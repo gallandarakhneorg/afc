@@ -49,7 +49,7 @@ public class Triangle2dfx
 	/**
 	 * Literal constant.
 	 */
-	private static final String POINT_ONE_NOT_NULL = "Point 1 must not be null"; //$NON-NLS-1$
+	private static final String POINT_ONE_NOT_NULL = "Point 1 must not be null"; 
 
 	private DoubleProperty x1;
 
@@ -99,7 +99,7 @@ public class Triangle2dfx
 	 * @param triangle the triangle to copy.
 	 */
 	public Triangle2dfx(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		assert triangle != null : "Triangle must be not null"; 
 		set(triangle.getX1(), triangle.getY1(), triangle.getX2(), triangle.getY2(), triangle.getX3(), triangle.getY3());
 	}
 
@@ -152,19 +152,19 @@ public class Triangle2dfx
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getX1());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY1());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getX2());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY2());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getX3());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY3());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -199,7 +199,7 @@ public class Triangle2dfx
 	@Pure
 	public DoubleProperty x1Property() {
 		if (this.x1 == null) {
-			this.x1 = new SimpleDoubleProperty(this, "x1"); //$NON-NLS-1$
+			this.x1 = new SimpleDoubleProperty(this, "x1"); 
 		}
 		return this.x1;
 	}
@@ -216,7 +216,7 @@ public class Triangle2dfx
 	@Pure
 	public DoubleProperty y1Property() {
 		if (this.y1 == null) {
-			this.y1 = new SimpleDoubleProperty(this, "y1"); //$NON-NLS-1$
+			this.y1 = new SimpleDoubleProperty(this, "y1"); 
 		}
 		return this.y1;
 	}
@@ -233,7 +233,7 @@ public class Triangle2dfx
 	@Pure
 	public DoubleProperty x2Property() {
 		if (this.x2 == null) {
-			this.x2 = new SimpleDoubleProperty(this, "x2"); //$NON-NLS-1$
+			this.x2 = new SimpleDoubleProperty(this, "x2"); 
 		}
 		return this.x2;
 	}
@@ -250,7 +250,7 @@ public class Triangle2dfx
 	@Pure
 	public DoubleProperty y2Property() {
 		if (this.y2 == null) {
-			this.y2 = new SimpleDoubleProperty(this, "y2"); //$NON-NLS-1$
+			this.y2 = new SimpleDoubleProperty(this, "y2"); 
 		}
 		return this.y2;
 	}
@@ -267,7 +267,7 @@ public class Triangle2dfx
 	@Pure
 	public DoubleProperty x3Property() {
 		if (this.x3 == null) {
-			this.x3 = new SimpleDoubleProperty(this, "x3"); //$NON-NLS-1$
+			this.x3 = new SimpleDoubleProperty(this, "x3"); 
 		}
 		return this.x3;
 	}
@@ -284,7 +284,7 @@ public class Triangle2dfx
 	@Pure
 	public DoubleProperty y3Property() {
 		if (this.y3 == null) {
-			this.y3 = new SimpleDoubleProperty(this, "y3"); //$NON-NLS-1$
+			this.y3 = new SimpleDoubleProperty(this, "y3"); 
 		}
 		return this.y3;
 	}
@@ -341,7 +341,7 @@ public class Triangle2dfx
 	@Pure
 	public ReadOnlyBooleanProperty ccwProperty() {
 		if (this.ccw == null) {
-			this.ccw = new ReadOnlyBooleanWrapper(this, "ccw"); //$NON-NLS-1$
+			this.ccw = new ReadOnlyBooleanWrapper(this, "ccw"); 
 			this.ccw.bind(Bindings.createBooleanBinding(() -> {
 				return Triangle2afp.isCCWOrderDefinition(
 						getX1(), getY1(), getX2(), getY2(),
@@ -357,7 +357,7 @@ public class Triangle2dfx
 	@Override
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			},

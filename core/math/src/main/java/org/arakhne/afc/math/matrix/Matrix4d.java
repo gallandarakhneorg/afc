@@ -195,8 +195,8 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the array of length 16 containing in order
 	 */
 	public Matrix4d(double[] v) {
-		assert v != null : "Array must not be null"; //$NON-NLS-1$
-		assert v.length >= 16 : "Size of the array is to small"; //$NON-NLS-1$
+		assert v != null : "Array must not be null"; 
+		assert v.length >= 16 : "Size of the array is to small"; 
 		this.m00 = v[0];
 		this.m01 = v[1];
 		this.m02 = v[2];
@@ -225,7 +225,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the source matrix
 	 */
 	public Matrix4d(Matrix4d matrix) {
-		assert matrix != null : "Matrix must not be null"; //$NON-NLS-1$
+		assert matrix != null : "Matrix must not be null"; 
 		this.m00 = matrix.m00;
 		this.m01 = matrix.m01;
 		this.m02 = matrix.m02;
@@ -280,22 +280,22 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@Override
 	public String toString() {
-		return this.m00 + ", " //$NON-NLS-1$
-			+ this.m01 + ", " //$NON-NLS-1$
-			+ this.m02 + ", " //$NON-NLS-1$
-			+ this.m03 + "\n" //$NON-NLS-1$
-			+ this.m10 + ", " //$NON-NLS-1$
-			+ this.m11 + ", " //$NON-NLS-1$
-			+ this.m12 + ", " //$NON-NLS-1$
-			+ this.m13 + "\n" //$NON-NLS-1$
-			+ this.m20 + ", " //$NON-NLS-1$
-			+ this.m21 + ", " //$NON-NLS-1$
-			+ this.m22 + ", " //$NON-NLS-1$
-			+ this.m23 + "\n" //$NON-NLS-1$
-			+ this.m30 + ", " //$NON-NLS-1$
-			+ this.m31 + ", " //$NON-NLS-1$
-			+ this.m32 + ", " //$NON-NLS-1$
-			+ this.m33 + "\n"; //$NON-NLS-1$
+		return this.m00 + ", " 
+			+ this.m01 + ", " 
+			+ this.m02 + ", " 
+			+ this.m03 + "\n" 
+			+ this.m10 + ", " 
+			+ this.m11 + ", " 
+			+ this.m12 + ", " 
+			+ this.m13 + "\n" 
+			+ this.m20 + ", " 
+			+ this.m21 + ", " 
+			+ this.m22 + ", " 
+			+ this.m23 + "\n" 
+			+ this.m30 + ", " 
+			+ this.m31 + ", " 
+			+ this.m32 + ", " 
+			+ this.m33 + "\n"; 
 	}
 
 	/**
@@ -337,8 +337,8 @@ public class Matrix4d implements Serializable, Cloneable {
 	 */
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public final void setElement(int row, int column, double value) {
-		assert row >= 0 && row < 4 : "Row number must be in [0; 4]"; //$NON-NLS-1$
-		assert column >= 0 && column < 4 : "Column number must be in [0; 4]"; //$NON-NLS-1$
+		assert row >= 0 && row < 4 : "Row number must be in [0; 4]"; 
+		assert column >= 0 && column < 4 : "Column number must be in [0; 4]"; 
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -436,8 +436,8 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
 	public final double getElement(int row, int column) {
-		assert row >= 0 && row < 4 : "Row number must be in [0; 4]"; //$NON-NLS-1$
-		assert column >= 0 && column < 4 : "Column number must be in [0; 4]"; //$NON-NLS-1$
+		assert row >= 0 && row < 4 : "Row number must be in [0; 4]"; 
+		assert column >= 0 && column < 4 : "Column number must be in [0; 4]"; 
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -514,9 +514,9 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the array into which the matrix row values will be copied
 	 */
 	public final void getRow(int row, double[] v) {
-		assert row >= 0 && row < 4 : "Row number must be in [0; 4]"; //$NON-NLS-1$
-		assert v != null : "Array of values must not be null"; //$NON-NLS-1$
-		assert v.length >= 4 : "Size of the array of values is too small"; //$NON-NLS-1$
+		assert row >= 0 && row < 4 : "Row number must be in [0; 4]"; 
+		assert v != null : "Array of values must not be null"; 
+		assert v.length >= 4 : "Size of the array of values is too small"; 
 		if (row == 0) {
 			v[0] = this.m00;
 			v[1] = this.m01;
@@ -553,9 +553,9 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the array into which the matrix row values will be copied
 	 */
 	public final void getColumn(int column, double[] v) {
-		assert column >= 0 && column < 4 : "Column number must be in [0; 4]"; //$NON-NLS-1$
-		assert v != null : "Array of values must not be null"; //$NON-NLS-1$
-		assert v.length >= 4 : "Size of the array of values is too small"; //$NON-NLS-1$
+		assert column >= 0 && column < 4 : "Column number must be in [0; 4]"; 
+		assert v != null : "Array of values must not be null"; 
+		assert v.length >= 4 : "Size of the array of values is too small"; 
 		if (column == 0) {
 			v[0] = this.m00;
 			v[1] = this.m10;
@@ -597,7 +597,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the fourth column element
 	 */
 	public final void setRow(int row, double value1, double value2, double value3, double value4) {
-		assert row >= 0 && row < 4 : "Row number must be in [0; 4]"; //$NON-NLS-1$
+		assert row >= 0 && row < 4 : "Row number must be in [0; 4]"; 
 		switch (row) {
 		case 0:
 			this.m00 = value1;
@@ -643,9 +643,9 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the replacement row
 	 */
 	public final void setRow(int row, double[] v) {
-		assert row >= 0 && row < 4 : "Row number must be in [0; 4]"; //$NON-NLS-1$
-		assert v != null : "Array of values must not be null"; //$NON-NLS-1$
-		assert v.length >= 4 : "Size of the array of values is too small"; //$NON-NLS-1$
+		assert row >= 0 && row < 4 : "Row number must be in [0; 4]"; 
+		assert v != null : "Array of values must not be null"; 
+		assert v.length >= 4 : "Size of the array of values is too small"; 
 		switch (row) {
 		case 0:
 			this.m00 = v[0];
@@ -697,7 +697,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the fourth row element
 	 */
 	public final void setColumn(int column, double value1, double value2, double value3, double value4) {
-		assert column >= 0 && column < 4 : "Column number must be in [0; 4]"; //$NON-NLS-1$
+		assert column >= 0 && column < 4 : "Column number must be in [0; 4]"; 
 		switch (column) {
 		case 0:
 			this.m00 = value1;
@@ -743,9 +743,9 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the replacement column
 	 */
 	public final void setColumn(int column, double[] v) {
-		assert column >= 0 && column < 4 : "Column number must be in [0; 4]"; //$NON-NLS-1$
-		assert v != null : "Array of values must not be null"; //$NON-NLS-1$
-		assert v.length >= 4 : "Size of the array of values is too small"; //$NON-NLS-1$
+		assert column >= 0 && column < 4 : "Column number must be in [0; 4]"; 
+		assert v != null : "Array of values must not be null"; 
+		assert v.length >= 4 : "Size of the array of values is too small"; 
 		switch (column) {
 		case 0:
 			this.m00 = v[0];
@@ -822,7 +822,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the original matrix values
 	 */
 	public final void add(double scalar, Matrix4d matrix) {
-		assert matrix != null : "Matrix must not be null"; //$NON-NLS-1$
+		assert matrix != null : "Matrix must not be null"; 
 		this.m00 = matrix.m00 + scalar;
 		this.m01 = matrix.m01 + scalar;
 		this.m02 = matrix.m02 + scalar;
@@ -855,8 +855,8 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the second matrix
 	 */
 	public final void add(Matrix4d matrix1, Matrix4d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; //$NON-NLS-1$
-		assert matrix2 != null : "Second matrix must not be null"; //$NON-NLS-1$
+		assert matrix1 != null : "First matrix must not be null"; 
+		assert matrix2 != null : "Second matrix must not be null"; 
 		this.m00 = matrix1.m00 + matrix2.m00;
 		this.m01 = matrix1.m01 + matrix2.m01;
 		this.m02 = matrix1.m02 + matrix2.m02;
@@ -887,7 +887,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the other matrix
 	 */
 	public final void add(Matrix4d matrix) {
-		assert matrix != null : "Matrix must not be null"; //$NON-NLS-1$
+		assert matrix != null : "Matrix must not be null"; 
 		this.m00 += matrix.m00;
 		this.m01 += matrix.m01;
 		this.m02 += matrix.m02;
@@ -921,8 +921,8 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the second matrix
 	 */
 	public final void sub(Matrix4d matrix1, Matrix4d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; //$NON-NLS-1$
-		assert matrix2 != null : "Second matrix must not be null"; //$NON-NLS-1$
+		assert matrix1 != null : "First matrix must not be null"; 
+		assert matrix2 != null : "Second matrix must not be null"; 
 		this.m00 = matrix1.m00 - matrix2.m00;
 		this.m01 = matrix1.m01 - matrix2.m01;
 		this.m02 = matrix1.m02 - matrix2.m02;
@@ -954,7 +954,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the other matrix
 	 */
 	public final void sub(Matrix4d matrix) {
-		assert matrix != null : "Matrix must not be null"; //$NON-NLS-1$
+		assert matrix != null : "Matrix must not be null"; 
 		this.m00 -= matrix.m00;
 		this.m01 -= matrix.m01;
 		this.m02 -= matrix.m02;
@@ -1053,7 +1053,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the Matrix4f to be converted to double
 	 */
 	public final void set(Matrix4d matrix) {
-		assert matrix != null : "Matrix must not be null"; //$NON-NLS-1$
+		assert matrix != null : "Matrix must not be null"; 
 		this.m00 = matrix.m00;
 		this.m01 = matrix.m01;
 		this.m02 = matrix.m02;
@@ -1086,8 +1086,8 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the double precision array of length 16
 	 */
 	public final void set(double[] matrix) {
-		assert matrix != null : "Matrix must not be null"; //$NON-NLS-1$
-		assert matrix.length >= 16 : "Size of the array too small"; //$NON-NLS-1$
+		assert matrix != null : "Matrix must not be null"; 
+		assert matrix.length >= 16 : "Size of the array too small"; 
 		this.m00 = matrix[0];
 		this.m01 = matrix[1];
 		this.m02 = matrix[2];
@@ -1251,7 +1251,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the original matrix
 	 */
 	public final void mul(double scalar, Matrix4d matrix) {
-		assert matrix != null : "Matrix must not be null"; //$NON-NLS-1$
+		assert matrix != null : "Matrix must not be null"; 
 		this.m00 = scalar * matrix.m00;
 		this.m01 = scalar * matrix.m01;
 		this.m02 = scalar * matrix.m02;
@@ -1283,7 +1283,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the other matrix
 	 */
 	public final void mul(Matrix4d matrix) {
-		assert matrix != null : "Matrix must not be null"; //$NON-NLS-1$
+		assert matrix != null : "Matrix must not be null"; 
 		final double m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10 + this.m02 * matrix.m20 + this.m03 * matrix.m30;
 		final double m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11 + this.m02 * matrix.m21 + this.m03 * matrix.m31;
 		final double m02 = this.m00 * matrix.m02 + this.m01 * matrix.m12 + this.m02 * matrix.m22 + this.m03 * matrix.m32;
@@ -1334,8 +1334,8 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the second matrix
 	 */
 	public final void mul(Matrix4d matrix1, Matrix4d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; //$NON-NLS-1$
-		assert matrix2 != null : "Second matrix must not be null"; //$NON-NLS-1$
+		assert matrix1 != null : "First matrix must not be null"; 
+		assert matrix2 != null : "Second matrix must not be null"; 
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10
 					+ matrix1.m02 * matrix2.m20 + matrix1.m03 * matrix2.m30;
@@ -1441,7 +1441,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public boolean equals(Matrix4d matrix) {
-		assert matrix != null : "Matrix must not be null"; //$NON-NLS-1$
+		assert matrix != null : "Matrix must not be null"; 
 		try {
 			return this.m00 == matrix.m00 && this.m01 == matrix.m01
 					&& this.m02 == matrix.m02 && this.m03 == matrix.m03
@@ -1501,7 +1501,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Pure
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:returncount"})
 	public boolean epsilonEquals(Matrix4d matrix, double epsilon) {
-		assert matrix != null : "Matrix must not be null"; //$NON-NLS-1$
+		assert matrix != null : "Matrix must not be null"; 
 
 		double diff;
 
@@ -1724,7 +1724,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the source matrix
 	 */
 	public final void negate(Matrix4d matrix) {
-		assert matrix != null : "First matrix must not be null"; //$NON-NLS-1$
+		assert matrix != null : "First matrix must not be null"; 
 		this.m00 = -matrix.m00;
 		this.m01 = -matrix.m01;
 		this.m02 = -matrix.m02;

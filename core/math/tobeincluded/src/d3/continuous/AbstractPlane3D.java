@@ -66,19 +66,19 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		StringBuilder buf = new StringBuilder();
 		buf.append('[');
 		buf.append(getEquationComponentA());
-		buf.append(".x "); //$NON-NLS-1$
+		buf.append(".x "); 
 		double b = getEquationComponentB(); 
 		if (b>=0) buf.append('+');
 		buf.append(b);
-		buf.append(".y "); //$NON-NLS-1$
+		buf.append(".y "); 
 		double c = getEquationComponentC(); 
 		if (c>=0) buf.append('+');
 		buf.append(c);
-		buf.append(".z "); //$NON-NLS-1$
+		buf.append(".z "); 
 		double d = getEquationComponentD(); 
 		if (d>=0) buf.append('+');
 		buf.append(d);
-		buf.append("=0]"); //$NON-NLS-1$
+		buf.append("=0]"); 
 		return buf.toString();
 	}
 

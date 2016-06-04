@@ -128,16 +128,16 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	 */
 	protected void assertElement(PathIterator2ai<?> pi, PathElementType type, int... coords) {
 		if (!pi.hasNext()) {
-			fail("expected path element but the iterator is empty"); //$NON-NLS-1$
+			fail("expected path element but the iterator is empty"); 
 		}
 		PathElement2ai pe = pi.next();
 		if (!type.equals(pe.getType())) {
-			fail("expected: "+type+"; actual: "+pe.getType());  //$NON-NLS-1$//$NON-NLS-2$
+			fail("expected: "+type+"; actual: "+pe.getType());  
 		}
 		int[] c = new int[coords.length];
 		pe.toArray(c);
 		if (!isEquals(c, coords)) {
-			fail("expected: "+Arrays.toString(coords)+"; actual: "+Arrays.toString(c));  //$NON-NLS-1$//$NON-NLS-2$
+			fail("expected: "+Arrays.toString(coords)+"; actual: "+Arrays.toString(c));  
 		}
 	}
 	
@@ -187,7 +187,7 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	 */
 	protected void assertNoElement(PathIterator2ai<?> pi) {
 		if (pi.hasNext()) {
-			fail("expected no path element but the iterator is not empty"); //$NON-NLS-1$
+			fail("expected no path element but the iterator is not empty"); 
 		}
 	}
 

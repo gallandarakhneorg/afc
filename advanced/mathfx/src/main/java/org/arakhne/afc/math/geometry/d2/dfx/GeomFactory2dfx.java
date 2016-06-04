@@ -46,7 +46,7 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 
 	@Override
 	public Point2dfx convertToPoint(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		try {
 			return (Point2dfx) pt;
 		} catch (Throwable exception) {
@@ -56,7 +56,7 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 
 	@Override
 	public Point2dfx convertToPoint(Vector2D<?, ?> v) {
-		assert v != null : "Vector must be not null"; //$NON-NLS-1$
+		assert v != null : "Vector must be not null"; 
 		Point2dfx pt;
 		try {
 			final Vector2dfx pp = (Vector2dfx) v;
@@ -69,7 +69,7 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 
 	@Override
 	public Vector2dfx convertToVector(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		Vector2dfx v;
 		try {
 			final Point2dfx pp = (Point2dfx) pt;
@@ -82,7 +82,7 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 
 	@Override
 	public Vector2dfx convertToVector(Vector2D<?, ?> v) {
-		assert v != null : "Vector must be not null"; //$NON-NLS-1$
+		assert v != null : "Vector must be not null"; 
 		Vector2dfx vv;
 		try {
 			vv = (Vector2dfx) v;
@@ -140,14 +140,14 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 
 	@Override
 	public Rectangle2dfx newBox(double x, double y, double width, double height) {
-		assert width >= 0. : "Width must be positive or zero"; //$NON-NLS-1$
-		assert height >= 0. : "Height must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0. : "Width must be positive or zero"; 
+		assert height >= 0. : "Height must be positive or zero"; 
 		return new Rectangle2dfx(x,  y, width, height);
 	}
 
 	@Override
 	public Path2afp<?, ?, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> newPath(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : "Path winding rule must be not null"; 
 		return new Path2dfx(rule);
 	}
 

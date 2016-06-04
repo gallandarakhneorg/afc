@@ -82,7 +82,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
 	public void toSystem(Point2D<?, ?> point, CoordinateSystem2D targetCoordinateSystem) {
-		assert targetCoordinateSystem != null : "Target coordinate system must be not null"; //$NON-NLS-1$
+		assert targetCoordinateSystem != null : "Target coordinate system must be not null"; 
 		if (this != targetCoordinateSystem) {
 			point.setY(-point.getY());
 		}
@@ -95,7 +95,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
 	public void toSystem(Vector2D<?, ?> point, CoordinateSystem2D targetCoordinateSystem) {
-		assert targetCoordinateSystem != null : "Target coordinate system must be not null"; //$NON-NLS-1$
+		assert targetCoordinateSystem != null : "Target coordinate system must be not null"; 
 		if (this != targetCoordinateSystem) {
 			point.setY(-point.getY());
 		}
@@ -110,7 +110,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 */
 	@Pure
 	public double toSystem(double rotation, CoordinateSystem2D targetCoordinateSystem) {
-		assert targetCoordinateSystem != null : "Target coordinate system must be not null"; //$NON-NLS-1$
+		assert targetCoordinateSystem != null : "Target coordinate system must be not null"; 
 		if (this != targetCoordinateSystem) {
 			return -rotation;
 		}
@@ -124,7 +124,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
 	public void toSystem(Transform2D matrix, CoordinateSystem2D targetCoordinateSystem) {
-		assert targetCoordinateSystem != null : "Target coordinate system must be not null"; //$NON-NLS-1$
+		assert targetCoordinateSystem != null : "Target coordinate system must be not null"; 
 		if (this != targetCoordinateSystem) {
 			final double r = -matrix.getRotation();
 			matrix.setRotation(r);
@@ -347,7 +347,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 		case XY_RIGHT_HAND:
 			return new ImmutableVector2D(0, 1);
 		default:
-			throw new IllegalArgumentException("this"); //$NON-NLS-1$
+			throw new IllegalArgumentException("this"); 
 		}
 	}
 
@@ -367,7 +367,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 			vectorToFill.set(0, 1);
 			return vectorToFill;
 		default:
-			throw new IllegalArgumentException("this"); //$NON-NLS-1$
+			throw new IllegalArgumentException("this"); 
 
 		}
 	}
@@ -384,7 +384,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 		case XY_RIGHT_HAND:
 			return new ImmutableVector2D(0, -1);
 		default:
-			throw new IllegalArgumentException("this"); //$NON-NLS-1$
+			throw new IllegalArgumentException("this"); 
 		}
 	}
 
@@ -404,7 +404,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 			vectorToFill.set(0, -1);
 			return vectorToFill;
 		default:
-			throw new IllegalArgumentException("this"); //$NON-NLS-1$
+			throw new IllegalArgumentException("this"); 
 		}
 	}
 

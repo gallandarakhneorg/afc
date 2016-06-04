@@ -37,7 +37,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("boxing")
+@SuppressWarnings("all")
 public class BinaryTreeNodeTest {
 
 	private final TreeNodeListenerStub<DefaultBinaryTreeNode<Object>> listener =
@@ -54,11 +54,11 @@ public class BinaryTreeNodeTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		this.root = new NodeStub("root"); //$NON-NLS-1$
-		this.child1 = new NodeStub("child1"); //$NON-NLS-1$
-		this.child2 = new NodeStub("child2"); //$NON-NLS-1$
-		this.node = new NodeStub("node"); //$NON-NLS-1$
-		this.newNode = new NodeStub("newNode"); //$NON-NLS-1$
+		this.root = new NodeStub("root"); 
+		this.child1 = new NodeStub("child1"); 
+		this.child2 = new NodeStub("child2"); 
+		this.node = new NodeStub("node"); 
+		this.newNode = new NodeStub("newNode"); 
 		
 		this.root.setChildAt(BinaryTreeZone.LEFT, this.child1);
 		this.root.setChildAt(BinaryTreeZone.RIGHT, this.child2);

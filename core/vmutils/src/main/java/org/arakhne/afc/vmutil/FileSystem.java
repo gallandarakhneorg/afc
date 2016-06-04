@@ -53,6 +53,8 @@ import java.util.zip.ZipOutputStream;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.locale.Locale;
+
 /** An utility class that permits to deal with filenames.
  *
  * @author $Author: sgalland$
@@ -85,7 +87,7 @@ public final class FileSystem {
 		pattern.append(validChars);
 		pattern.append("*)*"); //$NON-NLS-1$
 		pattern.append("$"); //$NON-NLS-1$
-		//"^([A-Za-z]:)?([^\\\\/:*?\"<>|]*\\\\)*[^\\\\/:*?\"<>|]*$"; //$NON-NLS-1$
+		//"^([A-Za-z]:)?([^\\\\/:*?\"<>|]*\\\\)*[^\\\\/:*?\"<>|]*$";
 		WINDOW_NATIVE_FILENAME_PATTERN = pattern.toString();
 	}
 
@@ -1586,7 +1588,7 @@ public final class FileSystem {
 			final File userHome = getUserHomeDirectory();
 			final OperatingSystem os = OperatingSystem.getCurrentOS();
 			if (os == OperatingSystem.ANDROID) {
-				return join(userHome, "Android", Android.DATA_DIRECTORY,  //$NON-NLS-1$
+				return join(userHome, "Android", Android.DATA_DIRECTORY, //$NON-NLS-1$
 						Android.makeAndroidApplicationName(software));
 			} else if (os.isUnixCompliant()) {
 				return new File(new File(userHome, ".config"), software); //$NON-NLS-1$
@@ -1594,10 +1596,10 @@ public final class FileSystem {
 				final String userName = System.getProperty("user.name"); //$NON-NLS-1$
 				if (userName != null && !"".equals(userName)) { //$NON-NLS-1$
 					return join(
-							new File("C:"),  //$NON-NLS-1$
+							new File("C:"), //$NON-NLS-1$
 							"Documents and Settings", //$NON-NLS-1$
 							userName,
-							"Local Settings", "Application Data", //$NON-NLS-1$//$NON-NLS-2$
+							"Local Settings", "Application Data", //$NON-NLS-1$ //$NON-NLS-2$
 							software);
 				}
 			}
@@ -1787,7 +1789,7 @@ public final class FileSystem {
 						theUrl.getRef());
 			} catch (URISyntaxException e1) {
 				// The URL is broken beyond automatic repair
-				throw new IllegalArgumentException("broken URL: " + theUrl); //$NON-NLS-1$
+				throw new IllegalArgumentException(Locale.getString("E1", theUrl)); //$NON-NLS-1$
 			}
 
 		}
@@ -1812,7 +1814,7 @@ public final class FileSystem {
 				return new File(decodeHTMLEntities(auth + path));
 			}
 		}
-		throw new IllegalArgumentException("not a file URL: " + theUrl); //$NON-NLS-1$
+		throw new IllegalArgumentException(Locale.getString("E2", theUrl)); //$NON-NLS-1$
 	}
 
 	/** Convert a string to an URL according to several rules.
@@ -2534,17 +2536,17 @@ public final class FileSystem {
 		if (url == null) {
 			return null;
 		}
-		final String s = url.toExternalForm().replaceAll("/$", "");  //$NON-NLS-1$//$NON-NLS-2$
+		final String s = url.toExternalForm().replaceAll("/$", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		String sp;
 		final Iterator<URL> classpath = ClasspathUtil.getClasspath();
 		URL path;
 
 		while (classpath.hasNext()) {
 			path = classpath.next();
-			sp = path.toExternalForm().replaceAll("/$", "");  //$NON-NLS-1$//$NON-NLS-2$
+			sp = path.toExternalForm().replaceAll("/$", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			if (s.startsWith(sp)) {
 				final StringBuilder buffer = new StringBuilder("resource:"); //$NON-NLS-1$
-				buffer.append(s.substring(sp.length()).replaceAll("^/", ""));  //$NON-NLS-1$//$NON-NLS-2$
+				buffer.append(s.substring(sp.length()).replaceAll("^/", "")); //$NON-NLS-1$ //$NON-NLS-2$
 				try {
 					return new URL(buffer.toString());
 				} catch (MalformedURLException e) {
@@ -2870,7 +2872,7 @@ public final class FileSystem {
 		}
 		output.mkdirs();
 		if (!output.isDirectory()) {
-			throw new IOException("not a directory: " + output); //$NON-NLS-1$
+			throw new IOException(Locale.getString("E3", output)); //$NON-NLS-1$
 		}
 		ZipInputStream zis = null;
 		try {
@@ -3008,7 +3010,7 @@ public final class FileSystem {
 			throw new NullPointerException();
 		}
 		if (prefix.length() < 3) {
-			throw new IllegalArgumentException("Prefix string too short"); //$NON-NLS-1$
+			throw new IllegalArgumentException(Locale.getString("E4", 3, prefix)); //$NON-NLS-1$
 		}
 		final String string = (suffix == null) ? ".tmp" : suffix; //$NON-NLS-1$
 		final File targetDirectory;

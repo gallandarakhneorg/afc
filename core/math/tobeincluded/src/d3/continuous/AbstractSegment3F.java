@@ -1234,19 +1234,19 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append("[p:("); //$NON-NLS-1$
+		b.append("[p:("); 
 		b.append(this.getP1().getX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(this.getP1().getY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(this.getP1().getZ());
-		b.append("),v:("); //$NON-NLS-1$
+		b.append("),v:("); 
 		b.append(this.getSegmentVector().getX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(this.getSegmentVector().getY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(this.getSegmentVector().getZ());
-		b.append(")]"); //$NON-NLS-1$
+		b.append(")]"); 
 		return b.toString();
 	}
 

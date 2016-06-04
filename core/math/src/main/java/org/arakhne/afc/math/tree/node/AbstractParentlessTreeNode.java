@@ -234,7 +234,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 		if (this.data != null) {
 			for (final D data : this.data) {
 				if (data == null) {
-					buffer.append("null"); //$NON-NLS-1$
+					buffer.append("null"); 
 				} else {
 					buffer.append(data.toString());
 				}

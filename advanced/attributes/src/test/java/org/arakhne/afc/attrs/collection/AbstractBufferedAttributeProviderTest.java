@@ -112,7 +112,7 @@ public class AbstractBufferedAttributeProviderTest extends AbstractAttributeProv
 	/**
 	 */
 	public AbstractBufferedAttributeProviderTest() {
-		super("BufferedAttributeContainerTest"); //$NON-NLS-1$
+		super("BufferedAttributeContainerTest"); 
 	}
 	
 	@Override

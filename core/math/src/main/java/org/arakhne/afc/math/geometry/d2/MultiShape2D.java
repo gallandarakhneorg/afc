@@ -64,7 +64,7 @@ public interface MultiShape2D<
 	 */
 	@Pure
 	default CT getFirstShapeContaining(Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
 		if (toBoundingBox().contains(point)) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.contains(point)) {
@@ -83,7 +83,7 @@ public interface MultiShape2D<
 	@Pure
 	@Unefficient
 	default List<CT> getShapesContaining(Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
 		final List<CT> list = new ArrayList<>();
 		if (toBoundingBox().contains(point)) {
 			for (final CT shape : getBackendDataList()) {
@@ -129,7 +129,7 @@ public interface MultiShape2D<
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Multishape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Multishape must be not null"; 
 		final List<CT> backend = getBackendDataList();
 		backend.clear();
 		backend.addAll(shape.getBackendDataList());
@@ -395,8 +395,8 @@ public interface MultiShape2D<
 		 * @param iterator the original iterator.
 		 */
 		public BackendIterator(MultiShape2D<?, ?, CT, ?, ?, ?, ?> backend, ListIterator<CT> iterator) {
-			assert backend != null : "Backend must be not null"; //$NON-NLS-1$
-			assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+			assert backend != null : "Backend must be not null"; 
+			assert iterator != null : "Iterator must be not null"; 
 			this.backend = backend;
 			this.iterator = iterator;
 		}
@@ -475,8 +475,8 @@ public interface MultiShape2D<
 		 * @param list the original list.
 		 */
 		public BackendList(MultiShape2D<?, ?, CT, ?, ?, ?, ?> backend, List<CT> list) {
-			assert backend != null : "Backend must be not null"; //$NON-NLS-1$
-			assert list != null : "List must be not null"; //$NON-NLS-1$
+			assert backend != null : "Backend must be not null"; 
+			assert list != null : "List must be not null"; 
 			this.backend = backend;
 			this.list = list;
 		}

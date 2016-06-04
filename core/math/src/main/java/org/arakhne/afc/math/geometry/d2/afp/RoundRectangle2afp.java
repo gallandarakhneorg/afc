@@ -76,12 +76,12 @@ public interface RoundRectangle2afp<
 	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean containsRoundRectangleRectangle(double rx1, double ry1, double rwidth1, double rheight1,
 			double awidth, double aheight, double rx2, double ry2, double rwidth2, double rheight2) {
-		assert rwidth1 >= 0. : "Round rectangle width must be positive or zero"; //$NON-NLS-1$
-		assert rheight1 >= 0. : "Round rectangle height must be positive or zero"; //$NON-NLS-1$
-		assert awidth >= 0. : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
-		assert aheight >= 0. : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
-		assert rwidth2 >= 0. : "Rectangle width must be positive or zero"; //$NON-NLS-1$
-		assert rheight2 >= 0. : "Rectangle height must be positive or zero"; //$NON-NLS-1$
+		assert rwidth1 >= 0. : "Round rectangle width must be positive or zero"; 
+		assert rheight1 >= 0. : "Round rectangle height must be positive or zero"; 
+		assert awidth >= 0. : "Round rectangle arc width must be positive or zero"; 
+		assert aheight >= 0. : "Round rectangle arc height must be positive or zero"; 
+		assert rwidth2 >= 0. : "Rectangle width must be positive or zero"; 
+		assert rheight2 >= 0. : "Rectangle height must be positive or zero"; 
 		final double rcx1 = rx1 + rwidth1 / 2;
 		final double rcy1 = ry1 + rheight1 / 2;
 		final double rcx2 = rx2 + rwidth2 / 2;
@@ -117,10 +117,10 @@ public interface RoundRectangle2afp<
 	@Pure
 	static boolean containsRoundRectanglePoint(double rx, double ry, double rwidth, double rheight,
 			double awidth, double aheight, double px, double py) {
-		assert rwidth >= 0. : "Round rectangle width must be positive or zero"; //$NON-NLS-1$
-		assert rheight >= 0. : "Round rectangle height must be positive or zero"; //$NON-NLS-1$
-		assert awidth >= 0. : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
-		assert aheight >= 0. : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
+		assert rwidth >= 0. : "Round rectangle width must be positive or zero"; 
+		assert rheight >= 0. : "Round rectangle height must be positive or zero"; 
+		assert awidth >= 0. : "Round rectangle arc width must be positive or zero"; 
+		assert aheight >= 0. : "Round rectangle arc height must be positive or zero"; 
 		if (rwidth <= 0 && rheight <= 0) {
 			return rx == px && ry == py;
 		}
@@ -183,10 +183,10 @@ public interface RoundRectangle2afp<
 		"checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	static boolean intersectsRoundRectangleSegment(double rx1, double ry1, double rx2, double ry2,
 			double aw, double ah, double sx1, double sy1, double sx2, double sy2) {
-		assert rx1 <= rx2 : "rx1 must be lower or equal rx2"; //$NON-NLS-1$
-		assert ry1 <= ry2 : "ry1 must be lower or equal ry2"; //$NON-NLS-1$
-		assert aw >= 0. : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
-		assert ah >= 0. : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
+		assert rx1 <= rx2 : "rx1 must be lower or equal rx2"; 
+		assert ry1 <= ry2 : "ry1 must be lower or equal ry2"; 
+		assert aw >= 0. : "Round rectangle arc width must be positive or zero"; 
+		assert ah >= 0. : "Round rectangle arc height must be positive or zero"; 
 		double segmentX1 = sx1;
 		double segmentY1 = sy1;
 		double segmentX2 = sx2;
@@ -313,14 +313,14 @@ public interface RoundRectangle2afp<
 	static boolean intersectsRoundRectangleRoundRectangle(double r1x1, double r1y1, double r1x2,
 			double r1y2, double r1aw, double r1ah,
 			double r2x1, double r2y1, double r2x2, double r2y2, double r2aw, double r2ah) {
-		assert r1x1 <= r1x2 : "r1x1 must be lower or equal r1x2"; //$NON-NLS-1$
-		assert r1y1 <= r1y2 : "r1y1 must be lower or equal r1y2"; //$NON-NLS-1$
-		assert r1aw >= 0. : "First round rectangle arc width must be positive or zero"; //$NON-NLS-1$
-		assert r1ah >= 0. : "First round rectangle arc height must be positive or zero"; //$NON-NLS-1$
-		assert r2x1 <= r2x2 : "r2x1 must be lower or equal r2x2"; //$NON-NLS-1$
-		assert r2y1 <= r2y2 : "r2y1 must be lower or equal r2y2"; //$NON-NLS-1$
-		assert r2aw >= 0. : "Second round rectangle arc width must be positive or zero"; //$NON-NLS-1$
-		assert r2ah >= 0. : "Second round rectangle arc height must be positive or zero"; //$NON-NLS-1$
+		assert r1x1 <= r1x2 : "r1x1 must be lower or equal r1x2"; 
+		assert r1y1 <= r1y2 : "r1y1 must be lower or equal r1y2"; 
+		assert r1aw >= 0. : "First round rectangle arc width must be positive or zero"; 
+		assert r1ah >= 0. : "First round rectangle arc height must be positive or zero"; 
+		assert r2x1 <= r2x2 : "r2x1 must be lower or equal r2x2"; 
+		assert r2y1 <= r2y2 : "r2y1 must be lower or equal r2y2"; 
+		assert r2aw >= 0. : "Second round rectangle arc width must be positive or zero"; 
+		assert r2ah >= 0. : "Second round rectangle arc height must be positive or zero"; 
 		if (Rectangle2afp.intersectsRectangleRectangle(r1x1, r1y1, r1x2, r1y2, r2x1, r2y1, r2x2, r2y2)) {
 			// Boundings rectangles are intersecting
 
@@ -397,11 +397,11 @@ public interface RoundRectangle2afp<
 	static boolean intersectsRoundRectangleCircle(double rx1, double ry1, double rx2,
 			double ry2, double aw, double ah,
 			double cx, double cy, double radius) {
-		assert rx1 <= rx2 : "rx1 must be lower or equal rx2"; //$NON-NLS-1$
-		assert ry1 <= ry2 : "ry1 must be lower or equal ry2"; //$NON-NLS-1$
-		assert aw >= 0. : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
-		assert ah >= 0. : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
-		assert radius >= 0. : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		assert rx1 <= rx2 : "rx1 must be lower or equal rx2"; 
+		assert ry1 <= ry2 : "ry1 must be lower or equal ry2"; 
+		assert aw >= 0. : "Round rectangle arc width must be positive or zero"; 
+		assert ah >= 0. : "Round rectangle arc height must be positive or zero"; 
+		assert radius >= 0. : "Circle radius must be positive or zero"; 
 
 		final double rInnerMinX = rx1 + aw;
 		final double rInnerMaxX = rx2 - aw;
@@ -450,12 +450,12 @@ public interface RoundRectangle2afp<
 	static boolean intersectsRoundRectangleRectangle(double r1x1, double r1y1, double r1x2,
 			double r1y2, double r1aw, double r1ah,
 			double r2x1, double r2y1, double r2x2, double r2y2) {
-		assert r1x1 <= r1x2 : "r1x1 must be lower or equal r1x2"; //$NON-NLS-1$
-		assert r1y1 <= r1y2 : "r1y1 must be lower or equal r1y2"; //$NON-NLS-1$
-		assert r1aw >= 0. : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
-		assert r1ah >= 0. : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
-		assert r2x1 <= r2x2 : "r2x1 must be lower or equal r2x2"; //$NON-NLS-1$
-		assert r2y1 <= r2y2 : "r2y1 must be lower or equal r2y2"; //$NON-NLS-1$
+		assert r1x1 <= r1x2 : "r1x1 must be lower or equal r1x2"; 
+		assert r1y1 <= r1y2 : "r1y1 must be lower or equal r1y2"; 
+		assert r1aw >= 0. : "Round rectangle arc width must be positive or zero"; 
+		assert r1ah >= 0. : "Round rectangle arc height must be positive or zero"; 
+		assert r2x1 <= r2x2 : "r2x1 must be lower or equal r2x2"; 
+		assert r2y1 <= r2y2 : "r2y1 must be lower or equal r2y2"; 
 		if (Rectangle2afp.intersectsRectangleRectangle(r1x1, r1y1, r1x2, r1y2, r2x1, r2y1, r2x2, r2y2)) {
 			// Boundings rectangles are intersecting
 
@@ -517,12 +517,12 @@ public interface RoundRectangle2afp<
 	static boolean intersectsRoundRectangleEllipse(double rx1, double ry1, double rx2,
 			double ry2, double aw, double ah,
 			double ex, double ey, double ew, double eh) {
-		assert rx1 <= rx2 : "rx1 must be lower or equal rx2"; //$NON-NLS-1$
-		assert ry1 <= ry2 : "ry1 must be lower or equal ry2"; //$NON-NLS-1$
-		assert aw >= 0. : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
-		assert ah >= 0. : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
-		assert ew >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert eh >= 0. : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert rx1 <= rx2 : "rx1 must be lower or equal rx2"; 
+		assert ry1 <= ry2 : "ry1 must be lower or equal ry2"; 
+		assert aw >= 0. : "Round rectangle arc width must be positive or zero"; 
+		assert ah >= 0. : "Round rectangle arc height must be positive or zero"; 
+		assert ew >= 0. : "Ellipse width must be positive or zero"; 
+		assert eh >= 0. : "Ellipse height must be positive or zero"; 
 
 		final double rInnerMinX = rx1 + aw;
 		final double rInnerMaxX = rx2 - aw;
@@ -614,16 +614,16 @@ public interface RoundRectangle2afp<
 	 *     of this <code>RoundRectangle2afp</code>.
 	 */
 	default void set(double x, double y, double width, double height, double arcWidth, double arcHeight) {
-		assert width >= 0. : "Rectangle width must be positive or zero"; //$NON-NLS-1$
-		assert height >= 0. : "Rectangle geight must be positive or zero"; //$NON-NLS-1$
-		assert arcWidth >= 0. : "Rectangle arc width must be positive or zero"; //$NON-NLS-1$
-		assert arcHeight >= 0. : "Rectangle arc height must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0. : "Rectangle width must be positive or zero"; 
+		assert height >= 0. : "Rectangle geight must be positive or zero"; 
+		assert arcWidth >= 0. : "Rectangle arc width must be positive or zero"; 
+		assert arcHeight >= 0. : "Rectangle arc height must be positive or zero"; 
 		setFromCorners(x, y, x + width, y + height, arcWidth, arcHeight);
 	}
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Shape must be not null"; 
 		setFromCorners(shape.getMinX(), shape.getMinY(), shape.getMaxX(), shape.getMaxY(),
 				shape.getArcWidth(), shape.getArcHeight());
 	}
@@ -650,7 +650,7 @@ public interface RoundRectangle2afp<
 
 	@Override
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		return containsRoundRectangleRectangle(
 				getMinX(), getMinY(), getWidth(), getHeight(), getArcWidth(), getArcHeight(),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getWidth(), rectangle.getHeight());
@@ -659,7 +659,7 @@ public interface RoundRectangle2afp<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final Point2D<?, ?> n = getClosestPointTo(pt);
 		return n.getDistanceSquared(pt);
 	}
@@ -667,7 +667,7 @@ public interface RoundRectangle2afp<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final Point2D<?, ?> n = getClosestPointTo(pt);
 		return n.getDistanceL1(pt);
 	}
@@ -675,14 +675,14 @@ public interface RoundRectangle2afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final Point2D<?, ?> n = getClosestPointTo(pt);
 		return n.getDistanceLinf(pt);
 	}
 
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		return intersectsRoundRectangleCircle(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -693,7 +693,7 @@ public interface RoundRectangle2afp<
 
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		assert ellipse != null : "Ellipse must be not null"; 
 		return intersectsRoundRectangleEllipse(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -704,7 +704,7 @@ public interface RoundRectangle2afp<
 
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
 		return OrientedRectangle2afp.intersectsOrientedRectangleRoundRectangle(
 				orientedRectangle.getCenterX(), orientedRectangle.getCenterY(),
 				orientedRectangle.getFirstAxisX(), orientedRectangle.getFirstAxisY(), orientedRectangle.getFirstAxisExtent(),
@@ -714,7 +714,7 @@ public interface RoundRectangle2afp<
 
 	@Override
 	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> oarallelogram) {
-		assert oarallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		assert oarallelogram != null : "Parallelogram must be not null"; 
 		return Parallelogram2afp.intersectsParallelogramRoundRectangle(
 				oarallelogram.getCenterX(), oarallelogram.getCenterY(),
 				oarallelogram.getFirstAxisX(), oarallelogram.getFirstAxisY(), oarallelogram.getFirstAxisExtent(),
@@ -724,7 +724,7 @@ public interface RoundRectangle2afp<
 
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		return intersectsRoundRectangleRectangle(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -735,7 +735,7 @@ public interface RoundRectangle2afp<
 
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		assert roundRectangle != null : "Round rectangle must be not null"; 
 		return intersectsRoundRectangleRoundRectangle(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -747,7 +747,7 @@ public interface RoundRectangle2afp<
 
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null"; 
 		return RoundRectangle2afp.intersectsRoundRectangleSegment(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -758,13 +758,13 @@ public interface RoundRectangle2afp<
 
 	@Override
 	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		assert triangle != null : "Triangle must be not null"; 
 		return intersects(triangle.getPathIterator());
 	}
 
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path2afp.computeCrossingsFromRoundRect(
 				0,
@@ -779,7 +779,7 @@ public interface RoundRectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "MultiShape must be not null"; 
 		return multishape.intersects(this);
 	}
 
@@ -819,7 +819,7 @@ public interface RoundRectangle2afp<
 	@Override
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	default P getClosestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final double px = pt.getX();
 		final double py = pt.getY();
 		final double rx1 = getMinX();
@@ -906,14 +906,14 @@ public interface RoundRectangle2afp<
 
     @Override
     default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-        assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+        assert circle != null : "Circle must be not null"; 
         return getClosestPointTo(circle.getCenter());
     }
 
     @Override
     @Unefficient
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-        assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+        assert ellipse != null : "Ellipse must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getFlatteningPathIterator(), ellipse.getPathIterator(), point);
         return point;
@@ -922,7 +922,7 @@ public interface RoundRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-        assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+        assert rectangle != null : "Rectangle must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getFlatteningPathIterator(), rectangle.getPathIterator(), point);
         return point;
@@ -931,16 +931,15 @@ public interface RoundRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-        assert segment != null : "Segment must be not null"; //$NON-NLS-1$
-        final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getFlatteningPathIterator(), segment.getPathIterator(), point);
-        return point;
+        assert segment != null : "Segment must be not null"; 
+        final Point2D<?, ?> pointOnSegment = segment.getClosestPointTo(this);
+        return getClosestPointTo(pointOnSegment);
     }
 
     @Override
     @Unefficient
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-        assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+        assert triangle != null : "Triangle must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getFlatteningPathIterator(), triangle.getPathIterator(), point);
         return point;
@@ -949,7 +948,7 @@ public interface RoundRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-        assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+        assert orientedRectangle != null : "Oriented rectangle must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getFlatteningPathIterator(), orientedRectangle.getPathIterator(), point);
         return point;
@@ -958,7 +957,7 @@ public interface RoundRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-        assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+        assert parallelogram != null : "Parallelogram must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getFlatteningPathIterator(), parallelogram.getPathIterator(), point);
         return point;
@@ -967,7 +966,7 @@ public interface RoundRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-        assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+        assert roundRectangle != null : "Round rectangle must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getFlatteningPathIterator(), roundRectangle.getPathIterator(), point);
         return point;
@@ -976,7 +975,7 @@ public interface RoundRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
-        assert path != null : "Path must be not null"; //$NON-NLS-1$
+        assert path != null : "Path must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getFlatteningPathIterator(), path.getPathIterator(), point);
         return point;
@@ -985,7 +984,7 @@ public interface RoundRectangle2afp<
     @Pure
     @Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final double px = pt.getX();
 		final double py = pt.getY();
 		final double rx1 = getMinX();
@@ -1058,7 +1057,7 @@ public interface RoundRectangle2afp<
 		 * @param rectangle the iterated rectangle.
 		 */
 		public AbstractRoundRectanglePathIterator(RoundRectangle2afp<?, ?, T, ?, ?, ?> rectangle) {
-			assert rectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+			assert rectangle != null : "Round rectangle must be not null"; 
 			this.rectangle = rectangle;
 		}
 
@@ -1300,7 +1299,7 @@ public interface RoundRectangle2afp<
 		 */
 		public TransformedRoundRectanglePathIterator(RoundRectangle2afp<?, ?, T, ?, ?, ?> rectangle, Transform2D transform) {
 			super(rectangle);
-			assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+			assert transform != null : "Transformation must be not null"; 
 			this.transform = transform;
 			if (rectangle.isEmpty()) {
 				this.index = ELEMENT_COUNT;

@@ -602,11 +602,11 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 */
 	@Override
 	public String toString() {
-		return "(" //$NON-NLS-1$
+		return "(" 
 				+this.x
-				+";" //$NON-NLS-1$
+				+";" 
 				+this.y
-				+")"; //$NON-NLS-1$
+				+")"; 
 	}
 
 }

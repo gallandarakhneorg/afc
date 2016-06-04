@@ -42,6 +42,7 @@ import org.arakhne.afc.testtools.AbstractTestCase;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
 
 	/** Random number generator.
@@ -66,13 +67,13 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
 		int count = this.RANDOM.nextInt(400)+100;
 		this.reference = new HashMap<>(count);
 		for(int idx=0; idx<count; idx++) {
-			this.reference.put(createKeyInstance("in/"), createValueInstance("in/")); //$NON-NLS-1$//$NON-NLS-2$
+			this.reference.put(createKeyInstance("in/"), createValueInstance("in/")); 
 		}
 		
 		count = this.RANDOM.nextInt(5)+5;
 		this.unreference = new HashMap<>(count);
 		for(int idx=0; idx<count; idx++) {
-			this.unreference.put(createKeyInstance("out/"), createValueInstance("out/")); //$NON-NLS-1$//$NON-NLS-2$
+			this.unreference.put(createKeyInstance("out/"), createValueInstance("out/")); 
 		}
 
 		this.map = createMap();
@@ -192,7 +193,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         int count = this.RANDOM.nextInt(50)+50;
         for(int idx=0; idx<count; idx++) {
         	int index = this.RANDOM.nextInt(this.reference.size());
-        	Assert.assertTrue("#"+idx, this.map.containsKey(key(this.reference,index))); //$NON-NLS-1$
+        	Assert.assertTrue("#"+idx, this.map.containsKey(key(this.reference,index))); 
         }
         count = this.RANDOM.nextInt(5)+5;
         int index;
@@ -200,7 +201,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         	elt = key(this.unreference, index);
-        	Assert.assertFalse("#"+idx, this.map.containsKey(elt)); //$NON-NLS-1$
+        	Assert.assertFalse("#"+idx, this.map.containsKey(elt)); 
         }
     }
 
@@ -212,7 +213,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         int count = this.RANDOM.nextInt(50)+50;
         for(int idx=0; idx<count; idx++) {
         	int index = this.RANDOM.nextInt(this.reference.size());
-        	Assert.assertTrue("#"+idx, this.map.containsValue(value(this.reference,index))); //$NON-NLS-1$
+        	Assert.assertTrue("#"+idx, this.map.containsValue(value(this.reference,index))); 
         }
         count = this.RANDOM.nextInt(5)+5;
         int index;
@@ -220,7 +221,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         	elt = value(this.unreference, index);
-        	Assert.assertFalse("#"+idx, this.map.containsValue(elt)); //$NON-NLS-1$
+        	Assert.assertFalse("#"+idx, this.map.containsValue(elt)); 
         }
     }
 
@@ -231,7 +232,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         int count = this.RANDOM.nextInt(50)+50;
         for(int idx=0; idx<count; idx++) {
         	int index = this.RANDOM.nextInt(this.reference.size());
-        	Assert.assertNull("#"+idx, this.map.get(key(this.reference,index))); //$NON-NLS-1$
+        	Assert.assertNull("#"+idx, this.map.get(key(this.reference,index))); 
         }
         count = this.RANDOM.nextInt(5)+5;
         int index;
@@ -239,7 +240,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         	elt = key(this.unreference, index);
-        	Assert.assertNull("#"+idx, this.map.get(elt)); //$NON-NLS-1$
+        	Assert.assertNull("#"+idx, this.map.get(elt)); 
         }
         
         initMapWith(this.reference);
@@ -248,13 +249,13 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.reference.size());
         	elt = key(this.reference, index);
-        	Assert.assertEquals("#"+idx, this.reference.get(elt), this.map.get(elt)); //$NON-NLS-1$
+        	Assert.assertEquals("#"+idx, this.reference.get(elt), this.map.get(elt)); 
         }
         count = this.RANDOM.nextInt(5)+5;
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         	elt = key(this.unreference, index);
-        	Assert.assertNull("#"+idx, this.map.get(elt)); //$NON-NLS-1$
+        	Assert.assertNull("#"+idx, this.map.get(elt)); 
         }
     }
 
@@ -264,8 +265,8 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
     public void testPut() {
         int count = this.RANDOM.nextInt(50)+50;
         for(int idx=0; idx<count; idx++) {
-        	K key = createKeyInstance("tmp/"); //$NON-NLS-1$
-        	V value = createValueInstance("tmp/"); //$NON-NLS-1$
+        	K key = createKeyInstance("tmp/"); 
+        	V value = createValueInstance("tmp/"); 
         	this.map.put(key, value);
         	Assert.assertSame(value, this.map.get(key));
         }
@@ -284,15 +285,15 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         for(int idx=0; !this.reference.isEmpty() && idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.reference.size());
         	elt = key(this.reference, index);
-        	Assert.assertSame("#"+idx, this.reference.get(elt), this.map.remove(elt)); //$NON-NLS-1$
+        	Assert.assertSame("#"+idx, this.reference.get(elt), this.map.remove(elt)); 
         	this.reference.remove(elt);
-        	Assert.assertNull("#"+idx, this.map.get(elt)); //$NON-NLS-1$
+        	Assert.assertNull("#"+idx, this.map.get(elt)); 
         }
         count = this.RANDOM.nextInt(5)+5;
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         	elt = key(this.unreference, index);
-        	Assert.assertNull("#"+idx, this.map.remove(elt)); //$NON-NLS-1$
+        	Assert.assertNull("#"+idx, this.map.remove(elt)); 
         }
     }
 
@@ -309,13 +310,13 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.reference.size());
         	elt = key(this.reference, index);
-        	Assert.assertEquals("#"+idx, this.reference.get(elt), this.map.get(elt)); //$NON-NLS-1$
+        	Assert.assertEquals("#"+idx, this.reference.get(elt), this.map.get(elt)); 
         }
         count = this.RANDOM.nextInt(5)+5;
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         	elt = key(this.unreference, index);
-        	Assert.assertNull("#"+idx, this.map.get(elt)); //$NON-NLS-1$
+        	Assert.assertNull("#"+idx, this.map.get(elt)); 
         }
     }
 

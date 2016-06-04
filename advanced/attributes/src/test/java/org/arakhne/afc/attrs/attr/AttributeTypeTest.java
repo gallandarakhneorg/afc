@@ -55,11 +55,11 @@ import org.arakhne.afc.ui.vector.VectorToolkit;
 public class AttributeTypeTest extends AbstractTestCase {
 
 	protected static void assertCastException(AttributeType type, Object value) {
-		assertException(ClassCastException.class, type, "cast", new Class<?>[] {Object.class}, new Object[] {value}); //$NON-NLS-1$
+		assertException(ClassCastException.class, type, "cast", new Class<?>[] {Object.class}, new Object[] {value}); 
 	}
 
 	protected static void assertNullException(AttributeType type, Object value) {
-		assertException(NullPointerException.class, type, "cast", new Class<?>[] {Object.class}, new Object[] {value}); //$NON-NLS-1$
+		assertException(NullPointerException.class, type, "cast", new Class<?>[] {Object.class}, new Object[] {value}); 
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		for(AttributeType type : AttributeType.values()) {
 			String name = type.getName();
 			assertNotNull(name);
-			assertNotSame("", name); //$NON-NLS-1$
+			assertNotSame("", name); 
 		}
 	}
 
@@ -109,7 +109,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(AttributeType.INTEGER, AttributeType.fromValue(1l));
 		assertEquals(AttributeType.REAL, AttributeType.fromValue(1f));
 		assertEquals(AttributeType.REAL, AttributeType.fromValue(1.));
-		assertEquals(AttributeType.STRING, AttributeType.fromValue("Hello")); //$NON-NLS-1$
+		assertEquals(AttributeType.STRING, AttributeType.fromValue("Hello")); 
 		assertEquals(AttributeType.STRING, AttributeType.fromValue(new StringBuffer()));
 		assertEquals(AttributeType.STRING, AttributeType.fromValue(new StringBuilder()));
 		assertEquals(AttributeType.DATE, AttributeType.fromValue(Calendar.getInstance()));
@@ -123,8 +123,8 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(AttributeType.POLYLINE3D, AttributeType.fromValue(new Point3D[0]));
 		assertEquals(AttributeType.IMAGE, AttributeType.fromValue(VectorToolkit.image(1,1,false)));
 		assertEquals(AttributeType.UUID, AttributeType.fromValue(UUID.randomUUID()));
-		assertEquals(AttributeType.URL, AttributeType.fromValue(new URL("http://set.utbm.fr"))); //$NON-NLS-1$
-		assertEquals(AttributeType.URI, AttributeType.fromValue(new URI("http://set.utbm.fr"))); //$NON-NLS-1$
+		assertEquals(AttributeType.URL, AttributeType.fromValue(new URL("http://set.utbm.fr"))); 
+		assertEquals(AttributeType.URI, AttributeType.fromValue(new URI("http://set.utbm.fr"))); 
 		assertEquals(AttributeType.INET_ADDRESS, AttributeType.fromValue(InetAddress.getLocalHost()));
 		AttributeType randomType = randomEnum(AttributeType.class);
 		assertEquals(AttributeType.ENUMERATION, AttributeType.fromValue(randomType));
@@ -244,7 +244,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertTrue(Arrays.equals(new Point3D[0], (Point3D[])AttributeType.POLYLINE3D.getDefaultValue()));
 		assertNull(AttributeType.URL.getDefaultValue());
 		assertNull(AttributeType.URI.getDefaultValue());
-		assertEquals(java.util.UUID.fromString("00000000-0000-0000-0000-000000000000"), AttributeType.UUID.getDefaultValue()); //$NON-NLS-1$
+		assertEquals(java.util.UUID.fromString("00000000-0000-0000-0000-000000000000"), AttributeType.UUID.getDefaultValue()); 
 		assertEquals(InetAddress.getLocalHost(), AttributeType.INET_ADDRESS.getDefaultValue());
 		assertNull(AttributeType.ENUMERATION.getDefaultValue());
 		assertEquals(Object.class, AttributeType.TYPE.getDefaultValue());
@@ -260,26 +260,26 @@ public class AttributeTypeTest extends AbstractTestCase {
 		long vLong = 1;
 		float vFloat = 1f;
 		double vDouble = 1.;
-		String vStr = "Hello"; //$NON-NLS-1$
-		StringBuilder vStrB = new StringBuilder("www.arakhne.org"); //$NON-NLS-1$
+		String vStr = "Hello"; 
+		StringBuilder vStrB = new StringBuilder("www.arakhne.org"); 
 		Calendar cal = Calendar.getInstance();
 		Date dt = new Date();
 		Point2d pt2d1 = new Point2d(0,0);
 		Image img = VectorToolkit.image(1,1,false);
 		Color col = Colors.RED;
-		UUID uuid = UUID.nameUUIDFromBytes("abcd".getBytes()); //$NON-NLS-1$
+		UUID uuid = UUID.nameUUIDFromBytes("abcd".getBytes()); 
 		//TODO: fixcode: Point3D pt3d = new Point3fp(0,0,0);
 		Point2D[] tabpt2d1 = new Point2D[0];
 		Point3D[] tabpt3d = new Point3D[0];
 		int[] tabint = new int[0];
 		Object obj = Locale.getDefault();
-		URL url = new URL("http://set.utbm.fr"); //$NON-NLS-1$
-		URI uri = new URI("http://set.utbm.fr"); //$NON-NLS-1$
+		URL url = new URL("http://set.utbm.fr"); 
+		URI uri = new URI("http://set.utbm.fr"); 
 		InetAddress ipAddress = InetAddress.getLocalHost();
 		InetAddress worldAddress = InetAddress.getByName(vStrB.toString());
 		String vIpStr = ipAddress.toString();
 		AttributeType enumeration = randomEnum(AttributeType.class);
-		String vEnumStr = AttributeType.class.getCanonicalName()+"."+AttributeType.values()[1].name(); //$NON-NLS-1$
+		String vEnumStr = AttributeType.class.getCanonicalName()+"."+AttributeType.values()[1].name(); 
 		
 		// BOOLEAN
 		type = AttributeType.BOOLEAN;
@@ -669,7 +669,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(url.toString(), type.cast(url));
 		assertEquals(uri.toString(), type.cast(uri));
 		assertEquals(ipAddress.toString(), type.cast(ipAddress));
-		assertEquals(enumeration.getClass().getCanonicalName()+"."+enumeration.name(), type.cast(enumeration)); //$NON-NLS-1$
+		assertEquals(enumeration.getClass().getCanonicalName()+"."+enumeration.name(), type.cast(enumeration)); 
 
 		// TIMESTAMP
 		type = AttributeType.TIMESTAMP;
@@ -728,7 +728,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,obj);
 		assertEquals(url.toURI(), type.cast(url));
 		assertSame(uri, type.cast(uri));
-		assertEquals(new URI(AttributeConstants.DEFAULT_SCHEME.name(), ipAddress.getHostAddress(), ""), type.cast(ipAddress)); //$NON-NLS-1$
+		assertEquals(new URI(AttributeConstants.DEFAULT_SCHEME.name(), ipAddress.getHostAddress(), ""), type.cast(ipAddress)); 
 		assertCastException(type,enumeration);
 
 		// URL
@@ -758,7 +758,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,obj);
 		assertSame(url, type.cast(url));
 		assertEquals(uri.toURL(), type.cast(uri));
-		assertEquals(new URL(AttributeConstants.DEFAULT_SCHEME.name(), ipAddress.getHostAddress(), ""), type.cast(ipAddress)); //$NON-NLS-1$
+		assertEquals(new URL(AttributeConstants.DEFAULT_SCHEME.name(), ipAddress.getHostAddress(), ""), type.cast(ipAddress)); 
 		assertCastException(type,enumeration);
 
 		// INET_ADDRESS
@@ -787,8 +787,8 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
-		assertEquals(InetAddress.getByName("set.utbm.fr"), type.cast(url)); //$NON-NLS-1$
-		assertEquals(InetAddress.getByName("set.utbm.fr"), type.cast(uri)); //$NON-NLS-1$
+		assertEquals(InetAddress.getByName("set.utbm.fr"), type.cast(url)); 
+		assertEquals(InetAddress.getByName("set.utbm.fr"), type.cast(uri)); 
 		assertSame(ipAddress, type.cast(ipAddress));
 		assertCastException(type,enumeration);
 

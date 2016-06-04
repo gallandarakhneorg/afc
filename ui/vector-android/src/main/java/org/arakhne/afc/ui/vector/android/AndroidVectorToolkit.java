@@ -223,20 +223,20 @@ public class AndroidVectorToolkit extends VectorToolkit {
 		String lt = type.toLowerCase();
 		Bitmap aImg = toNativeUIObject(Bitmap.class, image);
 		CompressFormat format;
-		if (lt.equals("png")) { //$NON-NLS-1$
+		if (lt.equals("png")) { 
 			format = CompressFormat.PNG;
 		}
-		else if (lt.equals("jpeg") || lt.equals("jpg")) { //$NON-NLS-1$ //$NON-NLS-2$
+		else if (lt.equals("jpeg") || lt.equals("jpg")) {  
 			format = CompressFormat.JPEG;
 		}
-		else if (lt.equals("webp")) { //$NON-NLS-1$
+		else if (lt.equals("webp")) { 
 			format = CompressFormat.WEBP;
 		}
 		else {
-			throw new IOException("Unsupported image type: "+type); //$NON-NLS-1$
+			throw new IOException("Unsupported image type: "+type); 
 		}
 		if (!aImg.compress(format, 100, stream)) {
-			throw new IOException("Unable to write the Android image for type: "+type); //$NON-NLS-1$
+			throw new IOException("Unable to write the Android image for type: "+type); 
 		}
 	}
 

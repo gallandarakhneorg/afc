@@ -156,11 +156,11 @@ public class Tuple2dfx<RT extends Tuple2dfx<? super RT>> implements Tuple2D<RT> 
 	@Pure
 	@Override
 	public String toString() {
-		return "(" //$NON-NLS-1$
+		return "(" 
 				+ getX()
-				+ ";" //$NON-NLS-1$
+				+ ";" 
 				+ getY()
-				+ ")"; //$NON-NLS-1$
+				+ ")"; 
 	}
 
 	/** Replies the x property.
@@ -170,7 +170,7 @@ public class Tuple2dfx<RT extends Tuple2dfx<? super RT>> implements Tuple2D<RT> 
 	@Pure
 	public DoubleProperty xProperty() {
 		if (this.x == null) {
-			this.x = new SimpleDoubleProperty(this, "x"); //$NON-NLS-1$;
+			this.x = new SimpleDoubleProperty(this, "x"); ;
 		}
 		return this.x;
 	}
@@ -182,7 +182,7 @@ public class Tuple2dfx<RT extends Tuple2dfx<? super RT>> implements Tuple2D<RT> 
 	@Pure
 	public DoubleProperty yProperty() {
 		if (this.y == null) {
-			this.y = new SimpleDoubleProperty(this, "y"); //$NON-NLS-1$
+			this.y = new SimpleDoubleProperty(this, "y"); 
 		}
 		return this.y;
 	}

@@ -32,6 +32,7 @@ import org.junit.Before;
  * @mavengroupid org.arakhne.afc
  * @mavenartifactid arakhneVmutils
  */
+@SuppressWarnings("all")
 public class CallerTest {
 
 	private InnerCallerTest caller;
@@ -94,7 +95,7 @@ public class CallerTest {
 	 * @throws Exception
 	 */
 	public void getCallerMethod() throws Exception {
-    	assertEquals("innerinnerTestGetCallerMethod", //$NON-NLS-1$
+    	assertEquals("innerinnerTestGetCallerMethod", 
     			this.caller.innerinnerTestGetCallerMethod());
 	}
 
@@ -118,11 +119,11 @@ public class CallerTest {
 	 * @throws Exception
 	 */
 	public void getCallerMethodInt() throws Exception {
-    	assertEquals("innerTestGetCallerMethod", //$NON-NLS-1$
+    	assertEquals("innerTestGetCallerMethod", 
     			this.caller.innerinnerTestGetCallerMethod(0));
-    	assertEquals("innerinnerTestGetCallerMethod", //$NON-NLS-1$
+    	assertEquals("innerinnerTestGetCallerMethod", 
     			this.caller.innerinnerTestGetCallerMethod(1));
-    	assertEquals("testGetCallerMethodInt", //$NON-NLS-1$
+    	assertEquals("testGetCallerMethodInt", 
     			this.caller.innerinnerTestGetCallerMethod(2));
 	}
 	

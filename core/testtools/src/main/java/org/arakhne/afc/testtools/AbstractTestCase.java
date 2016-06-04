@@ -1148,7 +1148,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 					null);
 		}
 		assert expected != null && actual != null;
-		final DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");   //$NON-NLS-1$
+		final DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 		final String expectedStr = fmt.format(expected);
 		final String actualStr = fmt.format(expected);
 		if (expectedStr.equals(actualStr)) {

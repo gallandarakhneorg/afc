@@ -31,6 +31,8 @@ import java.util.Set;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.locale.Locale;
+
 /**
  * A <tt>Set</tt> implementation with {@link SoftReference soft values}
  * or {@link WeakReference weak values}. An entry in a
@@ -254,8 +256,7 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 		@Override
 		public void remove() {
 			if (!this.enableRemove) {
-				throw new IllegalStateException(
-						"you must not invoke the remove function between hasNext and next functions."); //$NON-NLS-1$
+				throw new IllegalStateException(Locale.getString("E1")); //$NON-NLS-1$
 			}
 			this.originalIterator.remove();
 		}

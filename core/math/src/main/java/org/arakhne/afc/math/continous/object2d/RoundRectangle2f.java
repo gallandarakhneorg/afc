@@ -481,19 +481,19 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getMinX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMinY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxY());
-		b.append("|"); //$NON-NLS-1$
+		b.append("|"); 
 		b.append(getArcWidth());
-		b.append("x"); //$NON-NLS-1$
+		b.append("x"); 
 		b.append(getArcHeight());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 

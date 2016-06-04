@@ -46,7 +46,7 @@ class PointCollection<P extends Point2D<? super P, ? super V>,
      * @param path the path from which the points are extracted.
      */
     PointCollection(Path2ai<?, ?, ?, P, V, ?> path) {
-        assert path != null : "Path must not be null"; //$NON-NLS-1$
+        assert path != null : "Path must not be null"; 
         this.path = path;
     }
 
@@ -89,7 +89,7 @@ class PointCollection<P extends Point2D<? super P, ? super V>,
     @SuppressWarnings("unchecked")
     @Override
     public <T> T[] toArray(T[] array) {
-        assert array != null : "Array must not be null"; //$NON-NLS-1$
+        assert array != null : "Array must not be null"; 
         final Iterator<P> iterator = new PointIterator();
         for (int i = 0; i < array.length && iterator.hasNext(); ++i) {
             array[i] = (T) iterator.next();
@@ -121,7 +121,7 @@ class PointCollection<P extends Point2D<? super P, ? super V>,
 
     @Override
     public boolean containsAll(Collection<?> collection) {
-        assert collection != null : "Collection must not be null"; //$NON-NLS-1$
+        assert collection != null : "Collection must not be null"; 
         for (final Object obj : collection) {
             if ((!(obj instanceof Point2D))
                     || (!this.path.contains((Point2D<?, ?>) obj))) {
@@ -133,7 +133,7 @@ class PointCollection<P extends Point2D<? super P, ? super V>,
 
     @Override
     public boolean addAll(Collection<? extends P> collection) {
-        assert collection != null : "Collection must not be null"; //$NON-NLS-1$
+        assert collection != null : "Collection must not be null"; 
         boolean changed = false;
         for (final P pts : collection) {
             if (add(pts)) {
@@ -145,7 +145,7 @@ class PointCollection<P extends Point2D<? super P, ? super V>,
 
     @Override
     public boolean removeAll(Collection<?> collection) {
-        assert collection != null : "Collection must not be null"; //$NON-NLS-1$
+        assert collection != null : "Collection must not be null"; 
         boolean changed = false;
         for (final Object obj : collection) {
             if (obj instanceof Point2D) {

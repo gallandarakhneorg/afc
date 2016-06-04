@@ -46,7 +46,7 @@ public class DotGxlWriter {
 
 	/** Common extension used for <code>.dot</code> files.
 	 */
-	public static final String EXTENSION = ".gxl"; //$NON-NLS-1$
+	public static final String EXTENSION = ".gxl"; 
 
 	private final Writer writer;
 
@@ -79,15 +79,15 @@ public class DotGxlWriter {
 	 * @throws IOException in case of error
 	 */
 	public void write(Tree<?, ?> tree) throws IOException {
-		this.writer.append("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n"); //$NON-NLS-1$
-		this.writer.append("<gxl>\n"); //$NON-NLS-1$
+		this.writer.append("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n"); 
+		this.writer.append("<gxl>\n"); 
 
 		if (tree != null) {
-			this.writer.append("\t<graph id=\""); //$NON-NLS-1$
+			this.writer.append("\t<graph id=\""); 
 			this.writer.append(Integer.toHexString(System.identityHashCode(new Integer(tree.hashCode()))));
-			this.writer.append("-"); //$NON-NLS-1$
+			this.writer.append("-"); 
 			this.writer.append(Integer.toString(this.graphIndex++));
-			this.writer.append("\" edgeids=\"true\" edgemode=\"directed\">\n"); //$NON-NLS-1$
+			this.writer.append("\" edgeids=\"true\" edgemode=\"directed\">\n"); 
 
 			// Write the node attributes
 			Iterator<? extends TreeNode<?, ?>> iterator = tree.broadFirstIterator();
@@ -96,20 +96,20 @@ public class DotGxlWriter {
 			while (iterator.hasNext()) {
 				node = iterator.next();
 				dataCount = node.getUserDataCount();
-				final String name = "NODE" + Integer.toHexString(node.hashCode()); //$NON-NLS-1$
+				final String name = "NODE" + Integer.toHexString(node.hashCode()); 
 				final String label = Integer.toString(dataCount);
 
-				this.writer.append("\t\t<node id=\""); //$NON-NLS-1$
+				this.writer.append("\t\t<node id=\""); 
 				this.writer.append(name);
-				this.writer.append("\">\n"); //$NON-NLS-1$
+				this.writer.append("\">\n"); 
 
-				this.writer.append("\t\t\t<attr name=\"label\">\n"); //$NON-NLS-1$
-				this.writer.append("\t\t\t\t<string>"); //$NON-NLS-1$
+				this.writer.append("\t\t\t<attr name=\"label\">\n"); 
+				this.writer.append("\t\t\t\t<string>"); 
 				this.writer.append(label);
-				this.writer.append("</string>\n"); //$NON-NLS-1$
-				this.writer.append("\t\t\t</attr>\n"); //$NON-NLS-1$
+				this.writer.append("</string>\n"); 
+				this.writer.append("\t\t\t</attr>\n"); 
 
-				this.writer.append("\t\t</node>\n"); //$NON-NLS-1$
+				this.writer.append("\t\t</node>\n"); 
 			}
 
 			// Write the node attributes
@@ -118,40 +118,40 @@ public class DotGxlWriter {
 			String childName;
 			while (iterator.hasNext()) {
 				node = iterator.next();
-				final String name = "NODE" + Integer.toHexString(node.hashCode()); //$NON-NLS-1$
+				final String name = "NODE" + Integer.toHexString(node.hashCode()); 
 				if (!node.isLeaf()) {
 					final int childCount = node.getChildCount();
 					for (int i = 0; i < childCount; ++i) {
 						child = node.getChildAt(i);
 						if (child != null) {
-							childName = "NODE" + Integer.toHexString(child.hashCode()); //$NON-NLS-1$
+							childName = "NODE" + Integer.toHexString(child.hashCode()); 
 
-							this.writer.append("\t\t<edge id=\""); //$NON-NLS-1$
+							this.writer.append("\t\t<edge id=\""); 
 							this.writer.append(name);
-							this.writer.append("--"); //$NON-NLS-1$
+							this.writer.append("--"); 
 							this.writer.append(childName);
-							this.writer.append("\" isdirected=\"true\" from=\""); //$NON-NLS-1$
+							this.writer.append("\" isdirected=\"true\" from=\""); 
 							this.writer.append(name);
-							this.writer.append("\" to=\""); //$NON-NLS-1$
+							this.writer.append("\" to=\""); 
 							this.writer.append(childName);
-							this.writer.append("\">\n"); //$NON-NLS-1$
+							this.writer.append("\">\n"); 
 
-							this.writer.append("\t\t\t<attr name=\"label\">\n"); //$NON-NLS-1$
-							this.writer.append("\t\t\t\t<string>"); //$NON-NLS-1$
+							this.writer.append("\t\t\t<attr name=\"label\">\n"); 
+							this.writer.append("\t\t\t\t<string>"); 
 							this.writer.append(Integer.toString(i));
-							this.writer.append("</string>\n"); //$NON-NLS-1$
-							this.writer.append("\t\t\t</attr>\n"); //$NON-NLS-1$
+							this.writer.append("</string>\n"); 
+							this.writer.append("\t\t\t</attr>\n"); 
 
-							this.writer.append("\t\t</edge>\n"); //$NON-NLS-1$
+							this.writer.append("\t\t</edge>\n"); 
 						}
 					}
 				}
 			}
 
-			this.writer.append("\t</graph>\n"); //$NON-NLS-1$
+			this.writer.append("\t</graph>\n"); 
 		}
 
-		this.writer.append("</gxl>\n"); //$NON-NLS-1$
+		this.writer.append("</gxl>\n"); 
 	}
 
 	/** Close the output stream.

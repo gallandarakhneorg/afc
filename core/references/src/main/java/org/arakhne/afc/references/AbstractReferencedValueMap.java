@@ -36,6 +36,8 @@ import java.util.Set;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.locale.Locale;
+
 /**
  * A <tt>Map</tt> implementation with <em>weak/soft values</em>. An entry in a
  * <tt>AbstractReferencedValueMap</tt> will automatically be removed when its value is no
@@ -133,7 +135,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 				if (newCap <= cap) {
 					// integer overflow
 					if (cap == Integer.MAX_VALUE) {
-						throw new OutOfMemoryError("Required array size too large"); //$NON-NLS-1$
+						throw new OutOfMemoryError();
 					}
 					newCap = Integer.MAX_VALUE;
 				}
@@ -543,8 +545,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 		@Override
 		public void remove() {
 			if (!this.enableRemove) {
-				throw new IllegalStateException(
-						"you must not invoke the remove function between hasNext and next functions."); //$NON-NLS-1$
+				throw new IllegalStateException(Locale.getString("E1")); //$NON-NLS-1$
 			}
 			this.originalIterator.remove();
 		}

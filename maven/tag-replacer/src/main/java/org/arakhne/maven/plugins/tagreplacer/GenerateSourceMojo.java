@@ -91,7 +91,7 @@ public class GenerateSourceMojo extends AbstractReplaceMojo {
 	protected synchronized void executeMojo(File targetDir) throws MojoExecutionException {
 		if (this.generateTargets.contains(targetDir)
 				&& targetDir.isDirectory()) {
-			getLog().debug("Skiping " + targetDir + " because is was already generated");  //$NON-NLS-1$//$NON-NLS-2$
+			getLog().debug("Skiping " + targetDir + " because is was already generated"); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 

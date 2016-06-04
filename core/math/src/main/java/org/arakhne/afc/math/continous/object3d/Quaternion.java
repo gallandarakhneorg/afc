@@ -230,15 +230,15 @@ public class Quaternion implements Cloneable, Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "(" //$NON-NLS-1$
+		return "(" 
 				+this.x
-				+";" //$NON-NLS-1$
+				+";" 
 				+this.y
-				+";" //$NON-NLS-1$
+				+";" 
 				+this.z
-				+";" //$NON-NLS-1$
+				+";" 
 				+this.w
-				+")"; //$NON-NLS-1$
+				+")"; 
 	}
 
 	/**

@@ -38,7 +38,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"boxing"})
+@SuppressWarnings("all")
 public class NaryTreeNodeTest {
 
 	private final TreeNodeListenerStub<DefaultNaryTreeNode<Object>> listener =
@@ -56,11 +56,11 @@ public class NaryTreeNodeTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		this.root = new NodeStub("root"); //$NON-NLS-1$
-		this.child1 = new NodeStub("child1"); //$NON-NLS-1$
-		this.child2 = new NodeStub("child2"); //$NON-NLS-1$
-		this.node = new NodeStub("node"); //$NON-NLS-1$
-		this.newNode = new NodeStub("newNode"); //$NON-NLS-1$
+		this.root = new NodeStub("root"); 
+		this.child1 = new NodeStub("child1"); 
+		this.child2 = new NodeStub("child2"); 
+		this.node = new NodeStub("node"); 
+		this.newNode = new NodeStub("newNode"); 
 		
 		this.root.addChild(this.child1);
 		this.root.addChild(this.child2);
@@ -347,7 +347,7 @@ public class NaryTreeNodeTest {
 	public void setChildAt_newNode_m1() {
 		try {
 			this.node.setChildAt(-1, this.newNode);
-			fail("expecting IndexOutOfBoundsException"); //$NON-NLS-1$
+			fail("expecting IndexOutOfBoundsException"); 
 		}
 		catch( IndexOutOfBoundsException e) {
 			//
@@ -360,7 +360,7 @@ public class NaryTreeNodeTest {
 	public void setChildAt_newNode_0() {
 		try {
 			this.node.setChildAt(0, this.newNode);
-			fail("expecting IndexOutOfBoundsException"); //$NON-NLS-1$
+			fail("expecting IndexOutOfBoundsException"); 
 		}
 		catch(IndexOutOfBoundsException e) {
 			//
@@ -373,7 +373,7 @@ public class NaryTreeNodeTest {
 	public void setChildAt_newNode_1() {
 		try {
 			this.node.setChildAt(1, this.newNode);
-			fail("expecting IndexOutOfBoundsException"); //$NON-NLS-1$
+			fail("expecting IndexOutOfBoundsException"); 
 		}
 		catch(IndexOutOfBoundsException e) {
 			//
@@ -386,7 +386,7 @@ public class NaryTreeNodeTest {
 	public void setChildAt_newNode_2() {
 		try {
 			this.node.setChildAt(2, this.newNode);
-			fail("expecting IndexOutOfBoundsException"); //$NON-NLS-1$
+			fail("expecting IndexOutOfBoundsException"); 
 		}
 		catch(IndexOutOfBoundsException e) {
 			//
@@ -399,7 +399,7 @@ public class NaryTreeNodeTest {
 	public void setChildAt_moveNode_m1() {
 		try {
 			this.node.setChildAt(-1, this.child2);
-			fail("expecting IndexOutOfBoundsException"); //$NON-NLS-1$
+			fail("expecting IndexOutOfBoundsException"); 
 		}
 		catch(IndexOutOfBoundsException e) {
 			//
@@ -412,7 +412,7 @@ public class NaryTreeNodeTest {
 	public void setChildAt_moveNode_0() {
 		try {
 			this.node.setChildAt(0, this.child2);
-			fail("expecting IndexOutOfBoundsException"); //$NON-NLS-1$
+			fail("expecting IndexOutOfBoundsException"); 
 		}
 		catch(IndexOutOfBoundsException e) {
 			//
@@ -425,7 +425,7 @@ public class NaryTreeNodeTest {
 	public void setChildAt_moveNode_1() {
 		try {
 			this.node.setChildAt(1, this.child2);
-			fail("expecting IndexOutOfBoundsException"); //$NON-NLS-1$
+			fail("expecting IndexOutOfBoundsException"); 
 		}
 		catch(IndexOutOfBoundsException e) {
 			//
@@ -438,7 +438,7 @@ public class NaryTreeNodeTest {
 	public void setChildAt_moveNode_2() {
 		try {
 			this.node.setChildAt(2, this.child2);
-			fail("expecting IndexOutOfBoundsException"); //$NON-NLS-1$
+			fail("expecting IndexOutOfBoundsException"); 
 		}
 		catch(IndexOutOfBoundsException e) {
 			//

@@ -38,7 +38,7 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	@Test
 	public void toStringTest() {
 		Matrix3d matrix = new Matrix3d(0,1,2,3,4,5,6,7,8);
-		String s = "0.0, 1.0, 2.0\n3.0, 4.0, 5.0\n6.0, 7.0, 8.0\n"; //$NON-NLS-1$
+		String s = "0.0, 1.0, 2.0\n3.0, 4.0, 5.0\n6.0, 7.0, 8.0\n"; 
 				
 		assertTrue(s.equals(matrix.toString()));
 	}

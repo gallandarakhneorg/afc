@@ -213,7 +213,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 		if (index >= 0 && index < zones.length) {
 			return getChildAt(zones[index]);
 		}
-		throw new IndexOutOfBoundsException(index + " >= 4"); //$NON-NLS-1$
+		throw new IndexOutOfBoundsException(index + " >= 4"); 
 	}
 
 	/** Replies the node that is corresponding to the given zone.
@@ -445,7 +445,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 		if (index >= 0 && index < zones.length) {
 			return setChildAt(zones[index], newChild);
 		}
-		throw new IndexOutOfBoundsException(index + " >= 4"); //$NON-NLS-1$
+		throw new IndexOutOfBoundsException(index + " >= 4"); 
 	}
 
 	/** Set the child at the specified zone.

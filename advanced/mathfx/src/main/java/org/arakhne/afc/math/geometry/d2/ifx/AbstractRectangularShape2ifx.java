@@ -140,7 +140,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty minXProperty() {
 		if (this.minX == null) {
-			this.minX = new SimpleIntegerProperty(this, "minX") { //$NON-NLS-1$
+			this.minX = new SimpleIntegerProperty(this, "minX") { 
 				@Override
 				protected void invalidated() {
 					final int currentMin = get();
@@ -173,7 +173,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty maxXProperty() {
 		if (this.maxX == null) {
-			this.maxX = new SimpleIntegerProperty(this, "maxX") { //$NON-NLS-1$
+			this.maxX = new SimpleIntegerProperty(this, "maxX") { 
 				@Override
 				protected void invalidated() {
 					final int currentMax = get();
@@ -206,7 +206,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty minYProperty() {
 		if (this.minY == null) {
-			this.minY = new SimpleIntegerProperty(this, "minY") { //$NON-NLS-1$
+			this.minY = new SimpleIntegerProperty(this, "minY") { 
 				@Override
 				protected void invalidated() {
 					final int currentMin = get();
@@ -239,7 +239,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty maxYProperty() {
 		if (this.maxY == null) {
-			this.maxY = new SimpleIntegerProperty(this, "maxY") { //$NON-NLS-1$
+			this.maxY = new SimpleIntegerProperty(this, "maxY") { 
 				@Override
 				protected void invalidated() {
 					final int currentMax = get();
@@ -269,15 +269,15 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getMinX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMinY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxY());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -293,7 +293,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty widthProperty() {
 		if (this.width == null) {
-			this.width = new ReadOnlyIntegerWrapper(this, "width"); //$NON-NLS-1$
+			this.width = new ReadOnlyIntegerWrapper(this, "width"); 
 			this.width.bind(Bindings.subtract(maxXProperty(), minXProperty()));
 		}
 		return this.width;
@@ -311,7 +311,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty heightProperty() {
 		if (this.height == null) {
-			this.height = new ReadOnlyIntegerWrapper(this, "height"); //$NON-NLS-1$
+			this.height = new ReadOnlyIntegerWrapper(this, "height"); 
 			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
 		}
 		return this.height;

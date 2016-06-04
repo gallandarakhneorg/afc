@@ -25,6 +25,7 @@ import java.net.URL;
 import java.net.URLStreamHandler;
 
 import org.arakhne.afc.vmutil.URISchemeType;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * The class <code>Handler</code> is supporting file protocol
@@ -56,7 +57,7 @@ public class Handler extends URLStreamHandler {
 		if (URISchemeType.FILE.isURL(url)) {
 			return new URLConnection(url);
 		}
-		throw new UnsupportedOperationException("Unsupported protocol: " + url); //$NON-NLS-1$
+		throw new UnsupportedOperationException(Locale.getString("E1", url)); //$NON-NLS-1$
 	}
 
 }

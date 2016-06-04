@@ -205,10 +205,10 @@ public abstract class AbstractPathElement3D implements AbstractPathElement3X {
 		@Pure
 		@Override
 		public String toString() {
-			return "MOVE("+ //$NON-NLS-1$
-					this.getToX()+"x"+ //$NON-NLS-1$
-					this.getToY()+"x"+ //$NON-NLS-1$
-					this.getToZ()+")"; //$NON-NLS-1$
+			return "MOVE("+ 
+					this.getToX()+"x"+ 
+					this.getToY()+"x"+ 
+					this.getToZ()+")"; 
 		}
 
 		@Pure
@@ -297,10 +297,10 @@ public abstract class AbstractPathElement3D implements AbstractPathElement3X {
 		@Pure
 		@Override
 		public String toString() {
-			return "MOVE("+ //$NON-NLS-1$
-					this.getToX()+"x"+ //$NON-NLS-1$
-					this.getToY()+"x"+ //$NON-NLS-1$
-					this.getToZ()+")"; //$NON-NLS-1$
+			return "MOVE("+ 
+					this.getToX()+"x"+ 
+					this.getToY()+"x"+ 
+					this.getToZ()+")"; 
 		}
 
 		@Override
@@ -390,13 +390,13 @@ public abstract class AbstractPathElement3D implements AbstractPathElement3X {
 		@Pure
 		@Override
 		public String toString() {
-			return "QUAD("+ //$NON-NLS-1$
-					this.getCtrlX1()+"x"+ //$NON-NLS-1$
-					this.getCtrlY1()+"x"+ //$NON-NLS-1$
-					this.getCtrlZ1()+"|"+ //$NON-NLS-1$
-					this.getToX()+"x"+ //$NON-NLS-1$
-					this.getToY()+"x"+ //$NON-NLS-1$
-					this.getToZ()+")"; //$NON-NLS-1$
+			return "QUAD("+ 
+					this.getCtrlX1()+"x"+ 
+					this.getCtrlY1()+"x"+ 
+					this.getCtrlZ1()+"|"+ 
+					this.getToX()+"x"+ 
+					this.getToY()+"x"+ 
+					this.getToZ()+")"; 
 		}
 
 		@Override
@@ -495,16 +495,16 @@ public abstract class AbstractPathElement3D implements AbstractPathElement3X {
 		@Pure
 		@Override
 		public String toString() {
-			return "CURVE("+ //$NON-NLS-1$
-					this.getCtrlX1()+"x"+ //$NON-NLS-1$
-					this.getCtrlY1()+"x"+ //$NON-NLS-1$
-					this.getCtrlZ1()+"|"+ //$NON-NLS-1$
-					this.getCtrlX2()+"x"+ //$NON-NLS-1$
-					this.getCtrlY2()+"x"+ //$NON-NLS-1$
-					this.getCtrlZ2()+"|"+ //$NON-NLS-1$
-					this.getToX()+"x"+ //$NON-NLS-1$
-					this.getToY()+"x"+ //$NON-NLS-1$
-					this.getToZ()+")"; //$NON-NLS-1$
+			return "CURVE("+ 
+					this.getCtrlX1()+"x"+ 
+					this.getCtrlY1()+"x"+ 
+					this.getCtrlZ1()+"|"+ 
+					this.getCtrlX2()+"x"+ 
+					this.getCtrlY2()+"x"+ 
+					this.getCtrlZ2()+"|"+ 
+					this.getToX()+"x"+ 
+					this.getToY()+"x"+ 
+					this.getToZ()+")"; 
 		}
 
 		@Override
@@ -590,7 +590,7 @@ public abstract class AbstractPathElement3D implements AbstractPathElement3X {
 		@Pure
 		@Override
 		public String toString() {
-			return "CLOSE"; //$NON-NLS-1$
+			return "CLOSE"; 
 		}
 
 		@Override

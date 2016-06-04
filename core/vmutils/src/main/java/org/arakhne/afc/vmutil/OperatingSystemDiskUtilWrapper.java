@@ -48,7 +48,7 @@ class OperatingSystemDiskUtilWrapper extends AbstractOperatingSystemWrapper {
 				"diskutil", //$NON-NLS-1$
 				"info", //$NON-NLS-1$
 				file.toString());
-		return cut(":", 1, grep(key + ":", result));  //$NON-NLS-1$//$NON-NLS-2$
+		return cut(":", 1, grep(key + ":", result)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override

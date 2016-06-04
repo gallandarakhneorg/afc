@@ -328,17 +328,17 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	public String toString() {
 		StringBuilder sb = new StringBuilder(64);
 		sb.append(getClass().getSimpleName());
-		sb.append("["); //$NON-NLS-1$
+		sb.append("["); 
 		sb.append(this.getMinX());
-		sb.append(", "); //$NON-NLS-1$
+		sb.append(", "); 
 		sb.append(this.getMinY());
-		sb.append(", "); //$NON-NLS-1$
+		sb.append(", "); 
 		sb.append(this.getMinZ());
-		sb.append(", "); //$NON-NLS-1$
+		sb.append(", "); 
 		sb.append(this.getMaxX());
-		sb.append(", "); //$NON-NLS-1$
+		sb.append(", "); 
 		sb.append(this.getMaxY());
-		sb.append(", "); //$NON-NLS-1$
+		sb.append(", "); 
 		sb.append(this.getMaxZ());
 		sb.append(']');
 		return sb.toString();

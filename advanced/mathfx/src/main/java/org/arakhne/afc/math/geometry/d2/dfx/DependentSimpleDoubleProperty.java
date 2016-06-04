@@ -52,7 +52,7 @@ class DependentSimpleDoubleProperty<T extends ObservableValue<?>> extends Simple
 	@SuppressWarnings("unchecked")
 	DependentSimpleDoubleProperty(Object bean, String name, T dependency) {
 		super(bean, name);
-		assert dependency != null : "Dependency must be not null"; //$NON-NLS-1$
+		assert dependency != null : "Dependency must be not null"; 
 		this.dependency = new WeakReference<>(dependency);
 		this.listener = new Listener<>();
 		dependency.addListener(this.listener);

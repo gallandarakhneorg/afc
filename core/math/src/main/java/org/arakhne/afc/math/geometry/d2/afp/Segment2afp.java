@@ -94,7 +94,7 @@ public interface Segment2afp<
 		 * @param transform the transformation, or <code>null</code>.
 		 */
 		public SegmentPathIterator(Segment2afp<?, ?, T, ?, ?, ?> segment, Transform2D transform) {
-			assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+			assert segment != null : "Segment must be not null"; 
 			this.segment = segment;
 			this.p1 = new InnerComputationPoint2afp();
 			this.p2 = new InnerComputationPoint2afp();
@@ -332,7 +332,7 @@ public interface Segment2afp<
 	static void computeClosestPointToPoint(
 			double ax, double ay, double bx, double by, double px, double py,
 			Point2D<?, ?> result) {
-		assert result != null : "Result must be not null"; //$NON-NLS-1$
+		assert result != null : "Result must be not null"; 
 		final double ratio = Segment2afp.computeProjectedPointOnLine(px, py, ax, ay, bx, by);
 		if (ratio <= 0.) {
 			result.set(ax, ay);
@@ -361,8 +361,8 @@ public interface Segment2afp<
 	@SuppressWarnings("checkstyle:parameternumber")
 	static void computeClosestPointToRectangle(double sx1, double sy1, double sx2, double sy2,
 			double rx, double ry, double rwidth, double rheight, Point2D<?, ?> result) {
-		assert rwidth >= 0. : "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
-		assert rheight >= 0. : "Hei of the rectangle must be positive or zero"; //$NON-NLS-1$
+		assert rwidth >= 0. : "Width of the rectangle must be positive or zero"; 
+		assert rheight >= 0. : "Hei of the rectangle must be positive or zero"; 
 		final double rmaxx = rx + rwidth;
 		final double rmaxy = ry + rheight;
 		final int code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
@@ -521,7 +521,7 @@ public interface Segment2afp<
 			double radius,
 			double x0, double y0,
 			double x1, double y1) {
-		assert radius >= 0. : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0. : "Circle radius must be positive or zero"; 
 		int numCrosses = crossings;
 
 		final double xmin = cx - Math.abs(radius);
@@ -590,8 +590,8 @@ public interface Segment2afp<
 			double ew, double eh,
 			double x0, double y0,
 			double x1, double y1) {
-		assert ew >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert eh >= 0 : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert ew >= 0. : "Ellipse width must be positive or zero"; 
+		assert eh >= 0 : "Ellipse height must be positive or zero"; 
 		int numCrosses = crossings;
 
 		final double xmin = ex;
@@ -754,8 +754,8 @@ public interface Segment2afp<
 			double rxmax, double rymax,
 			double x0, double y0,
 			double x1, double y1) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; 
+		assert rymin <= rymax : "rymin must be lower or equal to rymax"; 
 		int numCrosses = crossings;
 
 		if (y0 >= rymax && y1 >= rymax) {
@@ -872,10 +872,10 @@ public interface Segment2afp<
 			double arcWidth, double arcHeight,
 			double x0, double y0,
 			double x1, double y1) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
-		assert arcWidth >= 0. && arcWidth <= (rxmax - rxmin) / 2. : "arcWidth is too big"; //$NON-NLS-1$
-		assert arcHeight >= 0. && arcHeight <= (rymax - rymin) / 2. : "arcHeight is too big"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; 
+		assert rymin <= rymax : "rymin must be lower or equal to rymax"; 
+		assert arcWidth >= 0. && arcWidth <= (rxmax - rxmin) / 2. : "arcWidth is too big"; 
+		assert arcHeight >= 0. && arcHeight <= (rymax - rymin) / 2. : "arcHeight is too big"; 
 		int numCrosses = crossings;
 
 		if (y0 >= rymax && y1 >= rymax) {
@@ -1284,7 +1284,7 @@ public interface Segment2afp<
 	@Pure
 	static void computeFarthestPointToPoint(
 			double ax, double ay, double bx, double by, double px, double py, Point2D<?, ?> result) {
-		assert result != null : "Result must be not null"; //$NON-NLS-1$
+		assert result != null : "Result must be not null"; 
 		final double xpa = px - ax;
 		final double ypa = py - ay;
 		final double xpb = px - bx;
@@ -1481,7 +1481,7 @@ public interface Segment2afp<
 	static boolean computeLineLineIntersection(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4,
 			Point2D<?, ?> result) {
-		assert result != null : "Result must be not null"; //$NON-NLS-1$
+		assert result != null : "Result must be not null"; 
 		final double x21 = x2 - x1;
 		final double x43 = x4 - x3;
 		final double y21 = y2 - y1;
@@ -1651,7 +1651,7 @@ public interface Segment2afp<
 	static boolean computeSegmentSegmentIntersection(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4,
 			Point2D<?, ?> result) {
-		assert result != null : "Result must be not null"; //$NON-NLS-1$
+		assert result != null : "Result must be not null"; 
 		final double m = computeSegmentSegmentIntersectionFactor(x1, y1, x2, y2, x3, y3, x4, y4);
 		if (Double.isNaN(m)) {
 			return false;
@@ -1965,8 +1965,8 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static void interpolate(double p1x, double p1y, double p2x, double p2y, double factor, Point2D<?, ?> result) {
-		assert result != null : "Result must be not null"; //$NON-NLS-1$
-		assert factor >= 0. && factor <= 1. : "Factor must be in [0;1]"; //$NON-NLS-1$
+		assert result != null : "Result must be not null"; 
+		assert factor >= 0. && factor <= 1. : "Factor must be in [0;1]"; 
 		final double vx = p2x - p1x;
 		final double vy = p2y - p1y;
 		result.set(
@@ -2154,7 +2154,7 @@ public interface Segment2afp<
 	static boolean isPointClosedToLine(double x1, double y1,
 			double x2, double y2,
 			double x, double y, double hitDistance) {
-		assert hitDistance >= 0. : "Hit distance must be positive or zero"; //$NON-NLS-1$
+		assert hitDistance >= 0. : "Hit distance must be positive or zero"; 
 		return computeDistanceLinePoint(x1, y1, x2, y2, x, y) < hitDistance;
 	}
 
@@ -2174,7 +2174,7 @@ public interface Segment2afp<
 	static boolean isPointClosedToSegment(double x1, double y1,
 			double x2, double y2,
 			double x, double y, double hitDistance) {
-		assert hitDistance >= 0. : "Hit distance must be positive or zero"; //$NON-NLS-1$
+		assert hitDistance >= 0. : "Hit distance must be positive or zero"; 
 		return computeDistanceSegmentPoint(x1, y1, x2, y2, x, y) < hitDistance;
 	}
 
@@ -2196,8 +2196,8 @@ public interface Segment2afp<
 	 */
 	@Pure
 	default boolean clipToRectangle(double rxmin, double rymin, double rxmax, double rymax) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rymin"; //$NON-NLS-1$
-		assert rymin <= rymax : "rxmin must be lower or equal to rymin"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rymin"; 
+		assert rymin <= rymax : "rxmin must be lower or equal to rymin"; 
 		double x0 = getX1();
 		double y0 = getY1();
 		double x1 = getX2();
@@ -2312,14 +2312,14 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		return getClosestPointTo(circle.getCenter());
 	}
 
 	@Override
 	@Unefficient
 	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		assert ellipse != null : "Ellipse must be not null"; 
 		final P point = getGeomFactory().newPoint();
 		Path2afp.getClosestPointTo(getPathIterator(), ellipse.getPathIterator(), point);
 		return point;
@@ -2327,7 +2327,7 @@ public interface Segment2afp<
 
 	@Override
 	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectngle) {
-		assert orientedRectngle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert orientedRectngle != null : "Oriented rectangle must be not null"; 
 		// Change of basis to the local basis of the oriented rectangle
 		final double cx = orientedRectngle.getCenterX();
 		final double cy = orientedRectngle.getCenterY();
@@ -2354,7 +2354,7 @@ public interface Segment2afp<
 
 	@Override
 	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		assert parallelogram != null : "Parallelogram must be not null"; 
 		// Change of basis to the local basis of the oriented rectangle
 		final double cx = parallelogram.getCenterX();
 		final double cy = parallelogram.getCenterY();
@@ -2421,7 +2421,7 @@ public interface Segment2afp<
 	@Override
 	@Unefficient
 	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null"; 
 		final P point = getGeomFactory().newPoint();
 		Path2afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
 		return point;
@@ -2430,7 +2430,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final P point = getGeomFactory().newPoint();
 		Segment2afp.computeClosestPointToPoint(
 				getX1(), getY1(),
@@ -2443,7 +2443,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointToRectangle(getX1(), getY1(), getX2(), getY2(),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getWidth(), rectangle.getHeight(), point);
@@ -2453,7 +2453,7 @@ public interface Segment2afp<
 	@Override
 	@Unefficient
 	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		assert roundRectangle != null : "Round rectangle must be not null"; 
 		final P point = getGeomFactory().newPoint();
 		Path2afp.getClosestPointTo(getPathIterator(), roundRectangle.getPathIterator(), point);
 		return point;
@@ -2462,7 +2462,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null"; 
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointToSegment(getX1(), getY1(), getX2(), getY2(),
 				segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2(), point);
@@ -2472,7 +2472,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		assert triangle != null : "Triangle must be not null"; 
 		final double[] segments = new double[] {
 			triangle.getX1(), triangle.getY1(), triangle.getX2(), triangle.getY2(),
 			triangle.getX2(), triangle.getY2(), triangle.getX3(), triangle.getY3(),
@@ -2502,7 +2502,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		double ratio = computeProjectedPointOnLine(pt.getX(), pt.getY(), getX1(), getY1(), getX2(), getY2());
 		ratio = MathUtil.clamp(ratio, 0, 1);
 		final double vx = (getX2() - getX1()) * ratio;
@@ -2514,7 +2514,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		double ratio = computeProjectedPointOnLine(pt.getX(), pt.getY(), getX1(), getY1(), getX2(), getY2());
 		ratio = MathUtil.clamp(ratio, 0, 1);
 		final double vx = (getX2() - getX1()) * ratio;
@@ -2527,7 +2527,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		return computeDistanceSquaredSegmentPoint(
 				getX1(), getY1(),
 				getX2(), getY2(),
@@ -2537,7 +2537,7 @@ public interface Segment2afp<
 	@Override
 	@Pure
 	default double getDistanceSquared(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null"; 
 		return computeDistanceSquaredSegmentSegment(getX1(), getY1(), getX2(), getY2(),
 				segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2());
 	}
@@ -2545,7 +2545,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final P point = getGeomFactory().newPoint();
 		Segment2afp.computeFarthestPointToPoint(
 				getX1(), getY1(),
@@ -2628,7 +2628,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		return Circle2afp.intersectsCircleSegment(
 				circle.getX(), circle.getY(),
 				circle.getRadius(),
@@ -2639,7 +2639,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		assert ellipse != null : "Ellipse must be not null"; 
 		return Ellipse2afp.intersectsEllipseSegment(
 				ellipse.getMinX(), ellipse.getMinY(),
 				ellipse.getWidth(), ellipse.getHeight(),
@@ -2650,14 +2650,14 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "MultiShape must be not null"; 
 		return multishape.intersects(this);
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
 		return OrientedRectangle2afp.intersectsOrientedRectangleSegment(
 				orientedRectangle.getCenterX(), orientedRectangle.getCenterY(),
 				orientedRectangle.getFirstAxisX(), orientedRectangle.getFirstAxisY(), orientedRectangle.getFirstAxisExtent(),
@@ -2668,7 +2668,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		assert parallelogram != null : "Parallelogram must be not null"; 
 		return Parallelogram2afp.intersectsParallelogramSegment(
 				parallelogram.getCenterX(), parallelogram.getCenterY(),
 				parallelogram.getFirstAxisX(), parallelogram.getFirstAxisY(), parallelogram.getFirstAxisExtent(),
@@ -2679,7 +2679,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path2afp.computeCrossingsFromSegment(
 				0,
@@ -2694,7 +2694,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		return Rectangle2afp.intersectsRectangleSegment(
 				rectangle.getMinX(), rectangle.getMinY(),
 				rectangle.getMaxX(), rectangle.getMaxY(),
@@ -2705,7 +2705,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		assert roundRectangle != null : "Round rectangle must be not null"; 
 		return RoundRectangle2afp.intersectsRoundRectangleSegment(
 				roundRectangle.getMinX(), roundRectangle.getMinY(), roundRectangle.getMaxX(),
 				roundRectangle.getMaxY(), roundRectangle.getArcWidth(), roundRectangle.getArcHeight(),
@@ -2715,7 +2715,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null"; 
 		return intersectsSegmentSegmentWithEnds(
 				getX1(), getY1(),
 				getX2(), getY2(),
@@ -2726,7 +2726,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Segment must be not null"; //$NON-NLS-1$
+		assert triangle != null : "Segment must be not null"; 
 		return Triangle2afp.intersectsTriangleSegment(
 				triangle.getX1(), triangle.getY1(),
 				triangle.getX2(), triangle.getY2(),
@@ -2752,7 +2752,7 @@ public interface Segment2afp<
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Shape must be not null"; 
 		set(shape.getX1(), shape.getY1(), shape.getX2(), shape.getY2());
 	}
 
@@ -2762,8 +2762,8 @@ public interface Segment2afp<
 	 * @param secondPoint the second point.
 	 */
 	default void set(Point2D<?, ?> firstPoint, Point2D<?, ?> secondPoint) {
-		assert firstPoint != null : "First point must be not null"; //$NON-NLS-1$
-		assert secondPoint != null : "Second point must be not null"; //$NON-NLS-1$
+		assert firstPoint != null : "First point must be not null"; 
+		assert secondPoint != null : "Second point must be not null"; 
 		set(firstPoint.getX(), firstPoint.getY(), secondPoint.getX(), secondPoint.getY());
 	}
 
@@ -2781,7 +2781,7 @@ public interface Segment2afp<
 	 * @param pt the first point.
 	 */
 	default void setP1(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		set(pt.getX(), pt.getY(), getX2(), getY2());
 	}
 
@@ -2799,7 +2799,7 @@ public interface Segment2afp<
 	 * @param pt the second point.
 	 */
 	default void setP2(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		set(getX1(), getY1(), pt.getX(), pt.getY());
 	}
 
@@ -2830,7 +2830,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; 
 		box.setFromCorners(
 				this.getX1(),
 				this.getY1(),
@@ -2845,7 +2845,7 @@ public interface Segment2afp<
 	 * @see #createTransformedShape
 	 */
 	default void transform(Transform2D transform) {
-		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+		assert transform != null : "Transformation must be not null"; 
 		final Point2D<?, ?> p = new InnerComputationPoint2afp(getX1(), getY1());
 		transform.transform(p);
 		final double x1 = p.getX();

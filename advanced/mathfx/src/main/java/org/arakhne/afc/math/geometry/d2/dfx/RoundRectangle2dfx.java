@@ -115,19 +115,19 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getMinX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMinY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxY());
-		b.append("|"); //$NON-NLS-1$
+		b.append("|"); 
 		b.append(getArcWidth());
-		b.append("x"); //$NON-NLS-1$
+		b.append("x"); 
 		b.append(getArcHeight());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -144,7 +144,7 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 	public DoubleProperty arcWidthProperty() {
 		if (this.arcWidth == null) {
 			this.arcWidth = new DependentSimpleDoubleProperty<ReadOnlyDoubleProperty>(
-					this, "arcWidth", widthProperty()) { //$NON-NLS-1$
+					this, "arcWidth", widthProperty()) { 
 				@Override
 				protected void invalidated(ReadOnlyDoubleProperty dependency) {
 					final double value = get();
@@ -175,7 +175,7 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 	public DoubleProperty arcHeightProperty() {
 		if (this.arcHeight == null) {
 			this.arcHeight = new DependentSimpleDoubleProperty<ReadOnlyDoubleProperty>(
-					this, "arcHeight", heightProperty()) { //$NON-NLS-1$
+					this, "arcHeight", heightProperty()) { 
 				@Override
 				protected void invalidated(ReadOnlyDoubleProperty dependency) {
 					final double value = get();
@@ -195,13 +195,13 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 
 	@Override
 	public void setArcWidth(double arcWidth) {
-		assert arcWidth >= 0. : "Arc width must be positive or zero"; //$NON-NLS-1$
+		assert arcWidth >= 0. : "Arc width must be positive or zero"; 
 		arcWidthProperty().set(arcWidth);
 	}
 
 	@Override
 	public void setArcHeight(double arcHeight) {
-		assert arcHeight >= 0. : "Arc height must be positive or zero"; //$NON-NLS-1$
+		assert arcHeight >= 0. : "Arc height must be positive or zero"; 
 		arcHeightProperty().set(arcHeight);
 	}
 
@@ -214,8 +214,8 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 
 	@Override
 	public void setFromCorners(double x1, double y1, double x2, double y2, double arcWidth, double arcHeight) {
-		assert arcWidth >= 0. : "Arc width must be positive or zero"; //$NON-NLS-1$
-		assert arcHeight >= 0. : "Arc height must be positive or zero"; //$NON-NLS-1$
+		assert arcWidth >= 0. : "Arc width must be positive or zero"; 
+		assert arcHeight >= 0. : "Arc height must be positive or zero"; 
 		if (x1 <= x2) {
 			minXProperty().set(x1);
 			maxXProperty().set(x2);

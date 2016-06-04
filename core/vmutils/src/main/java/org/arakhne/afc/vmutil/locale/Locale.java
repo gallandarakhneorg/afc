@@ -542,7 +542,7 @@ public final class Locale {
 		}
 
 		// Get the two default charsets
-		//Charset oem_us = Charset.forName("IBM437"); //$NON-NLS-1$
+		//Charset oem_us = Charset.forName("IBM437");
 		final Charset westEuropean = Charset.forName("ISO-8859-1"); //$NON-NLS-1$
 		final Charset defaultCharset = Charset.defaultCharset();
 

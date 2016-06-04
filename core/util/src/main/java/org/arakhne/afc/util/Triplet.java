@@ -126,8 +126,8 @@ public class Triplet<A, B, C> implements Serializable {
 	@Pure
 	@Override
 	public String toString() {
-		return "<" + this.avalue + ";" + this.bvalue //$NON-NLS-1$//$NON-NLS-2$
-				+ ";" + this.cvalue + ">";  //$NON-NLS-1$//$NON-NLS-2$
+		return "<" + this.avalue + ";" + this.bvalue //$NON-NLS-1$ //$NON-NLS-2$
+				+ ";" + this.cvalue + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Pure

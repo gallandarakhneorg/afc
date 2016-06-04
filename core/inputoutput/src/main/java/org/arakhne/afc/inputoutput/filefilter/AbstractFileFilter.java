@@ -25,6 +25,7 @@ import java.io.File;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Abstract implementation of a file filter that may be
  * used in all the standard Java tools.
@@ -43,32 +44,33 @@ public abstract class AbstractFileFilter implements FileFilter {
 	private final String[] extensions;
 
 	/**
-	 * @param acceptDirectories1 is <code>true</code> to
+	 * @param acceptDirectories is <code>true</code> to
 	 *     permit to this file filter to accept directories;
 	 *     <code>false</code> if the directories should not
 	 *     match.
-	 * @param description1 is the description of the file filter.
-	 * @param extensions1 are the supported extensions.
+	 * @param description is the description of the file filter.
+	 * @param extensions are the supported extensions.
 	 */
-	public AbstractFileFilter(boolean acceptDirectories1, String description1, String... extensions1) {
-		this.acceptDirectories = acceptDirectories1;
-		this.extensions = extensions1;
+	public AbstractFileFilter(boolean acceptDirectories, String description, String... extensions) {
+		this.acceptDirectories = acceptDirectories;
+		this.extensions = extensions;
 
 		final StringBuilder b = new StringBuilder();
-		b.append(description1);
-		b.append(" ("); //$NON-NLS-1$
 		for (int i = 0; i < this.extensions.length; ++i) {
+			final String ext;
+			if (this.extensions[i].startsWith(".")) { //$NON-NLS-1$
+				ext = this.extensions[i].substring(1);
+			} else {
+				ext = this.extensions[i];
+			}
+			final String name = Locale.getString("EXTENSION_FORMAT", ext); //$NON-NLS-1$
 			if (i > 0) {
-				b.append(", "); //$NON-NLS-1$
+				b.append(Locale.getString("EXTENSION_APPEND", this.extensions[i])); //$NON-NLS-1$
+			} else {
+				b.append(name);
 			}
-			b.append("*"); //$NON-NLS-1$
-			if (!this.extensions[i].startsWith(".")) { //$NON-NLS-1$
-				b.append("."); //$NON-NLS-1$
-			}
-			b.append(this.extensions[i]);
 		}
-		b.append(")"); //$NON-NLS-1$
-		this.description = b.toString();
+		this.description = Locale.getString("EXTENSION_STRING", description, b.toString()); //$NON-NLS-1$
 	}
 
 	@Pure

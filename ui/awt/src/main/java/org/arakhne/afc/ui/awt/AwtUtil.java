@@ -107,7 +107,7 @@ public class AwtUtil {
 			return Cursor.getDefaultCursor();
 		if (cursor==MouseCursor.INVALID) {
 			try {
-				return Cursor.getSystemCustomCursor("Invalid.32x32"); //$NON-NLS-1$
+				return Cursor.getSystemCustomCursor("Invalid.32x32");  //$NON-NLS-1$
 			}
 			catch (Throwable exception) {
 				return Cursor.getDefaultCursor();

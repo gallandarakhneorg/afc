@@ -815,15 +815,15 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getZ());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getRadius());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 

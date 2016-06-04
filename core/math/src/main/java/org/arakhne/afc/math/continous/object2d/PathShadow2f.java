@@ -133,7 +133,7 @@ public class PathShadow2f {
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		float movx = element.toX;
@@ -366,39 +366,39 @@ public class PathShadow2f {
 		@Override
 		public String toString() {
 			StringBuilder b = new StringBuilder();
-			b.append("SHADOW {\n\tlow: ( "); //$NON-NLS-1$
+			b.append("SHADOW {\n\tlow: ( "); 
 			b.append(this.xmin4ymin);
-			b.append(" | "); //$NON-NLS-1$
+			b.append(" | "); 
 			b.append(this.ymin);
-			b.append(" )\n\thigh: ( "); //$NON-NLS-1$
+			b.append(" )\n\thigh: ( "); 
 			b.append(this.xmin4ymax);
-			b.append(" | "); //$NON-NLS-1$
+			b.append(" | "); 
 			b.append(this.ymax);
-			b.append(")\n}\nCROSSINGS {\n\tcrossings="); //$NON-NLS-1$
+			b.append(")\n}\nCROSSINGS {\n\tcrossings="); 
 			b.append(this.crossings);
-			b.append("\n\tlow: "); //$NON-NLS-1$
+			b.append("\n\tlow: "); 
 			if (this.hasX4ymin) {
-				b.append("( "); //$NON-NLS-1$
+				b.append("( "); 
 				b.append(this.x4ymin);
-				b.append(" | "); //$NON-NLS-1$
+				b.append(" | "); 
 				b.append(this.ymin);
-				b.append(" )\n"); //$NON-NLS-1$
+				b.append(" )\n"); 
 			}
 			else {
-				b.append("none\n"); //$NON-NLS-1$
+				b.append("none\n"); 
 			}
-			b.append("\thigh: "); //$NON-NLS-1$
+			b.append("\thigh: "); 
 			if (this.hasX4ymax) {
-				b.append("( "); //$NON-NLS-1$
+				b.append("( "); 
 				b.append(this.x4ymax);
-				b.append(" | "); //$NON-NLS-1$
+				b.append(" | "); 
 				b.append(this.ymax);
-				b.append(" )\n"); //$NON-NLS-1$
+				b.append(" )\n"); 
 			}
 			else {
-				b.append("none\n"); //$NON-NLS-1$
+				b.append("none\n"); 
 			}
-			b.append("}\n"); //$NON-NLS-1$
+			b.append("}\n"); 
 			return b.toString();
 		}
 

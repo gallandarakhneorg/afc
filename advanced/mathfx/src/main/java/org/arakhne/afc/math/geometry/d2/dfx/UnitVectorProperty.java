@@ -85,8 +85,8 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2dfx> {
 
 	private void init() {
 		final Vector2dfx v = getGeomFactory().newVector();
-		this.x = new ReadOnlyDoubleWrapper(v, "x"); //$NON-NLS-1$
-		this.y = new ReadOnlyDoubleWrapper(v, "y"); //$NON-NLS-1$
+		this.x = new ReadOnlyDoubleWrapper(v, "x"); 
+		this.y = new ReadOnlyDoubleWrapper(v, "y"); 
 		v.set(this.x, this.y);
 		super.set(v);
 	}
@@ -98,9 +98,9 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2dfx> {
 		}
 		if (this.fake == null) {
 			this.fake = getGeomFactory().newVector();
-			final DoubleProperty x = new SimpleDoubleProperty(this.fake, "x"); //$NON-NLS-1$
+			final DoubleProperty x = new SimpleDoubleProperty(this.fake, "x"); 
 			x.bind(internalXProperty());
-			final DoubleProperty y = new SimpleDoubleProperty(this.fake, "y"); //$NON-NLS-1$
+			final DoubleProperty y = new SimpleDoubleProperty(this.fake, "y"); 
 			y.bind(internalYProperty());
 			this.fake.set(x, y);
 		}
@@ -109,7 +109,7 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2dfx> {
 
 	@Override
 	public void set(Vector2dfx newValue) {
-		assert newValue != null : "Initial value must be not null"; //$NON-NLS-1$
+		assert newValue != null : "Initial value must be not null"; 
 		set(newValue.getX(), newValue.getY());
 	}
 
@@ -119,7 +119,7 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2dfx> {
 	 * @param y y coordinate of the vector.
 	 */
 	public void set(double x, double y) {
-		assert Vector2D.isUnitVector(x, y) : "Vector coordinates must correspond to a unit vector"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(x, y) : "Vector coordinates must correspond to a unit vector"; 
 		if ((x != getX() || y != getY()) && !isBound()) {
 			final Vector2dfx v = super.get();
 			v.set(x, y);

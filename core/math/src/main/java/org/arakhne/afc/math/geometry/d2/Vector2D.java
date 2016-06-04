@@ -150,7 +150,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default boolean isOrthogonal(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		return isOrthogonal(getX(), getY(), vector.getX(), vector.getY());
 	}
 
@@ -321,7 +321,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default double signedAngle(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not be null"; 
 		return signedAngle(getX(), getY(), vector.getX(), vector.getY());
 	}
 
@@ -374,8 +374,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param vector2 the second tuple
 	 */
 	default void add(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not be null"; //$NON-NLS-1$
-		assert vector2 != null : "Second vector must be not be null"; //$NON-NLS-1$
+		assert vector1 != null : "First vector must be not be null"; 
+		assert vector2 != null : "Second vector must be not be null"; 
 		set(vector1.getX() + vector2.getX(),
 				vector1.getY() + vector2.getY());
 	}
@@ -386,7 +386,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param vector the other tuple
 	 */
 	default void add(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not be null"; 
 		set(vector.getX() + getX(),
 				vector.getY() + getY());
 	}
@@ -399,8 +399,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param t2 the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector2D<?, ?> t1, Vector2D<?, ?> t2) {
-		assert t1 != null : "First vector must be not be null"; //$NON-NLS-1$
-		assert t2 != null : "Second vector must be not be null"; //$NON-NLS-1$
+		assert t1 != null : "First vector must be not be null"; 
+		assert t2 != null : "Second vector must be not be null"; 
 		set(scale * t1.getX() + t2.getX(),
 				scale * t1.getY() + t2.getY());
 	}
@@ -414,8 +414,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param vector2 the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not be null"; //$NON-NLS-1$
-		assert vector2 != null : "Second vector must be not be null"; //$NON-NLS-1$
+		assert vector1 != null : "First vector must be not be null"; 
+		assert vector2 != null : "Second vector must be not be null"; 
 		set(scale * vector1.getX() + vector2.getX(),
 				scale * vector1.getY() + vector2.getY());
 	}
@@ -428,7 +428,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not be null"; 
 		set(scale * getX() + vector.getX(),
 				scale * getY() + vector.getY());
 	}
@@ -441,7 +441,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not be null"; 
 		set(scale * getX() + vector.getX(),
 				scale * getY() + vector.getY());
 	}
@@ -455,8 +455,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param vector2 the second tuple
 	 */
 	default void sub(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not be null"; //$NON-NLS-1$
-		assert vector2 != null : "Second vector must be not be null"; //$NON-NLS-1$
+		assert vector1 != null : "First vector must be not be null"; 
+		assert vector2 != null : "Second vector must be not be null"; 
 		set(vector1.getX() - vector2.getX(), vector1.getY() - vector2.getY());
 	}
 
@@ -468,8 +468,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param point2 the second tuple
 	 */
 	default void sub(Point2D<?, ?> point1, Point2D<?, ?> point2) {
-		assert point1 != null : "First point must be not be null"; //$NON-NLS-1$
-		assert point2 != null : "Second point must be not be null"; //$NON-NLS-1$
+		assert point1 != null : "First point must be not be null"; 
+		assert point2 != null : "Second point must be not be null"; 
 		set(point1.getX() - point2.getX(), point1.getY() - point2.getY());
 	}
 
@@ -480,7 +480,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param vector the other tuple
 	 */
 	default void sub(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not be null"; 
 		set(getX() - vector.getX(), getY() - vector.getY());
 	}
 
@@ -522,7 +522,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default double dot(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not be null"; 
 		return dotProduct(getX(), getY(), vector.getX(), vector.getY());
 	}
 
@@ -539,7 +539,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default double perp(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not be null"; 
 		return perpProduct(getX(), getY(), vector.getX(), vector.getY());
 	}
 
@@ -587,7 +587,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param vector the un-normalized vector
 	 */
 	default void normalize(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not be null"; 
 		final double x = vector.getX();
 		final double y = vector.getY();
 		double sqlength = x * x + y * y;
@@ -628,7 +628,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default double angle(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not be null"; 
 		double vDot = dotProduct(getX(), getY(), vector.getX(), vector.getY()) / (getLength() * vector.getLength());
 		if (vDot < -1.) {
 			vDot = -1.;
@@ -682,7 +682,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #turnRight(double)
 	 */
 	default void turn(double angle, Vector2D<?, ?> vectorToTurn) {
-		assert vectorToTurn != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vectorToTurn != null : "Vector must be not null"; 
 		final double sin = Math.sin(angle);
 		final double cos = Math.cos(angle);
 		final double x =  cos * vectorToTurn.getX() - sin * vectorToTurn.getY();
@@ -783,7 +783,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param newLength - the new length.
 	 */
 	default void setLength(double newLength) {
-		assert newLength >= 0 : "Length must be positive or zero"; //$NON-NLS-1$
+		assert newLength >= 0 : "Length must be positive or zero"; 
 		final double l = getLength();
 		if (l != 0.) {
 			final double f = newLength / l;
@@ -971,7 +971,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RV operator_minus(Vector2D<?, ?> v) {
-		assert v != null : "Vector must be not null"; //$NON-NLS-1$
+		assert v != null : "Vector must be not null"; 
 		return getGeomFactory().newVector(getX() - v.getX(), getY() - v.getY());
 	}
 
@@ -1018,7 +1018,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RV operator_plus(Vector2D<?, ?> v) {
-		assert v != null : "Vector must be not null"; //$NON-NLS-1$
+		assert v != null : "Vector must be not null"; 
 		return getGeomFactory().newVector(getX() + v.getX(), getY() + v.getY());
 	}
 
@@ -1034,7 +1034,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RP operator_plus(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		return getGeomFactory().newPoint(getX() + pt.getX(), getY() + pt.getY());
 	}
 
@@ -1101,7 +1101,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 		 * @param vector the vector result.
 		 */
 		PowerResult(T vector) {
-			assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+			assert vector != null : "Vector must be not null"; 
 			this.scalar = Double.NaN;
 			this.vector = vector;
 		}

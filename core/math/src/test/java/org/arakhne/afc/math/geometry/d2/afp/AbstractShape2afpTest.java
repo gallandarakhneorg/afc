@@ -179,7 +179,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	 */
 	protected void assertElement(PathIterator2afp<?> pi, PathElementType type, double... coords) {
 		if (!pi.hasNext()) {
-			fail("expected path element but the iterator is empty"); //$NON-NLS-1$
+			fail("expected path element but the iterator is empty"); 
 		}
 		PathElement2afp pe = pi.next();
 		if (!type.equals(pe.getType())) {
@@ -188,7 +188,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 		double[] c = new double[coords.length];
 		pe.toArray(c);
 		if (!isEpsilonEquals(c, coords)) {
-			throw new ComparisonFailure("not same coordinates.", //$NON-NLS-1$ 
+			throw new ComparisonFailure("not same coordinates.",  
 					Arrays.toString(coords),
 					Arrays.toString(c));
 		}
@@ -240,7 +240,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	 */
 	protected void assertNoElement(PathIterator2afp<?> pi) {
 		if (pi.hasNext()) {
-			fail("expected no path element but the iterator is not empty: " //$NON-NLS-1$
+			fail("expected no path element but the iterator is not empty: " 
 					+ pi.next());
 		}
 	}

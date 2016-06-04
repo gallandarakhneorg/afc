@@ -62,27 +62,27 @@ public class FileChooserActivity extends FragmentActivity implements OnBackStack
 
 	/** Name of the extra data that is containing the options of the file chooser.
 	 */
-	static final String ACTIVITY_OPTIONS = "fileChooserActivityOptions"; //$NON-NLS-1$
+	static final String ACTIVITY_OPTIONS = "fileChooserActivityOptions"; 
 
 	/** Name of the attribute that permits to save the path in the activity.
 	 */
-	public static final String SAVED_PATH_NAME = "path"; //$NON-NLS-1$
+	public static final String SAVED_PATH_NAME = "path"; 
 
 	/** Name of the attribute that permits to save the icon selector in the activity.
 	 */
-	public static final String SAVED_ICON_SELECTOR = "iconSelector"; //$NON-NLS-1$
+	public static final String SAVED_ICON_SELECTOR = "iconSelector"; 
 
 	/** Name of the attribute that permits to save the file filter in the activity.
 	 */
-	public static final String SAVED_FILE_FILTER = "fileFilter"; //$NON-NLS-1$
+	public static final String SAVED_FILE_FILTER = "fileFilter"; 
 
 	/** Name of the attribute that permits to indicates if the chooser is for opening a file.
 	 */
-	public static final String SAVED_IS_OPEN = "isOpen"; //$NON-NLS-1$
+	public static final String SAVED_IS_OPEN = "isOpen"; 
 
 	/** Name of the preference that permits to store the path.
 	 */
-	private static final String PREFERENCE_FILE_PATH = "lastSelectedPath"; //$NON-NLS-1$
+	private static final String PREFERENCE_FILE_PATH = "lastSelectedPath"; 
 
 	private static File getFileParameter(String name, File defaultValue, Bundle... bundles) {
 		for(Bundle b : bundles) {
@@ -106,7 +106,7 @@ public class FileChooserActivity extends FragmentActivity implements OnBackStack
 						}
 					}
 					catch(Throwable e) {
-						Log.d("FILE_CHOOSER", e.getLocalizedMessage(), e); //$NON-NLS-1$
+						Log.d("FILE_CHOOSER", e.getLocalizedMessage(), e); 
 					}
 				}
 			}
@@ -126,7 +126,7 @@ public class FileChooserActivity extends FragmentActivity implements OnBackStack
 						}
 					}
 					catch(Throwable e) {
-						Log.d("FILE_CHOOSER", e.getLocalizedMessage(), e); //$NON-NLS-1$
+						Log.d("FILE_CHOOSER", e.getLocalizedMessage(), e); 
 					}
 				}
 			}

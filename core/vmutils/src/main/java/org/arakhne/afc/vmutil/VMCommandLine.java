@@ -34,6 +34,8 @@ import java.util.TreeMap;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.locale.Locale;
+
 /**
  * This utility class permits to get the java command line for the current VM.
  *
@@ -112,7 +114,7 @@ public class VMCommandLine {
 	 */
 	public VMCommandLine() {
 		if (classnameToLaunch == null) {
-			throw new IllegalArgumentException("you must call the other constructor previously"); //$NON-NLS-1$
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 	}
 
@@ -788,7 +790,7 @@ public class VMCommandLine {
 		}
 
 		if (waitingValue != null && waitingValue.isMandatory()) {
-			throw new IllegalStateException("expected a value for command line option " + valueOptionName); //$NON-NLS-1$
+			throw new IllegalStateException(Locale.getString("E2", valueOptionName)); //$NON-NLS-1$
 		}
 
 		commandLineParameters = new String[params.size()];

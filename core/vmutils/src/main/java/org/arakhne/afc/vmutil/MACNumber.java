@@ -33,6 +33,8 @@ import java.util.regex.Pattern;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.locale.Locale;
+
 /** A MACNumber is the unique number associated to a network interface.
  *
  * @author $Author: sgalland$
@@ -81,7 +83,7 @@ public final class MACNumber {
 	@SuppressWarnings("checkstyle:magicnumber")
 	public MACNumber(byte[] bytes) {
 		if (bytes == null || bytes.length != 6) {
-			throw new IllegalArgumentException("mac address not 6 bytes long"); //$NON-NLS-1$
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 		this.bytes = new byte[6];
 		System.arraycopy(bytes, 0, this.bytes, 0, 6);
@@ -96,11 +98,11 @@ public final class MACNumber {
 	@SuppressWarnings("checkstyle:magicnumber")
 	public MACNumber(String address) {
 		if (address == null) {
-			throw new IllegalArgumentException("mac address not 6 bytes long"); //$NON-NLS-1$
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 		final String[] parts = address.split(Pattern.quote(":")); //$NON-NLS-1$
 		if (parts.length != 6) {
-			throw new IllegalArgumentException("mac address not 6 bytes long"); //$NON-NLS-1$
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 		this.bytes = new byte[6];
 		try {
@@ -110,7 +112,7 @@ public final class MACNumber {
 				this.bytes[i] = (byte) val;
 			}
 		} catch (Exception exception) {
-			throw new IllegalArgumentException("mac address not 6 bytes long"); //$NON-NLS-1$
+			throw new IllegalArgumentException(Locale.getString("E1"), exception); //$NON-NLS-1$
 		}
 	}
 

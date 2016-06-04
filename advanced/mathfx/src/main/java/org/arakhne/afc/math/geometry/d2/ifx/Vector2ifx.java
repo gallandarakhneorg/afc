@@ -153,7 +153,7 @@ public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector
 	 */
 	public DoubleProperty lengthProperty() {
 		if (this.lengthProperty == null) {
-			this.lengthProperty = new ReadOnlyDoubleWrapper(this, "length"); //$NON-NLS-1$
+			this.lengthProperty = new ReadOnlyDoubleWrapper(this, "length"); 
 			this.lengthProperty.bind(Bindings.createDoubleBinding(() -> {
 				return Math.sqrt(lengthSquaredProperty().doubleValue());
 			}, lengthSquaredProperty()));
@@ -172,7 +172,7 @@ public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector
 	 */
 	public DoubleProperty lengthSquaredProperty() {
 		if (this.lengthSquareProperty == null) {
-			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, "lengthSquared"); //$NON-NLS-1$
+			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, "lengthSquared"); 
 			this.lengthSquareProperty.bind(Bindings.createDoubleBinding(() -> {
 				return Vector2ifx.this.x.doubleValue() * Vector2ifx.this.x.doubleValue()
 						+ Vector2ifx.this.y.doubleValue() * Vector2ifx.this.y.doubleValue();

@@ -49,6 +49,8 @@ import java.util.regex.Pattern;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.locale.Locale;
+
 /** This class loader permits to load classes from
  * a set of classpaths.
  *
@@ -220,16 +222,13 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 				if (pkg.isSealed()) {
 					// Verify that code source URL is the same.
 					if (!pkg.isSealed(url)) {
-						throw new SecurityException(
-								"sealing violation: package " + pkgname + " is sealed"); //$NON-NLS-1$ //$NON-NLS-2$
+						throw new SecurityException(Locale.getString("E1", pkgname)); //$NON-NLS-1$
 					}
 				} else {
 					// Make sure we are not attempting to seal the package
 					// at this code source URL.
 					if ((man != null) && isSealed(pkgname, man)) {
-						throw new SecurityException(
-								"sealing violation: can't seal package " + pkgname +  //$NON-NLS-1$
-						": already loaded"); //$NON-NLS-1$
+						throw new SecurityException(Locale.getString("E2", pkgname)); //$NON-NLS-1$
 					}
 				}
 			} else {

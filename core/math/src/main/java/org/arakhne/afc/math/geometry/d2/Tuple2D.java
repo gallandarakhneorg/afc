@@ -60,7 +60,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 * @param tuple   the source tuple, which will not be modified
 	 */
 	default void absolute(Tuple2D<?> tuple)  {
-		assert tuple != null : "Tuple must be not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must be not be null"; 
 		tuple.set(Math.abs(getX()), Math.abs(getY()));
 	}
 
@@ -120,7 +120,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param max  the highest value in this tuple after clamping
 	 */
 	default void clamp(int min, int max) {
-		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max"; 
 		final double x = MathUtil.clamp(getX(), min, max);
 		final double y = MathUtil.clamp(getY(), min, max);
 		set(x, y);
@@ -132,7 +132,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param max  the highest value in this tuple after clamping
 	 */
 	default void clamp(double min, double max) {
-		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max"; 
 		final double x = MathUtil.clamp(getX(), min, max);
 		final double y = MathUtil.clamp(getY(), min, max);
 		set(x, y);
@@ -147,8 +147,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clamp(int min, int max, Tuple2D<?> tuple) {
-		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max"; 
+		assert tuple != null : "Tuple must not be null"; 
 		final double x = MathUtil.clamp(tuple.getX(), min, max);
 		final double y = MathUtil.clamp(tuple.getY(), min, max);
 		set(x, y);
@@ -162,8 +162,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clamp(double min, double max, Tuple2D<?> tuple) {
-		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max"; 
+		assert tuple != null : "Tuple must not be null"; 
 		final double x = MathUtil.clamp(tuple.getX(), min, max);
 		final double y = MathUtil.clamp(tuple.getY(), min, max);
 		set(x, y);
@@ -208,7 +208,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clampMin(int min, Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
 		double x = tuple.getX();
 		double y = tuple.getY();
 		if (x < min) {
@@ -227,7 +227,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clampMin(double min, Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
 		double x = tuple.getX();
 		double y = tuple.getY();
 		if (x < min) {
@@ -278,7 +278,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clampMax(int max, Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
 		double x = tuple.getX();
 		double y = tuple.getY();
 		if (x > max) {
@@ -297,7 +297,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clampMax(double max, Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
 		double x = tuple.getX();
 		double y = tuple.getY();
 		if (x > max) {
@@ -314,7 +314,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 * @param tuple is the target tuple
 	 */
 	default void get(Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
 		tuple.set(getX(), getY());
 	}
 
@@ -323,8 +323,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param tuple the array that will contain the values of the vector
 	 */
 	default void get(int[] tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
-		assert tuple.length >= 2 : "Size of the array too low"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
+		assert tuple.length >= 2 : "Size of the array too low"; 
 		tuple[0] = ix();
 		tuple[1] = iy();
 	}
@@ -334,8 +334,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param tuple the array that will contain the values of the vector
 	 */
 	default void get(double[] tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
-		assert tuple.length >= 2 : "Size of the array too low"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
+		assert tuple.length >= 2 : "Size of the array too low"; 
 		tuple[0] = getX();
 		tuple[1] = getY();
 	}
@@ -345,7 +345,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 * @param tuple the source tuple
 	 */
 	default void negate(Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
 		set(-tuple.getX(), -tuple.getY());
 	}
 
@@ -363,7 +363,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 * @param tuple the source tuple
 	 */
 	default void scale(int scale, Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
 		set(scale * tuple.getX(), scale * tuple.getY());
 	}
 
@@ -374,7 +374,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 * @param tuple the source tuple
 	 */
 	default void scale(double scale, Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
 		set(scale * tuple.getX(), scale * tuple.getY());
 	}
 
@@ -401,7 +401,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 * @param tuple the tuple to be copied
 	 */
 	default void set(Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
 		set(tuple.getX(), tuple.getY());
 	}
 
@@ -433,8 +433,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 * @param tuple the array of length 2 containing xy in order
 	 */
 	default void set(int[] tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
-		assert tuple.length >= 2 : "Array size is too low"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
+		assert tuple.length >= 2 : "Array size is too low"; 
 		setX(tuple[0]);
 		setY(tuple[1]);
 	}
@@ -445,8 +445,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 * @param tuple the array of length 2 containing xy in order
 	 */
 	default void set(double[] tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
-		assert tuple.length >= 2 : "Array size is too low"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
+		assert tuple.length >= 2 : "Array size is too low"; 
 		setX(tuple[0]);
 		setY(tuple[1]);
 	}
@@ -569,9 +569,9 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param alpha  the alpha interpolation parameter (value in [0;1]).
 	 */
 	default void interpolate(Tuple2D<?> tuple1, Tuple2D<?> tuple2, double alpha) {
-		assert tuple1 != null : "First tuple must not be null"; //$NON-NLS-1$
-		assert tuple2 != null : "Second tuple must not be null"; //$NON-NLS-1$
-		assert alpha >= 0. && alpha <= 1. : "Alpha must be in [0; 1]"; //$NON-NLS-1$
+		assert tuple1 != null : "First tuple must not be null"; 
+		assert tuple2 != null : "Second tuple must not be null"; 
+		assert alpha >= 0. && alpha <= 1. : "Alpha must be in [0; 1]"; 
 		set((1. - alpha) * tuple1.getX() + alpha * tuple2.getX(),
 				(1. - alpha) * tuple1.getY() + alpha * tuple2.getY());
 	}
@@ -583,8 +583,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 *  @param alpha  the alpha interpolation parameter
 	 */
 	default void interpolate(Tuple2D<?> tuple, double alpha) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
-		assert alpha >= 0. && alpha <= 1. : "Alpha must be in [0; 1]"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
+		assert alpha >= 0. && alpha <= 1. : "Alpha must be in [0; 1]"; 
 		set((1. - alpha) * getX() + alpha * tuple.getX(),
 				(1. - alpha) * getY() + alpha * tuple.getY());
 	}
@@ -626,7 +626,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 */
 	@Pure
 	default boolean epsilonEquals(Tuple2D<?> tuple, double epsilon) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; 
 		final double dx = getX() - tuple.getX();
 		final double dy = getY() - tuple.getY();
 		return (dx * dx + dy * dy) <= (epsilon * epsilon);

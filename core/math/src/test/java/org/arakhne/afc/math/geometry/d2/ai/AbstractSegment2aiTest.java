@@ -580,10 +580,10 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
     		int y2 = data[i++];
     		int crossing = data[i++];
     		    		
-    		label = x1+";"+y1+";"+x2+";"+y2;  //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+    		label = x1+";"+y1+";"+x2+";"+y2;  
     		assertEquals(label, crossing, Segment2ai.computeCrossingsFromRect(0, 5, 3, 7, 5, x1, y1, x2, y2));
 
-    		label = x2+";"+y2+";"+x1+";"+y1;  //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+    		label = x2+";"+y2+";"+x1+";"+y1;  
     		if (crossing!=SHAPE_INTERSECTS) {
     			crossing = -crossing;
     		}

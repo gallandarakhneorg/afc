@@ -77,7 +77,7 @@ public class Circle2ifx
 	 * @param circle the circle to copy.
 	 */
 	public Circle2ifx(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		set(circle.getX(), circle.getY(), circle.getRadius());
 	}
 
@@ -113,13 +113,13 @@ public class Circle2ifx
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getRadius());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -136,7 +136,7 @@ public class Circle2ifx
 	@Pure
 	public IntegerProperty xProperty() {
 		if (this.centerX == null) {
-			this.centerX = new SimpleIntegerProperty(this, "x"); //$NON-NLS-1$
+			this.centerX = new SimpleIntegerProperty(this, "x"); 
 		}
 		return this.centerX;
 	}
@@ -154,7 +154,7 @@ public class Circle2ifx
 	@Pure
 	public IntegerProperty yProperty() {
 		if (this.centerY == null) {
-			this.centerY = new SimpleIntegerProperty(this, "y"); //$NON-NLS-1$
+			this.centerY = new SimpleIntegerProperty(this, "y"); 
 		}
 		return this.centerY;
 	}
@@ -177,7 +177,7 @@ public class Circle2ifx
 
 	@Override
 	public void setRadius(int radius) {
-		assert radius >= 0 : "Radius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0 : "Radius must be positive or zero"; 
 		radiusProperty().set(radius);
 	}
 
@@ -188,7 +188,7 @@ public class Circle2ifx
 	@Pure
 	public IntegerProperty radiusProperty() {
 		if (this.radius == null) {
-			this.radius = new SimpleIntegerProperty(this, "radius") { //$NON-NLS-1$
+			this.radius = new SimpleIntegerProperty(this, "radius") { 
 				@Override
 				protected void invalidated() {
 					if (get() < 0) {
@@ -202,7 +202,7 @@ public class Circle2ifx
 
 	@Override
 	public void set(int x, int y, int radius) {
-		assert radius >= 0 : "Radius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0 : "Radius must be positive or zero"; 
 		xProperty().set(x);
 		yProperty().set(y);
 		radiusProperty().set(radius);
@@ -211,7 +211,7 @@ public class Circle2ifx
 	@Override
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			}, xProperty(), yProperty(), radiusProperty()));

@@ -40,9 +40,10 @@ import org.junit.Test;
  * @mavengroupid org.arakhne.afc
  * @mavenartifactid arakhneVmutils
  */
+@SuppressWarnings("all")
 public class URLConnectionTest {
 
-	private static final String RESOURCE_URL = "resource:org/arakhne/afc/vmutil/test.txt"; //$NON-NLS-1$
+	private static final String RESOURCE_URL = "resource:org/arakhne/afc/vmutil/test.txt"; 
 
 	private URLConnection connection;
 
@@ -77,7 +78,7 @@ public class URLConnectionTest {
 				line = br.readLine();
 			}
 		}
-		assertEquals("TEST1: FOR UNIT TEST ONLY", line); //$NON-NLS-1$
+		assertEquals("TEST1: FOR UNIT TEST ONLY", line); 
 	}
 
 }

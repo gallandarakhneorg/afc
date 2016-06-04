@@ -88,7 +88,7 @@ public final class NullAttribute implements Serializable, Cloneable {
 	@Pure
 	@Override
 	public String toString() {
-		return "null"; //$NON-NLS-1$
+		return "null"; 
 	}
 
 }

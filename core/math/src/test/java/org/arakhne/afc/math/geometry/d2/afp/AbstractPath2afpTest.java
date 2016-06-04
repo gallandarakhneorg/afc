@@ -2930,7 +2930,7 @@ extends AbstractShape2afpTest<T, B> {
 		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createRectangle(-4, 6, 2, 1)));
 		assertFpPointEquals(6.01612, 0.59312, this.shape.getClosestPointTo(createRectangle(7, 1, 2, 1)));
 		assertFpPointEquals(2.89236, 1.12379, this.shape.getClosestPointTo(createRectangle(3, 0, 2, 1)));
-		assertFpPointEquals(2.75, 1, this.shape.getClosestPointTo(createRectangle(2, 0, 2, 1)));
+		assertFpPointEquals(2, 0.75926, this.shape.getClosestPointTo(createRectangle(2, 0, 2, 1)));
 	}
 
 	@Test
@@ -2987,7 +2987,7 @@ extends AbstractShape2afpTest<T, B> {
 	public void getClosestPointToOrientedRectangle2afp() {
 		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestOrientedRectangle(-4, 6)));
 		assertFpPointEquals(5.59375, 1.19354, this.shape.getClosestPointTo(createTestOrientedRectangle(8, 3)));
-		assertFpPointEquals(3.56282, 2.028488, this.shape.getClosestPointTo(createTestOrientedRectangle(3, 0)));
+		assertFpPointEquals(2.33767, 0.80928, this.shape.getClosestPointTo(createTestOrientedRectangle(3, 0)));
 	}
 
 	@Test
@@ -3007,7 +3007,7 @@ extends AbstractShape2afpTest<T, B> {
 	public void getClosestPointToParallelogram2afp() {
 		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestParallelogram(-4, 6)));
 		assertFpPointEquals(5.59375, 1.19354, this.shape.getClosestPointTo(createTestParallelogram(8, 3)));
-		assertFpPointEquals(3.4707, 1.82378, this.shape.getClosestPointTo(createTestParallelogram(3, 0)));
+		assertFpPointEquals(2.43358, 0.84812, this.shape.getClosestPointTo(createTestParallelogram(3, 0)));
 	}
 
 	@Test

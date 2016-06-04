@@ -682,20 +682,20 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder s = new StringBuilder("OBB "); //$NON-NLS-1$
-		s.append("center: "); //$NON-NLS-1$
+		StringBuilder s = new StringBuilder("OBB "); 
+		s.append("center: "); 
 		s.append(this.getCenter().toString());
-		s.append(" axis1: "); //$NON-NLS-1$
+		s.append(" axis1: "); 
 		s.append(this.getFirstAxis().toString());
-		s.append(" axis2: "); //$NON-NLS-1$
+		s.append(" axis2: "); 
 		s.append(this.getSecondAxis().toString());
-		s.append(" axis3: "); //$NON-NLS-1$
+		s.append(" axis3: "); 
 		s.append(this.getThirdAxis().toString());
-		s.append(" extent1: "); //$NON-NLS-1$
+		s.append(" extent1: "); 
 		s.append(this.getFirstAxisExtent());
-		s.append(" extent2: "); //$NON-NLS-1$
+		s.append(" extent2: "); 
 		s.append(this.getSecondAxisExtent());
-		s.append(" extent3: "); //$NON-NLS-1$
+		s.append(" extent3: "); 
 		s.append(this.getThirdAxisExtent());
 		return s.toString();
 	}

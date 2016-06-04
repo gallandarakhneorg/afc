@@ -91,7 +91,7 @@ class AndroidResourceWrapper implements ResourceWrapper {
 
 	@Override
     public String translateResourceName(String resourceName) {
-		return resourceName.replaceAll("[.]", "/");  //$NON-NLS-1$//$NON-NLS-2$
+		return resourceName.replaceAll("[.]", "/"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

@@ -84,7 +84,7 @@ public class FloatDimension extends Dimension2D {
 	 */
 	@Override
 	public String toString() {
-		return "(w="+this.width+";h="+this.height+")";   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		return "(w="+this.width+";h="+this.height+")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	@Override

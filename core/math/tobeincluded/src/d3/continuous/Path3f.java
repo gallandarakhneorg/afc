@@ -81,7 +81,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		Path3f subPath;
 
 		if (pe.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		candidate = new Point3f(pe.getToX(), pe.getToY(), pe.getToZ());
@@ -164,7 +164,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		Path3f subPath;
 
 		if (pe.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		candidate = new Point3f(pe.getToX(), pe.getToY(), pe.getToZ());
@@ -517,15 +517,15 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		if (this.numCoords>0) {
 			b.append(this.coords[0]);
 			for(int i=1; i<this.numCoords; ++i) {
-				b.append(", "); //$NON-NLS-1$
+				b.append(", "); 
 				b.append(this.coords[i]);
 			}
 		}
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -733,7 +733,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		AbstractPathElement3F pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		Path3f subPath;
@@ -831,7 +831,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		AbstractPathElement3F pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		Path3f subPath;
@@ -925,7 +925,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		AbstractPathElement3D pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		Path3d subPath;
@@ -1020,7 +1020,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		AbstractPathElement3F pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		Path3f subPath;
@@ -1114,7 +1114,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		AbstractPathElement3F pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		Path3f subPath;
@@ -1209,7 +1209,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		AbstractPathElement3F pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		Path3f subPath;
@@ -1304,7 +1304,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		AbstractPathElement3F pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		Path3f subPath;
@@ -1398,7 +1398,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		AbstractPathElement3F pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		Path3f subPath;
@@ -1490,7 +1490,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		AbstractPathElement3F pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		Path3f subPath;
@@ -1826,7 +1826,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 
 	private void ensureSlots(boolean needMove, int n) {
 		if (needMove && this.numTypes==0) {
-			throw new IllegalStateException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalStateException("missing initial moveto in path definition"); 
 		}
 		if (this.types.length==this.numTypes) {
 			this.types = Arrays.copyOf(this.types, this.types.length+GROW_SIZE);
@@ -1991,7 +1991,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		AbstractPathElement3F pathElement = pi.next();
 		
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 		
 		Path3f subPath;
@@ -3274,7 +3274,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		@Override
 		public AbstractPathElement3F next() {
 			if (this.done) {
-				throw new NoSuchElementException("flattening iterator out of bounds"); //$NON-NLS-1$
+				throw new NoSuchElementException("flattening iterator out of bounds"); 
 			}
 
 			AbstractPathElement3F element;

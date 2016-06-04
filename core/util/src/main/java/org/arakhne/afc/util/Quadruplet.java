@@ -150,8 +150,8 @@ public class Quadruplet<A, B, C, D> implements Serializable {
 	@Pure
 	@Override
 	public String toString() {
-		return "<" + this.avalue + ";" + this.bvalue + ";" //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-				+ this.cvalue + ";" + this.dvalue + ">"; //$NON-NLS-1$//$NON-NLS-2$
+		return "<" + this.avalue + ";" + this.bvalue + ";" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				+ this.cvalue + ";" + this.dvalue + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Pure

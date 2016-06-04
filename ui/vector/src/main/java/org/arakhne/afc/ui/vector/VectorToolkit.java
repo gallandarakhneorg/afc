@@ -67,9 +67,9 @@ public abstract class VectorToolkit {
 	@SuppressWarnings("unchecked")
 	private static void init() {
 		Throwable error = null;
-		String toolkits = Locale.getString("WINDOW_TOOLKITS"); //$NON-NLS-1$
-		if (toolkits!=null && !"WINDOW_TOOLKITS".equals(toolkits)) { //$NON-NLS-1$
-			String[] classes = toolkits.split("[ \t\n\f]*;[ \t\n\f]*"); //$NON-NLS-1$
+		String toolkits = Locale.getString("WINDOW_TOOLKITS");  //$NON-NLS-1$
+		if (toolkits!=null && !"WINDOW_TOOLKITS".equals(toolkits)) {  //$NON-NLS-1$
+			String[] classes = toolkits.split("[ \t\n\f]*;[ \t\n\f]*");  //$NON-NLS-1$
 		
 			List<Class<? extends VectorToolkit>> types = new ArrayList<>();
 			
@@ -99,13 +99,13 @@ public abstract class VectorToolkit {
 					}
 				}
 			}
-			throw new Error("Unable to find a generic Window Toolkit. " //$NON-NLS-1$
-					+"The supported toolkit classes are: " //$NON-NLS-1$
+			throw new Error("Unable to find a generic Window Toolkit. "  //$NON-NLS-1$
+					+"The supported toolkit classes are: "  //$NON-NLS-1$
 					+toolkits
-					+". You must update your classpath with the Java archive that is containing one of them.", //$NON-NLS-1$
+					+". You must update your classpath with the Java archive that is containing one of them.",  //$NON-NLS-1$
 					error);
 		}
-		throw new Error("Unable to find the resource file 'VectorToolkit.properties' in which the list of the toolkits is stored. Have you correctly installed all the file of this Java module?"); //$NON-NLS-1$
+		throw new Error("Unable to find the resource file 'VectorToolkit.properties' in which the list of the toolkits is stored. Have you correctly installed all the file of this Java module?");  //$NON-NLS-1$
 	}
 	
 	/** Replies if this toolkit may be used according to the current JVM settings.
@@ -184,7 +184,7 @@ public abstract class VectorToolkit {
 		VectorGraphics2D g = this.currentContext;
 		if (g==null) {
 			throw new IllegalStateException(
-					Locale.getString("NO_PRE_DRAWING")); //$NON-NLS-1$
+					Locale.getString("NO_PRE_DRAWING"));  //$NON-NLS-1$
 		}
 		return g;
 	}
@@ -933,19 +933,19 @@ public abstract class VectorToolkit {
 	 */
 	public static Color color(String c) {
 		if (c==null) return null;
-		if ("red".equalsIgnoreCase(c)) return Colors.RED; //$NON-NLS-1$
-		if ("blue".equalsIgnoreCase(c)) return Colors.BLUE; //$NON-NLS-1$
-		if ("green".equalsIgnoreCase(c)) return Colors.GREEN; //$NON-NLS-1$
-		if ("black".equalsIgnoreCase(c)) return Colors.BLACK; //$NON-NLS-1$
-		if ("white".equalsIgnoreCase(c)) return Colors.WHITE; //$NON-NLS-1$
-		if ("gray".equalsIgnoreCase(c)) return Colors.GRAY; //$NON-NLS-1$
-		if ("cyan".equalsIgnoreCase(c)) return Colors.CYAN; //$NON-NLS-1$
-		if ("magenta".equalsIgnoreCase(c)) return Colors.MAGENTA; //$NON-NLS-1$
-		if ("yellow".equalsIgnoreCase(c)) return Colors.YELLOW; //$NON-NLS-1$
-		if ("lightgray".equalsIgnoreCase(c)) return Colors.LIGHT_GRAY; //$NON-NLS-1$
-		if ("darkgray".equalsIgnoreCase(c)) return Colors.DARK_GRAY; //$NON-NLS-1$
-		if ("orange".equalsIgnoreCase(c)) return Colors.ORANGE; //$NON-NLS-1$
-		if ("pink".equalsIgnoreCase(c)) return Colors.PINK; //$NON-NLS-1$
+		if ("red".equalsIgnoreCase(c)) return Colors.RED;  //$NON-NLS-1$
+		if ("blue".equalsIgnoreCase(c)) return Colors.BLUE;  //$NON-NLS-1$
+		if ("green".equalsIgnoreCase(c)) return Colors.GREEN;  //$NON-NLS-1$
+		if ("black".equalsIgnoreCase(c)) return Colors.BLACK;  //$NON-NLS-1$
+		if ("white".equalsIgnoreCase(c)) return Colors.WHITE;  //$NON-NLS-1$
+		if ("gray".equalsIgnoreCase(c)) return Colors.GRAY;  //$NON-NLS-1$
+		if ("cyan".equalsIgnoreCase(c)) return Colors.CYAN;  //$NON-NLS-1$
+		if ("magenta".equalsIgnoreCase(c)) return Colors.MAGENTA;  //$NON-NLS-1$
+		if ("yellow".equalsIgnoreCase(c)) return Colors.YELLOW;  //$NON-NLS-1$
+		if ("lightgray".equalsIgnoreCase(c)) return Colors.LIGHT_GRAY;  //$NON-NLS-1$
+		if ("darkgray".equalsIgnoreCase(c)) return Colors.DARK_GRAY;  //$NON-NLS-1$
+		if ("orange".equalsIgnoreCase(c)) return Colors.ORANGE;  //$NON-NLS-1$
+		if ("pink".equalsIgnoreCase(c)) return Colors.PINK;  //$NON-NLS-1$
 		Integer intval = Integer.decode(c);
         int i = intval.intValue();
         int a;

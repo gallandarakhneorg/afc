@@ -65,7 +65,7 @@ public interface MultiShape2afp<
 	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		assert ellipse != null : "Ellipse must be not null"; 
 		if (ellipse.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(ellipse)) {
@@ -79,7 +79,7 @@ public interface MultiShape2afp<
 	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		if (circle.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(circle)) {
@@ -93,7 +93,7 @@ public interface MultiShape2afp<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		if (rectangle.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(rectangle)) {
@@ -107,7 +107,7 @@ public interface MultiShape2afp<
 	@Pure
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null"; 
 		if (segment.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(segment)) {
@@ -121,7 +121,7 @@ public interface MultiShape2afp<
 	@Pure
 	@Override
 	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		assert triangle != null : "Triangle must be not null"; 
 		if (triangle.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(triangle)) {
@@ -148,7 +148,7 @@ public interface MultiShape2afp<
 	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
 		if (orientedRectangle.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(orientedRectangle)) {
@@ -162,7 +162,7 @@ public interface MultiShape2afp<
 	@Pure
 	@Override
 	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		assert parallelogram != null : "Parallelogram must be not null"; 
 		if (parallelogram.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(parallelogram)) {
@@ -176,7 +176,7 @@ public interface MultiShape2afp<
 	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		assert roundRectangle != null : "Round rectangle must be not null"; 
 		if (roundRectangle.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(roundRectangle)) {
@@ -191,7 +191,7 @@ public interface MultiShape2afp<
 	@Override
 	@Unefficient
 	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "MultiShape must be not null"; 
 		if (multishape.toBoundingBox().intersects(toBoundingBox())) {
 			for (final CT shape1 : getBackendDataList()) {
 				for (final Shape2afp<?, ?, ?, ?, ?, ?> shape2 : multishape.getBackendDataList()) {
@@ -220,7 +220,7 @@ public interface MultiShape2afp<
 	@Pure
 	@Override
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		if (rectangle.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.contains(rectangle)) {
@@ -254,7 +254,7 @@ public interface MultiShape2afp<
 	@Pure
 	@Override
 	default CT getFirstShapeIntersecting(ST shape) {
-		assert shape != null : "Input shape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Input shape must be not null"; 
 		if (shape.intersects(toBoundingBox())) {
 			for (final CT innerShape : getBackendDataList()) {
 				if (innerShape.intersects(shape)) {
@@ -269,7 +269,7 @@ public interface MultiShape2afp<
 	@Override
 	@Pure
 	default List<CT> getShapesIntersecting(ST shape) {
-		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Shape must be not null"; 
 		final List<CT> list = new ArrayList<>();
 		if (shape.intersects(toBoundingBox())) {
 			for (final CT subshape : getBackendDataList()) {
@@ -284,7 +284,7 @@ public interface MultiShape2afp<
 	@Pure
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; 
 		final Iterator<CT> iterator = getBackendDataList().iterator();
 		if (iterator.hasNext()) {
 			iterator.next().toBoundingBox(box);
@@ -307,7 +307,7 @@ public interface MultiShape2afp<
 
 	@Override
 	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		double min = Double.POSITIVE_INFINITY;
 		final P closest = getGeomFactory().newPoint();
 		P point;
@@ -325,7 +325,7 @@ public interface MultiShape2afp<
 
 	@Override
 	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null"; 
 		double min = Double.POSITIVE_INFINITY;
 		final P closest = getGeomFactory().newPoint();
 		P point;
@@ -343,7 +343,7 @@ public interface MultiShape2afp<
 
 	@Override
 	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		double min = Double.POSITIVE_INFINITY;
 		final P closest = getGeomFactory().newPoint();
 		P point;
@@ -361,7 +361,7 @@ public interface MultiShape2afp<
 
 	@Override
 	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		assert roundRectangle != null : "Round rectangle must be not null"; 
 		double min = Double.POSITIVE_INFINITY;
 		final P closest = getGeomFactory().newPoint();
 		P point;
@@ -379,7 +379,7 @@ public interface MultiShape2afp<
 
 	@Override
 	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		assert ellipse != null : "Ellipse must be not null"; 
 		double min = Double.POSITIVE_INFINITY;
 		final P closest = getGeomFactory().newPoint();
 		P point;
@@ -397,7 +397,7 @@ public interface MultiShape2afp<
 
 	@Override
 	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		assert triangle != null : "Triangle must be not null"; 
 		double min = Double.POSITIVE_INFINITY;
 		final P closest = getGeomFactory().newPoint();
 		P point;
@@ -415,7 +415,7 @@ public interface MultiShape2afp<
 
 	@Override
 	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
 		double min = Double.POSITIVE_INFINITY;
 		final P closest = getGeomFactory().newPoint();
 		P point;
@@ -433,7 +433,7 @@ public interface MultiShape2afp<
 
 	@Override
 	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		assert parallelogram != null : "Parallelogram must be not null"; 
 		double min = Double.POSITIVE_INFINITY;
 		final P closest = getGeomFactory().newPoint();
 		P point;
@@ -451,7 +451,7 @@ public interface MultiShape2afp<
 
 	@Override
 	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null"; 
 		double min = Double.POSITIVE_INFINITY;
 		final P closest = getGeomFactory().newPoint();
 		P point;
@@ -469,7 +469,7 @@ public interface MultiShape2afp<
 
 	@Override
 	default P getClosestPointTo(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "MultiShape must be not null"; 
 		double min = Double.POSITIVE_INFINITY;
 		final P closest = getGeomFactory().newPoint();
 		P point;
@@ -521,8 +521,8 @@ public interface MultiShape2afp<
 		 */
 		public AbstractMultiShapePathIterator(List<? extends Shape2afp<?, ?, IE, ?, ?, ?>> list,
 				GeomFactory2afp<IE, ?, ?, ?> factory) {
-			assert list != null : "List of shapes must be not null"; //$NON-NLS-1$
-			assert factory != null : "Shape factory must be not null"; //$NON-NLS-1$
+			assert list != null : "List of shapes must be not null"; 
+			assert factory != null : "Shape factory must be not null"; 
 			this.list = list;
 			this.factory = factory;
 			this.shapesIterator = list.iterator();
@@ -565,7 +565,7 @@ public interface MultiShape2afp<
 
 		@Override
 		public IE next() {
-			assert this.next != null : "No such element"; //$NON-NLS-1$
+			assert this.next != null : "No such element"; 
 			final IE elementToReturn = this.next;
 			searchNext();
 			return elementToReturn;
@@ -670,7 +670,7 @@ public interface MultiShape2afp<
 		public TransformedMultiShapePathIterator(List<? extends Shape2afp<?, ?, IE, ?, ?, ?>> list,
 				GeomFactory2afp<IE, ?, ?, ?> factory, Transform2D transform) {
 			super(list, factory);
-			assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+			assert transform != null : "Transformation must be not null"; 
 			this.transform = transform;
 			delayedInit(list);
 		}

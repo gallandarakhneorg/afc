@@ -59,8 +59,8 @@ public class GaussianStochasticLaw extends StochasticLaw {
 	 * @throws LawParameterNotFoundException when a mandatory parameter was not found.
 	 */
 	public GaussianStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
-		this.mean = paramFloat("mean", parameters); //$NON-NLS-1$
-		this.standardDeviation = paramFloat("standardDeviation", parameters); //$NON-NLS-1$
+		this.mean = paramFloat("mean", parameters); 
+		this.standardDeviation = paramFloat("standardDeviation", parameters); 
 		if (this.standardDeviation <= 0) {
 			throw new OutsideDomainException(this.standardDeviation);
 		}
@@ -95,9 +95,9 @@ public class GaussianStochasticLaw extends StochasticLaw {
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("NORMAL(mean="); //$NON-NLS-1$
+		b.append("NORMAL(mean="); 
 		b.append(this.mean);
-		b.append(";deviation="); //$NON-NLS-1$
+		b.append(";deviation="); 
 		b.append(this.standardDeviation);
 		b.append(')');
 		return b.toString();

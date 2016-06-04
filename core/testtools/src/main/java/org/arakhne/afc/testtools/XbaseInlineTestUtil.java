@@ -73,7 +73,7 @@ public final class XbaseInlineTestUtil {
 		final String value = Strings.nullToEmpty(annotation.value());
 		for (int i = 1; i <= parameters.length; ++i) {
 			if (!value.contains("$" + i)) { //$NON-NLS-1$
-				fail("@Inline value does not contains the string \"$" + i + "\""); //$NON-NLS-1$//$NON-NLS-2$
+				fail("@Inline value does not contains the string \"$" + i + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}

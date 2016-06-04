@@ -153,7 +153,7 @@ public class BufferedAttributeCollectionTest extends AbstractAttributeCollection
 	/**
 	 */
 	public BufferedAttributeCollectionTest() {
-		super("BufferedAttributeProviderTest"); //$NON-NLS-1$
+		super("BufferedAttributeProviderTest"); 
 	}
 	
 	@Override

@@ -102,7 +102,7 @@ public class Point2i extends Tuple2i<Point2i> implements Point2D<Point2i, Vector
 	@Pure
 	@Override
 	public double getDistanceSquared(Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
 		final double dx = this.x - point.getX();
 		final double dy = this.y - point.getY();
 		return dx * dx + dy * dy;
@@ -111,7 +111,7 @@ public class Point2i extends Tuple2i<Point2i> implements Point2D<Point2i, Vector
 	@Pure
 	@Override
 	public double getDistance(Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
 		final double dx = this.x - point.getX();
 		final double dy = this.y - point.getY();
 		return Math.sqrt(dx * dx + dy * dy);
@@ -120,110 +120,110 @@ public class Point2i extends Tuple2i<Point2i> implements Point2D<Point2i, Vector
 	@Pure
 	@Override
 	public double getDistanceL1(Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
 		return Math.abs(this.x - point.getX()) + Math.abs(this.y - point.getY());
 	}
 
 	@Pure
 	@Override
 	public double getDistanceLinf(Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
 		return Math.max(Math.abs(this.x - point.getX()), Math.abs(this.y - point.getY()));
 	}
 
 	@Pure
 	@Override
 	public int getIdistanceL1(Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
 		return (int) Math.round(getDistanceL1(point));
 	}
 
 	@Pure
 	@Override
 	public int getIdistanceLinf(Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
 		return (int) Math.round(getDistanceLinf(point));
 	}
 
 	@Override
 	public void add(Point2D<?, ?> point, Vector2D<?, ?> vector) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
+		assert vector != null : "Vector must be not null"; 
 		this.x = (int) Math.round(point.getX() + vector.getX());
 		this.y = (int) Math.round(point.getY() + vector.getY());
 	}
 
 	@Override
 	public void add(Vector2D<?, ?> vector, Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
+		assert vector != null : "Vector must be not null"; 
 		this.x = (int) Math.round(vector.getX() + point.getX());
 		this.y = (int) Math.round(vector.getY() + point.getY());
 	}
 
 	@Override
 	public void add(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		this.x = (int) Math.round(this.x + vector.getX());
 		this.y = (int) Math.round(this.y + vector.getY());
 	}
 
 	@Override
 	public void scaleAdd(int scale, Vector2D<?, ?> vector, Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
+		assert vector != null : "Vector must be not null"; 
 		this.x = (int) Math.round(scale * vector.getX() + point.getX());
 		this.y = (int) Math.round(scale * vector.getY() + point.getY());
 	}
 
 	@Override
 	public void scaleAdd(double scale, Vector2D<?, ?> vector, Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
+		assert vector != null : "Vector must be not null"; 
 		this.x = (int) Math.round(scale * vector.getX() + point.getX());
 		this.y = (int) Math.round(scale * vector.getY() + point.getY());
 	}
 
 	@Override
 	public void scaleAdd(int scale, Point2D<?, ?> point, Vector2D<?, ?> vector) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
+		assert vector != null : "Vector must be not null"; 
 		this.x = (int) Math.round(scale * point.getX() + vector.getX());
 		this.y = (int) Math.round(scale * point.getY() + vector.getY());
 	}
 
 	@Override
 	public void scaleAdd(double scale, Point2D<?, ?> point, Vector2D<?, ?> vector) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
+		assert vector != null : "Vector must be not null"; 
 		this.x = (int) Math.round(scale * point.getX() + vector.getX());
 		this.y = (int) Math.round(scale * point.getY() + vector.getY());
 	}
 
 	@Override
 	public void scaleAdd(int scale, Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		this.x = (int) Math.round(scale * this.x + vector.getX());
 		this.y = (int) Math.round(scale * this.y + vector.getY());
 	}
 
 	@Override
 	public void scaleAdd(double scale, Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		this.x = (int) Math.round(scale * this.x + vector.getX());
 		this.y = (int) Math.round(scale * this.y + vector.getY());
 	}
 
 	@Override
 	public void sub(Point2D<?, ?> point, Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		this.x = (int) Math.round(point.getX() - vector.getX());
 		this.y = (int) Math.round(point.getY() - vector.getY());
 	}
 
 	@Override
 	public void sub(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		this.x = (int) Math.round(this.x - vector.getX());
 		this.y = (int) Math.round(this.y - vector.getY());
 	}

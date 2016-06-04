@@ -58,8 +58,8 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 	 * @param max is the max corner of the rectangle.
 	 */
 	public Rectangle2i(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert min != null : "Minimum corner must be not null"; //$NON-NLS-1$
-		assert max != null : "Maximum corner must be not null"; //$NON-NLS-1$
+		assert min != null : "Minimum corner must be not null"; 
+		assert max != null : "Maximum corner must be not null"; 
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
 	}
 
@@ -70,8 +70,8 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 	 * @param height height of the rectangle.
 	 */
 	public Rectangle2i(int x, int y, int width, int height) {
-		assert width >= 0. : "Width must be positive or zero"; //$NON-NLS-1$
-		assert height >= 0. : "Height must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0. : "Width must be positive or zero"; 
+		assert height >= 0. : "Height must be positive or zero"; 
 		set(x, y, width, height);
 	}
 
@@ -194,15 +194,15 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getMinX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMinY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxY());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 

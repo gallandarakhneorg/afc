@@ -162,10 +162,10 @@ public abstract class AbstractPlane3DTestCase<T extends Plane3D<? super T>> {
 	 */
 	protected void assertEpsilonEquals(String message, double expected, double actual) {
 		if (isEpsilonEquals(expected,actual)) return;
-		fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-				+"not same double value, expected:"+ //$NON-NLS-1$
+		fail((message==null ? "" : (message+": "))  
+				+"not same double value, expected:"+ 
 				expected
-				+", actual:"+actual); //$NON-NLS-1$
+				+", actual:"+actual); 
 	}
 	
 	/** Replies if two values are equals at espilon.

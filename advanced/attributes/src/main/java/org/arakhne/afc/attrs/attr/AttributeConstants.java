@@ -38,55 +38,55 @@ public final class AttributeConstants {
 
 	/** String constant for the <code>true</code> boolean constant.
 	 */
-	public static final String TRUE_CONSTANT = "true"; //$NON-NLS-1$
+	public static final String TRUE_CONSTANT = "true"; 
 
 	/** String constant for the <code>true</code> boolean constant.
 	 */
-	public static final String YES_CONSTANT = "yes"; //$NON-NLS-1$
+	public static final String YES_CONSTANT = "yes"; 
 
 	/** String constant for the <code>true</code> boolean constant.
 	 */
-	public static final String OUI_CONSTANT = "oui"; //$NON-NLS-1$
+	public static final String OUI_CONSTANT = "oui"; 
 
 	/** String constant for the <code>true</code> boolean constant.
 	 */
-	public static final String T_CONSTANT = "t"; //$NON-NLS-1$
+	public static final String T_CONSTANT = "t"; 
 
 	/** String constant for the <code>true</code> boolean constant.
 	 */
-	public static final String O_CONSTANT = "o"; //$NON-NLS-1$
+	public static final String O_CONSTANT = "o"; 
 
 	/** String constant for the <code>true</code> boolean constant.
 	 */
-	public static final String Y_CONSTANT = "y"; //$NON-NLS-1$
+	public static final String Y_CONSTANT = "y"; 
 
 	/** String constant for the <code>false</code> boolean constant.
 	 */
-	public static final String FALSE_CONSTANT = "false"; //$NON-NLS-1$
+	public static final String FALSE_CONSTANT = "false"; 
 
 	/** String constant for the <code>true</code> boolean constant.
 	 */
-	public static final String NO_CONSTANT = "no"; //$NON-NLS-1$
+	public static final String NO_CONSTANT = "no"; 
 
 	/** String constant for the <code>true</code> boolean constant.
 	 */
-	public static final String NON_CONSTANT = "non"; //$NON-NLS-1$
+	public static final String NON_CONSTANT = "non"; 
 
 	/** String constant for the <code>true</code> boolean constant.
 	 */
-	public static final String F_CONSTANT = "f"; //$NON-NLS-1$
+	public static final String F_CONSTANT = "f"; 
 
 	/** String constant for the <code>true</code> boolean constant.
 	 */
-	public static final String N_CONSTANT = "n"; //$NON-NLS-1$
+	public static final String N_CONSTANT = "n"; 
 
 	/** Attribute "name".
 	 */
-	public static final String ATTR_NAME = "name"; //$NON-NLS-1$
+	public static final String ATTR_NAME = "name"; 
 
 	/** Attirbute "id".
 	 */
-	public static final String ATTR_IDENTIFIER = "id"; //$NON-NLS-1$
+	public static final String ATTR_IDENTIFIER = "id"; 
 
 	private AttributeConstants() {
 		//

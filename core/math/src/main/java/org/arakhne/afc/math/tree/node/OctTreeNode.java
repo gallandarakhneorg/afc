@@ -331,7 +331,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 			return this.child8;
 		default:
 		}
-		throw new IndexOutOfBoundsException(index + ">= 8"); //$NON-NLS-1$
+		throw new IndexOutOfBoundsException(index + ">= 8"); 
 	}
 
 	/** Replies count of children in this node.
@@ -392,7 +392,7 @@ public abstract class OctTreeNode<D, N extends OctTreeNode<D, N>> extends Abstra
 			return setChild8(newChild);
 		default:
 		}
-		throw new IndexOutOfBoundsException(index + ">= 8"); //$NON-NLS-1$
+		throw new IndexOutOfBoundsException(index + ">= 8"); 
 	}
 
 	/** Set the child at the specified zone.

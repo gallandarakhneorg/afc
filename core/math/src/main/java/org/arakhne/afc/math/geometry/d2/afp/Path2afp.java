@@ -38,6 +38,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
+import org.arakhne.afc.math.geometry.d2.afp.PathShadow2afp.PathShadowData;
 
 /** Fonctional interface that represented a 2D path on a plane.
  *
@@ -99,14 +100,14 @@ public interface Path2afp<
 			PathIterator2afp<?> iterator,
 			PathShadow2afp shadow,
 			CrossingComputationType type) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
-		assert shadow != null : "Shadow to the right must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
+		assert shadow != null : "Shadow to the right must be not null"; 
 		if (!iterator.hasNext()) {
 			return 0;
 		}
 		PathElement2afp pathElement1 = iterator.next();
 		if (pathElement1.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in the first path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in the first path definition"); 
 		}
 		final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
 		Path2afp<?, ?, ?, ?, ?, ?> subPath;
@@ -233,9 +234,9 @@ public interface Path2afp<
 	 *     if it is inside the shape.
 	 */
 	static void getClosestPointTo(PathIterator2afp<? extends PathElement2afp> pi, double x, double y, Point2D<?, ?> result) {
-		assert pi != null : "Iterator must be not null"; //$NON-NLS-1$
-		assert !pi.isCurved() : "The path iterator is not iterating on a polyline path"; //$NON-NLS-1$
-		assert result != null : "Result point must be not null"; //$NON-NLS-1$
+		assert pi != null : "Iterator must be not null"; 
+		assert !pi.isCurved() : "The path iterator is not iterating on a polyline path"; 
+		assert result != null : "Result point must be not null"; 
 		double bestDist = Double.POSITIVE_INFINITY;
 		PathElement2afp pe;
 		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
@@ -316,115 +317,196 @@ public interface Path2afp<
 	@Unefficient
 	static boolean getClosestPointTo(PathIterator2afp<? extends PathElement2afp> pi,
 			PathIterator2afp<? extends PathElement2afp> shape, Point2D<?, ?> result) {
-		assert pi != null : "First iterator must be not null"; //$NON-NLS-1$
-		assert shape != null : "Second iterator must be not null"; //$NON-NLS-1$
-		assert !pi.isCurved() : "The first path iterator is curved"; //$NON-NLS-1$
-		assert result != null : "Result point must be not null"; //$NON-NLS-1$
-		if (!pi.hasNext() || !shape.hasNext()) {
-			return false;
-		}
-		PathElement2afp pathElement1 = pi.next();
-		PathIterator2afp<? extends PathElement2afp> pi2 = null;
-		PathElement2afp pathElement2;
-		if (pathElement1.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in the first path definition"); //$NON-NLS-1$
-		}
-		if (shape.next().getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in the second path definition"); //$NON-NLS-1$
-		}
-		if (!pi.hasNext() || !shape.hasNext()) {
-			return false;
-		}
-		boolean foundClosestPoint = false;
-		double distance;
-		double minDistance = Double.POSITIVE_INFINITY;
-		final Point2D<?, ?> point = new InnerComputationPoint2afp();
-		Rectangle2afp<?, ?, ?, ?, ?, ?> box = null;
-		while (pi.hasNext()) {
-			pathElement1 = pi.next();
-			switch (pathElement1.getType()) {
-			case MOVE_TO:
-				break;
-			case CLOSE:
-			case LINE_TO:
-				if (shape.isCurved()) {
-					pi2 = new FlatteningPathIterator<>(shape.restartIterations(),
-							MathConstants.SPLINE_APPROXIMATION_RATIO,
-							DEFAULT_FLATENING_LIMIT);
-				} else {
-					pi2 = shape.restartIterations();
-				}
-				// Skip first moveto.
-				pi2.next();
-				final boolean computeBox = box == null;
-				while (pi2.hasNext()) {
-					pathElement2 = pi2.next();
-					switch (pathElement2.getType()) {
-					case CLOSE:
-					case LINE_TO:
-						distance = Segment2afp.computeClosestPointToSegment(
-								pathElement1.getFromX(), pathElement1.getFromY(),
-								pathElement1.getToX(), pathElement1.getToY(),
-								pathElement2.getFromX(), pathElement2.getFromY(),
-								pathElement2.getToX(), pathElement2.getToY(),
-								point);
-						if (distance <= 0.) {
-							result.set(point);
-							return true;
-						}
-						if (distance < minDistance) {
-							foundClosestPoint = true;
-							minDistance = distance;
-							result.set(point);
-						}
-						if (computeBox) {
-							if (box == null) {
-								box = shape.getGeomFactory().newBox(pathElement2.getFromX(), pathElement2.getFromY(), 0, 0);
-							} else {
-								box.add(pathElement2.getFromX(), pathElement2.getFromY());
-							}
-							box.add(pathElement2.getToX(), pathElement2.getToY());
-						}
-						break;
-					case MOVE_TO:
-						break;
-					case QUAD_TO:
-					case CURVE_TO:
-					case ARC_TO:
-					default:
-						throw new IllegalArgumentException("curved path is not supported"); //$NON-NLS-1$
-					}
-				}
-				break;
-			case QUAD_TO:
-			case CURVE_TO:
-			case ARC_TO:
-			default:
-				throw new IllegalArgumentException("curved path is not supported"); //$NON-NLS-1$
-			}
-		}
-		// Determine if the second shape is inside the first.
-		if (foundClosestPoint && box != null && pathElement1.getType() == PathElementType.CLOSE) {
-			final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-			final int crossings = computeCrossingsFromPath(
-					0, pi.restartIterations(),
-					new PathShadow2afp(shape.restartIterations(),
-					        box.getMinX(), box.getMinY(), box.getMaxX(), box.getMaxY()),
-					CrossingComputationType.STANDARD);
-			if (crossings != MathConstants.SHAPE_INTERSECTS && (crossings & mask) != 0) {
-				// The second shape is inside the first.
-				final PathElement2afp element = shape.restartIterations().next();
-				result.set(element.getFromX(), element.getFromY());
-				foundClosestPoint = true;
-			}
-		}
-		return foundClosestPoint;
+        assert pi != null : "First iterator must be not null"; 
+        assert shape != null : "Second iterator must be not null"; 
+        assert !pi.isCurved() : "The first path iterator is curved"; 
+        assert result != null : "Result point must be not null"; 
+        if (!pi.hasNext() || !shape.hasNext()) {
+            return false;
+        }
+        PathElement2afp pathElement1 = pi.next();
+        if (pathElement1.getType() != PathElementType.MOVE_TO) {
+            throw new IllegalArgumentException("missing initial moveto in the first path definition"); 
+        }
+        if (shape.next().getType() != PathElementType.MOVE_TO) {
+            throw new IllegalArgumentException("missing initial moveto in the second path definition"); 
+        }
+        if (!pi.hasNext() || !shape.hasNext()) {
+            return false;
+        }
+        final GeomFactory2afp<?, ?, ?, ?> factory = pi.getGeomFactory();
+        final Rectangle2afp<?, ?, ?, ?, ?, ?> box = factory.newBox();
+        computeDrawableElementBoundingBox(shape.restartIterations(), box);
+        final PathShadow2afp shadow = new PathShadow2afp(shape.restartIterations());
+        final PathShadowData data = new PathShadowData(box.getMinX(), box.getMinY(), box.getMaxY(), result);
+        double curx = pathElement1.getToX();
+        double movx = curx;
+        double cury = pathElement1.getToY();
+        double movy = cury;
+        int numCrossings = 0;
+        double endx;
+        double endy;
+        while (pi.hasNext()) {
+            pathElement1 = pi.next();
+            switch (pathElement1.getType()) {
+            case MOVE_TO:
+                movx = pathElement1.getToX();
+                curx = movx;
+                movy = pathElement1.getToY();
+                cury = movy;
+                break;
+            case LINE_TO:
+                endx = pathElement1.getToX();
+                endy = pathElement1.getToY();
+                shadow.computeCrossings(numCrossings, curx, cury, endx, endy, data);
+                numCrossings = data.getCrossings();
+                if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+                    return true;
+                }
+                curx = endx;
+                cury = endy;
+                break;
+            case CLOSE:
+                if (curx != movx || cury != movy) {
+                    shadow.computeCrossings(numCrossings, curx, cury, movx, movy, data);
+                    numCrossings = data.getCrossings();
+                    if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+                        return true;
+                    }
+                }
+                curx = movx;
+                cury = movy;
+                break;
+            case QUAD_TO:
+            case CURVE_TO:
+            case ARC_TO:
+            default:
+                throw new IllegalArgumentException("curved path is not supported"); 
+            }
+        }
+        assert numCrossings != MathConstants.SHAPE_INTERSECTS;
+        final boolean isOpen = (curx != movx) || (cury != movy);
+        if (!isOpen) {
+            final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+            if ((mask & numCrossings) != 0) {
+                // Inside
+                final PathElement2afp element = pi.restartIterations().next();
+                result.set(element.getFromX(), element.getFromY());
+            }
+        }
+        return true;
+//
+//
+//
+//	    assert pi != null : "First iterator must be not null"; 
+//		assert shape != null : "Second iterator must be not null"; 
+//		assert !pi.isCurved() : "The first path iterator is curved"; 
+//		assert result != null : "Result point must be not null"; 
+//		if (!pi.hasNext() || !shape.hasNext()) {
+//			return false;
+//		}
+//		PathElement2afp pathElement1 = pi.next();
+//		PathIterator2afp<? extends PathElement2afp> pi2 = null;
+//		PathElement2afp pathElement2;
+//		if (pathElement1.getType() != PathElementType.MOVE_TO) {
+//			throw new IllegalArgumentException("missing initial moveto in the first path definition"); 
+//		}
+//		if (shape.next().getType() != PathElementType.MOVE_TO) {
+//			throw new IllegalArgumentException("missing initial moveto in the second path definition"); 
+//		}
+//		if (!pi.hasNext() || !shape.hasNext()) {
+//			return false;
+//		}
+//		boolean foundClosestPoint = false;
+//		double distance;
+//		double minDistance = Double.POSITIVE_INFINITY;
+//		final Point2D<?, ?> point = new InnerComputationPoint2afp();
+//		Rectangle2afp<?, ?, ?, ?, ?, ?> box = null;
+//		while (pi.hasNext()) {
+//			pathElement1 = pi.next();
+//			switch (pathElement1.getType()) {
+//			case MOVE_TO:
+//				break;
+//			case CLOSE:
+//			case LINE_TO:
+//				if (shape.isCurved()) {
+//					pi2 = new FlatteningPathIterator<>(shape.restartIterations(),
+//							MathConstants.SPLINE_APPROXIMATION_RATIO,
+//							DEFAULT_FLATENING_LIMIT);
+//				} else {
+//					pi2 = shape.restartIterations();
+//				}
+//				// Skip first moveto.
+//				pi2.next();
+//				final boolean computeBox = box == null;
+//				while (pi2.hasNext()) {
+//					pathElement2 = pi2.next();
+//					switch (pathElement2.getType()) {
+//					case CLOSE:
+//					case LINE_TO:
+//						distance = Segment2afp.computeClosestPointToSegment(
+//								pathElement1.getFromX(), pathElement1.getFromY(),
+//								pathElement1.getToX(), pathElement1.getToY(),
+//								pathElement2.getFromX(), pathElement2.getFromY(),
+//								pathElement2.getToX(), pathElement2.getToY(),
+//								point);
+//						if (distance <= 0.) {
+//							result.set(point);
+//							return true;
+//						}
+//						if (distance < minDistance) {
+//							foundClosestPoint = true;
+//							minDistance = distance;
+//							result.set(point);
+//						}
+//						if (computeBox) {
+//							if (box == null) {
+//								box = shape.getGeomFactory().newBox(pathElement2.getFromX(), pathElement2.getFromY(), 0, 0);
+//							} else {
+//								box.add(pathElement2.getFromX(), pathElement2.getFromY());
+//							}
+//							box.add(pathElement2.getToX(), pathElement2.getToY());
+//						}
+//						break;
+//					case MOVE_TO:
+//						break;
+//					case QUAD_TO:
+//					case CURVE_TO:
+//					case ARC_TO:
+//					default:
+//						throw new IllegalArgumentException("curved path is not supported"); 
+//					}
+//				}
+//				break;
+//			case QUAD_TO:
+//			case CURVE_TO:
+//			case ARC_TO:
+//			default:
+//				throw new IllegalArgumentException("curved path is not supported"); 
+//			}
+//		}
+//		// Determine if the second shape is inside the first.
+//		if (foundClosestPoint && box != null && pathElement1.getType() == PathElementType.CLOSE) {
+//			final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+//			final int crossings = computeCrossingsFromPath(
+//					0, pi.restartIterations(),
+//					new PathShadow2afp(shape.restartIterations(),
+//					        box.getMinX(), box.getMinY(), box.getMaxX(), box.getMaxY()),
+//					CrossingComputationType.STANDARD);
+//			if (crossings != MathConstants.SHAPE_INTERSECTS && (crossings & mask) != 0) {
+//				// The second shape is inside the first.
+//				final PathElement2afp element = shape.restartIterations().next();
+//				result.set(element.getFromX(), element.getFromY());
+//				foundClosestPoint = true;
+//			}
+//		}
+//		return foundClosestPoint;
 	}
 
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final P point = getGeomFactory().newPoint();
 		Path2afp.getClosestPointTo(
 				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -573,9 +655,9 @@ public interface Path2afp<
 	 * @param result the farthest point on the shape.
 	 */
 	static void getFarthestPointTo(PathIterator2afp<? extends PathElement2afp> pi, double x, double y, Point2D<?, ?> result) {
-		assert pi != null : "Iterator must be not null"; //$NON-NLS-1$
-		assert !pi.isCurved() : "The path iterator is not iterating on a polyline path"; //$NON-NLS-1$
-		assert result != null : "Result point must be not null"; //$NON-NLS-1$
+		assert pi != null : "Iterator must be not null"; 
+		assert !pi.isCurved() : "The path iterator is not iterating on a polyline path"; 
+		assert result != null : "Result point must be not null"; 
 		double bestDist = Double.NEGATIVE_INFINITY;
 		PathElement2afp pe;
 		final Point2D<?, ?> point = new InnerComputationPoint2afp();
@@ -607,7 +689,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final P point = getGeomFactory().newPoint();
 		Path2afp.getFarthestPointTo(
 				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -631,7 +713,7 @@ public interface Path2afp<
 	 *         specified {@code PathIterator2f}; {@code false} otherwise
 	 */
 	static boolean containsPoint(PathIterator2afp<? extends PathElement2afp> pi, double x, double y) {
-		assert pi != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert pi != null : "Iterator must be not null"; 
 		// Copied from the AWT API
 		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
 		final int cross = computeCrossingsFromPoint(0, pi, x, y, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
@@ -656,9 +738,9 @@ public interface Path2afp<
 	 */
 	static boolean containsRectangle(PathIterator2afp<? extends PathElement2afp> pi, double rx, double ry,
 			double rwidth, double rheight) {
-		assert pi != null : "Iterator must be not null"; //$NON-NLS-1$
-		assert rwidth >= 0. : "Rectangle width must be positive or zero"; //$NON-NLS-1$
-		assert rheight >= 0. : "Rectangle height must be positive or zero"; //$NON-NLS-1$
+		assert pi != null : "Iterator must be not null"; 
+		assert rwidth >= 0. : "Rectangle width must be positive or zero"; 
+		assert rheight >= 0. : "Rectangle height must be positive or zero"; 
 		// Copied from AWT API
 		if (rwidth <= 0 || rheight <= 0) {
 			return false;
@@ -687,9 +769,9 @@ public interface Path2afp<
 	 */
 	static boolean intersectsPathIteratorRectangle(PathIterator2afp<? extends PathElement2afp> pi,
 			double x, double y, double width, double height) {
-		assert pi != null : "Iterator must be not null"; //$NON-NLS-1$
-		assert width >= 0. : "Rectangle width must be positive or zero"; //$NON-NLS-1$
-		assert height >= 0. : "Rectangle height must be positive or zero"; //$NON-NLS-1$
+		assert pi != null : "Iterator must be not null"; 
+		assert width >= 0. : "Rectangle width must be positive or zero"; 
+		assert height >= 0. : "Rectangle height must be positive or zero"; 
 		if (width <= 0 || height <= 0) {
 			return false;
 		}
@@ -727,7 +809,7 @@ public interface Path2afp<
 			PathIterator2afp<? extends PathElement2afp> iterator,
 			double px, double py,
 			CrossingComputationType type) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
 		// Copied from the AWT API
 		if (!iterator.hasNext()) {
 			return 0;
@@ -735,7 +817,7 @@ public interface Path2afp<
 		PathElement2afp element;
 		element = iterator.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 		final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
 		Path2afp<?, ?, ?, ?, ?, ?> subPath;
@@ -900,9 +982,9 @@ public interface Path2afp<
 			PathIterator2afp<? extends PathElement2afp> iterator,
 			double ex, double ey, double ew, double eh,
 			CrossingComputationType type) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
-		assert ew >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert eh >= 0. : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
+		assert ew >= 0. : "Ellipse width must be positive or zero"; 
+		assert eh >= 0. : "Ellipse height must be positive or zero"; 
 		// Copied from the AWT API
 		if (!iterator.hasNext()) {
 			return 0;
@@ -911,7 +993,7 @@ public interface Path2afp<
 
 		element = iterator.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
@@ -1077,9 +1159,9 @@ public interface Path2afp<
 			double x1, double y1, double x2, double y2,
 			double arcWidth, double arcHeight,
 			CrossingComputationType type) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
-		assert x1 <= x2 : "x1 must be lower or equal to x2"; //$NON-NLS-1$
-		assert y1 <= y2 : "y1 must be lower or equal to y2"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
+		assert x1 <= x2 : "x1 must be lower or equal to x2"; 
+		assert y1 <= y2 : "y1 must be lower or equal to y2"; 
 
 		if (!iterator.hasNext()) {
 			return 0;
@@ -1088,7 +1170,7 @@ public interface Path2afp<
 		PathElement2afp pathElement = iterator.next();
 
 		if (pathElement.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
@@ -1251,8 +1333,8 @@ public interface Path2afp<
 			PathIterator2afp<? extends PathElement2afp> iterator,
 			double cx, double cy, double radius,
 			CrossingComputationType type) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
-		assert radius >= 0. : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
+		assert radius >= 0. : "Circle radius must be positive or zero"; 
 		// Copied from the AWT API
 		if (!iterator.hasNext()) {
 			return 0;
@@ -1261,7 +1343,7 @@ public interface Path2afp<
 
 		element = iterator.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
@@ -1423,7 +1505,7 @@ public interface Path2afp<
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int computeCrossingsFromSegment(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
 			double x1, double y1, double x2, double y2, CrossingComputationType type) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
 		// Copied from the AWT API
 		if (!iterator.hasNext() || crossings == MathConstants.SHAPE_INTERSECTS) {
 			return crossings;
@@ -1432,7 +1514,7 @@ public interface Path2afp<
 
 		element = iterator.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
@@ -1603,9 +1685,9 @@ public interface Path2afp<
 			double rxmin, double rymin,
 			double rxmax, double rymax,
 			CrossingComputationType type) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; 
+		assert rymin <= rymax : "rymin must be lower or equal to rymax"; 
 		// Copied from AWT API
 		if (!iterator.hasNext()) {
 			return 0;
@@ -1614,7 +1696,7 @@ public interface Path2afp<
 		PathElement2afp pathElement = iterator.next();
 
 		if (pathElement.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
@@ -1802,7 +1884,7 @@ public interface Path2afp<
 			double x2, double y2,
 			double x3, double y3,
 			CrossingComputationType type) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
 		if (!iterator.hasNext()) {
 			return 0;
 		}
@@ -1810,7 +1892,7 @@ public interface Path2afp<
 		PathElement2afp pathElement = iterator.next();
 
 		if (pathElement.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
@@ -1971,8 +2053,8 @@ public interface Path2afp<
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean computeDrawableElementBoundingBox(PathIterator2afp<?> iterator,
 			Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
+		assert box != null : "Rectangle must be not null"; 
 		final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
 		boolean foundOneLine = false;
 		double xmin = Double.POSITIVE_INFINITY;
@@ -2119,8 +2201,8 @@ public interface Path2afp<
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean computeControlPointBoundingBox(PathIterator2afp<?> iterator,
 			Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
+		assert box != null : "Rectangle must be not null"; 
 		boolean foundOneControlPoint = false;
 		double xmin = Double.POSITIVE_INFINITY;
 		double ymin = Double.POSITIVE_INFINITY;
@@ -2293,11 +2375,11 @@ public interface Path2afp<
 	 * @return the squared length of the path.
 	 */
 	static double computeLength(PathIterator2afp<?> iterator) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
 		PathElement2afp pathElement = iterator.next();
 
 		if (pathElement.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		// only for internal use
@@ -2403,7 +2485,7 @@ public interface Path2afp<
 	 * @param iterator the iterator that provides the elements to add in the path.
 	 */
 	default void add(Iterator<? extends PathElement2afp> iterator) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
 		PathElement2afp element;
 		while (iterator.hasNext()) {
 			element = iterator.next();
@@ -2439,7 +2521,7 @@ public interface Path2afp<
 	 * @param path the path to copy.
 	 */
 	default void set(Path2afp<?, ?, ?, ?, ?, ?> path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null"; 
 		clear();
 		add(path.getPathIterator());
 	}
@@ -2455,7 +2537,7 @@ public interface Path2afp<
 
 	@Override
 	default void moveTo(Point2D<?, ?> position) {
-		assert position != null : "Point must be not null"; //$NON-NLS-1$
+		assert position != null : "Point must be not null"; 
 		moveTo(position.getX(), position.getY());
 	}
 
@@ -2471,7 +2553,7 @@ public interface Path2afp<
 
 	@Override
 	default void lineTo(Point2D<?, ?> to) {
-		assert to != null : "Point must be not null"; //$NON-NLS-1$
+		assert to != null : "Point must be not null"; 
 		lineTo(to.getX(), to.getY());
 	}
 
@@ -2492,8 +2574,8 @@ public interface Path2afp<
 
 	@Override
 	default void quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
-		assert ctrl != null : "Control point must be not null"; //$NON-NLS-1$
-		assert to != null : "Target point must be not null"; //$NON-NLS-1$
+		assert ctrl != null : "Control point must be not null"; 
+		assert to != null : "Target point must be not null"; 
 		quadTo(ctrl.getX(), ctrl.getY(), to.getX(), to.getY());
 	}
 
@@ -2518,9 +2600,9 @@ public interface Path2afp<
 
 	@Override
 	default void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
-		assert ctrl1 != null : "First control point must be not null"; //$NON-NLS-1$
-		assert ctrl2 != null : "Second control point must be not null"; //$NON-NLS-1$
-		assert to != null : "Target point must be not null"; //$NON-NLS-1$
+		assert ctrl1 != null : "First control point must be not null"; 
+		assert ctrl2 != null : "Second control point must be not null"; 
+		assert to != null : "Target point must be not null"; 
 		curveTo(ctrl1.getX(), ctrl1.getY(), ctrl2.getX(), ctrl2.getY(), to.getX(), to.getY());
 	}
 
@@ -2573,9 +2655,9 @@ public interface Path2afp<
 	default void arcTo(double ctrlx, double ctrly, double tox, double toy, double tfrom, double tto,
 			ArcType type) {
 		// Copied from JavaFX Path2D
-		assert tfrom >= 0. : "tfrom must be positive or zero"; //$NON-NLS-1$
-		assert tto >= tfrom : "tto must be greater than or equal to tfrom"; //$NON-NLS-1$
-		assert tto <= 1. : "tto must be lower than 1"; //$NON-NLS-1$
+		assert tfrom >= 0. : "tfrom must be positive or zero"; 
+		assert tto >= tfrom : "tto must be greater than or equal to tfrom"; 
+		assert tto <= 1. : "tto must be lower than 1"; 
 		double currentx = getCurrentX();
 		double currenty = getCurrentY();
 		final double ocurrentx = currentx;
@@ -2642,8 +2724,8 @@ public interface Path2afp<
 	@Override
 	default void arcTo(Point2D<?, ?> ctrl, Point2D<?, ?> to, double tfrom, double tto,
 			org.arakhne.afc.math.geometry.d2.Path2D.ArcType type) {
-		assert ctrl != null : "Control point must be not null"; //$NON-NLS-1$
-		assert to != null : "Target point must be not null"; //$NON-NLS-1$
+		assert ctrl != null : "Control point must be not null"; 
+		assert to != null : "Target point must be not null"; 
 		arcTo(ctrl.getX(), ctrl.getY(), to.getX(), to.getY(), tfrom, tto, type);
 	}
 
@@ -2665,8 +2747,8 @@ public interface Path2afp<
 
 	@Override
 	default void arcTo(Point2D<?, ?> to, Vector2D<?, ?> radii, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
-		assert radii != null : "Radii vector must be not null"; //$NON-NLS-1$
-		assert to != null : "Target point must be not null"; //$NON-NLS-1$
+		assert radii != null : "Radii vector must be not null"; 
+		assert to != null : "Target point must be not null"; 
 		arcTo(to.getX(), to.getY(), radii.getX(), radii.getY(), xAxisRotation, largeArcFlag, sweepFlag);
 	}
 
@@ -2714,8 +2796,8 @@ public interface Path2afp<
 	default void arcTo(double tox, double toy, double radiusx, double radiusy, double xAxisRotation,
 			boolean largeArcFlag, boolean sweepFlag) {
 		// Copied for JavaFX
-		assert radiusx >= 0. : "X radius must be positive or zero."; //$NON-NLS-1$
-		assert radiusy >= 0. : "Y radius must be positive or zero."; //$NON-NLS-1$
+		assert radiusx >= 0. : "X radius must be positive or zero."; 
+		assert radiusy >= 0. : "Y radius must be positive or zero."; 
 		if (radiusx == 0. || radiusy == 0.) {
 			lineTo(tox, toy);
 			return;
@@ -2820,7 +2902,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final Point2D<?, ?> c = getClosestPointTo(pt);
 		return c.getDistanceSquared(pt);
 	}
@@ -2828,7 +2910,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final Point2D<?, ?> c = getClosestPointTo(pt);
 		return c.getDistanceL1(pt);
 	}
@@ -2836,7 +2918,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final Point2D<?, ?> c = getClosestPointTo(pt);
 		return c.getDistanceLinf(pt);
 	}
@@ -2849,7 +2931,7 @@ public interface Path2afp<
 
 	@Override
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		return containsRectangle(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getWidth(), rectangle.getHeight());
 	}
@@ -2857,7 +2939,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		// Copied from AWT API
 		if (rectangle.isEmpty()) {
 			return false;
@@ -2874,14 +2956,14 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert roundRectangle != null : "Rectangle must be not null"; 
 		return roundRectangle.intersects(this);
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		assert ellipse != null : "Ellipse must be not null"; 
 		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = computeCrossingsFromEllipse(
 				0,
@@ -2895,7 +2977,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = computeCrossingsFromCircle(
 				0,
@@ -2909,7 +2991,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null"; 
 		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = computeCrossingsFromSegment(
 				0,
@@ -2923,7 +3005,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		assert triangle != null : "Triangle must be not null"; 
 		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = computeCrossingsFromTriangle(
 				0,
@@ -2937,7 +3019,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
 		return OrientedRectangle2afp.intersectsOrientedRectanglePathIterator(
 				orientedRectangle.getCenterX(), orientedRectangle.getCenterY(),
 				orientedRectangle.getFirstAxisX(), orientedRectangle.getFirstAxisY(),
@@ -2948,7 +3030,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> sparallelogram) {
-		assert sparallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		assert sparallelogram != null : "Parallelogram must be not null"; 
 		return Parallelogram2afp.intersectsParallelogramPathIterator(
 				sparallelogram.getCenterX(), sparallelogram.getCenterY(),
 				sparallelogram.getFirstAxisX(), sparallelogram.getFirstAxisY(), sparallelogram.getFirstAxisExtent(),
@@ -2959,7 +3041,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default boolean intersects(Path2afp<?, ?, ?, ?, ?, ?> path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null"; 
 		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = computeCrossingsFromPath(
 				0,
@@ -2973,7 +3055,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
 		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = computeCrossingsFromPath(
 				0,
@@ -2987,7 +3069,7 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "MultiShape must be not null"; 
 		return multishape.intersects(this);
 	}
 
@@ -3009,7 +3091,7 @@ public interface Path2afp<
 
 	@Override
 	default void setLastPoint(Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; 
 		setLastPoint(point.getX(), point.getY());
 	}
 
@@ -3112,7 +3194,7 @@ public interface Path2afp<
 
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; 
 		Path2afp.computeDrawableElementBoundingBox(
 				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				box);
@@ -3134,7 +3216,7 @@ public interface Path2afp<
 		 * @param path the iterated path.
 		 */
 		public AbstractPathPathIterator(Path2afp<?, ?, T, ?, ?, ?> path) {
-			assert path != null : "Path must be not null"; //$NON-NLS-1$
+			assert path != null : "Path must be not null"; 
 			this.path = path;
 		}
 
@@ -3300,7 +3382,7 @@ public interface Path2afp<
 						this.p2.getX(), this.p2.getY());
 				break;
 			case ARC_TO:
-				throw new IllegalStateException("Path must not contains ArcPathElement"); //$NON-NLS-1$
+				throw new IllegalStateException("Path must not contains ArcPathElement"); 
 			default:
 			}
 			if (element == null) {
@@ -3348,7 +3430,7 @@ public interface Path2afp<
 		 */
 		public TransformedPathPathIterator(Path2afp<?, ?, T, ?, ?, ?> path, Transform2D transform) {
 			super(path);
-			assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+			assert transform != null : "Transformation must be not null"; 
 			this.transform = transform;
 			this.p1 = new InnerComputationPoint2afp();
 			this.p2 = new InnerComputationPoint2afp();
@@ -3437,7 +3519,7 @@ public interface Path2afp<
 						this.p2.getX(), this.p2.getY());
 				break;
 			case ARC_TO:
-				throw new IllegalStateException("Path must not contains ArcPathElement"); //$NON-NLS-1$
+				throw new IllegalStateException("Path must not contains ArcPathElement"); 
 			default:
 			}
 			if (element == null) {
@@ -3548,9 +3630,9 @@ public interface Path2afp<
 		 *     allowed for any curved segment
 		 */
 		public FlatteningPathIterator(PathIterator2afp<T> pathIterator, double flatness, int limit) {
-			assert pathIterator != null : "Iterator must be not null"; //$NON-NLS-1$
-			assert flatness >= 0. : "Flatness must be positive or zero"; //$NON-NLS-1$
-			assert limit >= 0 : "Recursive subdivisions number must be positive or zero"; //$NON-NLS-1$
+			assert pathIterator != null : "Iterator must be not null"; 
+			assert flatness >= 0. : "Flatness must be positive or zero"; 
+			assert limit >= 0 : "Recursive subdivisions number must be positive or zero"; 
 			this.pathIterator = pathIterator;
 			this.squaredFlatness = flatness * flatness;
 			this.limit = limit;
@@ -3906,7 +3988,7 @@ public interface Path2afp<
 				this.levelIndex--;
 				break;
 			case ARC_TO:
-				throw new IllegalStateException("Path must not contains ArcPathElement"); //$NON-NLS-1$
+				throw new IllegalStateException("Path must not contains ArcPathElement"); 
 			default:
 			}
 		}
@@ -3920,7 +4002,7 @@ public interface Path2afp<
 		@Override
 		public T next() {
 			if (this.done) {
-				throw new NoSuchElementException("flattening iterator out of bounds"); //$NON-NLS-1$
+				throw new NoSuchElementException("flattening iterator out of bounds"); 
 			}
 			final T element;
 			final PathElementType type = this.holdType;

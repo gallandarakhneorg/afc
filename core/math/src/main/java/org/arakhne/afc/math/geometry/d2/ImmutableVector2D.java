@@ -88,11 +88,11 @@ public final class ImmutableVector2D implements UnmodifiableVector2D<ImmutableVe
 	@Pure
 	@Override
 	public String toString() {
-		return "(" //$NON-NLS-1$
+		return "(" 
 				+ this.x
-				+ ";" //$NON-NLS-1$
+				+ ";" 
 				+ this.y
-				+ ")"; //$NON-NLS-1$
+				+ ")"; 
 	}
 
 	@Override

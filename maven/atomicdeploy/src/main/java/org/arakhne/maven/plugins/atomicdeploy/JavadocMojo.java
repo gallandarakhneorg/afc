@@ -60,17 +60,17 @@ public class JavadocMojo extends AbstractArakhneMojo {
 	 */
 	@Override
 	public synchronized void checkMojoAttributes() {
-		assertNotNull("javadocDirectory", this.javadocDirectory); //$NON-NLS-1$
-		assertNotNull("outputDirectory", this.outputDirectory); //$NON-NLS-1$
-		assertNotNull("artifactHandlerManager", this.artifactHandlerManager); //$NON-NLS-1$
-		assertNotNull("baseDirectory", this.baseDirectory); //$NON-NLS-1$
-		assertNotNull("mavenProjectBuilder", this.mavenProjectBuilder); //$NON-NLS-1$
-		assertNotNull("mavenSession", this.mavenSession); //$NON-NLS-1$
-		assertNotNull("repositorySystem", this.repoSystem); //$NON-NLS-1$
-		assertNotNull("repositorySystemSession", this.repoSession); //$NON-NLS-1$
-		assertNotNull("remoteRepositoryList", this.remoteRepos); //$NON-NLS-1$
-		assertNotNull("targetDirectoryName", this.targetDirectoryName); //$NON-NLS-1$
-		assertNotNull("buildContext", this.buildContext); //$NON-NLS-1$
+		assertNotNull("javadocDirectory", this.javadocDirectory);  //$NON-NLS-1$
+		assertNotNull("outputDirectory", this.outputDirectory);  //$NON-NLS-1$
+		assertNotNull("artifactHandlerManager", this.artifactHandlerManager);  //$NON-NLS-1$
+		assertNotNull("baseDirectory", this.baseDirectory);  //$NON-NLS-1$
+		assertNotNull("mavenProjectBuilder", this.mavenProjectBuilder);  //$NON-NLS-1$
+		assertNotNull("mavenSession", this.mavenSession);  //$NON-NLS-1$
+		assertNotNull("repositorySystem", this.repoSystem);  //$NON-NLS-1$
+		assertNotNull("repositorySystemSession", this.repoSession);  //$NON-NLS-1$
+		assertNotNull("remoteRepositoryList", this.remoteRepos);  //$NON-NLS-1$
+		assertNotNull("targetDirectoryName", this.targetDirectoryName);  //$NON-NLS-1$
+		assertNotNull("buildContext", this.buildContext);  //$NON-NLS-1$
 	}
 
 	//-----------------------------------------------------
@@ -217,7 +217,7 @@ public class JavadocMojo extends AbstractArakhneMojo {
 				String url = site.getUrl();
 				if (url!=null && url.length()>0) {
 					try {
-						return new URL(url+"/"+targetDirectoryName); //$NON-NLS-1$
+						return new URL(url+"/"+targetDirectoryName);  //$NON-NLS-1$
 					}
 					catch(Throwable e) {
 						//
@@ -259,16 +259,16 @@ public class JavadocMojo extends AbstractArakhneMojo {
 	public synchronized void executeMojo() throws MojoExecutionException {
 		MavenProject project = this.mavenSession.getCurrentProject();
 		File javadocDir = new File(this.javadocDirectory);
-		File indexFile = new File(javadocDir, "index.html"); //$NON-NLS-1$
+		File indexFile = new File(javadocDir, "index.html");  //$NON-NLS-1$
 		if (javadocDir.isDirectory() && indexFile.isFile()) {
 			URL deployementURL = getInheritedSiteDeploymentURL(project, this.targetDirectoryName);
 			BuildContext buildContext = getBuildContext();
 			buildContext.removeMessages(project.getFile());
 			if (deployementURL!=null) {
-				if ("file".equalsIgnoreCase(deployementURL.getProtocol())) { //$NON-NLS-1$
+				if ("file".equalsIgnoreCase(deployementURL.getProtocol())) {  //$NON-NLS-1$
 					File output = new File(deployementURL.getPath());
-					getLog().info("Input: "+javadocDir); //$NON-NLS-1$
-					getLog().info("Output: "+output); //$NON-NLS-1$
+					getLog().info("Input: "+javadocDir);  //$NON-NLS-1$
+					getLog().info("Output: "+output);  //$NON-NLS-1$
 					try {
 						dirRemove(output);
 						dirCopy(javadocDir, output, true);
@@ -278,7 +278,7 @@ public class JavadocMojo extends AbstractArakhneMojo {
 					}
 				}
 				else {
-					String message = "Unsupported transport protocol: "+deployementURL.getProtocol(); //$NON-NLS-1$
+					String message = "Unsupported transport protocol: "+deployementURL.getProtocol();  //$NON-NLS-1$
 					buildContext.addMessage(
 							project.getFile(), 
 							1, 1, 
@@ -287,7 +287,7 @@ public class JavadocMojo extends AbstractArakhneMojo {
 				}
 			}
 			else {
-				String message = "No site deployement URL found"; //$NON-NLS-1$
+				String message = "No site deployement URL found";  //$NON-NLS-1$
 				buildContext.addMessage(
 						project.getFile(), 
 						1, 1, 
@@ -296,7 +296,7 @@ public class JavadocMojo extends AbstractArakhneMojo {
 			}
 		}
 		else {
-			getLog().info("Skipping project, no javadoc directory found"); //$NON-NLS-1$
+			getLog().info("Skipping project, no javadoc directory found");  //$NON-NLS-1$
 		}
 	}
 

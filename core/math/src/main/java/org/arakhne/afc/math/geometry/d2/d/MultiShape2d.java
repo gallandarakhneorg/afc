@@ -64,7 +64,7 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 	 * @param shapes the shapes to add into the multishape.
 	 */
 	public MultiShape2d(@SuppressWarnings("unchecked") T... shapes) {
-		assert shapes != null : "Shape array must be not null"; //$NON-NLS-1$
+		assert shapes != null : "Shape array must be not null"; 
 		addAll(Arrays.asList(shapes));
 	}
 
@@ -73,7 +73,7 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 	 * @param shapes the shapes to add into the multishape.
 	 */
 	public MultiShape2d(Iterable<? extends T> shapes) {
-		assert shapes != null : "Shape list must be not null"; //$NON-NLS-1$
+		assert shapes != null : "Shape list must be not null"; 
 		for (final T element : shapes) {
 			add(element);
 		}
@@ -136,7 +136,7 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 	@Pure
 	@Override
 	public void toBoundingBox(Rectangle2d box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; 
 		if (this.bounds == null) {
 			this.bounds = getGeomFactory().newBox();
 			MultiShape2afp.super.toBoundingBox(this.bounds);

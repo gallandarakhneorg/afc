@@ -100,19 +100,19 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getMinX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMinY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxY());
-		b.append("|"); //$NON-NLS-1$
+		b.append("|"); 
 		b.append(getArcWidth());
-		b.append("x"); //$NON-NLS-1$
+		b.append("x"); 
 		b.append(getArcHeight());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -130,13 +130,13 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 
 	@Override
 	public void setArcWidth(double arcWidth) {
-		assert arcWidth >= 0 : "Arc width must be positive or zero"; //$NON-NLS-1$
+		assert arcWidth >= 0 : "Arc width must be positive or zero"; 
 		this.arcWidth = Math.min(getWidth() / 2, arcWidth);
 	}
 
 	@Override
 	public void setArcHeight(double arcHeight) {
-		assert arcHeight >= 0 : "Arc height must be positive or zero"; //$NON-NLS-1$
+		assert arcHeight >= 0 : "Arc height must be positive or zero"; 
 		this.arcHeight = Math.min(getHeight() / 2, arcHeight);
 	}
 

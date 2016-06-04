@@ -58,7 +58,7 @@ public interface Shape2afp<
 	@Pure
 	@Override
 	default boolean contains(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		return contains(pt.getX(), pt.getY());
 	}
 
@@ -66,7 +66,7 @@ public interface Shape2afp<
 	@Unefficient
 	@Override
 	default boolean contains(Shape2D<?, ?, ?, ?, ?, ?> shape) {
-		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Shape must be not null"; 
 		if (isEmpty()) {
 			return false;
 		}
@@ -126,7 +126,7 @@ public interface Shape2afp<
                 maxX = rect.getMaxX();
                 maxY = rect.getMaxY();
 			} else {
-			    assert originalBounds instanceof Rectangle2ai : "Unsupported type of bounding box"; //$NON-NLS-1$
+			    assert originalBounds instanceof Rectangle2ai : "Unsupported type of bounding box"; 
                 final Rectangle2ai<?, ?, ?, ?, ?, ?> rect = (Rectangle2ai<?, ?, ?, ?, ?, ?>) originalBounds;
                 minX = rect.getMinX();
                 minY = rect.getMinY();
@@ -174,7 +174,7 @@ public interface Shape2afp<
 	@Pure
 	@Override
 	default void translate(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		translate(vector.getX(), vector.getY());
 	}
 
@@ -272,7 +272,7 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default boolean intersects(Path2afp<?, ?, ?, ?, ?, ?> path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null"; 
 		return intersects(path.getPathIterator());
 	}
 
@@ -366,7 +366,7 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default double getDistanceSquared(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		assert ellipse != null : "Ellipse must be not null"; 
 		return ellipse.getDistanceSquared(getClosestPointTo(ellipse));
 	}
 
@@ -377,7 +377,7 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default double getDistanceSquared(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		return circle.getDistanceSquared(getClosestPointTo(circle));
 	}
 
@@ -388,7 +388,7 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default double getDistanceSquared(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		return rectangle.getDistanceSquared(getClosestPointTo(rectangle));
 	}
 
@@ -399,7 +399,7 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default double getDistanceSquared(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null"; 
 		return segment.getDistanceSquared(getClosestPointTo(segment));
 	}
 
@@ -410,7 +410,7 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default double getDistanceSquared(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		assert triangle != null : "Triangle must be not null"; 
 		return triangle.getDistanceSquared(getClosestPointTo(triangle));
 	}
 
@@ -421,7 +421,7 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default double getDistanceSquared(Path2afp<?, ?, ?, ?, ?, ?> path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null"; 
 		return path.getDistanceSquared(getClosestPointTo(path));
 	}
 
@@ -432,7 +432,7 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default double getDistanceSquared(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
 		return orientedRectangle.getDistanceSquared(getClosestPointTo(orientedRectangle));
 	}
 
@@ -443,7 +443,7 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default double getDistanceSquared(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		assert parallelogram != null : "Parallelogram must be not null"; 
 		return parallelogram.getDistanceSquared(getClosestPointTo(parallelogram));
 	}
 
@@ -454,7 +454,7 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default double getDistanceSquared(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		assert roundRectangle != null : "Round rectangle must be not null"; 
 		return roundRectangle.getDistanceSquared(getClosestPointTo(roundRectangle));
 	}
 
@@ -465,7 +465,7 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default double getDistanceSquared(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "Multishape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "Multishape must be not null"; 
 		return multishape.getDistanceSquared(getClosestPointTo(multishape));
 	}
 
@@ -657,7 +657,7 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default P getClosestPointTo(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "Multishape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "Multishape must be not null"; 
 		Shape2afp<?, ?, ?, ?, ?, ?> closest = null;
 		double minDist = Double.POSITIVE_INFINITY;
 		double dist;

@@ -122,7 +122,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 	 * @param windingRule the path winding rule.
 	 */
 	public Path2i(PathWindingRule windingRule) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert windingRule != null : "Path winding rule must be not null"; 
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new int[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -133,8 +133,8 @@ public class Path2i extends AbstractShape2i<Path2i>
 	 * @param iterator the iterator that provides the elements to copy.
 	 */
 	public Path2i(PathWindingRule windingRule, Iterator<PathElement2i> iterator) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert windingRule != null : "Path winding rule must be not null"; 
+		assert iterator != null : "Iterator must be not null"; 
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new int[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -176,7 +176,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 
 	private void ensureSlots(boolean needMove, int nbSlots) {
 		if (needMove && this.numTypes == 0) {
-			throw new IllegalStateException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalStateException("missing initial moveto in path definition"); 
 		}
 		if (this.types.length == this.numTypes) {
 			this.types = Arrays.copyOf(this.types, this.types.length + GROW_SIZE);
@@ -189,7 +189,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final int px = pt.ix();
 		final int py = pt.iy();
 		for (int i = 0; i < this.numCoords; i += 2) {
@@ -244,15 +244,15 @@ public class Path2i extends AbstractShape2i<Path2i>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		if (this.numCoords > 0) {
 			b.append(this.coords[0]);
 			for (int i = 1; i < this.numCoords; ++i) {
-				b.append(", "); //$NON-NLS-1$
+				b.append(", "); 
 				b.append(this.coords[i]);
 			}
 		}
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -276,7 +276,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 
 	@Override
 	public void transform(Transform2D transform) {
-		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+		assert transform != null : "Transformation must be not null"; 
 		final Point2D<?, ?> p = new InnerComputationPoint2ai();
 		for (int i = 0; i < this.numCoords;) {
 			p.set(this.coords[i], this.coords[i + 1]);
@@ -323,7 +323,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 	@Override
 	@Pure
 	public void toBoundingBox(Rectangle2i box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; 
 		Rectangle2i bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
@@ -467,7 +467,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 	@Override
 	@Pure
 	public void toBoundingBoxWithCtrlPoints(Rectangle2i box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; 
 		Rectangle2i bb = this.logicalBounds == null ? null : this.logicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
@@ -717,7 +717,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 
 	@Override
 	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : "Path winding rule must be not null"; 
 		this.windingRule = rule;
 	}
 
@@ -787,7 +787,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 
 	@Override
 	public void set(Path2i path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null"; 
 		clear();
 		add(path.getPathIterator());
 	}

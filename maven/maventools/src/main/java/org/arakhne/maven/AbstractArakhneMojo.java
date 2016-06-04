@@ -240,8 +240,8 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	public final void dirCopy(File in, File out, boolean skipHiddenFiles) throws IOException {
 		assert in != null;
 		assert out != null;
-		getLog().debug(in.toString() + "->" + out.toString());  //$NON-NLS-1$
-		getLog().debug("Ignore hidden files: " + skipHiddenFiles);  //$NON-NLS-1$
+		getLog().debug(in.toString() + "->" + out.toString()); //$NON-NLS-1$
+		getLog().debug("Ignore hidden files: " + skipHiddenFiles); //$NON-NLS-1$
 		out.mkdirs();
 		final LinkedList<File> candidates = new LinkedList<>();
 		candidates.add(in);
@@ -272,7 +272,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	private static File toOutput(File root, File file, File newRoot) {
 		final String filename = file.getAbsolutePath();
 		final String rootPath = root.getAbsolutePath();
-		return new File(filename.replaceAll("^\\Q" + rootPath + "\\E", //$NON-NLS-1$//$NON-NLS-2$
+		return new File(filename.replaceAll("^\\Q" + rootPath + "\\E", //$NON-NLS-1$ //$NON-NLS-2$
 				newRoot.getAbsolutePath()));
 	}
 
@@ -953,7 +953,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * @return the artifact
 	 */
 	public final Artifact createArtifact(String groupId, String artifactId, String version) {
-		return createArtifact(groupId, artifactId, version, "runtime", "jar"); //$NON-NLS-1$//$NON-NLS-2$
+		return createArtifact(groupId, artifactId, version, "runtime", "jar"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/** Convert the maven artifact to Aether artifact.

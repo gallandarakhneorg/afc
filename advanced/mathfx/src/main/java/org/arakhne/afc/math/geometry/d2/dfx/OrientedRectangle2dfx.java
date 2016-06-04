@@ -51,7 +51,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	 *Literal constant.
 	 */
 
-	private static final String EXTENT_POSITIVE_OR_ZERO = "Extent must be positive or zero"; //$NON-NLS-1$
+	private static final String EXTENT_POSITIVE_OR_ZERO = "Extent must be positive or zero"; 
 
 	/**
 	 *Center of the OBR.
@@ -94,7 +94,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	 * @param obr the oriented rectangle to copy.
 	 */
 	public OrientedRectangle2dfx(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> obr) {
-		assert obr != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert obr != null : "Oriented rectangle must be not null"; 
 		set(obr.getCenterX(), obr.getCenterY(),
 				obr.getFirstAxisX(), obr.getFirstAxisY(),
 				obr.getFirstAxisExtent(),
@@ -106,7 +106,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	 * @param pointCloud - the cloud of points.
 	 */
 	public OrientedRectangle2dfx(Iterable<? extends Point2D<?, ?>> pointCloud) {
-		assert pointCloud != null : "Collection of points must be not null"; //$NON-NLS-1$
+		assert pointCloud != null : "Collection of points must be not null"; 
 		setFromPointCloud(pointCloud);
 	}
 
@@ -115,7 +115,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	 * @param pointCloud - the cloud of points.
 	 */
 	public OrientedRectangle2dfx(Point2D<?, ?>... pointCloud) {
-		assert pointCloud != null : "Collection of points must be not null"; //$NON-NLS-1$
+		assert pointCloud != null : "Collection of points must be not null"; 
 		setFromPointCloud(Arrays.asList(pointCloud));
 	}
 
@@ -192,23 +192,23 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getCenterX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getCenterY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getFirstAxisX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getFirstAxisY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getFirstAxisExtent());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getSecondAxisX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getSecondAxisY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getSecondAxisExtent());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -237,7 +237,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Pure
 	public DoubleProperty centerXProperty() {
 		if (this.cx == null) {
-			this.cx = new SimpleDoubleProperty(this, "centerX"); //$NON-NLS-1$
+			this.cx = new SimpleDoubleProperty(this, "centerX"); 
 		}
 		return this.cx;
 	}
@@ -249,7 +249,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Pure
 	public DoubleProperty centerYProperty() {
 		if (this.cy == null) {
-			this.cy = new SimpleDoubleProperty(this, "centerX"); //$NON-NLS-1$
+			this.cy = new SimpleDoubleProperty(this, "centerX"); 
 		}
 		return this.cy;
 	}
@@ -313,7 +313,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Pure
 	public UnitVectorProperty firstAxisProperty() {
 		if (this.raxis == null) {
-			this.raxis = new UnitVectorProperty(this, "firstAxis", getGeomFactory()); //$NON-NLS-1$
+			this.raxis = new UnitVectorProperty(this, "firstAxis", getGeomFactory()); 
 		}
 		return this.raxis;
 	}
@@ -325,7 +325,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Pure
 	public ReadOnlyUnitVectorProperty secondAxisProperty() {
 		if (this.saxis == null) {
-			this.saxis = new ReadOnlyUnitVectorWrapper(this, "secondAxis", getGeomFactory()); //$NON-NLS-1$
+			this.saxis = new ReadOnlyUnitVectorWrapper(this, "secondAxis", getGeomFactory()); 
 			this.saxis.bind(Bindings.createObjectBinding(() -> {
 				final Vector2dfx firstAxis = firstAxisProperty().get();
 				return firstAxis.toOrthogonalVector();
@@ -354,7 +354,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Pure
 	public DoubleProperty firstAxisExtentProperty() {
 		if (this.extentR == null) {
-			this.extentR = new SimpleDoubleProperty(this, "firstAxisExtent") { //$NON-NLS-1$
+			this.extentR = new SimpleDoubleProperty(this, "firstAxisExtent") { 
 				@Override
 				protected void invalidated() {
 					if (get() < 0.) {
@@ -385,7 +385,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Pure
 	public DoubleProperty secondAxisExtentProperty() {
 		if (this.extentS == null) {
-			this.extentS = new SimpleDoubleProperty(this, "secondAxisExtent") { //$NON-NLS-1$
+			this.extentS = new SimpleDoubleProperty(this, "secondAxisExtent") { 
 				@Override
 				protected void invalidated() {
 					if (get() < 0.) {
@@ -399,7 +399,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 
 	@Override
 	public void setFirstAxis(double x, double y, double extent) {
-		assert Vector2D.isUnitVector(x, y) : "Axis must be unit vector"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(x, y) : "Axis must be unit vector"; 
 		assert extent >= 0 : EXTENT_POSITIVE_OR_ZERO;
 		firstAxisProperty().set(x, y);
 		firstAxisExtentProperty().set(extent);
@@ -407,7 +407,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 
 	@Override
 	public void setSecondAxis(double x, double y, double extent) {
-		assert Vector2D.isUnitVector(x, y) : "Axis must be unit vector"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(x, y) : "Axis must be unit vector"; 
 		assert extent >= 0 : EXTENT_POSITIVE_OR_ZERO;
 		firstAxisProperty().set(y, -x);
 		secondAxisExtentProperty().set(extent);
@@ -415,9 +415,9 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 
 	@Override
 	public void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent, double axis2Extent) {
-		assert Vector2D.isUnitVector(axis1x, axis1y) : "First axis must be unit vector"; //$NON-NLS-1$
-		assert axis1Extent >= 0 : "First axis extent must be positive or zero"; //$NON-NLS-1$
-		assert axis2Extent >= 0 : "Second axis extent must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1x, axis1y) : "First axis must be unit vector"; 
+		assert axis1Extent >= 0 : "First axis extent must be positive or zero"; 
+		assert axis2Extent >= 0 : "Second axis extent must be positive or zero"; 
 		centerXProperty().set(centerX);
 		centerYProperty().set(centerY);
 		firstAxisProperty().set(axis1x, axis1y);
@@ -429,7 +429,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Override
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			},

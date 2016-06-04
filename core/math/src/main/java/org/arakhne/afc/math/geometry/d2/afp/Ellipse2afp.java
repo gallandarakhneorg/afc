@@ -58,22 +58,22 @@ public interface Ellipse2afp<
 
 	/** Literal constant.
 	 */
-	String ELLIPSE_HEIGHT_POSITIVE_OR_ZERO = "Ellipse height must be positive or zero"; //$NON-NLS-1$
+	String ELLIPSE_HEIGHT_POSITIVE_OR_ZERO = "Ellipse height must be positive or zero"; 
 
 	/**
 	 * literal constant.
 	 */
-	String ELLIPSE_WIDTH_POSITIVE_OR_ZERO = "Ellipse width must be positive or zero"; //$NON-NLS-1$
+	String ELLIPSE_WIDTH_POSITIVE_OR_ZERO = "Ellipse width must be positive or zero"; 
 
 	/**
 	 * literal constant.
 	 */
-	String VERTICAL_RADIUS_POSITIVE_OR_ZERO = "Vertical radius must be positive or zero"; //$NON-NLS-1$
+	String VERTICAL_RADIUS_POSITIVE_OR_ZERO = "Vertical radius must be positive or zero"; 
 
 	/**
 	 * literal constant.
 	 */
-	String HORIZONTAL_RADIUS_GREATER_OR_EQUAL_TO_VERTICAL_RADIUS = "Horizontal radius must be positive or zero"; //$NON-NLS-1$
+	String HORIZONTAL_RADIUS_GREATER_OR_EQUAL_TO_VERTICAL_RADIUS = "Horizontal radius must be positive or zero"; 
 
 	/**
 	 * Replies if the given point is inside the given ellipse.
@@ -123,7 +123,7 @@ public interface Ellipse2afp<
 			Point2D<?, ?> result) {
 		assert ew >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO;
 		assert eh >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO;
-		assert result != null : "Result point must be not null"; //$NON-NLS-1$
+		assert result != null : "Result point must be not null"; 
 
 		// Translate the point in the local ellipse's coordinate system.
 		final double e0;
@@ -206,7 +206,7 @@ public interface Ellipse2afp<
 			Point2D<?, ?> result) {
 		assert ew >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO;
 		assert eh >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO;
-		assert result != null : "Result point must be not null"; //$NON-NLS-1$
+		assert result != null : "Result point must be not null"; 
 
 		// Translate the point in the local ellipse's coordinate system.
 		final double e0;
@@ -289,7 +289,7 @@ public interface Ellipse2afp<
 			double ew, double eh, Point2D<?, ?> result) {
 		assert ew >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO;
 		assert eh >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO;
-		assert result != null : "Result point must be not null"; //$NON-NLS-1$
+		assert result != null : "Result point must be not null"; 
 
 		// Translate the point in the local ellipse's coordinate system.
 		final double e0;
@@ -373,8 +373,8 @@ public interface Ellipse2afp<
 			double rxmin, double rymin, double rxmax, double rymax) {
 		assert ewidth >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO;
 		assert eheight >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO;
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; 
+		assert rymin <= rymax : "rymin must be lower or equal to rymax"; 
 		final double ecx = ex + ewidth / 2.;
 		final double ecy = ey + eheight / 2.;
 		final double rcx = (rxmin + rxmax) / 2.;
@@ -411,10 +411,10 @@ public interface Ellipse2afp<
 	@Unefficient
 	static boolean intersectsEllipseEllipse(double x1, double y1, double width1, double height1,
 			double x2, double y2, double width2, double height2) {
-		assert width1 >= 0. : "First ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert height1 >= 0. : "First ellipse height must be positive or zero"; //$NON-NLS-1$
-		assert width2 >= 0. : "First ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert height2 >= 0. : "First ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert width1 >= 0. : "First ellipse width must be positive or zero"; 
+		assert height1 >= 0. : "First ellipse height must be positive or zero"; 
+		assert width2 >= 0. : "First ellipse width must be positive or zero"; 
+		assert height2 >= 0. : "First ellipse height must be positive or zero"; 
 
 		if (width2 <= 0 || height2 <= 0 || width1 <= 0 || height1 <= 0) {
 			return false;
@@ -450,7 +450,7 @@ public interface Ellipse2afp<
 			double cx, double cy, double cradius) {
 		assert ewidth >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO;
 		assert eheight >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO;
-		assert cradius >= 0. : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		assert cradius >= 0. : "Circle radius must be positive or zero"; 
 		final Point2D<?, ?> p = new InnerComputationPoint2afp();
 		computeClosestPointToSolidEllipse(cx, cy, ex, ey, ewidth, eheight, p);
 		final double dx = p.getX() - cx;
@@ -669,7 +669,7 @@ public interface Ellipse2afp<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final Point2D<?, ?> r = getClosestPointTo(pt);
 		return r.getDistanceSquared(pt);
 	}
@@ -677,7 +677,7 @@ public interface Ellipse2afp<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final Point2D<?, ?> r = getClosestPointTo(pt);
 		return r.getDistanceL1(pt);
 	}
@@ -685,7 +685,7 @@ public interface Ellipse2afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final Point2D<?, ?> r = getClosestPointTo(pt);
 		return r.getDistanceLinf(pt);
 	}
@@ -700,7 +700,7 @@ public interface Ellipse2afp<
 
 	@Override
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		return containsEllipseRectangle(
 				getMinX(), getMinY(), getWidth(), getHeight(),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY());
@@ -708,7 +708,7 @@ public interface Ellipse2afp<
 
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		return intersectsEllipseRectangle(
 				getMinX(), getMinY(),
 				getWidth(), getHeight(),
@@ -718,7 +718,7 @@ public interface Ellipse2afp<
 
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		assert ellipse != null : "Ellipse must be not null"; 
 		return intersectsEllipseEllipse(
 				getMinX(), getMinY(),
 				getWidth(), getHeight(),
@@ -729,7 +729,7 @@ public interface Ellipse2afp<
 	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		return intersectsEllipseCircle(
 				getMinX(), getMinY(),
 				getWidth(), getHeight(),
@@ -739,7 +739,7 @@ public interface Ellipse2afp<
 	@Pure
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null"; 
 		return intersectsEllipseSegment(
 				getMinX(), getMinY(),
 				getWidth(), getHeight(),
@@ -751,7 +751,7 @@ public interface Ellipse2afp<
 	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
 		return OrientedRectangle2afp.intersectsOrientedRectangleEllipse(
 				orientedRectangle.getCenterX(), orientedRectangle.getCenterY(),
 				orientedRectangle.getFirstAxisX(), orientedRectangle.getFirstAxisY(), orientedRectangle.getFirstAxisExtent(),
@@ -762,7 +762,7 @@ public interface Ellipse2afp<
 	@Pure
 	@Override
 	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		assert triangle != null : "Triangle must be not null"; 
 		return Triangle2afp.intersectsTriangleEllipse(
 				triangle.getX1(), triangle.getY1(),
 				triangle.getX2(), triangle.getY2(),
@@ -774,7 +774,7 @@ public interface Ellipse2afp<
 	@Pure
 	@Override
 	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert parallelogram != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert parallelogram != null : "Oriented rectangle must be not null"; 
 		return Parallelogram2afp.intersectsParallelogramEllipse(
 				parallelogram.getCenterX(), parallelogram.getCenterY(),
 				parallelogram.getFirstAxisX(), parallelogram.getFirstAxisY(), parallelogram.getFirstAxisExtent(),
@@ -785,7 +785,7 @@ public interface Ellipse2afp<
 	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		assert roundRectangle != null : "Round rectangle must be not null"; 
 		return RoundRectangle2afp.intersectsRoundRectangleEllipse(
 				roundRectangle.getMinX(), roundRectangle.getMinY(),
 				roundRectangle.getMaxX(), roundRectangle.getMaxY(),
@@ -795,7 +795,7 @@ public interface Ellipse2afp<
 
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path2afp.computeCrossingsFromEllipse(
 				0,
@@ -810,7 +810,7 @@ public interface Ellipse2afp<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "MultiShape must be not null"; 
 		return multishape.intersects(this);
 	}
 
@@ -824,7 +824,7 @@ public interface Ellipse2afp<
 
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final P point = getGeomFactory().newPoint();
 		Ellipse2afp.computeClosestPointToSolidEllipse(
 				pt.getX(), pt.getY(),
@@ -836,14 +836,14 @@ public interface Ellipse2afp<
 
 	@Override
 	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		return getClosestPointTo(circle.getCenter());
 	}
 
 	@Override
 	@Unefficient
 	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		assert ellipse != null : "Ellipse must be not null"; 
 		final P pointOnSecondEllipse = getGeomFactory().newPoint();
 		Path2afp.getClosestPointTo(
 				new Path2afp.FlatteningPathIterator<>(ellipse.getPathIterator(), MathConstants.SPLINE_APPROXIMATION_RATIO,
@@ -855,7 +855,7 @@ public interface Ellipse2afp<
 	@Override
 	@Unefficient
 	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		final Point2D<?, ?> pointOnRectangle = rectangle.getClosestPointTo(this);
 		return getClosestPointTo(pointOnRectangle);
 	}
@@ -863,7 +863,7 @@ public interface Ellipse2afp<
 	@Override
 	@Unefficient
 	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null"; 
 		final Point2D<?, ?> pointOnSegment = segment.getClosestPointTo(this);
 		return getClosestPointTo(pointOnSegment);
 	}
@@ -871,7 +871,7 @@ public interface Ellipse2afp<
 	@Override
 	@Unefficient
 	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		assert triangle != null : "Triangle must be not null"; 
 		final Point2D<?, ?> pointOnTriangle = triangle.getClosestPointTo(this);
 		return getClosestPointTo(pointOnTriangle);
 	}
@@ -879,7 +879,7 @@ public interface Ellipse2afp<
 	@Override
 	@Unefficient
 	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
 		final Point2D<?, ?> pointOnRectangle = orientedRectangle.getClosestPointTo(this);
 		return getClosestPointTo(pointOnRectangle);
 	}
@@ -887,7 +887,7 @@ public interface Ellipse2afp<
 	@Override
 	@Unefficient
 	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert parallelogram != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert parallelogram != null : "Rectangle must be not null"; 
 		final Point2D<?, ?> pointOnParallelogram = parallelogram.getClosestPointTo(this);
 		return getClosestPointTo(pointOnParallelogram);
 	}
@@ -895,7 +895,7 @@ public interface Ellipse2afp<
 	@Override
 	@Unefficient
 	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		assert roundRectangle != null : "Round rectangle must be not null"; 
 		final Point2D<?, ?> pointOnRectangle = roundRectangle.getClosestPointTo(this);
 		return getClosestPointTo(pointOnRectangle);
 	}
@@ -903,7 +903,7 @@ public interface Ellipse2afp<
 	@Override
 	@Unefficient
 	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null"; 
 		final P point = getGeomFactory().newPoint();
 		Path2afp.getClosestPointTo(
 				new Path2afp.FlatteningPathIterator<>(getPathIterator(), MathConstants.SPLINE_APPROXIMATION_RATIO,
@@ -914,7 +914,7 @@ public interface Ellipse2afp<
 
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final P point = getGeomFactory().newPoint();
 		Ellipse2afp.computeFarthestPointToShallowEllipse(
 				pt.getX(), pt.getY(),
@@ -1031,7 +1031,7 @@ public interface Ellipse2afp<
 		 * @param ellipse the ellipse to iterate on.
 		 */
 		public AbstractEllipsePathIterator(Ellipse2afp<?, ?, T, ?, ?, ?> ellipse) {
-			assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+			assert ellipse != null : "Ellipse must be not null"; 
 			this.ellipse = ellipse;
 		}
 
@@ -1205,7 +1205,7 @@ public interface Ellipse2afp<
 		 */
 		public TransformedEllipsePathIterator(Ellipse2afp<?, ?, T, ?, ?, ?> ellipse, Transform2D transform) {
 			super(ellipse);
-			assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+			assert transform != null : "Transformation must be not null"; 
 			this.transform = transform;
 			if (ellipse.isEmpty()) {
 				this.index = 6;
@@ -1341,12 +1341,12 @@ public interface Ellipse2afp<
 				double px, double py,
 				double horizontalRadius, double verticalRadius,
 				boolean computeDistance) {
-			assert px >= 0 : "Point coordinate X must be positive or zero"; //$NON-NLS-1$
-			assert py >= 0 : "Point coordinate Y must be positive or zero"; //$NON-NLS-1$
+			assert px >= 0 : "Point coordinate X must be positive or zero"; 
+			assert py >= 0 : "Point coordinate Y must be positive or zero"; 
 			assert horizontalRadius >= 0 : HORIZONTAL_RADIUS_GREATER_OR_EQUAL_TO_VERTICAL_RADIUS;
 			assert verticalRadius >= 0 : VERTICAL_RADIUS_POSITIVE_OR_ZERO;
 			assert horizontalRadius >= verticalRadius
-					: "Horizontal radius must be greater or equal to vertical radius"; //$NON-NLS-1$
+					: "Horizontal radius must be greater or equal to vertical radius"; 
 			final double closeX;
 			final double closeY;
 			double distance = 0;
@@ -1425,12 +1425,12 @@ public interface Ellipse2afp<
 				double px, double py,
 				double horizontalRadius, double verticalRadius,
 				boolean computeDistance) {
-			assert px >= 0 : "Point coordinate X must be positive or zero"; //$NON-NLS-1$
-			assert py >= 0 : "Point coordinate Y must be positive or zero"; //$NON-NLS-1$
+			assert px >= 0 : "Point coordinate X must be positive or zero"; 
+			assert py >= 0 : "Point coordinate Y must be positive or zero"; 
 			assert horizontalRadius >= 0 : HORIZONTAL_RADIUS_GREATER_OR_EQUAL_TO_VERTICAL_RADIUS;
 			assert verticalRadius >= 0 : VERTICAL_RADIUS_POSITIVE_OR_ZERO;
 			assert horizontalRadius >= verticalRadius
-					: "Horizontal radius must be greater or equal to vertical radius"; //$NON-NLS-1$
+					: "Horizontal radius must be greater or equal to vertical radius"; 
 			final double closeX;
 			final double closeY;
 			double distance = 0;
@@ -1545,12 +1545,12 @@ public interface Ellipse2afp<
 				double px, double py,
 				double horizontalRadius, double verticalRadius,
 				boolean computeDistance) {
-			assert px <= 0 : "Point coordinate X must be negative or zero"; //$NON-NLS-1$
-			assert py <= 0 : "Point coordinate Y must be negative or zero"; //$NON-NLS-1$
+			assert px <= 0 : "Point coordinate X must be negative or zero"; 
+			assert py <= 0 : "Point coordinate Y must be negative or zero"; 
 			assert horizontalRadius >= 0 : HORIZONTAL_RADIUS_GREATER_OR_EQUAL_TO_VERTICAL_RADIUS;
 			assert verticalRadius >= 0 : VERTICAL_RADIUS_POSITIVE_OR_ZERO;
 			assert horizontalRadius >= verticalRadius
-					: "Horizontal radius must be greater or equal to vertical radius"; //$NON-NLS-1$
+					: "Horizontal radius must be greater or equal to vertical radius"; 
 			final double farX;
 			final double farY;
 			double distance = 0;

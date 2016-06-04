@@ -89,7 +89,7 @@ class Timestamp extends Number {
 	@Pure
 	@Override
 	public String toString() {
-		return MessageFormat.format("{0, date, full} {0, time, full}", //$NON-NLS-1$
+		return MessageFormat.format("{0, date, full} {0, time, full}", 
 				new Date(this.time));
 	}
 

@@ -1060,19 +1060,19 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	@Override
 	public String toString() {
 		final StringBuilder buffer = new StringBuilder();
-		buffer.append("["); //$NON-NLS-1$
+		buffer.append("["); 
 		if (!isEmpty()) {
 			boolean join = false;
 			for (final ST segment : this.segmentList) {
 				if (join) {
-					buffer.append(", "); //$NON-NLS-1$
+					buffer.append(", "); 
 				} else {
 					join = true;
 				}
 				buffer.append(segment.toString());
 			}
 		}
-		buffer.append("]"); //$NON-NLS-1$
+		buffer.append("]"); 
 		return buffer.toString();
 	}
 

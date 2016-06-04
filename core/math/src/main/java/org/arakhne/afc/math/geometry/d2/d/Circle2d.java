@@ -73,7 +73,7 @@ public class Circle2d
 	 * @param circle the circle to copy.
 	 */
 	public Circle2d(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		set(circle.getX(), circle.getY(), circle.getRadius());
 	}
 
@@ -92,13 +92,13 @@ public class Circle2d
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getRadius());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -146,7 +146,7 @@ public class Circle2d
 
 	@Override
 	public void set(double x, double y, double radius) {
-		assert radius >= 0. : "Radius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0. : "Radius must be positive or zero"; 
 		if (this.centerX != x || this.centerY != y || this.radius != radius) {
 			this.centerX = x;
 			this.centerY = y;

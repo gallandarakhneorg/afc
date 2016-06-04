@@ -69,7 +69,7 @@ public interface Circle2afp<
 	 */
 	@Pure
 	static boolean containsCirclePoint(double cx, double cy, double radius, double px, double py) {
-		assert radius >= 0 : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0 : "Circle radius must be positive or zero"; 
 		return Point2D.getDistanceSquaredPointPoint(
 				px, py,
 				cx, cy) <= (radius * radius);
@@ -90,9 +90,9 @@ public interface Circle2afp<
 	@Pure
 	static boolean containsCircleRectangle(double cx, double cy, double radius, double rxmin,
 			double rymin, double rxmax, double rymax) {
-		assert radius >= 0 : "Circle radius must be positive or zero"; //$NON-NLS-1$
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert radius >= 0 : "Circle radius must be positive or zero"; 
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; 
+		assert rymin <= rymax : "rymin must be lower or equal to rymax"; 
 		final double rcx = (rxmin + rxmax) / 2;
 		final double rcy = (rymin + rymax) / 2;
 		final double farX;
@@ -123,8 +123,8 @@ public interface Circle2afp<
 	 */
 	@Pure
 	static boolean intersectsCircleCircle(double x1, double y1, double radius1, double x2, double y2, double radius2) {
-		assert radius1 >= 0 : "First circle radius must be positive or zero"; //$NON-NLS-1$
-		assert radius1 >= 0 : "Second circle radius must be positive or zero"; //$NON-NLS-1$
+		assert radius1 >= 0 : "First circle radius must be positive or zero"; 
+		assert radius1 >= 0 : "Second circle radius must be positive or zero"; 
 		final double r = radius1 + radius2;
 		return Point2D.getDistanceSquaredPointPoint(x1, y1, x2, y2) < (r * r);
 	}
@@ -143,9 +143,9 @@ public interface Circle2afp<
 	 */
 	@Pure
 	static boolean intersectsCircleRectangle(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
-		assert radius >= 0 : "Circle radius must be positive or zero"; //$NON-NLS-1$
-		assert x2 <= x3 : "x2 must be lower or equal to x3"; //$NON-NLS-1$
-		assert y2 <= y3 : "y2 must be lower or equal to y3"; //$NON-NLS-1$
+		assert radius >= 0 : "Circle radius must be positive or zero"; 
+		assert x2 <= x3 : "x2 must be lower or equal to x3"; 
+		assert y2 <= y3 : "y2 must be lower or equal to y3"; 
 		final double dx;
 		if (x1 < x2) {
 			dx = x2 - x1;
@@ -179,7 +179,7 @@ public interface Circle2afp<
 	 */
 	@Pure
 	static boolean intersectsCircleLine(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
-		assert radius >= 0 : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0 : "Circle radius must be positive or zero"; 
 		final double d = Segment2afp.computeDistanceSquaredLinePoint(x2, y2, x3, y3, x1, y1);
 		return d < (radius * radius);
 	}
@@ -198,7 +198,7 @@ public interface Circle2afp<
 	 */
 	@Pure
 	static boolean intersectsCircleSegment(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
-		assert radius >= 0 : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0 : "Circle radius must be positive or zero"; 
 		final double d = Segment2afp.computeDistanceSquaredSegmentPoint(x2, y2, x3, y3, x1, y1);
 		return d < (radius * radius);
 	}
@@ -242,7 +242,7 @@ public interface Circle2afp<
 	 * @param center the center point.
 	 */
 	default void setCenter(Point2D<?, ?> center) {
-		assert center != null : "Point must be not null"; //$NON-NLS-1$
+		assert center != null : "Point must be not null"; 
 		set(center.getX(), center.getY(), getRadius());
 	}
 
@@ -296,13 +296,13 @@ public interface Circle2afp<
 	 * @param radius the radius.
 	 */
 	default void set(Point2D<?, ?> center, double radius) {
-		assert center != null : "Point must be not null"; //$NON-NLS-1$
+		assert center != null : "Point must be not null"; 
 		set(center.getX(), center.getY(), radius);
 	}
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Shape must be not null"; 
 		set(shape.getX(), shape.getY(), shape.getRadius());
 	}
 
@@ -313,7 +313,7 @@ public interface Circle2afp<
 
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; 
 		final double x = getX();
 		final double y = getY();
 		final double radius = getRadius();
@@ -330,7 +330,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default double getDistance(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		double distance = Point2D.getDistancePointPoint(getX(), getY(), pt.getX(), pt.getY());
 		distance = distance - getRadius();
 		return Math.max(0., distance);
@@ -339,7 +339,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final double x = getX();
 		final double y = getY();
 		final double radius = getRadius();
@@ -356,7 +356,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final Point2D<?, ?> r = getClosestPointTo(pt);
 		return r.getDistanceL1(pt);
 	}
@@ -364,7 +364,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final Point2D<?, ?> r = getClosestPointTo(pt);
 		return r.getDistanceLinf(pt);
 	}
@@ -377,7 +377,7 @@ public interface Circle2afp<
 
 	@Override
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		return containsCircleRectangle(getX(), getY(), getRadius(),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY());
 	}
@@ -390,7 +390,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		return intersectsCircleRectangle(
 				getX(), getY(), getRadius(),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY());
@@ -399,7 +399,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		assert ellipse != null : "Ellipse must be not null"; 
 		return Ellipse2afp.intersectsEllipseCircle(
 				ellipse.getMinX(), ellipse.getMinY(),
 				ellipse.getWidth(), ellipse.getHeight(),
@@ -409,7 +409,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		return intersectsCircleCircle(
 				getX(), getY(), getRadius(),
 				circle.getX(), circle.getY(), circle.getRadius());
@@ -418,7 +418,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		assert triangle != null : "Triangle must be not null"; 
 		return Triangle2afp.intersectsTriangleCircle(
 				triangle.getX1(), triangle.getY1(),
 				triangle.getX2(), triangle.getY2(),
@@ -430,7 +430,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null"; 
 		return intersectsCircleSegment(
 				getX(), getY(), getRadius(),
 				segment.getX1(), segment.getY1(),
@@ -440,7 +440,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
 		return OrientedRectangle2afp.intersectsOrientedRectangleCircle(
 				orientedRectangle.getCenterX(), orientedRectangle.getCenterY(),
 				orientedRectangle.getFirstAxisX(), orientedRectangle.getFirstAxisY(), orientedRectangle.getFirstAxisExtent(),
@@ -451,7 +451,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		assert parallelogram != null : "Parallelogram must be not null"; 
 		return Parallelogram2afp.intersectsParallelogramCircle(
 				parallelogram.getCenterX(), parallelogram.getCenterY(),
 				parallelogram.getFirstAxisX(), parallelogram.getFirstAxisY(), parallelogram.getFirstAxisExtent(),
@@ -462,7 +462,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; 
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path2afp.computeCrossingsFromCircle(
 				0,
@@ -477,7 +477,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		assert roundRectangle != null : "Round rectangle must be not null"; 
 		return RoundRectangle2afp.intersectsRoundRectangleCircle(
 				roundRectangle.getMinX(), roundRectangle.getMinY(),
 				roundRectangle.getMaxX(), roundRectangle.getMaxY(),
@@ -488,14 +488,14 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "MultiShape must be not null"; 
 		return multishape.intersects(this);
 	}
 
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final double x = getX();
 		final double y = getY();
 		final double radius = getRadius();
@@ -512,7 +512,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		assert ellipse != null : "Ellipse must be not null"; 
 		final Point2D<?, ?> point = ellipse.getClosestPointTo(getCenter());
 		return getClosestPointTo(point);
 	}
@@ -520,7 +520,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		final Point2D<?, ?> point = circle.getClosestPointTo(getCenter());
 		return getClosestPointTo(point);
 	}
@@ -528,7 +528,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null"; 
 		final Point2D<?, ?> point = rectangle.getClosestPointTo(getCenter());
 		return getClosestPointTo(point);
 	}
@@ -536,7 +536,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null"; 
 		final Point2D<?, ?> point = segment.getClosestPointTo(getCenter());
 		return getClosestPointTo(point);
 	}
@@ -544,7 +544,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		assert triangle != null : "Triangle must be not null"; 
 		final Point2D<?, ?> point = triangle.getClosestPointTo(getCenter());
 		return getClosestPointTo(point);
 	}
@@ -552,7 +552,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null"; 
 		final Point2D<?, ?> point = path.getClosestPointTo(getCenter());
 		return getClosestPointTo(point);
 	}
@@ -560,7 +560,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
 		final Point2D<?, ?> point = orientedRectangle.getClosestPointTo(getCenter());
 		return getClosestPointTo(point);
 	}
@@ -568,7 +568,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		assert parallelogram != null : "Parallelogram must be not null"; 
 		final Point2D<?, ?> point = parallelogram.getClosestPointTo(getCenter());
 		return getClosestPointTo(point);
 	}
@@ -576,7 +576,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		assert roundRectangle != null : "Round rectangle must be not null"; 
 		final Point2D<?, ?> point = roundRectangle.getClosestPointTo(getCenter());
 		return getClosestPointTo(point);
 	}
@@ -584,7 +584,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "Multishape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "Multishape must be not null"; 
 		final Point2D<?, ?> point = multishape.getClosestPointTo(getCenter());
 		return getClosestPointTo(point);
 	}
@@ -592,7 +592,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		final double x = getX();
 		final double y = getY();
 		final double vx = x - pt.getX();
@@ -800,7 +800,7 @@ public interface Circle2afp<
 		 * @param circle the circle.
 		 */
 		public AbstractCirclePathIterator(Circle2afp<?, ?, T, ?, ?, ?> circle) {
-			assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+			assert circle != null : "Circle must be not null"; 
 			this.circle = circle;
 		}
 
@@ -965,7 +965,7 @@ public interface Circle2afp<
 		 */
 		public TransformedCirclePathIterator(Circle2afp<?, ?, T, ?, ?, ?> circle, Transform2D transform) {
 			super(circle);
-			assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+			assert transform != null : "Transformation must be not null"; 
 			this.transform = transform;
 			if (circle.isEmpty()) {
 				this.index = NUMBER_ELEMENTS;

@@ -300,7 +300,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	protected double estimate(PT p1, PT p2) {
 		assert p1 != null && p2 != null;
 		if (this.heuristic == null) {
-			throw new IllegalStateException("no heuristic found"); //$NON-NLS-1$
+			throw new IllegalStateException("no heuristic found"); 
 		}
 		return this.heuristic.evaluate(p1, p2);
 	}
@@ -372,7 +372,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		try {
 			return (GP) new GraphPath(segment, startPoint);
 		} catch (Throwable e) {
-			throw new IllegalStateException("no path factory found", e); //$NON-NLS-1$
+			throw new IllegalStateException("no path factory found", e); 
 		}
 	}
 
@@ -395,7 +395,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		try {
 			return path.add(segment);
 		} catch (Throwable e) {
-			throw new IllegalStateException("no path factory found", e); //$NON-NLS-1$
+			throw new IllegalStateException("no path factory found", e); 
 		}
 	}
 
@@ -736,19 +736,19 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		@Override
 		public String toString() {
 			final StringBuilder b = new StringBuilder();
-			b.append("{"); //$NON-NLS-1$
+			b.append("{"); 
 			b.append(this.entryPoint.getClass().getName());
-			b.append("|"); //$NON-NLS-1$
+			b.append("|"); 
 			b.append(System.identityHashCode(this.entryPoint));
-			b.append("|"); //$NON-NLS-1$
+			b.append("|"); 
 			b.append(this.costToReach);
-			b.append("|"); //$NON-NLS-1$
+			b.append("|"); 
 			b.append(this.estimatedCost);
-			b.append("|"); //$NON-NLS-1$
+			b.append("|"); 
 			b.append(this.costToReach + this.estimatedCost);
-			b.append("|"); //$NON-NLS-1$
+			b.append("|"); 
 			b.append(this.entryPoint.toString());
-			b.append("}"); //$NON-NLS-1$
+			b.append("}"); 
 			return b.toString();
 		}
 

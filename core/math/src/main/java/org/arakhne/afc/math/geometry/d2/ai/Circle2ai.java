@@ -72,7 +72,7 @@ public interface Circle2ai<
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean contains(int cx, int cy, int cr, int x, int y) {
-		assert cr >= 0 : "Circle radius must be positive or zero."; //$NON-NLS-1$
+		assert cr >= 0 : "Circle radius must be positive or zero."; 
 
 		final int vx = x - cx;
 		final int vy = y - cy;
@@ -152,8 +152,8 @@ public interface Circle2ai<
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean contains(int cx, int cy, int cr, int quadrant, int x, int y) {
-		assert cr >= 0 : "Circle radius must be positive or zero."; //$NON-NLS-1$
-		assert quadrant >= 0 && quadrant <= 3 : "invalid quadrant value"; //$NON-NLS-1$
+		assert cr >= 0 : "Circle radius must be positive or zero."; 
+		assert quadrant >= 0 && quadrant <= 3 : "invalid quadrant value"; 
 
 		final int vx = x - cx;
 		final int vy = y - cy;
@@ -215,7 +215,7 @@ public interface Circle2ai<
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber",
 			"checkstyle:booleanexpressioncomplexity"})
 	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
-		assert box != null : "Rectangle must be not null."; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null."; 
 		final int cx = getX();
 		final int cy = getY();
 		final int radius = getRadius();
@@ -293,8 +293,8 @@ public interface Circle2ai<
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	static void computeClosestPointTo(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
-		assert cr >= 0 : "Circle radius must be positive or zero."; //$NON-NLS-1$
-		assert result != null : "Result point must be positive or zero."; //$NON-NLS-1$
+		assert cr >= 0 : "Circle radius must be positive or zero."; 
+		assert result != null : "Result point must be positive or zero."; 
 
 		final int vx = x - cx;
 		final int vy = y - cy;
@@ -363,7 +363,7 @@ public interface Circle2ai<
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	static void computeFarthestPointTo(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
-		assert cr >= 0 : "Circle radius must be positive or zero."; //$NON-NLS-1$
+		assert cr >= 0 : "Circle radius must be positive or zero."; 
 
 		final int vx = x - cx;
 		final int vy = y - cy;
@@ -422,8 +422,8 @@ public interface Circle2ai<
 	 */
 	@Pure
 	static boolean intersectsCircleCircle(int x1, int y1, int radius1, int x2, int y2, int radius2) {
-		assert radius1 >= 0 : "Radius of the first circle must be positive or zero."; //$NON-NLS-1$
-		assert radius2 >= 0 : "Radius of the second circle must be positive or zero."; //$NON-NLS-1$
+		assert radius1 >= 0 : "Radius of the first circle must be positive or zero."; 
+		assert radius2 >= 0 : "Radius of the second circle must be positive or zero."; 
 		final Point2D<?, ?> point = new InnerComputationPoint2ai();
 		computeClosestPointTo(x1, y1, radius1, x2, y2, point);
 		return contains(x2, y2, radius2, point.ix(), point.iy());
@@ -443,7 +443,7 @@ public interface Circle2ai<
 	 */
 	@Pure
 	static boolean intersectsCircleRectangle(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
-		assert radius >= 0 : "Circle radius must be positive or zero."; //$NON-NLS-1$
+		assert radius >= 0 : "Circle radius must be positive or zero."; 
 		final Point2D<?, ?> point = new InnerComputationPoint2ai();
 		Rectangle2ai.computeClosestPoint(x2, y2, x3, y3, x1, y1, point);
 		return contains(x1, y1, radius, point.ix(), point.iy());
@@ -462,7 +462,7 @@ public interface Circle2ai<
 	 * <code>false</code>
 	 */
 	static boolean intersectsCircleSegment(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
-		assert radius >= 0 : "Circle radius must be positive or zero."; //$NON-NLS-1$
+		assert radius >= 0 : "Circle radius must be positive or zero."; 
 		final Point2D<?, ?> point = new InnerComputationPoint2ai();
 		Segment2ai.computeClosestPointTo(x2, y2, x3, y3, x1, y1, point);
 		return contains(x1, y1, radius, point.ix(), point.iy());
@@ -485,8 +485,8 @@ public interface Circle2ai<
 	static <P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>>
 			Iterator<P> getPointIterator(int cx, int cy,  int radius, int firstOctantIndex, int nbOctants,
 			GeomFactory2ai<?, P, V, ?> factory) {
-		assert radius >= 0 : "Circle radius must be positive or zero."; //$NON-NLS-1$
-		assert firstOctantIndex >= 0 && firstOctantIndex < 8 : "invalid quadrant value"; //$NON-NLS-1$
+		assert radius >= 0 : "Circle radius must be positive or zero."; 
+		assert firstOctantIndex >= 0 && firstOctantIndex < 8 : "invalid quadrant value"; 
 		int maxOctant;
 		maxOctant = Math.min(8, firstOctantIndex + nbOctants);
 		if (maxOctant > 8) {
@@ -638,7 +638,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Box must be not null."; //$NON-NLS-1$
+		assert box != null : "Box must be not null."; 
 		final int centerX = getX();
 		final int centerY = getY();
 		final int radius = getRadius();
@@ -652,7 +652,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null."; //$NON-NLS-1$
+		assert pt != null : "Point must be not null."; 
 		final P c = getClosestPointTo(pt);
 		return c.getDistanceSquared(pt);
 	}
@@ -660,7 +660,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null."; //$NON-NLS-1$
+		assert pt != null : "Point must be not null."; 
 		final P c = getClosestPointTo(pt);
 		return c.getDistanceL1(pt);
 	}
@@ -675,7 +675,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null."; //$NON-NLS-1$
+		assert pt != null : "Point must be not null."; 
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointTo(getX(), getY(), getRadius(), pt.ix(), pt.iy(), point);
 		return point;
@@ -709,7 +709,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null."; //$NON-NLS-1$
+		assert pt != null : "Point must be not null."; 
 		final P point = getGeomFactory().newPoint();
 		computeFarthestPointTo(getX(), getY(), getRadius(), pt.ix(), pt.iy(), point);
 		return point;
@@ -718,7 +718,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null."; //$NON-NLS-1$
+		assert rectangle != null : "Rectangle must be not null."; 
 		return intersectsCircleRectangle(
 				getX(), getY(), getRadius(),
 				rectangle.getMinX(), rectangle.getMinY(),
@@ -728,7 +728,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null."; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null."; 
 		return intersectsCircleCircle(
 				getX(), getY(), getRadius(),
 				circle.getX(), circle.getY(), circle.getRadius());
@@ -737,7 +737,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null."; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null."; 
 		return intersectsCircleSegment(
 				getX(), getY(), getRadius(),
 				segment.getX1(), segment.getY1(),
@@ -747,7 +747,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator2ai<?> iterator) {
-		assert iterator != null : "Iterator must be not null."; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null."; 
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path2ai.computeCrossingsFromCircle(
 				0,
@@ -761,7 +761,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "MultiShape must be not null"; 
 		return multishape.intersects(this);
 	}
 
@@ -831,7 +831,7 @@ public interface Circle2ai<
 		 * @param circle the circle.
 		 */
 		public AbstractCirclePathIterator(Circle2ai<?, ?, IE, ?, ?, ?> circle) {
-			assert circle != null : "Circle must be not null."; //$NON-NLS-1$
+			assert circle != null : "Circle must be not null."; 
 			this.circle = circle;
 		}
 
@@ -1009,7 +1009,7 @@ public interface Circle2ai<
 		 */
 		public TransformedCirclePathIterator(Circle2ai<?, ?, IE, ?, ?, ?> circle, Transform2D transform) {
 			super(circle);
-			assert transform != null : "Transformation must not be null."; //$NON-NLS-1$
+			assert transform != null : "Transformation must not be null."; 
 			this.transform = transform;
 			if (circle.isEmpty()) {
 				this.index = 6;
@@ -1136,11 +1136,11 @@ public interface Circle2ai<
 		 */
 		public CirclePerimeterIterator(GeomFactory<V, P> factory,
 				int centerX, int centerY, int radius, int initialOctant, int lastOctant, boolean skip) {
-			assert factory != null : "Factory must be not null."; //$NON-NLS-1$
-			assert radius >= 0 : "Circle radius must be positive or zero."; //$NON-NLS-1$
-			assert initialOctant >= 0 && initialOctant < 8 : "Initial octant must be in [0; 7]"; //$NON-NLS-1$
+			assert factory != null : "Factory must be not null."; 
+			assert radius >= 0 : "Circle radius must be positive or zero."; 
+			assert initialOctant >= 0 && initialOctant < 8 : "Initial octant must be in [0; 7]"; 
 			assert lastOctant > initialOctant && lastOctant <= 8
-				: "Last octant must be in [initialOctant + 1; 8]"; //$NON-NLS-1$
+				: "Last octant must be in [initialOctant + 1; 8]"; 
 			this.factory = factory;
 			this.cx = centerX;
 			this.cy = centerY;

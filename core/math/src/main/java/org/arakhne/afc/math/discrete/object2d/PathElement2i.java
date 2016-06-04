@@ -195,9 +195,9 @@ public abstract class PathElement2i implements PathElement2D {
 
 		@Override
 		public String toString() {
-			return "MOVE("+ //$NON-NLS-1$
-					this.toX+"x"+ //$NON-NLS-1$
-					this.toY+")"; //$NON-NLS-1$
+			return "MOVE("+ 
+					this.toX+"x"+ 
+					this.toY+")"; 
 		}
 
 	}
@@ -260,9 +260,9 @@ public abstract class PathElement2i implements PathElement2D {
 
 		@Override
 		public String toString() {
-			return "LINE("+ //$NON-NLS-1$
-					this.toX+"x"+ //$NON-NLS-1$
-					this.toY+")"; //$NON-NLS-1$
+			return "LINE("+ 
+					this.toX+"x"+ 
+					this.toY+")"; 
 		}
 
 	}
@@ -333,11 +333,11 @@ public abstract class PathElement2i implements PathElement2D {
 		
 		@Override
 		public String toString() {
-			return "QUAD("+ //$NON-NLS-1$
-					this.ctrlX1+"x"+ //$NON-NLS-1$
-					this.ctrlY1+"|"+ //$NON-NLS-1$
-					this.toX+"x"+ //$NON-NLS-1$
-					this.toY+")"; //$NON-NLS-1$
+			return "QUAD("+ 
+					this.ctrlX1+"x"+ 
+					this.ctrlY1+"|"+ 
+					this.toX+"x"+ 
+					this.toY+")"; 
 		}
 
 	}
@@ -415,13 +415,13 @@ public abstract class PathElement2i implements PathElement2D {
 
 		@Override
 		public String toString() {
-			return "CURVE("+ //$NON-NLS-1$
-					this.ctrlX1+"x"+ //$NON-NLS-1$
-					this.ctrlY1+"|"+ //$NON-NLS-1$
-					this.ctrlX2+"x"+ //$NON-NLS-1$
-					this.ctrlY2+"|"+ //$NON-NLS-1$
-					this.toX+"x"+ //$NON-NLS-1$
-					this.toY+")"; //$NON-NLS-1$
+			return "CURVE("+ 
+					this.ctrlX1+"x"+ 
+					this.ctrlY1+"|"+ 
+					this.ctrlX2+"x"+ 
+					this.ctrlY2+"|"+ 
+					this.toX+"x"+ 
+					this.toY+")"; 
 		}
 
 	}
@@ -482,7 +482,7 @@ public abstract class PathElement2i implements PathElement2D {
 		
 		@Override
 		public String toString() {
-			return "CLOSE"; //$NON-NLS-1$
+			return "CLOSE"; 
 		}
 
 	}

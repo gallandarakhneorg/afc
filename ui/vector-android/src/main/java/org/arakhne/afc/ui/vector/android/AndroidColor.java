@@ -111,42 +111,42 @@ class AndroidColor implements Color, NativeWrapper, Cloneable {
 	@Override
 	public int getGreen() {
 		if (this.originalDrawable!=null)
-			throw new IllegalStateException("color is a Drawable"); //$NON-NLS-1$
+			throw new IllegalStateException("color is a Drawable"); 
 		return android.graphics.Color.green(this.original);
 	}
 
 	@Override
 	public int getRed() {
 		if (this.originalDrawable!=null)
-			throw new IllegalStateException("color is a Drawable"); //$NON-NLS-1$
+			throw new IllegalStateException("color is a Drawable"); 
 		return android.graphics.Color.red(this.original);
 	}
 
 	@Override
 	public int getBlue() {
 		if (this.originalDrawable!=null)
-			throw new IllegalStateException("color is a Drawable"); //$NON-NLS-1$
+			throw new IllegalStateException("color is a Drawable"); 
 		return android.graphics.Color.blue(this.original);
 	}
 
 	@Override
 	public int getAlpha() {
 		if (this.originalDrawable!=null)
-			throw new IllegalStateException("color is a Drawable"); //$NON-NLS-1$
+			throw new IllegalStateException("color is a Drawable"); 
 		return android.graphics.Color.alpha(this.original);
 	}
 
 	@Override
 	public int getRGB() {
 		if (this.originalDrawable!=null)
-			throw new IllegalStateException("color is a Drawable"); //$NON-NLS-1$
+			throw new IllegalStateException("color is a Drawable"); 
 		return this.original;
 	}
 
 	@Override
 	public Color brighterColor() {
 		if (this.originalDrawable!=null)
-			throw new IllegalStateException("color is a Drawable"); //$NON-NLS-1$
+			throw new IllegalStateException("color is a Drawable"); 
 		int r = getRed();
 		int g = getGreen();
 		int b = getBlue();
@@ -175,7 +175,7 @@ class AndroidColor implements Color, NativeWrapper, Cloneable {
 	@Override
 	public Color darkerColor() {
 		if (this.originalDrawable!=null)
-			throw new IllegalStateException("color is a Drawable"); //$NON-NLS-1$
+			throw new IllegalStateException("color is a Drawable"); 
 		return new AndroidColor(
 				Math.max((int)(getRed()  *FACTOR), 0),
 				Math.max((int)(getGreen()*FACTOR), 0),
@@ -186,7 +186,7 @@ class AndroidColor implements Color, NativeWrapper, Cloneable {
 	@Override
 	public Color transparentColor() {
 		if (this.originalDrawable!=null)
-			throw new IllegalStateException("color is a Drawable"); //$NON-NLS-1$
+			throw new IllegalStateException("color is a Drawable"); 
 		int alpha = getAlpha() / 2;
 		return new AndroidColor(
 				getRed(), getGreen(), getBlue(),

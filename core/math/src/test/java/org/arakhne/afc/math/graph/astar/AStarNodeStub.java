@@ -67,17 +67,17 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append("{N="); //$NON-NLS-1$
+		b.append("{N="); 
 		b.append(this.id);
-		b.append(";E="); //$NON-NLS-1$
+		b.append(";E="); 
 		b.append(this.astarEntryConnection);
-		b.append(";g="); //$NON-NLS-1$
+		b.append(";g="); 
 		b.append(Double.toString(getCost()));
-		b.append(";h="); //$NON-NLS-1$
+		b.append(";h="); 
 		b.append(Double.toString(getEstimatedCost()));
-		b.append(";f="); //$NON-NLS-1$
+		b.append(";f="); 
 		b.append(Double.toString(getPathCost()));
-		b.append("}"); //$NON-NLS-1$
+		b.append("}"); 
 		return b.toString();
 	}
 

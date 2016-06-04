@@ -12,7 +12,6 @@
 
 	<artifactId>vmutils</artifactId>
 	<name>VM Utilities</name>
-	<url>http://www.arakhne.org/arakhneVmutils/</url>
 
 	<properties>
 		<manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>

@@ -48,8 +48,8 @@ public class Ellipse2d extends AbstractRectangularShape2d<Ellipse2d>
 	 * @param max is the max corner of the ellipse.
 	 */
 	public Ellipse2d(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert min != null : "Minimum point must be not null"; //$NON-NLS-1$
-		assert max != null : "Maximum point must be not null"; //$NON-NLS-1$
+		assert min != null : "Minimum point must be not null"; 
+		assert max != null : "Maximum point must be not null"; 
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 
@@ -60,8 +60,8 @@ public class Ellipse2d extends AbstractRectangularShape2d<Ellipse2d>
 	 * @param height height of the ellipse's bounding box.
 	 */
 	public Ellipse2d(double x, double y, double width, double height) {
-		assert width >= 0. : "Width must be positive or zero"; //$NON-NLS-1$
-		assert height >= 0. : "Height must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0. : "Width must be positive or zero"; 
+		assert height >= 0. : "Height must be positive or zero"; 
 		setFromCorners(x, y, x + width, y + height);
 	}
 

@@ -62,7 +62,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	private static Image getNoPicture() {
 		Image noPictureImage = noPictureBuffer==null ? null : noPictureBuffer.get();
 		if (noPictureImage==null) {
-			URL url = Resources.getResource(AbstractVectorGraphics2D.class, "no_picture.png"); //$NON-NLS-1$
+			URL url = Resources.getResource(AbstractVectorGraphics2D.class, "no_picture.png");  //$NON-NLS-1$
 			if (url!=null) {
 				try {
 					noPictureImage = VectorToolkit.image(url);
@@ -155,7 +155,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	 * @param message is the message to log.
 	 */
 	protected void log(String message) {
-		System.out.println(toString()+": "+message); //$NON-NLS-1$
+		System.out.println(toString()+": "+message);  //$NON-NLS-1$
 	}
 
 	/** Log the given message.
@@ -165,8 +165,8 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	 */
 	protected void log(String message, Throwable exception) {
 		String tag = toString();
-		System.out.println(tag+": "+message); //$NON-NLS-1$
-		System.out.println(tag+": "+exception.getLocalizedMessage()); //$NON-NLS-1$
+		System.out.println(tag+": "+message);  //$NON-NLS-1$
+		System.out.println(tag+": "+exception.getLocalizedMessage());  //$NON-NLS-1$
 		exception.printStackTrace();
 	}
 

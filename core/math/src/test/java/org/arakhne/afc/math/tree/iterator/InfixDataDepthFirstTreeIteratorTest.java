@@ -39,6 +39,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class InfixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIteratorTest {
 
 	private InfixDataDepthFirstTreeIterator<Object,DefaultBinaryTreeNode<Object>> iterator;
@@ -61,64 +62,64 @@ public class InfixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterato
 	@Override
 	public void iterate() {
 		assertTrue(this.iterator.hasNext());
-		assertEquals("b", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("b", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("a", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("a", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("h", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("h", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("e", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("e", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("f", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("f", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("g", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("g", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("j", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("j", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("k", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("k", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("i", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("i", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("l", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("l", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("m", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("m", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("n", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("n", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("c", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("c", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("d", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("d", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("q", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("q", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("r", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("r", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("o", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("o", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("p", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("p", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("s", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("s", this.iterator.next()); 
 
 		assertTrue(this.iterator.hasNext());
-		assertEquals("t", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("t", this.iterator.next()); 
 
 		assertFalse(this.iterator.hasNext());
 	}
@@ -129,58 +130,58 @@ public class InfixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterato
 		//
 		// Remove o
 		//
-		assertEquals("b", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("a", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("h", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("e", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("f", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("g", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("j", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("k", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("i", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("l", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("m", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("n", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("c", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("d", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("q", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("r", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("o", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("b", this.iterator.next()); 
+		assertEquals("a", this.iterator.next()); 
+		assertEquals("h", this.iterator.next()); 
+		assertEquals("e", this.iterator.next()); 
+		assertEquals("f", this.iterator.next()); 
+		assertEquals("g", this.iterator.next()); 
+		assertEquals("j", this.iterator.next()); 
+		assertEquals("k", this.iterator.next()); 
+		assertEquals("i", this.iterator.next()); 
+		assertEquals("l", this.iterator.next()); 
+		assertEquals("m", this.iterator.next()); 
+		assertEquals("n", this.iterator.next()); 
+		assertEquals("c", this.iterator.next()); 
+		assertEquals("d", this.iterator.next()); 
+		assertEquals("q", this.iterator.next()); 
+		assertEquals("r", this.iterator.next()); 
+		assertEquals("o", this.iterator.next()); 
 
 		this.iterator.remove();
 		try {
 			this.iterator.remove();
-			fail("Expecting NoSuchElementException"); //$NON-NLS-1$
+			fail("Expecting NoSuchElementException"); 
 		}
 		catch(NoSuchElementException e) {
 			// Expected exception
 		}
 
-		assertEquals("p", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("s", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("t", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("p", this.iterator.next()); 
+		assertEquals("s", this.iterator.next()); 
+		assertEquals("t", this.iterator.next()); 
 		assertFalse(this.iterator.hasNext());
 
 		Iterator<Object> it = this.tree.dataBroadFirstIterator();
-		assertEquals("a", it.next()); //$NON-NLS-1$
-		assertEquals("b", it.next()); //$NON-NLS-1$
-		assertEquals("c", it.next()); //$NON-NLS-1$
-		assertEquals("d", it.next()); //$NON-NLS-1$
-		assertEquals("p", it.next()); //$NON-NLS-1$
-		assertEquals("e", it.next()); //$NON-NLS-1$
-		assertEquals("f", it.next()); //$NON-NLS-1$
-		assertEquals("g", it.next()); //$NON-NLS-1$
-		assertEquals("q", it.next()); //$NON-NLS-1$
-		assertEquals("r", it.next()); //$NON-NLS-1$
-		assertEquals("s", it.next()); //$NON-NLS-1$
-		assertEquals("t", it.next()); //$NON-NLS-1$
-		assertEquals("h", it.next()); //$NON-NLS-1$
-		assertEquals("i", it.next()); //$NON-NLS-1$
-		assertEquals("j", it.next()); //$NON-NLS-1$
-		assertEquals("k", it.next()); //$NON-NLS-1$
-		assertEquals("l", it.next()); //$NON-NLS-1$
-		assertEquals("m", it.next()); //$NON-NLS-1$
-		assertEquals("n", it.next()); //$NON-NLS-1$
+		assertEquals("a", it.next()); 
+		assertEquals("b", it.next()); 
+		assertEquals("c", it.next()); 
+		assertEquals("d", it.next()); 
+		assertEquals("p", it.next()); 
+		assertEquals("e", it.next()); 
+		assertEquals("f", it.next()); 
+		assertEquals("g", it.next()); 
+		assertEquals("q", it.next()); 
+		assertEquals("r", it.next()); 
+		assertEquals("s", it.next()); 
+		assertEquals("t", it.next()); 
+		assertEquals("h", it.next()); 
+		assertEquals("i", it.next()); 
+		assertEquals("j", it.next()); 
+		assertEquals("k", it.next()); 
+		assertEquals("l", it.next()); 
+		assertEquals("m", it.next()); 
+		assertEquals("n", it.next()); 
 		assertFalse(it.hasNext());
 
 		//
@@ -188,56 +189,56 @@ public class InfixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterato
 		//
 		this.iterator = new InfixDataDepthFirstTreeIterator<>(this.tree);
 
-		assertEquals("b", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("a", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("h", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("e", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("f", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("b", this.iterator.next()); 
+		assertEquals("a", this.iterator.next()); 
+		assertEquals("h", this.iterator.next()); 
+		assertEquals("e", this.iterator.next()); 
+		assertEquals("f", this.iterator.next()); 
 
 		this.iterator.remove();
 		try {
 			this.iterator.remove();
-			fail("Expecting NoSuchElementException"); //$NON-NLS-1$
+			fail("Expecting NoSuchElementException"); 
 		}
 		catch(NoSuchElementException e) {
 			// Expected exception
 		}
 
-		assertEquals("g", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("j", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("k", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("i", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("l", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("m", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("n", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("c", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("d", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("q", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("r", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("p", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("s", this.iterator.next()); //$NON-NLS-1$
-		assertEquals("t", this.iterator.next()); //$NON-NLS-1$
+		assertEquals("g", this.iterator.next()); 
+		assertEquals("j", this.iterator.next()); 
+		assertEquals("k", this.iterator.next()); 
+		assertEquals("i", this.iterator.next()); 
+		assertEquals("l", this.iterator.next()); 
+		assertEquals("m", this.iterator.next()); 
+		assertEquals("n", this.iterator.next()); 
+		assertEquals("c", this.iterator.next()); 
+		assertEquals("d", this.iterator.next()); 
+		assertEquals("q", this.iterator.next()); 
+		assertEquals("r", this.iterator.next()); 
+		assertEquals("p", this.iterator.next()); 
+		assertEquals("s", this.iterator.next()); 
+		assertEquals("t", this.iterator.next()); 
 		assertFalse(this.iterator.hasNext());
 
 		it = this.tree.dataBroadFirstIterator();
-		assertEquals("a", it.next()); //$NON-NLS-1$
-		assertEquals("b", it.next()); //$NON-NLS-1$
-		assertEquals("c", it.next()); //$NON-NLS-1$
-		assertEquals("d", it.next()); //$NON-NLS-1$
-		assertEquals("p", it.next()); //$NON-NLS-1$
-		assertEquals("e", it.next()); //$NON-NLS-1$
-		assertEquals("g", it.next()); //$NON-NLS-1$
-		assertEquals("q", it.next()); //$NON-NLS-1$
-		assertEquals("r", it.next()); //$NON-NLS-1$
-		assertEquals("s", it.next()); //$NON-NLS-1$
-		assertEquals("t", it.next()); //$NON-NLS-1$
-		assertEquals("h", it.next()); //$NON-NLS-1$
-		assertEquals("i", it.next()); //$NON-NLS-1$
-		assertEquals("j", it.next()); //$NON-NLS-1$
-		assertEquals("k", it.next()); //$NON-NLS-1$
-		assertEquals("l", it.next()); //$NON-NLS-1$
-		assertEquals("m", it.next()); //$NON-NLS-1$
-		assertEquals("n", it.next()); //$NON-NLS-1$
+		assertEquals("a", it.next()); 
+		assertEquals("b", it.next()); 
+		assertEquals("c", it.next()); 
+		assertEquals("d", it.next()); 
+		assertEquals("p", it.next()); 
+		assertEquals("e", it.next()); 
+		assertEquals("g", it.next()); 
+		assertEquals("q", it.next()); 
+		assertEquals("r", it.next()); 
+		assertEquals("s", it.next()); 
+		assertEquals("t", it.next()); 
+		assertEquals("h", it.next()); 
+		assertEquals("i", it.next()); 
+		assertEquals("j", it.next()); 
+		assertEquals("k", it.next()); 
+		assertEquals("l", it.next()); 
+		assertEquals("m", it.next()); 
+		assertEquals("n", it.next()); 
 		assertFalse(it.hasNext());
 	}
 	

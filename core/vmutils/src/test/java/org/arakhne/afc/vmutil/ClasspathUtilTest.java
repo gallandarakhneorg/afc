@@ -40,7 +40,7 @@ import org.junit.Test;
  * @mavengroupid org.arakhne.afc
  * @mavenartifactid arakhneVmutils
  */
-@SuppressWarnings("static-method")
+@SuppressWarnings("all")
 public class ClasspathUtilTest {
 
 	/**
@@ -50,7 +50,7 @@ public class ClasspathUtilTest {
 		Iterator<URL> urls = ClasspathUtil.getStartClasspath();
 		assertNotNull(urls);
 		
-		String[] paths = System.getProperty("java.class.path").split( //$NON-NLS-1$
+		String[] paths = System.getProperty("java.class.path").split( 
 				Pattern.quote(File.pathSeparator));
 		
 		for(int i=0; i<paths.length; i++) {
@@ -67,7 +67,7 @@ public class ClasspathUtilTest {
 		Iterator<URL> urls = ClasspathUtil.getClasspath();
 		assertNotNull(urls);
 		
-		String[] paths = System.getProperty("java.class.path").split( //$NON-NLS-1$
+		String[] paths = System.getProperty("java.class.path").split( 
 				Pattern.quote(File.pathSeparator));
 		List<String> list = new ArrayList<>(Arrays.asList(paths));
 
@@ -78,7 +78,7 @@ public class ClasspathUtilTest {
 	}
 	
 	private static void assertUrl(List<String> expected, URL actual) {
-		assertNotNull("An url cannot be null", actual); //$NON-NLS-1$
+		assertNotNull("An url cannot be null", actual); 
 		Iterator<String> iterator = expected.iterator();
 		String u;
 		if (iterator.hasNext()) {
@@ -92,12 +92,12 @@ public class ClasspathUtilTest {
 			}
 		}
 		
-		System.out.println("Additional class path: "+actual); //$NON-NLS-1$
+		System.out.println("Additional class path: "+actual); 
 	}
 		
 	private static boolean isEquals(URL expected, URL actual) {
-		String u1 = expected==null ? null : expected.toExternalForm().replaceFirst("/$", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		String u2 = actual==null ? null : actual.toExternalForm().replaceFirst("/$", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		String u1 = expected==null ? null : expected.toExternalForm().replaceFirst("/$", "");  
+		String u2 = actual==null ? null : actual.toExternalForm().replaceFirst("/$", "");  
 		if (u1==u2) return true;
 		if (u1==null || u2==null) return false;
 		return u1.equals(u2);

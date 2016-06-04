@@ -51,7 +51,7 @@ public interface RectangularShape2ai<
 
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must not be null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must not be null"; 
 		box.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
 	}
 
@@ -68,8 +68,8 @@ public interface RectangularShape2ai<
 	 * @param height height of the rectangular shape.
 	 */
 	default void set(int x, int y, int width, int height) {
-		assert width >= 0 : "Width must be positive or zero"; //$NON-NLS-1$
-		assert height >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0 : "Width must be positive or zero"; 
+		assert height >= 0 : "Height must be positive or zero"; 
 		setFromCorners(x, y, x + width, y + height);
 	}
 
@@ -79,8 +79,8 @@ public interface RectangularShape2ai<
 	 * @param max is the max corner of the rectangle.
 	 */
 	default void set(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert min != null : "Minimum point must be not be null"; //$NON-NLS-1$
-		assert max != null : "Maximum point must be not be null"; //$NON-NLS-1$
+		assert min != null : "Minimum point must be not be null"; 
+		assert max != null : "Maximum point must be not be null"; 
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
 	}
 
@@ -89,7 +89,7 @@ public interface RectangularShape2ai<
 	 * @param width width of the rectangular shape.
 	 */
 	default void setWidth(int width) {
-		assert width >= 0 : "Width must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0 : "Width must be positive or zero"; 
 		setMaxX(getMinX() + width);
 	}
 
@@ -98,7 +98,7 @@ public interface RectangularShape2ai<
 	 * @param height height of the rectangular shape.
 	 */
 	default void setHeight(int height) {
-		assert height >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0 : "Height must be positive or zero"; 
 		setMaxY(getMinY() + height);
 	}
 
@@ -117,8 +117,8 @@ public interface RectangularShape2ai<
 	 * @param p2 the second corner.
 	 */
 	default void setFromCorners(Point2D<?, ?> p1, Point2D<?, ?> p2) {
-		assert p1 != null : "First corner must be not be null"; //$NON-NLS-1$
-		assert p2 != null : "Second corner must be not be null"; //$NON-NLS-1$
+		assert p1 != null : "First corner must be not be null"; 
+		assert p2 != null : "Second corner must be not be null"; 
 		setFromCorners(p1.ix(), p1.iy(), p2.ix(), p2.iy());
 	}
 
@@ -149,8 +149,8 @@ public interface RectangularShape2ai<
      * @param corner the specified corner point
      */
 	default void setFromCenter(Point2D<?, ?> center, Point2D<?, ?> corner) {
-		assert center != null : "Center must be not be null"; //$NON-NLS-1$
-		assert corner != null : "Corner must be not be null"; //$NON-NLS-1$
+		assert center != null : "Center must be not be null"; 
+		assert corner != null : "Corner must be not be null"; 
 		setFromCenter(center.ix(), center.iy(), corner.ix(), corner.iy());
 	}
 

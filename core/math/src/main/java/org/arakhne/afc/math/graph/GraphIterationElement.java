@@ -136,16 +136,16 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	public String toString() {
 		final StringBuilder buffer = new StringBuilder();
 		buffer.append(this.currentSegment.toString());
-		buffer.append(">"); //$NON-NLS-1$
+		buffer.append(">"); 
 		buffer.append(getDistanceToReachSegment());
 		if (this.previousSegment != null) {
-			buffer.append("<"); //$NON-NLS-1$
+			buffer.append("<"); 
 			buffer.append(this.previousSegment.toString());
 		}
 		if (isCulDeSac()) {
-			buffer.append("]"); //$NON-NLS-1$
+			buffer.append("]"); 
 		} else if (this.isTerminalSegment()) {
-			buffer.append("|"); //$NON-NLS-1$
+			buffer.append("|"); 
 		}
 		return buffer.toString();
 	}

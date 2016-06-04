@@ -40,7 +40,7 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	@Test
 	public void toStringTest() {
 		Matrix2d matrix = new Matrix2d(0,1,2,3);
-		String s = "0.0, 1.0\n2.0, 3.0\n"; //$NON-NLS-1$
+		String s = "0.0, 1.0\n2.0, 3.0\n"; 
 				
 		assertEquals(s, matrix.toString());
 	}
@@ -551,7 +551,7 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m, mean);
 		for(int i=0; i<2; ++i) {
 			for(int j=0; j<2; ++j) {
-				assertEpsilonEquals("i="+i+"; j="+j, //$NON-NLS-1$ //$NON-NLS-2$
+				assertEpsilonEquals("i="+i+"; j="+j,  
 						expected.getElement(i, j), 
 						mat.getElement(i, j));
 			}
@@ -594,7 +594,7 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(expectedMean, mean);
 		for(int i=0; i<2; ++i) {
 			for(int j=0; j<2; ++j) {
-				assertEpsilonEquals("i="+i+"; j="+j, //$NON-NLS-1$ //$NON-NLS-2$
+				assertEpsilonEquals("i="+i+"; j="+j,  
 						expectedCov.getElement(i, j), 
 						cov.getElement(i, j));
 			}

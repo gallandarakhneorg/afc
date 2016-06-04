@@ -41,7 +41,7 @@ public class GeomFactory2d implements GeomFactory2afp<PathElement2d, Point2d, Ve
 
 	@Override
 	public Point2d convertToPoint(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		try {
 			return (Point2d) pt;
 		} catch (Throwable exception) {
@@ -51,19 +51,19 @@ public class GeomFactory2d implements GeomFactory2afp<PathElement2d, Point2d, Ve
 
 	@Override
 	public Point2d convertToPoint(Vector2D<?, ?> v) {
-		assert v != null : "Vector must be not null"; //$NON-NLS-1$
+		assert v != null : "Vector must be not null"; 
 		return new Point2d(v.getX(), v.getY());
 	}
 
 	@Override
 	public Vector2d convertToVector(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		return new Vector2d(pt.getX(), pt.getY());
 	}
 
 	@Override
 	public Vector2d convertToVector(Vector2D<?, ?> v) {
-		assert v != null : "Vector must be not null"; //$NON-NLS-1$
+		assert v != null : "Vector must be not null"; 
 		Vector2d vv;
 		try {
 			vv = (Vector2d) v;
@@ -105,7 +105,7 @@ public class GeomFactory2d implements GeomFactory2afp<PathElement2d, Point2d, Ve
 
 	@Override
 	public Path2d newPath(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : "Path winding rule must be not null"; 
 		return new Path2d(rule);
 	}
 
@@ -116,8 +116,8 @@ public class GeomFactory2d implements GeomFactory2afp<PathElement2d, Point2d, Ve
 
 	@Override
 	public Rectangle2d newBox(double x, double y, double width, double height) {
-		assert width >= 0. : "Width must be positive or zero"; //$NON-NLS-1$
-		assert height >= 0. : "Height must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0. : "Width must be positive or zero"; 
+		assert height >= 0. : "Height must be positive or zero"; 
 		return new Rectangle2d(x, y, width, height);
 	}
 

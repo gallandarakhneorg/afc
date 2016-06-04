@@ -70,7 +70,7 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 	 * @param shapes the shapes to add into the multishape.
 	 */
 	public MultiShape2ifx(@SuppressWarnings("unchecked") T... shapes) {
-		assert shapes != null : "Shape array must be not null"; //$NON-NLS-1$
+		assert shapes != null : "Shape array must be not null"; 
 		addAll(Arrays.asList(shapes));
 	}
 
@@ -79,7 +79,7 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 	 * @param shapes the shapes to add into the multishape.
 	 */
 	public MultiShape2ifx(Iterable<? extends T> shapes) {
-		assert shapes != null : "Shape list must be not null"; //$NON-NLS-1$
+		assert shapes != null : "Shape list must be not null"; 
 		for (final T element : shapes) {
 			add(element);
 		}
@@ -97,7 +97,7 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 	 */
 	public ListProperty<T> elementsProperty() {
 		if (this.elements == null) {
-			this.elements = new SimpleListProperty<>(this, "elements", new InternalObservableList<>()); //$NON-NLS-1$
+			this.elements = new SimpleListProperty<>(this, "elements", new InternalObservableList<>()); 
 		}
 		return this.elements;
 	}
@@ -105,7 +105,7 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 	@Override
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				final Rectangle2ifx box = getGeomFactory().newBox();
 				final Rectangle2ifx shapeBox = getGeomFactory().newBox();
@@ -155,7 +155,7 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 	@Pure
 	@Override
 	public void toBoundingBox(Rectangle2ifx box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; 
 		box.set(boundingBoxProperty().get());
 	}
 
@@ -202,14 +202,14 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 
 		@Override
 		protected void doAdd(int index, T element) {
-			assert element != null : "New element in the list of shapes must be not null"; //$NON-NLS-1$
+			assert element != null : "New element in the list of shapes must be not null"; 
 			this.internalList.add(index, element);
 			bind(element);
 		}
 
 		@Override
 		protected T doSet(int index, T element) {
-			assert element != null : "New element in the list of shapes must be not null"; //$NON-NLS-1$
+			assert element != null : "New element in the list of shapes must be not null"; 
 			final T old = this.internalList.set(index, element);
 			unbind(old);
 			bind(element);

@@ -122,22 +122,22 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getX1());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY1());
-		b.append("|"); //$NON-NLS-1$
+		b.append("|"); 
 		b.append(getX2());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY2());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
 	@Pure
 	@Override
 	public Segment2dfx createTransformedShape(Transform2D transform) {
-		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+		assert transform != null : "Transformation must be not null"; 
 		final Point2dfx point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
 		final double x1 = point.getX();
@@ -188,7 +188,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Pure
 	public DoubleProperty x1Property() {
 		if (this.ax == null) {
-			this.ax = new SimpleDoubleProperty(this, "x1"); //$NON-NLS-1$
+			this.ax = new SimpleDoubleProperty(this, "x1"); 
 		}
 		return this.ax;
 	}
@@ -206,7 +206,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Pure
 	public DoubleProperty y1Property() {
 		if (this.ay == null) {
-			this.ay = new SimpleDoubleProperty(this, "y1"); //$NON-NLS-1$
+			this.ay = new SimpleDoubleProperty(this, "y1"); 
 		}
 		return this.ay;
 	}
@@ -224,7 +224,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Pure
 	public DoubleProperty x2Property() {
 		if (this.bx == null) {
-			this.bx = new SimpleDoubleProperty(this, "x2"); //$NON-NLS-1$
+			this.bx = new SimpleDoubleProperty(this, "x2"); 
 		}
 		return this.bx;
 	}
@@ -242,7 +242,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Pure
 	public DoubleProperty y2Property() {
 		if (this.by == null) {
-			this.by = new SimpleDoubleProperty(this, "y2"); //$NON-NLS-1$
+			this.by = new SimpleDoubleProperty(this, "y2"); 
 		}
 		return this.by;
 	}
@@ -260,7 +260,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Override
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			},

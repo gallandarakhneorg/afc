@@ -33,17 +33,17 @@ package org.arakhne.afc.math;
 @Deprecated
 @SuppressWarnings("checkstyle:all")
 public interface MathFunction {
-	
+
 	/** Replies the value of the function.
-	 * 
+	 *
 	 * @param x
 	 * @return the value of {@code f(x)}.
 	 * @throws MathException in case {@code f(x)} could not be computed
 	 */
 	public double f(double x)  throws MathException;
-	
+
 	/** Replies the range of the function.
-	 * 
+	 *
 	 * @return a array of ranges. It corresponds to a list of couples that defined the set of valid values.
 	 */
 	public MathFunctionRange[] getRange();

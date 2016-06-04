@@ -86,8 +86,8 @@ public class JPopupTextField extends JPanel {
 		Font smallFont = font.deriveFont(size);
 		this.textField.setFont(smallFont);
 		this.textField.setMinimumSize(new Dimension(2*font.getSize(), font.getSize()));
-		this.textField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel");  //$NON-NLS-1$
-		this.textField.getActionMap().put("Cancel", new AbstractAction() { //$NON-NLS-1$
+		this.textField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel");   //$NON-NLS-1$
+		this.textField.getActionMap().put("Cancel", new AbstractAction() {  //$NON-NLS-1$
 			private static final long serialVersionUID = -2343325366957567597L;
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -113,7 +113,7 @@ public class JPopupTextField extends JPanel {
 		if (old==null || old.getX()!=x || old.getY()!=y) {
 			this.preferredLocation = new Point2D.Float(x,y);
 			layoutInputComponent();
-			firePropertyChange("preferredLocation", old, this.preferredLocation); //$NON-NLS-1$
+			firePropertyChange("preferredLocation", old, this.preferredLocation);  //$NON-NLS-1$
 		}
 	}
 
@@ -127,7 +127,7 @@ public class JPopupTextField extends JPanel {
 				(old==null || p==null || !p.equals(old))) {
 			this.preferredLocation = p;
 			layoutInputComponent();
-			firePropertyChange("preferredLocation", old, this.preferredLocation); //$NON-NLS-1$
+			firePropertyChange("preferredLocation", old, this.preferredLocation);  //$NON-NLS-1$
 		}
 	}
 

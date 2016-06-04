@@ -57,7 +57,7 @@ public abstract class AbstractRectangularShape2i<IT extends AbstractRectangularS
 	 * @param shape the shape to copy.
 	 */
 	public AbstractRectangularShape2i(RectangularShape2ai<?, ?, ?, ?, ?, ?> shape) {
-		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Shape must be not null"; 
 		this.minx = shape.getMinX();
 		this.miny = shape.getMinY();
 		this.maxx = shape.getMaxX();
@@ -176,15 +176,15 @@ public abstract class AbstractRectangularShape2i<IT extends AbstractRectangularS
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getMinX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMinY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxY());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 

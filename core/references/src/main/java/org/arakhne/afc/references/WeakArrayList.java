@@ -31,6 +31,9 @@ import java.util.List;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
+
 /**
  * A array-based <tt>List</tt> implementation with <em>weak keys</em>.
  * An entry in a <tt>WeakArrayList</tt> will automatically be removed when
@@ -95,9 +98,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
 	 *            is negative
 	 */
 	public WeakArrayList(int initialCapacity) {
-		if (initialCapacity < 0) {
-			throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity); //$NON-NLS-1$
-		}
+		assert initialCapacity >= 0 : AssertMessages.positiveOrZeroParameter();
 		this.data = new Object[initialCapacity];
 		this.size = 0;
 	}
@@ -270,13 +271,13 @@ public class WeakArrayList<T> extends AbstractList<T> {
 	protected void assertRange(int index, boolean allowLast) {
 		final int csize = expurge();
 		if (index < 0) {
-			throw new IndexOutOfBoundsException("invalid negative value: " + Integer.toString(index)); //$NON-NLS-1$
+			throw new IndexOutOfBoundsException(Locale.getString("E1", index)); //$NON-NLS-1$
 		}
 		if (allowLast && (index > csize)) {
-			throw new IndexOutOfBoundsException("index>" + csize + ": " + Integer.toString(index)); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new IndexOutOfBoundsException(Locale.getString("E2", csize, index)); //$NON-NLS-1$
 		}
 		if (!allowLast && (index >= csize)) {
-			throw new IndexOutOfBoundsException("index>=" + csize + ": " + Integer.toString(index)); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new IndexOutOfBoundsException(Locale.getString("E3", csize, index)); //$NON-NLS-1$
 		}
 	}
 

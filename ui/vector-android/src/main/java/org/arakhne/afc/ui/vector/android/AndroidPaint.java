@@ -133,7 +133,7 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 			this.paint.setStrokeJoin(Join.ROUND);
 			break;
 		default:
-			throw new IllegalArgumentException("join"); //$NON-NLS-1$
+			throw new IllegalArgumentException("join"); 
 		}
 		switch(endCap) {
 		case BUTT:
@@ -146,7 +146,7 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 			this.paint.setStrokeCap(Cap.SQUARE);
 			break;
 		default:
-			throw new IllegalArgumentException("endCap"); //$NON-NLS-1$
+			throw new IllegalArgumentException("endCap"); 
 		}
 		if (dashes!=null && dashes.length>=2) {
 			this.paint.setPathEffect(new DashPathEffect(dashes, dashPhase));
@@ -260,7 +260,7 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 
 	@Override
 	public float getMaxAdvance() {
-		return this.paint.measureText("m"); //$NON-NLS-1$
+		return this.paint.measureText("m"); 
 	}
 
 	@Override
@@ -305,18 +305,18 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 		Typeface tf = this.paint.getTypeface();
 		tf = Typeface.create(tf, Typeface.NORMAL);
 		if (tf.equals(Typeface.DEFAULT)) {
-			return "Normal"; //$NON-NLS-1$
+			return "Normal"; 
 		}
 		if (tf.equals(Typeface.MONOSPACE)) {
-			return "Monospace"; //$NON-NLS-1$
+			return "Monospace"; 
 		}
 		if (tf.equals(Typeface.SANS_SERIF)) {
-			return "Sans"; //$NON-NLS-1$
+			return "Sans"; 
 		}
 		if (tf.equals(Typeface.SERIF)) {
-			return "Serif"; //$NON-NLS-1$
+			return "Serif"; 
 		}
-		return "Unknown"; //$NON-NLS-1$
+		return "Unknown"; 
 	}
 
 	@Override
@@ -328,22 +328,22 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 	public String getPhysicalPSName() {
 		StringBuilder b = new StringBuilder();
 		b.append(getName());
-		b.append("."); //$NON-NLS-1$
+		b.append("."); 
 		Typeface tf = this.paint.getTypeface();
 		if (tf==null) tf = Typeface.DEFAULT;
 		switch(tf.getStyle()) {
 		case Typeface.BOLD_ITALIC:
-			b.append("bolditalic"); //$NON-NLS-1$
+			b.append("bolditalic"); 
 			break;
 		case Typeface.BOLD:
-			b.append("bold"); //$NON-NLS-1$
+			b.append("bold"); 
 			break;
 		case Typeface.ITALIC:
-			b.append("italic"); //$NON-NLS-1$
+			b.append("italic"); 
 			break;
 		default:
 		case Typeface.NORMAL:
-			b.append("plain"); //$NON-NLS-1$
+			b.append("plain"); 
 			break;
 		}
 		return b.toString();
@@ -400,7 +400,7 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 	@Override
 	public String toString() {
 		if (this.paint==null) return null;
-		return "color=0x"+Integer.toHexString(this.paint.getColor()); //$NON-NLS-1$
+		return "color=0x"+Integer.toHexString(this.paint.getColor()); 
 	}
 
 	@Override

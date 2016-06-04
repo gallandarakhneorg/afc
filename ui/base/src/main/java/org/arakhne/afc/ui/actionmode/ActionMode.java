@@ -323,7 +323,7 @@ public abstract class ActionMode<DRAW extends Selectable, CANVAS, COLOR> {
 				mode = delegation.newInstance();
 			}
 			catch (Throwable e) {
-				throw new ActionModeException(Locale.getString("NOT_MODE_TRIGGER"), e); //$NON-NLS-1$
+				throw new ActionModeException(Locale.getString("NOT_MODE_TRIGGER"), e);  //$NON-NLS-1$
 			}
 			mode.setModeManager(getModeManager());
 		}

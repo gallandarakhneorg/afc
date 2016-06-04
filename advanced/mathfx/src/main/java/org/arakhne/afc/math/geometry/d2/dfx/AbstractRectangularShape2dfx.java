@@ -78,7 +78,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	 * @param shape the shape to copy.
 	 */
 	public AbstractRectangularShape2dfx(RectangularShape2afp<?, ?, ?, ?, ?, ?> shape) {
-		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Shape must be not null"; 
 		setFromCorners(shape.getMinX(), shape.getMinY(), shape.getMaxX(), shape.getMaxY());
 	}
 
@@ -142,7 +142,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Pure
 	public DoubleProperty minXProperty() {
 		if (this.minX == null) {
-			this.minX = new SimpleDoubleProperty(this, "minX") { //$NON-NLS-1$
+			this.minX = new SimpleDoubleProperty(this, "minX") { 
 				@Override
 				protected void invalidated() {
 					final double currentMin = get();
@@ -175,7 +175,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Pure
 	public DoubleProperty maxXProperty() {
 		if (this.maxX == null) {
-			this.maxX = new SimpleDoubleProperty(this, "maxX") { //$NON-NLS-1$
+			this.maxX = new SimpleDoubleProperty(this, "maxX") { 
 				@Override
 				protected void invalidated() {
 					final double currentMax = get();
@@ -208,7 +208,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Pure
 	public DoubleProperty minYProperty() {
 		if (this.minY == null) {
-			this.minY = new SimpleDoubleProperty(this, "minY") { //$NON-NLS-1$
+			this.minY = new SimpleDoubleProperty(this, "minY") { 
 				@Override
 				protected void invalidated() {
 					final double currentMin = get();
@@ -241,7 +241,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Pure
 	public DoubleProperty maxYProperty() {
 		if (this.maxY == null) {
-			this.maxY = new SimpleDoubleProperty(this, "maxY") { //$NON-NLS-1$
+			this.maxY = new SimpleDoubleProperty(this, "maxY") { 
 				@Override
 				protected void invalidated() {
 					final double currentMax = get();
@@ -268,7 +268,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Pure
 	public DoubleProperty widthProperty() {
 		if (this.width == null) {
-			this.width = new SimpleDoubleProperty(this, "width"); //$NON-NLS-1$
+			this.width = new SimpleDoubleProperty(this, "width"); 
 			this.width.bind(Bindings.subtract(maxXProperty(), minXProperty()));
 		}
 		return this.width;
@@ -286,7 +286,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Pure
 	public DoubleProperty heightProperty() {
 		if (this.height == null) {
-			this.height = new SimpleDoubleProperty(this, "height"); //$NON-NLS-1$
+			this.height = new SimpleDoubleProperty(this, "height"); 
 			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
 		}
 		return this.height;
@@ -308,22 +308,22 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getMinX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMinY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxY());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
 	@Override
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			},

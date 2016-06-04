@@ -95,15 +95,15 @@ public class Segment2d extends AbstractShape2d<Segment2d>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getX1());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY1());
-		b.append("|"); //$NON-NLS-1$
+		b.append("|"); 
 		b.append(getX2());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY2());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 

@@ -29,6 +29,7 @@ import java.util.Map;
 
 import org.arakhne.afc.vmutil.ResourceNotFoundException;
 import org.arakhne.afc.vmutil.Resources;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /**
  * The class <code>URLConnection</code> is implementing
@@ -63,7 +64,7 @@ class URLConnection extends java.net.URLConnection {
 
 	@Override
     public String getHeaderField(int index) {
-		assert index >= 0 : "Index must be positive or zero"; //$NON-NLS-1$
+		assert index >= 0 : AssertMessages.positiveOrZeroParameter();
 		try {
 			connect();
 		} catch (IOException e) {
@@ -84,7 +85,7 @@ class URLConnection extends java.net.URLConnection {
 
     @Override
     public String getHeaderFieldKey(int index) {
-		assert index >= 0 : "Index must be positive or zero"; //$NON-NLS-1$
+		assert index >= 0 : AssertMessages.positiveOrZeroParameter();
 		try {
 			connect();
 		} catch (IOException e) {

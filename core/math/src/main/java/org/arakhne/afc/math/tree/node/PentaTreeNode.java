@@ -236,7 +236,7 @@ public abstract class PentaTreeNode<D, N extends PentaTreeNode<D, N>> extends Ab
 			return this.child5;
 		default:
 		}
-		throw new IndexOutOfBoundsException(index + " >= 5"); //$NON-NLS-1$
+		throw new IndexOutOfBoundsException(index + " >= 5"); 
 	}
 
 	@Pure
@@ -439,7 +439,7 @@ public abstract class PentaTreeNode<D, N extends PentaTreeNode<D, N>> extends Ab
 			return setChild5(newChild);
 		default:
 		}
-		throw new IndexOutOfBoundsException(index + ">= 5"); //$NON-NLS-1$
+		throw new IndexOutOfBoundsException(index + ">= 5"); 
 	}
 
 	@Override

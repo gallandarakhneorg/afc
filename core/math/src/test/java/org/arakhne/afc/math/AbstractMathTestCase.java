@@ -83,13 +83,13 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	public void assertEpsilonEquals(String message, Tuple2D<?> expected, Tuple2D<?> actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same x value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same x value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getY(), actual.getY())) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same y value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same y value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
@@ -105,13 +105,13 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	public void assertNotEpsilonEquals(String message, Tuple2D<?> expected, Tuple2D<?> actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same x value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same x value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getY(), actual.getY(), false)) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same y value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same y value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
@@ -147,19 +147,19 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	public void assertEpsilonEquals(String message, Tuple3D<?> expected, Tuple3D<?> actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same x value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same x value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getY(), actual.getY())) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same y value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same y value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getZ(), actual.getZ())) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same z value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same z value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
@@ -188,19 +188,19 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	public void assertNotEpsilonEquals(String message, Tuple3D<?> expected, Tuple3D<?> actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same x value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same x value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getY(), actual.getY(), false)) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same y value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same y value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getZ(), actual.getZ(), false)) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same z value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same z value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
@@ -236,25 +236,25 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	public void assertEpsilonEquals(String message, Quaternion expected, Quaternion actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same x value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same x value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getY(), actual.getY())) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same y value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same y value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getZ(), actual.getZ())) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same z value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same z value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getW(), actual.getW())) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same w value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same w value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
@@ -270,25 +270,25 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	public void assertNotEpsilonEquals(String message, Quaternion expected, Quaternion actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same x value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same x value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getY(), actual.getY(), false)) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same y value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same y value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getZ(), actual.getZ(), false)) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same z value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same z value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getW(), actual.getW(), false)) {
 			throw new ComparisonFailure(
-					formatFailMessage(message, "not same w value", expected, actual), //$NON-NLS-1$
+					formatFailMessage(message, "not same w value", expected, actual), 
 					expected.toString(),
 					actual.toString());
 		}
@@ -406,10 +406,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
 		if (!isEpsilonEquals(distSq, 0.)) {
-			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.getX() + "; " + v.getY() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new ComparisonFailure(formatFailMessage(null, "not same vector", str1, str2), //$NON-NLS-1$
-					str1, str2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ")";   
+			final String str2 = "(" + v.getX() + ", " + v.getY() + ")";   
+			throw new ComparisonFailure(formatFailMessage(null, "not same vector", str1, str2), 
+					str1, str2);   
 		}
 	}
 
@@ -421,10 +421,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 */
 	public void assertIntVectorEquals(int x, int y, Vector2D<?, ?> v) {
 		if (x != v.ix() || y != v.iy()) {
-			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.ix() + "; " + v.iy() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new ComparisonFailure(formatFailMessage(null, "not same vector", str1, str2), //$NON-NLS-1$
-					str1, str2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ")";   
+			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";   
+			throw new ComparisonFailure(formatFailMessage(null, "not same vector", str1, str2), 
+					str1, str2);   
 		}
 	}
 
@@ -439,10 +439,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
 		if (isEpsilonEquals(distSq, 0.)) {
-			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.getX() + "; " + v.getY() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new ComparisonFailure(formatFailMessage(null, "same vector", str1, str2), //$NON-NLS-1$
-					str1, str2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ")";   
+			final String str2 = "(" + v.getX() + ", " + v.getY() + ")";   
+			throw new ComparisonFailure(formatFailMessage(null, "same vector", str1, str2), 
+					str1, str2);   
 		}
 	}
 
@@ -454,10 +454,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 */
 	public void assertIntVectorNotEquals(int x, int y, Vector2D<?, ?> v) {
 		if (x == v.ix() && y == v.iy()) {
-			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.ix() + "; " + v.iy() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new ComparisonFailure(formatFailMessage(null, "same vector", str1, str2), //$NON-NLS-1$
-					str1, str2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ")";   
+			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";   
+			throw new ComparisonFailure(formatFailMessage(null, "same vector", str1, str2), 
+					str1, str2);   
 		}
 	}
 
@@ -474,10 +474,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		double dz = z - v.getZ();
 		double distSq = dx * dx + dy * dy + dz * dz;
 		if (!isEpsilonEquals(distSq, 0.)) {
-			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.getX() + "; " + v.getY() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new ComparisonFailure(formatFailMessage(null, "not same vector", str1, str2), //$NON-NLS-1$
-					str1, str2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ")";   
+			final String str2 = "(" + v.getX() + ", " + v.getY() + ")";   
+			throw new ComparisonFailure(formatFailMessage(null, "not same vector", str1, str2), 
+					str1, str2);   
 		}
 	}
 
@@ -490,10 +490,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 */
 	public void assertIntVectorEquals(int x, int y, int z, Vector3D v) {
 		if (x != v.ix() || y != v.iy() || z != v.iz()) {
-			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.ix() + "; " + v.iy() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new ComparisonFailure(formatFailMessage(null, "not same vector", str1, str2), //$NON-NLS-1$
-					str1, str2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ")";   
+			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";   
+			throw new ComparisonFailure(formatFailMessage(null, "not same vector", str1, str2), 
+					str1, str2);   
 		}
 	}
 
@@ -510,10 +510,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		double dz = z - v.getZ();
 		double distSq = dx * dx + dy * dy + dz * dz;
 		if (isEpsilonEquals(distSq, 0.)) {
-			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.getX() + "; " + v.getY() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new ComparisonFailure(formatFailMessage(null, "same vector", str1, str2), //$NON-NLS-1$
-					str1, str2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ")";   
+			final String str2 = "(" + v.getX() + ", " + v.getY() + ")";   
+			throw new ComparisonFailure(formatFailMessage(null, "same vector", str1, str2), 
+					str1, str2);   
 		}
 	}
 
@@ -526,10 +526,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 */
 	public void assertIntVectorNotEquals(int x, int y, int z, Vector3D v) {
 		if (x == v.ix() && y == v.iy() && z == v.iz()) {
-			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.ix() + "; " + v.iy() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new ComparisonFailure(formatFailMessage(null, "same vector", str1, str2), //$NON-NLS-1$
-					str1, str2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ")";   
+			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";   
+			throw new ComparisonFailure(formatFailMessage(null, "same vector", str1, str2), 
+					str1, str2);   
 		}
 	}
 
@@ -544,10 +544,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
 		if (!isEpsilonEquals(distSq, 0.)) {
-			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.getX() + "; " + v.getY() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new ComparisonFailure(formatFailMessage(null, "not same point", str1, str2), //$NON-NLS-1$
-					str1, str2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ")";   
+			final String str2 = "(" + v.getX() + ", " + v.getY() + ")";   
+			throw new ComparisonFailure(formatFailMessage(null, "not same point", str1, str2), 
+					str1, str2);   
 		}
 	}
 
@@ -559,10 +559,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 */
 	public void assertIntPointEquals(int x, int y, Point2D<?, ?> v) {
 		if (x != v.ix() || y != v.iy()) {
-			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.ix() + "; " + v.iy() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new ComparisonFailure(formatFailMessage(null, "not same point", str1, str2), //$NON-NLS-1$
-					str1, str2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ")";   
+			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";   
+			throw new ComparisonFailure(formatFailMessage(null, "not same point", str1, str2), 
+					str1, str2);   
 		}
 	}
 
@@ -577,10 +577,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
 		if (isEpsilonEquals(distSq, 0.)) {
-			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.getX() + "; " + v.getY() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new ComparisonFailure(formatFailMessage(null, "same point", str1, str2), //$NON-NLS-1$
-					str1, str2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ")";   
+			final String str2 = "(" + v.getX() + ", " + v.getY() + ")";   
+			throw new ComparisonFailure(formatFailMessage(null, "same point", str1, str2), 
+					str1, str2);   
 		}
 	}
 
@@ -592,10 +592,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 */
 	public void assertIntPointNotEquals(int x, int y, Point2D<?, ?> v) {
 		if (x == v.ix() && y == v.iy()) {
-			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			final String str2 = "(" + v.ix() + "; " + v.iy() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			throw new ComparisonFailure(formatFailMessage(null, "same point", str1, str2), //$NON-NLS-1$
-					str1, str2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			final String str1 = "(" + x + ", " + y + ")";   
+			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";   
+			throw new ComparisonFailure(formatFailMessage(null, "same point", str1, str2), 
+					str1, str2);   
 		}
 	}
 
@@ -610,7 +610,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			||(!isEpsilonEquals(expected.getM10(), actual.getM10()))
 			||(!isEpsilonEquals(expected.getM11(), actual.getM11()))) {
 			throw new ComparisonFailure(
-					formatFailMessage(null, "Not same matrices", expected, actual), //$NON-NLS-1$
+					formatFailMessage(null, "Not same matrices", expected, actual), 
 					expected.toString(), actual.toString());
 		}
 	}
@@ -626,7 +626,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			&&(isEpsilonEquals(expected.getM10(), actual.getM10()))
 			&&(isEpsilonEquals(expected.getM11(), actual.getM11()))) {
 			throw new ComparisonFailure(
-					formatFailMessage(null, "Not same matrices", expected, actual), //$NON-NLS-1$
+					formatFailMessage(null, "Not same matrices", expected, actual), 
 					expected.toString(), actual.toString());
 		}
 	}
@@ -647,7 +647,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			||(!isEpsilonEquals(expected.getM21(), actual.getM21()))
 			||(!isEpsilonEquals(expected.getM22(), actual.getM22()))) {
 			throw new ComparisonFailure(
-					formatFailMessage(null, "Not same matrices", expected, actual), //$NON-NLS-1$
+					formatFailMessage(null, "Not same matrices", expected, actual), 
 					expected.toString(), actual.toString());
 		}
 	}
@@ -668,7 +668,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			&&(isEpsilonEquals(expected.getM21(), actual.getM21()))
 			&&(isEpsilonEquals(expected.getM22(), actual.getM22()))) {
 			throw new ComparisonFailure(
-					formatFailMessage(null, "Not same matrices", expected, actual), //$NON-NLS-1$
+					formatFailMessage(null, "Not same matrices", expected, actual), 
 					expected.toString(), actual.toString());
 		}
 	}
@@ -696,7 +696,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			||(!isEpsilonEquals(expected.getM32(), actual.getM32()))
 			||(!isEpsilonEquals(expected.getM33(), actual.getM33()))) {
 			throw new ComparisonFailure(
-					formatFailMessage(null, "Not same matrices", expected, actual), //$NON-NLS-1$
+					formatFailMessage(null, "Not same matrices", expected, actual), 
 					expected.toString(), actual.toString());
 		}
 	}
@@ -724,7 +724,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			&&(isEpsilonEquals(expected.getM32(), actual.getM32()))
 			&&(isEpsilonEquals(expected.getM33(), actual.getM33()))) {
 			throw new ComparisonFailure(
-					formatFailMessage(null, "Not same matrices", expected, actual), //$NON-NLS-1$
+					formatFailMessage(null, "Not same matrices", expected, actual), 
 					expected.toString(), actual.toString());
 		}
 	}

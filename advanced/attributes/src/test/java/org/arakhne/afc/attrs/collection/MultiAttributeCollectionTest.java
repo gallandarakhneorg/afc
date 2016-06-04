@@ -58,27 +58,27 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		this.subprovider3 = new HeapAttributeCollection();
 		this.subcontainer4 = new AttributeContainerStub();
 		
-		this.subprovider1.setAttribute("A", true); //$NON-NLS-1$
-		this.subprovider1.setAttribute("B", 1); //$NON-NLS-1$
-		this.subprovider1.setAttribute("C", new URL("http://www.multiagent.fr")); //$NON-NLS-1$ //$NON-NLS-2$
-		this.subprovider1.setAttribute("E", new URL("http://www.multiagent.fr")); //$NON-NLS-1$ //$NON-NLS-2$
-		this.subprovider1.setAttribute("Z1", "Z1"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.subprovider1.setAttribute("A", true); 
+		this.subprovider1.setAttribute("B", 1); 
+		this.subprovider1.setAttribute("C", new URL("http://www.multiagent.fr"));  
+		this.subprovider1.setAttribute("E", new URL("http://www.multiagent.fr"));  
+		this.subprovider1.setAttribute("Z1", "Z1");  
 
-		this.subprovider2.setAttribute("A", true); //$NON-NLS-1$
-		this.subprovider2.setAttribute("B", 1.); //$NON-NLS-1$
-		this.subprovider2.setAttribute("D", "abc"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.subprovider2.setAttribute("E", 1); //$NON-NLS-1$
-		this.subprovider2.setAttribute("Z2", "Z2"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.subprovider2.setAttribute("A", true); 
+		this.subprovider2.setAttribute("B", 1.); 
+		this.subprovider2.setAttribute("D", "abc");  
+		this.subprovider2.setAttribute("E", 1); 
+		this.subprovider2.setAttribute("Z2", "Z2");  
 
-		this.subprovider3.setAttribute("A", false); //$NON-NLS-1$
-		this.subprovider3.setAttribute("B", 1); //$NON-NLS-1$
-		this.subprovider3.setAttribute("C", new URL("http://www.multiagent.fr")); //$NON-NLS-1$ //$NON-NLS-2$
-		this.subprovider3.setAttribute("D", "abc"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.subprovider3.setAttribute("E", true); //$NON-NLS-1$
-		this.subprovider3.setAttribute("Z3", "Z3"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.subprovider3.setAttribute("A", false); 
+		this.subprovider3.setAttribute("B", 1); 
+		this.subprovider3.setAttribute("C", new URL("http://www.multiagent.fr"));  
+		this.subprovider3.setAttribute("D", "abc");  
+		this.subprovider3.setAttribute("E", true); 
+		this.subprovider3.setAttribute("Z3", "Z3");  
 		
-		this.subcontainer4.provider.setAttribute("A", true); //$NON-NLS-1$
-		this.subcontainer4.provider.setAttribute("Z4", "Z4"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.subcontainer4.provider.setAttribute("A", true); 
+		this.subcontainer4.provider.setAttribute("Z4", "Z4");  
 		
 		this.provider.addAttributeContainer(this.subprovider1);
 		this.provider.addAttributeContainer(this.subprovider2);
@@ -115,12 +115,12 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEpsilonEquals(Collections.emptyList(), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Collections.emptyList(), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 
 		assertFalse(this.provider.removeAllAttributes());
@@ -129,12 +129,12 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEpsilonEquals(Collections.emptyList(), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Collections.emptyList(), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 	}
 
@@ -143,7 +143,7 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		//
 		// Remove A
 		//
-		assertTrue(this.provider.removeAttribute("A")); //$NON-NLS-1$
+		assertTrue(this.provider.removeAttribute("A")); 
 		assertEquals(4, this.subprovider1.getAttributeCount());
 		assertEquals(4, this.subprovider2.getAttributeCount());
 		assertEquals(5, this.subprovider3.getAttributeCount());
@@ -151,84 +151,84 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(9, this.provider.getAttributeCount());		
 		
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("B", 1.), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("B", 1.), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.INTEGER), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.INTEGER), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 
 		//
 		// Failure on remove of ZZZ
 		//
-		assertFalse(this.provider.removeAttribute("ZZZ")); //$NON-NLS-1$
+		assertFalse(this.provider.removeAttribute("ZZZ")); 
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("B", 1.), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("B", 1.), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.INTEGER), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.INTEGER), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 
 		//
 		// Remove Z3
 		//
-		assertTrue(this.provider.removeAttribute("Z3")); //$NON-NLS-1$
+		assertTrue(this.provider.removeAttribute("Z3")); 
 		assertEquals(4, this.subprovider1.getAttributeCount());
 		assertEquals(4, this.subprovider2.getAttributeCount());
 		assertEquals(4, this.subprovider3.getAttributeCount());
@@ -236,36 +236,36 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(8, this.provider.getAttributeCount());
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("B", 1.), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true) //$NON-NLS-1$
+				new AttributeImpl("B", 1.), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true) 
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.INTEGER), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.INTEGER), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 	}
 
@@ -274,7 +274,7 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		//
 		// Rename A to ZZZ
 		//
-		assertTrue(this.provider.renameAttribute("A", "ZZZ")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(this.provider.renameAttribute("A", "ZZZ"));  
 		assertEquals(5, this.subprovider1.getAttributeCount());
 		assertEquals(5, this.subprovider2.getAttributeCount());
 		assertEquals(6, this.subprovider3.getAttributeCount());
@@ -282,48 +282,48 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(10, this.provider.getAttributeCount());		
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", false), //$NON-NLS-1$
-				new AttributeImpl("B", 1.), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", false), 
+				new AttributeImpl("B", 1.), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("ZZZ", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.INTEGER), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("ZZZ", AttributeType.BOOLEAN), 
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.INTEGER), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 
 		//
 		// Rename TOTOZZZ to A
 		//
-		assertFalse(this.provider.renameAttribute("TOTOZZZ", "A")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse(this.provider.renameAttribute("TOTOZZZ", "A"));  
 		assertEquals(5, this.subprovider1.getAttributeCount());
 		assertEquals(5, this.subprovider2.getAttributeCount());
 		assertEquals(6, this.subprovider3.getAttributeCount());
@@ -331,48 +331,48 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(10, this.provider.getAttributeCount());		
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", false), //$NON-NLS-1$
-				new AttributeImpl("B", 1.), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", false), 
+				new AttributeImpl("B", 1.), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("ZZZ", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.INTEGER), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("ZZZ", AttributeType.BOOLEAN), 
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.INTEGER), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 
 		//
 		// Rename Z4 to C
 		//
-		assertFalse(this.provider.renameAttribute("TOTOZZZ", "A")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse(this.provider.renameAttribute("TOTOZZZ", "A"));  
 		assertEquals(5, this.subprovider1.getAttributeCount());
 		assertEquals(5, this.subprovider2.getAttributeCount());
 		assertEquals(6, this.subprovider3.getAttributeCount());
@@ -380,42 +380,42 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(10, this.provider.getAttributeCount());		
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", false), //$NON-NLS-1$
-				new AttributeImpl("B", 1.), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", false), 
+				new AttributeImpl("B", 1.), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("ZZZ", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.INTEGER), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("ZZZ", AttributeType.BOOLEAN), 
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.INTEGER), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 	}
 
@@ -424,7 +424,7 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		//
 		// Rename A to ZZZ
 		//
-		assertTrue(this.provider.renameAttribute("A", "ZZZ")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(this.provider.renameAttribute("A", "ZZZ"));  
 		assertEquals(5, this.subprovider1.getAttributeCount());
 		assertEquals(5, this.subprovider2.getAttributeCount());
 		assertEquals(6, this.subprovider3.getAttributeCount());
@@ -432,48 +432,48 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(10, this.provider.getAttributeCount());		
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", false), //$NON-NLS-1$
-				new AttributeImpl("B", 1.), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", false), 
+				new AttributeImpl("B", 1.), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("ZZZ", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.INTEGER), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("ZZZ", AttributeType.BOOLEAN), 
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.INTEGER), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 
 		//
 		// Rename TOTOZZZ to A
 		//
-		assertFalse(this.provider.renameAttribute("TOTOZZZ", "A")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse(this.provider.renameAttribute("TOTOZZZ", "A"));  
 		assertEquals(5, this.subprovider1.getAttributeCount());
 		assertEquals(5, this.subprovider2.getAttributeCount());
 		assertEquals(6, this.subprovider3.getAttributeCount());
@@ -481,48 +481,48 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(10, this.provider.getAttributeCount());		
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", false), //$NON-NLS-1$
-				new AttributeImpl("B", 1.), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", false), 
+				new AttributeImpl("B", 1.), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("ZZZ", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.INTEGER), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("ZZZ", AttributeType.BOOLEAN), 
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.INTEGER), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 
 		//
 		// Rename Z4 to C
 		//
-		assertFalse(this.provider.renameAttribute("TOTOZZZ", "A")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse(this.provider.renameAttribute("TOTOZZZ", "A"));  
 		assertEquals(5, this.subprovider1.getAttributeCount());
 		assertEquals(5, this.subprovider2.getAttributeCount());
 		assertEquals(6, this.subprovider3.getAttributeCount());
@@ -530,42 +530,42 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(10, this.provider.getAttributeCount());		
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", false), //$NON-NLS-1$
-				new AttributeImpl("B", 1.), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", false), 
+				new AttributeImpl("B", 1.), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("ZZZ", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.INTEGER), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("ZZZ", AttributeType.BOOLEAN), 
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.INTEGER), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 	}
 
@@ -575,8 +575,8 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		// Set ZZZ
 		//
 		assertEquals(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				this.provider.setAttribute("ZZZ", new AttributeValueImpl("xyz"))); //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				this.provider.setAttribute("ZZZ", new AttributeValueImpl("xyz")));  
 		assertEquals(6, this.subprovider1.getAttributeCount());
 		assertEquals(6, this.subprovider2.getAttributeCount());
 		assertEquals(7, this.subprovider3.getAttributeCount());
@@ -584,53 +584,53 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(10, this.provider.getAttributeCount());		
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				new AttributeImpl("A", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				new AttributeImpl("A", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("A", false), //$NON-NLS-1$
-				new AttributeImpl("B", 1.), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				new AttributeImpl("A", false), 
+				new AttributeImpl("B", 1.), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("ZZZ", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.INTEGER), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("ZZZ", AttributeType.STRING), 
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.INTEGER), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 
 		//
 		// Set B
 		//
 		assertEquals(
-				new AttributeImpl("B", "def"), //$NON-NLS-1$ //$NON-NLS-2$
-				this.provider.setAttribute("B", new AttributeValueImpl("def"))); //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("B", "def"),  
+				this.provider.setAttribute("B", new AttributeValueImpl("def")));  
 		assertEquals(6, this.subprovider1.getAttributeCount());
 		assertEquals(6, this.subprovider2.getAttributeCount());
 		assertEquals(7, this.subprovider3.getAttributeCount());
@@ -638,45 +638,45 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(10, this.provider.getAttributeCount());		
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("B", "def"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				new AttributeImpl("A", true), 
+				new AttributeImpl("B", "def"),  
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("B", "def"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				new AttributeImpl("A", true), 
+				new AttributeImpl("B", "def"),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("A", false), //$NON-NLS-1$
-				new AttributeImpl("B", "def"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				new AttributeImpl("A", false), 
+				new AttributeImpl("B", "def"),  
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("ZZZ", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("ZZZ", AttributeType.STRING), 
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.STRING), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 	}
 
@@ -686,8 +686,8 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		// Set ZZZ
 		//
 		assertEquals(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				this.provider.setAttribute(new AttributeImpl("ZZZ", "xyz"))); //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				this.provider.setAttribute(new AttributeImpl("ZZZ", "xyz")));  
 		assertEquals(6, this.subprovider1.getAttributeCount());
 		assertEquals(6, this.subprovider2.getAttributeCount());
 		assertEquals(7, this.subprovider3.getAttributeCount());
@@ -695,53 +695,53 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(10, this.provider.getAttributeCount());		
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				new AttributeImpl("A", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				new AttributeImpl("A", true), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("A", false), //$NON-NLS-1$
-				new AttributeImpl("B", 1.), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				new AttributeImpl("A", false), 
+				new AttributeImpl("B", 1.), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("ZZZ", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.INTEGER), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("ZZZ", AttributeType.STRING), 
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.INTEGER), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 
 		//
 		// Set B
 		//
 		assertEquals(
-				new AttributeImpl("B", "def"), //$NON-NLS-1$ //$NON-NLS-2$
-				this.provider.setAttribute(new AttributeImpl("B", "def"))); //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("B", "def"),  
+				this.provider.setAttribute(new AttributeImpl("B", "def")));  
 		assertEquals(6, this.subprovider1.getAttributeCount());
 		assertEquals(6, this.subprovider2.getAttributeCount());
 		assertEquals(7, this.subprovider3.getAttributeCount());
@@ -749,45 +749,45 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(10, this.provider.getAttributeCount());		
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("B", "def"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				new AttributeImpl("A", true), 
+				new AttributeImpl("B", "def"),  
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("B", "def"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				new AttributeImpl("A", true), 
+				new AttributeImpl("B", "def"),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("ZZZ", "xyz"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("A", false), //$NON-NLS-1$
-				new AttributeImpl("B", "def"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("ZZZ", "xyz"),  
+				new AttributeImpl("A", false), 
+				new AttributeImpl("B", "def"),  
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("ZZZ", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("A", AttributeType.BOOLEAN), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("ZZZ", AttributeType.STRING), 
+				makeUninitialized("A", AttributeType.BOOLEAN), 
+				makeUninitialized("B", AttributeType.STRING), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 	}
 
@@ -797,8 +797,8 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		// Set type of A to STRING
 		//
 		assertEquals(
-				makeUninitialized("A", AttributeType.STRING), //$NON-NLS-1$
-				this.provider.setAttributeType("A", AttributeType.STRING)); //$NON-NLS-1$
+				makeUninitialized("A", AttributeType.STRING), 
+				this.provider.setAttributeType("A", AttributeType.STRING)); 
 
 		assertEquals(5, this.subprovider1.getAttributeCount());
 		assertEquals(5, this.subprovider2.getAttributeCount());
@@ -807,49 +807,49 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(9, this.provider.getAttributeCount());		
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", Boolean.TRUE.toString()), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", Boolean.TRUE.toString()), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", Boolean.TRUE.toString()), //$NON-NLS-1$
-				new AttributeImpl("B", 1), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", Boolean.TRUE.toString()), 
+				new AttributeImpl("B", 1), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", Boolean.FALSE.toString()), //$NON-NLS-1$
-				new AttributeImpl("B", 1.), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", Boolean.FALSE.toString()), 
+				new AttributeImpl("B", 1.), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("A", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.INTEGER), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("A", AttributeType.OBJECT), 
+				makeUninitialized("B", AttributeType.INTEGER), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 
 		//
 		// Set type of B to STRING
 		//
 		assertEquals(
-				makeUninitialized("B", AttributeType.STRING), //$NON-NLS-1$
-				this.provider.setAttributeType("B", AttributeType.STRING)); //$NON-NLS-1$
+				makeUninitialized("B", AttributeType.STRING), 
+				this.provider.setAttributeType("B", AttributeType.STRING)); 
 
 		assertEquals(5, this.subprovider1.getAttributeCount());
 		assertEquals(5, this.subprovider2.getAttributeCount());
@@ -858,41 +858,41 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		assertEquals(9, this.provider.getAttributeCount());		
 
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", Boolean.TRUE.toString()), //$NON-NLS-1$
-				new AttributeImpl("B", Long.toString(1)), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("Z1", "Z1") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", Boolean.TRUE.toString()), 
+				new AttributeImpl("B", Long.toString(1)), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("E", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("Z1", "Z1")  
 		), this.subprovider1.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", Boolean.TRUE.toString()), //$NON-NLS-1$
-				new AttributeImpl("B", Double.toString(1.)), //$NON-NLS-1$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", 1), //$NON-NLS-1$
-				new AttributeImpl("Z2", "Z2") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", Boolean.TRUE.toString()), 
+				new AttributeImpl("B", Double.toString(1.)), 
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", 1), 
+				new AttributeImpl("Z2", "Z2")  
 		), this.subprovider2.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", Boolean.FALSE.toString()), //$NON-NLS-1$
-				new AttributeImpl("B", Long.toString(1)), //$NON-NLS-1$
-				new AttributeImpl("C", new URL("http://www.multiagent.fr")), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("D", "abc"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E", true), //$NON-NLS-1$
-				new AttributeImpl("Z3", "Z3") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", Boolean.FALSE.toString()), 
+				new AttributeImpl("B", Long.toString(1)), 
+				new AttributeImpl("C", new URL("http://www.multiagent.fr")),  
+				new AttributeImpl("D", "abc"),  
+				new AttributeImpl("E", true), 
+				new AttributeImpl("Z3", "Z3")  
 		), this.subprovider3.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("A", true), //$NON-NLS-1$
-				new AttributeImpl("Z4", "Z4") //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("A", true), 
+				new AttributeImpl("Z4", "Z4")  
 		), this.subcontainer4.getAllAttributes());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("A", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("B", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("C", AttributeType.URL), //$NON-NLS-1$
-				makeUninitialized("D", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("E", AttributeType.OBJECT), //$NON-NLS-1$
-				makeUninitialized("Z1", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z2", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z3", AttributeType.STRING), //$NON-NLS-1$
-				makeUninitialized("Z4", AttributeType.STRING) //$NON-NLS-1$
+				makeUninitialized("A", AttributeType.OBJECT), 
+				makeUninitialized("B", AttributeType.STRING), 
+				makeUninitialized("C", AttributeType.URL), 
+				makeUninitialized("D", AttributeType.STRING), 
+				makeUninitialized("E", AttributeType.OBJECT), 
+				makeUninitialized("Z1", AttributeType.STRING), 
+				makeUninitialized("Z2", AttributeType.STRING), 
+				makeUninitialized("Z3", AttributeType.STRING), 
+				makeUninitialized("Z4", AttributeType.STRING) 
 		), this.provider.getAllAttributes());
 	}
 

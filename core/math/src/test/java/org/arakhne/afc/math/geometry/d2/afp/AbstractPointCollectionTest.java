@@ -271,7 +271,7 @@ public abstract class AbstractPointCollectionTest<P extends Point2D<? super P, ?
     public void retainAll() {
     	try {
     		this.collection.retainAll(Collections.emptyList());
-    		fail("Expecting an exception"); //$NON-NLS-1$
+    		fail("Expecting an exception"); 
     	}
     	catch(Throwable e1) {
     		e1.equals(e1);

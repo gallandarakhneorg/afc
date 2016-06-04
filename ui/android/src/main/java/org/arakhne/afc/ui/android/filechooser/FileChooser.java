@@ -87,7 +87,7 @@ public class FileChooser {
 			context.startActivityForResult(intent, activityResultRequestCode);
 		}
 		catch (ActivityNotFoundException e) {
-			Log.e("FILE_CHOOSER", e.getLocalizedMessage(), e); //$NON-NLS-1$
+			Log.e("FILE_CHOOSER", e.getLocalizedMessage(), e); 
 		}	
 	}
 
@@ -109,7 +109,7 @@ public class FileChooser {
 			int activityResultRequestCode, 
 			int chooserTitle,
 			Bundle options) {
-		showOpenChooser(context, activityResultRequestCode, chooserTitle, "file/*", options); //$NON-NLS-1$
+		showOpenChooser(context, activityResultRequestCode, chooserTitle, "file/*", options); 
 	}
 
 	/** Show the file chooser for opening a file.
@@ -215,7 +215,7 @@ public class FileChooser {
 			context.startActivityForResult(intent, activityResultRequestCode);
 		}
 		catch (ActivityNotFoundException e) {
-			Log.e("FILE_CHOOSER", e.getLocalizedMessage(), e); //$NON-NLS-1$
+			Log.e("FILE_CHOOSER", e.getLocalizedMessage(), e); 
 		}	
 	}
 
@@ -237,7 +237,7 @@ public class FileChooser {
 			int activityResultRequestCode, 
 			int chooserTitle,
 			Bundle options) {
-		showSaveChooser(context, activityResultRequestCode, chooserTitle, "file/*", options); //$NON-NLS-1$
+		showSaveChooser(context, activityResultRequestCode, chooserTitle, "file/*", options); 
 	}
 
 	/** Show the file chooser for saving a file.

@@ -28,6 +28,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.Point2D;
 
 /** Shadow of a path that is used for computing the crossing values
  * between a shape and the shadow.
@@ -56,7 +57,7 @@ public class PathShadow2afp {
      * @param path the path that is constituting the shadow.
      */
     public PathShadow2afp(Path2afp<?, ?, ?, ?, ?, ?> path) {
-        assert path != null : "Path must be not null"; //$NON-NLS-1$
+        assert path != null : "Path must be not null"; 
         this.pathIterator = path.getPathIterator();
         final Rectangle2afp<?, ?, ?, ?, ?, ?> box = path.toBoundingBox();
         this.boundingMinX = box.getMinX();
@@ -70,8 +71,8 @@ public class PathShadow2afp {
      * @param bounds the bounding box enclosing the primitives of the path iterator.
      */
     public PathShadow2afp(PathIterator2afp<?> pathIterator, Rectangle2afp<?, ?, ?, ?, ?, ?> bounds) {
-        assert pathIterator != null : "Path iterator must be not null"; //$NON-NLS-1$
-        assert bounds != null : "Bounding box must be not null"; //$NON-NLS-1$
+        assert pathIterator != null : "Path iterator must be not null"; 
+        assert bounds != null : "Bounding box must be not null"; 
         this.pathIterator = pathIterator;
         this.boundingMinX = bounds.getMinX();
         this.boundingMinY = bounds.getMinY();
@@ -87,14 +88,26 @@ public class PathShadow2afp {
      * @param maxY maximum y coordinate of the bounding box enclosing the primitives of the path iterator.
      */
     public PathShadow2afp(PathIterator2afp<?> pathIterator, double minX, double minY, double maxX, double maxY) {
-        assert pathIterator != null : "Path iterator must be not null"; //$NON-NLS-1$
-        assert minX <= maxX : "Minimum X coordinate must be lower than or equal to the maxmimum X coordinate"; //$NON-NLS-1$
-        assert minY <= maxY : "Minimum X coordinate must be lower than or equal to the maxmimum X coordinate"; //$NON-NLS-1$
+        assert pathIterator != null : "Path iterator must be not null"; 
+        assert minX <= maxX : "Minimum X coordinate must be lower than or equal to the maxmimum X coordinate"; 
+        assert minY <= maxY : "Minimum X coordinate must be lower than or equal to the maxmimum X coordinate"; 
         this.pathIterator = pathIterator;
         this.boundingMinX = minX;
         this.boundingMinY = minY;
         this.boundingMaxX = maxX;
         this.boundingMaxY = maxY;
+    }
+
+    /** Construct new path shadow.
+     * @param pathIterator the iterator on the path that is constituting the shadow.
+     */
+    public PathShadow2afp(PathIterator2afp<?> pathIterator) {
+        assert pathIterator != null : "Path iterator must be not null"; 
+        this.pathIterator = pathIterator;
+        this.boundingMinX = Double.NaN;
+        this.boundingMinY = Double.NaN;
+        this.boundingMaxX = Double.NaN;
+        this.boundingMaxY = Double.NaN;
     }
 
     /** Compute the crossings between this shadow and
@@ -125,57 +138,86 @@ public class PathShadow2afp {
         if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
             // The segment is intersecting the bounds of the shadow path.
             // We must consider the shape of shadow path now.
+            // Apply the previously computed crossings
+            // The segment is intersecting the bounds of the shadow path.
+            // We must consider the shape of shadow path now.
             final PathShadowData data = new PathShadowData(
                     this.boundingMinX,
                     this.boundingMinY,
-                    this.boundingMaxY);
-
-            final PathIterator2afp<?> iterator;
-            if (this.started) {
-                iterator = this.pathIterator.restartIterations();
-            } else {
-                this.started = true;
-                iterator = this.pathIterator;
-            }
-
-            discretizePathIterator(
-                    iterator,
-                    x0, y0, x1, y1,
-                    false,
-                    iterator.getWindingRule(),
-                    iterator.getGeomFactory(),
-                    data);
-
-            // Test if the shape is intesecting the shadow shape.
-            final int exactPathCrossings = data.getCrossings();
-            final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-            if (exactPathCrossings == MathConstants.SHAPE_INTERSECTS
-                    || (exactPathCrossings & mask) != 0) {
-                // The given line is intersecting the path shape
-                return MathConstants.SHAPE_INTERSECTS;
-            }
-
-            // There is no intersection with the shadow path's shape.
-            // Compute the crossings with the minimum/maximum y borders.
-            int inc = 0;
-            if (data.hasX4ymin()) {
-                ++inc;
-            }
-            if (data.hasX4ymax()) {
-                ++inc;
-            }
-
-            if (y0 < y1) {
-                numCrosses = inc;
-            } else {
-                numCrosses = -inc;
-            }
-
-            // Apply the previously computed crossings
-            numCrosses += crossings;
+                    this.boundingMaxY,
+                    null);
+            computeCrossings(crossings, x0, y0, x1, y1, data);
+            numCrosses = data.getCrossings();
         }
 
         return numCrosses;
+    }
+
+    /** Compute the crossings between this shadow and
+     * the given segment.
+     *
+     * @param crossings is the initial value of the crossings.
+     * @param x0 is the first point of the segment.
+     * @param y0 is the first point of the segment.
+     * @param x1 is the second point of the segment.
+     * @param y1 is the second point of the segment.
+     * @param data the data used for computation and providing the result.
+     */
+    @Pure
+    @SuppressWarnings("checkstyle:npathcomplexity")
+    public void computeCrossings(
+            int crossings,
+            double x0, double y0,
+            double x1, double y1,
+            PathShadowData data) {
+        assert data != null : "Data must be not null"; 
+
+        data.reset();
+
+        final PathIterator2afp<?> iterator;
+        if (this.started) {
+            iterator = this.pathIterator.restartIterations();
+        } else {
+            this.started = true;
+            iterator = this.pathIterator;
+        }
+
+        discretizePathIterator(
+                iterator,
+                x0, y0, x1, y1,
+                false,
+                iterator.getWindingRule(),
+                iterator.getGeomFactory(),
+                data);
+
+        // Test if the shape is intesecting the shadow shape.
+        final int exactPathCrossings = data.getCrossings();
+        final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+        if (exactPathCrossings == MathConstants.SHAPE_INTERSECTS
+                || (exactPathCrossings & mask) != 0) {
+            // The given line is intersecting the path shape
+            data.setCrossings(MathConstants.SHAPE_INTERSECTS);
+            return;
+        }
+
+        // There is no intersection with the shadow path's shape.
+        // Compute the crossings with the minimum/maximum y borders.
+        int inc = 0;
+        if (data.hasX4ymin()) {
+            ++inc;
+        }
+        if (data.hasX4ymax()) {
+            ++inc;
+        }
+
+        final int numCrosses;
+        if (y0 < y1) {
+            numCrosses = inc;
+        } else {
+            numCrosses = -inc;
+        }
+
+        data.setCrossings(numCrosses + crossings);
     }
 
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
@@ -194,10 +236,11 @@ public class PathShadow2afp {
 
         element = pi.next();
         if (element.getType() != PathElementType.MOVE_TO) {
-            throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+            throw new IllegalArgumentException("missing initial moveto in path definition"); 
         }
 
         Path2afp<?, ?, E, ?, ?, ?> localPath;
+        final Point2D<?, ?> point = data.isClosestPointNeeded() ? factory.newPoint() : null;
         double movx = element.getToX();
         double movy = element.getToY();
         double curx = movx;
@@ -221,6 +264,12 @@ public class PathShadow2afp {
                         endx, endy,
                         x1, y1, x2, y2,
                         data);
+                if (data.isClosestPointNeeded()) {
+                    assert point != null;
+                    final double distance = Segment2afp.computeClosestPointToSegment(
+                            x1, y1, x2, y2, curx, cury, endx, endy, point);
+                    data.setClosestPoint(point.getX(), point.getY(), distance);
+                }
                 if (data.getCrossings() == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -304,6 +353,12 @@ public class PathShadow2afp {
                             x1, y1, x2, y2,
                             data);
                 }
+                if (data.isClosestPointNeeded()) {
+                    assert point != null;
+                    final double distance = Segment2afp.computeClosestPointToSegment(
+                            x1, y1, x2, y2, curx, cury, movx, movy, point);
+                    data.setClosestPoint(point.getX(),  point.getY(), distance);
+                }
                 if (data.getCrossings() != 0) {
                     return;
                 }
@@ -325,6 +380,12 @@ public class PathShadow2afp {
                         movx, movy,
                         x1, y1, x2, y2,
                         data);
+                if (data.isClosestPointNeeded()) {
+                    assert point != null;
+                    final double distance = Segment2afp.computeClosestPointToSegment(
+                            x1, y1, x2, y2, curx, cury, movx, movy, point);
+                    data.setClosestPoint(point.getX(),  point.getY(), distance);
+                }
             } else {
                 // Assume that when is the path is open, only
                 // SHAPE_INTERSECTS may be return
@@ -503,7 +564,7 @@ public class PathShadow2afp {
      * @mavengroupid $GroupId$
      * @mavenartifactid $ArtifactId$
      */
-    private static class PathShadowData {
+    public static class PathShadowData {
 
         private int crossings;
 
@@ -515,15 +576,60 @@ public class PathShadow2afp {
 
         private double x4ymax;
 
+        private final double xmin;
+
         private final double ymin;
 
         private final double ymax;
 
-        PathShadowData(double xmin, double miny, double maxy) {
-            this.x4ymin = xmin;
-            this.x4ymax = xmin;
+        private double minDistance = Double.POSITIVE_INFINITY;
+
+        private final Point2D<?, ?> closestPoint;
+
+        /** Construct a path shadow data.
+         *
+         * @param xmin the minimum x of the shadow.
+         * @param miny the minimum y of the shadow.
+         * @param maxy the maximum y of the shadow.
+         * @param closestPoint the closest point to set, if not <code>null</code>.
+         */
+        public PathShadowData(double xmin, double miny, double maxy, Point2D<?, ?> closestPoint) {
+            this.xmin = xmin;
             this.ymin = miny;
             this.ymax = maxy;
+            this.closestPoint = closestPoint;
+            reset();
+        }
+
+        /** Reset this data container.
+         */
+        void reset() {
+            this.crossings = 0;
+            this.hasX4ymin = false;
+            this.hasX4ymax = false;
+            this.x4ymin = this.xmin;
+            this.x4ymax = this.xmin;
+        }
+
+        /** Replies if a closest point should be computed.
+         *
+         * @return <code>true</code> to compute the closest point.
+         */
+        public boolean isClosestPointNeeded() {
+            return this.closestPoint != null;
+        }
+
+        /** Change closest point and the distance between the shape and the shadowed shape.
+         *
+         * @param x x coordinate of the new closest point.
+         * @param y y coordinate of the new closest point.
+         * @param distance the distance to the closest point.
+         */
+        void setClosestPoint(double x, double y, double distance) {
+            if (distance < this.minDistance) {
+                this.minDistance = distance;
+                this.closestPoint.set(x, y);
+            }
         }
 
         /** Replies the number of crossings.
@@ -538,19 +644,19 @@ public class PathShadow2afp {
          *
          * @param crossings the new number of crossings.
          */
-        public void setCrossings(int crossings) {
+        void setCrossings(int crossings) {
             this.crossings = crossings;
         }
 
         /** Increment number of crossings.
          */
-        public void incrementCrossings() {
+        void incrementCrossings() {
             ++this.crossings;
         }
 
         /** Decrement number of crossings.
          */
-        public void decrementCrossings() {
+        void decrementCrossings() {
             --this.crossings;
         }
 
@@ -574,28 +680,37 @@ public class PathShadow2afp {
         @Override
         public String toString() {
             final StringBuilder b = new StringBuilder();
-            b.append("y min line:\n\tymin: "); //$NON-NLS-1$
+            b.append("y min line:\n\tymin: "); 
             b.append(this.ymin);
-            b.append("\n\tx: "); //$NON-NLS-1$
+            b.append("\n\tx: "); 
             if (this.hasX4ymin) {
                 b.append(this.x4ymin);
             } else {
-                b.append("none"); //$NON-NLS-1$
+                b.append("none"); 
             }
-            b.append("\ny max line:\n\tymax: "); //$NON-NLS-1$
+            b.append("\ny max line:\n\tymax: "); 
             b.append(this.ymax);
-            b.append("\n\tx: "); //$NON-NLS-1$
+            b.append("\n\tx: "); 
             if (this.hasX4ymax) {
                 b.append(this.x4ymax);
             } else {
-                b.append("none"); //$NON-NLS-1$
+                b.append("none"); 
             }
-            b.append("\ncrossings: "); //$NON-NLS-1$
+            b.append("\ncrossings: "); 
             b.append(this.crossings);
+            b.append("\nclosest point:\n\tcoordinates: "); 
+            b.append(this.closestPoint);
+            b.append("\n\tdistance: "); 
+            b.append(this.minDistance);
             return b.toString();
         }
 
-        public void setCrossingCoordinateForYMax(double x, double y) {
+        /** Change the intersection point at the maximum y.
+         *
+         * @param x x coordinate of the intersection point.
+         * @param y y coordinate of the intersection point.
+         */
+        void setCrossingCoordinateForYMax(double x, double y) {
             if (MathUtil.compareEpsilon(y, this.ymax) >= 0) {
                 if (x > this.x4ymax) {
                     this.x4ymax = x;
@@ -604,7 +719,12 @@ public class PathShadow2afp {
             }
         }
 
-        public void setCrossingCoordinateForYMin(double x, double y) {
+        /** Change the intersection point at the minimum y.
+        *
+        * @param x x coordinate of the intersection point.
+        * @param y y coordinate of the intersection point.
+        */
+        void setCrossingCoordinateForYMin(double x, double y) {
             if (MathUtil.compareEpsilon(y, this.ymin) <= 0) {
                 if (x > this.x4ymin) {
                     this.x4ymin = x;

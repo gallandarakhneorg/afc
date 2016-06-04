@@ -542,12 +542,12 @@ public class AwtVectorToolkit extends VectorToolkit {
 
 	@Override
 	protected Color createSelectionBackground() {
-		return color(UIManager.getColor("Tree.selectionBackground")); //$NON-NLS-1$
+		return color(UIManager.getColor("Tree.selectionBackground"));  //$NON-NLS-1$
 	}
 
 	@Override
 	protected Color createSelectionForeground() {
-		return color(UIManager.getColor("Tree.selectionForeground")); //$NON-NLS-1$
+		return color(UIManager.getColor("Tree.selectionForeground"));  //$NON-NLS-1$
 	}
 
 }

@@ -182,7 +182,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 		case 1:
 			return this.right;
 		default:
-			throw new IndexOutOfBoundsException(index + ">= 2"); //$NON-NLS-1$
+			throw new IndexOutOfBoundsException(index + ">= 2"); 
 		}
 	}
 
@@ -305,7 +305,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 		case 1:
 			return setRightChild(newChild);
 		default:
-			throw new IndexOutOfBoundsException(index + ">= 2"); //$NON-NLS-1$
+			throw new IndexOutOfBoundsException(index + ">= 2"); 
 		}
 	}
 
@@ -348,7 +348,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 			}
 			break;
 		default:
-			throw new IndexOutOfBoundsException(index + ">= 2"); //$NON-NLS-1$
+			throw new IndexOutOfBoundsException(index + ">= 2"); 
 		}
 	}
 

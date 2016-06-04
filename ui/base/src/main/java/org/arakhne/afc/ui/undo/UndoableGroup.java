@@ -92,7 +92,7 @@ public class UndoableGroup implements Undoable {
     
 	@Override
 	public void undo() {
-		if (!this.finalized) throw new IllegalStateException("you must invoked end() before calling undo()"); //$NON-NLS-1$
+		if (!this.finalized) throw new IllegalStateException("you must invoked end() before calling undo()");  //$NON-NLS-1$
 		if (this.died || this.undoables.isEmpty()) throw new IllegalStateException();
 		Undoable u;
 		for(int i=this.undoables.size()-1; i>=0; --i) {
@@ -103,7 +103,7 @@ public class UndoableGroup implements Undoable {
 
 	@Override
 	public void redo() {
-		if (!this.finalized) throw new IllegalStateException("you must invoked end() before calling redo()"); //$NON-NLS-1$
+		if (!this.finalized) throw new IllegalStateException("you must invoked end() before calling redo()");  //$NON-NLS-1$
 		if (this.died || this.undoables.isEmpty()) throw new IllegalStateException();
 		for(Undoable u : this.undoables) {
 			u.redo();

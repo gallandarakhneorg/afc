@@ -423,12 +423,12 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder s= new StringBuilder("Capsule "); //$NON-NLS-1$
-		s.append("a: "); //$NON-NLS-1$
+		StringBuilder s= new StringBuilder("Capsule "); 
+		s.append("a: "); 
 		s.append(this.getMedial1().toString());
-		s.append(" b: "); //$NON-NLS-1$
+		s.append(" b: "); 
 		s.append(this.getMedial2().toString());
-		s.append(" radius: "); //$NON-NLS-1$
+		s.append(" radius: "); 
 		s.append(this.getRadius());
 		return s.toString();
 	}

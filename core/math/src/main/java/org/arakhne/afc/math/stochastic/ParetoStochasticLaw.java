@@ -58,8 +58,8 @@ public class ParetoStochasticLaw extends StochasticLaw {
 	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
 	 */
 	public ParetoStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
-		this.xmin = paramFloat("xmin", parameters); //$NON-NLS-1$
-		this.k = paramFloat("k", parameters); //$NON-NLS-1$
+		this.xmin = paramFloat("xmin", parameters); 
+		this.k = paramFloat("k", parameters); 
 		if (this.xmin <= 0) {
 			throw new OutsideDomainException(this.xmin);
 		}
@@ -100,9 +100,9 @@ public class ParetoStochasticLaw extends StochasticLaw {
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("PARETO(k="); //$NON-NLS-1$
+		b.append("PARETO(k="); 
 		b.append(this.k);
-		b.append(", xmin="); //$NON-NLS-1$
+		b.append(", xmin="); 
 		b.append(this.xmin);
 		b.append(')');
 		return b.toString();

@@ -55,7 +55,7 @@ public class Circle2i extends AbstractShape2i<Circle2i>
 	 * @param radius the radius of the circle.
 	 */
 	public Circle2i(Point2D<?, ?> center, int radius) {
-		assert center != null : "Center point must be not null"; //$NON-NLS-1$
+		assert center != null : "Center point must be not null"; 
 		set(center.ix(), center.iy(), radius);
 	}
 
@@ -72,7 +72,7 @@ public class Circle2i extends AbstractShape2i<Circle2i>
 	 * @param circle the circle to copy.
 	 */
 	public Circle2i(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		assert circle != null : "Circle must be not null"; 
 		set(circle.getX(), circle.getY(), circle.getRadius());
 	}
 
@@ -90,13 +90,13 @@ public class Circle2i extends AbstractShape2i<Circle2i>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getRadius());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -136,7 +136,7 @@ public class Circle2i extends AbstractShape2i<Circle2i>
 
 	@Override
 	public void setRadius(int radius) {
-		assert radius >= 0 : "Radius must be positive or equal"; //$NON-NLS-1$
+		assert radius >= 0 : "Radius must be positive or equal"; 
 		if (this.radius != radius) {
 			this.radius = radius;
 			fireGeometryChange();
@@ -145,7 +145,7 @@ public class Circle2i extends AbstractShape2i<Circle2i>
 
 	@Override
 	public void set(int x, int y, int radius) {
-		assert radius >= 0 : "Radius must be positive or equal"; //$NON-NLS-1$
+		assert radius >= 0 : "Radius must be positive or equal"; 
 		if (this.centerX != x || this.centerY != y || this.radius != radius) {
 			this.centerX = x;
 			this.centerY = y;

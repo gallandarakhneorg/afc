@@ -32,7 +32,7 @@ package org.arakhne.afc.math;
 @Deprecated
 @SuppressWarnings("checkstyle:all")
 public class MathException extends org.arakhne.afc.math.stochastic.MathException {
-	
+
 	private static final long serialVersionUID = -3499177554318732766L;
 
 	/**
@@ -41,7 +41,7 @@ public class MathException extends org.arakhne.afc.math.stochastic.MathException
 	public MathException() {
 		super();
 	}
-	
+
 	/**
 	 * @param message is the message of the exception
 	 */

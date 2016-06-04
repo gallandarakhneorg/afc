@@ -31,7 +31,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("static-method")
+@SuppressWarnings("all")
 public class NaturalOrderComparatorTest {
 
 	/**
@@ -46,7 +46,7 @@ public class NaturalOrderComparatorTest {
 		Integer o4 = 10;
 		Float v1 = 3f;
 		Double v2 = 3.;
-		String v3 = "3"; //$NON-NLS-1$
+		String v3 = "3"; 
 		Object v4 = new Object();
 		
 		assertEquals(0, comparator.compare(o1, o1));
@@ -55,28 +55,28 @@ public class NaturalOrderComparatorTest {
 		assertEquals(-1, comparator.compare(o1, o4));
 		try {
 			comparator.compare(o1, v1);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
 		}
 		try {
 			comparator.compare(o1, v2);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
 		}
 		try {
 			comparator.compare(o1, v3);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
 		}
 		try {
 			comparator.compare(o1, v4);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
@@ -88,28 +88,28 @@ public class NaturalOrderComparatorTest {
 		assertEquals(-1, comparator.compare(o2, o4));
 		try {
 			comparator.compare(o2, v1);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
 		}
 		try {
 			comparator.compare(o2, v2);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
 		}
 		try {
 			comparator.compare(o2, v3);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
 		}
 		try {
 			comparator.compare(o2, v4);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
@@ -122,28 +122,28 @@ public class NaturalOrderComparatorTest {
 		assertEquals(-1, comparator.compare(o3, o4));
 		try {
 			comparator.compare(o3, v1);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
 		}
 		try {
 			comparator.compare(o3, v2);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
 		}
 		try {
 			comparator.compare(o3, v3);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
 		}
 		try {
 			comparator.compare(o3, v4);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
@@ -156,28 +156,28 @@ public class NaturalOrderComparatorTest {
 		assertEquals(0, comparator.compare(o4, o4));
 		try {
 			comparator.compare(o4, v1);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
 		}
 		try {
 			comparator.compare(o4, v2);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
 		}
 		try {
 			comparator.compare(o4, v3);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception
 		}
 		try {
 			comparator.compare(o4, v4);
-			fail("Expecting UnsupportedNaturalOrderException"); //$NON-NLS-1$
+			fail("Expecting UnsupportedNaturalOrderException"); 
 		}
 		catch(UnsupportedNaturalOrderException exception) {
 			// expected exception

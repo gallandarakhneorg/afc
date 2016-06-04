@@ -164,7 +164,7 @@ public class Vector2dfx extends Tuple2dfx<Vector2dfx> implements Vector2D<Vector
 	 */
 	public ReadOnlyDoubleProperty lengthProperty() {
 		if (this.lengthProperty == null) {
-			this.lengthProperty = new ReadOnlyDoubleWrapper(this, "length"); //$NON-NLS-1$
+			this.lengthProperty = new ReadOnlyDoubleWrapper(this, "length"); 
 			this.lengthProperty.bind(Bindings.createDoubleBinding(() -> {
 				return Math.sqrt(lengthSquaredProperty().doubleValue());
 			}, lengthSquaredProperty()));
@@ -183,7 +183,7 @@ public class Vector2dfx extends Tuple2dfx<Vector2dfx> implements Vector2D<Vector
 	 */
 	public ReadOnlyDoubleProperty lengthSquaredProperty() {
 		if (this.lengthSquareProperty == null) {
-			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, "lengthSquared"); //$NON-NLS-1$
+			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, "lengthSquared"); 
 			this.lengthSquareProperty.bind(Bindings.createDoubleBinding(() -> {
 				return Vector2dfx.this.x.doubleValue() * Vector2dfx.this.x.doubleValue()
 						+ Vector2dfx.this.y.doubleValue() * Vector2dfx.this.y.doubleValue();

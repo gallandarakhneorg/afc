@@ -76,11 +76,11 @@ public class AboutDialog extends Dialog {
 		super(context);
 		this.applicationIconId = applicationIcon;
 		if (infoAsset==null || infoAsset.isEmpty())
-			this.infoAssetName = "info.html"; //$NON-NLS-1$
+			this.infoAssetName = "info.html"; 
 		else
 			this.infoAssetName = infoAsset;
 		if (legalAsset==null || legalAsset.isEmpty())
-			this.legalAssetName = "legal.html"; //$NON-NLS-1$
+			this.legalAssetName = "legal.html"; 
 		else
 			this.legalAssetName = legalAsset;
 	}

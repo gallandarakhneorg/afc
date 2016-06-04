@@ -68,7 +68,7 @@ class AndroidDimension implements Dimension, Cloneable {
 		
 	@Override
 	public String toString() {
-		return this.h+";"+this.w; //$NON-NLS-1$
+		return this.h+";"+this.w; 
 	}
 	
 	@Override

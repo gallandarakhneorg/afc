@@ -34,16 +34,16 @@ import org.junit.Test;
 public class LocaleTest {
 
 	private final LocaleStub tmp = new LocaleStub();
-	private static final String RESOURCE1 = "org/arakhne/afc/vmutil/locale/LocaleTest"; //$NON-NLS-1$
-	private static final String RESOURCE2 = "org/arakhne/afc/vmutil/locale/LocaleStub"; //$NON-NLS-1$
-	private static final String NOKEY = "NOKEY"; //$NON-NLS-1$
-	private static final String KEY1 = "ONE"; //$NON-NLS-1$
-	private static final String KEY2 = "TWO"; //$NON-NLS-1$
-	private static final String KEY3 = "THREE"; //$NON-NLS-1$
-	private static final String DEFAULT = "DEFAULT"; //$NON-NLS-1$
-	private static final String P1 = "P1"; //$NON-NLS-1$
-	private static final String P2 = "P2"; //$NON-NLS-1$
-	private static final String P3 = "P3"; //$NON-NLS-1$
+	private static final String RESOURCE1 = "org/arakhne/afc/vmutil/locale/LocaleTest"; 
+	private static final String RESOURCE2 = "org/arakhne/afc/vmutil/locale/LocaleStub"; 
+	private static final String NOKEY = "NOKEY"; 
+	private static final String KEY1 = "ONE"; 
+	private static final String KEY2 = "TWO"; 
+	private static final String KEY3 = "THREE"; 
+	private static final String DEFAULT = "DEFAULT"; 
+	private static final String P1 = "P1"; 
+	private static final String P2 = "P2"; 
+	private static final String P3 = "P3"; 
 	
 	@Test
     public void getStringWithDefaultFromStringStringStringStringArray() {
@@ -52,20 +52,20 @@ public class LocaleTest {
     			DEFAULT,
     			Locale.getStringWithDefaultFrom(RESOURCE1,NOKEY,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"ABC P1 'P2' {2}", //$NON-NLS-1$
+    			"ABC P1 'P2' {2}", 
     			Locale.getStringWithDefaultFrom(RESOURCE1,KEY1,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"ABC P3 'P1' {2}", //$NON-NLS-1$
+    			"ABC P3 'P1' {2}", 
     			Locale.getStringWithDefaultFrom(RESOURCE1,KEY1,DEFAULT,P3,P1,P2));
     	
     	assertEquals(
     			DEFAULT,
     			Locale.getStringWithDefaultFrom(RESOURCE2,NOKEY,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"DEF P1 'P2' {2}", //$NON-NLS-1$
+    			"DEF P1 'P2' {2}", 
     			Locale.getStringWithDefaultFrom(RESOURCE2,KEY1,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"DEF P3 'P1' {2}", //$NON-NLS-1$
+    			"DEF P3 'P1' {2}", 
     			Locale.getStringWithDefaultFrom(RESOURCE2,KEY1,DEFAULT,P3,P1,P2));
 
     	assertInlineParameterUsage(Locale.class, "getStringWithDefaultFrom",
@@ -79,20 +79,20 @@ public class LocaleTest {
     			DEFAULT,
     			Locale.getStringWithDefaultFrom(l, RESOURCE1,NOKEY,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"ABC P1 'P2' {2}", //$NON-NLS-1$
+    			"ABC P1 'P2' {2}", 
     			Locale.getStringWithDefaultFrom(l, RESOURCE1,KEY1,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"ABC P3 'P1' {2}", //$NON-NLS-1$
+    			"ABC P3 'P1' {2}", 
     			Locale.getStringWithDefaultFrom(l, RESOURCE1,KEY1,DEFAULT,P3,P1,P2));
     	
     	assertEquals(
     			DEFAULT,
     			Locale.getStringWithDefaultFrom(l, RESOURCE2,NOKEY,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"DEF P1 'P2' {2}", //$NON-NLS-1$
+    			"DEF P1 'P2' {2}", 
     			Locale.getStringWithDefaultFrom(l, RESOURCE2,KEY1,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"DEF P3 'P1' {2}", //$NON-NLS-1$
+    			"DEF P3 'P1' {2}", 
     			Locale.getStringWithDefaultFrom(l, RESOURCE2,KEY1,DEFAULT,P3,P1,P2));
     }
 
@@ -101,20 +101,20 @@ public class LocaleTest {
     	assertEquals(NOKEY,
     			Locale.getStringFrom(RESOURCE1,NOKEY,P1,P2,P3));
     	assertEquals(
-    			"ABC P1 'P2' {2}", //$NON-NLS-1$
+    			"ABC P1 'P2' {2}", 
     			Locale.getStringFrom(RESOURCE1,KEY1,P1,P2,P3));
     	assertEquals(
-    			"ABC P3 'P1' {2}", //$NON-NLS-1$
+    			"ABC P3 'P1' {2}", 
     			Locale.getStringFrom(RESOURCE1,KEY1,P3,P1,P2));
     	
     	assertEquals(
     			NOKEY,
     			Locale.getStringFrom(RESOURCE2,NOKEY,P1,P2,P3));
     	assertEquals(
-    			"DEF P1 'P2' {2}", //$NON-NLS-1$
+    			"DEF P1 'P2' {2}", 
     			Locale.getStringFrom(RESOURCE2,KEY1,P1,P2,P3));
     	assertEquals(
-    			"DEF P3 'P1' {2}", //$NON-NLS-1$
+    			"DEF P3 'P1' {2}", 
     			Locale.getStringFrom(RESOURCE2,KEY1,P3,P1,P2));
     	
     	assertInlineParameterUsage(Locale.class, "getStringFrom", String.class, String.class, Object[].class);
@@ -127,20 +127,20 @@ public class LocaleTest {
     	assertEquals(NOKEY,
     			Locale.getStringFrom(l, RESOURCE1,NOKEY,P1,P2,P3));
     	assertEquals(
-    			"ABC P1 'P2' {2}", //$NON-NLS-1$
+    			"ABC P1 'P2' {2}", 
     			Locale.getStringFrom(l, RESOURCE1,KEY1,P1,P2,P3));
     	assertEquals(
-    			"ABC P3 'P1' {2}", //$NON-NLS-1$
+    			"ABC P3 'P1' {2}", 
     			Locale.getStringFrom(l, RESOURCE1,KEY1,P3,P1,P2));
     	
     	assertEquals(
     			NOKEY,
     			Locale.getStringFrom(l, RESOURCE2,NOKEY,P1,P2,P3));
     	assertEquals(
-    			"DEF P1 'P2' {2}", //$NON-NLS-1$
+    			"DEF P1 'P2' {2}", 
     			Locale.getStringFrom(l, RESOURCE2,KEY1,P1,P2,P3));
     	assertEquals(
-    			"DEF P3 'P1' {2}", //$NON-NLS-1$
+    			"DEF P3 'P1' {2}", 
     			Locale.getStringFrom(l, RESOURCE2,KEY1,P3,P1,P2));
 
     	
@@ -152,20 +152,20 @@ public class LocaleTest {
     	assertEquals(NOKEY,
     			Locale.getString(LocaleTest.class,NOKEY,P1,P2,P3));
     	assertEquals(
-    			"ABC P1 'P2' {2}", //$NON-NLS-1$
+    			"ABC P1 'P2' {2}", 
     			Locale.getString(LocaleTest.class,KEY1,P1,P2,P3));
     	assertEquals(
-    			"ABC P3 'P1' {2}", //$NON-NLS-1$
+    			"ABC P3 'P1' {2}", 
     			Locale.getString(LocaleTest.class,KEY1,P3,P1,P2));
     	
     	assertEquals(
     			NOKEY,
     			Locale.getString(LocaleStub.class,NOKEY,P1,P2,P3));
     	assertEquals(
-    			"DEF P1 'P2' {2}", //$NON-NLS-1$
+    			"DEF P1 'P2' {2}", 
     			Locale.getString(LocaleStub.class,KEY1,P1,P2,P3));
     	assertEquals(
-    			"DEF P3 'P1' {2}", //$NON-NLS-1$
+    			"DEF P3 'P1' {2}", 
     			Locale.getString(LocaleStub.class,KEY1,P3,P1,P2));
     }
     
@@ -176,20 +176,20 @@ public class LocaleTest {
     	assertEquals(NOKEY,
     			Locale.getString(l, LocaleTest.class,NOKEY,P1,P2,P3));
     	assertEquals(
-    			"ABC P1 'P2' {2}", //$NON-NLS-1$
+    			"ABC P1 'P2' {2}", 
     			Locale.getString(l, LocaleTest.class,KEY1,P1,P2,P3));
     	assertEquals(
-    			"ABC P3 'P1' {2}", //$NON-NLS-1$
+    			"ABC P3 'P1' {2}", 
     			Locale.getString(l, LocaleTest.class,KEY1,P3,P1,P2));
     	
     	assertEquals(
     			NOKEY,
     			Locale.getString(l, LocaleStub.class,NOKEY,P1,P2,P3));
     	assertEquals(
-    			"DEF P1 'P2' {2}", //$NON-NLS-1$
+    			"DEF P1 'P2' {2}", 
     			Locale.getString(l, LocaleStub.class,KEY1,P1,P2,P3));
     	assertEquals(
-    			"DEF P3 'P1' {2}", //$NON-NLS-1$
+    			"DEF P3 'P1' {2}", 
     			Locale.getString(l, LocaleStub.class,KEY1,P3,P1,P2));
     }
 
@@ -199,20 +199,20 @@ public class LocaleTest {
     			DEFAULT,
     			Locale.getStringWithDefault(LocaleTest.class,NOKEY,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"ABC P1 'P2' {2}", //$NON-NLS-1$
+    			"ABC P1 'P2' {2}", 
     			Locale.getStringWithDefault(LocaleTest.class,KEY1,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"ABC P3 'P1' {2}", //$NON-NLS-1$
+    			"ABC P3 'P1' {2}", 
     			Locale.getStringWithDefault(LocaleTest.class,KEY1,DEFAULT,P3,P1,P2));
     	
     	assertEquals(
     			DEFAULT,
     			Locale.getStringWithDefault(LocaleStub.class,NOKEY,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"DEF P1 'P2' {2}", //$NON-NLS-1$
+    			"DEF P1 'P2' {2}", 
     			Locale.getStringWithDefault(LocaleStub.class,KEY1,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"DEF P3 'P1' {2}", //$NON-NLS-1$
+    			"DEF P3 'P1' {2}", 
     			Locale.getStringWithDefault(LocaleStub.class,KEY1,DEFAULT,P3,P1,P2));
     }
 
@@ -224,20 +224,20 @@ public class LocaleTest {
     			DEFAULT,
     			Locale.getStringWithDefault(l, LocaleTest.class,NOKEY,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"ABC P1 'P2' {2}", //$NON-NLS-1$
+    			"ABC P1 'P2' {2}", 
     			Locale.getStringWithDefault(l, LocaleTest.class,KEY1,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"ABC P3 'P1' {2}", //$NON-NLS-1$
+    			"ABC P3 'P1' {2}", 
     			Locale.getStringWithDefault(l, LocaleTest.class,KEY1,DEFAULT,P3,P1,P2));
     	
     	assertEquals(
     			DEFAULT,
     			Locale.getStringWithDefault(l, LocaleStub.class,NOKEY,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"DEF P1 'P2' {2}", //$NON-NLS-1$
+    			"DEF P1 'P2' {2}", 
     			Locale.getStringWithDefault(l, LocaleStub.class,KEY1,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"DEF P3 'P1' {2}", //$NON-NLS-1$
+    			"DEF P3 'P1' {2}", 
     			Locale.getStringWithDefault(l, LocaleStub.class,KEY1,DEFAULT,P3,P1,P2));
     }
 
@@ -247,20 +247,20 @@ public class LocaleTest {
     			NOKEY,
     			Locale.getString(NOKEY,P1,P2,P3));
     	assertEquals(
-    			"ABC P1 'P2' {2}", //$NON-NLS-1$
+    			"ABC P1 'P2' {2}", 
     			Locale.getString(KEY1,P1,P2,P3));
     	assertEquals(
-    			"ABC P3 'P1' {2}", //$NON-NLS-1$
+    			"ABC P3 'P1' {2}", 
     			Locale.getString(KEY1,P3,P1,P2));
     	try {
     		Locale.getString(KEY2);
-    		fail("expecting IllegalArgumentException"); //$NON-NLS-1$
+    		fail("expecting IllegalArgumentException"); 
     	}
     	catch(IllegalArgumentException exception) {
     		// expected exception
     	}
     	assertEquals(
-    			"(d92b87b0-efe9-4dd9-903f-7c994b8e2a9f)", //$NON-NLS-1$
+    			"(d92b87b0-efe9-4dd9-903f-7c994b8e2a9f)", 
     			Locale.getString(KEY3));
     }
     
@@ -272,20 +272,20 @@ public class LocaleTest {
     			NOKEY,
     			Locale.getString(l, NOKEY,P1,P2,P3));
     	assertEquals(
-    			"ABC P1 'P2' {2}", //$NON-NLS-1$
+    			"ABC P1 'P2' {2}", 
     			Locale.getString(l, KEY1,P1,P2,P3));
     	assertEquals(
-    			"ABC P3 'P1' {2}", //$NON-NLS-1$
+    			"ABC P3 'P1' {2}", 
     			Locale.getString(l, KEY1,P3,P1,P2));
     	try {
     		Locale.getString(l, KEY2);
-    		fail("expecting IllegalArgumentException"); //$NON-NLS-1$
+    		fail("expecting IllegalArgumentException"); 
     	}
     	catch(IllegalArgumentException exception) {
     		// expected exception
     	}
     	assertEquals(
-    			"(d92b87b0-efe9-4dd9-903f-7c994b8e2a9f)", //$NON-NLS-1$
+    			"(d92b87b0-efe9-4dd9-903f-7c994b8e2a9f)", 
     			Locale.getString(l, KEY3));
     }
 
@@ -295,20 +295,20 @@ public class LocaleTest {
     			DEFAULT,
     			Locale.getStringWithDefault(NOKEY,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"ABC P1 'P2' {2}", //$NON-NLS-1$
+    			"ABC P1 'P2' {2}", 
     			Locale.getStringWithDefault(KEY1,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"ABC P3 'P1' {2}", //$NON-NLS-1$
+    			"ABC P3 'P1' {2}", 
     			Locale.getStringWithDefault(KEY1,DEFAULT,P3,P1,P2));
     	try {
     		Locale.getStringWithDefault(KEY2,DEFAULT);
-    		fail("expecting IllegalArgumentException"); //$NON-NLS-1$
+    		fail("expecting IllegalArgumentException"); 
     	}
     	catch(IllegalArgumentException exception) {
     		//expected exception
     	}
     	assertEquals(
-    			"(d92b87b0-efe9-4dd9-903f-7c994b8e2a9f)", //$NON-NLS-1$
+    			"(d92b87b0-efe9-4dd9-903f-7c994b8e2a9f)", 
     			Locale.getStringWithDefault(KEY3,DEFAULT));
     }
 
@@ -320,20 +320,20 @@ public class LocaleTest {
     			DEFAULT,
     			Locale.getStringWithDefault(l, NOKEY,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"ABC P1 'P2' {2}", //$NON-NLS-1$
+    			"ABC P1 'P2' {2}", 
     			Locale.getStringWithDefault(l, KEY1,DEFAULT,P1,P2,P3));
     	assertEquals(
-    			"ABC P3 'P1' {2}", //$NON-NLS-1$
+    			"ABC P3 'P1' {2}", 
     			Locale.getStringWithDefault(l, KEY1,DEFAULT,P3,P1,P2));
     	try {
     		Locale.getStringWithDefault(l, KEY2, DEFAULT);
-    		fail("expecting IllegalArgumentException"); //$NON-NLS-1$
+    		fail("expecting IllegalArgumentException"); 
     	}
     	catch(IllegalArgumentException exception) {
     		// expected exception
     	}
     	assertEquals(
-    			"(d92b87b0-efe9-4dd9-903f-7c994b8e2a9f)", //$NON-NLS-1$
+    			"(d92b87b0-efe9-4dd9-903f-7c994b8e2a9f)", 
     			Locale.getStringWithDefault(l, KEY3, DEFAULT));
     }
     
@@ -344,73 +344,73 @@ public class LocaleTest {
     	
     	data = Double.valueOf(123.456);
     	raw = Double.toString(123.456);
-    	localized = MessageFormat.format("{0}", data); //$NON-NLS-1$
+    	localized = MessageFormat.format("{0}", data); 
     	assertEquals(
-    			localized+" "+raw, //$NON-NLS-1$
-    			Locale.getString("FOUR", data)); //$NON-NLS-1$
+    			localized+" "+raw, 
+    			Locale.getString("FOUR", data)); 
 
     	data = Double.valueOf(-123.456);
     	raw = Double.toString(-123.456);
-    	localized = MessageFormat.format("{0}", data); //$NON-NLS-1$
+    	localized = MessageFormat.format("{0}", data); 
     	assertEquals(
-    			localized+" "+raw, //$NON-NLS-1$
-    			Locale.getString("FOUR", data)); //$NON-NLS-1$
+    			localized+" "+raw, 
+    			Locale.getString("FOUR", data)); 
 
     	data = Long.valueOf(123456);
     	raw = Long.toString(123456);
-    	localized = MessageFormat.format("{0}", data); //$NON-NLS-1$
+    	localized = MessageFormat.format("{0}", data); 
     	assertEquals(
-    			localized+" "+raw, //$NON-NLS-1$
-    			Locale.getString("FOUR", data)); //$NON-NLS-1$
+    			localized+" "+raw, 
+    			Locale.getString("FOUR", data)); 
 
     	data = Long.valueOf(-123456);
     	raw = Long.toString(-123456);
-    	localized = MessageFormat.format("{0}", data); //$NON-NLS-1$
+    	localized = MessageFormat.format("{0}", data); 
     	assertEquals(
-    			localized+" "+raw, //$NON-NLS-1$
-    			Locale.getString("FOUR", data)); //$NON-NLS-1$
+    			localized+" "+raw, 
+    			Locale.getString("FOUR", data)); 
 
     	data = Short.valueOf((short)123);
     	raw = Short.toString((short)123);
-    	localized = MessageFormat.format("{0}", data); //$NON-NLS-1$
+    	localized = MessageFormat.format("{0}", data); 
     	assertEquals(
-    			localized+" "+raw, //$NON-NLS-1$
-    			Locale.getString("FOUR", data)); //$NON-NLS-1$
+    			localized+" "+raw, 
+    			Locale.getString("FOUR", data)); 
 
     	data = Short.valueOf((short)-123);
     	raw = Short.toString((short)-123);
-    	localized = MessageFormat.format("{0}", data); //$NON-NLS-1$
+    	localized = MessageFormat.format("{0}", data); 
     	assertEquals(
-    			localized+" "+raw, //$NON-NLS-1$
-    			Locale.getString("FOUR", data)); //$NON-NLS-1$
+    			localized+" "+raw, 
+    			Locale.getString("FOUR", data)); 
 
-    	raw = "123456789123456789123456789.123456789"; //$NON-NLS-1$
+    	raw = "123456789123456789123456789.123456789"; 
     	data = new BigDecimal(raw);
-    	localized = MessageFormat.format("{0}", data); //$NON-NLS-1$
+    	localized = MessageFormat.format("{0}", data); 
     	assertEquals(
-    			localized+" "+raw, //$NON-NLS-1$
-    			Locale.getString("FOUR", data)); //$NON-NLS-1$
+    			localized+" "+raw, 
+    			Locale.getString("FOUR", data)); 
 
-    	raw = "-123456789123456789123456789.123456789"; //$NON-NLS-1$
+    	raw = "-123456789123456789123456789.123456789"; 
     	data = new BigDecimal(raw);
-    	localized = MessageFormat.format("{0}", data); //$NON-NLS-1$
+    	localized = MessageFormat.format("{0}", data); 
     	assertEquals(
-    			localized+" "+raw, //$NON-NLS-1$
-    			Locale.getString("FOUR", data)); //$NON-NLS-1$
+    			localized+" "+raw, 
+    			Locale.getString("FOUR", data)); 
 
-    	raw = "123456789123456789123456789123456789"; //$NON-NLS-1$
+    	raw = "123456789123456789123456789123456789"; 
     	data = new BigInteger(raw);
-    	localized = MessageFormat.format("{0}", data); //$NON-NLS-1$
+    	localized = MessageFormat.format("{0}", data); 
     	assertEquals(
-    			localized+" "+raw, //$NON-NLS-1$
-    			Locale.getString("FOUR", data)); //$NON-NLS-1$
+    			localized+" "+raw, 
+    			Locale.getString("FOUR", data)); 
 
-    	raw = "-123456789123456789123456789123456789"; //$NON-NLS-1$
+    	raw = "-123456789123456789123456789123456789"; 
     	data = new BigInteger(raw);
-    	localized = MessageFormat.format("{0}", data); //$NON-NLS-1$
+    	localized = MessageFormat.format("{0}", data); 
     	assertEquals(
-    			localized+" "+raw, //$NON-NLS-1$
-    			Locale.getString("FOUR", data)); //$NON-NLS-1$
+    			localized+" "+raw, 
+    			Locale.getString("FOUR", data)); 
     }
     
 	@Test
@@ -419,63 +419,63 @@ public class LocaleTest {
     	
     	data = Double.valueOf(123.456);
     	assertEquals(
-    			"123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
+    			"123", 
+    			Locale.getString("FORMAT_1", data)); 
 
     	data = Double.valueOf(-123.456);
     	assertEquals(
-    			"-123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
+    			"-123", 
+    			Locale.getString("FORMAT_1", data)); 
 
     	data = Long.valueOf(123456);
     	assertEquals(
-    			"123456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
+    			"123456", 
+    			Locale.getString("FORMAT_1", data)); 
 
     	data = Long.valueOf(-123456);
     	assertEquals(
-    			"-123456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
+    			"-123456", 
+    			Locale.getString("FORMAT_1", data)); 
 
     	data = Short.valueOf((short)123);
     	assertEquals(
-    			"123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
+    			"123", 
+    			Locale.getString("FORMAT_1", data)); 
 
     	data = Short.valueOf((short)-123);
     	assertEquals(
-    			"-123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
+    			"-123", 
+    			Locale.getString("FORMAT_1", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
+    			"123456789123456789123456789", 
+    			Locale.getString("FORMAT_1", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"123456789123456789123456790", //$NON-NLS-1$
-    			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
+    			"123456789123456789123456790", 
+    			Locale.getString("FORMAT_1", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789", 
+    			Locale.getString("FORMAT_1", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"-123456789123456789123456790", //$NON-NLS-1$
-    			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
+    			"-123456789123456789123456790", 
+    			Locale.getString("FORMAT_1", data)); 
 
-    	data = new BigInteger("123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("123456789123456789123456789123456789"); 
     	assertEquals(
-    			"123456789123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
+    			"123456789123456789123456789123456789", 
+    			Locale.getString("FORMAT_1", data)); 
 
-    	data = new BigInteger("-123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("-123456789123456789123456789123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789123456789", 
+    			Locale.getString("FORMAT_1", data)); 
     }
  
 	@Test
@@ -484,63 +484,63 @@ public class LocaleTest {
     	
     	data = Double.valueOf(123.456);
     	assertEquals(
-    			"123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
+    			"123", 
+    			Locale.getString("FORMAT_2", data)); 
 
     	data = Double.valueOf(-123.456);
     	assertEquals(
-    			"-123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
+    			"-123", 
+    			Locale.getString("FORMAT_2", data)); 
 
     	data = Long.valueOf(123456);
     	assertEquals(
-    			"123456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
+    			"123456", 
+    			Locale.getString("FORMAT_2", data)); 
 
     	data = Long.valueOf(-123456);
     	assertEquals(
-    			"-123456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
+    			"-123456", 
+    			Locale.getString("FORMAT_2", data)); 
 
     	data = Short.valueOf((short)123);
     	assertEquals(
-    			"123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
+    			"123", 
+    			Locale.getString("FORMAT_2", data)); 
 
     	data = Short.valueOf((short)-123);
     	assertEquals(
-    			"-123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
+    			"-123", 
+    			Locale.getString("FORMAT_2", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
+    			"123456789123456789123456789", 
+    			Locale.getString("FORMAT_2", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"123456789123456789123456790", //$NON-NLS-1$
-    			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
+    			"123456789123456789123456790", 
+    			Locale.getString("FORMAT_2", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789", 
+    			Locale.getString("FORMAT_2", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"-123456789123456789123456790", //$NON-NLS-1$
-    			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
+    			"-123456789123456789123456790", 
+    			Locale.getString("FORMAT_2", data)); 
 
-    	data = new BigInteger("123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("123456789123456789123456789123456789"); 
     	assertEquals(
-    			"123456789123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
+    			"123456789123456789123456789123456789", 
+    			Locale.getString("FORMAT_2", data)); 
 
-    	data = new BigInteger("-123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("-123456789123456789123456789123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789123456789", 
+    			Locale.getString("FORMAT_2", data)); 
     }
    
 	@Test
@@ -549,63 +549,63 @@ public class LocaleTest {
     	
     	data = Double.valueOf(123.456);
     	assertEquals(
-    			"123.5", //$NON-NLS-1$
-    			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
+    			"123.5", 
+    			Locale.getString("FORMAT_3", data)); 
 
     	data = Double.valueOf(-123.456);
     	assertEquals(
-    			"-123.5", //$NON-NLS-1$
-    			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
+    			"-123.5", 
+    			Locale.getString("FORMAT_3", data)); 
 
     	data = Long.valueOf(123456);
     	assertEquals(
-    			"123456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
+    			"123456", 
+    			Locale.getString("FORMAT_3", data)); 
 
     	data = Long.valueOf(-123456);
     	assertEquals(
-    			"-123456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
+    			"-123456", 
+    			Locale.getString("FORMAT_3", data)); 
 
     	data = Short.valueOf((short)123);
     	assertEquals(
-    			"123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
+    			"123", 
+    			Locale.getString("FORMAT_3", data)); 
 
     	data = Short.valueOf((short)-123);
     	assertEquals(
-    			"-123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
+    			"-123", 
+    			Locale.getString("FORMAT_3", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"123456789123456789123456789.1", //$NON-NLS-1$
-    			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
+    			"123456789123456789123456789.1", 
+    			Locale.getString("FORMAT_3", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"123456789123456789123456790.0", //$NON-NLS-1$
-    			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
+    			"123456789123456789123456790.0", 
+    			Locale.getString("FORMAT_3", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789.1", //$NON-NLS-1$
-    			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789.1", 
+    			Locale.getString("FORMAT_3", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"-123456789123456789123456790.0", //$NON-NLS-1$
-    			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
+    			"-123456789123456789123456790.0", 
+    			Locale.getString("FORMAT_3", data)); 
 
-    	data = new BigInteger("123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("123456789123456789123456789123456789"); 
     	assertEquals(
-    			"123456789123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
+    			"123456789123456789123456789123456789", 
+    			Locale.getString("FORMAT_3", data)); 
 
-    	data = new BigInteger("-123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("-123456789123456789123456789123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789123456789", 
+    			Locale.getString("FORMAT_3", data)); 
     }
 
 	@Test
@@ -614,63 +614,63 @@ public class LocaleTest {
     	
     	data = Double.valueOf(123.456);
     	assertEquals(
-    			"123.46", //$NON-NLS-1$
-    			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
+    			"123.46", 
+    			Locale.getString("FORMAT_4", data)); 
 
     	data = Double.valueOf(-123.456);
     	assertEquals(
-    			"-123.46", //$NON-NLS-1$
-    			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
+    			"-123.46", 
+    			Locale.getString("FORMAT_4", data)); 
 
     	data = Long.valueOf(123456);
     	assertEquals(
-    			"123456.0", //$NON-NLS-1$
-    			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
+    			"123456.0", 
+    			Locale.getString("FORMAT_4", data)); 
 
     	data = Long.valueOf(-123456);
     	assertEquals(
-    			"-123456.0", //$NON-NLS-1$
-    			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
+    			"-123456.0", 
+    			Locale.getString("FORMAT_4", data)); 
 
     	data = Short.valueOf((short)123);
     	assertEquals(
-    			"123.0", //$NON-NLS-1$
-    			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
+    			"123.0", 
+    			Locale.getString("FORMAT_4", data)); 
 
     	data = Short.valueOf((short)-123);
     	assertEquals(
-    			"-123.0", //$NON-NLS-1$
-    			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
+    			"-123.0", 
+    			Locale.getString("FORMAT_4", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"123456789123456789123456789.12", //$NON-NLS-1$
-    			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
+    			"123456789123456789123456789.12", 
+    			Locale.getString("FORMAT_4", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"123456789123456789123456789.99", //$NON-NLS-1$
-    			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
+    			"123456789123456789123456789.99", 
+    			Locale.getString("FORMAT_4", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789.12", //$NON-NLS-1$
-    			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789.12", 
+    			Locale.getString("FORMAT_4", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"-123456789123456789123456789.99", //$NON-NLS-1$
-    			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789.99", 
+    			Locale.getString("FORMAT_4", data)); 
 
-    	data = new BigInteger("123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("123456789123456789123456789123456789"); 
     	assertEquals(
-    			"123456789123456789123456789123456789.0", //$NON-NLS-1$
-    			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
+    			"123456789123456789123456789123456789.0", 
+    			Locale.getString("FORMAT_4", data)); 
 
-    	data = new BigInteger("-123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("-123456789123456789123456789123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789123456789.0", //$NON-NLS-1$
-    			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789123456789.0", 
+    			Locale.getString("FORMAT_4", data)); 
     }
     
 	@Test
@@ -679,63 +679,63 @@ public class LocaleTest {
     	
     	data = Double.valueOf(123.456);
     	assertEquals(
-    			"123.456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
+    			"123.456", 
+    			Locale.getString("FORMAT_5", data)); 
 
     	data = Double.valueOf(-123.456);
     	assertEquals(
-    			"-123.456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
+    			"-123.456", 
+    			Locale.getString("FORMAT_5", data)); 
 
     	data = Long.valueOf(123456);
     	assertEquals(
-    			"123456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
+    			"123456", 
+    			Locale.getString("FORMAT_5", data)); 
 
     	data = Long.valueOf(-123456);
     	assertEquals(
-    			"-123456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
+    			"-123456", 
+    			Locale.getString("FORMAT_5", data)); 
 
     	data = Short.valueOf((short)123);
     	assertEquals(
-    			"123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
+    			"123", 
+    			Locale.getString("FORMAT_5", data)); 
 
     	data = Short.valueOf((short)-123);
     	assertEquals(
-    			"-123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
+    			"-123", 
+    			Locale.getString("FORMAT_5", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"123456789123456789123456789.123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
+    			"123456789123456789123456789.123", 
+    			Locale.getString("FORMAT_5", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"123456789123456789123456789.988", //$NON-NLS-1$
-    			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
+    			"123456789123456789123456789.988", 
+    			Locale.getString("FORMAT_5", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789.123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789.123", 
+    			Locale.getString("FORMAT_5", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"-123456789123456789123456789.988", //$NON-NLS-1$
-    			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789.988", 
+    			Locale.getString("FORMAT_5", data)); 
 
-    	data = new BigInteger("123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("123456789123456789123456789123456789"); 
     	assertEquals(
-    			"123456789123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
+    			"123456789123456789123456789123456789", 
+    			Locale.getString("FORMAT_5", data)); 
 
-    	data = new BigInteger("-123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("-123456789123456789123456789123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789123456789", 
+    			Locale.getString("FORMAT_5", data)); 
     }
     
 	@Test
@@ -744,63 +744,63 @@ public class LocaleTest {
     	
     	data = Double.valueOf(123.456);
     	assertEquals(
-    			"123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
+    			"123", 
+    			Locale.getString("FORMAT_6", data)); 
 
     	data = Double.valueOf(-123.456);
     	assertEquals(
-    			"-123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
+    			"-123", 
+    			Locale.getString("FORMAT_6", data)); 
 
     	data = Long.valueOf(123456);
     	assertEquals(
-    			"123456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
+    			"123456", 
+    			Locale.getString("FORMAT_6", data)); 
 
     	data = Long.valueOf(-123456);
     	assertEquals(
-    			"-123456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
+    			"-123456", 
+    			Locale.getString("FORMAT_6", data)); 
 
     	data = Short.valueOf((short)123);
     	assertEquals(
-    			"123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
+    			"123", 
+    			Locale.getString("FORMAT_6", data)); 
 
     	data = Short.valueOf((short)-123);
     	assertEquals(
-    			"-123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
+    			"-123", 
+    			Locale.getString("FORMAT_6", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
+    			"123456789123456789123456789", 
+    			Locale.getString("FORMAT_6", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"123456789123456789123456790", //$NON-NLS-1$
-    			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
+    			"123456789123456789123456790", 
+    			Locale.getString("FORMAT_6", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789", 
+    			Locale.getString("FORMAT_6", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"-123456789123456789123456790", //$NON-NLS-1$
-    			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
+    			"-123456789123456789123456790", 
+    			Locale.getString("FORMAT_6", data)); 
 
-    	data = new BigInteger("123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("123456789123456789123456789123456789"); 
     	assertEquals(
-    			"123456789123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
+    			"123456789123456789123456789123456789", 
+    			Locale.getString("FORMAT_6", data)); 
 
-    	data = new BigInteger("-123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("-123456789123456789123456789123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789123456789", 
+    			Locale.getString("FORMAT_6", data)); 
     }
     
 	@Test
@@ -809,63 +809,63 @@ public class LocaleTest {
     	
     	data = Double.valueOf(123.456);
     	assertEquals(
-    			"123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
+    			"123", 
+    			Locale.getString("FORMAT_7", data)); 
 
     	data = Double.valueOf(-123.456);
     	assertEquals(
-    			"-123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
+    			"-123", 
+    			Locale.getString("FORMAT_7", data)); 
 
     	data = Long.valueOf(123456);
     	assertEquals(
-    			"123456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
+    			"123456", 
+    			Locale.getString("FORMAT_7", data)); 
 
     	data = Long.valueOf(-123456);
     	assertEquals(
-    			"-123456", //$NON-NLS-1$
-    			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
+    			"-123456", 
+    			Locale.getString("FORMAT_7", data)); 
 
     	data = Short.valueOf((short)123);
     	assertEquals(
-    			"123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
+    			"123", 
+    			Locale.getString("FORMAT_7", data)); 
 
     	data = Short.valueOf((short)-123);
     	assertEquals(
-    			"-123", //$NON-NLS-1$
-    			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
+    			"-123", 
+    			Locale.getString("FORMAT_7", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
+    			"123456789123456789123456789", 
+    			Locale.getString("FORMAT_7", data)); 
 
-    	data = new BigDecimal("123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"123456789123456789123456790", //$NON-NLS-1$
-    			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
+    			"123456789123456789123456790", 
+    			Locale.getString("FORMAT_7", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.123456789"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789", 
+    			Locale.getString("FORMAT_7", data)); 
 
-    	data = new BigDecimal("-123456789123456789123456789.987654321"); //$NON-NLS-1$
+    	data = new BigDecimal("-123456789123456789123456789.987654321"); 
     	assertEquals(
-    			"-123456789123456789123456790", //$NON-NLS-1$
-    			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
+    			"-123456789123456789123456790", 
+    			Locale.getString("FORMAT_7", data)); 
 
-    	data = new BigInteger("123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("123456789123456789123456789123456789"); 
     	assertEquals(
-    			"123456789123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
+    			"123456789123456789123456789123456789", 
+    			Locale.getString("FORMAT_7", data)); 
 
-    	data = new BigInteger("-123456789123456789123456789123456789"); //$NON-NLS-1$
+    	data = new BigInteger("-123456789123456789123456789123456789"); 
     	assertEquals(
-    			"-123456789123456789123456789123456789", //$NON-NLS-1$
-    			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
+    			"-123456789123456789123456789123456789", 
+    			Locale.getString("FORMAT_7", data)); 
     }
 
 }

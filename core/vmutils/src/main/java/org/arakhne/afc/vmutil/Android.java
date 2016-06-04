@@ -26,6 +26,8 @@ import java.lang.reflect.Method;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.locale.Locale;
+
 /**
  * This class stores several information given by
  * the Android operating systems.
@@ -168,7 +170,7 @@ public final class Android {
 			final Class<?> contextType = androidContext.getClass();
 			final Class<?> contextClass = getContextClass();
 			if (!contextClass.isAssignableFrom(contextType)) {
-				throw new AndroidException("not an Android Context class"); //$NON-NLS-1$
+				throw new AndroidException(Locale.getString("E1", androidContext)); //$NON-NLS-1$
 			}
 			synchronized (Android.class) {
 				contextResolver = null;

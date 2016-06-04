@@ -71,8 +71,8 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 * @param max is the max corner of the rectangle.
 	 */
 	public Rectangle2ifx(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert min != null : "Minimum point must be not null"; //$NON-NLS-1$
-		assert max != null : "Maximum point must be not null"; //$NON-NLS-1$
+		assert min != null : "Minimum point must be not null"; 
+		assert max != null : "Maximum point must be not null"; 
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
 	}
 
@@ -83,8 +83,8 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 * @param height height of the rectangle.
 	 */
 	public Rectangle2ifx(int x, int y, int width, int height) {
-		assert width >= 0 : "Width must be positive or equal"; //$NON-NLS-1$
-		assert height >= 0 : "Height must be positive or equal"; //$NON-NLS-1$
+		assert width >= 0 : "Width must be positive or equal"; 
+		assert height >= 0 : "Height must be positive or equal"; 
 		setFromCorners(x, y, x + width, y + height);
 	}
 
@@ -153,7 +153,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Pure
 	public IntegerProperty minXProperty() {
 		if (this.minX == null) {
-			this.minX = new SimpleIntegerProperty(this, "minX") { //$NON-NLS-1$
+			this.minX = new SimpleIntegerProperty(this, "minX") { 
 				@Override
 				protected void invalidated() {
 					final int currentMin = get();
@@ -186,7 +186,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Pure
 	public IntegerProperty maxXProperty() {
 		if (this.maxX == null) {
-			this.maxX = new SimpleIntegerProperty(this, "maxX") { //$NON-NLS-1$
+			this.maxX = new SimpleIntegerProperty(this, "maxX") { 
 				@Override
 				protected void invalidated() {
 					final int currentMax = get();
@@ -219,7 +219,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Pure
 	public IntegerProperty minYProperty() {
 		if (this.minY == null) {
-			this.minY = new SimpleIntegerProperty(this, "minY") { //$NON-NLS-1$
+			this.minY = new SimpleIntegerProperty(this, "minY") { 
 				@Override
 				protected void invalidated() {
 					final int currentMin = get();
@@ -252,7 +252,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Pure
 	public IntegerProperty maxYProperty() {
 		if (this.maxY == null) {
-			this.maxY = new SimpleIntegerProperty(this, "maxY") { //$NON-NLS-1$
+			this.maxY = new SimpleIntegerProperty(this, "maxY") { 
 				@Override
 				protected void invalidated() {
 					final int currentMax = get();
@@ -282,15 +282,15 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getMinX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMinY());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxX());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getMaxY());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -306,7 +306,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Pure
 	public IntegerProperty widthProperty() {
 		if (this.width == null) {
-			this.width = new ReadOnlyIntegerWrapper(this, "width"); //$NON-NLS-1$
+			this.width = new ReadOnlyIntegerWrapper(this, "width"); 
 			this.width.bind(Bindings.subtract(maxXProperty(), minXProperty()));
 		}
 		return this.width;
@@ -324,7 +324,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Pure
 	public IntegerProperty heightProperty() {
 		if (this.height == null) {
-			this.height = new ReadOnlyIntegerWrapper(this, "height"); //$NON-NLS-1$
+			this.height = new ReadOnlyIntegerWrapper(this, "height"); 
 			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
 		}
 		return this.height;
@@ -333,7 +333,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Override
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			},

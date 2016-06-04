@@ -128,7 +128,7 @@ public class Tuple3d<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 
 	@Pure
 	public String toString() {
-		return this.getX()+"  "+this.getY()+"  "+this.getZ(); //$NON-NLS-1$ //$NON-NLS-2$
+		return this.getX()+"  "+this.getY()+"  "+this.getZ();  
 	}
 
 	/* (non-Javadoc)

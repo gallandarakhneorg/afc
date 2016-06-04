@@ -57,8 +57,8 @@ public class LogisticStochasticLaw extends StochasticLaw {
 	 * @throws OutsideDomainException when scale is negative.
 	 */
 	public LogisticStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
-		this.mu = paramFloat("mu", parameters); //$NON-NLS-1$
-		this.scale = paramFloat("scale", parameters); //$NON-NLS-1$
+		this.mu = paramFloat("mu", parameters); 
+		this.scale = paramFloat("scale", parameters); 
 		if (this.scale <= 0) {
 			throw new OutsideDomainException(this.scale);
 		}
@@ -93,9 +93,9 @@ public class LogisticStochasticLaw extends StochasticLaw {
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("LOGISTIC(mu="); //$NON-NLS-1$
+		b.append("LOGISTIC(mu="); 
 		b.append(this.mu);
-		b.append(", scale="); //$NON-NLS-1$
+		b.append(", scale="); 
 		b.append(this.scale);
 		b.append(')');
 		return b.toString();

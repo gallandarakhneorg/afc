@@ -181,15 +181,15 @@ public class DefaultUndoManager implements UndoManager {
 	@Override
 	public synchronized String getUndoPresentationName() {
 		if (canUndo())
-			return Locale.getString("UNDO", this.undoes.getLast().getPresentationName()); //$NON-NLS-1$
-		return Locale.getString("NO_UNDO"); //$NON-NLS-1$
+			return Locale.getString("UNDO", this.undoes.getLast().getPresentationName());  //$NON-NLS-1$
+		return Locale.getString("NO_UNDO");  //$NON-NLS-1$
 	}
 
 	@Override
 	public synchronized String getRedoPresentationName() {
 		if (canRedo())
-			return Locale.getString("REDO", this.redoes.getFirst().getPresentationName()); //$NON-NLS-1$
-		return Locale.getString("NO_REDO"); //$NON-NLS-1$
+			return Locale.getString("REDO", this.redoes.getFirst().getPresentationName());  //$NON-NLS-1$
+		return Locale.getString("NO_REDO");  //$NON-NLS-1$
 	}
 
 }

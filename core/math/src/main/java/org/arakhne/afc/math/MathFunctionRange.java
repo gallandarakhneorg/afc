@@ -32,9 +32,9 @@ package org.arakhne.afc.math;
 @Deprecated
 @SuppressWarnings("checkstyle:all")
 public class MathFunctionRange {
-	
+
 	/** Create a set of bounds that correspond to the specified discrete values.
-	 * 
+	 *
 	 * @param values are put in there own bounds object
 	 * @return the set of bounds
 	 */
@@ -45,14 +45,14 @@ public class MathFunctionRange {
 		}
 		return bounds;
 	}
-	
+
 	/** Create a set of bounds that correspond to the specified values.
 	 * <p>
 	 * The first value is the minimal value of the first bounds,
 	 * the second value is the maximal value of the first bounds,
 	 * the third value is the minimal value of the second bounds,
 	 * the forth value is the maximal value of the second bounds, and so on.
-	 * 
+	 *
 	 * @param values are put in there own bounds object
 	 * @return the set of bounds
 	 */
@@ -65,7 +65,7 @@ public class MathFunctionRange {
 	}
 
 	/** Create a bound that corresponds to {@code -infinity; +infinity}.
-	 * 
+	 *
 	 * @return the set of bounds
 	 */
 	public static MathFunctionRange[] createInfinitySet() {
@@ -80,7 +80,7 @@ public class MathFunctionRange {
 	private final boolean includeMax;
 
 	/** A bounding set with one value.
-	 * 
+	 *
 	 * @param value is the value of the minimal and maximale values in the set.
 	 */
 	public MathFunctionRange(double value) {
@@ -88,7 +88,7 @@ public class MathFunctionRange {
 	}
 
 	/** A bounding set with with two bounds.
-	 * 
+	 *
 	 * @param min1 is the minimal value
 	 * @param max1 is the maximal value
 	 */
@@ -97,7 +97,7 @@ public class MathFunctionRange {
 	}
 
 	/** A bounding set with with two bounds.
-	 * 
+	 *
 	 * @param min1 is the minimal value
 	 * @param includeMin1 indicates if the minimal value is inside the bounds or outside.
 	 * @param max1 is the maximal value
@@ -118,7 +118,7 @@ public class MathFunctionRange {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @return {@inheritDoc}
 	 */
 	@Override
@@ -131,9 +131,9 @@ public class MathFunctionRange {
 		buffer.append(this.includeMax ? ']' : ')');
 		return buffer.toString();
 	}
-	
+
 	/** Replies the minimal value of the value set.
-	 * 
+	 *
 	 * @return the minimal value of the value set.
 	 */
 	public double getMin() {
@@ -141,7 +141,7 @@ public class MathFunctionRange {
 	}
 
 	/** Replies the maximal value of the value set.
-	 * 
+	 *
 	 * @return the maximal value of the value set.
 	 */
 	public double getMax() {
@@ -149,7 +149,7 @@ public class MathFunctionRange {
 	}
 
 	/** Replies if the minimal value is included in the value set.
-	 * 
+	 *
 	 * @return <code>true</code> if the minimal value is inside the set,
 	 * otherwise <code>false</code>
 	 */
@@ -158,7 +158,7 @@ public class MathFunctionRange {
 	}
 
 	/** Replies if the maximal value is included in the value set.
-	 * 
+	 *
 	 * @return <code>true</code> if the maximal value is inside the set,
 	 * otherwise <code>false</code>
 	 */

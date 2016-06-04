@@ -46,7 +46,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	 * @param max the max value.
 	 */
 	public DoubleRange(double min, double max) {
-		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max";
 		this.min = min;
 		this.max = max;
 	}
@@ -124,7 +124,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	@Override
 	@Pure
 	public String toString() {
-		return "[" + Double.toString(this.min) + "; " + Double.toString(this.max) + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "[" + Double.toString(this.min) + "; " + Double.toString(this.max) + "]";
 	}
 
 }

@@ -149,7 +149,7 @@ public enum AttributeType {
 
 	static {
 		final String pName = AttributeType.class.getPackage().getName();
-		NAME_RESOURCE_FILE = pName + ".types"; //$NON-NLS-1$
+		NAME_RESOURCE_FILE = pName + ".types"; 
 	}
 
 	/** Replies the name of this type (localized).
@@ -161,46 +161,46 @@ public enum AttributeType {
 	public String getName() {
 		switch (this) {
 		case INTEGER:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "INTEGER"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "INTEGER"); 
 		case REAL:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "FLOAT"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "FLOAT"); 
 		case STRING:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "STRING"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "STRING"); 
 		case BOOLEAN:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "BOOLEAN"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "BOOLEAN"); 
 		case DATE:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "DATE"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "DATE"); 
 		case TIMESTAMP:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "TIMESTAMP"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "TIMESTAMP"); 
 		case OBJECT:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "OBJECT"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "OBJECT"); 
 		case POINT3D:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "POINT3D"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "POINT3D"); 
 		case POINT:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "POINT2D"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "POINT2D"); 
 		case COLOR:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "COLOR"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "COLOR"); 
 		case IMAGE:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "ICON"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "ICON"); 
 		case POLYLINE:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "POLYLINE"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "POLYLINE"); 
 		case POLYLINE3D:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "POLYLINE3D"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "POLYLINE3D"); 
 		case UUID:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "UUID"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "UUID"); 
 		case URL:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "URL"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "URL"); 
 		case URI:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "URI"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "URI"); 
 		case INET_ADDRESS:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "INET_ADDRESS"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "INET_ADDRESS"); 
 		case ENUMERATION:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "ENUMERATION"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "ENUMERATION"); 
 		case TYPE:
-			return Locale.getStringFrom(NAME_RESOURCE_FILE, "TYPE"); //$NON-NLS-1$
+			return Locale.getStringFrom(NAME_RESOURCE_FILE, "TYPE"); 
 		default:
 		}
-		return Locale.getStringFrom(NAME_RESOURCE_FILE, "OTHER"); //$NON-NLS-1$
+		return Locale.getStringFrom(NAME_RESOURCE_FILE, "OTHER"); 
 	}
 
 	@Pure
@@ -433,7 +433,7 @@ public enum AttributeType {
 		case COLOR:
 			return Colors.BLACK;
 		case UUID:
-			return java.util.UUID.fromString("00000000-0000-0000-0000-000000000000"); //$NON-NLS-1$
+			return java.util.UUID.fromString("00000000-0000-0000-0000-000000000000"); 
 		case URL:
 			return null;
 		case URI:
@@ -609,12 +609,12 @@ public enum AttributeType {
 			return ((Number) obj).doubleValue();
 		case STRING:
 			if (obj == null) {
-				return ""; //$NON-NLS-1$
+				return ""; 
 			}
 			if (obj instanceof Enum<?>) {
 				final Enum<?> enumValue = (Enum<?>) obj;
 				return enumValue.getClass().getCanonicalName()
-						+ "." //$NON-NLS-1$
+						+ "." 
 						+ enumValue.name();
 			}
 			return obj.toString();
@@ -700,7 +700,7 @@ public enum AttributeType {
 			if (obj instanceof InetAddress) {
 				try {
 					return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
-							((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
+							((InetAddress) obj).getHostAddress(), ""); 
 				} catch (MalformedURLException e) {
 					//
 				}
@@ -708,7 +708,7 @@ public enum AttributeType {
 			if (obj instanceof InetSocketAddress) {
 				try {
 					return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
-							((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
+							((InetSocketAddress) obj).getAddress().getHostAddress(), ""); 
 				} catch (MalformedURLException e) {
 					//
 				}
@@ -729,7 +729,7 @@ public enum AttributeType {
 			if (obj instanceof InetAddress) {
 				try {
 					return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
-							((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
+							((InetAddress) obj).getHostAddress(), ""); 
 				} catch (URISyntaxException e) {
 					//
 				}
@@ -737,7 +737,7 @@ public enum AttributeType {
 			if (obj instanceof InetSocketAddress) {
 				try {
 					return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
-							((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
+							((InetSocketAddress) obj).getAddress().getHostAddress(), ""); 
 				} catch (URISyntaxException e) {
 					//
 				}
@@ -816,7 +816,7 @@ public enum AttributeType {
 			if (obj instanceof CharSequence) {
 				try {
 					final String ipStr = obj.toString();
-					final int index = ipStr.lastIndexOf("/"); //$NON-NLS-1$
+					final int index = ipStr.lastIndexOf("/"); 
 					if (index >= 0) {
 						try {
 							return InetAddress.getByName(ipStr.substring(index + 1));

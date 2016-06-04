@@ -33,9 +33,9 @@ package org.arakhne.afc.math;
 @Deprecated
 @SuppressWarnings("checkstyle:all")
 public interface MathInversableFunction extends MathFunction {
-	
+
 	/** Replies the value of the inverse function.
-	 * 
+	 *
 	 * @param y
 	 * @return the value of {@code f<sup>-1</sup>(y)}.
 	 * @throws MathException in case {@code f<sup>-1</sup>(y)} could not be computed

@@ -47,7 +47,7 @@ public abstract class AbstractShape2d<T extends AbstractShape2d<?>> implements S
 	 * @param listener the listener.
 	 */
 	protected synchronized void addShapeGeometryChangeListener(ShapeGeometryChangeListener listener) {
-		assert listener != null : "Listener must be not null"; //$NON-NLS-1$
+		assert listener != null : "Listener must be not null"; 
 		if (this.geometryListeners == null) {
 			this.geometryListeners = new WeakArrayList<>();
 		}
@@ -59,7 +59,7 @@ public abstract class AbstractShape2d<T extends AbstractShape2d<?>> implements S
 	 * @param listener the listener.
 	 */
 	protected synchronized void removeShapeGeometryChangeListener(ShapeGeometryChangeListener listener) {
-		assert listener != null : "Listener must be not null"; //$NON-NLS-1$
+		assert listener != null : "Listener must be not null"; 
 		if (this.geometryListeners != null) {
 			this.geometryListeners.remove(listener);
 			if (this.geometryListeners.isEmpty()) {

@@ -39,6 +39,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class PrefixDepthFirstTreeIteratorTest extends AbstractTreeIteratorTest {
 
 	private PrefixDepthFirstTreeIterator<DefaultBinaryTreeNode<Object>> iterator;
@@ -127,7 +128,7 @@ public class PrefixDepthFirstTreeIteratorTest extends AbstractTreeIteratorTest {
 		this.iterator.remove();
 		try {
 			this.iterator.remove();
-			fail("Expecting NoSuchElementException"); //$NON-NLS-1$
+			fail("Expecting NoSuchElementException"); 
 		}
 		catch(NoSuchElementException e) {
 			// Expected exception

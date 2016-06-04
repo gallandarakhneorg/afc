@@ -39,6 +39,8 @@ import java.util.Map;
 import javax.activation.MimetypesFileTypeMap;
 
 import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * The class <code>URLConnection</code> is implementing
@@ -76,7 +78,7 @@ class URLConnection extends java.net.URLConnection {
 
 	@Override
     public String getHeaderField(int index) {
-		assert index >= 0 : "Index must be positive or zero"; //$NON-NLS-1$
+		assert index >= 0 : AssertMessages.positiveOrZeroParameter();
 		try {
 			connect();
 		} catch (IOException e) {
@@ -118,7 +120,7 @@ class URLConnection extends java.net.URLConnection {
 
 	@Override
     public String getHeaderFieldKey(int index) {
-		assert index >= 0 : "Index must be positive or zero"; //$NON-NLS-1$
+		assert index >= 0 : AssertMessages.positiveOrZeroParameter();
     	switch (index) {
     	case 0:
     		return "content-type"; //$NON-NLS-1$
@@ -174,7 +176,7 @@ class URLConnection extends java.net.URLConnection {
 			}
 			return os;
 		}
-		throw new UnknownServiceException("URL connection cannot do output"); //$NON-NLS-1$
+		throw new UnknownServiceException(Locale.getString("E1")); //$NON-NLS-1$
     }
 
 	@Override
@@ -187,7 +189,7 @@ class URLConnection extends java.net.URLConnection {
 			}
 			return is;
 		}
-		throw new UnknownServiceException("URL connection cannot do input"); //$NON-NLS-1$
+		throw new UnknownServiceException("E2"); //$NON-NLS-1$
     }
 
 }

@@ -66,9 +66,9 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
 	 */
 	public TriangularStochasticLaw(Map<String, String> parameters) throws LawParameterNotFoundException {
-		this(paramFloat("minX", parameters), //$NON-NLS-1$
-			paramFloat("mode", parameters), //$NON-NLS-1$
-			paramFloat("maxX", parameters)); //$NON-NLS-1$
+		this(paramFloat("minX", parameters), 
+			paramFloat("mode", parameters), 
+			paramFloat("maxX", parameters)); 
 	}
 
 	/** Construct the law.
@@ -125,11 +125,11 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("TRIANGULAR(minX="); //$NON-NLS-1$
+		b.append("TRIANGULAR(minX="); 
 		b.append(this.minX);
-		b.append(", mode="); //$NON-NLS-1$
+		b.append(", mode="); 
 		b.append(this.mode);
-		b.append(", maxX="); //$NON-NLS-1$
+		b.append(", maxX="); 
 		b.append(this.maxX);
 		b.append(')');
 		return b.toString();

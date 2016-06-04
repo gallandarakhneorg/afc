@@ -117,7 +117,7 @@ public abstract class PropertyEditorView extends LinearLayout {
 	 */
 	protected String getPropertyLabel(String propertyName) {
 		Resources r = getResources();
-		String key = ":string/property_label_"+propertyName; //$NON-NLS-1$
+		String key = ":string/property_label_"+propertyName; 
 		int id = 0;
 		Iterator<String> packages = this.packageNames.iterator();
 		while (packages.hasNext() && id==0) {
@@ -129,8 +129,8 @@ public abstract class PropertyEditorView extends LinearLayout {
 		}
 		if (label==null || label.isEmpty()) {
 			Log.d(getContext().getApplicationInfo().className,
-					"Unable to retreive the resource"+key); //$NON-NLS-1$
-			return "?"+key; //$NON-NLS-1$
+					"Unable to retreive the resource"+key); 
+			return "?"+key; 
 		}
 		return label;
 	}

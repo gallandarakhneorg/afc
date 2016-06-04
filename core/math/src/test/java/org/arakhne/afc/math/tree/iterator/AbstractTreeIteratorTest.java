@@ -53,6 +53,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public abstract class AbstractTreeIteratorTest {
 
 	/**
@@ -109,21 +110,21 @@ public abstract class AbstractTreeIteratorTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		this.root = new NodeStub("root"); //$NON-NLS-1$
-		this.child1 = new NodeStub("child1"); //$NON-NLS-1$
-		this.child11 = new NodeStub("child11"); //$NON-NLS-1$;
-		this.child12 = new NodeStub("child12"); //$NON-NLS-1$;
-		this.child121 = new NodeStub("child121"); //$NON-NLS-1$;
-		this.child1211 = new NodeStub("child1211"); //$NON-NLS-1$;
-		this.child1212 = new NodeStub("child1212"); //$NON-NLS-1$;
-		this.child12121 = new NodeStub("child12121"); //$NON-NLS-1$;
-		this.child12122 = new NodeStub("child12122"); //$NON-NLS-1$;
-		this.child122 = new NodeStub("child122"); //$NON-NLS-1$;
-		this.child2 = new NodeStub("child2"); //$NON-NLS-1$
-		this.child21 = new NodeStub("child21"); //$NON-NLS-1$;
-		this.child211 = new NodeStub("child211"); //$NON-NLS-1$;
-		this.child22 = new NodeStub("child22"); //$NON-NLS-1$;
-		this.child222 = new NodeStub("child222"); //$NON-NLS-1$;
+		this.root = new NodeStub("root"); 
+		this.child1 = new NodeStub("child1"); 
+		this.child11 = new NodeStub("child11"); ;
+		this.child12 = new NodeStub("child12"); ;
+		this.child121 = new NodeStub("child121"); ;
+		this.child1211 = new NodeStub("child1211"); ;
+		this.child1212 = new NodeStub("child1212"); ;
+		this.child12121 = new NodeStub("child12121"); ;
+		this.child12122 = new NodeStub("child12122"); ;
+		this.child122 = new NodeStub("child122"); ;
+		this.child2 = new NodeStub("child2"); 
+		this.child21 = new NodeStub("child21"); ;
+		this.child211 = new NodeStub("child211"); ;
+		this.child22 = new NodeStub("child22"); ;
+		this.child222 = new NodeStub("child222"); ;
 		
 		this.root.setChildAt(BinaryTreeZone.LEFT,			this.child1);
 		this.root.setChildAt(BinaryTreeZone.RIGHT,			this.child2);

@@ -45,7 +45,7 @@ class AwtStroke implements Stroke, NativeWrapper {
 			return BasicStroke.JOIN_ROUND;
 		default:
 		}
-		throw new RuntimeException("unsupported line join: "+join); //$NON-NLS-1$
+		throw new RuntimeException("unsupported line join: "+join);  //$NON-NLS-1$
 	}
 	
 	private static int toAwtEndCap(EndCap endCap) {
@@ -58,21 +58,21 @@ class AwtStroke implements Stroke, NativeWrapper {
 			return BasicStroke.CAP_SQUARE;
 		default:
 		}
-		throw new RuntimeException("unsupported end cap: "+endCap); //$NON-NLS-1$
+		throw new RuntimeException("unsupported end cap: "+endCap);  //$NON-NLS-1$
 	}
 	
 	private static LineJoin fromAwtLineJoin(int join) {
 		if (join==BasicStroke.JOIN_MITER) return LineJoin.MITER;
 		if (join==BasicStroke.JOIN_BEVEL) return LineJoin.BEVEL;
 		if (join==BasicStroke.JOIN_ROUND) return LineJoin.ROUND;
-		throw new RuntimeException("unsupported line join: "+join); //$NON-NLS-1$
+		throw new RuntimeException("unsupported line join: "+join);  //$NON-NLS-1$
 	}
 	
 	private static EndCap fromAwtEndCap(int endCap) {
 		if (endCap==BasicStroke.CAP_SQUARE) return EndCap.SQUARE;
 		if (endCap==BasicStroke.CAP_BUTT) return EndCap.BUTT;
 		if (endCap==BasicStroke.CAP_ROUND) return EndCap.ROUND;
-		throw new RuntimeException("unsupported end cap: "+endCap); //$NON-NLS-1$
+		throw new RuntimeException("unsupported end cap: "+endCap);  //$NON-NLS-1$
 	}
 
 	private final BasicStroke stroke;

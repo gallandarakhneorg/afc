@@ -72,8 +72,8 @@ public final class TextUtil {
 	 * @return <code>true</code> if a is equal to b; otherwise <code>false</code>.
 	 */
 	public static boolean equalsIgnoreCase(String firstText, String secondText, boolean isNullEmptyEquivalence) {
-		final String aa = (firstText != null || !isNullEmptyEquivalence) ? firstText : "";  //$NON-NLS-1$
-		final String bb = (secondText != null || !isNullEmptyEquivalence) ? secondText : "";  //$NON-NLS-1$
+		final String aa = (firstText != null || !isNullEmptyEquivalence) ? firstText : ""; //$NON-NLS-1$
+		final String bb = (secondText != null || !isNullEmptyEquivalence) ? secondText : ""; //$NON-NLS-1$
 		if (aa == null) {
 			return bb == null;
 		}

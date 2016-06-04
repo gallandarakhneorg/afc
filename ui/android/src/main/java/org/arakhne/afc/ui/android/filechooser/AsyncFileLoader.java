@@ -72,7 +72,7 @@ class AsyncFileLoader extends AsyncTaskLoader<List<File>> {
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean isHiddenFile(File file) {
-		return file.isHidden() || file.getName().equalsIgnoreCase("lost.dir"); //$NON-NLS-1$
+		return file.isHidden() || file.getName().equalsIgnoreCase("lost.dir"); 
 	}
 
 	/**

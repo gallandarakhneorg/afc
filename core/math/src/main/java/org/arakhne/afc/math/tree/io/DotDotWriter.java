@@ -45,7 +45,7 @@ public class DotDotWriter {
 
 	/** Common extension used for <code>.dot</code> files.
 	 */
-	public static final String EXTENSION = ".dot"; //$NON-NLS-1$
+	public static final String EXTENSION = ".dot"; 
 
 	private final Writer writer;
 
@@ -78,9 +78,9 @@ public class DotDotWriter {
 	 * @throws IOException in case of error
 	 */
 	public void write(Tree<?, ?> tree) throws IOException {
-		this.writer.append("digraph G"); //$NON-NLS-1$
+		this.writer.append("digraph G"); 
 		this.writer.append(Integer.toString(this.graphIndex++));
-		this.writer.append(" {\n"); //$NON-NLS-1$
+		this.writer.append(" {\n"); 
 
 		if (tree != null) {
 			// Write the node attributes
@@ -90,17 +90,17 @@ public class DotDotWriter {
 			while (iterator.hasNext()) {
 				node = iterator.next();
 				dataCount = node.getUserDataCount();
-				final String name = "NODE" + Integer.toHexString(System.identityHashCode(node)); //$NON-NLS-1$
+				final String name = "NODE" + Integer.toHexString(System.identityHashCode(node)); 
 				final String label = Integer.toString(dataCount);
 
-				this.writer.append("\t"); //$NON-NLS-1$
+				this.writer.append("\t"); 
 				this.writer.append(name);
-				this.writer.append(" [label=\""); //$NON-NLS-1$
+				this.writer.append(" [label=\""); 
 				this.writer.append(label);
-				this.writer.append("\"]\n"); //$NON-NLS-1$
+				this.writer.append("\"]\n"); 
 			}
 
-			this.writer.append("\n"); //$NON-NLS-1$
+			this.writer.append("\n"); 
 
 			// Write the node links
 			iterator = tree.broadFirstIterator();
@@ -109,34 +109,34 @@ public class DotDotWriter {
 			String childName;
 			while (iterator.hasNext()) {
 				node = iterator.next();
-				final String name = "NODE" + Integer.toHexString(System.identityHashCode(node)); //$NON-NLS-1$
+				final String name = "NODE" + Integer.toHexString(System.identityHashCode(node)); 
 				if (!node.isLeaf()) {
 					partitionType = node.getPartitionEnumeration();
 					final int childCount = node.getChildCount();
 					for (int i = 0; i < childCount; ++i) {
 						child = node.getChildAt(i);
 						if (child != null) {
-							childName = "NODE" + Integer.toHexString(System.identityHashCode(child)); //$NON-NLS-1$
+							childName = "NODE" + Integer.toHexString(System.identityHashCode(child)); 
 							final String label;
 							if (partitionType != null) {
 								label = partitionType.getEnumConstants()[i].name();
 							} else {
 								label = Integer.toString(i);
 							}
-							this.writer.append("\t"); //$NON-NLS-1$
+							this.writer.append("\t"); 
 							this.writer.append(name);
-							this.writer.append("->"); //$NON-NLS-1$
+							this.writer.append("->"); 
 							this.writer.append(childName);
-							this.writer.append(" [label=\""); //$NON-NLS-1$
+							this.writer.append(" [label=\""); 
 							this.writer.append(label);
-							this.writer.append("\"]\n"); //$NON-NLS-1$
+							this.writer.append("\"]\n"); 
 						}
 					}
 				}
 			}
 		}
 
-		this.writer.append("}\n\n"); //$NON-NLS-1$
+		this.writer.append("}\n\n"); 
 	}
 
 	/** Close the output stream.

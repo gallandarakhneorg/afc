@@ -42,12 +42,12 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 	/**
 	 *Literal constant.
      */
-	private static final String SECOND_VECTOR_NOT_NULL = "Second vector must be not null"; //$NON-NLS-1$
+	private static final String SECOND_VECTOR_NOT_NULL = "Second vector must be not null"; 
 
     /**
      *Literal constant.
      */
-    private static final String FIRST_VECTOR_NOT_NULL = "First vector must be not null"; //$NON-NLS-1$
+    private static final String FIRST_VECTOR_NOT_NULL = "First vector must be not null"; 
 
 	/** Construct a zero vector.
 	 */
@@ -128,14 +128,14 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 	@Pure
 	@Override
 	public double dot(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		return this.x * vector.getX() + this.y * vector.getY();
 	}
 
 	@Pure
 	@Override
 	public double perp(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		return this.x * vector.getY() - vector.getX() * this.y;
 	}
 
@@ -161,7 +161,7 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 
 	@Override
 	public void add(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		this.x = this.x + vector.getX();
 		this.y = this.y + vector.getY();
 	}
@@ -184,14 +184,14 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 
 	@Override
 	public void scaleAdd(int scale, Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		this.x = scale * this.x + vector.getX();
 		this.y = scale * this.y + vector.getY();
 	}
 
 	@Override
 	public void scaleAdd(double scale, Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		this.x = scale * this.x + vector.getX();
 		this.y = scale * this.y + vector.getY();
 	}
@@ -206,22 +206,22 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 
 	@Override
 	public void sub(Point2D<?, ?> point1, Point2D<?, ?> point2) {
-		assert point1 != null : "First point must be not null"; //$NON-NLS-1$
-		assert point2 != null : "Second point must be not null"; //$NON-NLS-1$
+		assert point1 != null : "First point must be not null"; 
+		assert point2 != null : "Second point must be not null"; 
 		this.x = point1.getX() - point2.getX();
 		this.y = point1.getY() - point2.getY();
 	}
 
 	@Override
 	public void sub(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; 
 		this.x -= vector.getX();
 		this.y -= vector.getY();
 	}
 
 	@Override
 	public void setLength(double newLength) {
-		assert newLength >= 0. : "New length must be positive or zero"; //$NON-NLS-1$
+		assert newLength >= 0. : "New length must be positive or zero"; 
 		final double l = getLength();
 		if (l != 0) {
 			final double f = newLength / l;

@@ -182,11 +182,11 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		for(int i=0; i<coords.length; i+=2) {
 			int x = coords[i];
 			int y = coords[i+1];
-			assertTrue("("+x+";"+y+")", iterator.hasNext()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			assertTrue("("+x+";"+y+")", iterator.hasNext()); 
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals("(>"+x+"<;"+y+")!=("+p.ix()+";"+p.iy()+")", x, p.ix()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
-			assertEquals("("+x+";>"+y+"<)!=("+p.ix()+";"+p.iy()+")", y, p.iy()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+			assertEquals("(>"+x+"<;"+y+")!=("+p.ix()+";"+p.iy()+")", x, p.ix()); 
+			assertEquals("("+x+";>"+y+"<)!=("+p.ix()+";"+p.iy()+")", y, p.iy()); 
 		}
 		
 		assertFalse(iterator.hasNext());
@@ -232,11 +232,11 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		for(int i=0; i<coords.length; i+=2) {
 			int x = coords[i];
 			int y = coords[i+1];
-			assertTrue("("+x+";"+y+")", iterator.hasNext()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			assertTrue("("+x+";"+y+")", iterator.hasNext()); 
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals("(>"+x+"<;"+y+")!=("+p.ix()+";"+p.iy()+")", x, p.ix()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
-			assertEquals("("+x+";>"+y+"<)!=("+p.ix()+";"+p.iy()+")", y, p.iy()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+			assertEquals("(>"+x+"<;"+y+")!=("+p.ix()+";"+p.iy()+")", x, p.ix()); 
+			assertEquals("("+x+";>"+y+"<)!=("+p.ix()+";"+p.iy()+")", y, p.iy()); 
 		}
 		
 		assertFalse(iterator.hasNext());

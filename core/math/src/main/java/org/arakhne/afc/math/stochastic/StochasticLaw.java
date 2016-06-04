@@ -54,7 +54,7 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	protected static double paramFloat(String paramName, Map<String, String> parameters)
 	throws LawParameterNotFoundException {
 		final String svalue = parameters.get(paramName);
-		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
+		if (svalue != null && !"".equals(svalue)) { 
 			try {
 				return Float.parseFloat(svalue);
 			} catch (AssertionError e) {
@@ -77,7 +77,7 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	protected static boolean paramBoolean(String paramName, Map<String, String> parameters)
 	throws LawParameterNotFoundException {
 		final String svalue = parameters.get(paramName);
-		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
+		if (svalue != null && !"".equals(svalue)) { 
 			try {
 				return Boolean.parseBoolean(svalue);
 			} catch (AssertionError e) {

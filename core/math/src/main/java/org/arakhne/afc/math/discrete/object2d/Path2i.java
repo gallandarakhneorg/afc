@@ -89,7 +89,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		int movx = element.toX;
@@ -210,7 +210,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		int movx = element.toX;
@@ -344,7 +344,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		int movx = element.toX;
@@ -548,7 +548,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		PathElement2i pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition"); 
 		}
 
 		int curx, cury, movx, movy, endx, endy;
@@ -829,15 +829,15 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		if (this.numCoords>0) {
 			b.append(this.coords[0]);
 			for(int i=1; i<this.numCoords; ++i) {
-				b.append(", "); //$NON-NLS-1$
+				b.append(", "); 
 				b.append(this.coords[i]);
 			}
 		}
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -894,7 +894,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 	private void ensureSlots(boolean needMove, int n) {
 		if (needMove && this.numTypes==0) {
-			throw new IllegalStateException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalStateException("missing initial moveto in path definition"); 
 		}
 		if (this.types.length==this.numTypes) {
 			this.types = Arrays.copyOf(this.types, this.types.length+GROW_SIZE);
@@ -2733,7 +2733,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		@Override
 		public PathElement2i next() {
 			if (this.done) {
-				throw new NoSuchElementException("flattening iterator out of bounds"); //$NON-NLS-1$
+				throw new NoSuchElementException("flattening iterator out of bounds"); 
 			}
 
 			PathElement2i element;

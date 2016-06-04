@@ -701,13 +701,13 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 */
 	@Override
 	public String toString() {
-		return "(" //$NON-NLS-1$
+		return "(" 
 				+this.x
-				+";" //$NON-NLS-1$
+				+";" 
 				+this.y
-				+";" //$NON-NLS-1$
+				+";" 
 				+this.z
-				+")"; //$NON-NLS-1$
+				+")"; 
 	}
 
 }

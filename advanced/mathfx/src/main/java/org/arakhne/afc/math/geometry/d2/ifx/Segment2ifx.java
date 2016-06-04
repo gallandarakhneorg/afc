@@ -120,22 +120,22 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		b.append(getX1());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY1());
-		b.append("|"); //$NON-NLS-1$
+		b.append("|"); 
 		b.append(getX2());
-		b.append(";"); //$NON-NLS-1$
+		b.append(";"); 
 		b.append(getY2());
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
 	@Pure
 	@Override
 	public Shape2ifx<?> createTransformedShape(Transform2D transform) {
-		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+		assert transform != null : "Transformation must be not null"; 
 		final Point2ifx point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
 		final int x1 = point.ix();
@@ -186,7 +186,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	public IntegerProperty x1Property() {
 		if (this.ax == null) {
-			this.ax = new SimpleIntegerProperty(this, "x1"); //$NON-NLS-1$
+			this.ax = new SimpleIntegerProperty(this, "x1"); 
 		}
 		return this.ax;
 	}
@@ -204,7 +204,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	public IntegerProperty y1Property() {
 		if (this.ay == null) {
-			this.ay = new SimpleIntegerProperty(this, "y1"); //$NON-NLS-1$
+			this.ay = new SimpleIntegerProperty(this, "y1"); 
 		}
 		return this.ay;
 	}
@@ -222,7 +222,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	public IntegerProperty x2Property() {
 		if (this.bx == null) {
-			this.bx = new SimpleIntegerProperty(this, "x2"); //$NON-NLS-1$
+			this.bx = new SimpleIntegerProperty(this, "x2"); 
 		}
 		return this.bx;
 	}
@@ -240,7 +240,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	public IntegerProperty y2Property() {
 		if (this.by == null) {
-			this.by = new SimpleIntegerProperty(this, "y2"); //$NON-NLS-1$
+			this.by = new SimpleIntegerProperty(this, "y2"); 
 		}
 		return this.by;
 	}
@@ -258,7 +258,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Override
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			},

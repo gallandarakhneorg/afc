@@ -1054,82 +1054,72 @@ public abstract class AbstractRoundRectangle2afpTest<T extends RoundRectangle2af
 
 	@Test
 	public void getDistanceSquaredRectangle2afp() {
-		assert(false);
-	}
-
-	@Test
-	public void getDistanceSquaredTriangle2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredEllipse2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredPath2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredOrientedRectangle2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredParallelogram2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredRoundRectangle2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredMultiShape2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToEllipse2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToRectangle2afp() {
-		assert(false);
-	}
-
-	@Test
-	public void getClosestPointToTriangle2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToPath2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToOrientedRectangle2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 		
 	@Test
 	public void getClosestPointToParallelogram2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToRoundRectangle2afp() {
-		assert(false);
+        throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToMultiShape2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
@@ -1162,24 +1152,48 @@ public abstract class AbstractRoundRectangle2afpTest<T extends RoundRectangle2af
 
 	@Test
 	public void getClosestPointToSegment2afp() {
-		assertFpPointEquals(5.06108, 8.01572, this.shape.getClosestPointTo(createSegment(0, 0, 1, 1)));
+		assertFpPointEquals(5.0721, 8.00794, this.shape.getClosestPointTo(createSegment(0, 0, 1, 1)));
 		assertFpPointEquals(5.06108, 8.01572, this.shape.getClosestPointTo(createSegment(0, 1, 1, 0)));
 		assertFpPointEquals(8, 8, this.shape.getClosestPointTo(createSegment(6, 4, 8, 5)));
 		assertFpPointEquals(5, 14.5, this.shape.getClosestPointTo(createSegment(4, 14, 6, 15)));
 		assertFpPointEquals(7, 9, this.shape.getClosestPointTo(createSegment(7, 9, 9, 10)));
-		assertFpPointEquals(9.93892, 8.01572, this.shape.getClosestPointTo(createSegment(
+		assertFpPointEquals(9.90811, 8.00066, this.shape.getClosestPointTo(createSegment(
 				9.315811794580389, 7.677476922530425, 11.315811794580389, 8.677476922530425)));
 	}
 
 	@Test
 	public void getDistanceSquaredSegment2afp() {
-		assertEpsilonEquals(65.71262, this.shape.getDistanceSquared(createSegment(0, 0, 1, 1)));
-		assertEpsilonEquals(74.83477, this.shape.getDistanceSquared(createSegment(0, 1, 1, 0)));
+		assertEpsilonEquals(65.69325, this.shape.getDistanceSquared(createSegment(0, 0, 1, 1)));
+		assertEpsilonEquals(74.83131, this.shape.getDistanceSquared(createSegment(0, 1, 1, 0)));
 		assertEpsilonEquals(9, this.shape.getDistanceSquared(createSegment(6, 4, 8, 5)));
 		assertEpsilonEquals(0, this.shape.getDistanceSquared(createSegment(4, 14, 6, 15)));
 		assertEpsilonEquals(0, this.shape.getDistanceSquared(createSegment(7, 9, 9, 10)));
-		assertEpsilonEquals(0, this.shape.getDistanceSquared(createSegment(
+		assertEpsilonEquals(0.000585, this.shape.getDistanceSquared(createSegment(
 				9.315811794580389, 7.677476922530425, 11.315811794580389, 8.677476922530425)));
 	}
+
+	protected Triangle2afp<?, ?, ?, ?, ?, ?> createTestTriangle(double dx, double dy) {
+	    return createTriangle(dx, dy, dx + 2, dy + 1.5, dx + 1.5, dy - 1.6);
+	}
 	
+    @Test
+    public void getClosestPointToTriangle2afp() {
+        assertFpPointEquals(5.06108, 8.01572, this.shape.getClosestPointTo(createTestTriangle(0, 0)));
+        assertFpPointEquals(10, 16, this.shape.getClosestPointTo(createTestTriangle(14, 16)));
+        assertFpPointEquals(5.0609, 17.98404, this.shape.getClosestPointTo(createTestTriangle(3, 20)));
+        assertFpPointEquals(8.59677, 18, this.shape.getClosestPointTo(createTestTriangle(7, 19)));
+        assertFpPointEquals(5, 14.75, this.shape.getClosestPointTo(createTestTriangle(4, 14)));
+        assertFpPointEquals(6, 10, this.shape.getClosestPointTo(createTestTriangle(6, 10)));
+    }
+
+    @Test
+    public void getDistanceSquaredTriangle2afp() {
+        assertEpsilonEquals(105.14327, this.shape.getDistanceSquared(createTestTriangle(0, 0)));
+        assertEpsilonEquals(16, this.shape.getDistanceSquared(createTestTriangle(14, 16)));
+        assertEpsilonEquals(0.48763, this.shape.getDistanceSquared(createTestTriangle(3, 20)));
+        assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestTriangle(7, 19)));
+        assertEpsilonEquals(1.54379, this.shape.getDistanceSquared(createTestTriangle(4, 14)));
+        assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestTriangle(6, 10)));
+    }
+
 }

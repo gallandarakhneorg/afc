@@ -320,10 +320,10 @@ public class ProgressBarModel extends DefaultProgression implements BoundedRange
 		if (bar!=null) {
 			StringBuilder buffer = new StringBuilder();
 			buffer.append((int)getPercent());
-			buffer.append("%"); //$NON-NLS-1$
+			buffer.append("%");  //$NON-NLS-1$
 			String comment = getComment();
 			if (comment!=null) {
-				buffer.append(" - ");  //$NON-NLS-1$
+				buffer.append(" - ");   //$NON-NLS-1$
 				buffer.append(comment);
 			}
 			bar.setString(comment);

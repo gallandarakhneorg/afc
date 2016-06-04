@@ -1849,102 +1849,102 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
 	@Test
 	public void getDistanceSquaredRectangle2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredMultiShape2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredCircle2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredTriangle2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredEllipse2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredSegment2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 	
 	@Test
 	public void getDistanceSquaredPath2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredOrientedRectangle2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredParallelogram2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getDistanceSquaredRoundRectangle2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToEllipse2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToCircle2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToRectangle2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToSegment2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToTriangle2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToPath2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToOrientedRectangle2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 		
 	@Test
 	public void getClosestPointToParallelogram2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToRoundRectangle2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 
 	@Test
 	public void getClosestPointToMultiShape2afp() {
-		assert(false);
+		throw new RuntimeException();
 	}
 	
 }

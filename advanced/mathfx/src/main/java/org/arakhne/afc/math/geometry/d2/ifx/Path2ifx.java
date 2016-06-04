@@ -118,7 +118,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 * @param windingRule the path winding rule.
 	 */
 	public Path2ifx(PathWindingRule windingRule) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert windingRule != null : "Path winding rule must be not null"; 
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
 		}
@@ -129,8 +129,8 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 * @param iterator the iterator that provides the elements to copy.
 	 */
 	public Path2ifx(PathWindingRule windingRule, Iterator<PathElement2ifx> iterator) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert windingRule != null : "Path winding rule must be not null"; 
+		assert iterator != null : "Iterator must be not null"; 
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
 		}
@@ -147,7 +147,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null"; 
 		if (this.coords != null && !this.coords.isEmpty()) {
 			final int size = this.coords.size();
 			for (int i = 0; i < size; i += 2) {
@@ -212,16 +212,16 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
+		b.append("["); 
 		if (this.coords != null && !this.coords.isEmpty()) {
 			final Iterator<Integer> iterator = this.coords.iterator();
 			b.append(iterator.next());
 			while (iterator.hasNext()) {
-				b.append(", "); //$NON-NLS-1$
+				b.append(", "); 
 				b.append(iterator.next());
 			}
 		}
-		b.append("]"); //$NON-NLS-1$
+		b.append("]"); 
 		return b.toString();
 	}
 
@@ -238,7 +238,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void transform(Transform2D transform) {
-		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+		assert transform != null : "Transformation must be not null"; 
 		final Point2D<?, ?> p = new InnerComputationPoint2ai();
 		if (this.coords != null && !this.coords.isEmpty()) {
 			final ListIterator<Integer> li = this.coords.listIterator();
@@ -259,7 +259,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 */
 	public BooleanProperty isEmptyProperty() {
 		if (this.isEmpty == null) {
-			this.isEmpty = new SimpleBooleanProperty(this, "isEmpty"); //$NON-NLS-1$
+			this.isEmpty = new SimpleBooleanProperty(this, "isEmpty"); 
 			this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
 				final PathIterator2ai<PathElement2ifx> pi = getPathIterator();
 				while (pi.hasNext()) {
@@ -282,7 +282,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	@Override
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new ReadOnlyObjectWrapper<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new ReadOnlyObjectWrapper<>(this, "boundingBox"); 
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				final Rectangle2ifx bb = getGeomFactory().newBox();
 				Path2ai.computeDrawableElementBoundingBox(
@@ -303,7 +303,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 */
 	public ObjectProperty<Rectangle2ifx> controlPointBoundingBoxProperty() {
 		if (this.logicalBounds == null) {
-			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, "controlPointBoundingBox"); //$NON-NLS-1$
+			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, "controlPointBoundingBox"); 
 			this.logicalBounds.bind(Bindings.createObjectBinding(() -> {
 				final Rectangle2ifx bb = getGeomFactory().newBox();
 				Path2ai.computeControlPointBoundingBox(
@@ -322,7 +322,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void toBoundingBox(Rectangle2ifx box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; 
 		box.set(boundingBoxProperty().get());
 	}
 
@@ -332,7 +332,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 */
 	public ObjectProperty<PathWindingRule> windingRuleProperty() {
 		if (this.windingRule == null) {
-			this.windingRule = new SimpleObjectProperty<>(this, "windingRule", DEFAULT_WINDING_RULE); //$NON-NLS-1$
+			this.windingRule = new SimpleObjectProperty<>(this, "windingRule", DEFAULT_WINDING_RULE); 
 		}
 		return this.windingRule;
 	}
@@ -344,7 +344,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : "Path winding rule must be not null"; 
 		if (this.windingRule != null || rule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(rule);
 		}
@@ -356,7 +356,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 */
 	public BooleanProperty isPolylineProperty() {
 		if (this.isPolyline == null) {
-			this.isPolyline = new ReadOnlyBooleanWrapper(this, "isPolyline", false); //$NON-NLS-1$
+			this.isPolyline = new ReadOnlyBooleanWrapper(this, "isPolyline", false); 
 			this.isPolyline.bind(Bindings.createBooleanBinding(() -> {
 				boolean first = true;
 				boolean hasOneLine = false;
@@ -389,7 +389,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 */
 	public  BooleanProperty isCurvedProperty() {
 		if (this.isCurved == null) {
-			this.isCurved = new ReadOnlyBooleanWrapper(this, "isCurved", false); //$NON-NLS-1$
+			this.isCurved = new ReadOnlyBooleanWrapper(this, "isCurved", false); 
 			this.isCurved.bind(Bindings.createBooleanBinding(() -> {
 				for (final PathElementType type : innerTypesProperty()) {
 					if (type == PathElementType.CURVE_TO || type == PathElementType.QUAD_TO) {
@@ -413,7 +413,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 */
 	public BooleanProperty isMultiPartsProperty() {
 		if (this.isMultipart == null) {
-			this.isMultipart = new ReadOnlyBooleanWrapper(this, "isMultiParts", false); //$NON-NLS-1$
+			this.isMultipart = new ReadOnlyBooleanWrapper(this, "isMultiParts", false); 
 			this.isMultipart.bind(Bindings.createBooleanBinding(() -> {
 				boolean foundOne = false;
 				for (final PathElementType type : innerTypesProperty()) {
@@ -441,7 +441,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 */
 	public BooleanProperty isPolygonProperty() {
 		if (this.isPolygon == null) {
-			this.isPolygon = new ReadOnlyBooleanWrapper(this, "isPolygon", false); //$NON-NLS-1$
+			this.isPolygon = new ReadOnlyBooleanWrapper(this, "isPolygon", false); 
 			this.isPolygon.bind(Bindings.createBooleanBinding(() -> {
 				boolean first = true;
 				boolean lastIsClose = false;
@@ -486,7 +486,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void toBoundingBoxWithCtrlPoints(Rectangle2ifx box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; 
 		box.set(controlPointBoundingBoxProperty().get());
 	}
 
@@ -687,7 +687,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	private void ensureMoveTo() {
 		if (this.types == null || this.types.isEmpty()) {
-			throw new IllegalStateException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalStateException("missing initial moveto in path definition"); 
 		}
 	}
 
@@ -730,7 +730,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 */
 	protected ReadOnlyListWrapper<Integer> innerCoordinatesProperty() {
 		if (this.coords == null) {
-			this.coords = new ReadOnlyListWrapper<>(this, "coordinates", //$NON-NLS-1$
+			this.coords = new ReadOnlyListWrapper<>(this, "coordinates", 
 					FXCollections.observableList(new ArrayList<>()));
 		}
 		return this.coords;
@@ -816,7 +816,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void set(Path2ifx path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null"; 
 		clear();
 		add(path.getPathIterator());
 	}
@@ -827,7 +827,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 */
 	protected ReadOnlyListWrapper<PathElementType> innerTypesProperty() {
 		if (this.types == null) {
-			this.types = new ReadOnlyListWrapper<>(this, "types", //$NON-NLS-1$
+			this.types = new ReadOnlyListWrapper<>(this, "types", 
 					FXCollections.observableList(new ArrayList<>()));
 		}
 		return this.types;

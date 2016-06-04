@@ -166,13 +166,13 @@ public class PointerEventAndroid extends EventObject implements PointerEvent {
 	 */
 	@Override
 	public String toString() {
-		return "device="+getDeviceId()+ //$NON-NLS-1$
-				"\nx="+getX()+ //$NON-NLS-1$
-				"\ny="+getY()+ //$NON-NLS-1$
-				"\nbutton="+getButton()+ //$NON-NLS-1$
-				"\nkeys=0x"+Integer.toHexString(this.motionEvent.getMetaState())+ //$NON-NLS-1$
-				"\norientation="+getOrientation()+ //$NON-NLS-1$
-				"\nconsumed="+isConsumed(); //$NON-NLS-1$
+		return "device="+getDeviceId()+ 
+				"\nx="+getX()+ 
+				"\ny="+getY()+ 
+				"\nbutton="+getButton()+ 
+				"\nkeys=0x"+Integer.toHexString(this.motionEvent.getMetaState())+ 
+				"\norientation="+getOrientation()+ 
+				"\nconsumed="+isConsumed(); 
 	}
 
 	@Override

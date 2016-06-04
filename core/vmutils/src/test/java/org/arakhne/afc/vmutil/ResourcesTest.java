@@ -42,11 +42,11 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class ResourcesTest {
 
-	private static final String TEST_NAME_1 = "/org/arakhne/afc/vmutil/test.txt"; //$NON-NLS-1$
-	private static final String TEST_NAME_2 = "org/arakhne/afc/vmutil/test.txt"; //$NON-NLS-1$
-	private static final String TEST_NAME_3 = "test.txt"; //$NON-NLS-1$
-	private static final String TEST_NAME_4 = "/test.txt"; //$NON-NLS-1$
-	private static final String PACKAGE_NAME = "org.arakhne.afc.vmutil"; //$NON-NLS-1$
+	private static final String TEST_NAME_1 = "/org/arakhne/afc/vmutil/test.txt"; 
+	private static final String TEST_NAME_2 = "org/arakhne/afc/vmutil/test.txt"; 
+	private static final String TEST_NAME_3 = "test.txt"; 
+	private static final String TEST_NAME_4 = "/test.txt"; 
+	private static final String PACKAGE_NAME = "org.arakhne.afc.vmutil"; 
 	
 	@Test
 	public void getResourceString() {

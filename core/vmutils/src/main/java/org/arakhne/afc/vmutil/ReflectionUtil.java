@@ -37,6 +37,8 @@ import java.util.regex.Pattern;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+
 /**
  * This utility class provides a way to extend the reflection API and
  * the Class class with autoboxing-compliant functions.
@@ -142,7 +144,7 @@ public final class ReflectionUtil {
 				return Void.class.isInstance(obj);
 			}
 
-			assert false : "Unsupported primitive type"; //$NON-NLS-1$
+			assert false : AssertMessages.unsupportedPrimitiveType();
 		}
 
 		return false;
@@ -261,7 +263,7 @@ public final class ReflectionUtil {
 	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	public static Class<?> forName(String name, boolean typeInitialization, ClassLoader loader) throws ClassNotFoundException {
-		if (name == null || "".equals(name) || "null".equals(name) //$NON-NLS-1$//$NON-NLS-2$
+		if (name == null || "".equals(name) || "null".equals(name) //$NON-NLS-1$ //$NON-NLS-2$
 				|| "void".equals(name)) { //$NON-NLS-1$
 			return void.class;
 		}
@@ -320,7 +322,7 @@ public final class ReflectionUtil {
 
 		for (final String path : entries) {
 			lentry = path.toLowerCase();
-			if (lentry.endsWith(".jar") || lentry.endsWith(".war")) { //$NON-NLS-1$//$NON-NLS-2$
+			if (lentry.endsWith(".jar") || lentry.endsWith(".war")) { //$NON-NLS-1$ //$NON-NLS-2$
 				getPackageClassesFromJar(classes, path, packageName);
 			} else {
 				getPackageClassesFromFileSystem(classes, path, packageName);
@@ -350,7 +352,7 @@ public final class ReflectionUtil {
 
 	private static void getPackageClassesFromJar(Collection<Class<?>> classes, String jarFilename, String packageName) {
 		try (JarFile jarFile = new JarFile(jarFilename)) {
-			final String packagePath = packageName.replace(".", "/"); //$NON-NLS-1$//$NON-NLS-2$
+			final String packagePath = packageName.replace(".", "/"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			final Enumeration<JarEntry> entries = jarFile.entries();
 			JarEntry entry;
@@ -436,7 +438,7 @@ public final class ReflectionUtil {
 
 		for (final String path : entries) {
 			lentry = path.toLowerCase();
-			if (lentry.endsWith(".jar") || lentry.endsWith(".war")) { //$NON-NLS-1$//$NON-NLS-2$
+			if (lentry.endsWith(".jar") || lentry.endsWith(".war")) { //$NON-NLS-1$ //$NON-NLS-2$
 				getSubClassesFromJar(result, path, className, allowAbstract, allowInterface, allowEnum);
 			} else {
 				getSubClassesFromFileSystem(result, path, className, allowAbstract, allowInterface, allowEnum);

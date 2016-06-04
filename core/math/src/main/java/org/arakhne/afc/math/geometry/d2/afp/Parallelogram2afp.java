@@ -61,39 +61,39 @@ public interface Parallelogram2afp<
     /**
      * Literal constant.
      */
-    String AXIS_1_EXTENT_POSITIVE_ZERO = "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
+    String AXIS_1_EXTENT_POSITIVE_ZERO = "Extent of axis 1 must be positive or zero"; 
     /**
      * Literal constant.
      */
-    String AXIS_2_EXTENT_POSITIVE_ZERO = "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
+    String AXIS_2_EXTENT_POSITIVE_ZERO = "Extent of axis 2 must be positive or zero"; 
     /**
      * Literal constant.
      */
-    String AXIS_1_NOT_UNIT_VECTOR =  "Axis 1 is not a unit vector"; //$NON-NLS-1$
+    String AXIS_1_NOT_UNIT_VECTOR =  "Axis 1 is not a unit vector"; 
     /**
      * Literal constant.
      */
-    String AXIS_1_NOT_NULL =  "Axis 1 must be not null"; //$NON-NLS-1$
+    String AXIS_1_NOT_NULL =  "Axis 1 must be not null"; 
     /**
      * Literal constant.
      */
-    String RECTANGLE_HEIGHT = "Height of the rectangle must be positive or zero"; //$NON-NLS-1$
+    String RECTANGLE_HEIGHT = "Height of the rectangle must be positive or zero"; 
     /**
      * Literal constant.
      */
-    String AXIS_2_NOT_UNIT_VECTOR =  "Axis 2 is not a unit vector"; //$NON-NLS-1$
+    String AXIS_2_NOT_UNIT_VECTOR =  "Axis 2 is not a unit vector"; 
     /**
      * Literal constant.
      */
-    String AXIS_2_NOT_NULL =  "Axis 2 must be not null"; //$NON-NLS-1$
+    String AXIS_2_NOT_NULL =  "Axis 2 must be not null"; 
     /**
      * Literal constant.
      */
-    String RECTANGLE_WIDTH = "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
+    String RECTANGLE_WIDTH = "Width of the rectangle must be positive or zero"; 
     /**
      * Literal constant.
      */
-    String NO_POINT_COLLECTION = "Collection of points must be not null"; //$NON-NLS-1$
+    String NO_POINT_COLLECTION = "Collection of points must be not null"; 
 
     /**
      * Compute the axes of an oriented bounding rectangle that is enclosing the set of points.
@@ -106,7 +106,7 @@ public interface Parallelogram2afp<
     static void computeOrthogonalAxes(Iterable<? extends Point2D<?, ?>> points,
             Vector2D<?, ?> raxis, Vector2D<?, ?> saxis) {
         assert points != null : NO_POINT_COLLECTION;
-        assert raxis != null || saxis != null : "One axis vector must be not null"; //$NON-NLS-1$
+        assert raxis != null || saxis != null : "One axis vector must be not null"; 
         // Determining the covariance matrix of the points
         // and set the center of the box
         final Matrix2d cov = new Matrix2d();
@@ -199,8 +199,8 @@ public interface Parallelogram2afp<
         assert raxis.isUnitVector() : AXIS_1_NOT_UNIT_VECTOR;
         assert saxis != null : AXIS_2_NOT_NULL;
         assert saxis.isUnitVector() : AXIS_2_NOT_UNIT_VECTOR;
-        assert center != null : "Center point must be not null"; //$NON-NLS-1$
-        assert extents != null : "Extent tuple must be not null"; //$NON-NLS-1$
+        assert center != null : "Center point must be not null"; 
+        assert extents != null : "Extent tuple must be not null"; 
 
         double minR = Double.POSITIVE_INFINITY;
         double maxR = Double.NEGATIVE_INFINITY;
@@ -287,7 +287,7 @@ public interface Parallelogram2afp<
         assert axis1Extent >= 0. : AXIS_1_EXTENT_POSITIVE_ZERO;
         assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
         assert axis2Extent >= 0. : AXIS_2_NOT_UNIT_VECTOR;
-        assert closest != null : "Closest point must benot null"; //$NON-NLS-1$
+        assert closest != null : "Closest point must benot null"; 
 
         // Computation is done according to the parallelogram center
         double dx = px - centerX;
@@ -432,7 +432,7 @@ public interface Parallelogram2afp<
         assert axis1Extent >= 0. : AXIS_1_EXTENT_POSITIVE_ZERO;
         assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
         assert axis2Extent >= 0. : AXIS_2_EXTENT_POSITIVE_ZERO;
-        assert farthest != null : "Farthest point must be not null"; //$NON-NLS-1$
+        assert farthest != null : "Farthest point must be not null"; 
 
         // Computation is done according to the parallelogram center
         final double dx = px - centerX;
@@ -775,7 +775,7 @@ public interface Parallelogram2afp<
         assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
         assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
         assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
-        assert circleRadius >= 0 : "Circle radius must be positive or zero"; //$NON-NLS-1$
+        assert circleRadius >= 0 : "Circle radius must be positive or zero"; 
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
         computeClosestPoint(
                 circleX, circleY,
@@ -1006,14 +1006,14 @@ public interface Parallelogram2afp<
             double axis1Extent2,
             double axis2X2, double axis2Y2,
             double axis2Extent2) {
-        assert axis1Extent1 >= 0 : "Extent of the first paralelogram axis 1 must be positive or zero"; //$NON-NLS-1$
-        assert axis2Extent1 >= 0 : "Extent of the first paralelogram axis 2 must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis1X1, axis1Y1) : "First paralelogram axis 1 is not a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X1, axis2Y1) : "First paralelogram axis 2 is not a unit vector"; //$NON-NLS-1$
-        assert axis1Extent2 >= 0 : "Extent of the second paralelogram axis 1 must be positive or zero"; //$NON-NLS-1$
-        assert axis2Extent2 >= 0 : "Extent of the second paralelogram axis 2 must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis1X2, axis1Y2) : "Second paralelogram axis 1 is not a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X2, axis2Y2) : "Second paralelogram axis 2 is not a unit vector"; //$NON-NLS-1$
+        assert axis1Extent1 >= 0 : "Extent of the first paralelogram axis 1 must be positive or zero"; 
+        assert axis2Extent1 >= 0 : "Extent of the first paralelogram axis 2 must be positive or zero"; 
+        assert Vector2D.isUnitVector(axis1X1, axis1Y1) : "First paralelogram axis 1 is not a unit vector"; 
+        assert Vector2D.isUnitVector(axis2X1, axis2Y1) : "First paralelogram axis 2 is not a unit vector"; 
+        assert axis1Extent2 >= 0 : "Extent of the second paralelogram axis 1 must be positive or zero"; 
+        assert axis2Extent2 >= 0 : "Extent of the second paralelogram axis 2 must be positive or zero"; 
+        assert Vector2D.isUnitVector(axis1X2, axis1Y2) : "Second paralelogram axis 1 is not a unit vector"; 
+        assert Vector2D.isUnitVector(axis2X2, axis2Y2) : "Second paralelogram axis 2 is not a unit vector"; 
 
         // Project the second parallelogram into the local axes of the first parallelogram
         final double x = centerX2 - centerX1;
@@ -1089,8 +1089,8 @@ public interface Parallelogram2afp<
         assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
         assert rwidth >= 0 : RECTANGLE_WIDTH;
         assert rheight >= 0 : RECTANGLE_HEIGHT;
-        assert rArcWidth >= 0 : "Arc width of the rectangle must be positive or zero"; //$NON-NLS-1$
-        assert rArcHeight >= 0 : "Arc height of the rectangle must be positive or zero"; //$NON-NLS-1$
+        assert rArcWidth >= 0 : "Arc width of the rectangle must be positive or zero"; 
+        assert rArcHeight >= 0 : "Arc height of the rectangle must be positive or zero"; 
 
         final double rx2 = rx + rwidth;
         final double ry2 = ry + rheight;
@@ -1189,7 +1189,7 @@ public interface Parallelogram2afp<
             double centerX, double centerY, double axis1X, double axis1Y, double extent1,
             double axis2X, double axis2Y, double extent2,
             PathIterator2afp<T> pathIterator) {
-        assert pathIterator != null : "Iterator must be not null"; //$NON-NLS-1$
+        assert pathIterator != null : "Iterator must be not null"; 
         assert extent1 >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
         assert extent2 >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
         assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
@@ -1262,7 +1262,7 @@ public interface Parallelogram2afp<
      * @param center the center point.
      */
     default void setCenter(Point2D<?, ?> center) {
-        assert center != null : "Center point must be not null"; //$NON-NLS-1$
+        assert center != null : "Center point must be not null"; 
         setCenter(center.getX(), center.getY());
     }
 
@@ -1352,7 +1352,7 @@ public interface Parallelogram2afp<
      * @param axis - the new values for the first axis.
      */
     default void setFirstAxis(Vector2D<?, ?> axis) {
-        assert axis != null : "Axis must be not null"; //$NON-NLS-1$
+        assert axis != null : "Axis must be not null"; 
         setFirstAxis(axis.getX(), axis.getY(), getFirstAxisExtent());
     }
 
@@ -1363,7 +1363,7 @@ public interface Parallelogram2afp<
      * @param extent - the extent of the axis.
      */
     default void setFirstAxis(Vector2D<?, ?> axis, double extent) {
-        assert axis != null : "Axis must be not null"; //$NON-NLS-1$
+        assert axis != null : "Axis must be not null"; 
         setFirstAxis(axis.getX(), axis.getY(), extent);
     }
 
@@ -1392,7 +1392,7 @@ public interface Parallelogram2afp<
      * @param axis - the new values for the first axis.
      */
     default void setSecondAxis(Vector2D<?, ?> axis) {
-        assert axis != null : "Axis must be not null"; //$NON-NLS-1$
+        assert axis != null : "Axis must be not null"; 
         setSecondAxis(axis.getX(), axis.getY(), getSecondAxisExtent());
     }
 
@@ -1403,7 +1403,7 @@ public interface Parallelogram2afp<
      * @param extent - the extent of the axis.
      */
     default void setSecondAxis(Vector2D<?, ?> axis, double extent) {
-        assert axis != null : "Axis must be not null"; //$NON-NLS-1$
+        assert axis != null : "Axis must be not null"; 
         setSecondAxis(axis.getX(), axis.getY(), extent);
     }
 
@@ -1440,7 +1440,7 @@ public interface Parallelogram2afp<
 
     @Override
     default void set(IT parallelogram) {
-        assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+        assert parallelogram != null : "Parallelogram must be not null"; 
         set(parallelogram.getCenterX(), parallelogram.getCenterY(),
                 parallelogram.getFirstAxisX(), parallelogram.getFirstAxisY(), parallelogram.getFirstAxisExtent(),
                 parallelogram.getSecondAxisX(), parallelogram.getSecondAxisY(), parallelogram.getSecondAxisExtent());
@@ -1455,9 +1455,9 @@ public interface Parallelogram2afp<
      * @param axis2Extent is the extent of the second axis.
      */
     default void set(Point2D<?, ?> center, Vector2D<?, ?> axis1, double axis1Extent, Vector2D<?, ?> axis2, double axis2Extent) {
-        assert center != null : "Center point must be not null"; //$NON-NLS-1$
-        assert axis1 != null : "First axis point must be not null"; //$NON-NLS-1$
-        assert axis2 != null : "Second axis point must be not null"; //$NON-NLS-1$
+        assert center != null : "Center point must be not null"; 
+        assert axis1 != null : "First axis point must be not null"; 
+        assert axis2 != null : "Second axis point must be not null"; 
         set(center.getX(), center.getY(), axis1.getX(), axis1.getY(), axis1Extent,
                 axis2.getX(), axis2.getY(), axis2Extent);
     }
@@ -1484,7 +1484,7 @@ public interface Parallelogram2afp<
      * @param pointCloud - the cloud of points.
      */
     default void setFromPointCloud(Iterable<? extends Point2D<?, ?>> pointCloud) {
-        assert pointCloud != null : "The iterable on points must be not null"; //$NON-NLS-1$
+        assert pointCloud != null : "The iterable on points must be not null"; 
         final Vector2D<?, ?> r = new InnerComputationVector2afp();
         final Vector2D<?, ?> s = new InnerComputationVector2afp();
         computeOrthogonalAxes(pointCloud, r, s);
@@ -1501,14 +1501,14 @@ public interface Parallelogram2afp<
      * @param pointCloud - the cloud of points.
      */
     default void setFromPointCloud(Point2D<?, ?>... pointCloud) {
-        assert pointCloud != null : "The array of points must be not null"; //$NON-NLS-1$
+        assert pointCloud != null : "The array of points must be not null"; 
         setFromPointCloud(Arrays.asList(pointCloud));
     }
 
     @Pure
     @Override
     default double getDistanceSquared(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; //$NON-NLS-1$
+        assert pt != null : "Point must be not null"; 
         // Only for internal usage.
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
         computeClosestPoint(
@@ -1523,7 +1523,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default double getDistanceL1(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; //$NON-NLS-1$
+        assert pt != null : "Point must be not null"; 
         // Only for internal usage.
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
         computeClosestPoint(
@@ -1538,7 +1538,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default double getDistanceLinf(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; //$NON-NLS-1$
+        assert pt != null : "Point must be not null"; 
         // Only for internal usage.
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
         computeClosestPoint(
@@ -1583,7 +1583,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-        assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+        assert rectangle != null : "Rectangle must be not null"; 
         return containsParallelogramRectangle(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1595,7 +1595,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-        assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+        assert circle != null : "Circle must be not null"; 
         return intersectsParallelogramCircle(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1606,7 +1606,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-        assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+        assert ellipse != null : "Ellipse must be not null"; 
         return intersectsParallelogramEllipse(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1619,7 +1619,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-        assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+        assert orientedRectangle != null : "Oriented rectangle must be not null"; 
         return intersectsParallelogramParallelogram(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1632,7 +1632,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-        assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+        assert parallelogram != null : "Parallelogram must be not null"; 
         return intersectsParallelogramParallelogram(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1645,7 +1645,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-        assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+        assert rectangle != null : "Rectangle must be not null"; 
         return intersectsParallelogramRectangle(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1657,14 +1657,14 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-        assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+        assert roundRectangle != null : "Round rectangle must be not null"; 
         return roundRectangle.intersects(this);
     }
 
     @Pure
     @Override
     default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-        assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+        assert segment != null : "Segment must be not null"; 
         return intersectsParallelogramSegment(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1675,7 +1675,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-        assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+        assert triangle != null : "Triangle must be not null"; 
         return intersectsParallelogramTriangle(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1686,14 +1686,14 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-        assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+        assert multishape != null : "MultiShape must be not null"; 
         return multishape.intersects(this);
     }
 
     @Pure
     @Override
     default boolean intersects(PathIterator2afp<?> iterator) {
-        assert iterator != null : "Path iterator must be not null"; //$NON-NLS-1$
+        assert iterator != null : "Path iterator must be not null"; 
         return intersectsParallelogramPathIterator(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1713,7 +1713,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default void toBoundingBox(B box) {
-        assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+        assert box != null : "Rectangle must be not null"; 
         final Point2D<?, ?> minCorner;
         final Point2D<?, ?> maxCorner;
 
@@ -1748,7 +1748,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; //$NON-NLS-1$
+        assert pt != null : "Point must be not null"; 
         final P point = getGeomFactory().newPoint();
         computeClosestPoint(
                 pt.getX(), pt.getY(),
@@ -1761,14 +1761,14 @@ public interface Parallelogram2afp<
 
     @Override
     default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-        assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+        assert circle != null : "Circle must be not null"; 
         return getClosestPointTo(circle.getCenter());
     }
 
     @Override
     @Unefficient
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-        assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+        assert ellipse != null : "Ellipse must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), ellipse.getPathIterator(), point);
         return point;
@@ -1777,7 +1777,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-        assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+        assert rectangle != null : "Rectangle must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), rectangle.getPathIterator(), point);
         return point;
@@ -1786,7 +1786,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-        assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+        assert segment != null : "Segment must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), segment.getPathIterator(), point);
         return point;
@@ -1795,7 +1795,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-        assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+        assert triangle != null : "Triangle must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), triangle.getPathIterator(), point);
         return point;
@@ -1804,7 +1804,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-        assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+        assert orientedRectangle != null : "Oriented rectangle must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), orientedRectangle.getPathIterator(), point);
         return point;
@@ -1813,7 +1813,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-        assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+        assert parallelogram != null : "Parallelogram must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), parallelogram.getPathIterator(), point);
         return point;
@@ -1822,7 +1822,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-        assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+        assert roundRectangle != null : "Round rectangle must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), roundRectangle.getPathIterator(), point);
         return point;
@@ -1831,7 +1831,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
-        assert path != null : "Path must be not null"; //$NON-NLS-1$
+        assert path != null : "Path must be not null"; 
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
         return point;
@@ -1840,7 +1840,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default P getFarthestPointTo(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; //$NON-NLS-1$
+        assert pt != null : "Point must be not null"; 
         final P point = getGeomFactory().newPoint();
         computeFarthestPoint(
                 pt.getX(), pt.getY(),
@@ -2055,7 +2055,7 @@ public interface Parallelogram2afp<
         public TransformedParallelogramPathIterator(Parallelogram2afp<?, ?, T, ?, ?, ?> parallelogram,
                 Transform2D transform) {
             super(parallelogram);
-            assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+            assert transform != null : "Transformation must be not null"; 
             this.transform = transform;
             if (parallelogram.isEmpty()) {
                 this.index = ELEMENT_NUMBER;

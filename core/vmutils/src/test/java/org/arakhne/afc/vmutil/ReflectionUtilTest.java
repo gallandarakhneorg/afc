@@ -76,16 +76,16 @@ public class ReflectionUtilTest {
 				new Object[] { 1 }));
 		assertFalse(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class },
-				new Object[] { 'c', "a" })); //$NON-NLS-1$
+				new Object[] { 'c', "a" })); 
 		assertTrue(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class },
-				new Object[] { 3., "a" })); //$NON-NLS-1$
+				new Object[] { 3., "a" })); 
 		assertTrue(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class },
-				new Object[] { 4., "a" })); //$NON-NLS-1$
+				new Object[] { 4., "a" })); 
 		assertFalse(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class },
-				new Object[] { 1, "a" })); //$NON-NLS-1$
+				new Object[] { 1, "a" })); 
 		assertFalse(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class },
 				new Object[] { 'c', true }));
@@ -107,20 +107,20 @@ public class ReflectionUtilTest {
 				new Object[] { 1. }));
 		assertFalse(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class, Array.class },
-				new Object[] { 1., "a" })); //$NON-NLS-1$
+				new Object[] { 1., "a" })); 
 		assertFalse(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class, Array.class },
-				new Object[] { 1., "a", null })); //$NON-NLS-1$
+				new Object[] { 1., "a", null })); 
 		assertFalse(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class, Array.class },
-				new Object[] { 1., "a", new int[0] })); //$NON-NLS-1$
+				new Object[] { 1., "a", new int[0] })); 
 		assertTrue(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class, int[].class },
-				new Object[] { 1., "a", new int[0] })); //$NON-NLS-1$
+				new Object[] { 1., "a", new int[0] })); 
 
 		assertTrue(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Number.class, String.class, int[].class },
-				new Object[] { 1., "a", new int[0] })); //$NON-NLS-1$
+				new Object[] { 1., "a", new int[0] })); 
 	}
 	
 	@Test

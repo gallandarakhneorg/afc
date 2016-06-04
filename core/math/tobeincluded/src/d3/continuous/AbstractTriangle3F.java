@@ -1788,25 +1788,25 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
-		buffer.append("["); //$NON-NLS-1$
+		buffer.append("["); 
 		buffer.append(this.getP1().getX());
-		buffer.append(";"); //$NON-NLS-1$
+		buffer.append(";"); 
 		buffer.append(this.getP1().getY());
-		buffer.append(";"); //$NON-NLS-1$
+		buffer.append(";"); 
 		buffer.append(this.getP1().getZ());
-		buffer.append("]-["); //$NON-NLS-1$
+		buffer.append("]-["); 
 		buffer.append(this.getP2().getX());
-		buffer.append(";"); //$NON-NLS-1$
+		buffer.append(";"); 
 		buffer.append(this.getP2().getY());
-		buffer.append(";"); //$NON-NLS-1$
+		buffer.append(";"); 
 		buffer.append(this.getP2().getZ());
-		buffer.append("]-["); //$NON-NLS-1$
+		buffer.append("]-["); 
 		buffer.append(this.getP3().getX());
-		buffer.append(";"); //$NON-NLS-1$
+		buffer.append(";"); 
 		buffer.append(this.getP3().getY());
-		buffer.append(";"); //$NON-NLS-1$
+		buffer.append(";"); 
 		buffer.append(this.getP3().getZ());
-		buffer.append("]"); //$NON-NLS-1$
+		buffer.append("]"); 
 		return buffer.toString();
 	}
 

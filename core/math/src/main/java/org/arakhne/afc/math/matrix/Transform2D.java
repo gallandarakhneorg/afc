@@ -775,7 +775,7 @@ public class Transform2D extends Matrix3d {
 	public Transform2D createInverse() {
 		float det = (float)(this.m00 * this.m11 - this.m01 * this.m10);
 		if (Math.abs(det) <= Double.MIN_VALUE) {
-			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$
+			throw new SingularMatrixException("Determinant is "+det); 
 		}
 		return new Transform2D(
 				(float)(this.m11 / det),
@@ -827,7 +827,7 @@ public class Transform2D extends Matrix3d {
 	public void invert() {
 		float det = (float)(this.m00 * this.m11 - this.m01 * this.m10);
 		if (Math.abs(det) <= Double.MIN_VALUE) {
-			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$
+			throw new SingularMatrixException("Determinant is "+det); 
 		}
 		set(
 				(float)(this.m11 / det),
@@ -860,7 +860,7 @@ public class Transform2D extends Matrix3d {
 	public void invert(Matrix3d m) {
 		float det = (float)(m.m00 * m.m11 - m.m01 * m.m10);
 		if (Math.abs(det) <= Double.MIN_VALUE) {
-			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$
+			throw new SingularMatrixException("Determinant is "+det); 
 		}
 		set(
 				(float)(m.m11 / det),

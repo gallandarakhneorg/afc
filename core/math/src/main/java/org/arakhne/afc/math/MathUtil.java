@@ -80,7 +80,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clamp(double v, double min, double max) {
-		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max";
 		if (v < min) {
 			return min;
 		}
@@ -103,7 +103,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int clamp(int v, int min, int max) {
-		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max";
 		if (v < min) {
 			return min;
 		}
@@ -445,7 +445,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clampCyclic(double value, double min, double max) {
-		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max";
 		if (Double.isNaN(max) || Double.isNaN(min) || Double.isNaN(max)) {
 			return Double.NaN;
 		}
@@ -480,7 +480,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clampToNearestBounds(double value, double minBounds, double maxBounds) {
-		assert minBounds <= maxBounds : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert minBounds <= maxBounds : "min must be lower or equal to max";
 		final double center = (minBounds + maxBounds) / 2;
 		if (value <= center) {
 			return minBounds;
@@ -506,8 +506,8 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int getCohenSutherlandCode(int px, int py, int rxmin, int rymin, int rxmax, int rymax) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax";
+		assert rymin <= rymax : "rymin must be lower or equal to rymax";
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
 		if (px < rxmin) {
@@ -550,8 +550,8 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int getCohenSutherlandCode(double px, double py, double rxmin, double rymin, double rxmax, double rymax) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax";
+		assert rymin <= rymax : "rymin must be lower or equal to rymax";
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
 		if (px < rxmin) {
@@ -1027,7 +1027,7 @@ public final class MathUtil {
 
 	/**
 	 * Replies the specified angle translated between -PI and PI.
-	 * 
+	 *
 	 * @param radian
 	 *            is an angle
 	 * @return normalized angle
@@ -1044,7 +1044,7 @@ public final class MathUtil {
 
 	/**
 	 * Replies the specified angle translated between 0 and 360.
-	 * 
+	 *
 	 * @param degree
 	 *            is an angle
 	 * @return normalized angle
@@ -1061,7 +1061,7 @@ public final class MathUtil {
 
 	/**
 	 * Replies the specified angle translated between -180 and 180.
-	 * 
+	 *
 	 * @param degree
 	 *            is an angle
 	 * @return normalized angle
@@ -1085,7 +1085,7 @@ public final class MathUtil {
 	 * values and the value is negative, the value is modulo the perimeter
 	 * of the clockwise circle.
 	 * The perimeter is the distance between {@code min} and {@code max}.
-	 * 
+	 *
 	 * @param value
 	 * @param min
 	 * @param max
@@ -1117,7 +1117,7 @@ public final class MathUtil {
 
 	/**
 	 * Compute the signed angle between two vectors.
-	 * 
+	 *
 	 * @param x1
 	 * @param y1
 	 * @param x2
@@ -1152,7 +1152,7 @@ public final class MathUtil {
 
 		/*
 		 * // First method // Angle // A . B = |A|.|B|.cos(theta) = cos(theta) float dot = x1 * x2 + y1 * y2; float angle = Math.acos(dot);
-		 * 
+		 *
 		 * // On which side of A, B is located? if ((dot > -1) && (dot < 1)) { dot = MathUtil.determinant(x2, y2, x1, y1); if (dot < 0) angle = -angle; }
 		 */
 
@@ -1183,7 +1183,7 @@ public final class MathUtil {
 	@SuppressWarnings("checkstyle:all")
 	public static final float angleOfVector( Point2D p1, Point2D p2 ) {
 		return signedAngle(
-				1, 0, 
+				1, 0,
 				p2.getX() - p1.getX(),
 				p2.getY() - p1.getY());
 	}
@@ -1206,7 +1206,7 @@ public final class MathUtil {
 	@SuppressWarnings("checkstyle:all")
 	public static final float angleOfVector(float x1, float y1, float x2, float y2) {
 		return signedAngle(
-				1, 0, 
+				1, 0,
 				x2-x1, y2-y1);
 	}
 
@@ -1226,7 +1226,7 @@ public final class MathUtil {
 	@SuppressWarnings("checkstyle:all")
 	public static final float angleOfVector(float x, float y) {
 		return signedAngle(
-				1, 0, 
+				1, 0,
 				x, y);
 	}
 
@@ -1245,8 +1245,8 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	@SuppressWarnings("checkstyle:all")
-	public static boolean isPointClosedToSegment( float x1, float y1, 
-			float x2, float y2, 
+	public static boolean isPointClosedToSegment( float x1, float y1,
+			float x2, float y2,
 			float x, float y, float hitDistance ) {
 		return ( distancePointToSegment(x, y, x1, y1, x2, y2) < hitDistance ) ;
 	}
@@ -1266,8 +1266,8 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	@SuppressWarnings("checkstyle:all")
-	public static boolean isPointClosedToLine( float x1, float y1, 
-			float x2, float y2, 
+	public static boolean isPointClosedToLine( float x1, float y1,
+			float x2, float y2,
 			float x, float y, float hitDistance ) {
 		return ( distancePointToLine(x, y, x1, y1, x2, y2) < hitDistance ) ;
 	}
@@ -1350,7 +1350,7 @@ public final class MathUtil {
 	 * <code>P1 + factor1 * (P2-P1) = P3 + factor2 * (P4-P3)</code>
 	 * <p>
 	 * This function computes and replies <code>factor1</code>.
-	 * 
+	 *
 	 * @param x1
 	 *            is the X coordinate of the first point of the first segment.
 	 * @param y1
@@ -1403,8 +1403,8 @@ public final class MathUtil {
 	 * <pre><code>det(X1,X2) = |X1|.|X2|.sin(a)</code></pre>
 	 * where <code>X1</code> and <code>X2</code> are two vectors
 	 * and <code>a</code> is the angle between <code>X1</code>
-	 * and <code>X2</code>. 
-	 * 
+	 * and <code>X2</code>.
+	 *
 	 * @param x1
 	 * @param y1
 	 * @param x2
@@ -1420,7 +1420,7 @@ public final class MathUtil {
 
 	/**
 	 * Replies the intersection point between two segments.
-	 * 
+	 *
 	 * @param x1
 	 *            is the X coordinate of the first point of the first segment.
 	 * @param y1
@@ -1450,7 +1450,7 @@ public final class MathUtil {
 	}
 
 	/** Compute the interpolate point between the two points.
-	 * 
+	 *
 	 * @param p1
 	 * @param p2
 	 * @param factor is between 0 and 1; 0 for p1, and 1 for p2.
@@ -1464,7 +1464,7 @@ public final class MathUtil {
 	}
 
 	/** Compute the interpolate point between the two points.
-	 * 
+	 *
 	 * @param p1x
 	 * @param p1y
 	 * @param p2x
@@ -1486,7 +1486,7 @@ public final class MathUtil {
 	}
 
 	/** Compute the dot product of two vectors.
-	 * 
+	 *
 	 * @param x1
 	 * @param y1
 	 * @param x2
@@ -1501,10 +1501,10 @@ public final class MathUtil {
 	}
 
 	/**
-	 * Replies the relative counterclockwise (CCW) of a segment against a point. Returns an indicator of where 
+	 * Replies the relative counterclockwise (CCW) of a segment against a point. Returns an indicator of where
 	 * the specified point {@code (px,py)} lies with respect to the line segment from {@code (x1,y1)}
-	 *  to {@code (x2,y2)}. The return value can be either 1, -1, or 0 and indicates in which 
-	 *  direction the specified line must pivot around its first end point, {@code (x1,y1)}, in 
+	 *  to {@code (x2,y2)}. The return value can be either 1, -1, or 0 and indicates in which
+	 *  direction the specified line must pivot around its first end point, {@code (x1,y1)}, in
 	 *  order to point at the specified point {@code (px,py)}.
 	 * In other words, given three point P1, P2, and P, is the segments (P1-P2-P) a counterclockwise turn?
 	 * <p>
@@ -1512,21 +1512,21 @@ public final class MathUtil {
 	 * this function tries to classifies the point if it is colinear to the segment.
 	 * The classification is explained below.
 	 * <p>
-	 * A return value of 1 indicates that the line segment must turn in the direction that takes the 
-	 * positive X axis towards the negative Y axis. In the default coordinate system used by Java 2D, 
+	 * A return value of 1 indicates that the line segment must turn in the direction that takes the
+	 * positive X axis towards the negative Y axis. In the default coordinate system used by Java 2D,
 	 * this direction is counterclockwise.
 	 * <p>
-	 * A return value of -1 indicates that the line segment must turn in the direction that takes the 
-	 * positive X axis towards the positive Y axis. In the default coordinate system, this 
+	 * A return value of -1 indicates that the line segment must turn in the direction that takes the
+	 * positive X axis towards the positive Y axis. In the default coordinate system, this
 	 * direction is clockwise.
 	 * <p>
-	 * A return value of 0 indicates that the point lies exactly on the line segment. 
-	 * Note that an indicator value of 0 is rare and not useful for determining colinearity 
+	 * A return value of 0 indicates that the point lies exactly on the line segment.
+	 * Note that an indicator value of 0 is rare and not useful for determining colinearity
 	 * because of floating point rounding issues.
 	 * <p>
-	 * If the point is colinear with the line segment, but not between the end points, then the value will be 
+	 * If the point is colinear with the line segment, but not between the end points, then the value will be
 	 * -1 if the point lies "beyond {@code (x1,y1)}" or 1 if the point lies "beyond {@code (x2,y2)}".
-	 * 
+	 *
 	 * @param x1
 	 *            the X coordinate of the start point of the specified line segment
 	 * @param y1
@@ -1596,8 +1596,8 @@ public final class MathUtil {
 	 * <p>
 	 * In opposite of {@link #ccw(float, float, float, float, float, float, boolean)},
 	 * this function does not try to classify the point if it is colinear
-	 * to the segment. If the point is colinear, O is always returns. 
-	 * 
+	 * to the segment. If the point is colinear, O is always returns.
+	 *
 	 * @param x1
 	 *            the X coordinate of the start point of the specified line segment
 	 * @param y1
@@ -1634,9 +1634,9 @@ public final class MathUtil {
 
 	/**
 	 * Replies the relative distance from the given point to the given line.
-	 * The replied distance may be negative, depending on which side of 
+	 * The replied distance may be negative, depending on which side of
 	 * the line the point is.
-	 * 
+	 *
 	 * @param x1
 	 *            the X coordinate of the start point of the specified line segment
 	 * @param y1
@@ -1666,7 +1666,7 @@ public final class MathUtil {
 
 	/** Compute the intersection of two lines specified
 	 * by the specified points and vectors.
-	 * 
+	 *
 	 * @param p1 is a point of the first line.
 	 * @param v1 is the direction of the first line.
 	 * @param p2 is a point of the second line.
@@ -1698,7 +1698,7 @@ public final class MathUtil {
 
 	/**
 	 * Replies the projection a point on a segment.
-	 * 
+	 *
 	 * @param px
 	 *            is the coordiante of the point to project
 	 * @param py
@@ -1711,12 +1711,12 @@ public final class MathUtil {
 	 *            is the x-coordinate of the second line point.
 	 * @param s2y
 	 *            is the y-coordinate of the second line point.
-	 * @return the projection of the specified point on the line. If 
-	 * equal to {@code 0}, the projection is equal to the first segment point. 
-	 * If equal to {@code 1}, the projection is equal to the second segment point. 
-	 * If inside {@code ]0;1[}, the projection is between the two segment points. 
-	 * If inside {@code ]-inf;0[}, the projection is outside on the side of the 
-	 * first segment point. If inside {@code ]1;+inf[}, the projection is 
+	 * @return the projection of the specified point on the line. If
+	 * equal to {@code 0}, the projection is equal to the first segment point.
+	 * If equal to {@code 1}, the projection is equal to the second segment point.
+	 * If inside {@code ]0;1[}, the projection is between the two segment points.
+	 * If inside {@code ]-inf;0[}, the projection is outside on the side of the
+	 * first segment point. If inside {@code ]1;+inf[}, the projection is
 	 * outside on the side of the second segment point.
 	 * @deprecated
 	 */
@@ -1738,7 +1738,7 @@ public final class MathUtil {
 	 * <code>P1 + factor1 * (P2-P1) = P3 + factor2 * (P4-P3)</code>
 	 * <p>
 	 * This function computes and replies <code>factor1</code>.
-	 * 
+	 *
 	 * @param x1
 	 *            is the X coordinate of the first point of the first line.
 	 * @param y1
@@ -1784,7 +1784,7 @@ public final class MathUtil {
 
 	/**
 	 * Replies if the given point is inside the given ellipse.
-	 * 
+	 *
 	 * @param px is the point to test.
 	 * @param py is the point to test.
 	 * @param ellx is the min corner of the ellipse.
@@ -1812,7 +1812,7 @@ public final class MathUtil {
 
 	/**
 	 * Replies if the given point is inside the given ellipse.
-	 * 
+	 *
 	 * @param px is the point to test.
 	 * @param py is the point to test.
 	 * @param cx is the center of the circle.
@@ -1832,7 +1832,7 @@ public final class MathUtil {
 
 	/** Replies the closest point from the given point in the solid ellipse.
 	 * A solid ellipse is an ellipse with a border and an interior area.
-	 * 
+	 *
 	 * @param px is the coordinate of the point.
 	 * @param py is the coordinate of the point.
 	 * @param ex is the coordinate of the min corner of the ellipse
@@ -1910,14 +1910,14 @@ public final class MathUtil {
 
 	/** Replies the closest point from the given point in the shallow ellipse.
 	 * A shallow ellipse is an ellipse with a border and not an interior area.
-	 * 
+	 *
 	 * @param px is the coordinate of the point.
 	 * @param py is the coordinate of the point.
 	 * @param ex is the coordinate of the min corner of the ellipse
 	 * @param ey is the coordinate of the min corner of the ellipse
 	 * @param ew is the width of the ellipse
 	 * @param eh is the height of the ellipse
-	 * @return the closest point in the ellipse, or <code>null</code> if 
+	 * @return the closest point in the ellipse, or <code>null</code> if
 	 * the given point is exactly at the center of the ellipse.
 	 * @deprecated
 	 */
@@ -1962,7 +1962,7 @@ public final class MathUtil {
 	 * The given two lines are described respectivaly by two points, i.e. {@code (x1,y1)} and {@code (x2,y2)} for the first line, and {@code (x3,y3)} and {@code (x4,y4)} for the second line.
 	 * <p>
 	 * If you are interested to test if the two lines are colinear, see {@link #isCollinearLines(float, float, float, float, float, float, float, float)}.
-	 * 
+	 *
 	 * @param x1
 	 *            is the X coordinate of the first point of the first line.
 	 * @param y1
@@ -1997,7 +1997,7 @@ public final class MathUtil {
 	 * Line through (x<sub>0</sub>,y<sub>0</sub>,z<sub>0</sub>) in direction (a<sub>0</sub>,b<sub>0</sub>,c<sub>0</sub>) and line through (x<sub>1</sub>,yx<sub>1</sub>,zx<sub>1</sub>) in direction (ax<sub>1</sub>,bx<sub>1</sub>,cx<sub>1</sub>): <center><img src="doc-files/parallellines3d.gif" alt="Parallel lines"></center>
 	 * <p>
 	 * Two lines specified by point and direction are coplanar if and only if the determinant in the numerator is zero. In this case they are concurrent (if the denominator is nonzero) or parallel (if the denominator is zero).
-	 * 
+	 *
 	 * @param x1
 	 *            is the X coordinate of the first point of the first line.
 	 * @param y1
@@ -2037,7 +2037,7 @@ public final class MathUtil {
 	 * Trival approach is: points are collinear iff |AB| + |AC| = |BC|, where A B C are the three points.
 	 * <p>
 	 * This function uses the equal-to-zero test with the error EPSILON.
-	 * 
+	 *
 	 * @param x1
 	 *            is the X coordinate of the first point
 	 * @param y1
@@ -2070,7 +2070,7 @@ public final class MathUtil {
 	 * Trival approach is: points are collinear iff |AB| + |AC| = |BC|, where A B C are the three points.
 	 * <p>
 	 * This function uses the equal-to-zero test with the error EPSILON.
-	 * 
+	 *
 	 * @param x1
 	 *            is the X coordinate of the first point
 	 * @param y1
@@ -2115,7 +2115,7 @@ public final class MathUtil {
 	 * Replies if two vectors are colinear.
 	 * <p>
 	 * This function uses the equal-to-zero test with the error EPSILON.
-	 * 
+	 *
 	 * @param x1
 	 *            is the X coordinate of the first vector
 	 * @param y1
@@ -2142,7 +2142,7 @@ public final class MathUtil {
 	 * Replies if two vectors are colinear.
 	 * <p>
 	 * This function uses the equal-to-zero test with the error EPSILON.
-	 * 
+	 *
 	 * @param x1
 	 *            is the X coordinate of the first vector
 	 * @param y1
@@ -2177,7 +2177,7 @@ public final class MathUtil {
 	 * The given two lines are described respectivaly by two points, i.e. {@code (x1,y1)} and {@code (x2,y2)} for the first line, and {@code (x3,y3)} and {@code (x4,y4)} for the second line.
 	 * <p>
 	 * If you are interested to test if the two lines are parallel, see {@link #isParallelLines(float, float, float, float, float, float, float, float)}.
-	 * 
+	 *
 	 * @param x1
 	 *            is the X coordinate of the first point of the first line.
 	 * @param y1
@@ -2211,7 +2211,7 @@ public final class MathUtil {
 	 * The given two lines are described respectivaly by two points, i.e. {@code (x1,y1,z1)} and {@code (x2,y2,z2)} for the first line, and {@code (x3,y3,z3)} and {@code (x4,y4,z4)} for the second line.
 	 * <p>
 	 * If you are interested to test if the two lines are parallel, see {@link #isParallelLines(float, float, float, float, float, float, float, float, float, float, float, float)}.
-	 * 
+	 *
 	 * @param x1
 	 *            is the X coordinate of the first point of the first line.
 	 * @param y1
@@ -2249,7 +2249,7 @@ public final class MathUtil {
 
 	/** Compute the zone where the point is against the given rectangle
 	 * according to the <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
-	 * 
+	 *
 	 * @param px is the coordinates of the points.
 	 * @param py is the coordinates of the points.
 	 * @param rxmin is the min of the coordinates of the rectangle.
@@ -2287,7 +2287,7 @@ public final class MathUtil {
 
 	/** Clip the given segment against the clipping rectangle
 	 * according to the <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
-	 * 
+	 *
 	 * @param p1 is the first point of the segment.
 	 * @param p2 is the first point of the segment.
 	 * @param rxmin is the min of the coordinates of the rectangle.
@@ -2342,7 +2342,7 @@ public final class MathUtil {
 					x = x0 + (x1 - x0) * (rymin - y0) / (y1 - y0);
 					y = rymin;
 				}
-				else if ((code3 & COHEN_SUTHERLAND_RIGHT)!=0) { 
+				else if ((code3 & COHEN_SUTHERLAND_RIGHT)!=0) {
 					// point is to the right of clip rectangle
 					y = y0 + (y1 - y0) * (rxmax - x0) / (x1 - x0);
 					x = rxmax;
@@ -2381,7 +2381,7 @@ public final class MathUtil {
 
 	/** Clip the given segment against the clipping rectangle
 	 * according to the <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
-	 * 
+	 *
 	 * @param p1 is the first point of the segment.
 	 * @param p2 is the first point of the segment.
 	 * @param rxmin is the min of the coordinates of the rectangle.
@@ -2436,7 +2436,7 @@ public final class MathUtil {
 					x = x0 + (x1 - x0) * (rymin - y0) / (y1 - y0);
 					y = rymin;
 				}
-				else if ((code3 & COHEN_SUTHERLAND_RIGHT)!=0) { 
+				else if ((code3 & COHEN_SUTHERLAND_RIGHT)!=0) {
 					// point is to the right of clip rectangle
 					y = y0 + (y1 - y0) * (rxmax - x0) / (x1 - x0);
 					x = rxmax;

@@ -252,11 +252,11 @@ public class ListenerCollection<L extends EventListener> {
 	@Pure
 	public String toString() {
 		final Object[] lList = this.listeners;
-		String string = "EventListenerList: "; //$NON-NLS-1$
-		string += lList.length / 2 + " listeners: "; //$NON-NLS-1$
+		String string = "EventListenerList: ";  //$NON-NLS-1$
+		string += lList.length / 2 + " listeners: ";  //$NON-NLS-1$
 		for (int i = 0; i <= lList.length - 2; i += 2) {
-			string += " type " + ((Class<?>) lList[i]).getName(); //$NON-NLS-1$
-			string += " listener " + lList[i + 1]; //$NON-NLS-1$
+			string += " type " + ((Class<?>) lList[i]).getName();  //$NON-NLS-1$
+			string += " listener " + lList[i + 1];  //$NON-NLS-1$
 		}
 		return string;
 	}
