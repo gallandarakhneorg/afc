@@ -43,7 +43,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  */
 @SuppressWarnings({"checkstyle:magicnumber", "static-method"})
 public abstract class PathElement2dfx implements PathElement2afp {
-
 	private static final long serialVersionUID = 1724746568685625149L;
 
 	/** Type of the element.
@@ -360,7 +359,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : AssertMessages.notNullParameter();
+		assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
 			array[0] = this.toX.intValue();
 			array[1] = this.toY.intValue();
