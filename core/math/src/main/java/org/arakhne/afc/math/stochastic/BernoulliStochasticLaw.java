@@ -57,7 +57,7 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
 	 */
 	public BernoulliStochasticLaw(Map<String, String> parameters) throws LawParameterNotFoundException {
-		this.p = paramFloat("p", parameters); 
+		this.p = paramFloat("p", parameters); //$NON-NLS-1$
 	}
 
 	/**Construct a law with the p parameter.
@@ -83,9 +83,9 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("BERNOUILLI(P(0)="); 
+		b.append("BERNOUILLI(P(0)="); //$NON-NLS-1$
 		b.append(1. - this.p);
-		b.append(";P(1)="); 
+		b.append(";P(1)="); //$NON-NLS-1$
 		b.append(this.p);
 		b.append(')');
 		return b.toString();

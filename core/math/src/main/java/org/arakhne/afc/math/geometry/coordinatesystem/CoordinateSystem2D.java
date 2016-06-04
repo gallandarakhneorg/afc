@@ -27,6 +27,7 @@ import org.arakhne.afc.math.geometry.d2.ImmutableVector2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /**
  * Represents the different kind of 2D referencials
@@ -82,7 +83,8 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
 	public void toSystem(Point2D<?, ?> point, CoordinateSystem2D targetCoordinateSystem) {
-		assert targetCoordinateSystem != null : "Target coordinate system must be not null"; 
+        assert point != null : AssertMessages.notNullParameter(0);
+		assert targetCoordinateSystem != null : AssertMessages.notNullParameter(1);
 		if (this != targetCoordinateSystem) {
 			point.setY(-point.getY());
 		}
@@ -95,7 +97,8 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
 	public void toSystem(Vector2D<?, ?> point, CoordinateSystem2D targetCoordinateSystem) {
-		assert targetCoordinateSystem != null : "Target coordinate system must be not null"; 
+        assert point != null : AssertMessages.notNullParameter(0);
+        assert targetCoordinateSystem != null : AssertMessages.notNullParameter(1);
 		if (this != targetCoordinateSystem) {
 			point.setY(-point.getY());
 		}
@@ -110,7 +113,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 */
 	@Pure
 	public double toSystem(double rotation, CoordinateSystem2D targetCoordinateSystem) {
-		assert targetCoordinateSystem != null : "Target coordinate system must be not null"; 
+        assert targetCoordinateSystem != null : AssertMessages.notNullParameter(1);
 		if (this != targetCoordinateSystem) {
 			return -rotation;
 		}
@@ -124,7 +127,8 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
 	public void toSystem(Transform2D matrix, CoordinateSystem2D targetCoordinateSystem) {
-		assert targetCoordinateSystem != null : "Target coordinate system must be not null"; 
+        assert matrix != null : AssertMessages.notNullParameter(0);
+        assert targetCoordinateSystem != null : AssertMessages.notNullParameter(1);
 		if (this != targetCoordinateSystem) {
 			final double r = -matrix.getRotation();
 			matrix.setRotation(r);
@@ -347,7 +351,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 		case XY_RIGHT_HAND:
 			return new ImmutableVector2D(0, 1);
 		default:
-			throw new IllegalArgumentException("this"); 
+			throw new CoordinateSystemNotFoundException();
 		}
 	}
 
@@ -367,7 +371,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 			vectorToFill.set(0, 1);
 			return vectorToFill;
 		default:
-			throw new IllegalArgumentException("this"); 
+			throw new CoordinateSystemNotFoundException();
 
 		}
 	}
@@ -384,7 +388,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 		case XY_RIGHT_HAND:
 			return new ImmutableVector2D(0, -1);
 		default:
-			throw new IllegalArgumentException("this"); 
+			throw new CoordinateSystemNotFoundException();
 		}
 	}
 
@@ -404,7 +408,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 			vectorToFill.set(0, -1);
 			return vectorToFill;
 		default:
-			throw new IllegalArgumentException("this"); 
+			throw new CoordinateSystemNotFoundException();
 		}
 	}
 

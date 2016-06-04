@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.d;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 2D tuple with 2 double precision floating-point numbers.
  *
@@ -55,7 +56,7 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2d(Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must be not null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		this.x = tuple.getX();
 		this.y = tuple.getY();
 	}
@@ -64,8 +65,8 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2d(int[] tuple) {
-		assert tuple != null : "Tuple must be not null"; 
-		assert tuple.length >= 2 : "Tuple size is too small"; 
+		assert tuple != null : AssertMessages.notNullParameter();
+		assert tuple.length >= 2 : AssertMessages.tooSmallArrayParameter(tuple.length, 2);
 		this.x = tuple[0];
 		this.y = tuple[1];
 	}
@@ -74,8 +75,8 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2d(double[] tuple) {
-		assert tuple != null : "Tuple must be not null"; 
-		assert tuple.length >= 2 : "Tuple size is too small"; 
+		assert tuple != null : AssertMessages.notNullParameter();
+		assert tuple.length >= 2 : AssertMessages.tooSmallArrayParameter(tuple.length, 2);
 		this.x = tuple[0];
 		this.y = tuple[1];
 	}
@@ -117,7 +118,7 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 
 	@Override
 	public void absolute(Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must be not null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		tuple.set(Math.abs(this.x), Math.abs(this.y));
 	}
 
@@ -155,7 +156,7 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 
 	@Override
 	public void negate(Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must be not null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		this.x = -tuple.getX();
 		this.y = -tuple.getY();
 	}
@@ -168,14 +169,14 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 
 	@Override
 	public void scale(int scale, Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must be not null"; 
+		assert tuple != null : AssertMessages.notNullParameter(1);
 		this.x = scale * tuple.getX();
 		this.y = scale * tuple.getY();
 	}
 
 	@Override
 	public void scale(double scale, Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must be not null"; 
+		assert tuple != null : AssertMessages.notNullParameter(1);
 		this.x = scale * tuple.getX();
 		this.y = scale * tuple.getY();
 	}
@@ -194,7 +195,7 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 
 	@Override
 	public void set(Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must be not null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		this.x = tuple.getX();
 		this.y = tuple.getY();
 	}
@@ -213,16 +214,16 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 
 	@Override
 	public void set(int[] tuple) {
-		assert tuple != null : "Tuple must be not null"; 
-		assert tuple.length >= 2 : "Tuple size is too small"; 
+		assert tuple != null : AssertMessages.notNullParameter();
+		assert tuple.length >= 2 : AssertMessages.tooSmallArrayParameter(tuple.length, 2);
 		this.x = tuple[0];
 		this.y = tuple[1];
 	}
 
 	@Override
 	public void set(double[] tuple) {
-		assert tuple != null : "Tuple must be not null"; 
-		assert tuple.length >= 2 : "Tuple size is too small"; 
+		assert tuple != null : AssertMessages.notNullParameter();
+		assert tuple.length >= 2 : AssertMessages.tooSmallArrayParameter(tuple.length, 2);
 		this.x = tuple[0];
 		this.y = tuple[1];
 	}
@@ -328,11 +329,11 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 	@Pure
 	@Override
 	public String toString() {
-		return "(" 
+		return "(" //$NON-NLS-1$
 				+ this.x
-				+ ", " 
+				+ ", " //$NON-NLS-1$
 				+ this.y
-				+ ")"; 
+				+ ")"; //$NON-NLS-1$
 	}
 
 }

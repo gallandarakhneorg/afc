@@ -65,8 +65,8 @@ public class UniformStochasticLaw extends StochasticLaw {
 	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
 	 */
 	public UniformStochasticLaw(Map<String, String> parameters) throws LawParameterNotFoundException {
-		this(paramFloat("minX", parameters), 
-			paramFloat("maxX", parameters)); 
+		this(paramFloat("minX", parameters), //$NON-NLS-1$
+			paramFloat("maxX", parameters)); //$NON-NLS-1$
 	}
 
 	/** Create a uniform stochastic law.

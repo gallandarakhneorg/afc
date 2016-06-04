@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a rectangular shape on a plane.
  *
@@ -51,7 +52,7 @@ public interface RectangularShape2afp<
 
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not null"; 
+		assert box != null : AssertMessages.notNullParameter();
 		box.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
 	}
 
@@ -68,14 +69,14 @@ public interface RectangularShape2afp<
 	 * @param height height of the rectangular shape.
 	 */
 	default void set(double x, double y, double width, double height) {
-		assert width >= 0. : "Width must be positive or zero"; 
-		assert height >= 0. : "Height must be positive or zero"; 
+		assert width >= 0. : AssertMessages.positiveOrZeroParameter(2);
+		assert height >= 0. : AssertMessages.positiveOrZeroParameter(3);
 		setFromCorners(x, y, x + width, y + height);
 	}
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Shape must be not null"; 
+		assert shape != null : AssertMessages.notNullParameter();
 		setFromCorners(shape.getMinX(), shape.getMinY(), shape.getMaxX(), shape.getMaxY());
 	}
 
@@ -85,8 +86,8 @@ public interface RectangularShape2afp<
 	 * @param max is the max corner of the rectangle.
 	 */
 	default void set(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert min != null : "Minimum point must be not null"; 
-		assert max != null : "Maximum point must be not null"; 
+		assert min != null : AssertMessages.notNullParameter(0);
+		assert max != null : AssertMessages.notNullParameter(1);
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 
@@ -95,7 +96,7 @@ public interface RectangularShape2afp<
 	 * @param width width of the rectangular shape.
 	 */
 	default void setWidth(double width) {
-		assert width >= 0. : "Width must be positive or zero"; 
+		assert width >= 0. : AssertMessages.positiveOrZeroParameter();
 		setMaxX(getMinX() + width);
 	}
 
@@ -104,7 +105,7 @@ public interface RectangularShape2afp<
 	 * @param height height of the rectangular shape.
 	 */
 	default void setHeight(double height) {
-		assert height >= 0. : "Height must be positive or zero"; 
+		assert height >= 0. : AssertMessages.positiveOrZeroParameter();
 		setMaxY(getMinY() + height);
 	}
 
@@ -125,8 +126,8 @@ public interface RectangularShape2afp<
 	 */
 	// This function has no default implementation for allowing implementation to be atomic.
 	default void setFromCorners(Point2D<?, ?> p1, Point2D<?, ?> p2) {
-		assert p1 != null : "First corner point must be not null"; 
-		assert p2 != null : "Second corner point must be not null"; 
+		assert p1 != null : AssertMessages.notNullParameter(0);
+		assert p2 != null : AssertMessages.notNullParameter(1);
 		setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
@@ -157,8 +158,8 @@ public interface RectangularShape2afp<
      * @param corner the specified corner point
      */
 	default void setFromCenter(Point2D<?, ?> center, Point2D<?, ?> corner) {
-		assert center != null : "Center point must be not null"; 
-		assert corner != null : "Corner point must be not null"; 
+		assert center != null : AssertMessages.notNullParameter(0);
+		assert corner != null : AssertMessages.notNullParameter(1);
 		setFromCenter(center.getX(), center.getY(), corner.getX(), corner.getY());
 	}
 

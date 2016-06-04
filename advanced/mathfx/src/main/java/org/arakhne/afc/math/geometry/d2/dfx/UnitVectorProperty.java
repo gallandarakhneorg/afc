@@ -29,7 +29,9 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /**
  * A JavaFX property that is representing a unit vector.
@@ -85,8 +87,8 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2dfx> {
 
 	private void init() {
 		final Vector2dfx v = getGeomFactory().newVector();
-		this.x = new ReadOnlyDoubleWrapper(v, "x"); 
-		this.y = new ReadOnlyDoubleWrapper(v, "y"); 
+		this.x = new ReadOnlyDoubleWrapper(v, MathFXAttributeNames.X);
+		this.y = new ReadOnlyDoubleWrapper(v, MathFXAttributeNames.X);
 		v.set(this.x, this.y);
 		super.set(v);
 	}
@@ -98,9 +100,9 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2dfx> {
 		}
 		if (this.fake == null) {
 			this.fake = getGeomFactory().newVector();
-			final DoubleProperty x = new SimpleDoubleProperty(this.fake, "x"); 
+			final DoubleProperty x = new SimpleDoubleProperty(this.fake, MathFXAttributeNames.X);
 			x.bind(internalXProperty());
-			final DoubleProperty y = new SimpleDoubleProperty(this.fake, "y"); 
+			final DoubleProperty y = new SimpleDoubleProperty(this.fake, MathFXAttributeNames.Y);
 			y.bind(internalYProperty());
 			this.fake.set(x, y);
 		}
@@ -109,7 +111,7 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2dfx> {
 
 	@Override
 	public void set(Vector2dfx newValue) {
-		assert newValue != null : "Initial value must be not null"; 
+		assert newValue != null : AssertMessages.notNullParameter();
 		set(newValue.getX(), newValue.getY());
 	}
 
@@ -119,7 +121,7 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2dfx> {
 	 * @param y y coordinate of the vector.
 	 */
 	public void set(double x, double y) {
-		assert Vector2D.isUnitVector(x, y) : "Vector coordinates must correspond to a unit vector"; 
+		assert Vector2D.isUnitVector(x, y) : AssertMessages.normalizedParameters(0, 1);
 		if ((x != getX() || y != getY()) && !isBound()) {
 			final Vector2dfx v = super.get();
 			v.set(x, y);

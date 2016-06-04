@@ -27,6 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.OrientedRectangle2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Oriented rectangle with 2 double precision floating-point numbers.
  *
@@ -84,7 +85,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	 * @param obr the oriented rectangle to copy.
 	 */
 	public OrientedRectangle2d(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> obr) {
-		assert obr != null : "Oriented Rectangle must be not null"; 
+		assert obr != null : AssertMessages.notNullParameter();
 		set(obr.getCenterX(), obr.getCenterY(),
 				obr.getFirstAxisX(), obr.getFirstAxisY(),
 				obr.getFirstAxisExtent(),
@@ -96,7 +97,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	 * @param pointCloud - the cloud of points.
 	 */
 	public OrientedRectangle2d(Iterable<? extends Point2D<?, ?>> pointCloud) {
-		assert pointCloud != null : "List of points must be not null"; 
+		assert pointCloud != null : AssertMessages.notNullParameter();
 		setFromPointCloud(pointCloud);
 	}
 
@@ -105,7 +106,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	 * @param pointCloud - the cloud of points.
 	 */
 	public OrientedRectangle2d(Point2D<?, ?>... pointCloud) {
-		assert pointCloud != null : "List of points must be not null"; 
+		assert pointCloud != null : AssertMessages.notNullParameter();
 		setFromPointCloud(Arrays.asList(pointCloud));
 	}
 
@@ -118,12 +119,13 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	 * @param axis1Extent is the extent of the first axis.
 	 * @param axis2Extent is the extent of the second axis.
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	public OrientedRectangle2d(double centerX, double centerY,
 			double axis1X, double axis1Y, double axis1Extent,
 			double axis2Extent) {
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis must be a unit vector"; 
-		assert axis1Extent >= 0. : "Extent for the first axis must be positive or zero"; 
-		assert axis2Extent >= 0. : "Extent for the first axis must be positive or zero"; 
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+		assert axis1Extent >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert axis2Extent >= 0. : AssertMessages.positiveOrZeroParameter(5);
 		set(centerX, centerY, axis1X, axis1Y, axis1Extent, axis2Extent);
 	}
 
@@ -156,23 +158,23 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("["); //$NON-NLS-1$
 		b.append(getCenterX());
-		b.append(";"); 
+		b.append(";"); //$NON-NLS-1$
 		b.append(getCenterY());
-		b.append(";"); 
+		b.append(";"); //$NON-NLS-1$
 		b.append(getFirstAxisX());
-		b.append(";"); 
+		b.append(";"); //$NON-NLS-1$
 		b.append(getFirstAxisY());
-		b.append(";"); 
+		b.append(";"); //$NON-NLS-1$
 		b.append(getFirstAxisExtent());
-		b.append(";"); 
+		b.append(";"); //$NON-NLS-1$
 		b.append(getSecondAxisX());
-		b.append(";"); 
+		b.append(";"); //$NON-NLS-1$
 		b.append(getSecondAxisY());
-		b.append(";"); 
+		b.append(";"); //$NON-NLS-1$
 		b.append(getSecondAxisExtent());
-		b.append("]"); 
+		b.append("]"); //$NON-NLS-1$
 		return b.toString();
 	}
 
@@ -263,7 +265,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 
 	@Override
 	public void setFirstAxisExtent(double extent) {
-		assert extent >= 0. : "Extent must be positive or zero"; 
+		assert extent >= 0. : AssertMessages.positiveOrZeroParameter();
 		if (this.extentR != extent) {
 			this.extentR = extent;
 			fireGeometryChange();
@@ -278,7 +280,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 
 	@Override
 	public void setSecondAxisExtent(double extent) {
-		assert extent >= 0. : "Extent must be positive or zero"; 
+		assert extent >= 0. : AssertMessages.positiveOrZeroParameter();
 		if (this.extentS != extent) {
 			this.extentS = extent;
 			fireGeometryChange();
@@ -287,8 +289,8 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 
 	@Override
 	public void setFirstAxis(double x, double y, double extent) {
-		assert Vector2D.isUnitVector(x, y) : "Axis must be a unit vector"; 
-		assert extent >= 0. : "Extent must be positive or zero"; 
+		assert Vector2D.isUnitVector(x, y) : AssertMessages.normalizedParameters(0, 1);
+		assert extent >= 0. : AssertMessages.positiveOrZeroParameter(2);
 		if (this.rx != x || this.ry != y || this.extentR != extent) {
 			this.rx = x;
 			this.ry = y;
@@ -299,8 +301,8 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 
 	@Override
 	public void setSecondAxis(double x, double y, double extent) {
-		assert Vector2D.isUnitVector(x, y) : "Axis must be a unit vector"; 
-		assert extent >= 0. : "Extent must be positive or zero"; 
+		assert Vector2D.isUnitVector(x, y) : AssertMessages.normalizedParameters(0, 1);
+		assert extent >= 0. : AssertMessages.positiveOrZeroParameter(2);
 		if (this.rx != y || this.ry != -x || this.extentS != extent) {
 			this.extentS = extent;
 			this.rx = y;
@@ -310,10 +312,11 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:magicnumber")
 	public void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent, double axis2Extent) {
-		assert Vector2D.isUnitVector(axis1x, axis1y) : "First axis must be a unit vector"; 
-		assert axis1Extent >= 0. : "First axis extent must be positive or zero"; 
-		assert axis2Extent >= 0. : "Second axis extent must be positive or zero"; 
+		assert Vector2D.isUnitVector(axis1x, axis1y) : AssertMessages.normalizedParameters(2, 3);
+		assert axis1Extent >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert axis2Extent >= 0. : AssertMessages.positiveOrZeroParameter(5);
 		if (this.cx != centerY || this.cy != centerY || this.rx != axis1x || this.ry != axis1y
 				|| this.extentR != axis1Extent || this.extentS != axis2Extent) {
 			this.cx = centerX;

@@ -26,6 +26,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Iterator;
 
+import org.arakhne.afc.inputoutput.filefilter.DOTFileFilter;
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.math.tree.TreeNode;
 
@@ -43,108 +44,111 @@ import org.arakhne.afc.math.tree.TreeNode;
  */
 public class DotDotWriter {
 
-	/** Common extension used for <code>.dot</code> files.
-	 */
-	public static final String EXTENSION = ".dot"; 
+    /** Common extension used for <code>.dot</code> files.
+     *
+     * @deprecated see {@link DOTFileFilter#EXTENSION}.
+     */
+    @Deprecated
+    public static final String EXTENSION = DOTFileFilter.EXTENSION;
 
-	private final Writer writer;
+    private final Writer writer;
 
-	private int graphIndex;
+    private int graphIndex;
 
-	/**
-	 * Create a new dot writer that output inside the given output stream.
-	 *
-	 * @param outputStream is the stream to write in.
-	 */
-	public DotDotWriter(OutputStream outputStream) {
-		this(new OutputStreamWriter(outputStream));
-	}
+    /**
+     * Create a new dot writer that output inside the given output stream.
+     *
+     * @param outputStream is the stream to write in.
+     */
+    public DotDotWriter(OutputStream outputStream) {
+        this(new OutputStreamWriter(outputStream));
+    }
 
-	/**
-	 * Create a new dot writer that output inside the given output stream.
-	 *
-	 * @param outputStream is the stream to write in.
-	 */
-	public DotDotWriter(Writer outputStream) {
-		assert outputStream != null;
-		this.writer = outputStream;
-		this.graphIndex = 1;
-	}
+    /**
+     * Create a new dot writer that output inside the given output stream.
+     *
+     * @param outputStream is the stream to write in.
+     */
+    public DotDotWriter(Writer outputStream) {
+        assert outputStream != null;
+        this.writer = outputStream;
+        this.graphIndex = 1;
+    }
 
-	/**
-	 * Write the given tree inside the .dot output stream.
-	 *
-	 * @param tree is the tree to write
-	 * @throws IOException in case of error
-	 */
-	public void write(Tree<?, ?> tree) throws IOException {
-		this.writer.append("digraph G"); 
-		this.writer.append(Integer.toString(this.graphIndex++));
-		this.writer.append(" {\n"); 
+    /**
+     * Write the given tree inside the .dot output stream.
+     *
+     * @param tree is the tree to write
+     * @throws IOException in case of error
+     */
+    public void write(Tree<?, ?> tree) throws IOException {
+        this.writer.append("digraph G"); //$NON-NLS-1$
+        this.writer.append(Integer.toString(this.graphIndex++));
+        this.writer.append(" {\n"); //$NON-NLS-1$
 
-		if (tree != null) {
-			// Write the node attributes
-			Iterator<? extends TreeNode<?, ?>> iterator = tree.broadFirstIterator();
-			TreeNode<?, ?> node;
-			int dataCount;
-			while (iterator.hasNext()) {
-				node = iterator.next();
-				dataCount = node.getUserDataCount();
-				final String name = "NODE" + Integer.toHexString(System.identityHashCode(node)); 
-				final String label = Integer.toString(dataCount);
+        if (tree != null) {
+            // Write the node attributes
+            Iterator<? extends TreeNode<?, ?>> iterator = tree.broadFirstIterator();
+            TreeNode<?, ?> node;
+            int dataCount;
+            while (iterator.hasNext()) {
+                node = iterator.next();
+                dataCount = node.getUserDataCount();
+                final String name = "NODE" + Integer.toHexString(System.identityHashCode(node)); //$NON-NLS-1$
+                final String label = Integer.toString(dataCount);
 
-				this.writer.append("\t"); 
-				this.writer.append(name);
-				this.writer.append(" [label=\""); 
-				this.writer.append(label);
-				this.writer.append("\"]\n"); 
-			}
+                this.writer.append("\t"); //$NON-NLS-1$
+                this.writer.append(name);
+                this.writer.append(" [label=\""); //$NON-NLS-1$
+                this.writer.append(label);
+                this.writer.append("\"]\n"); //$NON-NLS-1$
+            }
 
-			this.writer.append("\n"); 
+            this.writer.append("\n"); //$NON-NLS-1$
 
-			// Write the node links
-			iterator = tree.broadFirstIterator();
-			Class<? extends Enum<?>> partitionType;
-			TreeNode<?, ?> child;
-			String childName;
-			while (iterator.hasNext()) {
-				node = iterator.next();
-				final String name = "NODE" + Integer.toHexString(System.identityHashCode(node)); 
-				if (!node.isLeaf()) {
-					partitionType = node.getPartitionEnumeration();
-					final int childCount = node.getChildCount();
-					for (int i = 0; i < childCount; ++i) {
-						child = node.getChildAt(i);
-						if (child != null) {
-							childName = "NODE" + Integer.toHexString(System.identityHashCode(child)); 
-							final String label;
-							if (partitionType != null) {
-								label = partitionType.getEnumConstants()[i].name();
-							} else {
-								label = Integer.toString(i);
-							}
-							this.writer.append("\t"); 
-							this.writer.append(name);
-							this.writer.append("->"); 
-							this.writer.append(childName);
-							this.writer.append(" [label=\""); 
-							this.writer.append(label);
-							this.writer.append("\"]\n"); 
-						}
-					}
-				}
-			}
-		}
+            // Write the node links
+            iterator = tree.broadFirstIterator();
+            Class<? extends Enum<?>> partitionType;
+            TreeNode<?, ?> child;
+            String childName;
+            while (iterator.hasNext()) {
+                node = iterator.next();
+                final String name = "NODE" + Integer.toHexString(System.identityHashCode(node)); //$NON-NLS-1$
+                if (!node.isLeaf()) {
+                    partitionType = node.getPartitionEnumeration();
+                    final int childCount = node.getChildCount();
+                    for (int i = 0; i < childCount; ++i) {
+                        child = node.getChildAt(i);
+                        if (child != null) {
+                            childName = "NODE" + Integer.toHexString(System.identityHashCode(child)); //$NON-NLS-1$
+                            final String label;
+                            if (partitionType != null) {
+                                label = partitionType.getEnumConstants()[i].name();
+                            } else {
+                                label = Integer.toString(i);
+                            }
+                            this.writer.append("\t"); //$NON-NLS-1$
+                            this.writer.append(name);
+                            this.writer.append("->"); //$NON-NLS-1$
+                            this.writer.append(childName);
+                            this.writer.append(" [label=\""); //$NON-NLS-1$
+                            this.writer.append(label);
+                            this.writer.append("\"]\n"); //$NON-NLS-1$
+                        }
+                    }
+                }
+            }
+        }
 
-		this.writer.append("}\n\n"); 
-	}
+        this.writer.append("}\n\n"); //$NON-NLS-1$
+    }
 
-	/** Close the output stream.
-	 *
-	 * @throws IOException in case of error.
-	 */
-	public void close() throws IOException {
-		this.writer.close();
-	}
+    /** Close the output stream.
+     *
+     * @throws IOException in case of error.
+     */
+    public void close() throws IOException {
+        this.writer.close();
+    }
 
 }

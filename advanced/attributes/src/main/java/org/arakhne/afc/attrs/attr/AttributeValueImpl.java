@@ -601,13 +601,13 @@ public class AttributeValueImpl implements AttributeValue {
 	@Override
 	public String toString() {
 		final StringBuilder str = new StringBuilder();
-		str.append("["); 
+		str.append("["); //$NON-NLS-1$
 		str.append((this.value == null)
-				? "???" 
+				? "???" //$NON-NLS-1$
 				: this.value.toString());
-		str.append(":"); 
+		str.append(":"); //$NON-NLS-1$
 		str.append(this.type.toString());
-		str.append("]"); 
+		str.append("]"); //$NON-NLS-1$
 		return str.toString();
 	}
 
@@ -1052,7 +1052,7 @@ public class AttributeValueImpl implements AttributeValue {
 				final URI uri = (URI) this.value;
 				return uri.toASCIIString();
 			case TIMESTAMP:
-				final SimpleDateFormat tmformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+				final SimpleDateFormat tmformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
 				return tmformat.format(new Date(((Timestamp) this.value).longValue()));
 			case INTEGER:
 				return ((Long) this.value).toString();
@@ -1062,20 +1062,20 @@ public class AttributeValueImpl implements AttributeValue {
 				final Point2D<?, ?> pt2 = (Point2D<?, ?>) this.value;
 				final StringBuilder buffer1 = new StringBuilder();
 				buffer1.append(pt2.getX());
-				buffer1.append(";"); 
+				buffer1.append(";"); //$NON-NLS-1$
 				buffer1.append(pt2.getY());
 				return buffer1.toString();
 			case POINT3D:
 				final Point3D pt3 = (Point3D) this.value;
 				final StringBuilder buffer2 = new StringBuilder();
 				buffer2.append(pt3.getX());
-				buffer2.append(";"); 
+				buffer2.append(";"); //$NON-NLS-1$
 				buffer2.append(pt3.getY());
-				buffer2.append(";"); 
+				buffer2.append(";"); //$NON-NLS-1$
 				buffer2.append(pt3.getZ());
 				return buffer2.toString();
 			case DATE:
-				final SimpleDateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd"); 
+				final SimpleDateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 				return dtformat.format((Date) this.value);
 			case POLYLINE:
 				final StringBuilder buffer3 = new StringBuilder();
@@ -1083,10 +1083,10 @@ public class AttributeValueImpl implements AttributeValue {
 				for (int i = 0; i < lstpt2.length; ++i) {
 					if (lstpt2[i] != null) {
 						if (buffer3.length() > 0) {
-							buffer3.append(";"); 
+							buffer3.append(";"); //$NON-NLS-1$
 						}
 						buffer3.append(lstpt2[i].getX());
-						buffer3.append(";"); 
+						buffer3.append(";"); //$NON-NLS-1$
 						buffer3.append(lstpt2[i].getY());
 					}
 				}
@@ -1097,12 +1097,12 @@ public class AttributeValueImpl implements AttributeValue {
 				for (int i = 0; i < lstpt3.length; ++i) {
 					if (lstpt3[i] != null) {
 						if (buffer4.length() > 0) {
-							buffer4.append(";"); 
+							buffer4.append(";"); //$NON-NLS-1$
 						}
 						buffer4.append(lstpt3[i].getX());
-						buffer4.append(";"); 
+						buffer4.append(";"); //$NON-NLS-1$
 						buffer4.append(lstpt3[i].getY());
-						buffer4.append(";"); 
+						buffer4.append(";"); //$NON-NLS-1$
 						buffer4.append(lstpt3[i].getZ());
 					}
 				}
@@ -1113,7 +1113,7 @@ public class AttributeValueImpl implements AttributeValue {
 				final Class<?> enumerationType = enumeration.getDeclaringClass();
 				final String typeName = enumerationType.getCanonicalName();
 				buffer5.append(typeName);
-				buffer5.append("."); 
+				buffer5.append("."); //$NON-NLS-1$
 				buffer5.append(((Enum<?>) this.value).name());
 				return buffer5.toString();
 			case TYPE:
@@ -1206,12 +1206,12 @@ public class AttributeValueImpl implements AttributeValue {
 				}
 
 				try {
-					fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+					fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
 					return fmt.parse(txt);
 				} catch (ParseException exception) {
 					//
 				}
-				fmt = new SimpleDateFormat("yyyy-MM-dd"); 
+				fmt = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 				return fmt.parse(txt);
 			case OBJECT:
 				if (this.value instanceof Date) {
@@ -1430,7 +1430,7 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private static Point3D parsePoint3D(String text, boolean isStrict) {
-		final String[] comp = text.split(";"); 
+		final String[] comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && comp.length != 3) {
 			return null;
 		}
@@ -1520,7 +1520,7 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private static Point2D<?, ?> parsePoint(String text, boolean isStrict) {
-		final String[] comp = text.split(";"); 
+		final String[] comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && comp.length != 2) {
 			return null;
 		}
@@ -1617,7 +1617,7 @@ public class AttributeValueImpl implements AttributeValue {
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:booleanexpressioncomplexity"})
 	private static Color parseColor(String text, boolean isStrict) {
-		final String[] comp = text.split(";"); 
+		final String[] comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && comp.length != 3 && comp.length != 4) {
 			return null;
 		}
@@ -1747,7 +1747,7 @@ public class AttributeValueImpl implements AttributeValue {
 	private static UUID parseUUID(String text) {
 		try {
 			final URI uri = new URI(text);
-			if ("uuid".equalsIgnoreCase(uri.getScheme())) { 
+			if ("uuid".equalsIgnoreCase(uri.getScheme())) { //$NON-NLS-1$
 				return UUID.fromString(uri.getHost());
 			}
 		} catch (Throwable exception) {
@@ -1774,7 +1774,7 @@ public class AttributeValueImpl implements AttributeValue {
 				return new UUID(id.getMostSignificantBits(), id.getLeastSignificantBits());
 			case URI:
 				final URI uri = (URI) this.value;
-				if ("uuid".equalsIgnoreCase(uri.getScheme())) { 
+				if ("uuid".equalsIgnoreCase(uri.getScheme())) { //$NON-NLS-1$
 					try {
 						return UUID.fromString(uri.getHost());
 					} catch (AssertionError e) {
@@ -1789,7 +1789,7 @@ public class AttributeValueImpl implements AttributeValue {
 					return (UUID) this.value;
 				}
 				if (this.value instanceof URI
-						&& "uuid".equalsIgnoreCase(((URI) this.value).getScheme())) { 
+						&& "uuid".equalsIgnoreCase(((URI) this.value).getScheme())) { //$NON-NLS-1$
 					try {
 						return UUID.fromString(((URI) this.value).getHost());
 					} catch (AssertionError e) {
@@ -1827,7 +1827,7 @@ public class AttributeValueImpl implements AttributeValue {
 			return (UUID) AttributeType.UUID.getDefaultValue();
 		}
 		final String s = this.value.toString();
-		if (s == null || "".equals(s)) { 
+		if (s == null || "".equals(s)) { //$NON-NLS-1$
 			return (UUID) AttributeType.UUID.getDefaultValue();
 		}
 		try {
@@ -1863,7 +1863,7 @@ public class AttributeValueImpl implements AttributeValue {
 				}
 				break;
 			case INET_ADDRESS:
-				return new URL(DEFAULT_SCHEME.name(), ((InetAddress) this.value).getHostAddress(), ""); 
+				return new URL(DEFAULT_SCHEME.name(), ((InetAddress) this.value).getHostAddress(), ""); //$NON-NLS-1$
 			case UUID:
 			case BOOLEAN:
 			case COLOR:
@@ -1926,7 +1926,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case STRING:
 				return new URI((String) this.value);
 			case UUID:
-				return new URI("uuid:" + ((UUID) this.value).toString()); 
+				return new URI("uuid:" + ((UUID) this.value).toString()); //$NON-NLS-1$
 			case OBJECT:
 				if (this.value instanceof URI) {
 					return (URI) this.value;
@@ -1935,11 +1935,11 @@ public class AttributeValueImpl implements AttributeValue {
 					return ((URL) this.value).toURI();
 				}
 				if (this.value instanceof UUID) {
-					return new URI("uuid:" + ((UUID) this.value).toString()); 
+					return new URI("uuid:" + ((UUID) this.value).toString()); //$NON-NLS-1$
 				}
 				break;
 			case INET_ADDRESS:
-				return new URI(DEFAULT_SCHEME.name(), ((InetAddress) this.value).getHostAddress(), ""); 
+				return new URI(DEFAULT_SCHEME.name(), ((InetAddress) this.value).getHostAddress(), ""); //$NON-NLS-1$
 			case BOOLEAN:
 			case COLOR:
 			case DATE:
@@ -2090,7 +2090,7 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private static Point3D[] parsePolyline3D(String text, boolean isStrict) {
-		final String[] comp = text.split(";"); 
+		final String[] comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && (comp.length % 3) != 0) {
 			return null;
 		}
@@ -2256,7 +2256,7 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	private static Point2D<?, ?>[] parsePolyline(String text, boolean isStrict) {
-		final String[] comp = text.split(";"); 
+		final String[] comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && (comp.length % 2) != 0) {
 			return null;
 		}

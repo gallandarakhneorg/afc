@@ -27,6 +27,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 2D Vector with 2 double precision floating-point numbers.
  *
@@ -38,16 +39,6 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  */
 public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Point2d> {
 	private static final long serialVersionUID = 9183440606977893371L;
-
-	/**
-	 *Literal constant.
-     */
-	private static final String SECOND_VECTOR_NOT_NULL = "Second vector must be not null"; 
-
-    /**
-     *Literal constant.
-     */
-    private static final String FIRST_VECTOR_NOT_NULL = "First vector must be not null"; 
 
 	/** Construct a zero vector.
 	 */
@@ -128,14 +119,14 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 	@Pure
 	@Override
 	public double dot(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; 
+		assert vector != null : AssertMessages.notNullParameter();
 		return this.x * vector.getX() + this.y * vector.getY();
 	}
 
 	@Pure
 	@Override
 	public double perp(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; 
+		assert vector != null : AssertMessages.notNullParameter();
 		return this.x * vector.getY() - vector.getX() * this.y;
 	}
 
@@ -153,75 +144,75 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 
 	@Override
 	public void add(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : FIRST_VECTOR_NOT_NULL;
-		assert vector2 != null : SECOND_VECTOR_NOT_NULL;
+		assert vector1 != null : AssertMessages.notNullParameter(0);
+		assert vector2 != null : AssertMessages.notNullParameter(1);
 		this.x = vector1.getX() + vector2.getX();
 		this.y = vector1.getY() + vector2.getY();
 	}
 
 	@Override
 	public void add(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; 
+		assert vector != null : AssertMessages.notNullParameter();
 		this.x = this.x + vector.getX();
 		this.y = this.y + vector.getY();
 	}
 
 	@Override
 	public void scaleAdd(int scale, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : FIRST_VECTOR_NOT_NULL;
-		assert vector2 != null : SECOND_VECTOR_NOT_NULL;
+		assert vector1 != null : AssertMessages.notNullParameter(0);
+		assert vector2 != null : AssertMessages.notNullParameter(1);
 		this.x = scale * vector1.getX() + vector2.getX();
 		this.y = scale * vector1.getY() + vector2.getY();
 	}
 
 	@Override
 	public void scaleAdd(double scale, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : FIRST_VECTOR_NOT_NULL;
-		assert vector2 != null : SECOND_VECTOR_NOT_NULL;
+		assert vector1 != null : AssertMessages.notNullParameter(0);
+		assert vector2 != null : AssertMessages.notNullParameter(1);
 		this.x = scale * vector1.getX() + vector2.getX();
 		this.y = scale * vector1.getY() + vector2.getY();
 	}
 
 	@Override
 	public void scaleAdd(int scale, Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; 
+		assert vector != null : AssertMessages.notNullParameter();
 		this.x = scale * this.x + vector.getX();
 		this.y = scale * this.y + vector.getY();
 	}
 
 	@Override
 	public void scaleAdd(double scale, Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; 
+		assert vector != null : AssertMessages.notNullParameter();
 		this.x = scale * this.x + vector.getX();
 		this.y = scale * this.y + vector.getY();
 	}
 
 	@Override
 	public void sub(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : FIRST_VECTOR_NOT_NULL;
-		assert vector2 != null : SECOND_VECTOR_NOT_NULL;
+		assert vector1 != null : AssertMessages.notNullParameter(0);
+		assert vector2 != null : AssertMessages.notNullParameter(1);
 		this.x = vector1.getX() - vector2.getX();
 		this.y = vector1.getY() - vector2.getY();
 	}
 
 	@Override
 	public void sub(Point2D<?, ?> point1, Point2D<?, ?> point2) {
-		assert point1 != null : "First point must be not null"; 
-		assert point2 != null : "Second point must be not null"; 
+		assert point1 != null : AssertMessages.notNullParameter(0);
+		assert point2 != null : AssertMessages.notNullParameter(1);
 		this.x = point1.getX() - point2.getX();
 		this.y = point1.getY() - point2.getY();
 	}
 
 	@Override
 	public void sub(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; 
+		assert vector != null : AssertMessages.notNullParameter();
 		this.x -= vector.getX();
 		this.y -= vector.getY();
 	}
 
 	@Override
 	public void setLength(double newLength) {
-		assert newLength >= 0. : "New length must be positive or zero"; 
+		assert newLength >= 0. : AssertMessages.positiveOrZeroParameter();
 		final double l = getLength();
 		if (l != 0) {
 			final double f = newLength / l;

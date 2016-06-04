@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a rectangular shape on a plane.
  *
@@ -51,7 +52,7 @@ public interface RectangularShape2ai<
 
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must not be null"; 
+		assert box != null : AssertMessages.notNullParameter();
 		box.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
 	}
 
@@ -68,8 +69,8 @@ public interface RectangularShape2ai<
 	 * @param height height of the rectangular shape.
 	 */
 	default void set(int x, int y, int width, int height) {
-		assert width >= 0 : "Width must be positive or zero"; 
-		assert height >= 0 : "Height must be positive or zero"; 
+		assert width >= 0 : AssertMessages.positiveOrZeroParameter(2);
+		assert height >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		setFromCorners(x, y, x + width, y + height);
 	}
 
@@ -79,8 +80,8 @@ public interface RectangularShape2ai<
 	 * @param max is the max corner of the rectangle.
 	 */
 	default void set(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert min != null : "Minimum point must be not be null"; 
-		assert max != null : "Maximum point must be not be null"; 
+		assert min != null : AssertMessages.notNullParameter(0);
+		assert max != null : AssertMessages.notNullParameter(1);
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
 	}
 
@@ -89,7 +90,7 @@ public interface RectangularShape2ai<
 	 * @param width width of the rectangular shape.
 	 */
 	default void setWidth(int width) {
-		assert width >= 0 : "Width must be positive or zero"; 
+		assert width >= 0 : AssertMessages.positiveOrZeroParameter();
 		setMaxX(getMinX() + width);
 	}
 
@@ -98,7 +99,7 @@ public interface RectangularShape2ai<
 	 * @param height height of the rectangular shape.
 	 */
 	default void setHeight(int height) {
-		assert height >= 0 : "Height must be positive or zero"; 
+		assert height >= 0 : AssertMessages.positiveOrZeroParameter();
 		setMaxY(getMinY() + height);
 	}
 
@@ -117,8 +118,8 @@ public interface RectangularShape2ai<
 	 * @param p2 the second corner.
 	 */
 	default void setFromCorners(Point2D<?, ?> p1, Point2D<?, ?> p2) {
-		assert p1 != null : "First corner must be not be null"; 
-		assert p2 != null : "Second corner must be not be null"; 
+		assert p1 != null : AssertMessages.notNullParameter(0);
+		assert p2 != null : AssertMessages.notNullParameter(1);
 		setFromCorners(p1.ix(), p1.iy(), p2.ix(), p2.iy());
 	}
 
@@ -149,8 +150,8 @@ public interface RectangularShape2ai<
      * @param corner the specified corner point
      */
 	default void setFromCenter(Point2D<?, ?> center, Point2D<?, ?> corner) {
-		assert center != null : "Center must be not be null"; 
-		assert corner != null : "Corner must be not be null"; 
+		assert center != null : AssertMessages.notNullParameter(0);
+		assert corner != null : AssertMessages.notNullParameter(1);
 		setFromCenter(center.ix(), center.iy(), corner.ix(), corner.iy());
 	}
 

@@ -88,11 +88,11 @@ public final class ImmutablePoint2D implements UnmodifiablePoint2D<ImmutablePoin
 	@Pure
 	@Override
 	public String toString() {
-		return "(" 
+		return "(" //$NON-NLS-1$
 				+ this.x
-				+ ";" 
+				+ ", " //$NON-NLS-1$
 				+ this.y
-				+ ")"; 
+				+ ")"; //$NON-NLS-1$
 	}
 
 	@Pure

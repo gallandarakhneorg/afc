@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A 2D segment/line with 2 integer numbers.
  *
@@ -93,22 +94,22 @@ public class Segment2i extends AbstractShape2i<Segment2i>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getX1());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY1());
-		b.append("|"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getX2());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY2());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 
 	@Pure
 	@Override
 	public Shape2i<?> createTransformedShape(Transform2D transform) {
-		assert transform != null : "Transformation must be not null"; 
+		assert transform != null : AssertMessages.notNullParameter();
 		final Point2i point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
 		final int x1 = point.ix();

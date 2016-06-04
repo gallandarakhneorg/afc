@@ -27,8 +27,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A circle with 2 integer FX properties.
  *
@@ -77,7 +79,7 @@ public class Circle2ifx
 	 * @param circle the circle to copy.
 	 */
 	public Circle2ifx(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; 
+		assert circle != null : AssertMessages.notNullParameter();
 		set(circle.getX(), circle.getY(), circle.getRadius());
 	}
 
@@ -113,13 +115,12 @@ public class Circle2ifx
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("center: ("); //$NON-NLS-1$
 		b.append(getX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY());
-		b.append(";"); 
+		b.append(")\nradius: "); //$NON-NLS-1$
 		b.append(getRadius());
-		b.append("]"); 
 		return b.toString();
 	}
 
@@ -136,7 +137,7 @@ public class Circle2ifx
 	@Pure
 	public IntegerProperty xProperty() {
 		if (this.centerX == null) {
-			this.centerX = new SimpleIntegerProperty(this, "x"); 
+			this.centerX = new SimpleIntegerProperty(this, MathFXAttributeNames.X);
 		}
 		return this.centerX;
 	}
@@ -154,7 +155,7 @@ public class Circle2ifx
 	@Pure
 	public IntegerProperty yProperty() {
 		if (this.centerY == null) {
-			this.centerY = new SimpleIntegerProperty(this, "y"); 
+			this.centerY = new SimpleIntegerProperty(this, MathFXAttributeNames.Y);
 		}
 		return this.centerY;
 	}
@@ -177,7 +178,7 @@ public class Circle2ifx
 
 	@Override
 	public void setRadius(int radius) {
-		assert radius >= 0 : "Radius must be positive or zero"; 
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter();
 		radiusProperty().set(radius);
 	}
 
@@ -188,7 +189,7 @@ public class Circle2ifx
 	@Pure
 	public IntegerProperty radiusProperty() {
 		if (this.radius == null) {
-			this.radius = new SimpleIntegerProperty(this, "radius") { 
+			this.radius = new SimpleIntegerProperty(this, MathFXAttributeNames.RADIUS) {
 				@Override
 				protected void invalidated() {
 					if (get() < 0) {
@@ -202,7 +203,7 @@ public class Circle2ifx
 
 	@Override
 	public void set(int x, int y, int radius) {
-		assert radius >= 0 : "Radius must be positive or zero"; 
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
 		xProperty().set(x);
 		yProperty().set(y);
 		radiusProperty().set(radius);
@@ -211,7 +212,7 @@ public class Circle2ifx
 	@Override
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
+			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			}, xProperty(), yProperty(), radiusProperty()));

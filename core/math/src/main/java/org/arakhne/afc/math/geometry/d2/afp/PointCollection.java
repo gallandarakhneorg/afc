@@ -28,6 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** An collection of the points of the path.
  *
@@ -48,7 +49,7 @@ class PointCollection<P extends Point2D<? super P, ? super V>, V extends Vector2
      * @param path the path to iterate on.
      */
     PointCollection(Path2afp<?, ?, ?, P, V, ?> path) {
-        assert path != null : "Path must be not null"; 
+        assert path != null : AssertMessages.notNullParameter();
         this.path = path;
     }
 
@@ -96,7 +97,7 @@ class PointCollection<P extends Point2D<? super P, ? super V>, V extends Vector2
     @SuppressWarnings("unchecked")
     @Override
     public <T> T[] toArray(T[] array) {
-        assert array != null : "Array must be not null"; 
+        assert array != null : AssertMessages.notNullParameter();
         final Iterator<P> iterator = new PointIterator();
         for (int i = 0; i < array.length && iterator.hasNext(); ++i) {
             array[i] = (T) iterator.next();
@@ -129,7 +130,7 @@ class PointCollection<P extends Point2D<? super P, ? super V>, V extends Vector2
     @Pure
     @Override
     public boolean containsAll(Collection<?> collection) {
-        assert collection != null : "Collection must be not null"; 
+        assert collection != null : AssertMessages.notNullParameter();
         for (final Object obj : collection) {
             if ((!(obj instanceof Point2D))
                     || (!this.path.containsControlPoint((Point2D<?, ?>) obj))) {
@@ -141,7 +142,7 @@ class PointCollection<P extends Point2D<? super P, ? super V>, V extends Vector2
 
     @Override
     public boolean addAll(Collection<? extends P> collection) {
-        assert collection != null : "Collection must be not null"; 
+        assert collection != null : AssertMessages.notNullParameter();
         boolean changed = false;
         for (final P pts : collection) {
             if (add(pts)) {
@@ -153,7 +154,7 @@ class PointCollection<P extends Point2D<? super P, ? super V>, V extends Vector2
 
     @Override
     public boolean removeAll(Collection<?> collection) {
-        assert collection != null : "Collection must be not null"; 
+        assert collection != null : AssertMessages.notNullParameter();
         boolean changed = false;
         for (final Object obj : collection) {
             if (obj instanceof Point2D) {

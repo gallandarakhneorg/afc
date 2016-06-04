@@ -31,6 +31,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
@@ -141,8 +142,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the array of length 9 containing in order
 	 */
 	public Matrix3d(double[] values) {
-		assert values != null : "Array of values must not be null"; 
-		assert values.length >= 9 : "Size of the array is too small"; 
+		assert values != null : AssertMessages.notNullParameter();
+		assert values.length >= 9 : AssertMessages.tooSmallArrayParameter(values.length, 9);
 		this.m00 = values[0];
 		this.m01 = values[1];
 		this.m02 = values[2];
@@ -163,7 +164,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the source matrix
 	 */
 	public Matrix3d(Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 		this.m00 = matrix.m00;
 		this.m01 = matrix.m01;
 		this.m02 = matrix.m02;
@@ -202,15 +203,15 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Pure
 	@Override
 	public String toString() {
-		return this.m00 + ", " 
-				+ this.m01 + ", "  
-				+ this.m02 + "\n"  
-				+ this.m10 + ", "  
-				+ this.m11 + ", "  
-				+ this.m12 + "\n"  
-				+ this.m20 + ", " 
-				+ this.m21 + ", "  
-				+ this.m22 + "\n"; 
+		return this.m00 + ", " //$NON-NLS-1$
+				+ this.m01 + ", " //$NON-NLS-1$
+				+ this.m02 + "\n" //$NON-NLS-1$
+				+ this.m10 + ", " //$NON-NLS-1$
+				+ this.m11 + ", " //$NON-NLS-1$
+				+ this.m12 + "\n" //$NON-NLS-1$
+				+ this.m20 + ", " //$NON-NLS-1$
+				+ this.m21 + ", " //$NON-NLS-1$
+				+ this.m22 + "\n"; //$NON-NLS-1$
 	}
 
 	/**
@@ -243,8 +244,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the new value
 	 */
 	public void setElement(int row, int column, double value) {
-		assert row >= 0 && row < 3 : "Row index must be in [0; 2]"; 
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; 
+		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
+		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(1, column, 0, 2);
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -314,8 +315,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Pure
 	@SuppressWarnings("checkstyle:returncount")
 	public double getElement(int row, int column) {
-		assert row >= 0 && row < 3 : "Row index must be in [0; 2]"; 
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; 
+		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
+		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(1, column, 0, 2);
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -371,8 +372,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the vector into which the matrix row values will be copied
 	 */
 	public void getRow(int row, Vector3D vector) {
-		assert row >= 0 && row < 3 : "Row index must be in [0; 2]"; 
-		assert vector != null : "Vector of values must not be null"; 
+		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
+		assert vector != null : AssertMessages.notNullParameter(1);
 		if (row == 0) {
 			vector.set(this.m00, this.m01, this.m02);
 		} else if (row == 1) {
@@ -394,9 +395,9 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the array into which the matrix row values will be copied
 	 */
 	public void getRow(int row, double[] vector) {
-		assert row >= 0 && row < 3 : "Row index must be in [0; 2]"; 
-		assert vector != null : "Vector of values must not be null"; 
-		assert vector.length >= 3 : "Size of the vector is too small";  
+		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
+		assert vector != null : AssertMessages.notNullParameter(1);
+		assert vector.length >= 3 : AssertMessages.tooSmallArrayParameter(vector.length, 3);
 		if (row == 0) {
 			vector[0] = this.m00;
 			vector[1] = this.m01;
@@ -425,8 +426,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the vector into which the matrix row values will be copied
 	 */
 	public void getColumn(int column, Vector3D vector) {
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; 
-		assert vector != null : "Vector of values must not be null"; 
+		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
+		assert vector != null : AssertMessages.notNullParameter(1);
 		if (column == 0) {
 			vector.set(this.m00, this.m10, this.m20);
 		} else if (column == 1) {
@@ -449,9 +450,9 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the array into which the matrix row values will be copied
 	 */
 	public void getColumn(int column, double[] vector) {
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; 
-		assert vector != null : "Vector of values must not be null"; 
-		assert vector.length >= 3 : "Size of the vector is too small";  
+		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
+		assert vector != null : AssertMessages.notNullParameter(1);
+		assert vector.length >= 3 : AssertMessages.tooSmallArrayParameter(vector.length, 3);
 		if (column == 0) {
 			vector[0] = this.m00;
 			vector[1] = this.m10;
@@ -483,7 +484,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the third column element
 	 */
 	public void setRow(int row, double x, double y, double z) {
-		assert row >= 0 && row < 3 : "Row index must be in [0; 2]"; 
+		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
 		switch (row) {
 		case 0:
 			this.m00 = x;
@@ -519,8 +520,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the replacement row
 	 */
 	public void setRow(int row, Vector3D vector) {
-		assert row >= 0 && row < 3 : "Row index must be in [0; 2]"; 
-		assert vector != null : "Vector of values must not be null"; 
+		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
+		assert vector != null : AssertMessages.notNullParameter(1);
 		switch (row) {
 		case 0:
 			this.m00 = vector.getX();
@@ -556,9 +557,9 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the replacement row
 	 */
 	public void setRow(int row, double[] vector) {
-		assert row >= 0 && row < 3 : "Row index must be in [0; 2]"; 
-		assert vector != null : "Vector of values must not be null"; 
-		assert vector.length >= 3 : "Size of the vector is too small";  
+		assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
+		assert vector != null : AssertMessages.notNullParameter(1);
+		assert vector.length >= 3 : AssertMessages.tooSmallArrayParameter(vector.length, 3);
 		switch (row) {
 		case 0:
 			this.m00 = vector[0];
@@ -598,7 +599,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the third row element
 	 */
 	public void setColumn(int column, double x, double y, double z) {
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; 
+		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
 		switch (column) {
 		case 0:
 			this.m00 = x;
@@ -634,8 +635,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the replacement column
 	 */
 	public void setColumn(int column, Vector3D vector) {
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; 
-		assert vector != null : "Vector of values must not be null"; 
+		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
+		assert vector != null : AssertMessages.notNullParameter(1);
 		switch (column) {
 		case 0:
 			this.m00 = vector.getX();
@@ -671,9 +672,9 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the replacement column
 	 */
 	public void setColumn(int column, double[] vector) {
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; 
-		assert vector != null : "Vector of values must not be null"; 
-		assert vector.length >= 3 : "Size of the vector is too small";  
+		assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
+		assert vector != null : AssertMessages.notNullParameter(1);
+		assert vector.length >= 3 : AssertMessages.tooSmallArrayParameter(vector.length, 3);
 		switch (column) {
 		case 0:
 			this.m00 = vector[0];
@@ -732,7 +733,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the original matrix values
 	 */
 	public void add(double scalar, Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter(1);
 		this.m00 = matrix.m00 + scalar;
 		this.m01 = matrix.m01 + scalar;
 		this.m02 = matrix.m02 + scalar;
@@ -757,8 +758,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the second matrix
 	 */
 	public void add(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; 
-		assert matrix2 != null : "Second matrix must not be null"; 
+		assert matrix1 != null : AssertMessages.notNullParameter(0);
+		assert matrix2 != null : AssertMessages.notNullParameter(1);
 		this.m00 = matrix1.m00 + matrix2.m00;
 		this.m01 = matrix1.m01 + matrix2.m01;
 		this.m02 = matrix1.m02 + matrix2.m02;
@@ -781,7 +782,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the other matrix
 	 */
 	public void add(Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 		this.m00 += matrix.m00;
 		this.m01 += matrix.m01;
 		this.m02 += matrix.m02;
@@ -807,8 +808,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the second matrix
 	 */
 	public void sub(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; 
-		assert matrix2 != null : "Second matrix must not be null"; 
+		assert matrix1 != null : AssertMessages.notNullParameter(0);
+		assert matrix2 != null : AssertMessages.notNullParameter(1);
 		this.m00 = matrix1.m00 - matrix2.m00;
 		this.m01 = matrix1.m01 - matrix2.m01;
 		this.m02 = matrix1.m02 - matrix2.m02;
@@ -832,7 +833,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the other matrix
 	 */
 	public void sub(Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 		this.m00 -= matrix.m00;
 		this.m01 -= matrix.m01;
 		this.m02 -= matrix.m02;
@@ -876,7 +877,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the matrix to be transposed
 	 */
 	public void transpose(Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 		if (this != matrix) {
 			this.m00 = matrix.m00;
 			this.m01 = matrix.m10;
@@ -904,7 +905,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the Matrix3f to be converted to double
 	 */
 	public void set(Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 		this.m00 = matrix.m00;
 		this.m01 = matrix.m01;
 		this.m02 = matrix.m02;
@@ -929,8 +930,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the double precision array of length 9
 	 */
 	public void set(double[] matrix) {
-		assert matrix != null : "Matrix must not be null"; 
-		assert matrix.length >= 9 : "Size of the array is too small"; 
+		assert matrix != null : AssertMessages.notNullParameter();
+		assert matrix.length >= 9 : AssertMessages.tooSmallArrayParameter(matrix.length, 9);
 		this.m00 = matrix[0];
 		this.m01 = matrix[1];
 		this.m02 = matrix[2];
@@ -993,7 +994,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the matrix to be inverted
 	 */
 	public void invert(Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 		invertGeneral(matrix);
 	}
 
@@ -1033,7 +1034,7 @@ public class Matrix3d implements Serializable, Cloneable {
 		// Calculate LU decomposition: Is the matrix singular?
 		final int[] rowPerm = new int[3];
 		if (!luDecomposition(tmp, rowPerm)) {
-			throw new SingularMatrixException(Locale.getString("NOT_INVERTABLE_MATRIX")); 
+			throw new SingularMatrixException(Locale.getString("NOT_INVERTABLE_MATRIX")); //$NON-NLS-1$
 		}
 
 		// Perform back substitution on the identity matrix
@@ -1317,7 +1318,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the original matrix
 	 */
 	public void mul(double scalar, Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 		this.m00 = scalar * matrix.m00;
 		this.m01 = scalar * matrix.m01;
 		this.m02 = scalar * matrix.m02;
@@ -1341,7 +1342,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the other matrix
 	 */
 	public void mul(Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 
 		final double m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10 + this.m02 * matrix.m20;
 		final double m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11 + this.m02 * matrix.m21;
@@ -1378,8 +1379,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the second matrix
 	 */
 	public void mul(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; 
-		assert matrix2 != null : "Second matrix must not be null"; 
+		assert matrix1 != null : AssertMessages.notNullParameter(0);
+		assert matrix2 != null : AssertMessages.notNullParameter(1);
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10 + matrix1.m02 * matrix2.m20;
 			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m21;
@@ -1426,8 +1427,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 */
 	@Pure
 	public void mul(Vector3D vector, Vector3D result) {
-		assert vector != null : "Input vector must not be null"; 
-		assert result != null : "Result vector must not be null"; 
+		assert vector != null : AssertMessages.notNullParameter(0);
+		assert result != null : AssertMessages.notNullParameter(1);
 		result.set(
 				this.m00 * vector.getX() + this.m01 * vector.getY() + this.m02 * vector.getZ(),
 				this.m10 * vector.getX() + this.m11 * vector.getY() + this.m12 * vector.getZ(),
@@ -1441,8 +1442,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 */
 	@Pure
 	public void mulTransposeLeft(Vector3D vector, Vector3D result) {
-		assert vector != null : "Input vector must not be null"; 
-		assert result != null : "Result vector must not be null"; 
+		assert vector != null : AssertMessages.notNullParameter(0);
+		assert result != null : AssertMessages.notNullParameter(1);
 		result.set(
 				this.m00 * vector.getX() + this.m10 * vector.getY() + this.m20 * vector.getZ(),
 				this.m01 * vector.getX() + this.m11 * vector.getY() + this.m21 * vector.getZ(),
@@ -1459,8 +1460,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the matrix on the right hand side of the multiplication
 	 */
 	public void mulTransposeLeft(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; 
-		assert matrix2 != null : "Second matrix must not be null"; 
+		assert matrix1 != null : AssertMessages.notNullParameter(0);
+		assert matrix2 != null : AssertMessages.notNullParameter(1);
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10 + matrix1.m20 * matrix2.m20;
 			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11 + matrix1.m20 * matrix2.m21;
@@ -1509,7 +1510,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the matrix on the right hand side of the multiplication
 	 */
 	public void mulNormalize(Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 
 		final double[] tmp = new double[9];
 		final double[] tmpRot = new double[9];
@@ -1554,8 +1555,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the matrix on the right hand side of the multiplication
 	 */
 	public void mulNormalize(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; 
-		assert matrix2 != null : "Second matrix must not be null"; 
+		assert matrix1 != null : AssertMessages.notNullParameter(0);
+		assert matrix2 != null : AssertMessages.notNullParameter(1);
 
 		final double[] tmp = new double[9];
 		final double[] tmpRot = new double[9];
@@ -1600,8 +1601,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the matrix on the right hand side of the multiplication
 	 */
 	public void mulTransposeBoth(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; 
-		assert matrix2 != null : "Second matrix must not be null"; 
+		assert matrix1 != null : AssertMessages.notNullParameter(0);
+		assert matrix2 != null : AssertMessages.notNullParameter(1);
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01 + matrix1.m20 * matrix2.m02;
 			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11 + matrix1.m20 * matrix2.m12;
@@ -1651,8 +1652,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the matrix on the right hand side of the multiplication
 	 */
 	public void mulTransposeRight(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; 
-		assert matrix2 != null : "Second matrix must not be null"; 
+		assert matrix1 != null : AssertMessages.notNullParameter(0);
+		assert matrix2 != null : AssertMessages.notNullParameter(1);
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01 + matrix1.m02 * matrix2.m02;
 			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m12;
@@ -1700,7 +1701,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            Provides the matrix values to be normalized
 	 */
 	public void normalize(Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 
 		final double[] tmp = new double[9];
 		final double[] tmpRot = new double[9];
@@ -1789,7 +1790,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            Provides the matrix values to be normalized
 	 */
 	public void normalizeCP(Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 		double mag = 1. / Math.sqrt(matrix.m00 * matrix.m00 + matrix.m10 * matrix.m10 + matrix.m20
 				* matrix.m20);
 		this.m00 = matrix.m00 * mag;
@@ -1873,7 +1874,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public boolean epsilonEquals(Matrix3d matrix, double epsilon) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 		double diff;
 
 		diff = this.m00 - matrix.m00;
@@ -2019,7 +2020,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the source matrix
 	 */
 	public void negate(Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 		this.m00 = -matrix.m00;
 		this.m01 = -matrix.m01;
 		this.m02 = -matrix.m02;
@@ -2043,9 +2044,12 @@ public class Matrix3d implements Serializable, Cloneable {
 	 */
 	@SuppressWarnings({"checkstyle:methodlength", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	protected static void computeSVD(double[] matrix, double[] outScale, double[] outRot) {
-		assert matrix != null && matrix.length == 9 : "Size of m must be 9"; 
-		assert outScale != null && outScale.length == 3 : "Size of outScale must be 3"; 
-		assert outRot != null && outRot.length == 9 : "Size of outRot must be 9"; 
+	    assert matrix != null : AssertMessages.notNullParameter(0);
+		assert matrix.length >= 9 : AssertMessages.tooSmallArrayParameter(0, matrix.length, 9);
+		assert outScale != null : AssertMessages.notNullParameter(1);
+		assert outScale.length >= 3 : AssertMessages.tooSmallArrayParameter(1, outScale.length, 3);
+		assert outRot != null : AssertMessages.notNullParameter(2);
+		assert outRot.length >= 9 : AssertMessages.tooSmallArrayParameter(2, outRot.length, 9);
 		final double[] u1 = new double[9];
 		final double[] v1 = new double[9];
 		final double[] t1 = new double[9];
@@ -3306,8 +3310,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @return <code>true</code> if the cov matrix is computed.
 	 */
 	public boolean cov(Vector3D result, Vector3D... tuples) {
-		assert result != null : "Result vector must not be null"; 
-		assert tuples != null : "List of tuples must not be null"; 
+		assert result != null : AssertMessages.notNullParameter(0);
+		assert tuples != null : AssertMessages.notNullParameter(1);
 		return cov(result, Arrays.asList(tuples));
 	}
 
@@ -3319,8 +3323,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @return <code>true</code> if the cov matrix is computed.
 	 */
 	public boolean  cov(Vector3D result, Point3D... tuples) {
-		assert result != null : "Result vector must not be null"; 
-		assert tuples != null : "List of tuples must not be null"; 
+		assert result != null : AssertMessages.notNullParameter(0);
+		assert tuples != null : AssertMessages.notNullParameter(1);
 		return cov(result, Arrays.asList(tuples));
 	}
 
@@ -3332,8 +3336,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 * @return <code>true</code> if the cov matrix is computed.
 	 */
 	public boolean cov(Vector3D result, Iterable<? extends Tuple3D<?>> tuples) {
-		assert result != null : "Result vector must not be null"; 
-		assert tuples != null : "List of tuples must not be null"; 
+		assert result != null : AssertMessages.notNullParameter(0);
+		assert tuples != null : AssertMessages.notNullParameter(1);
 		setZero();
 
 		// Compute the mean m and set result with it.
@@ -3474,7 +3478,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public double[] eigenVectorsOfSymmetricMatrix(Matrix3d eigenVectors) {
-		assert eigenVectors != null : "Eigen vectors' matrix must not be null"; 
+		assert eigenVectors != null : AssertMessages.notNullParameter();
 		// Copy values up to the diagonal
 		double m11 = getElement(0, 0);
 		double m12 = getElement(0, 1);
@@ -3594,7 +3598,7 @@ public class Matrix3d implements Serializable, Cloneable {
 			}
 		}
 
-		assert !sweepsConsumed : "Sweep count consumed during eigenvector computation"; 
+		assert !sweepsConsumed;
 
 		// eigenvalues are on the diagonal
 		return new double[] {m11, m22, m33};

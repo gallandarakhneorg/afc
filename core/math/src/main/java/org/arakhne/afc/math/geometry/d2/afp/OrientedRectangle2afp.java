@@ -33,6 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a 2D oriented rectangle on a plane.
  * An oriented rectangle is a parallelogram with orthogonal axes.
@@ -57,22 +58,6 @@ public interface OrientedRectangle2afp<
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends Parallelogram2afp<ST, IT, IE, P, V, B> {
-	/**
-     * Literal constant.
-     */
-	String AXIS_1_EXTENT_POSITIVE_ZERO = "Extent of axis 1 must be positive or zero"; 
-    /**
-     * Literal constant.
-     */
-    String AXIS_2_EXTENT_POSITIVE_ZERO = "Extent of axis 2 must be positive or zero"; 
-    /**
-     * Literal constant.
-     */
-    String AXIS_1_NOT_UNIT_VECTOR =  "Axis 1 is not a unit vector"; 
-    /**
-     * Literal constant.
-     */
-    String RECTANGLE_HEIGHT = "Height of the rectangle must be positive or zero"; 
 
 	/** Project the given vector on the R axis, assuming S axis is orthogonal.
 	 *
@@ -88,7 +73,7 @@ public interface OrientedRectangle2afp<
 	 */
 	@Pure
 	static double projectVectorOnOrientedRectangleRAxis(double rx, double ry, double x,  double y) {
-		assert Vector2D.isUnitVector(rx, ry) : "Vector R is not a unit vector"; 
+		assert Vector2D.isUnitVector(rx, ry) : AssertMessages.normalizedParameters(0, 1);
 		return Vector2D.dotProduct(x, y, rx, ry);
 	}
 
@@ -106,7 +91,7 @@ public interface OrientedRectangle2afp<
 	 */
 	@Pure
 	static double projectVectorOnOrientedRectangleSAxis(double rx, double ry, double x,  double y) {
-		assert Vector2D.isUnitVector(rx, ry) : "Vector R is not a unit vector"; 
+		assert Vector2D.isUnitVector(rx, ry) : AssertMessages.normalizedParameters(0, 1);
 		return Vector2D.dotProduct(x, y, -ry, rx);
 	}
 
@@ -128,11 +113,11 @@ public interface OrientedRectangle2afp<
 			Iterable<? extends Point2D<?, ?>> points,
 			Vector2D<?, ?> raxis,
 			Point2D<?, ?> center, Tuple2D<?> extents) {
-		assert points != null : "Collection of points must be not null"; 
-		assert raxis != null : "First axis vector must be not null"; 
-		assert raxis.isUnitVector() : "First axis vector must be unit vector"; 
-		assert center != null : "Center point must be not null"; 
-		assert extents != null : "Extent tuple must be not null"; 
+		assert points != null : AssertMessages.notNullParameter(0);
+		assert raxis != null : AssertMessages.notNullParameter(1);
+		assert raxis.isUnitVector() : AssertMessages.normalizedParameter(1);
+		assert center != null : AssertMessages.notNullParameter(2);
+		assert extents != null : AssertMessages.notNullParameter(3);
 
 		double minR = Double.POSITIVE_INFINITY;
 		double maxR = Double.NEGATIVE_INFINITY;
@@ -201,15 +186,16 @@ public interface OrientedRectangle2afp<
 	 *     otherwise <code>false</code>.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean containsOrientedRectanglePoint(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
 			double axis1Extent,
 			double axis2Extent,
 			double px, double py) {
-		assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-		assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+		assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+		assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(5);
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
 		final double x = px - centerX;
 		final double y = py - centerY;
 		double coordinate = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
@@ -248,7 +234,8 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Unefficient
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:returncount",
-			"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+			"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
+			"checkstyle:magicnumber"})
 	static boolean containsOrientedRectangleRectangle(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -256,11 +243,11 @@ public interface OrientedRectangle2afp<
 			double axis2Extent,
 			double rx, double ry,
 			double rwidth, double rheight) {
-		assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-		assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-		assert rwidth >= 0 : RECTANGLE_WIDTH;
-		assert rheight >= 0 :  RECTANGLE_HEIGHT;
+		assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+		assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(5);
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+		assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(8);
+		assert rheight >= 0 : AssertMessages.positiveOrZeroParameter(9);
 
 		final double basex = rx - centerX;
 		final double basey = ry - centerY;
@@ -330,7 +317,7 @@ public interface OrientedRectangle2afp<
 	 * @param closest the closest point. If <code>null</code>, the closest point is not computed.
 	 * @param farthest the farthest point. If <code>null</code>, the farthest point is not computed.
 	 */
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static void computeClosestFarthestPoints(
 			double px, double py,
 			double centerX, double centerY,
@@ -338,11 +325,10 @@ public interface OrientedRectangle2afp<
 			double axis1Extent,
 			double axis2Extent,
 			Point2D<?, ?> closest, Point2D<?, ?> farthest) {
-		assert axis1Extent >= 0. : AXIS_1_EXTENT_POSITIVE_ZERO;
-		assert axis2Extent >= 0. : AXIS_1_EXTENT_POSITIVE_ZERO;
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-		assert closest != null || farthest != null
-			: "Neither closest point nor farthest point has a result vector"; 
+		assert axis1Extent >= 0. : AssertMessages.positiveOrZeroParameter(6);
+		assert axis2Extent >= 0. : AssertMessages.positiveOrZeroParameter(7);
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(4, 5);
+		assert closest != null || farthest != null : AssertMessages.oneNotNullParameter(8, 9);
 
 		final double dx = px - centerX;
 		final double dy = py - centerY;
@@ -407,16 +393,16 @@ public interface OrientedRectangle2afp<
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean intersectsOrientedRectangleSegment(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
 			double axis1Extent,
 			double axis2Extent,
 			double s1x, double s1y, double s2x, double s2y) {
-		assert axis1Extent >= 0. : AXIS_1_EXTENT_POSITIVE_ZERO;
-		assert axis2Extent >= 0. : AXIS_2_EXTENT_POSITIVE_ZERO;
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+		assert axis1Extent >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert axis2Extent >= 0. : AssertMessages.positiveOrZeroParameter(5);
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
 		//Changing Segment coordinate basis.
 		double x = s1x - centerX;
 		double y = s1y - centerY;
@@ -455,16 +441,16 @@ public interface OrientedRectangle2afp<
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean intersectsOrientedRectangleTriangle(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
 			double axis1Extent,
 			double axis2Extent,
 			double s1x, double s1y, double s2x, double s2y, double s3x, double s3y) {
-		assert axis1Extent >= 0. : AXIS_1_EXTENT_POSITIVE_ZERO;
-		assert axis2Extent >= 0. : AXIS_2_EXTENT_POSITIVE_ZERO;
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+		assert axis1Extent >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert axis2Extent >= 0. : AssertMessages.positiveOrZeroParameter(5);
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
 		//Changing Triangle coordinate basis.
 		double x = s1x - centerX;
 		double y = s1y - centerY;
@@ -506,18 +492,18 @@ public interface OrientedRectangle2afp<
 	 */
 	@Pure
 	@Unefficient
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean intersectsOrientedRectangleEllipse(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
 			double axis1Extent,
 			double axis2Extent,
 			double ex, double ey, double ewidth, double eheight) {
-		assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-		assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-		assert ewidth >= 0 : RECTANGLE_WIDTH;
-		assert eheight >= 0 :  RECTANGLE_HEIGHT;
+		assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+		assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(5);
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+		assert ewidth >= 0 : AssertMessages.positiveOrZeroParameter(7);
+		assert eheight >= 0 : AssertMessages.positiveOrZeroParameter(8);
 
 		if (ewidth <= 0 || eheight <= 0) {
 			return false;
@@ -572,17 +558,17 @@ public interface OrientedRectangle2afp<
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean intersectsOrientedRectangleCircle(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
 			double axis1Extent,
 			double axis2Extent,
 			double circleX, double circleY, double circleRadius) {
-		assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-		assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-		assert circleRadius >= 0 : "Circle radius must be positive or zero"; 
+		assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+		assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(5);
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+		assert circleRadius >= 0 : AssertMessages.positiveOrZeroParameter(8);
 		final Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				circleX, circleY,
@@ -643,7 +629,7 @@ public interface OrientedRectangle2afp<
 	 * @see <a href="http://www.jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf">Intersection between two oriented boudning rectangles</a>
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean intersectsOrientedRectangleOrientedRectangle(
 			double centerX1, double centerY1,
 			double axis1X1, double axis1Y1,
@@ -653,10 +639,10 @@ public interface OrientedRectangle2afp<
 			double axis1X2, double axis1Y2,
 			double axis1Extent2,
 			double axis2Extent2) {
-		assert axis1Extent1 >= 0. : "First axis extent of the first rectangle must be positive or zero"; 
-		assert axis2Extent1 >= 0. : "Second axis extent of the first rectangle must be positive or zero"; 
-		assert axis1Extent2 >= 0. : "First axis extent of the second rectangle must be positive or zero"; 
-		assert axis2Extent2 >= 0. : "Second axis extent of the second rectangle must be positive or zero"; 
+		assert axis1Extent1 >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert axis2Extent1 >= 0. : AssertMessages.positiveOrZeroParameter(5);
+		assert axis1Extent2 >= 0. : AssertMessages.positiveOrZeroParameter(10);
+		assert axis2Extent2 >= 0. : AssertMessages.positiveOrZeroParameter(11);
 
 		final double tx = centerX2 - centerX1;
 		final double ty = centerY2 - centerY1;
@@ -766,7 +752,7 @@ public interface OrientedRectangle2afp<
 	 * @see <a href="http://www.gamasutra.com/features/19991018/Gomez_5.htm">OBB collision detection on Gamasutra.com</a>
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean intersectsOrientedRectangleRectangle(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -774,11 +760,11 @@ public interface OrientedRectangle2afp<
 			double axis2Extent,
 			double rx, double ry,
 			double rwidth, double rheight) {
-		assert rwidth >= 0. : "Rectangle width must be positive or zero"; 
-		assert rheight >= 0. : "Rectangle height must be positive or zero"; 
-		assert axis1Extent >= 0. : "Axis 1 extent for the oriented rectangle must be positive or zero"; 
-		assert axis2Extent >= 0. : "Axis 2 extent for the oriented rectangle must be positive or zero"; 
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 of the oriented rectangle must be a unit vector"; 
+		assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(8);
+		assert rheight >= 0. : AssertMessages.positiveOrZeroParameter(9);
+		assert axis1Extent >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert axis2Extent >= 0. : AssertMessages.positiveOrZeroParameter(5);
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(1, 2);
 		final double rx2 = rx + rwidth;
 		final double ry2 = ry + rheight;
 		final double axis2X = -axis1Y;
@@ -855,7 +841,7 @@ public interface OrientedRectangle2afp<
 	 */
 	@Pure
 	@Unefficient
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity"})
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber"})
 	static boolean intersectsOrientedRectangleRoundRectangle(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -864,13 +850,13 @@ public interface OrientedRectangle2afp<
 			double rx, double ry,
 			double rwidth, double rheight,
 			double rArcWidth, double rArcHeight) {
-		assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-		assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-		assert rwidth >= 0 : RECTANGLE_WIDTH;
-		assert rheight >= 0 :  RECTANGLE_HEIGHT;
-		assert rArcWidth >= 0 : "Arc width of the rectangle must be positive or zero"; 
-		assert rArcHeight >= 0 : "Arc height of the rectangle must be positive or zero"; 
+		assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+		assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(5);
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+		assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(8);
+		assert rheight >= 0 : AssertMessages.positiveOrZeroParameter(9);
+		assert rArcWidth >= 0 : AssertMessages.positiveOrZeroParameter(10);
+		assert rArcHeight >= 0 : AssertMessages.positiveOrZeroParameter(11);
 
 		final double rx2 = rx + rwidth;
 		final double ry2 = ry + rheight;
@@ -964,14 +950,14 @@ public interface OrientedRectangle2afp<
 	 *         coordinates intersect each other; <code>false</code> otherwise.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static <T extends PathElement2afp> boolean intersectsOrientedRectanglePathIterator(
 			double centerX, double centerY, double axis1X, double axis1Y, double extent1, double extent2,
 			PathIterator2afp<T> pathIterator) {
-		assert pathIterator != null : "Iterator must be not null"; 
-		assert extent1 >= 0. : AXIS_1_EXTENT_POSITIVE_ZERO;
-		assert extent2 >= 0. : AXIS_2_EXTENT_POSITIVE_ZERO;
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+		assert pathIterator != null : AssertMessages.notNullParameter(6);
+		assert extent1 >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert extent2 >= 0. : AssertMessages.positiveOrZeroParameter(5);
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
 		final int mask = pathIterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final ProjectionToOrientedRectangleLocalCoordinateSystemPathIterator<T> localIterator =
 				new ProjectionToOrientedRectangleLocalCoordinateSystemPathIterator<>(
@@ -1014,7 +1000,7 @@ public interface OrientedRectangle2afp<
 
 	@Override
 	default void set(IT rectangle) {
-		assert rectangle != null : "Oriented rectangle must be not null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		set(rectangle.getCenterX(), rectangle.getCenterY(),
 				rectangle.getFirstAxisX(), rectangle.getFirstAxisY(), rectangle.getFirstAxisExtent(),
 				rectangle.getSecondAxisExtent());
@@ -1040,8 +1026,8 @@ public interface OrientedRectangle2afp<
 	 * @param axis2Extent is the extent of the second axis.
 	 */
 	default void set(Point2D<?, ?> center, Vector2D<?, ?> axis1, double axis1Extent, double axis2Extent) {
-		assert center != null : "Center point must be not null"; 
-		assert axis1 != null : "Axis vector must be not null"; 
+		assert center != null : AssertMessages.notNullParameter(0);
+		assert axis1 != null : AssertMessages.notNullParameter(1);
 		set(center.getX(), center.getY(), axis1.getX(), axis1.getY(), axis1Extent, axis2Extent);
 	}
 
@@ -1061,7 +1047,7 @@ public interface OrientedRectangle2afp<
 
 	@Override
 	default void setFromPointCloud(Iterable<? extends Point2D<?, ?>> pointCloud) {
-		assert pointCloud != null : "Iterable of points must be not null"; 
+		assert pointCloud != null : AssertMessages.notNullParameter();
 		final Vector2D<?, ?> r = new InnerComputationVector2afp();
 		Parallelogram2afp.computeOrthogonalAxes(pointCloud, r, null);
 		final Point2D<?, ?> center = new InnerComputationPoint2afp();
@@ -1075,7 +1061,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				pt.getX(), pt.getY(),
@@ -1090,7 +1076,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				pt.getX(), pt.getY(),
@@ -1105,7 +1091,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				pt.getX(), pt.getY(),
@@ -1134,7 +1120,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		return containsOrientedRectangleRectangle(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1146,7 +1132,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; 
+		assert circle != null : AssertMessages.notNullParameter();
 		return intersectsOrientedRectangleCircle(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1157,7 +1143,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; 
+		assert ellipse != null : AssertMessages.notNullParameter();
 		return intersectsOrientedRectangleEllipse(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1170,7 +1156,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
+		assert orientedRectangle != null : AssertMessages.notNullParameter();
 		return intersectsOrientedRectangleOrientedRectangle(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1183,7 +1169,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert parallelogram != null : "Parallelogram must be not null"; 
+		assert parallelogram != null : AssertMessages.notNullParameter();
 		return Parallelogram2afp.intersectsParallelogramParallelogram(
 				parallelogram.getCenterX(), parallelogram.getCenterY(),
 				parallelogram.getFirstAxisX(), parallelogram.getFirstAxisY(), parallelogram.getFirstAxisExtent(),
@@ -1196,7 +1182,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		return intersectsOrientedRectangleRectangle(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1208,14 +1194,14 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "round rectangle must be not null"; 
+		assert roundRectangle != null : AssertMessages.notNullParameter();
 		return roundRectangle.intersects(this);
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; 
+		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsOrientedRectangleSegment(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1226,7 +1212,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; 
+		assert triangle != null : AssertMessages.notNullParameter();
 		return intersectsOrientedRectangleTriangle(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1237,7 +1223,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
-		assert iterator != null : "Oriented rectangle must be not null"; 
+		assert iterator != null : AssertMessages.notNullParameter();
 		return intersectsOrientedRectanglePathIterator(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(),
@@ -1248,7 +1234,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; 
+		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
 
@@ -1295,7 +1281,7 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestFarthestPoints(
 				pt.getX(), pt.getY(),
@@ -1308,14 +1294,14 @@ public interface OrientedRectangle2afp<
 
     @Override
     default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-        assert circle != null : "Circle must be not null"; 
+        assert circle != null : AssertMessages.notNullParameter();
         return getClosestPointTo(circle.getCenter());
     }
 
     @Override
     @Unefficient
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-        assert ellipse != null : "Ellipse must be not null"; 
+        assert ellipse != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), ellipse.getPathIterator(), point);
         return point;
@@ -1324,7 +1310,7 @@ public interface OrientedRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-        assert rectangle != null : "Rectangle must be not null"; 
+        assert rectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), rectangle.getPathIterator(), point);
         return point;
@@ -1333,7 +1319,7 @@ public interface OrientedRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-        assert segment != null : "Segment must be not null"; 
+        assert segment != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), segment.getPathIterator(), point);
         return point;
@@ -1342,7 +1328,7 @@ public interface OrientedRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-        assert triangle != null : "Triangle must be not null"; 
+        assert triangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), triangle.getPathIterator(), point);
         return point;
@@ -1351,7 +1337,7 @@ public interface OrientedRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-        assert orientedRectangle != null : "Oriented rectangle must be not null"; 
+        assert orientedRectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), orientedRectangle.getPathIterator(), point);
         return point;
@@ -1360,7 +1346,7 @@ public interface OrientedRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-        assert parallelogram != null : "Parallelogram must be not null"; 
+        assert parallelogram != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), parallelogram.getPathIterator(), point);
         return point;
@@ -1369,7 +1355,7 @@ public interface OrientedRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-        assert roundRectangle != null : "Round rectangle must be not null"; 
+        assert roundRectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), roundRectangle.getPathIterator(), point);
         return point;
@@ -1378,7 +1364,7 @@ public interface OrientedRectangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
-        assert path != null : "Path must be not null"; 
+        assert path != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
         return point;
@@ -1387,7 +1373,7 @@ public interface OrientedRectangle2afp<
     @Pure
     @Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestFarthestPoints(
 				pt.getX(), pt.getY(),
@@ -1603,7 +1589,7 @@ public interface OrientedRectangle2afp<
 		public TransformedOrientedRectanglePathIterator(OrientedRectangle2afp<?, ?, T, ?, ?, ?> rectangle,
 				Transform2D transform) {
 			super(rectangle);
-			assert transform != null : "Transformation must be not null"; 
+			assert transform != null : AssertMessages.notNullParameter(1);
 			this.transform = transform;
 			if (rectangle.isEmpty()) {
 				this.index = ELEMENT_COUNT;

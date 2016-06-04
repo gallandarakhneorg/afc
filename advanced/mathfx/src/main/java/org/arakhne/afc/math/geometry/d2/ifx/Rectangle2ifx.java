@@ -28,8 +28,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A rectangle with 2 integer FX properties.
  *
@@ -71,8 +73,8 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 * @param max is the max corner of the rectangle.
 	 */
 	public Rectangle2ifx(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert min != null : "Minimum point must be not null"; 
-		assert max != null : "Maximum point must be not null"; 
+		assert min != null : AssertMessages.notNullParameter(0);
+		assert max != null : AssertMessages.notNullParameter(1);
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
 	}
 
@@ -83,8 +85,8 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 * @param height height of the rectangle.
 	 */
 	public Rectangle2ifx(int x, int y, int width, int height) {
-		assert width >= 0 : "Width must be positive or equal"; 
-		assert height >= 0 : "Height must be positive or equal"; 
+		assert width >= 0 : AssertMessages.positiveOrZeroParameter(2);
+		assert height >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		setFromCorners(x, y, x + width, y + height);
 	}
 
@@ -153,7 +155,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Pure
 	public IntegerProperty minXProperty() {
 		if (this.minX == null) {
-			this.minX = new SimpleIntegerProperty(this, "minX") { 
+			this.minX = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_X) {
 				@Override
 				protected void invalidated() {
 					final int currentMin = get();
@@ -186,7 +188,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Pure
 	public IntegerProperty maxXProperty() {
 		if (this.maxX == null) {
-			this.maxX = new SimpleIntegerProperty(this, "maxX") { 
+			this.maxX = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_X) {
 				@Override
 				protected void invalidated() {
 					final int currentMax = get();
@@ -219,7 +221,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Pure
 	public IntegerProperty minYProperty() {
 		if (this.minY == null) {
-			this.minY = new SimpleIntegerProperty(this, "minY") { 
+			this.minY = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_Y) {
 				@Override
 				protected void invalidated() {
 					final int currentMin = get();
@@ -252,7 +254,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Pure
 	public IntegerProperty maxYProperty() {
 		if (this.maxY == null) {
-			this.maxY = new SimpleIntegerProperty(this, "maxY") { 
+			this.maxY = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
 				@Override
 				protected void invalidated() {
 					final int currentMax = get();
@@ -282,15 +284,15 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getMinX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMinY());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getMaxX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMaxY());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 
@@ -306,7 +308,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Pure
 	public IntegerProperty widthProperty() {
 		if (this.width == null) {
-			this.width = new ReadOnlyIntegerWrapper(this, "width"); 
+			this.width = new ReadOnlyIntegerWrapper(this, MathFXAttributeNames.WIDTH);
 			this.width.bind(Bindings.subtract(maxXProperty(), minXProperty()));
 		}
 		return this.width;
@@ -324,7 +326,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Pure
 	public IntegerProperty heightProperty() {
 		if (this.height == null) {
-			this.height = new ReadOnlyIntegerWrapper(this, "height"); 
+			this.height = new ReadOnlyIntegerWrapper(this, MathFXAttributeNames.HEIGHT);
 			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
 		}
 		return this.height;
@@ -333,7 +335,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Override
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
+			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			},

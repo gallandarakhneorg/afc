@@ -29,9 +29,11 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A triangle with 2 double precision floating-point FX properties.
  *
@@ -45,11 +47,6 @@ public class Triangle2dfx
 		extends AbstractShape2dfx<Triangle2dfx>
 		implements Triangle2afp<Shape2dfx<?>, Triangle2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
 	private static final long serialVersionUID = -1872758222696617883L;
-
-	/**
-	 * Literal constant.
-	 */
-	private static final String POINT_ONE_NOT_NULL = "Point 1 must not be null"; 
 
 	private DoubleProperty x1;
 
@@ -77,9 +74,9 @@ public class Triangle2dfx
 	 * @param p3 third point.
 	 */
 	public Triangle2dfx(Point2D<?, ?> p1, Point2D<?, ?> p2, Point2D<?, ?> p3) {
-		assert p1 != null : POINT_ONE_NOT_NULL;
-		assert p2 != null : POINT_ONE_NOT_NULL;
-		assert p3 != null : POINT_ONE_NOT_NULL;
+		assert p1 != null : AssertMessages.notNullParameter(0);
+		assert p2 != null : AssertMessages.notNullParameter(1);
+		assert p3 != null : AssertMessages.notNullParameter(2);
 		set(p1.getX(), p1.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY());
 	}
 
@@ -99,7 +96,7 @@ public class Triangle2dfx
 	 * @param triangle the triangle to copy.
 	 */
 	public Triangle2dfx(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; 
+		assert triangle != null : AssertMessages.notNullParameter();
 		set(triangle.getX1(), triangle.getY1(), triangle.getX2(), triangle.getY2(), triangle.getX3(), triangle.getY3());
 	}
 
@@ -152,19 +149,19 @@ public class Triangle2dfx
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getX1());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY1());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getX2());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY2());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getX3());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY3());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 
@@ -199,7 +196,7 @@ public class Triangle2dfx
 	@Pure
 	public DoubleProperty x1Property() {
 		if (this.x1 == null) {
-			this.x1 = new SimpleDoubleProperty(this, "x1"); 
+			this.x1 = new SimpleDoubleProperty(this, MathFXAttributeNames.X1);
 		}
 		return this.x1;
 	}
@@ -216,7 +213,7 @@ public class Triangle2dfx
 	@Pure
 	public DoubleProperty y1Property() {
 		if (this.y1 == null) {
-			this.y1 = new SimpleDoubleProperty(this, "y1"); 
+			this.y1 = new SimpleDoubleProperty(this, MathFXAttributeNames.Y1);
 		}
 		return this.y1;
 	}
@@ -233,7 +230,7 @@ public class Triangle2dfx
 	@Pure
 	public DoubleProperty x2Property() {
 		if (this.x2 == null) {
-			this.x2 = new SimpleDoubleProperty(this, "x2"); 
+			this.x2 = new SimpleDoubleProperty(this, MathFXAttributeNames.X2);
 		}
 		return this.x2;
 	}
@@ -250,7 +247,7 @@ public class Triangle2dfx
 	@Pure
 	public DoubleProperty y2Property() {
 		if (this.y2 == null) {
-			this.y2 = new SimpleDoubleProperty(this, "y2"); 
+			this.y2 = new SimpleDoubleProperty(this, MathFXAttributeNames.Y2);
 		}
 		return this.y2;
 	}
@@ -267,7 +264,7 @@ public class Triangle2dfx
 	@Pure
 	public DoubleProperty x3Property() {
 		if (this.x3 == null) {
-			this.x3 = new SimpleDoubleProperty(this, "x3"); 
+			this.x3 = new SimpleDoubleProperty(this, MathFXAttributeNames.X3);
 		}
 		return this.x3;
 	}
@@ -284,7 +281,7 @@ public class Triangle2dfx
 	@Pure
 	public DoubleProperty y3Property() {
 		if (this.y3 == null) {
-			this.y3 = new SimpleDoubleProperty(this, "y3"); 
+			this.y3 = new SimpleDoubleProperty(this, MathFXAttributeNames.Y3);
 		}
 		return this.y3;
 	}
@@ -341,7 +338,7 @@ public class Triangle2dfx
 	@Pure
 	public ReadOnlyBooleanProperty ccwProperty() {
 		if (this.ccw == null) {
-			this.ccw = new ReadOnlyBooleanWrapper(this, "ccw"); 
+			this.ccw = new ReadOnlyBooleanWrapper(this, "ccw"); //$NON-NLS-1$
 			this.ccw.bind(Bindings.createBooleanBinding(() -> {
 				return Triangle2afp.isCCWOrderDefinition(
 						getX1(), getY1(), getX2(), getY2(),
@@ -357,7 +354,7 @@ public class Triangle2dfx
 	@Override
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			},

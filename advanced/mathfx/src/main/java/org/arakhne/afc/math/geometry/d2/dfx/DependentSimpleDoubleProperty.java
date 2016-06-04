@@ -26,6 +26,8 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+
 /**
  * A JavaFX double property that depends on another property.
  *
@@ -52,7 +54,7 @@ class DependentSimpleDoubleProperty<T extends ObservableValue<?>> extends Simple
 	@SuppressWarnings("unchecked")
 	DependentSimpleDoubleProperty(Object bean, String name, T dependency) {
 		super(bean, name);
-		assert dependency != null : "Dependency must be not null"; 
+		assert dependency != null : AssertMessages.notNullParameter(2);
 		this.dependency = new WeakReference<>(dependency);
 		this.listener = new Listener<>();
 		dependency.addListener(this.listener);

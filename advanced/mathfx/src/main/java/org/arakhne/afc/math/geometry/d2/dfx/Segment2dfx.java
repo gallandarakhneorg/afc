@@ -27,9 +27,11 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Segment with 2 double precision floating-point FX properties.
  *
@@ -122,22 +124,22 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getX1());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY1());
-		b.append("|"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getX2());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY2());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 
 	@Pure
 	@Override
 	public Segment2dfx createTransformedShape(Transform2D transform) {
-		assert transform != null : "Transformation must be not null"; 
+		assert transform != null : AssertMessages.notNullParameter();
 		final Point2dfx point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
 		final double x1 = point.getX();
@@ -188,7 +190,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Pure
 	public DoubleProperty x1Property() {
 		if (this.ax == null) {
-			this.ax = new SimpleDoubleProperty(this, "x1"); 
+			this.ax = new SimpleDoubleProperty(this, MathFXAttributeNames.X1);
 		}
 		return this.ax;
 	}
@@ -206,7 +208,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Pure
 	public DoubleProperty y1Property() {
 		if (this.ay == null) {
-			this.ay = new SimpleDoubleProperty(this, "y1"); 
+			this.ay = new SimpleDoubleProperty(this, MathFXAttributeNames.Y1);
 		}
 		return this.ay;
 	}
@@ -224,7 +226,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Pure
 	public DoubleProperty x2Property() {
 		if (this.bx == null) {
-			this.bx = new SimpleDoubleProperty(this, "x2"); 
+			this.bx = new SimpleDoubleProperty(this, MathFXAttributeNames.X2);
 		}
 		return this.bx;
 	}
@@ -242,7 +244,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Pure
 	public DoubleProperty y2Property() {
 		if (this.by == null) {
-			this.by = new SimpleDoubleProperty(this, "y2"); 
+			this.by = new SimpleDoubleProperty(this, MathFXAttributeNames.Y2);
 		}
 		return this.by;
 	}
@@ -260,7 +262,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Override
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			},

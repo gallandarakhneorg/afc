@@ -57,8 +57,8 @@ public class ExponentialStochasticLaw extends StochasticLaw {
 	 * @throws OutsideDomainException when lambda is outside its domain
 	 */
 	public ExponentialStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
-		this.lambda = paramFloat("lambda", parameters); 
-		this.xmin = paramFloat("xmin", parameters); 
+		this.lambda = paramFloat("lambda", parameters); //$NON-NLS-1$
+		this.xmin = paramFloat("xmin", parameters); //$NON-NLS-1$
 		if (this.lambda <= 0) {
 			throw new OutsideDomainException(this.lambda);
 		}
@@ -93,11 +93,11 @@ public class ExponentialStochasticLaw extends StochasticLaw {
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("EXPONENTIAL(lambda="); 
+		b.append("EXPONENTIAL(lambda="); //$NON-NLS-1$
 		b.append(this.lambda);
-		b.append(";["); 
+		b.append(";["); //$NON-NLS-1$
 		b.append(this.xmin);
-		b.append(";+inf)"); 
+		b.append(";+inf)"); //$NON-NLS-1$
 		return b.toString();
 	}
 

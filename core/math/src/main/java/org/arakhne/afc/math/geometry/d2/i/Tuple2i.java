@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.i;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 2D tuple with 2 integer numbers.
  *
@@ -55,7 +56,7 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2i(Tuple2i<?> tuple) {
-		assert tuple != null : "Input tuple must not be null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		this.x = tuple.x;
 		this.y = tuple.y;
 	}
@@ -64,7 +65,7 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2i(Tuple2D<?> tuple) {
-		assert tuple != null : "Input tuple must not be null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		this.x = tuple.ix();
 		this.y = tuple.iy();
 	}
@@ -73,8 +74,8 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2i(int[] tuple) {
-		assert tuple != null : "Input tuple must not be null"; 
-		assert tuple.length >= 2 : "Size of the input array is too small"; 
+		assert tuple != null : AssertMessages.notNullParameter();
+		assert tuple.length >= 2 : AssertMessages.tooSmallArrayParameter(tuple.length, 2);
 		this.x = tuple[0];
 		this.y = tuple[1];
 	}
@@ -83,8 +84,8 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2i(double[] tuple) {
-		assert tuple != null : "Input tuple must not be null"; 
-		assert tuple.length >= 2 : "Size of the input array is too small"; 
+		assert tuple != null : AssertMessages.notNullParameter();
+		assert tuple.length >= 2 : AssertMessages.tooSmallArrayParameter(tuple.length, 2);
 		this.x = (int) Math.round(tuple[0]);
 		this.y = (int) Math.round(tuple[1]);
 	}
@@ -126,7 +127,7 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 
 	@Override
 	public void absolute(Tuple2D<?> tuple) {
-		assert tuple != null : "Output tuple must not be null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		tuple.set(Math.abs(this.x), Math.abs(this.y));
 	}
 
@@ -164,7 +165,7 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 
 	@Override
 	public void negate(Tuple2D<?> tuple) {
-		assert tuple != null : "Input tuple must not be null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		this.x = -tuple.ix();
 		this.y = -tuple.iy();
 	}
@@ -177,14 +178,14 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 
 	@Override
 	public void scale(int scale, Tuple2D<?> tuple) {
-		assert tuple != null : "Input tuple must not be null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		this.x = (int) Math.round(scale * tuple.getX());
 		this.y = (int) Math.round(scale * tuple.getY());
 	}
 
 	@Override
 	public void scale(double scale, Tuple2D<?> tuple) {
-		assert tuple != null : "Input tuple must not be null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		this.x = (int) Math.round(scale * tuple.getX());
 		this.y = (int) Math.round(scale * tuple.getY());
 	}
@@ -203,7 +204,7 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 
 	@Override
 	public void set(Tuple2D<?> tuple) {
-		assert tuple != null : "Input tuple must not be null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		this.x = tuple.ix();
 		this.y = tuple.iy();
 	}
@@ -222,16 +223,16 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 
 	@Override
 	public void set(int[] tuple) {
-		assert tuple != null : "Input tuple must not be null"; 
-		assert tuple.length >= 2 : "Size of the input tuple is too small"; 
+		assert tuple != null : AssertMessages.notNullParameter();
+		assert tuple.length >= 2 : AssertMessages.tooSmallArrayParameter(tuple.length, 2);
 		this.x = tuple[0];
 		this.y = tuple[1];
 	}
 
 	@Override
 	public void set(double[] tuple) {
-		assert tuple != null : "Input tuple must not be null"; 
-		assert tuple.length >= 2 : "Size of the input tuple is too small"; 
+		assert tuple != null : AssertMessages.notNullParameter();
+		assert tuple.length >= 2 : AssertMessages.tooSmallArrayParameter(tuple.length, 2);
 		this.x = (int) Math.round(tuple[0]);
 		this.y = (int) Math.round(tuple[1]);
 	}
@@ -337,11 +338,11 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 	@Pure
 	@Override
 	public String toString() {
-		return "(" 
+		return "(" //$NON-NLS-1$
 				+ this.x
-				+ ", " 
+				+ ", " //$NON-NLS-1$
 				+ this.y
-				+ ")"; 
+				+ ")"; //$NON-NLS-1$
 	}
 
 }

@@ -24,9 +24,11 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
 import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Round rectangle with 2 double precision floating-point FX properties.
  *
@@ -115,19 +117,18 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("bounds: ("); //$NON-NLS-1$
 		b.append(getMinX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMinY());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getMaxX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMaxY());
-		b.append("|"); 
+		b.append(")\narcWidth: "); //$NON-NLS-1$
 		b.append(getArcWidth());
-		b.append("x"); 
+		b.append("\narcHeight: "); //$NON-NLS-1$
 		b.append(getArcHeight());
-		b.append("]"); 
 		return b.toString();
 	}
 
@@ -144,7 +145,7 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 	public DoubleProperty arcWidthProperty() {
 		if (this.arcWidth == null) {
 			this.arcWidth = new DependentSimpleDoubleProperty<ReadOnlyDoubleProperty>(
-					this, "arcWidth", widthProperty()) { 
+					this, MathFXAttributeNames.ARC_WIDTH, widthProperty()) {
 				@Override
 				protected void invalidated(ReadOnlyDoubleProperty dependency) {
 					final double value = get();
@@ -175,7 +176,7 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 	public DoubleProperty arcHeightProperty() {
 		if (this.arcHeight == null) {
 			this.arcHeight = new DependentSimpleDoubleProperty<ReadOnlyDoubleProperty>(
-					this, "arcHeight", heightProperty()) { 
+					this, MathFXAttributeNames.ARC_HEIGHT, heightProperty()) {
 				@Override
 				protected void invalidated(ReadOnlyDoubleProperty dependency) {
 					final double value = get();
@@ -195,13 +196,13 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 
 	@Override
 	public void setArcWidth(double arcWidth) {
-		assert arcWidth >= 0. : "Arc width must be positive or zero"; 
+		assert arcWidth >= 0. : AssertMessages.positiveOrZeroParameter();
 		arcWidthProperty().set(arcWidth);
 	}
 
 	@Override
 	public void setArcHeight(double arcHeight) {
-		assert arcHeight >= 0. : "Arc height must be positive or zero"; 
+		assert arcHeight >= 0. : AssertMessages.positiveOrZeroParameter();
 		arcHeightProperty().set(arcHeight);
 	}
 
@@ -213,9 +214,10 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:magicnumber")
 	public void setFromCorners(double x1, double y1, double x2, double y2, double arcWidth, double arcHeight) {
-		assert arcWidth >= 0. : "Arc width must be positive or zero"; 
-		assert arcHeight >= 0. : "Arc height must be positive or zero"; 
+		assert arcWidth >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert arcHeight >= 0. : AssertMessages.positiveOrZeroParameter(5);
 		if (x1 <= x2) {
 			minXProperty().set(x1);
 			maxXProperty().set(x2);

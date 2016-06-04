@@ -27,6 +27,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Shadow of a path that is used for computing the crossing values
  * between a shape and the shadow.
@@ -55,7 +57,7 @@ public class PathShadow2ai {
      * @param path the path that is constituting the shadow.
      */
     public PathShadow2ai(Path2ai<?, ?, ?, ?, ?, ?> path) {
-        assert path != null : "Path must be not null"; 
+        assert path != null : AssertMessages.notNullParameter();
         this.pathIterator = path.getPathIterator();
         final Rectangle2ai<?, ?, ?, ?, ?, ?> box = path.toBoundingBox();
         this.boundingMinX = box.getMinX();
@@ -69,8 +71,8 @@ public class PathShadow2ai {
      * @param bounds the bounding box enclosing the primitives of the path iterator.
      */
     public PathShadow2ai(PathIterator2ai<?> pathIterator, Rectangle2ai<?, ?, ?, ?, ?, ?> bounds) {
-        assert pathIterator != null : "Path iterator must be not null"; 
-        assert bounds != null : "Bonuding box xmust be not null"; 
+        assert pathIterator != null : AssertMessages.notNullParameter(0);
+        assert bounds != null : AssertMessages.notNullParameter(1);
         this.pathIterator = pathIterator;
         this.boundingMinX = bounds.getMinX();
         this.boundingMinY = bounds.getMinY();
@@ -85,10 +87,11 @@ public class PathShadow2ai {
      * @param maxX maximum x coordinate of the bounding box enclosing the primitives of the path iterator.
      * @param maxY maximum y coordinate of the bounding box enclosing the primitives of the path iterator.
      */
+    @SuppressWarnings("checkstyle:magicnumber")
     public PathShadow2ai(PathIterator2ai<?> pathIterator, int minX, int minY, int maxX, int maxY) {
-        assert pathIterator != null : "Path iterator must be not null"; 
-        assert minX <= maxX : "Minimum X coordinate must be lower than or equal to the maxmimum X coordinate"; 
-        assert minY <= maxY : "Minimum X coordinate must be lower than or equal to the maxmimum X coordinate"; 
+        assert pathIterator != null : AssertMessages.notNullParameter(0);
+        assert minX <= maxX : AssertMessages.lowerEqualParameters(1, minX, 3, maxX);
+        assert minY <= maxY : AssertMessages.lowerEqualParameters(2, minY, 4, maxY);
         this.pathIterator = pathIterator;
         this.boundingMinX = minX;
         this.boundingMinY = minY;
@@ -191,7 +194,7 @@ public class PathShadow2ai {
 
         element = pi.next();
         if (element.getType() != PathElementType.MOVE_TO) {
-            throw new IllegalArgumentException("missing initial moveto in path definition"); 
+            throw new IllegalArgumentException(Locale.getString(Path2ai.class, "E1")); //$NON-NLS-1$
         }
 
         Path2ai<?, ?, E, ?, ?, ?> localPath;
@@ -572,23 +575,23 @@ public class PathShadow2ai {
         @Override
         public String toString() {
             final StringBuilder b = new StringBuilder();
-            b.append("y min line:\n\tymin: "); 
+            b.append("y min line:\n\tymin: "); //$NON-NLS-1$
             b.append(this.ymin);
-            b.append("\n\tx: "); 
+            b.append("\n\tx: "); //$NON-NLS-1$
             if (this.hasX4ymin) {
                 b.append(this.x4ymin);
             } else {
-                b.append("none"); 
+                b.append("none"); //$NON-NLS-1$
             }
-            b.append("\ny max line:\n\tymax: "); 
+            b.append("\ny max line:\n\tymax: "); //$NON-NLS-1$
             b.append(this.ymax);
-            b.append("\n\tx: "); 
+            b.append("\n\tx: "); //$NON-NLS-1$
             if (this.hasX4ymax) {
                 b.append(this.x4ymax);
             } else {
-                b.append("none"); 
+                b.append("none"); //$NON-NLS-1$
             }
-            b.append("\ncrossings: "); 
+            b.append("\ncrossings: "); //$NON-NLS-1$
             b.append(this.crossings);
             return b.toString();
         }

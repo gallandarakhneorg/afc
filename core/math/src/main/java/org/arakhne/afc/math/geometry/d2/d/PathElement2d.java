@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** An element of the path with 2 double precision floating-point numbers.
  *
@@ -56,7 +57,7 @@ public abstract class PathElement2d implements PathElement2afp {
 	 * @param toy the x coordinate of the target point.
 	 */
 	PathElement2d(PathElementType type, double tox, double toy) {
-		assert type != null : "Path element type must be not null"; 
+		assert type != null : AssertMessages.notNullParameter(0);
 		this.type = type;
 		this.toX = tox;
 		this.toY = toy;
@@ -198,16 +199,16 @@ public abstract class PathElement2d implements PathElement2afp {
 
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; 
-			assert array.length >= 2 : "Array size is too small"; 
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
 			array[0] = (int) this.toX;
 			array[1] = (int) this.toY;
 		}
 
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; 
-			assert array.length >= 2 : "Array size is too small"; 
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -221,9 +222,9 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public String toString() {
-			return "MOVE\n\tto: (" 
-					+ getToX() + ", " 
-					+ getToY() + ")\n"; 
+			return "MOVE\n\tto: (" //$NON-NLS-1$
+					+ getToX() + ", " //$NON-NLS-1$
+					+ getToY() + ")\n"; //$NON-NLS-1$
 		}
 
 		@Override
@@ -314,16 +315,16 @@ public abstract class PathElement2d implements PathElement2afp {
 
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; 
-			assert array.length >= 2 : "Array size is too small"; 
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
 			array[0] = (int) this.toX;
 			array[1] = (int) this.toY;
 		}
 
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; 
-			assert array.length >= 2 : "Array size is too small"; 
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -337,11 +338,11 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public String toString() {
-			return "LINE\n\tfrom: (" 
-					+ getFromX() + ", " 
-					+ getFromY() + ")\n\tto: (" 
-					+ getToX() + ", " 
-					+ getToY() + ")\n"; 
+			return "LINE\n\tfrom: (" //$NON-NLS-1$
+					+ getFromX() + ", " //$NON-NLS-1$
+					+ getFromY() + ")\n\tto: (" //$NON-NLS-1$
+					+ getToX() + ", " //$NON-NLS-1$
+					+ getToY() + ")\n"; //$NON-NLS-1$
 		}
 
 		@Override
@@ -447,8 +448,8 @@ public abstract class PathElement2d implements PathElement2afp {
 
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; 
-			assert array.length >= 4 : "Array size is too small"; 
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 4 : AssertMessages.tooSmallArrayParameter(array.length, 4);
 			array[0] = (int) this.ctrlX;
 			array[1] = (int) this.ctrlY;
 			array[2] = (int) this.toX;
@@ -457,8 +458,8 @@ public abstract class PathElement2d implements PathElement2afp {
 
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; 
-			assert array.length >= 4 : "Array size is too small"; 
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 4 : AssertMessages.tooSmallArrayParameter(array.length, 4);
 			array[0] = this.ctrlX;
 			array[1] = this.ctrlY;
 			array[2] = this.toX;
@@ -474,13 +475,13 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public String toString() {
-			return "QUAD:\n\tfrom: (" 
-					+ getFromX() + ", " 
-					+ getFromY() + ")\n\tctrl: (" 
-					+ getCtrlX1() + ", " 
-					+ getCtrlY1() + ")\n\tto: (" 
-					+ getToX() + ", " 
-					+ getToY() + ")"; 
+			return "QUAD:\n\tfrom: (" //$NON-NLS-1$
+					+ getFromX() + ", " //$NON-NLS-1$
+					+ getFromY() + ")\n\tctrl: (" //$NON-NLS-1$
+					+ getCtrlX1() + ", " //$NON-NLS-1$
+					+ getCtrlY1() + ")\n\tto: (" //$NON-NLS-1$
+					+ getToX() + ", " //$NON-NLS-1$
+					+ getToY() + ")"; //$NON-NLS-1$
 		}
 
 		@Override
@@ -611,8 +612,8 @@ public abstract class PathElement2d implements PathElement2afp {
 
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; 
-			assert array.length >= 6 : "Array size is too small"; 
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 6 : AssertMessages.tooSmallArrayParameter(array.length, 6);
 			array[0] = (int) this.ctrlX1;
 			array[1] = (int) this.ctrlY1;
 			array[2] = (int) this.ctrlX2;
@@ -623,8 +624,8 @@ public abstract class PathElement2d implements PathElement2afp {
 
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; 
-			assert array.length >= 6 : "Array size is too small"; 
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 6 : AssertMessages.tooSmallArrayParameter(array.length, 6);
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlX2;
@@ -642,15 +643,15 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public String toString() {
-			return "CURVE:\n\tfrom: (" 
-					+ getFromX() + ", " 
-					+ getFromY() + ")\n\tctrl 1: (" 
-					+ getCtrlX1() + ", " 
-					+ getCtrlY1() + ")\n\tctrl 2: (" 
-					+ getCtrlX2() + ", " 
-					+ getCtrlY2() + ")\n\tto: (" 
-					+ this.getToX() + ", " 
-					+ this.getToY() + ")"; 
+			return "CURVE:\n\tfrom: (" //$NON-NLS-1$
+					+ getFromX() + ", " //$NON-NLS-1$
+					+ getFromY() + ")\n\tctrl 1: (" //$NON-NLS-1$
+					+ getCtrlX1() + ", " //$NON-NLS-1$
+					+ getCtrlY1() + ")\n\tctrl 2: (" //$NON-NLS-1$
+					+ getCtrlX2() + ", " //$NON-NLS-1$
+					+ getCtrlY2() + ")\n\tto: (" //$NON-NLS-1$
+					+ this.getToX() + ", " //$NON-NLS-1$
+					+ this.getToY() + ")"; //$NON-NLS-1$
 		}
 
 		@Override
@@ -761,16 +762,16 @@ public abstract class PathElement2d implements PathElement2afp {
 
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; 
-			assert array.length >= 2 : "Array size is too small"; 
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
 			array[0] = (int) this.toX;
 			array[1] = (int) this.toY;
 		}
 
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; 
-			assert array.length >= 2 : "Array size is too small"; 
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -784,11 +785,11 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public String toString() {
-			return "CLOSE:\n\tfrom: (" 
-					+ getFromX() + ", " 
-					+ getFromY() + ")\n\tto: " 
-					+ getToX() + ", " 
-					+ getToY() + ")"; 
+			return "CLOSE:\n\tfrom: (" //$NON-NLS-1$
+					+ getFromX() + ", " //$NON-NLS-1$
+					+ getFromY() + ")\n\tto: " //$NON-NLS-1$
+					+ getToX() + ", " //$NON-NLS-1$
+					+ getToY() + ")"; //$NON-NLS-1$
 		}
 
 		@Override
@@ -915,16 +916,16 @@ public abstract class PathElement2d implements PathElement2afp {
 
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; 
-			assert array.length >= 2 : "Array size is too small"; 
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
 			array[0] = (int) this.toX;
 			array[1] = (int) this.toY;
 		}
 
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; 
-			assert array.length >= 2 : "Array size is too small"; 
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -938,15 +939,15 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public String toString() {
-			return "ARC:\n\tfrom: (" 
-					+ getFromX() + ", " 
-					+ getFromY() + ")\n\tto: (" 
-					+ getToX() + ", " 
-					+ getToY() + ")\n\tx radius: " 
-					+ getRadiusX() + "\n\ty radius: " 
-					+ getRadiusY() + "\n\trotation: " 
-					+ getRotationX() + "\n\tlarge arc: " 
-					+ getLargeArcFlag() + "\n\tsweep: " 
+			return "ARC:\n\tfrom: (" //$NON-NLS-1$
+					+ getFromX() + ", " //$NON-NLS-1$
+					+ getFromY() + ")\n\tto: (" //$NON-NLS-1$
+					+ getToX() + ", " //$NON-NLS-1$
+					+ getToY() + ")\n\tx radius: " //$NON-NLS-1$
+					+ getRadiusX() + "\n\ty radius: " //$NON-NLS-1$
+					+ getRadiusY() + "\n\trotation: " //$NON-NLS-1$
+					+ getRotationX() + "\n\tlarge arc: " //$NON-NLS-1$
+					+ getLargeArcFlag() + "\n\tsweep: " //$NON-NLS-1$
 					+ getSweepFlag();
 		}
 

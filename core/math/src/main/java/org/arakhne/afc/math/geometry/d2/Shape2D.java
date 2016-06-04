@@ -26,6 +26,7 @@ import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 2D shape.
  *
@@ -185,7 +186,7 @@ public interface Shape2D<
      */
     @Pure
     default double getDistance(Point2D<?, ?> point) {
-        assert point != null : "Point must not be null"; 
+        assert point != null : AssertMessages.notNullParameter();
         return Math.sqrt(getDistanceSquared(point));
     }
 
@@ -197,7 +198,7 @@ public interface Shape2D<
     @Pure
     @Unefficient
     default double getDistance(Shape2D<?, ?, ?, ?, ?, ?> shape) {
-        assert shape != null : "Shape must not be null"; 
+        assert shape != null : AssertMessages.notNullParameter();
         return Math.sqrt(getDistanceSquared(shape));
     }
 

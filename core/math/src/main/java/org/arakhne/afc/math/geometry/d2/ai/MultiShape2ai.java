@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.d2.MultiShape2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Container for grouping of shapes.
  *
@@ -65,7 +66,7 @@ public interface MultiShape2ai<
 	@Pure
 	@Override
 	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; 
+		assert circle != null : AssertMessages.notNullParameter();
 		if (circle.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(circle)) {
@@ -79,7 +80,7 @@ public interface MultiShape2ai<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		if (rectangle.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(rectangle)) {
@@ -93,7 +94,7 @@ public interface MultiShape2ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; 
+		assert segment != null : AssertMessages.notNullParameter();
 		if (segment.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(segment)) {
@@ -121,7 +122,7 @@ public interface MultiShape2ai<
 	@Override
 	@Unefficient
 	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; 
+		assert multishape != null : AssertMessages.notNullParameter();
 		if (multishape.toBoundingBox().intersects(toBoundingBox())) {
 			for (final CT shape1 : getBackendDataList()) {
 				for (final Shape2ai<?, ?, ?, ?, ?, ?> shape2 : multishape.getBackendDataList()) {
@@ -150,7 +151,7 @@ public interface MultiShape2ai<
 	@Pure
 	@Override
 	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		if (rectangle.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.contains(rectangle)) {
@@ -184,7 +185,7 @@ public interface MultiShape2ai<
 	@Pure
 	@Override
 	default CT getFirstShapeIntersecting(ST shape) {
-		assert shape != null : "Input shape must be not null"; 
+		assert shape != null : AssertMessages.notNullParameter();
 		if (shape.intersects(toBoundingBox())) {
 			for (final CT innerShape : getBackendDataList()) {
 				if (innerShape.intersects(shape)) {
@@ -199,7 +200,7 @@ public interface MultiShape2ai<
 	@Override
 	@Pure
 	default List<CT> getShapesIntersecting(ST shape) {
-		assert shape != null : "Shape must be not null"; 
+		assert shape != null : AssertMessages.notNullParameter();
 		final List<CT> list = new ArrayList<>();
 		if (shape.intersects(toBoundingBox())) {
 			for (final CT subshape : getBackendDataList()) {
@@ -214,7 +215,7 @@ public interface MultiShape2ai<
 	@Pure
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not null"; 
+		assert box != null : AssertMessages.notNullParameter();
 		final Iterator<CT> iterator = getBackendDataList().iterator();
 		if (iterator.hasNext()) {
 			iterator.next().toBoundingBox(box);
@@ -301,8 +302,8 @@ public interface MultiShape2ai<
 		 */
 		public AbstractMultiShapePathIterator(List<? extends Shape2ai<?, ?, IE, ?, ?, ?>> list,
 				GeomFactory2ai<IE, ?, ?, ?> factory) {
-			assert list != null : "List of shapes must be not null"; 
-			assert factory != null : "Shape factory must be not null"; 
+			assert list != null : AssertMessages.notNullParameter(0);
+			assert factory != null : AssertMessages.notNullParameter(1);
 			this.list = list;
 			this.factory = factory;
 			this.shapesIterator = list.iterator();
@@ -345,7 +346,7 @@ public interface MultiShape2ai<
 
 		@Override
 		public IE next() {
-			assert this.next != null : "No such element"; 
+			assert this.next != null : AssertMessages.notNullParameter();
 			final IE elementToReturn = this.next;
 			searchNext();
 			return elementToReturn;
@@ -450,7 +451,7 @@ public interface MultiShape2ai<
 		public TransformedMultiShapePathIterator(List<? extends Shape2ai<?, ?, IE, ?, ?, ?>> list,
 				GeomFactory2ai<IE, ?, ?, ?> factory, Transform2D transform) {
 			super(list, factory);
-			assert transform != null : "Transformation must be not null"; 
+			assert transform != null : AssertMessages.notNullParameter(2);
 			this.transform = transform;
 			delayedInit(list);
 		}
@@ -490,7 +491,7 @@ public interface MultiShape2ai<
 		 *
 		 */
 		public MultiShapePointIterator(List<? extends Shape2ai<?, ?, ?, P, V, ?>> list) {
-			assert list != null : "List of elements must be not null"; 
+			assert list != null : AssertMessages.notNullParameter();
 			this.elements = list.iterator();
 			if (this.elements.hasNext()) {
 				this.currentIterator = this.elements.next().getPointIterator();
@@ -520,7 +521,7 @@ public interface MultiShape2ai<
 
 		@Override
 		public P next() {
-			assert this.next != null : "No such element"; 
+			assert this.next != null : AssertMessages.notNullParameter();
 			final P point = this.next;
 			searchNext();
 			return point;

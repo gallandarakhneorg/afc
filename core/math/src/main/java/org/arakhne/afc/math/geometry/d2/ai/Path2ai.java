@@ -37,6 +37,8 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Fonctional interface that represented a 2D path on a plane.
  *
@@ -85,8 +87,8 @@ public interface Path2ai<
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean computeDrawableElementBoundingBox(PathIterator2ai<?> iterator,
 			Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
-		assert iterator != null : "Iterator must not be null"; 
-		assert box != null : "Rectangle must not be null"; 
+		assert iterator != null : AssertMessages.notNullParameter(0);
+		assert box != null : AssertMessages.notNullParameter(1);
 		final GeomFactory2ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
 		boolean foundOneLine = false;
 		int xmin = Integer.MAX_VALUE;
@@ -229,8 +231,8 @@ public interface Path2ai<
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean computeControlPointBoundingBox(PathIterator2ai<?> iterator,
 			Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
-		assert iterator != null : "Iterator must be not null"; 
-		assert box != null : "Rectangle must be not null"; 
+		assert iterator != null : AssertMessages.notNullParameter(0);
+		assert box != null : AssertMessages.notNullParameter(1);
 		boolean foundOneControlPoint = false;
 		int xmin = Integer.MAX_VALUE;
 		int ymin = Integer.MAX_VALUE;
@@ -414,7 +416,7 @@ public interface Path2ai<
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int computeCrossingsFromSegment(int crossings, PathIterator2ai<?> pi, int x1, int y1, int x2, int y2,
 			CrossingComputationType type) {
-		assert pi != null : "Iterator must not be null"; 
+		assert pi != null : AssertMessages.notNullParameter(1);
 
 		// Copied from the AWT API
 		if (!pi.hasNext()) {
@@ -424,7 +426,7 @@ public interface Path2ai<
 
 		element = pi.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
 		int movx = element.getToX();
@@ -574,11 +576,11 @@ public interface Path2ai<
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
 	static int computeCrossingsFromCircle(int crossings, PathIterator2ai<?> pi, int cx, int cy, int radius,
 			CrossingComputationType type) {
-		assert pi != null : "Iterator must not be null"; 
-		assert radius >= 0 : "Circle radius must be positive or zero"; 
+		assert pi != null : AssertMessages.notNullParameter(1);
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(4);
 
 		// Copied from the AWT API
 		if (!pi.hasNext()) {
@@ -588,7 +590,7 @@ public interface Path2ai<
 
 		element = pi.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
 		int movx = element.getToX();
@@ -751,7 +753,7 @@ public interface Path2ai<
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
 			"checkstyle:returncount"})
 	static int computeCrossingsFromPoint(int crossings, PathIterator2ai<?> pi, int px, int py, CrossingComputationType type) {
-		assert pi != null : "Iterator must not be null"; 
+		assert pi != null : AssertMessages.notNullParameter(1);
 
 		// Copied and adapted from the AWT API
 		if (!pi.hasNext()) {
@@ -761,7 +763,7 @@ public interface Path2ai<
 
 		element = pi.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
 		int movx = element.getToX();
@@ -925,8 +927,8 @@ public interface Path2ai<
 			PathIterator2ai<?> iterator,
 			PathShadow2ai shadow,
 			CrossingComputationType type) {
-		assert iterator != null : "Iterator must not be null"; 
-		assert shadow != null : "The shadow projected on the right must not be null"; 
+		assert iterator != null : AssertMessages.notNullParameter(1);
+		assert shadow != null : AssertMessages.notNullParameter(2);
 
 		if (!iterator.hasNext()) {
 			return 0;
@@ -935,7 +937,7 @@ public interface Path2ai<
 		PathElement2ai pathElement1 = iterator.next();
 
 		if (pathElement1.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in the first path definition"); 
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
 		final GeomFactory2ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
@@ -1093,7 +1095,7 @@ public interface Path2ai<
 	 *         specified {@code PathIterator2f}; {@code false} otherwise
 	 */
 	static boolean contains(PathIterator2ai<?> pi, int x, int y) {
-		assert pi != null : "Iterator must not be null"; 
+		assert pi != null : AssertMessages.notNullParameter(0);
 		// Copied from the AWT API
 		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
 		final int cross = computeCrossingsFromPoint(0, pi, x, y, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
@@ -1116,10 +1118,11 @@ public interface Path2ai<
 	 * @return {@code true} if the specified rectangle is inside the
 	 *         specified {@code PathIterator2f}; {@code false} otherwise.
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean contains(PathIterator2ai<?> pi, int rx, int ry, int rwidth, int rheight) {
-		assert pi != null : "Iterator must not be null"; 
-		assert rwidth >= 0 : "Rectangle width must be positive or zero."; 
-		assert rheight >= 0 : "Rectangle height must be positive or zero"; 
+		assert pi != null : AssertMessages.notNullParameter(0);
+		assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(3);
+		assert rheight >= 0 : AssertMessages.positiveOrZeroParameter(4);
 		// Copied from AWT API
 		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = computeCrossingsFromRect(
@@ -1134,7 +1137,7 @@ public interface Path2ai<
 	@Pure
 	@Override
 	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
-		assert box != null : "Rectangle must not be null"; 
+		assert box != null : AssertMessages.notNullParameter();
 		return contains(getPathIterator(),
 				box.getMinX(), box.getMinY(), box.getWidth(), box.getHeight());
 	}
@@ -1173,7 +1176,7 @@ public interface Path2ai<
 			int rxmin, int rymin,
 			int rxmax, int rymax,
 			CrossingComputationType type) {
-		assert pi != null : "Iterator must not be null"; 
+		assert pi != null : AssertMessages.notNullParameter(1);
 		// Copied from AWT API
 		if (!pi.hasNext()) {
 			return 0;
@@ -1182,7 +1185,7 @@ public interface Path2ai<
 		PathElement2ai pathElement = pi.next();
 
 		if (pathElement.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
 		int curx = pathElement.getToX();
@@ -1354,10 +1357,11 @@ public interface Path2ai<
 	 *         the interior of the specified set of rectangular
 	 *         coordinates intersect each other; {@code false} otherwise.
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean intersects(PathIterator2ai<?> pi, int x, int y, int width, int height) {
-		assert pi != null : "Iterator must not be null"; 
-		assert width >= 0 : "Rectangle width must be positive or zero."; 
-		assert height >= 0 : "Rectangle height must be positive or zero"; 
+		assert pi != null : AssertMessages.notNullParameter(0);
+		assert width >= 0 : AssertMessages.positiveOrZeroParameter(3);
+		assert height >= 0 : AssertMessages.positiveOrZeroParameter(4);
 
 		if (width == 0 || height == 0) {
 			return false;
@@ -1372,7 +1376,7 @@ public interface Path2ai<
 	@Pure
 	@Override
 	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must not be null"; 
+		assert circle != null : AssertMessages.notNullParameter();
 		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = computeCrossingsFromCircle(
 				0,
@@ -1386,7 +1390,7 @@ public interface Path2ai<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		return intersects(getPathIterator(), rectangle.getMinX(), rectangle.getMinY(),
 				rectangle.getWidth(), rectangle.getHeight());
 	}
@@ -1394,7 +1398,7 @@ public interface Path2ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must not be null"; 
+		assert segment != null : AssertMessages.notNullParameter();
 		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = computeCrossingsFromSegment(
 				0,
@@ -1407,7 +1411,7 @@ public interface Path2ai<
 
 	@Override
 	default boolean intersects(PathIterator2ai<?> iterator) {
-		assert iterator != null : "Iterator must not be null"; 
+		assert iterator != null : AssertMessages.notNullParameter();
 		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = computeCrossingsFromPath(
 		        0, iterator,
@@ -1420,7 +1424,7 @@ public interface Path2ai<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; 
+		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
 
@@ -1440,7 +1444,7 @@ public interface Path2ai<
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static void getClosestPointTo(PathIterator2ai<? extends PathElement2ai> pi, int x, int y, Point2D<?, ?> result) {
-		assert pi != null : "Iterator must not be null"; 
+		assert pi != null : AssertMessages.notNullParameter(0);
 
 		int bestManhantanDist = Integer.MAX_VALUE;
 		int bestLinfinvDist = Integer.MAX_VALUE;
@@ -1532,7 +1536,7 @@ public interface Path2ai<
 
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), pt.ix(), pt.iy(), point);
 		return point;
@@ -1577,7 +1581,7 @@ public interface Path2ai<
 	 * @param result the farthest point on the shape.
 	 */
 	static void getFarthestPointTo(PathIterator2ai<? extends PathElement2ai> pi, int x, int y, Point2D<?, ?> result) {
-		assert pi != null : "Iterator must not be null"; 
+		assert pi != null : AssertMessages.notNullParameter(0);
 
 		int bestX = x;
 		int bestY = y;
@@ -1635,7 +1639,7 @@ public interface Path2ai<
 
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		getFarthestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), pt.ix(), pt.iy(), point);
 		return point;
@@ -1658,7 +1662,7 @@ public interface Path2ai<
 	 * @param iterator the iterator on the elements to add.
 	 */
 	default void add(Iterator<? extends PathElement2ai> iterator) {
-		assert iterator != null : "Iterator must not be null"; 
+		assert iterator != null : AssertMessages.notNullParameter();
 		PathElement2ai element;
 		while (iterator.hasNext()) {
 			element = iterator.next();
@@ -1693,7 +1697,7 @@ public interface Path2ai<
 	 * @param path the path to copy.
 	 */
 	default void set(Path2ai<?, ?, ?, ?, ?, ?> path) {
-		assert path != null : "Path must not be null"; 
+		assert path != null : AssertMessages.notNullParameter();
 		clear();
 		add(path.getPathIterator());
 	}
@@ -1709,7 +1713,7 @@ public interface Path2ai<
 
 	@Override
 	default void moveTo(Point2D<?, ?> position) {
-		assert position != null : "Position must not be null"; 
+		assert position != null : AssertMessages.notNullParameter();
 		moveTo(position.ix(), position.iy());
 	}
 
@@ -1725,7 +1729,7 @@ public interface Path2ai<
 
 	@Override
 	default void lineTo(Point2D<?, ?> to) {
-		assert to != null : "Position must not be null"; 
+		assert to != null : AssertMessages.notNullParameter();
 		lineTo(to.ix(), to.iy());
 	}
 
@@ -1746,8 +1750,8 @@ public interface Path2ai<
 
 	@Override
 	default void quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
-		assert ctrl != null : "Control point must not be null"; 
-		assert to != null : "Destination point must not be null"; 
+		assert ctrl != null : AssertMessages.notNullParameter(0);
+		assert to != null : AssertMessages.notNullParameter(1);
 		quadTo(ctrl.ix(), ctrl.iy(), to.ix(), to.iy());
 	}
 
@@ -1772,9 +1776,9 @@ public interface Path2ai<
 
 	@Override
 	default void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
-		assert ctrl1 != null : "First control point must not be null"; 
-		assert ctrl2 != null : "Second control point must not be null"; 
-		assert to != null : "Destination point must not be null"; 
+		assert ctrl1 != null : AssertMessages.notNullParameter(0);
+		assert ctrl2 != null : AssertMessages.notNullParameter(1);
+		assert to != null : AssertMessages.notNullParameter(2);
 		curveTo(ctrl1.ix(), ctrl1.iy(), ctrl2.ix(), ctrl2.iy(), to.ix(), to.iy());
 	}
 
@@ -1823,12 +1827,12 @@ public interface Path2ai<
 	 * @param type the specification of what additional path segments should
 	 *               be appended to lead the current path to the starting point.
 	 */
-	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber"})
 	default void arcTo(int ctrlx, int ctrly, int tox, int toy, double tfrom, double tto, ArcType type) {
 		// Copied from JavaFX Path2D
-		assert tfrom >= 0. : "tfrom must be positive or zero"; 
-		assert tto >= tfrom : "tto must be greater than or equal to tfrom"; 
-		assert tto <= 1. : "tto must be lower than 1"; 
+		assert tfrom >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert tto >= tfrom : AssertMessages.lowerEqualParameters(4, tfrom, 5, tto);
+		assert tto <= 1. : AssertMessages.lowerEqualParameter(5, tto, 1);
 		int currentx = getCurrentX();
 		int currenty = getCurrentY();
 		final int ocurrentx = currentx;
@@ -1895,8 +1899,8 @@ public interface Path2ai<
 	@Override
 	default void arcTo(Point2D<?, ?> ctrl, Point2D<?, ?> to, double tfrom, double tto,
 			org.arakhne.afc.math.geometry.d2.Path2D.ArcType type) {
-		assert ctrl != null : "Control point must be not null"; 
-		assert to != null : "Target point must be not null"; 
+		assert ctrl != null : AssertMessages.notNullParameter(0);
+		assert to != null : AssertMessages.notNullParameter(1);
 		arcTo(ctrl.ix(), ctrl.iy(), to.ix(), to.iy(), tfrom, tto, type);
 	}
 
@@ -1918,8 +1922,8 @@ public interface Path2ai<
 
 	@Override
 	default void arcTo(Point2D<?, ?> to, Vector2D<?, ?> radii, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
-		assert radii != null : "Radii vector must be not null"; 
-		assert to != null : "Target point must be not null"; 
+		assert radii != null : AssertMessages.notNullParameter(1);
+		assert to != null : AssertMessages.notNullParameter(0);
 		arcTo(to.ix(), to.iy(), radii.ix(), radii.iy(), xAxisRotation, largeArcFlag, sweepFlag);
 	}
 
@@ -1968,8 +1972,8 @@ public interface Path2ai<
 	default void arcTo(int tox, int toy, int radiusx, int radiusy, double xAxisRotation,
 			boolean largeArcFlag, boolean sweepFlag) {
 		// Copied for JavaFX
-		assert radiusx >= 0. : "X radius must be positive or zero."; 
-		assert radiusy >= 0. : "Y radius must be positive or zero."; 
+		assert radiusx >= 0. : AssertMessages.positiveOrZeroParameter(2);
+		assert radiusy >= 0. : AssertMessages.positiveOrZeroParameter(3);
 		if (radiusx == 0. || radiusy == 0.) {
 			lineTo(tox, toy);
 			return;
@@ -2074,7 +2078,7 @@ public interface Path2ai<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> pt) {
-		assert pt != null : "Point must not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final Point2D<?, ?> c = getClosestPointTo(pt);
 		return c.getDistanceSquared(pt);
 	}
@@ -2082,7 +2086,7 @@ public interface Path2ai<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
-		assert pt != null : "Point must not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final Point2D<?, ?> c = getClosestPointTo(pt);
 		return c.getDistanceL1(pt);
 	}
@@ -2090,7 +2094,7 @@ public interface Path2ai<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> pt) {
-		assert pt != null : "Point must not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final Point2D<?, ?> c = getClosestPointTo(pt);
 		return c.getDistanceLinf(pt);
 	}
@@ -2108,7 +2112,7 @@ public interface Path2ai<
 		PathElement2ai pathElement = pi.next();
 
 		if (pathElement.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
 		while (pi.hasNext()) {
@@ -2128,7 +2132,7 @@ public interface Path2ai<
 			case QUAD_TO:
 			case CURVE_TO:
 			case ARC_TO:
-				throw new IllegalStateException("Curve in path is not supported"); 
+				throw new IllegalStateException();
 			case MOVE_TO:
 			default:
 			}
@@ -2176,7 +2180,7 @@ public interface Path2ai<
 
 	@Override
 	default void setLastPoint(Point2D<?, ?> point) {
-		assert point != null : "Point must not be null"; 
+		assert point != null : AssertMessages.notNullParameter();
 		setLastPoint(point.ix(), point.iy());
 	}
 
@@ -2304,7 +2308,7 @@ public interface Path2ai<
 		 * @param path the path.
 		 */
 		public AbstractPathIterator(Path2ai<?, ?, E, ?, ?, ?> path) {
-			assert path != null : "Path must not be null"; 
+			assert path != null : AssertMessages.notNullParameter();
 			this.path = path;
 		}
 
@@ -2508,7 +2512,7 @@ public interface Path2ai<
 		 */
 		public TransformedPathIterator(Path2ai<?, ?, E, ?, ?, ?> path, Transform2D transform) {
 			super(path);
-			assert transform != null : "Transformation must not be null"; 
+			assert transform != null : AssertMessages.notNullParameter(1);
 			this.transform = transform;
 			this.p1 = new InnerComputationPoint2ai();
 			this.p2 = new InnerComputationPoint2ai();
@@ -2632,8 +2636,8 @@ public interface Path2ai<
 		 * @param factory the element factory.
 		 */
 		public PixelIterator(PathIterator2ai<?> pi, GeomFactory2ai<?, P, V, ?> factory) {
-			assert pi != null : "Iterator must not be null"; 
-			assert factory != null : "Factory must not be null"; 
+			assert pi != null : AssertMessages.notNullParameter(0);
+			assert factory != null : AssertMessages.notNullParameter(1);
 			this.pathIterator = pi;
 			this.factory = factory;
 			searchNext();
@@ -2799,10 +2803,10 @@ public interface Path2ai<
 		 */
 		public FlatteningPathIterator(Path2ai<?, ?, E, ?, ?, ?> path, PathIterator2ai<? extends E> pathIterator,
 				double flatness, int limit) {
-			assert path != null : "Path must not be null"; 
-			assert pathIterator != null : "Iterator must not be null"; 
-			assert flatness > 0f : "Flatness factor must be positive."; 
-			assert limit >= 0 : "Number of recursive subdivisions must be positive or zero."; 
+			assert path != null : AssertMessages.notNullParameter(0);
+			assert pathIterator != null : AssertMessages.notNullParameter(1);
+			assert flatness > 0f : AssertMessages.positiveOrZeroParameter(2);
+			assert limit >= 0 : AssertMessages.positiveOrZeroParameter(3);
 			this.path = path;
 			this.pathIterator = pathIterator;
 			this.squaredFlatness = flatness * flatness;
@@ -3191,7 +3195,7 @@ public interface Path2ai<
 		@Override
 		public E next() {
 			if (this.done) {
-				throw new NoSuchElementException("flattening iterator out of bounds"); 
+				throw new NoSuchElementException();
 			}
 
 			final E element;

@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d2.d;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** An ellipse with 2 double precision floating-point numbers.
  *
@@ -48,8 +49,8 @@ public class Ellipse2d extends AbstractRectangularShape2d<Ellipse2d>
 	 * @param max is the max corner of the ellipse.
 	 */
 	public Ellipse2d(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert min != null : "Minimum point must be not null"; 
-		assert max != null : "Maximum point must be not null"; 
+		assert min != null : AssertMessages.notNullParameter(0);
+		assert max != null : AssertMessages.notNullParameter(1);
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 
@@ -60,8 +61,8 @@ public class Ellipse2d extends AbstractRectangularShape2d<Ellipse2d>
 	 * @param height height of the ellipse's bounding box.
 	 */
 	public Ellipse2d(double x, double y, double width, double height) {
-		assert width >= 0. : "Width must be positive or zero"; 
-		assert height >= 0. : "Height must be positive or zero"; 
+		assert width >= 0. : AssertMessages.positiveOrZeroParameter(2);
+		assert height >= 0. : AssertMessages.positiveOrZeroParameter(3);
 		setFromCorners(x, y, x + width, y + height);
 	}
 

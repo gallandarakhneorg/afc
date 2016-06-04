@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a 2D rectangle on a plane.
  *
@@ -73,8 +74,8 @@ public interface Rectangle2afp<
 			double rx, double ry, double rmaxx, double rmaxy,
 			double px, double py,
 			Point2D<?, ?> closest) {
-		assert rmaxx >= rx : "rmaxx must be greater or equal to rx"; 
-		assert rmaxy >= ry : "rmaxy must be greater or equal to ry"; 
+		assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, rx, 2, rmaxx);
+		assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, ry, 3, rmaxy);
 		final double x;
 		if (px < rx) {
 			x = rx;
@@ -107,15 +108,15 @@ public interface Rectangle2afp<
 	 * @param closest is set with the closest point on the first rectangle.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static void computeClosestPointRectangleRectangle(
 			double rx1, double ry1, double rmaxx1, double rmaxy1,
 			double rx2, double ry2, double rmaxx2, double rmaxy2,
 			Point2D<?, ?> closest) {
-		assert rmaxx1 >= rx1 : "rmaxx1 must be greater or equal to rx1"; 
-		assert rmaxy1 >= ry1 : "rmaxy1 must be greater or equal to ry1"; 
-		assert rmaxx2 >= rx2 : "rmaxx2 must be greater or equal to rx2"; 
-		assert rmaxy2 >= ry2 : "rmaxy2 must be greater or equal to ry2"; 
+		assert rmaxx1 >= rx1 : AssertMessages.lowerEqualParameters(0, rx1, 2, rmaxx1);
+		assert rmaxy1 >= ry1 : AssertMessages.lowerEqualParameters(1, ry1, 3, rmaxy1);
+		assert rmaxx2 >= rx2 : AssertMessages.lowerEqualParameters(4, rx2, 6, rmaxx2);
+		assert rmaxy2 >= ry2 : AssertMessages.lowerEqualParameters(5, rx2, 7, rmaxx2);
 		final double px;
 		final double cx = (rx2 + rmaxx2) / 2.;
 		if (cx <= rx1) {
@@ -155,8 +156,8 @@ public interface Rectangle2afp<
 			double rx, double ry, double rmaxx, double rmaxy,
 			double sx1, double sy1, double sx2, double sy2,
 			Point2D<?, ?> closest) {
-		assert rmaxx >= rx : "rmaxx must be greater or equal to rx"; 
-		assert rmaxy >= ry : "rmaxy must be greater or equal to ry"; 
+		assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, rx, 2, rmaxx);
+		assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, ry, 3, rmaxy);
 		final int code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
 		final int code2 = MathUtil.getCohenSutherlandCode(sx2, sy2, rx, ry, rmaxx, rmaxy);
 		final Point2D<?, ?> tmp1 = new InnerComputationPoint2afp();
@@ -219,18 +220,18 @@ public interface Rectangle2afp<
 	 * @param closest is set with the closest point on the first rectangle.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static void computeClosestPointRectangleParallelogram(
 			double rx, double ry, double rmaxx, double rmaxy,
 			double centerX, double centerY, double axis1X, double axis1Y, double axis1Extent,
 			double axis2X, double axis2Y, double axis2Extent,
 			Point2D<?, ?> closest) {
-		assert rmaxx >= rx : "rmaxx must be greater or equal to rx"; 
-		assert rmaxy >= ry : "rmaxy must be greater or equal to ry"; 
-		assert Vector2D.isUnitVector(axis1X,  axis1Y) : "First axis must be unit vector"; 
-		assert axis1Extent >= 0. : "First axis extent must be positive or zero"; 
-		assert Vector2D.isUnitVector(axis2X,  axis2Y) : "Second axis must be unit vector"; 
-		assert axis2Extent >= 0. : "Second axis extent must be positive or zero"; 
+		assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, rx, 2, rmaxx);
+		assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, ry, 3, rmaxy);
+		assert Vector2D.isUnitVector(axis1X,  axis1Y) : AssertMessages.normalizedParameters(6, 7);
+		assert axis1Extent >= 0. : AssertMessages.positiveOrZeroParameter(8);
+		assert Vector2D.isUnitVector(axis2X,  axis2Y) : AssertMessages.normalizedParameters(9, 10);
+		assert axis2Extent >= 0. : AssertMessages.positiveOrZeroParameter(11);
 		final double a1x = axis1X * axis1Extent;
 		final double a1y = axis1Y * axis1Extent;
 		final double a2x = axis2X * axis2Extent;
@@ -295,16 +296,14 @@ public interface Rectangle2afp<
 	 * @return the rectricted Cohen-Sutherland zone.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
 	static int reduceCohenSutherlandZoneRectangleSegment(double rx1, double ry1, double rx2, double ry2,
 			double sx1, double sy1, double sx2, double sy2, int codePoint1, int codePoint2,
 			Point2D<?, ?> newSegmentP1, Point2D<?, ?> newSegmentP2) {
-		assert rx1 <= rx2 : "rx1 must be lower or equal to rx2"; 
-		assert ry1 <= ry2 : "ry1 must be lower or equal to ry2"; 
-		assert codePoint1 == MathUtil.getCohenSutherlandCode(sx1, sy1, rx1, ry1, rx2, ry2)
-		        : "Invalid Cohen-Sutherland code for the first point"; 
-		assert codePoint2 == MathUtil.getCohenSutherlandCode(sx2, sy2, rx1, ry1, rx2, ry2)
-		        : "Invalid Cohen-Sutherland code for the second point"; 
+		assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
+		assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 3, ry2);
+		assert codePoint1 == MathUtil.getCohenSutherlandCode(sx1, sy1, rx1, ry1, rx2, ry2) : AssertMessages.invalidValue(8);
+		assert codePoint2 == MathUtil.getCohenSutherlandCode(sx2, sy2, rx1, ry1, rx2, ry2) : AssertMessages.invalidValue(9);
 		double segmentX1 = sx1;
 		double segmentY1 = sy1;
 		double segmentX2 = sx2;
@@ -394,8 +393,8 @@ public interface Rectangle2afp<
 	@Pure
 	static double computeDistanceSquaredRectanglePoint(double rx, double ry, double rmaxx, double rmaxy,
 			double px, double py) {
-		assert rmaxx >= rx : "rmaxx must be greater or equal to rx"; 
-		assert rmaxy >= ry : "rmaxy must be greater or equal to ry"; 
+		assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, rx, 2, rmaxx);
+		assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, ry, 3, rmaxy);
 		final double dx;
 		if (px < rx) {
 			dx = rx - px;
@@ -429,12 +428,13 @@ public interface Rectangle2afp<
 	 * <code>false</code>
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean intersectsRectangleRectangle(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4) {
-		assert x1 <= x2 : "x1 must be lower or equal to x2"; 
-		assert y1 <= y2 : "y1 must be lower or equal to y2"; 
-		assert x3 <= x4 : "x3 must be lower or equal to x4"; 
-		assert y3 <= y4 : "y3 must be lower or equal to x4"; 
+		assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 2, x2);
+		assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 3, y2);
+		assert x3 <= x4 : AssertMessages.lowerEqualParameters(4, x3, 6, x4);
+		assert y3 <= y4 : AssertMessages.lowerEqualParameters(5, y3, 7, y4);
 		return x2 > x3 && x1 < x4 && y2 > y3 && y1 < y4;
 	}
 
@@ -454,8 +454,8 @@ public interface Rectangle2afp<
 	@Pure
 	static boolean intersectsRectangleLine(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4) {
-		assert x1 <= x2 : "x1 must be lower or equal to x2"; 
-		assert y1 <= y2 : "y1 must be lower or equal to y2"; 
+		assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 2, x2);
+		assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 3, y2);
 		final int a = Segment2afp.ccw(x3, y3, x4, y4, x1, y1, 0.);
 		int b = Segment2afp.ccw(x3, y3, x4, y4, x2, y1, 0.);
 		if (a != b && b != 0) {
@@ -486,8 +486,8 @@ public interface Rectangle2afp<
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	static boolean intersectsRectangleSegment(double rx1, double ry1, double rx2, double ry2,
 			double sx1, double sy1, double sx2, double sy2) {
-		assert rx1 <= rx2 : "rx1 must be lower or equal to rx2"; 
-		assert ry1 <= ry2 : "ry1 must be lower or equal to ry2"; 
+		assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
+		assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 3, ry2);
 		double segmentX1 = sx1;
 		double segmentY1 = sy1;
 		double segmentX2 = sx2;
@@ -567,14 +567,15 @@ public interface Rectangle2afp<
 	 *     otherwise <code>false</code>.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean containsRectangleRectangle(double enclosingX1, double enclosingY1,
 			double enclosingX2, double enclosingY2,
 			double innerX1, double innerY1,
 			double innerX2, double innerY2) {
-		assert enclosingX1 <= enclosingX2 : "Enclosing x1 must be lower or equal to enclosing x2"; 
-		assert enclosingY1 <= enclosingY2 : "Enclosing y1 must be lower or equal to enclosing y2"; 
-		assert innerX1 <= innerX2 : "Inner x1 must be lower or equal to inner x2"; 
-		assert innerY1 <= innerY2 : "Inner y1 must be lower or equal to inner y2"; 
+		assert enclosingX1 <= enclosingX2 : AssertMessages.lowerEqualParameters(0, enclosingX1, 2, enclosingX2);
+		assert enclosingY1 <= enclosingY2 : AssertMessages.lowerEqualParameters(1, enclosingY1, 3, enclosingY2);
+		assert innerX1 <= innerX2 : AssertMessages.lowerEqualParameters(4, innerX1, 6, innerX2);
+		assert innerY1 <= innerY2 : AssertMessages.lowerEqualParameters(5, innerY1, 7, innerY2);
 		return innerX1 >= enclosingX1
 				&& innerY1 >= enclosingY1
 				&& innerX2 <= enclosingX2
@@ -596,8 +597,8 @@ public interface Rectangle2afp<
 	static boolean containsRectanglePoint(
 			double rx1, double ry1, double rx2, double ry2,
 			double px, double py) {
-		assert rx1 <= rx2 : "rx1 must be lower or equal to rx2"; 
-		assert ry1 <= ry2 : "ry1 must be lower or equal to ry2"; 
+		assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
+		assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 3, ry2);
 		return (px >= rx1 && px <= rx2) && (py >= ry1 && py <= ry2);
 	}
 
@@ -618,7 +619,7 @@ public interface Rectangle2afp<
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Shape must be not null"; 
+		assert shape != null : AssertMessages.notNullParameter();
 		setFromCorners(shape.getMinX(), shape.getMinY(), shape.getMaxX(), shape.getMaxY());
 	}
 
@@ -628,11 +629,12 @@ public interface Rectangle2afp<
 	 * It means that the rectangle is set to the enclosing box related to the given parameters.
 	 */
 	@Override
+	@SuppressWarnings("checkstyle:magicnumber")
 	default void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent,
 			double axis2Extent) {
-		assert Vector2D.isUnitVector(axis1x, axis1y) : "Axis must be unit vector"; 
-		assert axis1Extent >= 0 : "First axis extent must be positive or zero"; 
-		assert axis2Extent >= 0 : "Second axis extent must be positive or zero"; 
+		assert Vector2D.isUnitVector(axis1x, axis1y) : AssertMessages.normalizedParameters(2, 3);
+		assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+		assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(5);
 		final double mx = Math.max(Math.abs(axis1x * axis1Extent), Math.abs(-axis1y * axis2Extent));
 		final double my = Math.max(Math.abs(axis1y * axis1Extent), Math.abs(axis1x * axis2Extent));
 		final double vx = OrientedRectangle2afp.projectVectorOnOrientedRectangleRAxis(1, 0, mx, my);
@@ -643,7 +645,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final double dx;
 		if (pt.getX() < getMinX()) {
 			dx = getMinX() - pt.getX();
@@ -665,7 +667,7 @@ public interface Rectangle2afp<
 
 	@Override
 	default double getDistanceSquared(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		final double dx;
 		if (rectangle.getMaxX() <= getMinX()) {
 			dx = getMinX() - rectangle.getMaxX();
@@ -688,7 +690,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final double dx;
 		if (pt.getX() < getMinX()) {
 			dx = getMinX() - pt.getX();
@@ -711,7 +713,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final double dx;
 		if (pt.getX() < getMinX()) {
 			dx = getMinX() - pt.getX();
@@ -742,7 +744,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		return containsRectangleRectangle(
 				getMinX(), getMinY(), getMaxX(), getMaxY(),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY());
@@ -756,7 +758,7 @@ public interface Rectangle2afp<
 	 * @param pt the point.
 	 */
 	default void add(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		add(pt.getX(), pt.getY());
 	}
 
@@ -796,7 +798,7 @@ public interface Rectangle2afp<
 	 */
 	@Pure
 	default B createUnion(RectangularShape2afp<?, ?, ?, ?, ?, ?> rect) {
-		assert rect != null : "Shape must be not null"; 
+		assert rect != null : AssertMessages.notNullParameter();
 		final B rr = getGeomFactory().newBox();
 		rr.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
 		rr.setUnion(rect);
@@ -818,7 +820,7 @@ public interface Rectangle2afp<
 	 */
 	@Pure
 	default B createIntersection(RectangularShape2afp<?, ?, ?, ?, ?, ?> rect) {
-		assert rect != null : "Shape must be not null"; 
+		assert rect != null : AssertMessages.notNullParameter();
 		final B rr = getGeomFactory().newBox();
 		final double x1 = Math.max(getMinX(), rect.getMinX());
 		final double y1 = Math.max(getMinY(), rect.getMinY());
@@ -839,7 +841,7 @@ public interface Rectangle2afp<
 	 * @see #createUnion(RectangularShape2afp)
 	 */
 	default void setUnion(RectangularShape2afp<?, ?, ?, ?, ?, ?> rect) {
-		assert rect != null : "Shape must be not null"; 
+		assert rect != null : AssertMessages.notNullParameter();
 		setFromCorners(
 				Math.min(getMinX(), rect.getMinX()),
 				Math.min(getMinY(), rect.getMinY()),
@@ -857,7 +859,7 @@ public interface Rectangle2afp<
 	 * @see #clear()
 	 */
 	default void setIntersection(RectangularShape2afp<?, ?, ?, ?, ?, ?> rect) {
-		assert rect != null : "Shape must be not null"; 
+		assert rect != null : AssertMessages.notNullParameter();
 		final double x1 = Math.max(getMinX(), rect.getMinX());
 		final double y1 = Math.max(getMinY(), rect.getMinY());
 		final double x2 = Math.min(getMaxX(), rect.getMaxX());
@@ -872,7 +874,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		return intersectsRectangleRectangle(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -883,7 +885,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; 
+		assert ellipse != null : AssertMessages.notNullParameter();
 		return Ellipse2afp.intersectsEllipseRectangle(
 				ellipse.getMinX(), ellipse.getMinY(),
 				ellipse.getWidth(), ellipse.getHeight(),
@@ -894,7 +896,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; 
+		assert circle != null : AssertMessages.notNullParameter();
 		return Circle2afp.intersectsCircleRectangle(
 				circle.getX(), circle.getY(),
 				circle.getRadius(),
@@ -905,7 +907,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; 
+		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsRectangleSegment(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -916,7 +918,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
+		assert orientedRectangle != null : AssertMessages.notNullParameter();
 		return OrientedRectangle2afp.intersectsOrientedRectangleRectangle(
 				orientedRectangle.getCenterX(), orientedRectangle.getCenterY(),
 				orientedRectangle.getFirstAxisX(), orientedRectangle.getFirstAxisY(), orientedRectangle.getFirstAxisExtent(),
@@ -927,7 +929,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert parallelogram != null : "Parallelogram must be not null"; 
+		assert parallelogram != null : AssertMessages.notNullParameter();
 		return Parallelogram2afp.intersectsParallelogramRectangle(
 				parallelogram.getCenterX(), parallelogram.getCenterY(),
 				parallelogram.getFirstAxisX(), parallelogram.getFirstAxisY(), parallelogram.getFirstAxisExtent(),
@@ -938,7 +940,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Round rectangle must be not null"; 
+		assert roundRectangle != null : AssertMessages.notNullParameter();
 		return RoundRectangle2afp.intersectsRoundRectangleRectangle(
 				roundRectangle.getMinX(), roundRectangle.getMinY(),
 				roundRectangle.getMaxX(), roundRectangle.getMaxY(),
@@ -949,7 +951,7 @@ public interface Rectangle2afp<
 
 	@Override
 	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; 
+		assert triangle != null : AssertMessages.notNullParameter();
 		return Triangle2afp.intersectsTriangleRectangle(
 				triangle.getX1(), triangle.getY1(),
 				triangle.getX2(), triangle.getY2(),
@@ -961,7 +963,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
-		assert iterator != null : "Iterator must be not null"; 
+		assert iterator != null : AssertMessages.notNullParameter();
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path2afp.computeCrossingsFromRect(
 				0,
@@ -976,7 +978,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; 
+		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
 
@@ -987,8 +989,8 @@ public interface Rectangle2afp<
 	 * @param result the displacement vector.
 	 */
 	default void avoidCollisionWith(Rectangle2afp<?, ?, ?, ?, ?, ?> reference, Vector2D<?, ?> result) {
-		assert reference != null : "Reference rectangle must be not null"; 
-		assert result != null : "Result vector must be not null"; 
+		assert reference != null : AssertMessages.notNullParameter();
+		assert result != null : AssertMessages.notNullParameter();
 		final double dx1 = reference.getMaxX() - getMinX();
 		final double dx2 = getMaxX() - reference.getMinX();
 		final double dy1 = reference.getMaxY() - getMinY();
@@ -1039,8 +1041,8 @@ public interface Rectangle2afp<
 	 */
 	default void avoidCollisionWith(Rectangle2afp<?, ?, ?, ?, ?, ?> reference,
 			Vector2D<?, ?> displacementDirection, Vector2D<?, ?> result) {
-		assert reference != null : "Reference rectangle must be not null"; 
-		assert result != null : "Result vector must be not null"; 
+		assert reference != null : AssertMessages.notNullParameter(0);
+		assert result != null : AssertMessages.notNullParameter(2);
 		if (displacementDirection == null || displacementDirection.getLengthSquared() == 0) {
 			avoidCollisionWith(reference, result);
 			return;
@@ -1084,7 +1086,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final double x;
 		int same = 0;
 		if (pt.getX() < getMinX()) {
@@ -1112,14 +1114,14 @@ public interface Rectangle2afp<
 
 	@Override
 	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; 
+		assert circle != null : AssertMessages.notNullParameter();
 		return getClosestPointTo(circle.getCenter());
 	}
 
 	@Override
 	@Unefficient
 	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : "Triangle must be not null"; 
+		assert triangle != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		Path2afp.getClosestPointTo(getPathIterator(), triangle.getPathIterator(), point);
 		return point;
@@ -1127,7 +1129,7 @@ public interface Rectangle2afp<
 
 	@Override
 	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
-		assert path != null : "Path must be not null"; 
+		assert path != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		Path2afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
 		return point;
@@ -1135,7 +1137,7 @@ public interface Rectangle2afp<
 
 	@Override
 	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointRectangleRectangle(getMinX(), getMinY(), getMaxX(), getMaxY(),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY(),
@@ -1145,7 +1147,7 @@ public interface Rectangle2afp<
 
 	@Override
 	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; 
+		assert segment != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointRectangleSegment(
 				getMinX(), getMinY(), getMaxX(), getMaxY(),
@@ -1155,7 +1157,7 @@ public interface Rectangle2afp<
 
 	@Override
 	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-		assert ellipse != null : "Ellipse must be not null"; 
+		assert ellipse != null : AssertMessages.notNullParameter();
 		final double cx = ellipse.getCenterX();
 		final double cy = ellipse.getCenterY();
 		final double sx = ellipse.getHorizontalRadius();
@@ -1175,7 +1177,7 @@ public interface Rectangle2afp<
 
 	@Override
 	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-		assert roundRectangle != null : "Round rectangle must be not null"; 
+		assert roundRectangle != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointRectangleRectangle(getMinX(), getMinY(), getMaxX(), getMaxY(),
 				roundRectangle.getMinX(), roundRectangle.getMinY(), roundRectangle.getMaxX(), roundRectangle.getMaxY(),
@@ -1185,7 +1187,7 @@ public interface Rectangle2afp<
 
 	@Override
 	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert parallelogram != null : "Parallelogram must be not null"; 
+		assert parallelogram != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointRectangleParallelogram(
 				getMinX(), getMinY(), getMaxX(), getMaxY(),
@@ -1198,7 +1200,7 @@ public interface Rectangle2afp<
 
 	@Override
 	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-		assert orientedRectangle != null : "Oriented rectangle must be not null"; 
+		assert orientedRectangle != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointRectangleParallelogram(
 				getMinX(), getMinY(), getMaxX(), getMaxY(),
@@ -1212,7 +1214,7 @@ public interface Rectangle2afp<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final double x;
 		if (pt.getX() <= getCenterX()) {
 			x = getMaxX();
@@ -1327,8 +1329,8 @@ public interface Rectangle2afp<
 	 */
 	@Override
 	default void setFirstAxis(double x, double y, double extent) {
-		assert Vector2D.isUnitVector(x, y) : "Axis must be unit vector"; 
-		assert extent >= 0. : "Extent must be positive or zero"; 
+		assert Vector2D.isUnitVector(x, y) : AssertMessages.normalizedParameters(0, 1);
+		assert extent >= 0. : AssertMessages.positiveOrZeroParameter(2);
 		set(getCenterX(), getCenterY(), x, y, extent, getSecondAxisExtent());
 	}
 
@@ -1339,8 +1341,8 @@ public interface Rectangle2afp<
 	 */
 	@Override
 	default void setSecondAxis(double x, double y, double extent) {
-		assert Vector2D.isUnitVector(x, y) : "Axis must be unit vector"; 
-		assert extent >= 0. : "Extent must be positive or zero"; 
+		assert Vector2D.isUnitVector(x, y) : AssertMessages.normalizedParameters(0, 1);
+		assert extent >= 0. : AssertMessages.positiveOrZeroParameter(2);
 		set(getCenterX(), getCenterY(), y, -x, getFirstAxisExtent(), extent);
 	}
 
@@ -1407,7 +1409,7 @@ public interface Rectangle2afp<
 		 * @param rectangle the iterated rectangle.
 		 */
 		public RectanglePathIterator(Rectangle2afp<?, ?, T, ?, ?, ?> rectangle) {
-			assert rectangle != null : "Rectangle must be not null"; 
+			assert rectangle != null : AssertMessages.notNullParameter();
 			this.rectangle = rectangle;
 			if (rectangle.isEmpty()) {
 				this.index = 5;
@@ -1535,8 +1537,8 @@ public interface Rectangle2afp<
 		 * @param transform the transformation.
 		 */
 		public TransformedRectanglePathIterator(Rectangle2afp<?, ?, T, ?, ?, ?> rectangle, Transform2D transform) {
-			assert rectangle != null : "Rectangle must be not null"; 
-			assert transform != null : "Transformation must be not null"; 
+			assert rectangle != null : AssertMessages.notNullParameter(0);
+			assert transform != null : AssertMessages.notNullParameter(1);
 			this.rectangle = rectangle;
 			this.transform = transform;
 			if (rectangle.isEmpty()) {

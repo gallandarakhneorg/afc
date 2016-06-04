@@ -59,8 +59,8 @@ public class CauchyStochasticLaw extends StochasticLaw {
 	 * @throws OutsideDomainException when gamma is outside its domain
 	 */
 	public CauchyStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
-		this.x0 = paramFloat("x0", parameters); 
-		this.gamma = paramFloat("gamma", parameters); 
+		this.x0 = paramFloat("x0", parameters); //$NON-NLS-1$
+		this.gamma = paramFloat("gamma", parameters); //$NON-NLS-1$
 		if (this.gamma <= 0) {
 			throw new OutsideDomainException(this.gamma);
 		}
@@ -96,9 +96,9 @@ public class CauchyStochasticLaw extends StochasticLaw {
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("CAUCHY(x0="); 
+		b.append("CAUCHY(x0="); //$NON-NLS-1$
 		b.append(this.x0);
-		b.append(", gamma="); 
+		b.append(", gamma="); //$NON-NLS-1$
 		b.append(this.gamma);
 		b.append(')');
 		return b.toString();

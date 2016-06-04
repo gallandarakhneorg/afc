@@ -27,6 +27,7 @@ import javafx.beans.property.ReadOnlyDoubleWrapper;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.GeomFactory;
+import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
@@ -153,7 +154,7 @@ public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector
 	 */
 	public DoubleProperty lengthProperty() {
 		if (this.lengthProperty == null) {
-			this.lengthProperty = new ReadOnlyDoubleWrapper(this, "length"); 
+			this.lengthProperty = new ReadOnlyDoubleWrapper(this, MathFXAttributeNames.LENGTH);
 			this.lengthProperty.bind(Bindings.createDoubleBinding(() -> {
 				return Math.sqrt(lengthSquaredProperty().doubleValue());
 			}, lengthSquaredProperty()));
@@ -172,7 +173,7 @@ public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector
 	 */
 	public DoubleProperty lengthSquaredProperty() {
 		if (this.lengthSquareProperty == null) {
-			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, "lengthSquared"); 
+			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, MathFXAttributeNames.LENGTH_SQUARED);
 			this.lengthSquareProperty.bind(Bindings.createDoubleBinding(() -> {
 				return Vector2ifx.this.x.doubleValue() * Vector2ifx.this.x.doubleValue()
 						+ Vector2ifx.this.y.doubleValue() * Vector2ifx.this.y.doubleValue();

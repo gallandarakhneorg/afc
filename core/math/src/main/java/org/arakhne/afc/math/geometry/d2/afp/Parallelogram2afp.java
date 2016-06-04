@@ -34,6 +34,7 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.matrix.Matrix2d;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a 2D parallelogram on a plane.
  *
@@ -58,42 +59,6 @@ public interface Parallelogram2afp<
         V extends Vector2D<? super V, ? super P>,
         B extends Rectangle2afp<?, ?, IE, P, V, B>>
         extends Shape2afp<ST, IT, IE, P, V, B> {
-    /**
-     * Literal constant.
-     */
-    String AXIS_1_EXTENT_POSITIVE_ZERO = "Extent of axis 1 must be positive or zero"; 
-    /**
-     * Literal constant.
-     */
-    String AXIS_2_EXTENT_POSITIVE_ZERO = "Extent of axis 2 must be positive or zero"; 
-    /**
-     * Literal constant.
-     */
-    String AXIS_1_NOT_UNIT_VECTOR =  "Axis 1 is not a unit vector"; 
-    /**
-     * Literal constant.
-     */
-    String AXIS_1_NOT_NULL =  "Axis 1 must be not null"; 
-    /**
-     * Literal constant.
-     */
-    String RECTANGLE_HEIGHT = "Height of the rectangle must be positive or zero"; 
-    /**
-     * Literal constant.
-     */
-    String AXIS_2_NOT_UNIT_VECTOR =  "Axis 2 is not a unit vector"; 
-    /**
-     * Literal constant.
-     */
-    String AXIS_2_NOT_NULL =  "Axis 2 must be not null"; 
-    /**
-     * Literal constant.
-     */
-    String RECTANGLE_WIDTH = "Width of the rectangle must be positive or zero"; 
-    /**
-     * Literal constant.
-     */
-    String NO_POINT_COLLECTION = "Collection of points must be not null"; 
 
     /**
      * Compute the axes of an oriented bounding rectangle that is enclosing the set of points.
@@ -105,8 +70,8 @@ public interface Parallelogram2afp<
      */
     static void computeOrthogonalAxes(Iterable<? extends Point2D<?, ?>> points,
             Vector2D<?, ?> raxis, Vector2D<?, ?> saxis) {
-        assert points != null : NO_POINT_COLLECTION;
-        assert raxis != null || saxis != null : "One axis vector must be not null"; 
+        assert points != null : AssertMessages.notNullParameter(0);
+        assert raxis != null || saxis != null : AssertMessages.oneNotNullParameter(1, 2);
         // Determining the covariance matrix of the points
         // and set the center of the box
         final Matrix2d cov = new Matrix2d();
@@ -140,8 +105,8 @@ public interface Parallelogram2afp<
      */
     @Pure
     static double projectVectorOnParallelogramRAxis(double rx, double ry, double sx, double sy, double x,  double y) {
-        assert Vector2D.isUnitVector(rx, ry) : AXIS_1_NOT_UNIT_VECTOR;
-        assert Vector2D.isUnitVector(sx, sy) : AXIS_2_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(rx, ry) : AssertMessages.normalizedParameters(0, 1);
+        assert Vector2D.isUnitVector(sx, sy) : AssertMessages.normalizedParameters(2, 3);
         final double det = Vector2D.perpProduct(rx, ry, sx, sy);
         if (det == 0.) {
             return Double.NaN;
@@ -166,8 +131,8 @@ public interface Parallelogram2afp<
      */
     @Pure
     static double projectVectorOnParallelogramSAxis(double rx, double ry, double sx, double sy, double x,  double y) {
-        assert Vector2D.isUnitVector(rx, ry) : AXIS_1_NOT_UNIT_VECTOR;
-        assert Vector2D.isUnitVector(sx, sy) : AXIS_2_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(rx, ry) : AssertMessages.normalizedParameters(0, 1);
+        assert Vector2D.isUnitVector(sx, sy) : AssertMessages.normalizedParameters(2, 3);
         final double det = Vector2D.perpProduct(sx, sy, rx, ry);
         if (det == 0.) {
             return Double.NaN;
@@ -190,17 +155,18 @@ public interface Parallelogram2afp<
      * @see "MGPCG pages 222-223 (oriented bounding box)"
      * @see OrientedRectangle2afp#computeCenterExtents(Iterable, Vector2D, Point2D, Tuple2D)
      */
+    @SuppressWarnings("checkstyle:magicnumber")
     static void computeCenterExtents(
             Iterable<? extends Point2D<?, ?>> points,
                     Vector2D<?, ?> raxis, Vector2D<?, ?> saxis,
                     Point2D<?, ?> center, Tuple2D<?> extents) {
-        assert points != null : NO_POINT_COLLECTION;
-        assert raxis != null : AXIS_1_NOT_NULL;
-        assert raxis.isUnitVector() : AXIS_1_NOT_UNIT_VECTOR;
-        assert saxis != null : AXIS_2_NOT_NULL;
-        assert saxis.isUnitVector() : AXIS_2_NOT_UNIT_VECTOR;
-        assert center != null : "Center point must be not null"; 
-        assert extents != null : "Extent tuple must be not null"; 
+        assert points != null : AssertMessages.notNullParameter(0);
+        assert raxis != null : AssertMessages.notNullParameter(1);
+        assert raxis.isUnitVector() : AssertMessages.normalizedParameter(1);
+        assert saxis != null : AssertMessages.notNullParameter(2);
+        assert saxis.isUnitVector() : AssertMessages.normalizedParameter(2);
+        assert center != null : AssertMessages.notNullParameter(3);
+        assert extents != null : AssertMessages.notNullParameter(4);
 
         double minR = Double.POSITIVE_INFINITY;
         double maxR = Double.NEGATIVE_INFINITY;
@@ -274,7 +240,7 @@ public interface Parallelogram2afp<
      * @param closest the closest point.
      */
     @Unefficient
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void computeClosestPoint(
             double px, double py,
             double centerX, double centerY,
@@ -283,11 +249,11 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             Point2D<?, ?> closest) {
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-        assert axis1Extent >= 0. : AXIS_1_EXTENT_POSITIVE_ZERO;
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
-        assert axis2Extent >= 0. : AXIS_2_NOT_UNIT_VECTOR;
-        assert closest != null : "Closest point must benot null"; 
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(4, 5);
+        assert axis1Extent >= 0. : AssertMessages.positiveOrZeroParameter(6);
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(7, 8);
+        assert axis2Extent >= 0. : AssertMessages.positiveOrZeroParameter(9);
+        assert closest != null : AssertMessages.notNullParameter(10);
 
         // Computation is done according to the parallelogram center
         double dx = px - centerX;
@@ -419,7 +385,7 @@ public interface Parallelogram2afp<
      * @param farthest the farthest point.
      */
     @Unefficient
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void computeFarthestPoint(
             double px, double py,
             double centerX, double centerY,
@@ -428,11 +394,11 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             Point2D<?, ?> farthest) {
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-        assert axis1Extent >= 0. : AXIS_1_EXTENT_POSITIVE_ZERO;
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
-        assert axis2Extent >= 0. : AXIS_2_EXTENT_POSITIVE_ZERO;
-        assert farthest != null : "Farthest point must be not null"; 
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(4, 5);
+        assert axis1Extent >= 0. : AssertMessages.positiveOrZeroParameter(6);
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(7, 8);
+        assert axis2Extent >= 0. : AssertMessages.positiveOrZeroParameter(9);
+        assert farthest != null : AssertMessages.notNullParameter(10);
 
         // Computation is done according to the parallelogram center
         final double dx = px - centerX;
@@ -509,7 +475,7 @@ public interface Parallelogram2afp<
      *     otherwise <code>false</code>.
      */
     @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean containsParallelogramPoint(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -517,10 +483,10 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             double px, double py) {
-        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
+        assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+        assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(7);
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
 
         final double x = px - centerX;
         final double y = py - centerY;
@@ -566,7 +532,8 @@ public interface Parallelogram2afp<
     @Pure
     @Unefficient
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:returncount",
-        "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+        "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
+        "checkstyle:magicnumber"})
     static boolean containsParallelogramRectangle(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -575,12 +542,12 @@ public interface Parallelogram2afp<
             double axis2Extent,
             double rx, double ry,
             double rwidth, double rheight) {
-        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
-        assert rwidth >= 0 : RECTANGLE_WIDTH;
-        assert rheight >= 0 : RECTANGLE_HEIGHT;
+        assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+        assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(7);
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
+        assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(10);
+        assert rheight >= 0 : AssertMessages.positiveOrZeroParameter(11);
 
         final double basex = rx - centerX;
         final double basey = ry - centerY;
@@ -650,7 +617,7 @@ public interface Parallelogram2afp<
      * @return <code>true</code> if intersecting, otherwise <code>false</code>
      */
     @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsParallelogramSegment(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -658,10 +625,10 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             double s1x, double s1y, double s2x, double s2y) {
-        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
+        assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+        assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(7);
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
 
         // Changing Segment coordinate basis.
         final double p1x = s1x - centerX;
@@ -706,7 +673,7 @@ public interface Parallelogram2afp<
      * @return <code>true</code> if intersecting, otherwise <code>false</code>
      */
     @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsParallelogramTriangle(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -714,10 +681,10 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             double tx1, double ty1, double tx2, double ty2, double tx3, double ty3) {
-        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
+        assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+        assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(7);
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
 
         // Changing Triangle coordinate basis.
         final double p1x = tx1 - centerX;
@@ -763,7 +730,7 @@ public interface Parallelogram2afp<
      * @return <code>true</code> if intersecting, otherwise <code>false</code>
      */
     @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsParallelogramCircle(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -771,11 +738,11 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             double circleX, double circleY, double circleRadius) {
-        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
-        assert circleRadius >= 0 : "Circle radius must be positive or zero"; 
+        assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+        assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(7);
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
+        assert circleRadius >= 0 : AssertMessages.positiveOrZeroParameter(10);
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
         computeClosestPoint(
                 circleX, circleY,
@@ -818,7 +785,7 @@ public interface Parallelogram2afp<
      */
     @Pure
     @Unefficient
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsParallelogramEllipse(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -826,12 +793,12 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             double ex, double ey, double ewidth, double eheight) {
-        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
-        assert ewidth >= 0 : RECTANGLE_WIDTH;
-        assert eheight >= 0 : RECTANGLE_HEIGHT;
+        assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+        assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(7);
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
+        assert ewidth >= 0 : AssertMessages.positiveOrZeroParameter(10);
+        assert eheight >= 0 : AssertMessages.positiveOrZeroParameter(11);
 
         if (ewidth <= 0 || eheight <= 0) {
             return false;
@@ -897,7 +864,7 @@ public interface Parallelogram2afp<
      */
     @Pure
     @Unefficient
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsParallelogramRectangle(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -906,12 +873,12 @@ public interface Parallelogram2afp<
             double axis2Extent,
             double rx, double ry,
             double rwidth, double rheight) {
-        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
-        assert rwidth >= 0 : RECTANGLE_WIDTH;
-        assert rheight >= 0 : RECTANGLE_HEIGHT;
+        assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+        assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(7);
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
+        assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(10);
+        assert rheight >= 0 : AssertMessages.positiveOrZeroParameter(11);
         final double rx2 = rx + rwidth;
         final double ry2 = ry + rheight;
         // Test border intersections
@@ -994,7 +961,7 @@ public interface Parallelogram2afp<
      */
     @Pure
     @Unefficient
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsParallelogramParallelogram(
             double centerX1, double centerY1,
             double axis1X1, double axis1Y1,
@@ -1006,14 +973,14 @@ public interface Parallelogram2afp<
             double axis1Extent2,
             double axis2X2, double axis2Y2,
             double axis2Extent2) {
-        assert axis1Extent1 >= 0 : "Extent of the first paralelogram axis 1 must be positive or zero"; 
-        assert axis2Extent1 >= 0 : "Extent of the first paralelogram axis 2 must be positive or zero"; 
-        assert Vector2D.isUnitVector(axis1X1, axis1Y1) : "First paralelogram axis 1 is not a unit vector"; 
-        assert Vector2D.isUnitVector(axis2X1, axis2Y1) : "First paralelogram axis 2 is not a unit vector"; 
-        assert axis1Extent2 >= 0 : "Extent of the second paralelogram axis 1 must be positive or zero"; 
-        assert axis2Extent2 >= 0 : "Extent of the second paralelogram axis 2 must be positive or zero"; 
-        assert Vector2D.isUnitVector(axis1X2, axis1Y2) : "Second paralelogram axis 1 is not a unit vector"; 
-        assert Vector2D.isUnitVector(axis2X2, axis2Y2) : "Second paralelogram axis 2 is not a unit vector"; 
+        assert axis1Extent1 >= 0 : AssertMessages.positiveOrZeroParameter(4);
+        assert axis2Extent1 >= 0 : AssertMessages.positiveOrZeroParameter(7);
+        assert Vector2D.isUnitVector(axis1X1, axis1Y1) : AssertMessages.normalizedParameters(2, 3);
+        assert Vector2D.isUnitVector(axis2X1, axis2Y1) : AssertMessages.normalizedParameters(5, 6);
+        assert axis1Extent2 >= 0 : AssertMessages.positiveOrZeroParameter(12);
+        assert axis2Extent2 >= 0 : AssertMessages.positiveOrZeroParameter(15);
+        assert Vector2D.isUnitVector(axis1X2, axis1Y2) : AssertMessages.normalizedParameters(10, 11);
+        assert Vector2D.isUnitVector(axis2X2, axis2Y2) : AssertMessages.normalizedParameters(13, 14);
 
         // Project the second parallelogram into the local axes of the first parallelogram
         final double x = centerX2 - centerX1;
@@ -1073,7 +1040,7 @@ public interface Parallelogram2afp<
      */
     @Pure
     @Unefficient
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity"})
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber"})
     static boolean intersectsParallelogramRoundRectangle(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -1083,14 +1050,14 @@ public interface Parallelogram2afp<
             double rx, double ry,
             double rwidth, double rheight,
             double rArcWidth, double rArcHeight) {
-        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
-        assert rwidth >= 0 : RECTANGLE_WIDTH;
-        assert rheight >= 0 : RECTANGLE_HEIGHT;
-        assert rArcWidth >= 0 : "Arc width of the rectangle must be positive or zero"; 
-        assert rArcHeight >= 0 : "Arc height of the rectangle must be positive or zero"; 
+        assert axis1Extent >= 0 : AssertMessages.positiveOrZeroParameter(4);
+        assert axis2Extent >= 0 : AssertMessages.positiveOrZeroParameter(7);
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
+        assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(10);
+        assert rheight >= 0 : AssertMessages.positiveOrZeroParameter(11);
+        assert rArcWidth >= 0 : AssertMessages.positiveOrZeroParameter(12);
+        assert rArcHeight >= 0 : AssertMessages.positiveOrZeroParameter(13);
 
         final double rx2 = rx + rwidth;
         final double ry2 = ry + rheight;
@@ -1184,16 +1151,16 @@ public interface Parallelogram2afp<
      *         coordinates intersect each other; <code>false</code> otherwise.
      */
     @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static <T extends PathElement2afp> boolean intersectsParallelogramPathIterator(
             double centerX, double centerY, double axis1X, double axis1Y, double extent1,
             double axis2X, double axis2Y, double extent2,
             PathIterator2afp<T> pathIterator) {
-        assert pathIterator != null : "Iterator must be not null"; 
-        assert extent1 >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
-        assert extent2 >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
+        assert pathIterator != null : AssertMessages.notNullParameter(8);
+        assert extent1 >= 0 : AssertMessages.positiveOrZeroParameter(4);
+        assert extent2 >= 0 : AssertMessages.positiveOrZeroParameter(7);
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AssertMessages.normalizedParameters(2, 3);
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
         final int mask = pathIterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
         final ProjectionToParallelogramLocalCoordinateSystemPathIterator<T> localIterator =
                 new ProjectionToParallelogramLocalCoordinateSystemPathIterator<>(
@@ -1262,7 +1229,7 @@ public interface Parallelogram2afp<
      * @param center the center point.
      */
     default void setCenter(Point2D<?, ?> center) {
-        assert center != null : "Center point must be not null"; 
+        assert center != null : AssertMessages.notNullParameter();
         setCenter(center.getX(), center.getY());
     }
 
@@ -1352,7 +1319,7 @@ public interface Parallelogram2afp<
      * @param axis - the new values for the first axis.
      */
     default void setFirstAxis(Vector2D<?, ?> axis) {
-        assert axis != null : "Axis must be not null"; 
+        assert axis != null : AssertMessages.notNullParameter();
         setFirstAxis(axis.getX(), axis.getY(), getFirstAxisExtent());
     }
 
@@ -1363,7 +1330,7 @@ public interface Parallelogram2afp<
      * @param extent - the extent of the axis.
      */
     default void setFirstAxis(Vector2D<?, ?> axis, double extent) {
-        assert axis != null : "Axis must be not null"; 
+        assert axis != null : AssertMessages.notNullParameter();
         setFirstAxis(axis.getX(), axis.getY(), extent);
     }
 
@@ -1392,7 +1359,7 @@ public interface Parallelogram2afp<
      * @param axis - the new values for the first axis.
      */
     default void setSecondAxis(Vector2D<?, ?> axis) {
-        assert axis != null : "Axis must be not null"; 
+        assert axis != null : AssertMessages.notNullParameter();
         setSecondAxis(axis.getX(), axis.getY(), getSecondAxisExtent());
     }
 
@@ -1403,7 +1370,7 @@ public interface Parallelogram2afp<
      * @param extent - the extent of the axis.
      */
     default void setSecondAxis(Vector2D<?, ?> axis, double extent) {
-        assert axis != null : "Axis must be not null"; 
+        assert axis != null : AssertMessages.notNullParameter();
         setSecondAxis(axis.getX(), axis.getY(), extent);
     }
 
@@ -1440,7 +1407,7 @@ public interface Parallelogram2afp<
 
     @Override
     default void set(IT parallelogram) {
-        assert parallelogram != null : "Parallelogram must be not null"; 
+        assert parallelogram != null : AssertMessages.notNullParameter();
         set(parallelogram.getCenterX(), parallelogram.getCenterY(),
                 parallelogram.getFirstAxisX(), parallelogram.getFirstAxisY(), parallelogram.getFirstAxisExtent(),
                 parallelogram.getSecondAxisX(), parallelogram.getSecondAxisY(), parallelogram.getSecondAxisExtent());
@@ -1455,9 +1422,9 @@ public interface Parallelogram2afp<
      * @param axis2Extent is the extent of the second axis.
      */
     default void set(Point2D<?, ?> center, Vector2D<?, ?> axis1, double axis1Extent, Vector2D<?, ?> axis2, double axis2Extent) {
-        assert center != null : "Center point must be not null"; 
-        assert axis1 != null : "First axis point must be not null"; 
-        assert axis2 != null : "Second axis point must be not null"; 
+        assert center != null : AssertMessages.notNullParameter(0);
+        assert axis1 != null : AssertMessages.notNullParameter(1);
+        assert axis2 != null : AssertMessages.notNullParameter(2);
         set(center.getX(), center.getY(), axis1.getX(), axis1.getY(), axis1Extent,
                 axis2.getX(), axis2.getY(), axis2Extent);
     }
@@ -1484,7 +1451,7 @@ public interface Parallelogram2afp<
      * @param pointCloud - the cloud of points.
      */
     default void setFromPointCloud(Iterable<? extends Point2D<?, ?>> pointCloud) {
-        assert pointCloud != null : "The iterable on points must be not null"; 
+        assert pointCloud != null : AssertMessages.notNullParameter();
         final Vector2D<?, ?> r = new InnerComputationVector2afp();
         final Vector2D<?, ?> s = new InnerComputationVector2afp();
         computeOrthogonalAxes(pointCloud, r, s);
@@ -1501,14 +1468,14 @@ public interface Parallelogram2afp<
      * @param pointCloud - the cloud of points.
      */
     default void setFromPointCloud(Point2D<?, ?>... pointCloud) {
-        assert pointCloud != null : "The array of points must be not null"; 
+        assert pointCloud != null : AssertMessages.notNullParameter();
         setFromPointCloud(Arrays.asList(pointCloud));
     }
 
     @Pure
     @Override
     default double getDistanceSquared(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; 
+        assert pt != null : AssertMessages.notNullParameter();
         // Only for internal usage.
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
         computeClosestPoint(
@@ -1523,7 +1490,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default double getDistanceL1(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; 
+        assert pt != null : AssertMessages.notNullParameter();
         // Only for internal usage.
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
         computeClosestPoint(
@@ -1538,7 +1505,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default double getDistanceLinf(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; 
+        assert pt != null : AssertMessages.notNullParameter();
         // Only for internal usage.
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
         computeClosestPoint(
@@ -1583,7 +1550,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-        assert rectangle != null : "Rectangle must be not null"; 
+        assert rectangle != null : AssertMessages.notNullParameter();
         return containsParallelogramRectangle(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1595,7 +1562,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-        assert circle != null : "Circle must be not null"; 
+        assert circle != null : AssertMessages.notNullParameter();
         return intersectsParallelogramCircle(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1606,7 +1573,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-        assert ellipse != null : "Ellipse must be not null"; 
+        assert ellipse != null : AssertMessages.notNullParameter();
         return intersectsParallelogramEllipse(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1619,7 +1586,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-        assert orientedRectangle != null : "Oriented rectangle must be not null"; 
+        assert orientedRectangle != null : AssertMessages.notNullParameter();
         return intersectsParallelogramParallelogram(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1632,7 +1599,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-        assert parallelogram != null : "Parallelogram must be not null"; 
+        assert parallelogram != null : AssertMessages.notNullParameter();
         return intersectsParallelogramParallelogram(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1645,7 +1612,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-        assert rectangle != null : "Rectangle must be not null"; 
+        assert rectangle != null : AssertMessages.notNullParameter();
         return intersectsParallelogramRectangle(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1657,14 +1624,14 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-        assert roundRectangle != null : "Round rectangle must be not null"; 
+        assert roundRectangle != null : AssertMessages.notNullParameter();
         return roundRectangle.intersects(this);
     }
 
     @Pure
     @Override
     default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-        assert segment != null : "Segment must be not null"; 
+        assert segment != null : AssertMessages.notNullParameter();
         return intersectsParallelogramSegment(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1675,7 +1642,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-        assert triangle != null : "Triangle must be not null"; 
+        assert triangle != null : AssertMessages.notNullParameter();
         return intersectsParallelogramTriangle(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1686,14 +1653,14 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-        assert multishape != null : "MultiShape must be not null"; 
+        assert multishape != null : AssertMessages.notNullParameter();
         return multishape.intersects(this);
     }
 
     @Pure
     @Override
     default boolean intersects(PathIterator2afp<?> iterator) {
-        assert iterator != null : "Path iterator must be not null"; 
+        assert iterator != null : AssertMessages.notNullParameter();
         return intersectsParallelogramPathIterator(
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1713,7 +1680,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default void toBoundingBox(B box) {
-        assert box != null : "Rectangle must be not null"; 
+        assert box != null : AssertMessages.notNullParameter();
         final Point2D<?, ?> minCorner;
         final Point2D<?, ?> maxCorner;
 
@@ -1748,7 +1715,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; 
+        assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         computeClosestPoint(
                 pt.getX(), pt.getY(),
@@ -1761,14 +1728,14 @@ public interface Parallelogram2afp<
 
     @Override
     default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-        assert circle != null : "Circle must be not null"; 
+        assert circle != null : AssertMessages.notNullParameter();
         return getClosestPointTo(circle.getCenter());
     }
 
     @Override
     @Unefficient
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-        assert ellipse != null : "Ellipse must be not null"; 
+        assert ellipse != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), ellipse.getPathIterator(), point);
         return point;
@@ -1777,7 +1744,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-        assert rectangle != null : "Rectangle must be not null"; 
+        assert rectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), rectangle.getPathIterator(), point);
         return point;
@@ -1786,7 +1753,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-        assert segment != null : "Segment must be not null"; 
+        assert segment != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), segment.getPathIterator(), point);
         return point;
@@ -1795,7 +1762,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-        assert triangle != null : "Triangle must be not null"; 
+        assert triangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), triangle.getPathIterator(), point);
         return point;
@@ -1804,7 +1771,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-        assert orientedRectangle != null : "Oriented rectangle must be not null"; 
+        assert orientedRectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), orientedRectangle.getPathIterator(), point);
         return point;
@@ -1813,7 +1780,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-        assert parallelogram != null : "Parallelogram must be not null"; 
+        assert parallelogram != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), parallelogram.getPathIterator(), point);
         return point;
@@ -1822,7 +1789,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-        assert roundRectangle != null : "Round rectangle must be not null"; 
+        assert roundRectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), roundRectangle.getPathIterator(), point);
         return point;
@@ -1831,7 +1798,7 @@ public interface Parallelogram2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
-        assert path != null : "Path must be not null"; 
+        assert path != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
         return point;
@@ -1840,7 +1807,7 @@ public interface Parallelogram2afp<
     @Pure
     @Override
     default P getFarthestPointTo(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; 
+        assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         computeFarthestPoint(
                 pt.getX(), pt.getY(),
@@ -2055,7 +2022,7 @@ public interface Parallelogram2afp<
         public TransformedParallelogramPathIterator(Parallelogram2afp<?, ?, T, ?, ?, ?> parallelogram,
                 Transform2D transform) {
             super(parallelogram);
-            assert transform != null : "Transformation must be not null"; 
+            assert transform != null : AssertMessages.notNullParameter(1);
             this.transform = transform;
             if (parallelogram.isEmpty()) {
                 this.index = ELEMENT_NUMBER;

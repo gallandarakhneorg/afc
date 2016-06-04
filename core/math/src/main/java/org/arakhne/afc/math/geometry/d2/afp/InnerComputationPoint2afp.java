@@ -61,7 +61,7 @@ public class InnerComputationPoint2afp implements Point2D<InnerComputationPoint2
 
 	@Override
 	public String toString() {
-		return "[" + this.x + "; " + this.y + "]";   
+		return "(" + this.x + ", " + this.y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	@Override

@@ -25,6 +25,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.SingularMatrixException;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 
 /** A 2D transformation.
@@ -144,7 +146,7 @@ public class Transform2D extends Matrix3d {
 	 * @see #makeTranslationMatrix(double, double)
 	 */
 	public void setTranslation(Tuple2D<?> translation) {
-		assert translation != null : "Translation must not be null"; 
+		assert translation != null : AssertMessages.notNullParameter();
 		this.m02 = translation.getX();
 		this.m12 = translation.getY();
 	}
@@ -178,7 +180,7 @@ public class Transform2D extends Matrix3d {
 	 * @param translation the translation.
 	 */
 	public void translate(Vector2D<?, ?> translation) {
-		assert translation != null : "Translation must not be null"; 
+		assert translation != null : AssertMessages.notNullParameter();
 		translate(translation.getX(), translation.getY());
 	}
 
@@ -206,7 +208,7 @@ public class Transform2D extends Matrix3d {
 	 */
 	@Pure
 	public void getTranslationVector(Tuple2D<?> translation) {
-		assert translation != null : "Output translation vector must not be null"; 
+		assert translation != null : AssertMessages.notNullParameter();
 		translation.set(this.m02, this.m12);
 	}
 
@@ -382,7 +384,7 @@ public class Transform2D extends Matrix3d {
 	 * @param tuple the scaling factors.
 	 */
 	public void scale(Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		scale(tuple.getX(), tuple.getY());
 	}
 
@@ -456,7 +458,7 @@ public class Transform2D extends Matrix3d {
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	public void getScaleVector(Tuple2D<?> scale) {
-		assert scale != null : "The output scaling vector must not be null"; 
+		assert scale != null : AssertMessages.notNullParameter();
 		final double[] tmpScale = new double[3];
 		final double[] tmpRot = new double[9];
 		getScaleRotate2x2(tmpScale, tmpRot);
@@ -500,7 +502,7 @@ public class Transform2D extends Matrix3d {
 	 * @see #makeScaleMatrix(double, double)
 	 */
 	public void setScale(Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		setScale(tuple.getX(), tuple.getY());
 	}
 
@@ -541,7 +543,7 @@ public class Transform2D extends Matrix3d {
 	 * @param shear the shear factors.
 	 */
 	public void shear(Tuple2D<?> shear) {
-		assert shear != null : "Shear must be not null"; 
+		assert shear != null : AssertMessages.notNullParameter();
 		shear(shear.getX(), shear.getY());
 	}
 
@@ -656,7 +658,7 @@ public class Transform2D extends Matrix3d {
 	 *            the tuple to be multiplied by this matrix and then replaced
 	 */
 	public void transform(Tuple2D<?> tuple) {
-		assert tuple != null : "Tuple to transform must not be null"; 
+		assert tuple != null : AssertMessages.notNullParameter();
 		final double x = this.m00 * tuple.getX() + this.m01 * tuple.getY() + this.m02;
 		final double y = this.m10 * tuple.getX() + this.m11 * tuple.getY() + this.m12;
 		tuple.set(x, y);
@@ -679,8 +681,8 @@ public class Transform2D extends Matrix3d {
 	 *            the tuple into which the product is placed
 	 */
 	public void transform(Tuple2D<?> tuple, Tuple2D<?> result) {
-		assert tuple != null : "Tuple to transform must not be null"; 
-		assert result != null : "Output tuple must not be null"; 
+		assert tuple != null : AssertMessages.notNullParameter(0);
+		assert result != null : AssertMessages.notNullParameter(1);
 		result.set(
 				this.m00 * tuple.getX() + this.m01 * tuple.getY() + this.m02,
 				this.m10 * tuple.getX() + this.m11 * tuple.getY() + this.m12);
@@ -709,8 +711,8 @@ public class Transform2D extends Matrix3d {
 	@Pure
 	public Transform2D createInverse() {
 		final double det = this.m00 * this.m11 - this.m01 * this.m10;
-		if (Math.abs(det) <= Double.MIN_VALUE) {
-			throw new SingularMatrixException("Determinant is " + det); 
+		if (MathUtil.isEpsilonZero(det)) {
+			throw new SingularMatrixException(Locale.getString("E1", det)); //$NON-NLS-1$
 		}
 		return new Transform2D(
 				this.m11 / det,
@@ -761,8 +763,8 @@ public class Transform2D extends Matrix3d {
 	@Override
 	public void invert() {
 		final double det = this.m00 * this.m11 - this.m01 * this.m10;
-		if (Math.abs(det) <= Double.MIN_VALUE) {
-			throw new SingularMatrixException("Determinant is " + det); 
+		if (MathUtil.isEpsilonZero(det)) {
+			throw new SingularMatrixException(Locale.getString("E1", det)); //$NON-NLS-1$
 		}
 		set(
 				this.m11 / det,
@@ -793,10 +795,10 @@ public class Transform2D extends Matrix3d {
 	 */
 	@Override
 	public void invert(Matrix3d matrix) {
-		assert matrix != null : "Matrix must not be null"; 
+		assert matrix != null : AssertMessages.notNullParameter();
 		final double det = matrix.getM00() * matrix.getM11() - matrix.getM01() * matrix.getM10();
 		if (MathUtil.isEpsilonZero(det)) {
-			throw new SingularMatrixException("Determinant is too small: " + det); 
+			throw new SingularMatrixException(Locale.getString("E1", det)); //$NON-NLS-1$
 		}
 		set(
 				matrix.getM11() / det,

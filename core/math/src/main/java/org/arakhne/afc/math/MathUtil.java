@@ -33,6 +33,7 @@ import org.arakhne.afc.math.continous.object2d.Point2f;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.generic.Vector2D;
 import org.arakhne.afc.math.physics.MeasureUnitUtil;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Mathematic and geometric utilities.
  *
@@ -80,7 +81,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clamp(double v, double min, double max) {
-		assert min <= max : "min must be lower or equal to max";
+		assert min <= max : AssertMessages.lowerEqualParameters(1, min, 2, max);
 		if (v < min) {
 			return min;
 		}
@@ -103,7 +104,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int clamp(int v, int min, int max) {
-		assert min <= max : "min must be lower or equal to max";
+		assert min <= max : AssertMessages.lowerEqualParameters(1, min, 2, max);
 		if (v < min) {
 			return min;
 		}
@@ -445,7 +446,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clampCyclic(double value, double min, double max) {
-		assert min <= max : "min must be lower or equal to max";
+		assert min <= max : AssertMessages.lowerEqualParameters(1, min, 2, max);
 		if (Double.isNaN(max) || Double.isNaN(min) || Double.isNaN(max)) {
 			return Double.NaN;
 		}
@@ -480,7 +481,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clampToNearestBounds(double value, double minBounds, double maxBounds) {
-		assert minBounds <= maxBounds : "min must be lower or equal to max";
+		assert minBounds <= maxBounds : AssertMessages.lowerEqualParameters(1, minBounds, 2, maxBounds);
 		final double center = (minBounds + maxBounds) / 2;
 		if (value <= center) {
 			return minBounds;
@@ -506,8 +507,8 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int getCohenSutherlandCode(int px, int py, int rxmin, int rymin, int rxmax, int rymax) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax";
-		assert rymin <= rymax : "rymin must be lower or equal to rymax";
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(2, rxmin, 4, rxmax);
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(3, rymin, 5, rymax);
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
 		if (px < rxmin) {
@@ -550,8 +551,8 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int getCohenSutherlandCode(double px, double py, double rxmin, double rymin, double rxmax, double rymax) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax";
-		assert rymin <= rymax : "rymin must be lower or equal to rymax";
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(2, rxmin, 4, rxmax);
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(3, rymin, 5, rymax);
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
 		if (px < rxmin) {

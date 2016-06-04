@@ -201,7 +201,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D, N>> extend
 		case 2:
 			return this.right;
 		default:
-			throw new IndexOutOfBoundsException(index + ">= 3"); 
+			throw new IndexOutOfBoundsException();
 		}
 	}
 
@@ -358,7 +358,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D, N>> extend
 		case 2:
 			return setRightChild(newChild);
 		default:
-			throw new IndexOutOfBoundsException(index + ">= 3"); 
+			throw new IndexOutOfBoundsException();
 		}
 	}
 

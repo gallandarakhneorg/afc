@@ -24,6 +24,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 
 /** 2D tuple with 2 integer FX properties.
@@ -144,11 +145,11 @@ public class Tuple2ifx<RT extends Tuple2ifx<? super RT>> implements Tuple2D<RT> 
 	@Pure
 	@Override
 	public String toString() {
-		return "(" 
+		return "(" //$NON-NLS-1$
 				+ ix()
-				+ ";" 
+				+ ", " //$NON-NLS-1$
 				+ iy()
-				+ ")"; 
+				+ ")"; //$NON-NLS-1$
 	}
 
 	/** Replies the x property.
@@ -158,7 +159,7 @@ public class Tuple2ifx<RT extends Tuple2ifx<? super RT>> implements Tuple2D<RT> 
 	@Pure
 	public IntegerProperty xProperty() {
 		if (this.x == null) {
-			this.x = new SimpleIntegerProperty(this, "x"); 
+			this.x = new SimpleIntegerProperty(this, MathFXAttributeNames.X);
 		}
 		return this.x;
 	}
@@ -170,7 +171,7 @@ public class Tuple2ifx<RT extends Tuple2ifx<? super RT>> implements Tuple2D<RT> 
 	@Pure
 	public IntegerProperty yProperty() {
 		if (this.y == null) {
-			this.y = new SimpleIntegerProperty(this, "y"); 
+			this.y = new SimpleIntegerProperty(this, MathFXAttributeNames.Y);
 		}
 		return this.y;
 	}

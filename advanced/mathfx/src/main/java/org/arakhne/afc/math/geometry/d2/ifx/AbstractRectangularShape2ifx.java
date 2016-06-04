@@ -26,6 +26,7 @@ import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.ai.RectangularShape2ai;
 
 /** A rectangular shape with 2 integer FX properties.
@@ -140,7 +141,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty minXProperty() {
 		if (this.minX == null) {
-			this.minX = new SimpleIntegerProperty(this, "minX") { 
+			this.minX = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_X) {
 				@Override
 				protected void invalidated() {
 					final int currentMin = get();
@@ -173,7 +174,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty maxXProperty() {
 		if (this.maxX == null) {
-			this.maxX = new SimpleIntegerProperty(this, "maxX") { 
+			this.maxX = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_X) {
 				@Override
 				protected void invalidated() {
 					final int currentMax = get();
@@ -206,7 +207,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty minYProperty() {
 		if (this.minY == null) {
-			this.minY = new SimpleIntegerProperty(this, "minY") { 
+			this.minY = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_Y) {
 				@Override
 				protected void invalidated() {
 					final int currentMin = get();
@@ -239,7 +240,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty maxYProperty() {
 		if (this.maxY == null) {
-			this.maxY = new SimpleIntegerProperty(this, "maxY") { 
+			this.maxY = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
 				@Override
 				protected void invalidated() {
 					final int currentMax = get();
@@ -269,15 +270,15 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getMinX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMinY());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getMaxX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMaxY());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 
@@ -293,7 +294,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty widthProperty() {
 		if (this.width == null) {
-			this.width = new ReadOnlyIntegerWrapper(this, "width"); 
+			this.width = new ReadOnlyIntegerWrapper(this, MathFXAttributeNames.WIDTH);
 			this.width.bind(Bindings.subtract(maxXProperty(), minXProperty()));
 		}
 		return this.width;
@@ -311,7 +312,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty heightProperty() {
 		if (this.height == null) {
-			this.height = new ReadOnlyIntegerWrapper(this, "height"); 
+			this.height = new ReadOnlyIntegerWrapper(this, MathFXAttributeNames.HEIGHT);
 			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
 		}
 		return this.height;

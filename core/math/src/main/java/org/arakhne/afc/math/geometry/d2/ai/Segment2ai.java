@@ -33,6 +33,7 @@ import org.arakhne.afc.math.geometry.d2.GeomFactory;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a 2D segment/line on a plane.
  *
@@ -68,8 +69,9 @@ public interface Segment2ai<
 	 * @param result the closest point in the segment to the point.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	static void computeClosestPointTo(int ax, int ay, int bx, int by, int px, int py, Point2D<?, ?> result) {
-		assert result != null : "Result must be not be null"; 
+		assert result != null : AssertMessages.notNullParameter(6);
 
 		// Special case
 		//    0 1 2 3 4 5 6 7 8 9 10
@@ -139,8 +141,9 @@ public interface Segment2ai<
 	 * @param result the farthest point in the segment to the point.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	static void computeFarthestPointTo(int ax, int ay, int bx, int by, int px, int py, Point2D<?, ?> result) {
-		assert result != null : "Result must be not be null"; 
+		assert result != null : AssertMessages.notNullParameter(6);
 		final int v1x = px - ax;
 		final int v1y = py - ay;
 		final int v2x = px - bx;
@@ -221,7 +224,7 @@ public interface Segment2ai<
 			int radius,
 			int x0, int y0,
 			int x1, int y1) {
-		assert radius >= 0 : "Redius must be positive or zero"; 
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 
 		int numCrosses = crossings;
 
@@ -920,14 +923,14 @@ public interface Segment2ai<
 	 * @param secondPoint the second point.
 	 */
 	default void set(Point2D<?, ?> firstPoint, Point2D<?, ?> secondPoint) {
-		assert firstPoint != null : "First point must be not be null"; 
-		assert secondPoint != null : "Second point must be not be null"; 
+		assert firstPoint != null : AssertMessages.notNullParameter(0);
+		assert secondPoint != null : AssertMessages.notNullParameter(1);
 		set(firstPoint.ix(), firstPoint.iy(), secondPoint.ix(), secondPoint.iy());
 	}
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Shape must be not be null"; 
+		assert shape != null : AssertMessages.notNullParameter();
 		set(shape.getX1(), shape.getY1(), shape.getX2(), shape.getY2());
 	}
 
@@ -1011,7 +1014,7 @@ public interface Segment2ai<
 	 */
 	@Pure
 	default void setP1(Point2D<?, ?> point) {
-		assert point != null : "Point must be not be null"; 
+		assert point != null : AssertMessages.notNullParameter();
 		set(point.ix(), point.iy(), getX2(), getY2());
 	}
 
@@ -1031,7 +1034,7 @@ public interface Segment2ai<
 	 */
 	@Pure
 	default void setP2(Point2D<?, ?> point) {
-		assert point != null : "Point must be not be null"; 
+		assert point != null : AssertMessages.notNullParameter();
 		set(getX1(), getY1(), point.ix(), point.iy());
 	}
 
@@ -1048,14 +1051,14 @@ public interface Segment2ai<
 	@Override
 	@Pure
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not be null"; 
+		assert box != null : AssertMessages.notNullParameter();
 		box.setFromCorners(getX1(), getY1(), getX2(), getY2());
 	}
 
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final P closestPoint = getClosestPointTo(pt);
 		return closestPoint.getDistanceSquared(pt);
 	}
@@ -1063,7 +1066,7 @@ public interface Segment2ai<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final P closestPoint = getClosestPointTo(pt);
 		return closestPoint.getDistanceL1(pt);
 	}
@@ -1071,7 +1074,7 @@ public interface Segment2ai<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final P closestPoint = getClosestPointTo(pt);
 		return closestPoint.getDistanceLinf(pt);
 	}
@@ -1112,7 +1115,7 @@ public interface Segment2ai<
 	@Pure
 	@Override
 	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not be null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		if (rectangle.isEmpty()) {
 			return contains(rectangle.getMinX(), rectangle.getMinY());
 		}
@@ -1130,7 +1133,7 @@ public interface Segment2ai<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointTo(getX1(), getY1(), getX2(), getY2(), pt.ix(), pt.iy(), point);
 		return point;
@@ -1164,7 +1167,7 @@ public interface Segment2ai<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeFarthestPointTo(getX1(), getY1(), getX2(), getY2(), pt.ix(), pt.iy(), point);
 		return point;
@@ -1218,7 +1221,7 @@ public interface Segment2ai<
 	 * @see #createTransformedShape(Transform2D)
 	 */
 	default void transform(Transform2D transform) {
-		assert transform != null : "Transformation must be not be null"; 
+		assert transform != null : AssertMessages.notNullParameter();
 		final P p = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(p);
 		setP1(p);
@@ -1239,8 +1242,8 @@ public interface Segment2ai<
 	 *     does not intersect the rectangle.
 	 */
 	default boolean clipToRectangle(int rxmin, int rymin, int rxmax, int rymax) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; 
-		assert rymin <= rymax : "rymin must be lower or equal to rymax"; 
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(0, rxmin, 2, rxmax);
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(1, rymin, 3, rymax);
 
 		int x0 = getX1();
 		int y0 = getY1();
@@ -1314,7 +1317,7 @@ public interface Segment2ai<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must be not be null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		return Rectangle2ai.intersectsRectangleSegment(
 				rectangle.getMinX(), rectangle.getMinY(),
 				rectangle.getMaxX(), rectangle.getMaxY(),
@@ -1325,7 +1328,7 @@ public interface Segment2ai<
 	@Pure
 	@Override
 	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not be null"; 
+		assert circle != null : AssertMessages.notNullParameter();
 		return Circle2ai.intersectsCircleSegment(
 				circle.getX(), circle.getY(),
 				circle.getRadius(),
@@ -1336,7 +1339,7 @@ public interface Segment2ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not be null"; 
+		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsSegmentSegment(
 				getX1(), getY1(), getX2(), getY2(),
 				segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2());
@@ -1345,7 +1348,7 @@ public interface Segment2ai<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator2ai<?> iterator) {
-		assert iterator != null : "Iterator must be not be null"; 
+		assert iterator != null : AssertMessages.notNullParameter();
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path2ai.computeCrossingsFromSegment(
 				0,
@@ -1360,7 +1363,7 @@ public interface Segment2ai<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; 
+		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
 
@@ -1420,7 +1423,7 @@ public interface Segment2ai<
 		 * @param y1 is the y-coordinate of the last point of the Bresenham line.
 		 */
 		public BresenhamLineIterator(GeomFactory<V, P> factory, int x0, int y0, int x1, int y1) {
-			assert factory != null : "Factory must be not be null"; 
+			assert factory != null : AssertMessages.notNullParameter(0);
 			this.factory = factory;
 			int localx0 = x0;
 			int localy0 = y0;
@@ -1534,7 +1537,7 @@ public interface Segment2ai<
 		 * @param segment the element.
 		 */
 		public AbstractSegmentPathIterator(Segment2ai<?, ?, IE, ?, ?, ?> segment) {
-			assert segment != null : "Factory must be not be null"; 
+			assert segment != null : AssertMessages.notNullParameter();
 			this.segment = segment;
 		}
 
@@ -1609,7 +1612,7 @@ public interface Segment2ai<
 		 */
 		public TransformedSegmentPathIterator(Segment2ai<?, ?, IE, ?, ?, ?> segment, Transform2D transform) {
 			super(segment);
-			assert transform != null : "Transformation must be not be null"; 
+			assert transform != null : AssertMessages.notNullParameter(1);
 			this.transform = transform;
 			if (segment.getX1() == segment.getX2() && segment.getY1() == segment.getY2()) {
 				this.index = 2;

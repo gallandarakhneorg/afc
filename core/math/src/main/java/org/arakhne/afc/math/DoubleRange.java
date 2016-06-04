@@ -24,6 +24,8 @@ import java.io.Serializable;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+
 /** A range of double floating-point numbers.
  *
  * @author $Author: sgalland$
@@ -46,7 +48,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	 * @param max the max value.
 	 */
 	public DoubleRange(double min, double max) {
-		assert min <= max : "min must be lower or equal to max";
+		assert min <= max : AssertMessages.lowerEqualParameters(0, min, 1, max);
 		this.min = min;
 		this.max = max;
 	}
@@ -124,7 +126,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	@Override
 	@Pure
 	public String toString() {
-		return "[" + Double.toString(this.min) + "; " + Double.toString(this.max) + "]";
+		return "[" + Double.toString(this.min) + "; " + Double.toString(this.max) + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 }

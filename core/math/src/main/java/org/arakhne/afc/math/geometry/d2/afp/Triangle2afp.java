@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a 2D triangle on a plane.
  *
@@ -202,11 +203,11 @@ public interface Triangle2afp<
      * <code>false</code> if not.
      */
     @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean containsTriangleRectangle(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double rx, double ry, double rwidth, double rheight) {
-        assert rwidth >= 0. : "Width of the rectangle must be positive or zero"; 
-        assert rheight >= 0. : "Height of the rectangle must be positive or zero"; 
+        assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(8);
+        assert rheight >= 0. : AssertMessages.positiveOrZeroParameter(9);
         return containsTrianglePoint(tx1, ty1, tx2, ty2, tx3, ty3, rx, ry)
                 && containsTrianglePoint(tx1, ty1, tx2, ty2, tx3, ty3, rx + rwidth, ry)
                 && containsTrianglePoint(tx1, ty1, tx2, ty2, tx3, ty3, rx + rwidth, ry + rheight)
@@ -228,10 +229,10 @@ public interface Triangle2afp<
      * @param farthest the farthest point.
      */
     @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void computeClosestFarthestPoints(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double px, double py, Point2D<?, ?> closest, Point2D<?, ?> farthest) {
-        assert closest != null || farthest != null : "Both closest and farthest cannot be null"; 
+        assert closest != null || farthest != null : AssertMessages.oneNotNullParameter(8, 9);
         if (closest != null) {
             final double side1 = Vector2D.perpProduct(tx2 - tx1, ty2 - ty1, px - tx1, py - ty1);
             final double side2 = Vector2D.perpProduct(tx3 - tx2, ty3 - ty2, px - tx2, py - ty2);
@@ -352,10 +353,10 @@ public interface Triangle2afp<
      * <code>false</code>
      */
     @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsTriangleCircle(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double cx, double cy, double cradius) {
-        assert cradius >= 0 : "Circle radius must be positive or zero"; 
+        assert cradius >= 0 : AssertMessages.positiveOrZeroParameter(8);
         final double distance = computeSquaredDistanceTrianglePoint(
                 tx1, ty1, tx2, ty2, tx3, ty3, cx, cy);
         return distance < cradius * cradius;
@@ -377,11 +378,11 @@ public interface Triangle2afp<
      * <code>false</code>
      */
     @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsTriangleEllipse(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double ex, double ey, double ewidth, double eheight) {
-        assert ewidth >= 0 : "Ellipse width must be positive or zero"; 
-        assert eheight >= 0 : "Ellipse height must be positive or zero"; 
+        assert ewidth >= 0 : AssertMessages.positiveOrZeroParameter(8);
+        assert eheight >= 0 : AssertMessages.positiveOrZeroParameter(9);
         final double a = ewidth / 2.;
         final double b = eheight / 2.;
         final double centerX = ex + a;
@@ -488,7 +489,7 @@ public interface Triangle2afp<
     static boolean intersectsTriangleTriangle(double t1x1, double t1y1, double t1x2, double t1y2,
             double t1x3, double t1y3, double t2x1, double t2y1, double t2x2, double t2y2,
             double t2x3, double t2y3) {
-        assert isCCWOrderDefinition(t1x1, t1y1, t1x2, t1y2, t1x3, t1y3) : "First triangle must be CCW ordered"; 
+        assert isCCWOrderDefinition(t1x1, t1y1, t1x2, t1y2, t1x3, t1y3) : AssertMessages.ccwParameters(0, 1, 2, 3, 4, 5);
 
         final double[] coordinates = new double[] {
             t1x2 - t1x1, t1x1, t1y2 - t1y1, t1y1,
@@ -538,11 +539,11 @@ public interface Triangle2afp<
      * <code>false</code>
      */
     @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsTriangleRectangle(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double rx, double ry, double rwidth, double rheight) {
-        assert rwidth >= 0. : "Rectangle width must be positive or zero"; 
-        assert rheight >= 0. : "Rectangle height must be positive or zero"; 
+        assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(8);
+        assert rheight >= 0. : AssertMessages.positiveOrZeroParameter(9);
         // Test triangle segment intersection with the rectangle
         final double rx2 = rx + rwidth;
         final double ry2 = ry + rheight;
@@ -646,7 +647,7 @@ public interface Triangle2afp<
      * @param point the point.
      */
     default void setP1(Point2D<?, ?> point) {
-        assert point != null : "Point must be not null"; 
+        assert point != null : AssertMessages.notNullParameter();
         setX1(point.getX());
         setY1(point.getY());
     }
@@ -666,7 +667,7 @@ public interface Triangle2afp<
      * @param point the point.
      */
     default void setP2(Point2D<?, ?> point) {
-        assert point != null : "Point must be not null"; 
+        assert point != null : AssertMessages.notNullParameter();
         setX2(point.getX());
         setY2(point.getY());
     }
@@ -686,7 +687,7 @@ public interface Triangle2afp<
      * @param point the point.
      */
     default void setP3(Point2D<?, ?> point) {
-        assert point != null : "Point must be not null"; 
+        assert point != null : AssertMessages.notNullParameter();
         setX3(point.getX());
         setY3(point.getY());
     }
@@ -750,7 +751,7 @@ public interface Triangle2afp<
 
     @Override
     default void set(IT shape) {
-        assert shape != null : "Shape must be not null"; 
+        assert shape != null : AssertMessages.notNullParameter();
         set(shape.getX1(), shape.getY1(), shape.getX2(), shape.getY2(), shape.getX3(), shape.getY3());
     }
 
@@ -768,7 +769,7 @@ public interface Triangle2afp<
     @Override
     @SuppressWarnings("checkstyle:npathcomplexity")
     default void toBoundingBox(B box) {
-        assert box != null : "Rectangle must be not null"; 
+        assert box != null : AssertMessages.notNullParameter();
         double minx = getX1();
         double maxx = minx;
         if (getX2() < minx) {
@@ -810,14 +811,14 @@ public interface Triangle2afp<
     @Pure
     @Override
     default double getDistanceSquared(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; 
+        assert pt != null : AssertMessages.notNullParameter();
         return computeSquaredDistanceTrianglePoint(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(), pt.getX(), pt.getY());
     }
 
     @Pure
     @Override
     default double getDistanceL1(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; 
+        assert pt != null : AssertMessages.notNullParameter();
         final Point2D<?, ?> r = getClosestPointTo(pt);
         return r.getDistanceL1(pt);
     }
@@ -825,7 +826,7 @@ public interface Triangle2afp<
     @Pure
     @Override
     default double getDistanceLinf(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; 
+        assert pt != null : AssertMessages.notNullParameter();
         final Point2D<?, ?> r = getClosestPointTo(pt);
         return r.getDistanceLinf(pt);
     }
@@ -838,7 +839,7 @@ public interface Triangle2afp<
 
     @Override
     default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-        assert rectangle != null : "Rectangle must be not null"; 
+        assert rectangle != null : AssertMessages.notNullParameter();
         return containsTriangleRectangle(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
                 rectangle.getMinX(), rectangle.getMinY(), rectangle.getWidth(), rectangle.getHeight());
     }
@@ -853,7 +854,7 @@ public interface Triangle2afp<
     @Pure
     @Override
     default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-        assert rectangle != null : "Rectangle must be not null"; 
+        assert rectangle != null : AssertMessages.notNullParameter();
         return intersectsTriangleRectangle(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
                 rectangle.getMinX(), rectangle.getMinY(), rectangle.getWidth(), rectangle.getHeight());
     }
@@ -861,7 +862,7 @@ public interface Triangle2afp<
     @Pure
     @Override
     default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-        assert ellipse != null : "Ellipse must be not null"; 
+        assert ellipse != null : AssertMessages.notNullParameter();
         return intersectsTriangleEllipse(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
                 ellipse.getMinX(), ellipse.getMinY(), ellipse.getWidth(), ellipse.getHeight());
     }
@@ -869,7 +870,7 @@ public interface Triangle2afp<
     @Pure
     @Override
     default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-        assert circle != null : "Circle must be not null"; 
+        assert circle != null : AssertMessages.notNullParameter();
         return intersectsTriangleCircle(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
                 circle.getX(), circle.getY(), circle.getRadius());
     }
@@ -877,7 +878,7 @@ public interface Triangle2afp<
     @Pure
     @Override
     default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-        assert segment != null : "Segment must be not null"; 
+        assert segment != null : AssertMessages.notNullParameter();
         return intersectsTriangleSegment(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
                 segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2());
     }
@@ -885,7 +886,7 @@ public interface Triangle2afp<
     @Pure
     @Override
     default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-        assert triangle != null : "Triangle must be not null"; 
+        assert triangle != null : AssertMessages.notNullParameter();
         if (isCCW()) {
             return intersectsTriangleTriangle(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
                     triangle.getX1(), triangle.getY1(), triangle.getX2(), triangle.getY2(), triangle.getX3(), triangle.getY3());
@@ -897,7 +898,7 @@ public interface Triangle2afp<
     @Pure
     @Override
     default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> sorientedRectangle) {
-        assert sorientedRectangle != null : "Oriented rectangle must be not null"; 
+        assert sorientedRectangle != null : AssertMessages.notNullParameter();
         return OrientedRectangle2afp.intersectsOrientedRectangleTriangle(
                 sorientedRectangle.getCenterX(), sorientedRectangle.getCenterY(),
                 sorientedRectangle.getFirstAxisX(), sorientedRectangle.getFirstAxisY(), sorientedRectangle.getFirstAxisExtent(),
@@ -908,7 +909,7 @@ public interface Triangle2afp<
     @Pure
     @Override
     default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-        assert parallelogram != null : "Parallelogram must be not null"; 
+        assert parallelogram != null : AssertMessages.notNullParameter();
         return Parallelogram2afp.intersectsParallelogramTriangle(
                 parallelogram.getCenterX(), parallelogram.getCenterY(),
                 parallelogram.getFirstAxisX(),
@@ -925,7 +926,7 @@ public interface Triangle2afp<
     @Pure
     @Override
     default boolean intersects(PathIterator2afp<?> iterator) {
-        assert iterator != null : "Iterator must be not null"; 
+        assert iterator != null : AssertMessages.notNullParameter();
         final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
         final int crossings = Path2afp.computeCrossingsFromTriangle(
                 0,
@@ -939,21 +940,21 @@ public interface Triangle2afp<
     @Pure
     @Override
     default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-        assert roundRectangle != null : "Round rectangle must be not null"; 
+        assert roundRectangle != null : AssertMessages.notNullParameter();
         return roundRectangle.intersects(getPathIterator());
     }
 
     @Pure
     @Override
     default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-        assert multishape != null : "MultiShape must be not null"; 
+        assert multishape != null : AssertMessages.notNullParameter();
         return multishape.intersects(this);
     }
 
     @Pure
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; 
+        assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         computeClosestFarthestPoints(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
                 pt.getX(), pt.getY(), point, null);
@@ -969,7 +970,7 @@ public interface Triangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
-        assert ellipse != null : "Ellipse must be not null"; 
+        assert ellipse != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), ellipse.getPathIterator(), point);
         return point;
@@ -978,7 +979,7 @@ public interface Triangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
-        assert rectangle != null : "Rectangle must be not null"; 
+        assert rectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), rectangle.getPathIterator(), point);
         return point;
@@ -987,7 +988,7 @@ public interface Triangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-        assert segment != null : "Segment must be not null"; 
+        assert segment != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), segment.getPathIterator(), point);
         return point;
@@ -996,7 +997,7 @@ public interface Triangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-        assert triangle != null : "Triangle must be not null"; 
+        assert triangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), triangle.getPathIterator(), point);
         return point;
@@ -1005,7 +1006,7 @@ public interface Triangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
-        assert orientedRectangle != null : "Oriented rectangle must be not null"; 
+        assert orientedRectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), orientedRectangle.getPathIterator(), point);
         return point;
@@ -1014,7 +1015,7 @@ public interface Triangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-        assert parallelogram != null : "Parallelogram must be not null"; 
+        assert parallelogram != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), parallelogram.getPathIterator(), point);
         return point;
@@ -1023,7 +1024,7 @@ public interface Triangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
-        assert roundRectangle != null : "Round rectangle must be not null"; 
+        assert roundRectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), roundRectangle.getPathIterator(), point);
         return point;
@@ -1032,7 +1033,7 @@ public interface Triangle2afp<
     @Override
     @Unefficient
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
-        assert path != null : "Path must be not null"; 
+        assert path != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
         return point;
@@ -1041,7 +1042,7 @@ public interface Triangle2afp<
     @Pure
     @Override
     default P getFarthestPointTo(Point2D<?, ?> pt) {
-        assert pt != null : "Point must be not null"; 
+        assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         computeClosestFarthestPoints(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
                 pt.getX(), pt.getY(), null, point);
@@ -1079,7 +1080,7 @@ public interface Triangle2afp<
          * @param triangle the iterated shape.
          */
         public AbstractTrianglePathIterator(Triangle2afp<?, ?, T, ?, ?, ?> triangle) {
-            assert triangle != null : "Triangle must be not null"; 
+            assert triangle != null : AssertMessages.notNullParameter();
             this.triangle = triangle;
         }
 
@@ -1265,7 +1266,7 @@ public interface Triangle2afp<
          */
         public TransformedTrianglePathIterator(Triangle2afp<?, ?, T, ?, ?, ?> triangle, Transform2D transform) {
             super(triangle);
-            assert transform != null : "Transformation must be not null"; 
+            assert transform != null : AssertMessages.notNullParameter(1);
             this.transform = transform;
             if (triangle.isEmpty()) {
                 this.index = NUMBER_ELEMENTS;

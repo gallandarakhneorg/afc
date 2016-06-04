@@ -34,6 +34,8 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.InnerComputationPoint2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Path with 2 double precision floating-point numbers.
  *
@@ -128,7 +130,7 @@ public class Path2d
 	 * @param windingRule the path winding rule.
 	 */
 	public Path2d(PathWindingRule windingRule) {
-		assert windingRule != null : "Path winding rule must be not null"; 
+		assert windingRule != null : AssertMessages.notNullParameter();
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -139,8 +141,8 @@ public class Path2d
 	 * @param iterator the iterator that provides the elements to copy.
 	 */
 	public Path2d(PathWindingRule windingRule, Iterator<PathElement2d> iterator) {
-		assert windingRule != null : "Path winding rule must be not null"; 
-		assert iterator != null : "Iterator must be not null"; 
+		assert windingRule != null : AssertMessages.notNullParameter(0);
+		assert iterator != null : AssertMessages.notNullParameter(1);
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -156,7 +158,7 @@ public class Path2d
 
 	private void ensureSlots(boolean needMove, int nbSlots) {
 		if (needMove && this.numTypes == 0) {
-			throw new IllegalStateException("missing initial moveto in path definition"); 
+			throw new IllegalStateException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 		if (this.types.length == this.numTypes) {
 			this.types = Arrays.copyOf(this.types, this.types.length + GROW_SIZE);
@@ -169,7 +171,7 @@ public class Path2d
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		for (int i = 0; i < this.numCoords; i += 2) {
 			final double x = this.coords[i];
 			final double y = this.coords[i + 1];
@@ -223,15 +225,15 @@ public class Path2d
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("["); //$NON-NLS-1$
 		if (this.numCoords > 0) {
 			b.append(this.coords[0]);
 			for (int i = 1; i < this.numCoords; ++i) {
-				b.append(", "); 
+				b.append(", "); //$NON-NLS-1$
 				b.append(this.coords[i]);
 			}
 		}
-		b.append("]"); 
+		b.append("]"); //$NON-NLS-1$
 		return b.toString();
 	}
 
@@ -255,7 +257,7 @@ public class Path2d
 
 	@Override
 	public void transform(Transform2D transform) {
-		assert transform != null : "Transformation must be not null"; 
+		assert transform != null : AssertMessages.notNullParameter();
 		final Point2D<?, ?> p = new InnerComputationPoint2afp();
 		for (int i = 0; i < this.numCoords; i += 2) {
 			p.set(this.coords[i], this.coords[i + 1]);
@@ -300,7 +302,7 @@ public class Path2d
 
 	@Override
 	public void toBoundingBox(Rectangle2d box) {
-		assert box != null : "Rectangle must be not null"; 
+		assert box != null : AssertMessages.notNullParameter();
 		Rectangle2d bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
@@ -441,7 +443,7 @@ public class Path2d
 	@Override
 	@Pure
 	public void toBoundingBoxWithCtrlPoints(Rectangle2d box) {
-		assert box != null : "Rectangle must be not null"; 
+		assert box != null : AssertMessages.notNullParameter();
 		Rectangle2d bb = this.logicalBounds == null ? null : this.logicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
@@ -534,7 +536,6 @@ public class Path2d
 	@Override
 	@Pure
 	public Point2d getPointAt(int index) {
-		assert index >= 0 && index < size() : "Index must be in [0;" + size() + ")";   
 		final int didx = index * 2;
 		return getGeomFactory().newPoint(
 				this.coords[didx],
@@ -703,7 +704,7 @@ public class Path2d
 
 	@Override
 	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; 
+		assert rule != null : AssertMessages.notNullParameter();
 		this.windingRule = rule;
 	}
 
@@ -782,7 +783,7 @@ public class Path2d
 
 	@Override
 	public void set(Path2d path) {
-		assert path != null : "Path must be not null"; 
+		assert path != null : AssertMessages.notNullParameter();
 		clear();
 		add(path.getPathIterator());
 	}

@@ -435,15 +435,15 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		final StringBuilder str = new StringBuilder();
 		str.append('[');
 		str.append((this.name == null)
-				? "???" 
+				? "???" //$NON-NLS-1$
 				: this.name);
 		str.append('=');
 		try {
 			str.append((getValue() == null)
-					? "???" 
+					? "???" //$NON-NLS-1$
 					: getValue().toString());
 		} catch (AttributeException e) {
-			str.append("???"); 
+			str.append("???"); //$NON-NLS-1$
 		}
 		str.append(':');
 		str.append(getType().toString());

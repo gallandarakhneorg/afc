@@ -29,6 +29,8 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Shadow of a path that is used for computing the crossing values
  * between a shape and the shadow.
@@ -57,7 +59,7 @@ public class PathShadow2afp {
      * @param path the path that is constituting the shadow.
      */
     public PathShadow2afp(Path2afp<?, ?, ?, ?, ?, ?> path) {
-        assert path != null : "Path must be not null"; 
+        assert path != null : AssertMessages.notNullParameter();
         this.pathIterator = path.getPathIterator();
         final Rectangle2afp<?, ?, ?, ?, ?, ?> box = path.toBoundingBox();
         this.boundingMinX = box.getMinX();
@@ -71,8 +73,8 @@ public class PathShadow2afp {
      * @param bounds the bounding box enclosing the primitives of the path iterator.
      */
     public PathShadow2afp(PathIterator2afp<?> pathIterator, Rectangle2afp<?, ?, ?, ?, ?, ?> bounds) {
-        assert pathIterator != null : "Path iterator must be not null"; 
-        assert bounds != null : "Bounding box must be not null"; 
+        assert pathIterator != null : AssertMessages.notNullParameter(0);
+        assert bounds != null : AssertMessages.notNullParameter(1);
         this.pathIterator = pathIterator;
         this.boundingMinX = bounds.getMinX();
         this.boundingMinY = bounds.getMinY();
@@ -87,10 +89,11 @@ public class PathShadow2afp {
      * @param maxX maximum x coordinate of the bounding box enclosing the primitives of the path iterator.
      * @param maxY maximum y coordinate of the bounding box enclosing the primitives of the path iterator.
      */
+    @SuppressWarnings("checkstyle:magicnumber")
     public PathShadow2afp(PathIterator2afp<?> pathIterator, double minX, double minY, double maxX, double maxY) {
-        assert pathIterator != null : "Path iterator must be not null"; 
-        assert minX <= maxX : "Minimum X coordinate must be lower than or equal to the maxmimum X coordinate"; 
-        assert minY <= maxY : "Minimum X coordinate must be lower than or equal to the maxmimum X coordinate"; 
+        assert pathIterator != null : AssertMessages.notNullParameter(0);
+        assert minX <= maxX : AssertMessages.lowerEqualParameters(1, minX, 3, maxX);
+        assert minY <= maxY : AssertMessages.lowerEqualParameters(2, minY, 4, maxY);
         this.pathIterator = pathIterator;
         this.boundingMinX = minX;
         this.boundingMinY = minY;
@@ -102,7 +105,7 @@ public class PathShadow2afp {
      * @param pathIterator the iterator on the path that is constituting the shadow.
      */
     public PathShadow2afp(PathIterator2afp<?> pathIterator) {
-        assert pathIterator != null : "Path iterator must be not null"; 
+        assert pathIterator != null : AssertMessages.notNullParameter();
         this.pathIterator = pathIterator;
         this.boundingMinX = Double.NaN;
         this.boundingMinY = Double.NaN;
@@ -164,13 +167,13 @@ public class PathShadow2afp {
      * @param data the data used for computation and providing the result.
      */
     @Pure
-    @SuppressWarnings("checkstyle:npathcomplexity")
+    @SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:magicnumber"})
     public void computeCrossings(
             int crossings,
             double x0, double y0,
             double x1, double y1,
             PathShadowData data) {
-        assert data != null : "Data must be not null"; 
+        assert data != null : AssertMessages.notNullParameter(5);
 
         data.reset();
 
@@ -236,7 +239,7 @@ public class PathShadow2afp {
 
         element = pi.next();
         if (element.getType() != PathElementType.MOVE_TO) {
-            throw new IllegalArgumentException("missing initial moveto in path definition"); 
+            throw new IllegalArgumentException(Locale.getString(Path2afp.class, "E1")); //$NON-NLS-1$
         }
 
         Path2afp<?, ?, E, ?, ?, ?> localPath;
@@ -680,27 +683,27 @@ public class PathShadow2afp {
         @Override
         public String toString() {
             final StringBuilder b = new StringBuilder();
-            b.append("y min line:\n\tymin: "); 
+            b.append("y min line:\n\tymin: "); //$NON-NLS-1$
             b.append(this.ymin);
-            b.append("\n\tx: "); 
+            b.append("\n\tx: "); //$NON-NLS-1$
             if (this.hasX4ymin) {
                 b.append(this.x4ymin);
             } else {
-                b.append("none"); 
+                b.append("none"); //$NON-NLS-1$
             }
-            b.append("\ny max line:\n\tymax: "); 
+            b.append("\ny max line:\n\tymax: "); //$NON-NLS-1$
             b.append(this.ymax);
-            b.append("\n\tx: "); 
+            b.append("\n\tx: "); //$NON-NLS-1$
             if (this.hasX4ymax) {
                 b.append(this.x4ymax);
             } else {
-                b.append("none"); 
+                b.append("none"); //$NON-NLS-1$
             }
-            b.append("\ncrossings: "); 
+            b.append("\ncrossings: "); //$NON-NLS-1$
             b.append(this.crossings);
-            b.append("\nclosest point:\n\tcoordinates: "); 
+            b.append("\nclosest point:\n\tcoordinates: "); //$NON-NLS-1$
             b.append(this.closestPoint);
-            b.append("\n\tdistance: "); 
+            b.append("\n\tdistance: "); //$NON-NLS-1$
             b.append(this.minDistance);
             return b.toString();
         }

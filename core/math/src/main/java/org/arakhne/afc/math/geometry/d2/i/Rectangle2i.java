@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A rectangle with 2 integer numbers.
  *
@@ -58,8 +59,8 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 	 * @param max is the max corner of the rectangle.
 	 */
 	public Rectangle2i(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert min != null : "Minimum corner must be not null"; 
-		assert max != null : "Maximum corner must be not null"; 
+		assert min != null : AssertMessages.notNullParameter(0);
+		assert max != null : AssertMessages.notNullParameter(1);
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
 	}
 
@@ -70,8 +71,8 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 	 * @param height height of the rectangle.
 	 */
 	public Rectangle2i(int x, int y, int width, int height) {
-		assert width >= 0. : "Width must be positive or zero"; 
-		assert height >= 0. : "Height must be positive or zero"; 
+		assert width >= 0. : AssertMessages.positiveOrZeroParameter(2);
+		assert height >= 0. : AssertMessages.positiveOrZeroParameter(3);
 		set(x, y, width, height);
 	}
 
@@ -194,15 +195,15 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getMinX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMinY());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getMaxX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMaxY());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 

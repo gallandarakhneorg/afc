@@ -192,15 +192,15 @@ public class Rectangle2d extends AbstractShape2d<Rectangle2d>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getMinX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMinY());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getMaxX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMaxY());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 

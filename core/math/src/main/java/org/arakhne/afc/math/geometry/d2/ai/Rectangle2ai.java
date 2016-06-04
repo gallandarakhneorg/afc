@@ -33,6 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai.BresenhamLineIterator;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a 2D rectangle on a plane.
  *
@@ -72,11 +73,12 @@ public interface Rectangle2ai<
 	 * <code>false</code>
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean intersectsRectangleRectangle(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-		assert x1 <= x2 : "x1 must be lower or equal to x2"; 
-		assert y1 <= y2 : "y1 must be lower or equal to y2"; 
-		assert x3 <= x4 : "x3 must be lower or equal to x4"; 
-		assert y3 <= y4 : "y3 must be lower or equal to y4"; 
+		assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 2, x2);
+		assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 3, y2);
+		assert x3 <= x4 : AssertMessages.lowerEqualParameters(4, x3, 6, x4);
+		assert y3 <= y4 : AssertMessages.lowerEqualParameters(5, y3, 7, y4);
 		return x2 > x3 && x1 < x4 && y2 > y3 && y1 < y4;
 	}
 
@@ -102,8 +104,8 @@ public interface Rectangle2ai<
 	@Pure
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	static boolean intersectsRectangleSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-		assert x1 <= x2 : "x1 must be lower or equal to x2"; 
-		assert y1 <= y2 : "y1 must be lower or equal to y2"; 
+		assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 2, x2);
+		assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 3, y2);
 
 		int c1 = MathUtil.getCohenSutherlandCode(x3, y3, x1, y1, x2, y2);
 		final int c2 = MathUtil.getCohenSutherlandCode(x4, y4, x1, y1, x2, y2);
@@ -186,10 +188,11 @@ public interface Rectangle2ai<
 	 * @param result the closest point.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	static void computeClosestPoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
-		assert minx <= maxx : "minx must be lower or equal to maxx"; 
-		assert miny <= maxy : "maxx must be lower or equal to maxy"; 
-		assert result != null : "Point must not be null"; 
+		assert minx <= maxx : AssertMessages.lowerEqualParameters(0, minx, 2, maxx);
+		assert miny <= maxy : AssertMessages.lowerEqualParameters(1, miny, 3, maxy);
+		assert result != null : AssertMessages.notNullParameter(6);
 
 		final int x;
 		int same = 0;
@@ -228,10 +231,11 @@ public interface Rectangle2ai<
 	 * @param result the farthest point.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	static void computeFarthestPoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
-		assert minx <= maxx : "minx must be lower or equal to maxx"; 
-		assert miny <= maxy : "maxx must be lower or equal to maxy"; 
-		assert result != null : "Point must not be null"; 
+		assert minx <= maxx : AssertMessages.lowerEqualParameters(0, minx, 2, maxx);
+		assert miny <= maxy : AssertMessages.lowerEqualParameters(1, miny, 3, maxy);
+		assert result != null : AssertMessages.notNullParameter(6);
 
 		final int x;
 		if (px <= ((minx + maxx) / 2)) {
@@ -266,7 +270,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
-		assert rectangle != null : "Rectangle must not be null"; 
+		assert rectangle != null : AssertMessages.notNullParameter();
 		return intersectsRectangleRectangle(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -277,7 +281,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must not be null"; 
+		assert circle != null : AssertMessages.notNullParameter();
 		return Circle2ai.intersectsCircleRectangle(
 				circle.getX(), circle.getY(),
 				circle.getRadius(),
@@ -288,7 +292,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must not be null"; 
+		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsRectangleSegment(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -298,7 +302,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator2ai<?> iterator) {
-		assert iterator != null : "Iterator must not be null"; 
+		assert iterator != null : AssertMessages.notNullParameter();
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path2ai.computeCrossingsFromRect(
 				0,
@@ -313,7 +317,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; 
+		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
 
@@ -326,21 +330,21 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
-		assert box != null : "Rectangle must not be null"; 
+		assert box != null : AssertMessages.notNullParameter();
 		return box.getMinX() >= getMinX() && box.getMaxX() <= getMaxX()
 				&& box.getMinY() >= getMinY() && box.getMaxY() <= getMaxY();
 	}
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Rectangle must not be null"; 
+		assert shape != null : AssertMessages.notNullParameter();
 		setFromCorners(shape.getMinX(), shape.getMinY(), shape.getMaxX(), shape.getMaxY());
 	}
 
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestPoint(getMinX(), getMinY(), getMaxX(), getMaxY(), pt.ix(), pt.iy(), point);
 		return point;
@@ -374,7 +378,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
-		assert pt != null : "Point must not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeFarthestPoint(getMinX(), getMinY(), getMaxX(), getMaxY(), pt.ix(), pt.iy(), point);
 		return point;
@@ -383,7 +387,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> pt) {
-		assert pt != null : "Point must not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final int dx;
 		if (pt.ix() < getMinX()) {
 			dx = getMinX() - pt.ix();
@@ -406,7 +410,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D<?, ?> pt) {
-		assert pt != null : "Point must not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final int dx;
 		if (pt.ix() < getMinX()) {
 			dx = getMinX() - pt.ix();
@@ -429,7 +433,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D<?, ?> pt) {
-		assert pt != null : "Point must not be null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		final int dx;
 		if (pt.ix() < getMinX()) {
 			dx = getMinX() - pt.ix();
@@ -462,7 +466,7 @@ public interface Rectangle2ai<
 	 */
 	@Pure
 	default Iterator<P> getPointIterator(Side startingBorder) {
-		assert startingBorder != null : "Side border must not be null"; 
+		assert startingBorder != null : AssertMessages.notNullParameter();
 		return new RectangleSideIterator<>(this, startingBorder);
 	}
 
@@ -489,7 +493,7 @@ public interface Rectangle2ai<
 	 */
 	@Pure
 	default B createUnion(RectangularShape2ai<?, ?, ?, ?, ?, ?> rect) {
-		assert rect != null : "Shape must be not null"; 
+		assert rect != null : AssertMessages.notNullParameter();
 		final B rr = getGeomFactory().newBox();
 		rr.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
 		rr.setUnion(rect);
@@ -511,7 +515,7 @@ public interface Rectangle2ai<
 	 */
 	@Pure
 	default B createIntersection(RectangularShape2ai<?, ?, ?, ?, ?, ?> rect) {
-		assert rect != null : "Shape must be not null"; 
+		assert rect != null : AssertMessages.notNullParameter();
 		final B rr = getGeomFactory().newBox();
 		final int x1 = Math.max(getMinX(), rect.getMinX());
 		final int y1 = Math.max(getMinY(), rect.getMinY());
@@ -532,7 +536,7 @@ public interface Rectangle2ai<
 	 * @see #createUnion(RectangularShape2ai)
 	 */
 	default void setUnion(RectangularShape2ai<?, ?, ?, ?, ?, ?> rect) {
-		assert rect != null : "Shape must be not null"; 
+		assert rect != null : AssertMessages.notNullParameter();
 		setFromCorners(
 				Math.min(getMinX(), rect.getMinX()),
 				Math.min(getMinY(), rect.getMinY()),
@@ -550,7 +554,7 @@ public interface Rectangle2ai<
 	 * @see #clear()
 	 */
 	default void setIntersection(RectangularShape2ai<?, ?, ?, ?, ?, ?> rect) {
-		assert rect != null : "Shape must be not null"; 
+		assert rect != null : AssertMessages.notNullParameter();
 		final int x1 = Math.max(getMinX(), rect.getMinX());
 		final int y1 = Math.max(getMinY(), rect.getMinY());
 		final int x2 = Math.min(getMaxX(), rect.getMaxX());
@@ -619,8 +623,8 @@ public interface Rectangle2ai<
 		 * @param firstSide the first side to iterate on.
 		 */
 		RectangleSideIterator(Rectangle2ai<?, ?, ?, P, V, ?> rectangle, Side firstSide) {
-			assert rectangle != null : "Rectangle must not be null"; 
-			assert firstSide != null : "First side must not be null"; 
+			assert rectangle != null : AssertMessages.notNullParameter(0);
+			assert firstSide != null : AssertMessages.notNullParameter(1);
 			this.factory = rectangle.getGeomFactory();
 			this.firstSide = firstSide;
 			this.x0 = rectangle.getMinX();
@@ -733,7 +737,7 @@ public interface Rectangle2ai<
 		 * @param rectangle is the rectangle to iterate.
 		 */
 		RectanglePathIterator(Rectangle2ai<?, ?, E, ?, ?, ?> rectangle) {
-			assert rectangle != null : "Rectangle must not be null"; 
+			assert rectangle != null : AssertMessages.notNullParameter();
 			this.rectangle = rectangle;
 			if (rectangle.isEmpty()) {
 				this.index = 5;
@@ -856,8 +860,8 @@ public interface Rectangle2ai<
 		 * @param transform the transformation to apply on the rectangle.
 		 */
 		TransformedRectanglePathIterator(Rectangle2ai<?, ?, E, ?, ?, ?> rectangle, Transform2D transform) {
-			assert rectangle != null : "Rectangle must not be null"; 
-			assert transform != null : "Transformation must not be null"; 
+			assert rectangle != null : AssertMessages.notNullParameter(0);
+			assert transform != null : AssertMessages.notNullParameter(1);
 			this.rectangle = rectangle;
 			this.transform = transform;
 			if (rectangle.isEmpty()) {

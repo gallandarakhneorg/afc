@@ -148,6 +148,7 @@ class CacheProviderStub extends BufferedAttributeCollection {
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class BufferedAttributeCollectionTest extends AbstractAttributeCollectionTest<CacheProviderStub> {
 
 	/**

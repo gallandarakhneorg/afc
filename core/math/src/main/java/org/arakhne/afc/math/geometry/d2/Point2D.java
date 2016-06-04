@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 2D Point.
  *
@@ -154,7 +155,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default double getDistanceSquared(Point2D<?, ?> point) {
-		assert point != null : "Point must not be null"; 
+		assert point != null : AssertMessages.notNullParameter();
 		return getDistanceSquaredPointPoint(getX(), getY(), point.getX(), point.getY());
 	}
 
@@ -165,7 +166,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default double getDistance(Point2D<?, ?> point) {
-		assert point != null : "Point must not be null"; 
+		assert point != null : AssertMessages.notNullParameter();
 		return getDistancePointPoint(getX(), getY(), point.getX(), point.getY());
 	}
 
@@ -177,7 +178,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default double getDistanceL1(Point2D<?, ?> point) {
-		assert point != null : "Point must not be null"; 
+		assert point != null : AssertMessages.notNullParameter();
 		return getDistanceL1PointPoint(getX(), getY(), point.getX(), point.getY());
 	}
 
@@ -190,7 +191,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default double getDistanceLinf(Point2D<?, ?> point) {
-		assert point != null : "Point must not be null"; 
+		assert point != null : AssertMessages.notNullParameter();
 		return getDistanceLinfPointPoint(getX(), getY(), point.getX(), point.getY());
 	}
 
@@ -202,7 +203,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default int getIdistanceL1(Point2D<?, ?> point) {
-		assert point != null : "Point must not be null"; 
+		assert point != null : AssertMessages.notNullParameter();
 		return Math.abs(ix() - point.ix()) + Math.abs(iy() - point.iy());
 	}
 
@@ -215,7 +216,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default int getIdistanceLinf(Point2D<?, ?> point) {
-		assert point != null : "Point must not be null"; 
+		assert point != null : AssertMessages.notNullParameter();
 		return Math.max(Math.abs(ix() - point.ix()), Math.abs(iy() - point.iy()));
 	}
 
@@ -225,8 +226,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @param vector the second tuple
 	 */
 	default void add(Point2D<?, ?> point, Vector2D<?, ?> vector) {
-		assert point != null : "Point must not be null"; 
-		assert vector != null : "Vector must not be null"; 
+		assert point != null : AssertMessages.notNullParameter(0);
+		assert vector != null : AssertMessages.notNullParameter(1);
 		set(point.getX() + vector.getX(),
 				point.getY() + vector.getY());
 	}
@@ -237,8 +238,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @param point the second tuple
 	 */
 	default void add(Vector2D<?, ?> vector, Point2D<?, ?> point) {
-		assert point != null : "Point must not be null"; 
-		assert vector != null : "Vector must not be null"; 
+		assert point != null : AssertMessages.notNullParameter(0);
+		assert vector != null : AssertMessages.notNullParameter(1);
 		set(vector.getX() + point.getX(),
 				vector.getY() + point.getY());
 	}
@@ -248,7 +249,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @param vector the other tuple
 	 */
 	default void add(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must not be null"; 
+		assert vector != null : AssertMessages.notNullParameter();
 		set(getX() + vector.getX(),
 				getY() + vector.getY());
 	}
@@ -261,8 +262,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @param point the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector2D<?, ?> vector, Point2D<?, ?> point) {
-		assert point != null : "Point must not be null"; 
-		assert vector != null : "Vector must not be null"; 
+		assert point != null : AssertMessages.notNullParameter(1);
+		assert vector != null : AssertMessages.notNullParameter(2);
 		set(scale * vector.getX() + point.getX(),
 				scale * vector.getY() + point.getY());
 	}
@@ -275,8 +276,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @param point the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector2D<?, ?> vector, Point2D<?, ?> point) {
-		assert point != null : "Point must not be null"; 
-		assert vector != null : "Vector must not be null"; 
+		assert point != null : AssertMessages.notNullParameter(1);
+		assert vector != null : AssertMessages.notNullParameter(2);
 		set(scale * vector.getX() + point.getX(),
 				scale * vector.getY() + point.getY());
 	}
@@ -289,8 +290,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(int scale, Point2D<?, ?> point, Vector2D<?, ?> vector) {
-		assert point != null : "Point must not be null"; 
-		assert vector != null : "Vector must not be null"; 
+		assert point != null : AssertMessages.notNullParameter(1);
+		assert vector != null : AssertMessages.notNullParameter(2);
 		set(scale * point.getX() + vector.getX(),
 				scale * point.getY() + vector.getY());
 	}
@@ -303,8 +304,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(double scale, Point2D<?, ?> point, Vector2D<?, ?> vector) {
-		assert point != null : "Point must not be null"; 
-		assert vector != null : "Vector must not be null"; 
+		assert point != null : AssertMessages.notNullParameter(1);
+		assert vector != null : AssertMessages.notNullParameter(2);
 		set(scale * point.getX() + vector.getX(),
 				scale * point.getY() + vector.getY());
 	}
@@ -316,7 +317,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must not be null"; 
+		assert vector != null : AssertMessages.notNullParameter(1);
 		set(scale * getX() + vector.getX(),
 				scale * getY() + vector.getY());
 	}
@@ -328,7 +329,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must not be null"; 
+		assert vector != null : AssertMessages.notNullParameter(1);
 		set(scale * getX() + vector.getX(),
 				scale * getY() + vector.getY());
 	}
@@ -341,8 +342,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @param vector the second tuple
 	 */
 	default void sub(Point2D<?, ?> point, Vector2D<?, ?> vector) {
-		assert point != null : "Point must not be null"; 
-		assert vector != null : "Vector must not be null"; 
+		assert point != null : AssertMessages.notNullParameter(0);
+		assert vector != null : AssertMessages.notNullParameter(1);
 		set(point.getX() - vector.getX(),
 				point.getY() - vector.getY());
 	}
@@ -353,7 +354,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @param vector the other tuple
 	 */
 	default void sub(Vector2D<?, ?> vector) {
-		assert vector != null : "Vector must not be null"; 
+		assert vector != null : AssertMessages.notNullParameter();
 		set(getX() - vector.getX(),
 				getY() - vector.getY());
 	}
@@ -384,7 +385,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default RP operator_plus(Vector2D<?, ?> v) {
-		assert v != null : "Vector must be not null"; 
+		assert v != null : AssertMessages.notNullParameter();
 		return getGeomFactory().newPoint(getX() + v.getX(), getY() + v.getY());
 	}
 
@@ -413,7 +414,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default RP operator_minus(Vector2D<?, ?> v) {
-		assert v != null : "Vector must be not null"; 
+		assert v != null : AssertMessages.notNullParameter();
 		return getGeomFactory().newPoint(getX() - v.getX(), getY() - v.getY());
 	}
 
@@ -429,7 +430,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default RV operator_minus(Point2D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; 
+		assert pt != null : AssertMessages.notNullParameter();
 		return getGeomFactory().newVector(getX() - pt.getX(), getY() - pt.getY());
 	}
 
@@ -568,7 +569,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @see #turnRight(double)
 	 */
 	default void turn(double angle, Point2D<?, ?> pointToTurn) {
-		assert pointToTurn != null : "Point to turn must be not null"; 
+		assert pointToTurn != null : AssertMessages.notNullParameter(1);
 		final double sin = Math.sin(angle);
 		final double cos = Math.cos(angle);
 		final double x =  cos * pointToTurn.getX() - sin * pointToTurn.getY();
@@ -592,8 +593,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @see #turnRight(double)
 	 */
 	default void turn(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
-		assert pointToTurn != null : "Point to turn must be not null"; 
-		assert origin != null : "Origin point must be not null"; 
+		assert pointToTurn != null : AssertMessages.notNullParameter(1);
+		assert origin != null : AssertMessages.notNullParameter(2);
 		final double sin = Math.sin(angle);
 		final double cos = Math.cos(angle);
 		final double vx = pointToTurn.getX() - origin.getX();
@@ -632,7 +633,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @see #turnRight(double)
 	 */
 	default void turnLeft(double angle, Point2D<?, ?> pointToTurn) {
-		assert pointToTurn != null : "Point to turn must be not null"; 
+		assert pointToTurn != null : AssertMessages.notNullParameter(1);
 		final double sin = Math.sin(angle);
 		final double cos = Math.cos(angle);
 		final double x;
@@ -662,8 +663,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @see #turnRight(double)
 	 */
 	default void turnLeft(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
-		assert pointToTurn != null : "Point to turn must be not null"; 
-		assert origin != null : "Origin point must be not null"; 
+		assert pointToTurn != null : AssertMessages.notNullParameter(1);
+		assert origin != null : AssertMessages.notNullParameter(2);
 		final double sin = Math.sin(angle);
 		final double cos = Math.cos(angle);
 		final double vx = pointToTurn.getX() - origin.getX();

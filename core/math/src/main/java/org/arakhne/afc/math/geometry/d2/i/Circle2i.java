@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A circle with 2 integer numbers.
  *
@@ -55,7 +56,7 @@ public class Circle2i extends AbstractShape2i<Circle2i>
 	 * @param radius the radius of the circle.
 	 */
 	public Circle2i(Point2D<?, ?> center, int radius) {
-		assert center != null : "Center point must be not null"; 
+		assert center != null : AssertMessages.notNullParameter(0);
 		set(center.ix(), center.iy(), radius);
 	}
 
@@ -72,7 +73,7 @@ public class Circle2i extends AbstractShape2i<Circle2i>
 	 * @param circle the circle to copy.
 	 */
 	public Circle2i(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; 
+		assert circle != null : AssertMessages.notNullParameter();
 		set(circle.getX(), circle.getY(), circle.getRadius());
 	}
 
@@ -90,13 +91,12 @@ public class Circle2i extends AbstractShape2i<Circle2i>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("center: ("); //$NON-NLS-1$
 		b.append(getX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY());
-		b.append(";"); 
+		b.append(")\nradius: "); //$NON-NLS-1$
 		b.append(getRadius());
-		b.append("]"); 
 		return b.toString();
 	}
 
@@ -136,7 +136,7 @@ public class Circle2i extends AbstractShape2i<Circle2i>
 
 	@Override
 	public void setRadius(int radius) {
-		assert radius >= 0 : "Radius must be positive or equal"; 
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter();
 		if (this.radius != radius) {
 			this.radius = radius;
 			fireGeometryChange();
@@ -145,7 +145,7 @@ public class Circle2i extends AbstractShape2i<Circle2i>
 
 	@Override
 	public void set(int x, int y, int radius) {
-		assert radius >= 0 : "Radius must be positive or equal"; 
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
 		if (this.centerX != x || this.centerY != y || this.radius != radius) {
 			this.centerX = x;
 			this.centerY = y;

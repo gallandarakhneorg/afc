@@ -64,10 +64,10 @@ public class LinearStochasticLaw extends StochasticLaw {
 	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
 	 */
 	public LinearStochasticLaw(Map<String, String> parameters) throws LawParameterNotFoundException {
-		this.ascendent = paramBoolean("ascendent", parameters); 
-		this.minX = paramFloat("maxX", parameters); 
-		this.maxX = paramFloat("maxX", parameters); 
-		this.delta = paramFloat("delta", parameters); 
+		this.ascendent = paramBoolean("ascendent", parameters); //$NON-NLS-1$
+		this.minX = paramFloat("maxX", parameters); //$NON-NLS-1$
+		this.maxX = paramFloat("maxX", parameters); //$NON-NLS-1$
+		this.delta = paramFloat("delta", parameters); //$NON-NLS-1$
 	}
 
 	/** Create a ascendent linear distribution.
@@ -131,17 +131,17 @@ public class LinearStochasticLaw extends StochasticLaw {
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("LINEAR(["); 
+		b.append("LINEAR(["); //$NON-NLS-1$
 		b.append(this.minX);
 		b.append(';');
 		b.append(this.maxX);
 		b.append(';');
 		if (this.ascendent) {
-			b.append("asc"); 
+			b.append("asc"); //$NON-NLS-1$
 		} else {
-			b.append("desc"); 
+			b.append("desc"); //$NON-NLS-1$
 		}
-		b.append("])"); 
+		b.append("])"); //$NON-NLS-1$
 		return b.toString();
 	}
 

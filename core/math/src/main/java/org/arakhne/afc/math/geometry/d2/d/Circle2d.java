@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A circle with 2 double precision floating-point numbers.
  *
@@ -73,7 +74,7 @@ public class Circle2d
 	 * @param circle the circle to copy.
 	 */
 	public Circle2d(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
-		assert circle != null : "Circle must be not null"; 
+		assert circle != null : AssertMessages.notNullParameter();
 		set(circle.getX(), circle.getY(), circle.getRadius());
 	}
 
@@ -92,13 +93,12 @@ public class Circle2d
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("center: ("); //$NON-NLS-1$
 		b.append(getX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY());
-		b.append(";"); 
+		b.append(")\nradius: "); //$NON-NLS-1$
 		b.append(getRadius());
-		b.append("]"); 
 		return b.toString();
 	}
 
@@ -146,7 +146,7 @@ public class Circle2d
 
 	@Override
 	public void set(double x, double y, double radius) {
-		assert radius >= 0. : "Radius must be positive or zero"; 
+		assert radius >= 0. : AssertMessages.positiveOrZeroParameter(2);
 		if (this.centerX != x || this.centerY != y || this.radius != radius) {
 			this.centerX = x;
 			this.centerY = y;

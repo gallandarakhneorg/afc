@@ -202,7 +202,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 		if (this.children != null) {
 			return this.children.get(index);
 		}
-		throw new IndexOutOfBoundsException(index + ">= 3"); 
+		throw new IndexOutOfBoundsException();
 	}
 
 	/** Move this node in the given new parent node.

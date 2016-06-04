@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.i;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.ai.RectangularShape2ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A rectangular shape with 2 integer numbers.
  *
@@ -57,7 +58,7 @@ public abstract class AbstractRectangularShape2i<IT extends AbstractRectangularS
 	 * @param shape the shape to copy.
 	 */
 	public AbstractRectangularShape2i(RectangularShape2ai<?, ?, ?, ?, ?, ?> shape) {
-		assert shape != null : "Shape must be not null"; 
+		assert shape != null : AssertMessages.notNullParameter();
 		this.minx = shape.getMinX();
 		this.miny = shape.getMinY();
 		this.maxx = shape.getMaxX();
@@ -176,15 +177,15 @@ public abstract class AbstractRectangularShape2i<IT extends AbstractRectangularS
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getMinX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMinY());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getMaxX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMaxY());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 

@@ -28,8 +28,10 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Rectangle with 2 double precision floating-point FX properties.
  *
@@ -73,8 +75,8 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	 * @param max is the max corner of the rectangle.
 	 */
 	public Rectangle2dfx(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert min != null : "Minimum corner must be not null"; 
-		assert max != null : "Maximum corner must be not null"; 
+		assert min != null : AssertMessages.notNullParameter(0);
+		assert max != null : AssertMessages.notNullParameter(1);
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 
@@ -85,8 +87,8 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	 * @param height height of the rectangle.
 	 */
 	public Rectangle2dfx(double x, double y, double width, double height) {
-		assert width >= 0. : "Width must be positive or zero"; 
-		assert height >= 0. : "HeightWidth must be positive or zero"; 
+		assert width >= 0. : AssertMessages.positiveOrZeroParameter(2);
+		assert height >= 0. : AssertMessages.positiveOrZeroParameter(3);
 		setFromCorners(x, y, x + width, y + height);
 	}
 
@@ -137,15 +139,15 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getMinX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMinY());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getMaxX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMaxY());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 
@@ -185,7 +187,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	@Pure
 	public DoubleProperty minXProperty() {
 		if (this.minX == null) {
-			this.minX = new SimpleDoubleProperty(this, "minX") { 
+			this.minX = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_X) {
 				@Override
 				protected void invalidated() {
 					final double currentMin = get();
@@ -218,7 +220,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	@Pure
 	public DoubleProperty maxXProperty() {
 		if (this.maxX == null) {
-			this.maxX = new SimpleDoubleProperty(this, "maxX") { 
+			this.maxX = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_X) {
 				@Override
 				protected void invalidated() {
 					final double currentMax = get();
@@ -251,7 +253,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	@Pure
 	public DoubleProperty minYProperty() {
 		if (this.minY == null) {
-			this.minY = new SimpleDoubleProperty(this, "minY") { 
+			this.minY = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_Y) {
 				@Override
 				protected void invalidated() {
 					final double currentMin = get();
@@ -284,7 +286,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	@Pure
 	public DoubleProperty maxYProperty() {
 		if (this.maxY == null) {
-			this.maxY = new SimpleDoubleProperty(this, "maxY") { 
+			this.maxY = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
 				@Override
 				protected void invalidated() {
 					final double currentMax = get();
@@ -311,7 +313,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	@Pure
 	public DoubleProperty widthProperty() {
 		if (this.width == null) {
-			this.width = new ReadOnlyDoubleWrapper(this, "width"); 
+			this.width = new ReadOnlyDoubleWrapper(this, MathFXAttributeNames.WIDTH);
 			this.width.bind(Bindings.subtract(maxXProperty(), minXProperty()));
 		}
 		return this.width;
@@ -329,7 +331,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	@Pure
 	public DoubleProperty heightProperty() {
 		if (this.height == null) {
-			this.height = new ReadOnlyDoubleWrapper(this, "height"); 
+			this.height = new ReadOnlyDoubleWrapper(this, MathFXAttributeNames.HEIGHT);
 			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
 		}
 		return this.height;
@@ -338,7 +340,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	@Override
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
+			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			},

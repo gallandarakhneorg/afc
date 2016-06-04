@@ -59,8 +59,8 @@ public class LogNormalStochasticLaw extends StochasticLaw {
 	 * @throws OutsideDomainException when standardDevisition is negative or nul.
 	 */
 	public LogNormalStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
-		this.mean = paramFloat("mean", parameters); 
-		this.standardDeviation = paramFloat("standardDeviation", parameters); 
+		this.mean = paramFloat("mean", parameters); //$NON-NLS-1$
+		this.standardDeviation = paramFloat("standardDeviation", parameters); //$NON-NLS-1$
 		if (this.standardDeviation <= 0) {
 			throw new OutsideDomainException(this.standardDeviation);
 		}
@@ -95,9 +95,9 @@ public class LogNormalStochasticLaw extends StochasticLaw {
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("LOGNORMAL(mean="); 
+		b.append("LOGNORMAL(mean="); //$NON-NLS-1$
 		b.append(this.mean);
-		b.append(";deviation="); 
+		b.append(";deviation="); //$NON-NLS-1$
 		b.append(this.standardDeviation);
 		b.append(')');
 		return b.toString();

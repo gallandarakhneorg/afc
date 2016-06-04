@@ -107,6 +107,7 @@ class ReadOnlyCacheProviderStub extends AbstractBufferedAttributeProvider {
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class AbstractBufferedAttributeProviderTest extends AbstractAttributeProviderTest<ReadOnlyCacheProviderStub> {
 
 	/**

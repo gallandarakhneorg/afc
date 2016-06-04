@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
 import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A round rectangle with 2 double precision floating-point numbers.
  *
@@ -100,19 +101,18 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("bounds: ("); //$NON-NLS-1$
 		b.append(getMinX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMinY());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getMaxX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMaxY());
-		b.append("|"); 
+		b.append(")\narcWidth: "); //$NON-NLS-1$
 		b.append(getArcWidth());
-		b.append("x"); 
+		b.append("\narcHeight: "); //$NON-NLS-1$
 		b.append(getArcHeight());
-		b.append("]"); 
 		return b.toString();
 	}
 
@@ -130,13 +130,13 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 
 	@Override
 	public void setArcWidth(double arcWidth) {
-		assert arcWidth >= 0 : "Arc width must be positive or zero"; 
+		assert arcWidth >= 0 : AssertMessages.positiveOrZeroParameter();
 		this.arcWidth = Math.min(getWidth() / 2, arcWidth);
 	}
 
 	@Override
 	public void setArcHeight(double arcHeight) {
-		assert arcHeight >= 0 : "Arc height must be positive or zero"; 
+		assert arcHeight >= 0 : AssertMessages.positiveOrZeroParameter();
 		this.arcHeight = Math.min(getHeight() / 2, arcHeight);
 	}
 

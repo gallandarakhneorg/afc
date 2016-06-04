@@ -27,9 +27,11 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A 2D segment/line with 2 integer FX properties.
  *
@@ -120,22 +122,22 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getX1());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY1());
-		b.append("|"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getX2());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY2());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 
 	@Pure
 	@Override
 	public Shape2ifx<?> createTransformedShape(Transform2D transform) {
-		assert transform != null : "Transformation must be not null"; 
+		assert transform != null : AssertMessages.notNullParameter();
 		final Point2ifx point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
 		final int x1 = point.ix();
@@ -186,7 +188,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	public IntegerProperty x1Property() {
 		if (this.ax == null) {
-			this.ax = new SimpleIntegerProperty(this, "x1"); 
+			this.ax = new SimpleIntegerProperty(this, MathFXAttributeNames.X1);
 		}
 		return this.ax;
 	}
@@ -204,7 +206,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	public IntegerProperty y1Property() {
 		if (this.ay == null) {
-			this.ay = new SimpleIntegerProperty(this, "y1"); 
+			this.ay = new SimpleIntegerProperty(this, MathFXAttributeNames.Y1);
 		}
 		return this.ay;
 	}
@@ -222,7 +224,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	public IntegerProperty x2Property() {
 		if (this.bx == null) {
-			this.bx = new SimpleIntegerProperty(this, "x2"); 
+			this.bx = new SimpleIntegerProperty(this, MathFXAttributeNames.X2);
 		}
 		return this.bx;
 	}
@@ -240,7 +242,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	public IntegerProperty y2Property() {
 		if (this.by == null) {
-			this.by = new SimpleIntegerProperty(this, "y2"); 
+			this.by = new SimpleIntegerProperty(this, MathFXAttributeNames.Y2);
 		}
 		return this.by;
 	}
@@ -258,7 +260,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Override
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
+			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			},

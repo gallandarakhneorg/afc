@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A triangle with 2 double precision floating-point numbers.
  *
@@ -66,9 +67,9 @@ public class Triangle2d
 	 * @param p3 third point.
 	 */
 	public Triangle2d(Point2D<?, ?> p1, Point2D<?, ?> p2, Point2D<?, ?> p3) {
-		assert p1 != null : "Point 1 must not be null"; 
-		assert p2 != null : "Point 1 must not be null"; 
-		assert p3 != null : "Point 1 must not be null"; 
+		assert p1 != null : AssertMessages.notNullParameter(0);
+		assert p2 != null : AssertMessages.notNullParameter(1);
+		assert p3 != null : AssertMessages.notNullParameter(2);
 		set(p1.getX(), p1.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY());
 	}
 
@@ -88,7 +89,7 @@ public class Triangle2d
 	 * @param t the triangle to copy.
 	 */
 	public Triangle2d(Triangle2afp<?, ?, ?, ?, ?, ?> t) {
-		assert t != null : "Triangle must be not null"; 
+		assert t != null : AssertMessages.notNullParameter();
 		set(t.getX1(), t.getY1(), t.getX2(), t.getY2(), t.getX3(), t.getY3());
 	}
 
@@ -110,19 +111,19 @@ public class Triangle2d
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getX1());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY1());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getX2());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY2());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getX3());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getY3());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 

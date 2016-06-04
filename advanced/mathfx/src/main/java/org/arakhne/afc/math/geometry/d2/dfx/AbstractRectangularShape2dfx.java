@@ -27,7 +27,9 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Abstract rectangular shape with 2 double precision floating-point FX properties.
  *
@@ -78,7 +80,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	 * @param shape the shape to copy.
 	 */
 	public AbstractRectangularShape2dfx(RectangularShape2afp<?, ?, ?, ?, ?, ?> shape) {
-		assert shape != null : "Shape must be not null"; 
+		assert shape != null : AssertMessages.notNullParameter();
 		setFromCorners(shape.getMinX(), shape.getMinY(), shape.getMaxX(), shape.getMaxY());
 	}
 
@@ -142,7 +144,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Pure
 	public DoubleProperty minXProperty() {
 		if (this.minX == null) {
-			this.minX = new SimpleDoubleProperty(this, "minX") { 
+			this.minX = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_X) {
 				@Override
 				protected void invalidated() {
 					final double currentMin = get();
@@ -175,7 +177,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Pure
 	public DoubleProperty maxXProperty() {
 		if (this.maxX == null) {
-			this.maxX = new SimpleDoubleProperty(this, "maxX") { 
+			this.maxX = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_X) {
 				@Override
 				protected void invalidated() {
 					final double currentMax = get();
@@ -208,7 +210,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Pure
 	public DoubleProperty minYProperty() {
 		if (this.minY == null) {
-			this.minY = new SimpleDoubleProperty(this, "minY") { 
+			this.minY = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_Y) {
 				@Override
 				protected void invalidated() {
 					final double currentMin = get();
@@ -241,7 +243,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Pure
 	public DoubleProperty maxYProperty() {
 		if (this.maxY == null) {
-			this.maxY = new SimpleDoubleProperty(this, "maxY") { 
+			this.maxY = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
 				@Override
 				protected void invalidated() {
 					final double currentMax = get();
@@ -268,7 +270,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Pure
 	public DoubleProperty widthProperty() {
 		if (this.width == null) {
-			this.width = new SimpleDoubleProperty(this, "width"); 
+			this.width = new SimpleDoubleProperty(this, MathFXAttributeNames.WIDTH);
 			this.width.bind(Bindings.subtract(maxXProperty(), minXProperty()));
 		}
 		return this.width;
@@ -286,7 +288,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Pure
 	public DoubleProperty heightProperty() {
 		if (this.height == null) {
-			this.height = new SimpleDoubleProperty(this, "height"); 
+			this.height = new SimpleDoubleProperty(this, MathFXAttributeNames.HEIGHT);
 			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
 		}
 		return this.height;
@@ -308,22 +310,22 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getMinX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMinY());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getMaxX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMaxY());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 
 	@Override
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); 
+			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				return toBoundingBox();
 			},

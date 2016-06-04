@@ -28,6 +28,7 @@ import java.util.List;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Container for grouping of shapes.
  *
@@ -64,7 +65,7 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 	 * @param shapes the shapes to add into the multishape.
 	 */
 	public MultiShape2d(@SuppressWarnings("unchecked") T... shapes) {
-		assert shapes != null : "Shape array must be not null"; 
+		assert shapes != null : AssertMessages.notNullParameter();
 		addAll(Arrays.asList(shapes));
 	}
 
@@ -73,7 +74,7 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 	 * @param shapes the shapes to add into the multishape.
 	 */
 	public MultiShape2d(Iterable<? extends T> shapes) {
-		assert shapes != null : "Shape list must be not null"; 
+		assert shapes != null : AssertMessages.notNullParameter();
 		for (final T element : shapes) {
 			add(element);
 		}
@@ -136,7 +137,7 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 	@Pure
 	@Override
 	public void toBoundingBox(Rectangle2d box) {
-		assert box != null : "Rectangle must be not null"; 
+		assert box != null : AssertMessages.notNullParameter();
 		if (this.bounds == null) {
 			this.bounds = getGeomFactory().newBox();
 			MultiShape2afp.super.toBoundingBox(this.bounds);

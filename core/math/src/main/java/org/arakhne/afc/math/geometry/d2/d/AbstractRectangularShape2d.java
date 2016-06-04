@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.d;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Abstract rectangular shape with 2 double precision floating-point numbers.
  *
@@ -57,7 +58,7 @@ public abstract class AbstractRectangularShape2d<IT extends AbstractRectangularS
 	 * @param rect the rectangular shape to copy.
 	 */
 	public AbstractRectangularShape2d(RectangularShape2afp<?, ?, ?, ?, ?, ?> rect) {
-		assert rect != null : "Shape must be not null"; 
+		assert rect != null : AssertMessages.notNullParameter();
 		this.minx = rect.getMinX();
 		this.miny = rect.getMinY();
 		this.maxx = rect.getMaxX();
@@ -177,15 +178,15 @@ public abstract class AbstractRectangularShape2d<IT extends AbstractRectangularS
 	@Override
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
-		b.append("["); 
+		b.append("("); //$NON-NLS-1$
 		b.append(getMinX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMinY());
-		b.append(";"); 
+		b.append(")-("); //$NON-NLS-1$
 		b.append(getMaxX());
-		b.append(";"); 
+		b.append(", "); //$NON-NLS-1$
 		b.append(getMaxY());
-		b.append("]"); 
+		b.append(")"); //$NON-NLS-1$
 		return b.toString();
 	}
 }

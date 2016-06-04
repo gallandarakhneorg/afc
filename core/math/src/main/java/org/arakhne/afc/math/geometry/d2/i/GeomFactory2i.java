@@ -24,6 +24,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.GeomFactory2ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Factory of geometrical elements.
  *
@@ -41,7 +42,7 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Vec
 
 	@Override
 	public Point2i convertToPoint(Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; 
+		assert point != null : AssertMessages.notNullParameter();
 		try {
 			return (Point2i) point;
 		} catch (Throwable exception) {
@@ -51,19 +52,19 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Vec
 
 	@Override
 	public Point2i convertToPoint(Vector2D<?, ?> vector) {
-		assert vector != null : "Point must be not null"; 
+		assert vector != null : AssertMessages.notNullParameter();
 		return new Point2i(vector.ix(), vector.iy());
 	}
 
 	@Override
 	public Vector2i convertToVector(Point2D<?, ?> point) {
-		assert point != null : "Point must be not null"; 
+		assert point != null : AssertMessages.notNullParameter();
 		return new Vector2i(point.ix(), point.iy());
 	}
 
 	@Override
 	public Vector2i convertToVector(Vector2D<?, ?> vector) {
-		assert vector != null : "Point must be not null"; 
+		assert vector != null : AssertMessages.notNullParameter();
 		Vector2i vv;
 		try {
 			vv = (Vector2i) vector;
@@ -105,7 +106,7 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Vec
 
 	@Override
 	public Path2i newPath(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; 
+		assert rule != null : AssertMessages.notNullParameter();
 		return new Path2i(rule);
 	}
 
@@ -116,8 +117,8 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Vec
 
 	@Override
 	public Rectangle2i newBox(int x, int y, int width, int height) {
-		assert width >= 0 : "Width must be positive or zero"; 
-		assert height >= 0 : "Height must be positive or zero"; 
+		assert width >= 0 : AssertMessages.positiveOrZeroParameter(2);
+		assert height >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		return new Rectangle2i(x, y, width, height);
 	}
 

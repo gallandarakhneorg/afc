@@ -35,6 +35,7 @@ import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.math.graph.GraphSegment;
 import org.arakhne.afc.util.ListUtil;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 
 /** This class provides an implementation of the
@@ -300,7 +301,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	protected double estimate(PT p1, PT p2) {
 		assert p1 != null && p2 != null;
 		if (this.heuristic == null) {
-			throw new IllegalStateException("no heuristic found"); 
+			throw new IllegalStateException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 		return this.heuristic.evaluate(p1, p2);
 	}
@@ -372,7 +373,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		try {
 			return (GP) new GraphPath(segment, startPoint);
 		} catch (Throwable e) {
-			throw new IllegalStateException("no path factory found", e); 
+			throw new IllegalStateException(Locale.getString("E2"), e); //$NON-NLS-1$
 		}
 	}
 
@@ -395,7 +396,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		try {
 			return path.add(segment);
 		} catch (Throwable e) {
-			throw new IllegalStateException("no path factory found", e); 
+			throw new IllegalStateException("no path factory found", e); //$NON-NLS-1$
 		}
 	}
 
@@ -736,19 +737,19 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		@Override
 		public String toString() {
 			final StringBuilder b = new StringBuilder();
-			b.append("{"); 
+			b.append("{"); //$NON-NLS-1$
 			b.append(this.entryPoint.getClass().getName());
-			b.append("|"); 
+			b.append("|"); //$NON-NLS-1$
 			b.append(System.identityHashCode(this.entryPoint));
-			b.append("|"); 
+			b.append("|"); //$NON-NLS-1$
 			b.append(this.costToReach);
-			b.append("|"); 
+			b.append("|"); //$NON-NLS-1$
 			b.append(this.estimatedCost);
-			b.append("|"); 
+			b.append("|"); //$NON-NLS-1$
 			b.append(this.costToReach + this.estimatedCost);
-			b.append("|"); 
+			b.append("|"); //$NON-NLS-1$
 			b.append(this.entryPoint.toString());
-			b.append("}"); 
+			b.append("}"); //$NON-NLS-1$
 			return b.toString();
 		}
 
