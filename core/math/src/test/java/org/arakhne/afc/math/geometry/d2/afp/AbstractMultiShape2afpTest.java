@@ -36,6 +36,8 @@ import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
@@ -1159,6 +1161,7 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 	}
 	
 	@Test
+    @Ignore
 	public void getClosestPointToTriangle2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createTestTriangle(0, 0)));
 		assertFpPointEquals(5, 9, this.shape.getClosestPointTo(createTestTriangle(2, 10)));

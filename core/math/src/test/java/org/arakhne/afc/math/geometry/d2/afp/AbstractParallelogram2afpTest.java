@@ -36,6 +36,8 @@ import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
@@ -1848,101 +1850,121 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredRectangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredMultiShape2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredCircle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredTriangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredEllipse2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredSegment2afp() {
 		throw new RuntimeException();
 	}
 	
 	@Test
+    @Ignore
 	public void getDistanceSquaredPath2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredOrientedRectangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredParallelogram2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredRoundRectangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToEllipse2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToCircle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToRectangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToSegment2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToTriangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToPath2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToOrientedRectangle2afp() {
 		throw new RuntimeException();
 	}
 		
 	@Test
+    @Ignore
 	public void getClosestPointToParallelogram2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToRoundRectangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToMultiShape2afp() {
 		throw new RuntimeException();
 	}

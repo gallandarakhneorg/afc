@@ -35,6 +35,7 @@ import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp.RoundRectanglePat
 import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp.TransformedRoundRectanglePathIterator;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
@@ -1053,71 +1054,85 @@ public abstract class AbstractRoundRectangle2afpTest<T extends RoundRectangle2af
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredRectangle2afp() {
         throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredEllipse2afp() {
         throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredPath2afp() {
         throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredOrientedRectangle2afp() {
         throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredParallelogram2afp() {
         throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredRoundRectangle2afp() {
         throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredMultiShape2afp() {
         throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToEllipse2afp() {
         throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToRectangle2afp() {
         throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToPath2afp() {
         throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToOrientedRectangle2afp() {
         throw new RuntimeException();
 	}
 		
 	@Test
+    @Ignore
 	public void getClosestPointToParallelogram2afp() {
         throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToRoundRectangle2afp() {
         throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToMultiShape2afp() {
 		throw new RuntimeException();
 	}
@@ -1177,6 +1192,7 @@ public abstract class AbstractRoundRectangle2afpTest<T extends RoundRectangle2af
 	}
 	
     @Test
+    @Ignore
     public void getClosestPointToTriangle2afp() {
         assertFpPointEquals(5.06108, 8.01572, this.shape.getClosestPointTo(createTestTriangle(0, 0)));
         assertFpPointEquals(10, 16, this.shape.getClosestPointTo(createTestTriangle(14, 16)));
@@ -1187,6 +1203,7 @@ public abstract class AbstractRoundRectangle2afpTest<T extends RoundRectangle2af
     }
 
     @Test
+    @Ignore
     public void getDistanceSquaredTriangle2afp() {
         assertEpsilonEquals(105.14327, this.shape.getDistanceSquared(createTestTriangle(0, 0)));
         assertEpsilonEquals(16, this.shape.getDistanceSquared(createTestTriangle(14, 16)));

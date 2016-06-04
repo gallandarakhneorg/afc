@@ -1551,101 +1551,121 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredRectangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredCircle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredTriangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredEllipse2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredSegment2afp() {
 		throw new RuntimeException();
 	}
 	
 	@Test
+    @Ignore
 	public void getDistanceSquaredPath2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredOrientedRectangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredMultiShape2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredParallelogram2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredRoundRectangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToEllipse2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToCircle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToRectangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToSegment2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToTriangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToPath2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToOrientedRectangle2afp() {
 		throw new RuntimeException();
 	}
 		
 	@Test
+    @Ignore
 	public void getClosestPointToParallelogram2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToRoundRectangle2afp() {
 		throw new RuntimeException();
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToMultiShape2afp() {
         throw new RuntimeException();
 	}
