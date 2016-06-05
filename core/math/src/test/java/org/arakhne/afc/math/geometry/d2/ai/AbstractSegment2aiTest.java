@@ -29,12 +29,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
+import org.junit.Test;
+
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.junit.Test;
+
+
 
 @SuppressWarnings("all")
 public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?, B>,
