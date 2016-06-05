@@ -472,35 +472,29 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		return false;
 	}
 
+    private   AttributeValue getValueForName(String name) {
+		final AttributeValue valueForName = null;
+		try {
+			return  extractValueFor(name);
+		} catch (AttributeException exception) {
+			//
+		}
+		return valueForName;
+	}
+
 	@Override
 	public boolean renameAttribute(String oldname, String newname, boolean overwrite) {
 		try {
-			AttributeValue valueForOldName = null;
-
-			try {
-				valueForOldName = extractValueFor(oldname);
-			} catch (AttributeException exception) {
-				//
-			}
-
+			final AttributeValue valueForOldName = getValueForName(oldname);
 			// The source attribute does not exist.
 			if (valueForOldName == null) {
 				return false;
 			}
-
-			AttributeValue oldValueForNewName = null;
-
-			try {
-				oldValueForNewName = extractValueFor(newname);
-			} catch (AttributeException exception) {
-				//
-			}
-
+			final AttributeValue oldValueForNewName = getValueForName(newname);
 			// Target attribute is existing and overwrite was disabled.
 			if ((!overwrite) && (oldValueForNewName != null)) {
 				return false;
 			}
-
 			final AttributeValue oldValueCopyForNewName = new AttributeValueImpl(oldValueForNewName);
 
 			removeValue(oldname);
