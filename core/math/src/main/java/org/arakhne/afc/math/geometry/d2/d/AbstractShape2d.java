@@ -100,15 +100,19 @@ public abstract class AbstractShape2d<T extends AbstractShape2d<?>> implements S
 			return true;
 		}
 		try {
-			try {
-				return equalsToShape((T) obj);
-			} catch (ClassCastException exception) {
-				return equalsToPathIterator((PathIterator2D<?>) obj);
-			}
+			return isEqualsToShape(obj);
 		} catch (Throwable exception) {
 			//
 		}
 		return false;
+	}
+
+	private boolean isEqualsToShape(Object obj) {
+		try {
+			return equalsToShape((T) obj);
+		} catch (ClassCastException exception) {
+			return equalsToPathIterator((PathIterator2D<?>) obj);
+		}
 	}
 
 	@Pure
