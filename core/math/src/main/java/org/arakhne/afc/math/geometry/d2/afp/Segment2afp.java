@@ -2493,12 +2493,11 @@ public interface Segment2afp<
 		final double oy1 = getY1();
 		final double ox2 = getX2();
 		final double oy2 = getY2();
-		final int magicFour = 4;
-		for (int i = 0; i < segments.length; i += magicFour) {
-			final double x1 = segments[i];
-			final double y1 = segments[i + 1];
-			final double x2 = segments[i + 2];
-			final double y2 = segments[i + 3];
+		for (int i = 0; i < segments.length;) {
+			final double x1 = segments[i++];
+			final double y1 = segments[i++];
+			final double x2 = segments[i++];
+			final double y2 = segments[i++];
 			final double distance = computeClosestPointToSegment(ox1, oy1, ox2, oy2, x1, y1, x2, y2, tmp);
 			if (distance < minDistance) {
 				minDistance = distance;
