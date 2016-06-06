@@ -1,34 +1,33 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2011 Janus Core Developers
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package org.arakhne.afc.math.geometry.d3.dfx;
 
-import org.arakhne.afc.math.geometry.d3.Tuple3D;
-import org.eclipse.xtext.xbase.lib.Pure;
+package org.arakhne.afc.math.geometry.d3.dfx;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
 
 /** 3D tuple with 3 double precision floating-point FX properties.
- * 
+ *
  * @param <RT> is the type of the data returned by the tuple.
  * @author $Author: sgalland$
  * @author $Author: olamotte$
@@ -46,7 +45,7 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 	/** x coordinate.
 	 */
 	DoubleProperty x;
-	
+
 	/** y coordinate.
 	 */
 	DoubleProperty y;
@@ -55,63 +54,63 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 	 */
 	DoubleProperty z;
 
-	/**
-	 */
+	/** Construct a zero tuple.
+     */
 	public Tuple3dfx() {
 		//
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z 
-	 */
+	/** Construct a tuple with the two given properties for its coordinates.
+     * @param x the property for the x coordinate.
+     * @param y the property for the y coordinate.
+     * @param z the property for the z coordinate.
+     */
 	public Tuple3dfx(DoubleProperty x, DoubleProperty y, DoubleProperty z) {
 		set(x, y, z);
 	}
 
-	/**
-	 * @param tuple is the tuple to copy.
-	 */
+	/** Constructor by copy.
+     * @param tuple is the tuple to copy.
+     */
 	public Tuple3dfx(Tuple3D<?> tuple) {
 		this(tuple.getX(), tuple.getY(), tuple.getZ());
 	}
 
-	/**
-	 * @param tuple is the tuple to copy.
-	 */
+	/** Constructor by copy.
+     * @param tuple is the tuple to copy.
+     */
 	public Tuple3dfx(int[] tuple) {
 		this((double) tuple[0], (double) tuple[1], (double) tuple[2]);
 	}
 
-	/**
-	 * @param tuple is the tuple to copy.
-	 */
+	/** Constructor by copy.
+     * @param tuple is the tuple to copy.
+     */
 	public Tuple3dfx(double[] tuple) {
 		this(tuple[0], tuple[1], tuple[2]);
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z 
-	 */
+	/** Construct a tuple with the three given coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     * @param z z coordinate.
+     */
 	public Tuple3dfx(int x, int y, int z) {
 		this((double) x, (double) y, (double) z);
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z 
-	 */
+	/** Construct a tuple with the three given coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     * @param z z coordinate.
+     */
 	public Tuple3dfx(double x, double y, double z) {
 		xProperty().set(x);
 		yProperty().set(y);
 		zProperty().set(z);
 	}
-	
-	/** Change the x and y properties.
+
+	/** Change the x, y and z properties.
 	 *
 	 * @param x the new x property.
 	 * @param y the new y property.
@@ -128,7 +127,7 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 	@Override
 	public RT clone() {
 		try {
-			RT clone = (RT) super.clone();
+			final RT clone = (RT) super.clone();
 			if (clone.x != null) {
 				clone.x = null;
 				clone.xProperty().set(getX());
@@ -142,8 +141,7 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 				clone.zProperty().set(getZ());
 			}
 			return clone;
-		}
-		catch(CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
 			throw new InternalError(e);
 		}
 	}
@@ -153,11 +151,9 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 	public boolean equals(Object t1) {
 		try {
 			return equals((Tuple3D<?>) t1);
-		}
-		catch(AssertionError e) {
+        } catch (AssertionError e) {
 			throw e;
-		}
-		catch (Throwable e2) {
+		} catch (Throwable e2) {
 			return false;
 		}
 	}
@@ -169,10 +165,10 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 		bits = 31 * bits + Double.doubleToLongBits(getX());
 		bits = 31 * bits + Double.doubleToLongBits(getY());
 		bits = 31 * bits + Double.doubleToLongBits(getZ());
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
-	
+
 	@Pure
 	@Override
 	public String toString() {
@@ -196,7 +192,7 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 		}
 		return this.x;
 	}
-	
+
 	/** Replies the y property.
 	 *
 	 * @return the y property.
@@ -240,22 +236,22 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 	public void setX(double x) {
 		xProperty().set(x);
 	}
-	
+
 	@Override
 	public double getY() {
 		return this.y == null ? 0 : this.y.doubleValue();
 	}
-	
+
 	@Override
 	public int iy() {
 		return this.y == null ? 0 : this.y.intValue();
 	}
-	
+
 	@Override
 	public void setY(int y) {
 		yProperty().set(y);
 	}
-	
+
 	@Override
 	public void setY(double y) {
 		yProperty().set(y);

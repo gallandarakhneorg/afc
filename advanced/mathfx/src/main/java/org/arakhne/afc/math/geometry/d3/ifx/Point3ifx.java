@@ -1,36 +1,35 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2011 Janus Core Developers
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d3.ifx;
+
+import javafx.beans.property.IntegerProperty;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
-import org.eclipse.xtext.xbase.lib.Pure;
-
-import javafx.beans.property.IntegerProperty;
 
 /** 3D Point with 3 integer FX properties.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -41,77 +40,78 @@ public class Point3ifx extends Tuple3ifx<Point3ifx> implements Point3D<Point3ifx
 
 	private static final long serialVersionUID = -1421615416984636660L;
 
-	/**
-	 */
+	/** Construct a zero point.
+     */
 	public Point3ifx() {
 		//
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
+	/** Construct a point with the given properties for its coordinates.
+     * @param x property for the x coordinate.
+     * @param y property for the y coordinate.
+     * @param z property for the z coordinate.
+     */
 	public Point3ifx(IntegerProperty x, IntegerProperty y, IntegerProperty z) {
 		super(x, y, z);
 	}
 
-	/**
-	 * @param tuple is the tuple to copy.
-	 */
+	/** Constructor by copy.
+     * @param tuple is the tuple to copy.
+     */
 	public Point3ifx(Tuple3D<?> tuple) {
 		super(tuple);
 	}
 
-	/**
-	 * @param tuple is the tuple to copy.
-	 */
+	/** Constructor by copy.
+     * @param tuple is the tuple to copy.
+     */
 	public Point3ifx(int[] tuple) {
 		super(tuple);
 	}
 
-	/**
-	 * @param tuple is the tuple to copy.
-	 */
+	/** Constructor by copy.
+     * @param tuple is the tuple to copy.
+     */
 	public Point3ifx(double[] tuple) {
 		super(tuple);
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
+	/** Construct a point with the given coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     * @param z z coordinate.
+     */
 	public Point3ifx(int x, int y, int z) {
-		super(x,y,z);
+		super(x, y, z);
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
+	/** Construct a point with the given coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     * @param z z coordinate.
+     */
 	public Point3ifx(float x, float y, float z) {
-		super(x,y,z);
+		super(x, y, z);
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 */
+	/** Construct a point with the given coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     * @param z z coordinate.
+     */
 	public Point3ifx(double x, double y, double z) {
-		super(x,y,z);
+		super(x, y, z);
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
+	/** Construct a point with the given coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     * @param z z coordinate.
+     */
 	public Point3ifx(long x, long y, long z) {
-		super(x,y,z);
+		super(x, y, z);
 	}
-	
+
 	@Override
 	public GeomFactory3ifx getGeomFactory() {
 		return GeomFactory3ifx.SINGLETON;
@@ -128,8 +128,9 @@ public class Point3ifx extends Tuple3ifx<Point3ifx> implements Point3D<Point3ifx
 			public GeomFactory3D<Vector3ifx, Point3ifx> getGeomFactory() {
 				return Point3ifx.this.getGeomFactory();
 			}
-			
+
 			@Override
+			@SuppressWarnings("checkstyle:superclone")
 			public Point3ifx clone() {
 				return Point3ifx.this.getGeomFactory().newPoint(
 						Point3ifx.this.ix(),
@@ -146,12 +147,12 @@ public class Point3ifx extends Tuple3ifx<Point3ifx> implements Point3D<Point3ifx
 			public int ix() {
 				return Point3ifx.this.ix();
 			}
-			
+
 			@Override
 			public double getY() {
 				return Point3ifx.this.getY();
 			}
-			
+
 			@Override
 			public int iy() {
 				return Point3ifx.this.iy();
@@ -166,7 +167,7 @@ public class Point3ifx extends Tuple3ifx<Point3ifx> implements Point3D<Point3ifx
 			public int iz() {
 				return Point3ifx.this.iz();
 			}
-			
+
 		};
 	}
 

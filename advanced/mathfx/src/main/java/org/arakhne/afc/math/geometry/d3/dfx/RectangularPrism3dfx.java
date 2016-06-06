@@ -1,29 +1,24 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d3.dfx;
-
-import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.afp.RectangularPrism3afp;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -31,8 +26,12 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Rectangle with 2 double precision floating-point FX properties.
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.afp.RectangularPrism3afp;
+
+/** Rectangular Prism with 3 double precision floating-point FX properties.
  *
  * @author $Author: sgalland$
  * @author $Author: olamotte$
@@ -43,8 +42,8 @@ import javafx.beans.property.SimpleObjectProperty;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx>
-	implements RectangularPrism3afp<Shape3dfx<?>, RectangularPrism3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
+public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx> implements
+        RectangularPrism3afp<Shape3dfx<?>, RectangularPrism3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
 
 	private static final long serialVersionUID = -1393290109630714626L;
 
@@ -59,21 +58,21 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	private DoubleProperty maxY;
 
 	private DoubleProperty maxZ;
-		
+
 	/** width property.
 	 */
 	private ReadOnlyDoubleWrapper width;
-	
+
 	/** height property.
 	 */
 	private ReadOnlyDoubleWrapper height;
-	
+
 	/** height property.
 	 */
 	private ReadOnlyDoubleWrapper depth;
 
-	/**
-	 */
+	/** Construct an empty rectangular prism.
+     */
 	public RectangularPrism3dfx() {
 		//
 	}
@@ -83,36 +82,36 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	 * @param max is the max corner of the rectangle.
 	 */
 	public RectangularPrism3dfx(Point3D<?, ?> min, Point3D<?, ?> max) {
-		assert (min != null) : "Minimum corner must be not null"; //$NON-NLS-1$
-		assert (max != null) : "Maximum corner must be not null"; //$NON-NLS-1$
+		assert min != null : "Minimum corner must be not null"; //$NON-NLS-1$
+		assert max != null : "Maximum corner must be not null"; //$NON-NLS-1$
 		setFromCorners(min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z 
-	 * @param width
-	 * @param height
-	 * @param depth 
-	 */
+	/** Construct a rectangle.
+     * @param x x coordinate of the minimum corner.
+     * @param y y coordinate of the minimum corner.
+     * @param z z coordinate of the minimum corner.
+     * @param width width of the rectangle.
+     * @param height height of the rectangle.
+     * @param depth depth of the rectangle.
+     */
 	public RectangularPrism3dfx(double x, double y, double z, double width, double height, double depth) {
-		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
-		assert (height >= 0.) : "HeightWidth must be positive or zero"; //$NON-NLS-1$
-		assert (depth >= 0.) : "HeightWidth must be positive or zero"; //$NON-NLS-1$
-		setFromCorners(x, y, z, x + width, y + height, z+depth);
+		assert width >= 0. : "Width must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0. : "HeightWidth must be positive or zero"; //$NON-NLS-1$
+		assert depth >= 0. : "HeightWidth must be positive or zero"; //$NON-NLS-1$
+        setFromCorners(x, y, z, x + width, y + height, z + depth);
 	}
-	
-	/**
-	 * @param r
-	 */
-	public RectangularPrism3dfx(RectangularPrism3dfx r) {
-		set(r);
+
+	/** Constructor by copy.
+     * @param rectangularPrism the shape to copy.
+     */
+	public RectangularPrism3dfx(RectangularPrism3dfx rectangularPrism) {
+		set(rectangularPrism);
 	}
-	
+
 	@Override
 	public RectangularPrism3dfx clone() {
-		RectangularPrism3dfx clone = super.clone();
+		final RectangularPrism3dfx clone = super.clone();
 		if (clone.minX != null) {
 			clone.minX = null;
 			clone.minXProperty().set(getMinX());
@@ -121,8 +120,8 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 			clone.minY = null;
 			clone.minYProperty().set(getMinY());
 		}
-		if (clone.minY != null) {
-			clone.minY = null;
+		if (clone.minZ != null) {
+			clone.minZ = null;
 			clone.minZProperty().set(getMinZ());
 		}
 		if (clone.maxX != null) {
@@ -133,8 +132,8 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 			clone.maxY = null;
 			clone.maxYProperty().set(getMaxY());
 		}
-		if (clone.maxY != null) {
-			clone.maxY = null;
+		if (clone.maxZ != null) {
+			clone.maxZ = null;
 			clone.maxZProperty().set(getMaxZ());
 		}
 		clone.width = null;
@@ -152,14 +151,14 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 		bits = 31 * bits + Double.doubleToLongBits(getMaxX());
 		bits = 31 * bits + Double.doubleToLongBits(getMaxY());
 		bits = 31 * bits + Double.doubleToLongBits(getMaxZ());
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getMinX());
 		b.append(";"); //$NON-NLS-1$
@@ -206,7 +205,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	public double getMinX() {
 		return this.minX == null ? 0 : this.minX.get();
 	}
-	
+
 	@Override
 	public void setMinX(double x) {
 		minXProperty().set(x);
@@ -222,8 +221,8 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 			this.minX = new SimpleDoubleProperty(this, "minX") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMin = get();
-					double currentMax = getMaxX();
+					final double currentMin = get();
+					final double currentMax = getMaxX();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						maxXProperty().set(currentMin);
@@ -239,7 +238,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	public double getMaxX() {
 		return this.maxX == null ? 0 : this.maxX.get();
 	}
-	
+
 	@Override
 	public void setMaxX(double x) {
 		maxXProperty().set(x);
@@ -255,8 +254,8 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 			this.maxX = new SimpleDoubleProperty(this, "maxX") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMax = get();
-					double currentMin = getMinX();
+					final double currentMax = get();
+					final double currentMin = getMinX();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						minXProperty().set(currentMax);
@@ -266,18 +265,18 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 		}
 		return this.maxX;
 	}
-	
+
 	@Pure
 	@Override
 	public double getMinY() {
 		return this.minY == null ? 0 : this.minY.get();
 	}
-	
+
 	@Override
 	public void setMinY(double y) {
 		minYProperty().set(y);
 	}
-	
+
 	/** Replies the property that is the minimum y coordinate of the box.
 	 *
 	 * @return the minY property.
@@ -288,8 +287,8 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 			this.minY = new SimpleDoubleProperty(this, "minY") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMin = get();
-					double currentMax = getMaxY();
+					final double currentMin = get();
+					final double currentMax = getMaxY();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						maxYProperty().set(currentMin);
@@ -299,18 +298,18 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 		}
 		return this.minY;
 	}
-	
+
 	@Pure
 	@Override
 	public double getMaxY() {
 		return this.maxY == null ? 0 : this.maxY.get();
 	}
-	
+
 	@Override
 	public void setMaxY(double y) {
 		maxYProperty().set(y);
 	}
-	
+
 	/** Replies the property that is the maximum y coordinate of the box.
 	 *
 	 * @return the maxY property.
@@ -321,8 +320,8 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 			this.maxY = new SimpleDoubleProperty(this, "maxY") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMax = get();
-					double currentMin = getMinY();
+					final double currentMax = get();
+					final double currentMin = getMinY();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						minYProperty().set(currentMax);
@@ -338,7 +337,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	public double getMinZ() {
 		return this.minZ == null ? 0 : this.minZ.get();
 	}
-	
+
 	@Override
 	public void setMinZ(double z) {
 		minZProperty().set(z);
@@ -354,8 +353,8 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 			this.minZ = new SimpleDoubleProperty(this, "minZ") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMin = get();
-					double currentMax = getMaxZ();
+					final double currentMin = get();
+					final double currentMax = getMaxZ();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						maxZProperty().set(currentMin);
@@ -371,7 +370,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	public double getMaxZ() {
 		return this.maxZ == null ? 0 : this.maxZ.get();
 	}
-	
+
 	@Override
 	public void setMaxZ(double y) {
 		maxZProperty().set(y);
@@ -387,8 +386,8 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 			this.maxZ = new SimpleDoubleProperty(this, "maxZ") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMax = get();
-					double currentMin = getMinZ();
+					final double currentMax = get();
+					final double currentMin = getMinZ();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						minZProperty().set(currentMax);
@@ -403,7 +402,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	public double getWidth() {
 		return widthProperty().get();
 	}
-	
+
 	/** Replies the property that is the width of the box.
 	 *
 	 * @return the width property.
@@ -416,12 +415,12 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 		}
 		return this.width;
 	}
-	
+
 	@Override
 	public double getHeight() {
 		return heightProperty().get();
 	}
-	
+
 	/** Replies the property that is the height of the box.
 	 *
 	 * @return the height property.
@@ -434,7 +433,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 		}
 		return this.height;
 	}
-	
+
 	@Override
 	public double getDepth() {
 		return depthProperty().get();
@@ -457,11 +456,10 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	public ObjectProperty<RectangularPrism3dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(
-					() -> {
-						return toBoundingBox();
-					},
-					minXProperty(), minYProperty(), minZProperty(), widthProperty(), heightProperty(), depthProperty()));
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
+			    return toBoundingBox();
+			},
+			        minXProperty(), minYProperty(), minZProperty(), widthProperty(), heightProperty(), depthProperty()));
 		}
 		return this.boundingBox;
 	}

@@ -1,38 +1,37 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d3.dfx;
-
-import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.Transform3D;
-import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Segment with 2 double precision floating-point FX properties.
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
+import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
+
+/** Segment with 3 double precision floating-point FX properties.
  *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -58,43 +57,43 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	private DoubleProperty by;
 
 	private DoubleProperty bz;
-	
-	/**
-	 */
+
+	/** Construct an empty segment.
+     */
 	public Segment3dfx() {
 		//
 	}
 
-	/**
-	 * @param a
-	 * @param b
-	 */
-	public Segment3dfx(Point3D<?, ?> a, Point3D<?, ?> b) {
-		this(a.getX(), a.getY(), a.getZ(), b.getX(), b.getY(), b.getZ());
+	/** Construct a segment with the two given points.
+     * @param p1 first point.
+     * @param p2 second point.
+     */
+	public Segment3dfx(Point3D<?, ?> p1, Point3D<?, ?> p2) {
+		this(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ());
 	}
 
-	/**
-	 * @param s
-	 */
-	public Segment3dfx(Segment3afp<?, ?, ?, ?, ?, ?> s) {
-		this(s.getX1(), s.getY1(), s.getZ1(), s.getX2(), s.getY2(), s.getZ2());
+	/** Constructor by copy.
+     * @param segment the segment to copy.
+     */
+	public Segment3dfx(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+		this(segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2());
 	}
 
-	/**
-	 * @param x1
-	 * @param y1
-	 * @param z1
-	 * @param x2
-	 * @param y2
-	 * @param z2
-	 */
+	/** Construct a segment with the two given points.
+     * @param x1 x coordinate of the first point.
+     * @param y1 y coordinate of the first point.
+     * @param z1 z coordinate of the first point.
+     * @param x2 x coordinate of the second point.
+     * @param y2 y coordinate of the second point.
+     * @param z2 z coordinate of the second point.
+     */
 	public Segment3dfx(double x1, double y1, double z1, double x2, double y2, double z2) {
 		set(x1, y1, z1, x2, y2, z2);
 	}
-	
+
 	@Override
 	public Segment3dfx clone() {
-		Segment3dfx clone = super.clone();
+		final Segment3dfx clone = super.clone();
 		if (clone.ax != null) {
 			clone.ax = null;
 			clone.x1Property().set(getX1());
@@ -121,7 +120,6 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 		}
 		return clone;
 	}
-	
 
 	@Pure
 	@Override
@@ -133,14 +131,14 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 		bits = 31 * bits + Double.doubleToLongBits(getX2());
 		bits = 31 * bits + Double.doubleToLongBits(getY2());
 		bits = 31 * bits + Double.doubleToLongBits(getZ2());
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getX1());
 		b.append(";"); //$NON-NLS-1$
@@ -160,12 +158,12 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	@Pure
 	@Override
 	public Segment3dfx createTransformedShape(Transform3D transform) {
-		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point3dfx point = getGeomFactory().newPoint(getX1(), getY1(), getZ1());
+		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+		final Point3dfx point = getGeomFactory().newPoint(getX1(), getY1(), getZ1());
 		transform.transform(point);
-		double x1 = point.getX();
-		double y1 = point.getY();
-		double z1 = point.getZ();
+		final double x1 = point.getX();
+		final double y1 = point.getY();
+		final double z1 = point.getZ();
 		point.set(getX2(), getY2(), getZ2());
 		transform.transform(point);
 		return getGeomFactory().newSegment(x1, y1, z1, point.getX(), point.getY(), point.getZ());
@@ -185,7 +183,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	public void setX1(double x) {
 		x1Property().set(x);
 	}
-	
+
 	@Override
 	public void setY1(double y) {
 		y1Property().set(y);
@@ -200,7 +198,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	public void setX2(double x) {
 		x2Property().set(x);
 	}
-	
+
 	@Override
 	public void setY2(double y) {
 		y2Property().set(y);
@@ -216,7 +214,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	public double getX1() {
 		return this.ax == null ? 0 : this.ax.get();
 	}
-	
+
 	/** Replies the property that is the x coordinate of the first segment point.
 	 *
 	 * @return the x1 property.
@@ -228,13 +226,13 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 		}
 		return this.ax;
 	}
-	
+
 	@Pure
 	@Override
 	public double getY1() {
 		return this.ay == null ? 0 : this.ay.get();
 	}
-	
+
 	/** Replies the property that is the y coordinate of the first segment point.
 	 *
 	 * @return the y1 property.
@@ -282,13 +280,13 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 		}
 		return this.bx;
 	}
-	
+
 	@Pure
 	@Override
 	public double getY2() {
 		return this.by == null ? 0 : this.by.get();
 	}
-	
+
 	/** Replies the property that is the y coordinate of the second segment point.
 	 *
 	 * @return the y2 property.
@@ -333,12 +331,11 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	public ObjectProperty<RectangularPrism3dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(
-					() -> {
-						return toBoundingBox();
-					},
-					x1Property(), y1Property(), z1Property(),
-					x2Property(), y2Property(), z2Property()));
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
+			    return toBoundingBox();
+			},
+			        x1Property(), y1Property(), z1Property(),
+			        x2Property(), y2Property(), z2Property()));
 		}
 		return this.boundingBox;
 	}

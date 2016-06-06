@@ -1,29 +1,24 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d3.ifx;
-
-import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
@@ -31,6 +26,10 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai;
 
 /** A rectangular prism with 3 integer FX properties.
  *
@@ -41,74 +40,76 @@ import javafx.beans.property.SimpleObjectProperty;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx>
-	implements RectangularPrism3ai<Shape3ifx<?>, RectangularPrism3ifx, PathElement3ifx, Point3ifx, Vector3ifx, RectangularPrism3ifx> {
+public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx> implements
+        RectangularPrism3ai<Shape3ifx<?>, RectangularPrism3ifx, PathElement3ifx, Point3ifx, Vector3ifx, RectangularPrism3ifx> {
 
 	private static final long serialVersionUID = -8092385681401129843L;
 
 	private IntegerProperty minX;
-	
+
 	private IntegerProperty minY;
 
 	private IntegerProperty minZ;
 
 	private IntegerProperty maxX;
-	
+
 	private IntegerProperty maxY;
 
 	private IntegerProperty maxZ;
-	
+
 	/** width property.
 	 */
 	private ReadOnlyIntegerWrapper width;
-	
+
 	/** height property.
 	 */
 	private ReadOnlyIntegerWrapper height;
-	
+
 	/** depth property.
 	 */
 	private ReadOnlyIntegerWrapper depth;
 
-	/**
-	 */
+	/** Construct an empty rectangle.
+     */
 	public RectangularPrism3ifx() {
 		super();
 	}
 
-	/**
-	 * @param min is the min corner of the rectangle.
-	 * @param max is the max corner of the rectangle.
-	 */
+	/** Construct a rectangle with the given minimum and maximum corners.
+     * @param min is the min corner of the rectangle.
+     * @param max is the max corner of the rectangle.
+     */
 	public RectangularPrism3ifx(Point3D<?, ?> min, Point3D<?, ?> max) {
-		assert (min != null) : "Minimum point must be not null"; //$NON-NLS-1$
-		assert (max != null) : "Maximum point must be not null"; //$NON-NLS-1$
+		assert min != null : "Minimum point must be not null"; //$NON-NLS-1$
+		assert max != null : "Maximum point must be not null"; //$NON-NLS-1$
 		setFromCorners(min.ix(), min.iy(), min.iz(), max.ix(), max.iy(), max.iz());
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 */
+	/** Construct a rectangle with the given minimum corner and sizes.
+     * @param x x coordinate of the minimum corner.
+     * @param y y coordinate of the minimum corner.
+     * @param z z coordinate of the minimum corner.
+     * @param width width of the rectangle.
+     * @param height height of the rectangle.
+     * @param depth depth of the rectangle.
+     */
 	public RectangularPrism3ifx(int x, int y, int z, int width, int height, int depth) {
-		assert (width >= 0) : "Width must be positive or equal"; //$NON-NLS-1$
-		assert (height >= 0) : "Height must be positive or equal"; //$NON-NLS-1$
-		assert (depth >= 0) : "Depth must be positive or equal"; //$NON-NLS-1$
+		assert width >= 0 : "Width must be positive or equal"; //$NON-NLS-1$
+		assert height >= 0 : "Height must be positive or equal"; //$NON-NLS-1$
+		assert depth >= 0 : "Depth must be positive or equal"; //$NON-NLS-1$
 		setFromCorners(x, y, z, x + width, y + height, z + depth);
 	}
-	
-	/**
-	 * @param r
-	 */
-	public RectangularPrism3ifx(RectangularPrism3ifx r) {
-		set(r);
+
+	/** Constructor by copy.
+     * @param rectangle the rectangle to copy.
+     */
+	public RectangularPrism3ifx(RectangularPrism3ifx rectangle) {
+		set(rectangle);
 	}
-	
+
 	@Override
 	public RectangularPrism3ifx clone() {
-		RectangularPrism3ifx clone = super.clone();
+		final RectangularPrism3ifx clone = super.clone();
 		if (clone.minX != null) {
 			clone.minX = null;
 			clone.minXProperty().set(getMinX());
@@ -182,8 +183,8 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 			this.minX = new SimpleIntegerProperty(this, "minX") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					int currentMin = get();
-					int currentMax = getMaxX();
+					final int currentMin = get();
+					final int currentMax = getMaxX();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						maxXProperty().set(currentMin);
@@ -215,8 +216,8 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 			this.maxX = new SimpleIntegerProperty(this, "maxX") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					int currentMax = get();
-					int currentMin = getMinX();
+					final int currentMax = get();
+					final int currentMin = getMinX();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						minXProperty().set(currentMax);
@@ -226,18 +227,18 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 		}
 		return this.maxX;
 	}
-	
+
 	@Pure
 	@Override
 	public int getMinY() {
 		return this.minY == null ? 0 : this.minY.get();
 	}
-	
+
 	@Override
 	public void setMinY(int y) {
 		minYProperty().set(y);
 	}
-	
+
 	/** Replies the property that is the minimum y coordinate of the box.
 	 *
 	 * @return the minY property.
@@ -248,8 +249,8 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 			this.minY = new SimpleIntegerProperty(this, "minY") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					int currentMin = get();
-					int currentMax = getMaxY();
+					final int currentMin = get();
+					final int currentMax = getMaxY();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						maxYProperty().set(currentMin);
@@ -259,18 +260,18 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 		}
 		return this.minY;
 	}
-	
+
 	@Pure
 	@Override
 	public int getMaxY() {
 		return this.maxY == null ? 0 : this.maxY.get();
 	}
-	
+
 	@Override
 	public void setMaxY(int y) {
 		maxYProperty().set(y);
 	}
-	
+
 	/** Replies the property that is the maximum y coordinate of the box.
 	 *
 	 * @return the maxY property.
@@ -281,8 +282,8 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 			this.maxY = new SimpleIntegerProperty(this, "maxY") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					int currentMax = get();
-					int currentMin = getMinY();
+					final int currentMax = get();
+					final int currentMin = getMinY();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						minYProperty().set(currentMax);
@@ -314,8 +315,8 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 			this.minZ = new SimpleIntegerProperty(this, "minZ") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					int currentMin = get();
-					int currentMax = getMaxZ();
+					final int currentMin = get();
+					final int currentMax = getMaxZ();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						maxZProperty().set(currentMin);
@@ -347,8 +348,8 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 			this.maxZ = new SimpleIntegerProperty(this, "maxZ") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					int currentMax = get();
-					int currentMin = getMinZ();
+					final int currentMax = get();
+					final int currentMin = getMinZ();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						minZProperty().set(currentMax);
@@ -373,7 +374,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getMinX());
 		b.append(";"); //$NON-NLS-1$
@@ -390,7 +391,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	public int getWidth() {
 		return widthProperty().get();
 	}
-	
+
 	/** Replies the property that is the width of the box.
 	 *
 	 * @return the width property.
@@ -403,12 +404,12 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 		}
 		return this.width;
 	}
-	
+
 	@Override
 	public int getHeight() {
 		return heightProperty().get();
 	}
-	
+
 	/** Replies the property that is the height of the box.
 	 *
 	 * @return the height property.
@@ -421,7 +422,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 		}
 		return this.height;
 	}
-	
+
 	@Override
 	public int getDepth() {
 		return depthProperty().get();
@@ -439,16 +440,15 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 		}
 		return this.depth;
 	}
-	
+
 	@Override
 	public ObjectProperty<RectangularPrism3ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(
-					() -> {
-						return toBoundingBox();
-					},
-					minXProperty(), minYProperty(), widthProperty(), heightProperty()));
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
+			    return toBoundingBox();
+			},
+			        minXProperty(), minYProperty(), widthProperty(), heightProperty()));
 		}
 		return this.boundingBox;
 	}

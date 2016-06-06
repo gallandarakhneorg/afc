@@ -1,39 +1,39 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2013 Christophe BOHRHAUER.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d3.dfx;
 
 import java.lang.ref.WeakReference;
-
-import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 /**
  * A JavaFX property that is representing a unit vector.
- * 
+ *
  * @author $Author: sgalland$
  * @author $Author: tpiotrow$
  * @version $FullVersion$
@@ -44,13 +44,13 @@ import javafx.beans.property.SimpleObjectProperty;
 public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 
 	private final WeakReference<GeomFactory3dfx> factory;
-	
+
 	private ReadOnlyDoubleWrapper x;
-	
+
 	private ReadOnlyDoubleWrapper y;
 
 	private ReadOnlyDoubleWrapper z;
-	
+
 	private Vector3dfx fake;
 
 	/** Construct a property.
@@ -63,7 +63,7 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 		super(bean, name);
 		this.factory = new WeakReference<>(factory);
 	}
-	
+
 	/** Replies the geometry factory associated to this property.
 	 *
 	 * @return the geometry factory.
@@ -71,21 +71,21 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 	public GeomFactory3dfx getGeomFactory() {
 		return this.factory.get();
 	}
-	
+
 	private ReadOnlyDoubleWrapper internalXProperty() {
 		if (this.x == null) {
 			init();
 		}
 		return this.x;
 	}
-	
+
 	private ReadOnlyDoubleWrapper internalYProperty() {
 		if (this.y == null) {
 			init();
 		}
 		return this.y;
 	}
-	
+
 	private ReadOnlyDoubleWrapper internalZProperty() {
 		if (this.z == null) {
 			init();
@@ -94,14 +94,14 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 	}
 
 	private void init() {
-		Vector3dfx v = getGeomFactory().newVector();
+		final Vector3dfx v = getGeomFactory().newVector();
 		this.x = new ReadOnlyDoubleWrapper(v, "x"); //$NON-NLS-1$
 		this.y = new ReadOnlyDoubleWrapper(v, "y"); //$NON-NLS-1$
 		this.z = new ReadOnlyDoubleWrapper(v, "z"); //$NON-NLS-1$
 		v.set(this.x, this.y, this.z);
 		super.set(v);
 	}
-	
+
 	@Override
 	public Vector3dfx get() {
 		if (isBound()) {
@@ -109,20 +109,20 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 		}
 		if (this.fake == null) {
 			this.fake = getGeomFactory().newVector();
-			DoubleProperty x = new SimpleDoubleProperty(this.fake, "x"); //$NON-NLS-1$
+			final DoubleProperty x = new SimpleDoubleProperty(this.fake, "x"); //$NON-NLS-1$
 			x.bind(internalXProperty());
-			DoubleProperty y = new SimpleDoubleProperty(this.fake, "y"); //$NON-NLS-1$
+			final DoubleProperty y = new SimpleDoubleProperty(this.fake, "y"); //$NON-NLS-1$
 			y.bind(internalYProperty());
-			DoubleProperty z = new SimpleDoubleProperty(this.fake, "z"); //$NON-NLS-1$
+			final DoubleProperty z = new SimpleDoubleProperty(this.fake, "z"); //$NON-NLS-1$
 			z.bind(internalYProperty());
 			this.fake.set(x, y, z);
 		}
 		return this.fake;
 	}
-	
+
 	@Override
 	public void set(Vector3dfx newValue) {
-		assert (newValue != null) : "Initial value must be not null"; //$NON-NLS-1$
+		assert newValue != null : "Initial value must be not null"; //$NON-NLS-1$
 		set(newValue.getX(), newValue.getY(), newValue.getZ());
 	}
 
@@ -133,9 +133,9 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 	 * @param z z coordinate of the vector.
 	 */
 	public void set(double x, double y, double z) {
-		assert (Vector3D.isUnitVector(x, y, z)) : "Vector coordinates must correspond to a unit vector"; //$NON-NLS-1$
+		assert Vector3D.isUnitVector(x, y, z) : "Vector coordinates must correspond to a unit vector"; //$NON-NLS-1$
 		if ((x != getX() || y != getY() || z != getZ()) && !isBound()) {
-			Vector3dfx v = super.get();
+			final Vector3dfx v = super.get();
 			v.set(x, y, z);
 			fireValueChangedEvent();
 		}
@@ -151,7 +151,7 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 		}
 		return internalXProperty().get();
 	}
-	
+
 	/** Replies the y coordinate of the vector.
 	 *
 	 * @return the y coordinate of the vector.
@@ -185,7 +185,7 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 		}
 		return internalXProperty().getReadOnlyProperty();
 	}
-	
+
 	/** Replies the y property.
 	 *
 	 * @return the y property.

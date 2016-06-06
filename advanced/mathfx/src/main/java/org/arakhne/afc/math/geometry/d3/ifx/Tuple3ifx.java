@@ -1,34 +1,33 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2011 Janus Core Developers
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package org.arakhne.afc.math.geometry.d3.ifx;
 
-import org.arakhne.afc.math.geometry.d3.Tuple3D;
-import org.eclipse.xtext.xbase.lib.Pure;
+package org.arakhne.afc.math.geometry.d3.ifx;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
 
 /** 3D tuple with 3 integer FX properties.
- * 
+ *
  * @param <RT> is the type of return tuples by the tuple.
  * @author $Author: sgalland$
  * @author $Author: tpiotrow$
@@ -44,7 +43,7 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 	/** x coordinate.
 	 */
 	IntegerProperty x;
-	
+
 	/** y coordinate.
 	 */
 	IntegerProperty y;
@@ -53,17 +52,17 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 	 */
 	IntegerProperty z;
 
-	/**
-	 */
+	/** Construct a zero tuple.
+     */
 	public Tuple3ifx() {
 		this(0, 0, 0);
 	}
-	
-	/**
-	 * @param xProperty
-	 * @param yProperty
-	 * @param zProperty
-	 */
+
+	/** Construct a tuple with the given properties for the coordinates.
+     * @param xProperty property for the x coordinate.
+     * @param yProperty property for the y coordinate.
+     * @param zProperty property for the z coordinate.
+     */
 	public Tuple3ifx(IntegerProperty xProperty, IntegerProperty yProperty, IntegerProperty zProperty) {
 		this.x = xProperty;
 		this.y = yProperty;
@@ -91,19 +90,20 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 		this((int) Math.round(tuple[0]), (int) Math.round(tuple[1]), (int) Math.round(tuple[2]));
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 */
+	/** Construct a tuple with the given coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     * @param z z coordinate.
+     */
 	public Tuple3ifx(double x, double y, double z) {
 		this((int) Math.round(x), (int) Math.round(y), (int) Math.round(z));
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
+	/** Construct a tuple with the given coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     * @param z z coordinate.
+     */
 	public Tuple3ifx(int x, int y, int z) {
 		this(new SimpleIntegerProperty(x), new SimpleIntegerProperty(y), new SimpleIntegerProperty(z));
 	}
@@ -113,7 +113,7 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 	@Override
 	public RT clone() {
 		try {
-			RT clone = (RT) super.clone();
+			final RT clone = (RT) super.clone();
 			if (this.x != null) {
 				clone.x = null;
 				clone.xProperty().set(ix());
@@ -127,8 +127,7 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 				clone.zProperty().set(iz());
 			}
 			return clone;
-		}
-		catch(CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
 			throw new InternalError(e);
 		}
 	}
@@ -139,11 +138,9 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 	public boolean equals(Object object) {
 		try {
 			return equals((RT) object);
-		}
-		catch(AssertionError e) {
+        } catch (AssertionError e) {
 			throw e;
-		}
-		catch (Throwable e2) {
+		} catch (Throwable e2) {
 			return false;
 		}
 	}
@@ -157,17 +154,14 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 		bits = 31 * bits + iz();
 		return bits ^ (bits >> 32);
 	}
-	
+
 	@Pure
 	@Override
 	public String toString() {
-		return "(" //$NON-NLS-1$
-				+ix()
-				+";" //$NON-NLS-1$
-				+iy()
-				+";" //$NON-NLS-1$
-				+iz()
-				+")"; //$NON-NLS-1$
+        return "(" //$NON-NLS-1$
+                + ix() + "," //$NON-NLS-1$
+                + iy() + "," //$NON-NLS-1$
+                + iz() + ")"; //$NON-NLS-1$
 	}
 
 	/** Replies the x property.
@@ -181,7 +175,7 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 		}
 		return this.x;
 	}
-	
+
 	/** Replies the y property.
 	 *
 	 * @return the y property.
@@ -225,22 +219,22 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 	public void setX(double x) {
 		xProperty().set((int) Math.round(x));
 	}
-	
+
 	@Override
 	public double getY() {
 		return this.y == null ? 0 : this.y.get();
 	}
-	
+
 	@Override
 	public int iy() {
 		return this.y == null ? 0 : this.y.get();
 	}
-	
+
 	@Override
 	public void setY(int y) {
 		yProperty().set(y);
 	}
-	
+
 	@Override
 	public void setY(double y) {
 		yProperty().set((int) Math.round(y));
