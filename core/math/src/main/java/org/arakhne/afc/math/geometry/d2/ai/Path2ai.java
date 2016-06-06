@@ -925,7 +925,7 @@ public interface Path2ai<
 	static int computeCrossingsFromPath(
 	        int crossings,
 			PathIterator2ai<?> iterator,
-			PathShadow2ai shadow,
+			BasicPathShadow2ai shadow,
 			CrossingComputationType type) {
 		assert iterator != null : AssertMessages.notNullParameter(1);
 		assert shadow != null : AssertMessages.notNullParameter(2);
@@ -1415,7 +1415,7 @@ public interface Path2ai<
 		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = computeCrossingsFromPath(
 		        0, iterator,
-				new PathShadow2ai(this),
+				new BasicPathShadow2ai(this),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return crossings == MathConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;

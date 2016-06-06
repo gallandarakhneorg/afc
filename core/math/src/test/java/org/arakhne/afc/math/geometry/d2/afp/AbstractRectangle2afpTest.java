@@ -1574,7 +1574,6 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 	}
 
 	@Test
-    @Ignore
 	public void getClosestPointToTriangle2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createTestTriangle(0, 4)));
 		assertFpPointEquals(10, 8, this.shape.getClosestPointTo(createTestTriangle(10, 6)));
@@ -1584,7 +1583,6 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 	}
 
 	@Test
-    @Ignore
 	public void getDistanceSquaredTriangle2afp() {
 		assertEpsilonEquals(5, this.shape.getDistanceSquared(createTestTriangle(0, 4)));
 		assertEpsilonEquals(.2, this.shape.getDistanceSquared(createTestTriangle(10, 6)));
@@ -1621,7 +1619,6 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		return path;
 	}
 	@Test
-    @Ignore
 	public void getClosestPointToPath2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createSimpleTestPath(0, 0, false)));
 		assertClosestPointInBothShapes(this.shape, createSimpleTestPath(0, 0, true));
@@ -1646,7 +1643,6 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 	}
 
 	@Test
-    @Ignore
 	public void getDistanceSquaredPath2afp() {
 		assertEpsilonEquals(3.55882, this.shape.getDistanceSquared(createSimpleTestPath(0, 0, false)));
 		assertEpsilonEquals(0, this.shape.getDistanceSquared(createSimpleTestPath(0, 0, true)));

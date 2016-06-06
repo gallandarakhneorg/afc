@@ -56,11 +56,11 @@ extends AbstractShape2afpTest<T, B> {
 		return path;
 	}
 
-	protected PathShadow2afp createShadow(int x1, int y1, int x2, int y2) {
+	protected BasicPathShadow2afp createShadow(int x1, int y1, int x2, int y2) {
 		T path = (T) createPath();
 		path.moveTo(x1, y1);
 		path.lineTo(x2, y2);
-		return new PathShadow2afp(path);
+		return new BasicPathShadow2afp(path);
 	}
 
 	@Test
@@ -208,7 +208,7 @@ extends AbstractShape2afpTest<T, B> {
 				Path2afp.computeCrossingsFromPath(
 						0,
 						(PathIterator2afp) path.getPathIterator(),
-						new PathShadow2afp((PathIterator2afp) circle.getPathIterator(), circle.toBoundingBox()),
+						new BasicPathShadow2afp((PathIterator2afp) circle.getPathIterator(), circle.toBoundingBox()),
 						CrossingComputationType.STANDARD));
 	}
 
@@ -2625,7 +2625,6 @@ extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test
-    @Ignore
 	public void staticGetClosestPointToPathIterator_close_evenOdd_onShape1() {
 		Point2D result;
 		Path2afp path;
@@ -2672,7 +2671,6 @@ extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test
-    @Ignore
 	public void staticGetClosestPointToPathIterator_close_nonZero_onShape1() {
 		Point2D result;
 		Path2afp path;
@@ -2765,7 +2763,6 @@ extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test
-    @Ignore
 	public void staticGetClosestPointToPathIterator_close_evenOdd_onShape2() {
 		Point2D result;
 		Path2afp path;
@@ -2793,7 +2790,7 @@ extends AbstractShape2afpTest<T, B> {
 				(PathIterator2afp) path.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				this.shape.getPathIterator(),
 				result));
-		assertFpPointEquals(Double.NaN, Double.NaN, result);
+		assertFpPointEquals(7, -5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
 		path = createPath(PathWindingRule.EVEN_ODD);
@@ -2815,7 +2812,6 @@ extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test
-    @Ignore
 	public void staticGetClosestPointToPathIterator_close_nonZero_onShape2() {
 		Point2D result;
 		Path2afp path;
@@ -2843,7 +2839,7 @@ extends AbstractShape2afpTest<T, B> {
 				(PathIterator2afp) path.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				this.shape.getPathIterator(),
 				result));
-		assertFpPointEquals(Double.NaN, Double.NaN, result);
+		assertFpPointEquals(7, -5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
 		path = createPath(PathWindingRule.NON_ZERO);
@@ -2861,7 +2857,7 @@ extends AbstractShape2afpTest<T, B> {
 				(PathIterator2afp) path.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				this.shape.getPathIterator(),
 				result));
-		assertFpPointEquals(Double.NaN, Double.NaN, result);
+		assertFpPointEquals(0, 0, result);
 	}
 
 	@Test

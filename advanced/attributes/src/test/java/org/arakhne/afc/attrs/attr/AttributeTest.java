@@ -55,7 +55,7 @@ import org.arakhne.afc.ui.vector.VectorToolkit;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-@Ignore//TODO: fixcode
+@Ignore("Invalid 3D primitives are included")
 public class AttributeTest extends AbstractTestCase {
 
 	/**

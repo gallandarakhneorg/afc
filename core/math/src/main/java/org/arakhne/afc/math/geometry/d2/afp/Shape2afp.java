@@ -137,7 +137,7 @@ public interface Shape2afp<
 			final PathIterator2afp<?> shapePathIterator = iterator.getGeomFactory().convert(shape.getPathIterator());
 			crossings = Path2afp.computeCrossingsFromPath(
 					0, iterator,
-					new PathShadow2afp(shapePathIterator, minX, minY, maxX, maxY),
+					new BasicPathShadow2afp(shapePathIterator, minX, minY, maxX, maxY),
 					CrossingComputationType.STANDARD);
 		}
 

@@ -97,7 +97,7 @@ public interface Path2afp<
     static int computeCrossingsFromPath(
             int crossings,
             PathIterator2afp<?> iterator,
-            PathShadow2afp shadow,
+            BasicPathShadow2afp shadow,
             CrossingComputationType type) {
         assert iterator != null : AssertMessages.notNullParameter(1);
         assert shadow != null : AssertMessages.notNullParameter(2);
@@ -332,7 +332,10 @@ public interface Path2afp<
         if (!pi.hasNext() || !shape.hasNext()) {
             return false;
         }
-        final ShadowedPath2afp shadow = new ShadowedPath2afp(shape.restartIterations());
+        final Rectangle2afp<?, ?, ?, ?, ?, ?> box = pi.getGeomFactory().newBox();
+        computeDrawableElementBoundingBox(shape.restartIterations(), box);
+        final ClosestPointPathShadow2afp shadow = new ClosestPointPathShadow2afp(shape.restartIterations(), box);
+        int crossings = 0;
         double curx = pathElement1.getToX();
         double movx = curx;
         double cury = pathElement1.getToY();
@@ -351,8 +354,9 @@ public interface Path2afp<
             case LINE_TO:
                 endx = pathElement1.getToX();
                 endy = pathElement1.getToY();
-                if (shadow.update(curx, cury, endx, endy)) {
-                    result.set(shadow.getClosestPoint());
+                crossings = shadow.computeCrossings(crossings, curx, cury, endx, endy);
+                if (crossings == MathConstants.SHAPE_INTERSECTS) {
+                    result.set(shadow.getClosestPointInOtherShape());
                     return true;
                 }
                 curx = endx;
@@ -360,8 +364,9 @@ public interface Path2afp<
                 break;
             case CLOSE:
                 if (curx != movx || cury != movy) {
-                    if (shadow.update(curx, cury, movx, movy)) {
-                        result.set(shadow.getClosestPoint());
+                    crossings = shadow.computeCrossings(crossings, curx, cury, movx, movy);
+                    if (crossings == MathConstants.SHAPE_INTERSECTS) {
+                        result.set(shadow.getClosestPointInOtherShape());
                         return true;
                     }
                 }
@@ -375,7 +380,16 @@ public interface Path2afp<
                 throw new IllegalArgumentException();
             }
         }
-        result.set(shadow.getClosestPoint());
+        if (curx == movx && cury == movy) {
+            assert crossings != MathConstants.SHAPE_INTERSECTS;
+            final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+            if ((crossings & mask) != 0) {
+                // Second path is inside the first shape
+                result.set(shadow.getClosestPointInShadowShape());
+                return true;
+            }
+        }
+        result.set(shadow.getClosestPointInOtherShape());
         return true;
     }
 
@@ -2916,7 +2930,7 @@ public interface Path2afp<
         final int crossings = computeCrossingsFromPath(
                 0,
                 path.getPathIterator(),
-                new PathShadow2afp(this),
+                new BasicPathShadow2afp(this),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
         return crossings == MathConstants.SHAPE_INTERSECTS
                 || (crossings & mask) != 0;
@@ -2930,7 +2944,7 @@ public interface Path2afp<
         final int crossings = computeCrossingsFromPath(
                 0,
                 iterator,
-                new PathShadow2afp(this),
+                new BasicPathShadow2afp(this),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
         return crossings == MathConstants.SHAPE_INTERSECTS
                 || (crossings & mask) != 0;

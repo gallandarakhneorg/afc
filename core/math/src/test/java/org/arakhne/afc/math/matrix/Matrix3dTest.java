@@ -255,7 +255,7 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 	
 	@Test
-	@Ignore
+	@Ignore("Invalid 3D primitives are included")
 	public void mulVector3D() {
 		//TODO: Fix the code
 //		Vector3f vector = new Vector3f(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
@@ -269,7 +269,7 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 	
 	@Test
-	@Ignore
+	@Ignore("Invalid 3D primitives are included")
 	public void mulTransposeLeftVector3D() {
 		//TODO: Fix the code
 //		Vector3f vector = new Vector3f(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
@@ -752,7 +752,7 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	@Ignore
+	@Ignore("Invalid 3D primitives are included")
 	public void cov() {
 		//TODO: Fix the code
 		//Verification of the function, by verifying all  the properties of the covariant matrix
@@ -803,7 +803,7 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 	
 	@Test
-	@Ignore
+	@Ignore("Invalid 3D primitives are included")
 	public void eigenVectorsOfSymmetricMatrix_zero() {
 		//TODO: Fix the code
 //		Matrix3f m = new Matrix3f();
@@ -826,7 +826,7 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 	
 	@Test
-	@Ignore
+	@Ignore("Invalid 3D primitives are included")
 	public void eigenVectorsOfSymmetricMatrix_identity() {
 //		//TODO: Fix the code
 //		Matrix3f m = new Matrix3f();
@@ -850,7 +850,7 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	@Ignore
+	@Ignore("Invalid 3D primitives are included")
 	public void eigenVectorsOfSymmetricMatrix_sym() {
 		//TODO: Fix the code
 //		Matrix3f m = new Matrix3f(1, 5, 0, 5, 2, 3, 0, 3, 1);

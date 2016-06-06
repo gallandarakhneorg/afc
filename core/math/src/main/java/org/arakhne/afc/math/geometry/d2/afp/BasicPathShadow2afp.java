@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import java.util.Iterator;
-
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -144,10 +142,7 @@ class BasicPathShadow2afp {
 
             discretizePathIterator(
                     iterator,
-                    x0, y0, x1, y1,
-                    false,
-                    iterator.getWindingRule(),
-                    iterator.getGeomFactory());
+                    x0, y0, x1, y1);
 
             // Test if the shape is intesecting the shadow shape.
             final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
@@ -182,12 +177,9 @@ class BasicPathShadow2afp {
 
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
             "checkstyle:npathcomplexity"})
-    private <E extends PathElement2afp> void discretizePathIterator(
-            Iterator<? extends PathElement2afp> pi,
-            double x1, double y1, double x2, double y2,
-            boolean closeable,
-            PathWindingRule rule,
-            GeomFactory2afp<E, ?, ?, ?> factory) {
+    private void discretizePathIterator(
+            PathIterator2afp<?> pi,
+            double x1, double y1, double x2, double y2) {
         if (!pi.hasNext() || this.crossings == MathConstants.SHAPE_INTERSECTS) {
             return;
         }
@@ -198,7 +190,7 @@ class BasicPathShadow2afp {
             throw new IllegalArgumentException(Locale.getString(Path2afp.class, "E1")); //$NON-NLS-1$
         }
 
-        Path2afp<?, ?, E, ?, ?, ?> localPath;
+        Path2afp<?, ?, ?, ?, ?, ?> localPath;
         double movx = element.getToX();
         double movy = element.getToY();
         double curx = movx;
@@ -231,17 +223,14 @@ class BasicPathShadow2afp {
                 endx = element.getToX();
                 endy = element.getToY();
                 // only for local use.
-                localPath = factory.newPath(rule);
+                localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
                 localPath.moveTo(curx, cury);
                 localPath.quadTo(
                         element.getCtrlX1(), element.getCtrlY1(),
                         endx, endy);
                 discretizePathIterator(
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                        x1, y1, x2, y2,
-                        false,
-                        rule,
-                        factory);
+                        x1, y1, x2, y2);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -252,7 +241,7 @@ class BasicPathShadow2afp {
                 endx = element.getToX();
                 endy = element.getToY();
                 // only for local use.
-                localPath = factory.newPath(rule);
+                localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
                 localPath.moveTo(curx, cury);
                 localPath.curveTo(
                         element.getCtrlX1(), element.getCtrlY1(),
@@ -260,10 +249,7 @@ class BasicPathShadow2afp {
                         endx, endy);
                 discretizePathIterator(
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                        x1, y1, x2, y2,
-                        false,
-                        rule,
-                        factory);
+                        x1, y1, x2, y2);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -274,7 +260,7 @@ class BasicPathShadow2afp {
                 endx = element.getToX();
                 endy = element.getToY();
                 // only for local use.
-                localPath = factory.newPath(rule);
+                localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
                 localPath.moveTo(curx, cury);
                 localPath.arcTo(
                         endx, endy,
@@ -283,10 +269,7 @@ class BasicPathShadow2afp {
                         element.getSweepFlag());
                 discretizePathIterator(
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                        x1, y1, x2, y2,
-                        false,
-                        rule,
-                        factory);
+                        x1, y1, x2, y2);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -315,34 +298,23 @@ class BasicPathShadow2afp {
         final boolean isOpen = (curx != movx) || (cury != movy);
 
         if (isOpen) {
-            if (closeable) {
-                crossSegmentTwoShadowLines(
-                        curx, cury,
-                        movx, movy,
-                        x1, y1, x2, y2);
-            } else {
-                // Assume that when is the path is open, only
-                // SHAPE_INTERSECTS may be return
-                this.crossings = 0;
-            }
+            // Assume that when is the path is open, only
+            // SHAPE_INTERSECTS may be return
+            this.crossings = 0;
         }
     }
 
     private void setCrossingCoordinateForYMax(double x, double y) {
-        if (MathUtil.compareEpsilon(y, this.boundingMaxY) >= 0) {
-            if (x > this.x4ymax) {
-                this.x4ymax = x;
-                this.hasX4ymax = true;
-            }
+        if (MathUtil.compareEpsilon(y, this.boundingMaxY) >= 0 && x > this.x4ymax) {
+            this.x4ymax = x;
+            this.hasX4ymax = true;
         }
     }
 
     private void setCrossingCoordinateForYMin(double x, double y) {
-        if (MathUtil.compareEpsilon(y, this.boundingMinY) <= 0) {
-            if (x > this.x4ymin) {
-                this.x4ymin = x;
-                this.hasX4ymin = true;
-            }
+        if (MathUtil.compareEpsilon(y, this.boundingMinY) <= 0 && x > this.x4ymin) {
+            this.x4ymin = x;
+            this.hasX4ymin = true;
         }
     }
 
@@ -499,6 +471,7 @@ class BasicPathShadow2afp {
         } else {
             setCrossingCoordinateForYMin(xintercept, shadowy);
         }
+
         if (sy0 < sy1) {
             ++this.crossings;
         } else {

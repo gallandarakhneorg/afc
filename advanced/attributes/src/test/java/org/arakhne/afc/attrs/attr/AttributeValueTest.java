@@ -49,7 +49,7 @@ import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.VectorToolkit;
 
 @SuppressWarnings("all")
-@Ignore
+@Ignore("Invalid 3D primitives are included")
 public class AttributeValueTest extends AbstractTestCase {
 
 	protected static void assertAllGetFailed(AttributeValue attr, AttributeType type) {

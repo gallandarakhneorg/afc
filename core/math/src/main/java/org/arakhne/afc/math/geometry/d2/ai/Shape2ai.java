@@ -144,7 +144,7 @@ public interface Shape2ai<
             final PathIterator2ai<?> shapePathIterator = iterator.getGeomFactory().convert(shape.getPathIterator());
             crossings = Path2ai.computeCrossingsFromPath(
                     0, iterator,
-                    new PathShadow2ai(shapePathIterator, minX, minY, maxX, maxY),
+                    new BasicPathShadow2ai(shapePathIterator, minX, minY, maxX, maxY),
                     CrossingComputationType.STANDARD);
         }
 

@@ -317,22 +317,22 @@ public interface Triangle2afp<
         final double side1 = Vector2D.perpProduct(bx - tx1, by - ty1, px - tx1, py - ty1);
         final double side2 = Vector2D.perpProduct(cx - bx, cy - by, px - bx, py - by);
         final double side3 = Vector2D.perpProduct(tx1 - cx, ty1 - cy, px - cx, py - cy);
-        if (side1 <= 0) {
-            if (side2 <= 0) {
+        if (side1 < 0) {
+            if (side2 < 0) {
                 return Point2D.getDistanceSquaredPointPoint(px, py, tx2, ty2);
             }
-            if (side3 <= 0) {
+            if (side3 < 0) {
                 return Point2D.getDistanceSquaredPointPoint(px, py, tx1, ty1);
             }
             return Segment2afp.computeDistanceSquaredSegmentPoint(tx1, ty1, tx2, ty2, px, py);
         }
-        if (side2 <= 0) {
-            if (side3 <= 0) {
+        if (side2 < 0) {
+            if (side3 < 0) {
                 return Point2D.getDistanceSquaredPointPoint(px, py, tx3, ty3);
             }
             return Segment2afp.computeDistanceSquaredSegmentPoint(tx2, ty2, tx3, ty3, px, py);
         }
-        if (side3 <= 0) {
+        if (side3 < 0) {
             return Segment2afp.computeDistanceSquaredSegmentPoint(tx3, ty3, tx1, ty1, px, py);
         }
         return 0.;
