@@ -330,7 +330,7 @@ public interface RectangularPrism3ai<
 	@Override
 	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : "Circle must not be null"; //$NON-NLS-1$
-		return Sphere3ai.intersectsCircleRectangle(
+		return Sphere3ai.intersectsSphereRectangularPrism(
 				sphere.getX(), sphere.getY(), sphere.getZ(),
 				sphere.getRadius(),
 				getMinX(), getMinY(), getMinZ(),

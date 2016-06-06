@@ -1380,9 +1380,9 @@ public interface Segment3afp<
 	 */
 	@Pure
 	// TODO : implement 3D
-	static UncertainIntersection getNoSegmentSegmentWithEndsIntersection(double x1, double y1, double z1, double x2, double y2, double z2,
-			double x3, double y3, double z3, double x4, double y4, double z4) {
-		final double vx1 = x2 - x1;
+	static UncertainIntersection getNoSegmentSegmentWithEndsIntersection(double x1, double y1, double z1, double x2, double y2,
+	        double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
+	    final double vx1 = x2 - x1;
 		final double vy1 = y2 - y1;
 
 		// Based on CCW. It is different than MathUtil.ccw(); because

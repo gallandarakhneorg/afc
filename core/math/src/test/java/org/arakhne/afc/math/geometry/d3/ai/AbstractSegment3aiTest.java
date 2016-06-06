@@ -43,7 +43,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Override
 	protected final T createShape() {
-		return (T) createSegment(0, 0, 10, 5);
+		return (T) createSegment(0, 0, 0, 10, 5, 0);
 	}
 	
 	@Test
@@ -64,42 +64,42 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	public void equalsObject() {
 		assertFalse(this.shape.equals(null));
 		assertFalse(this.shape.equals(new Object()));
-		assertFalse(this.shape.equals(createSegment(0, 0, 5, 5)));
-		assertFalse(this.shape.equals(createSegment(0, 0, 10, 6)));
-		assertFalse(this.shape.equals(createRectangle(0, 0, 10, 5)));
+		assertFalse(this.shape.equals(createSegment(0, 0, 0, 5, 5, 0)));
+		assertFalse(this.shape.equals(createSegment(0, 0, 0, 10, 6, 0)));
+		assertFalse(this.shape.equals(createRectangularPrism(0, 0, 0, 10, 5, 0)));
 		assertTrue(this.shape.equals(this.shape));
-		assertTrue(this.shape.equals(createSegment(0, 0, 10, 5)));
+		assertTrue(this.shape.equals(createSegment(0, 0, 0, 10, 5, 0)));
 	}
 
 	@Test
 	@Override
 	public void equalsObject_withPathIterator() {
-		assertFalse(this.shape.equals(createSegment(0, 0, 5, 5).getPathIterator()));
-		assertFalse(this.shape.equals(createSegment(0, 0, 10, 6).getPathIterator()));
-		assertFalse(this.shape.equals(createRectangle(0, 0, 10, 5).getPathIterator()));
+		assertFalse(this.shape.equals(createSegment(0, 0, 0, 5, 5, 0).getPathIterator()));
+		assertFalse(this.shape.equals(createSegment(0, 0, 0, 10, 6, 0).getPathIterator()));
+		assertFalse(this.shape.equals(createRectangularPrism(0, 0, 0, 10, 5, 0).getPathIterator()));
 		assertTrue(this.shape.equals(this.shape.getPathIterator()));
-		assertTrue(this.shape.equals(createSegment(0, 0, 10, 5).getPathIterator()));
+		assertTrue(this.shape.equals(createSegment(0, 0, 0, 10, 5, 0).getPathIterator()));
 	}
 
 	@Test
 	@Override
 	public void equalsToShape() {
 		assertFalse(this.shape.equalsToShape(null));
-		assertFalse(this.shape.equalsToShape((T) createSegment(0, 0, 5, 5)));
-		assertFalse(this.shape.equalsToShape((T) createSegment(0, 0, 10, 6)));
+		assertFalse(this.shape.equalsToShape((T) createSegment(0, 0, 0, 5, 5, 0)));
+		assertFalse(this.shape.equalsToShape((T) createSegment(0, 0, 0, 10, 6, 0)));
 		assertTrue(this.shape.equalsToShape(this.shape));
-		assertTrue(this.shape.equalsToShape((T) createSegment(0, 0, 10, 5)));
+		assertTrue(this.shape.equalsToShape((T) createSegment(0, 0, 0, 10, 5, 0)));
 	}
 
 	@Test
 	@Override
 	public void equalsToPathIterator() {
 		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
-		assertFalse(this.shape.equalsToPathIterator(createSegment(0, 0, 5, 5).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createSegment(0, 0, 10, 6).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createRectangle(0, 0, 10, 5).getPathIterator()));
+		assertFalse(this.shape.equalsToPathIterator(createSegment(0, 0, 0, 5, 5, 0).getPathIterator()));
+		assertFalse(this.shape.equalsToPathIterator(createSegment(0, 0, 0, 10, 6, 0).getPathIterator()));
+		assertFalse(this.shape.equalsToPathIterator(createRectangularPrism(0, 0, 0, 10, 5, 0).getPathIterator()));
 		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(createSegment(0, 0, 10, 5).getPathIterator()));
+		assertTrue(this.shape.equalsToPathIterator(createSegment(0, 0, 0, 10, 5, 0).getPathIterator()));
 	}
 
 	@Test
@@ -123,59 +123,59 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	@Test
 	@Override
 	public void getDistance() {
-		assertEpsilonEquals(0f, this.shape.getDistance(createPoint(0, 0)));
-		assertEpsilonEquals(1f, this.shape.getDistance(createPoint(1, 1)));
+		assertEpsilonEquals(0f, this.shape.getDistance(createPoint(0, 0, 0)));
+		assertEpsilonEquals(1f, this.shape.getDistance(createPoint(1, 1, 0)));
 		
-		assertEpsilonEquals(2.828427125f, this.shape.getDistance(createPoint(2, 4)));
+		assertEpsilonEquals(2.828427125f, this.shape.getDistance(createPoint(2, 4, 0)));
 
-		assertEpsilonEquals(1f, this.shape.getDistance(createPoint(2, 2)));
+		assertEpsilonEquals(1f, this.shape.getDistance(createPoint(2, 2, 0)));
 
-		assertEpsilonEquals(7.071067812f, this.shape.getDistance(createPoint(-5, 5)));
+		assertEpsilonEquals(7.071067812f, this.shape.getDistance(createPoint(-5, 5, 0)));
 	}
 
 	@Test
 	@Override
 	public void getDistanceSquared() {
-		assertEpsilonEquals(0f, this.shape.getDistanceSquared(createPoint(0, 0)));
-		assertEpsilonEquals(1f, this.shape.getDistanceSquared(createPoint(1, 1)));
+		assertEpsilonEquals(0f, this.shape.getDistanceSquared(createPoint(0, 0, 0)));
+		assertEpsilonEquals(1f, this.shape.getDistanceSquared(createPoint(1, 1, 0)));
 		
-		assertEpsilonEquals(8f, this.shape.getDistanceSquared(createPoint(2, 4)));
+		assertEpsilonEquals(8f, this.shape.getDistanceSquared(createPoint(2, 4, 0)));
 
-		assertEpsilonEquals(1f, this.shape.getDistanceSquared(createPoint(2, 2)));
+		assertEpsilonEquals(1f, this.shape.getDistanceSquared(createPoint(2, 2, 0)));
 
-		assertEpsilonEquals(50f, this.shape.getDistanceSquared(createPoint(-5, 5)));
+		assertEpsilonEquals(50f, this.shape.getDistanceSquared(createPoint(-5, 5, 0)));
 	}
 
 	@Test
 	@Override
 	public void getDistanceL1() {
-		assertEpsilonEquals(0f, this.shape.getDistanceL1(createPoint(0, 0)));
-		assertEpsilonEquals(1f, this.shape.getDistanceL1(createPoint(1, 1)));
+		assertEpsilonEquals(0f, this.shape.getDistanceL1(createPoint(0, 0, 0)));
+		assertEpsilonEquals(1f, this.shape.getDistanceL1(createPoint(1, 1, 0)));
 		
-		assertEpsilonEquals(4f, this.shape.getDistanceL1(createPoint(2, 4)));
+		assertEpsilonEquals(4f, this.shape.getDistanceL1(createPoint(2, 4, 0)));
 
-		assertEpsilonEquals(1f, this.shape.getDistanceL1(createPoint(2, 2)));
+		assertEpsilonEquals(1f, this.shape.getDistanceL1(createPoint(2, 2, 0)));
 
-		assertEpsilonEquals(10f, this.shape.getDistanceL1(createPoint(-5, 5)));
+		assertEpsilonEquals(10f, this.shape.getDistanceL1(createPoint(-5, 5, 0)));
 	}
 
 	@Test
 	@Override
 	public void getDistanceLinf() {
-		assertEpsilonEquals(0f, this.shape.getDistanceLinf(createPoint(0, 0)));
-		assertEpsilonEquals(1f, this.shape.getDistanceLinf(createPoint(1, 1)));
+		assertEpsilonEquals(0f, this.shape.getDistanceLinf(createPoint(0, 0, 0)));
+		assertEpsilonEquals(1f, this.shape.getDistanceLinf(createPoint(1, 1, 0)));
 		
-		assertEpsilonEquals(2f, this.shape.getDistanceLinf(createPoint(2, 4)));
+		assertEpsilonEquals(2f, this.shape.getDistanceLinf(createPoint(2, 4, 0)));
 
-		assertEpsilonEquals(1f, this.shape.getDistanceLinf(createPoint(2, 2)));
+		assertEpsilonEquals(1f, this.shape.getDistanceLinf(createPoint(2, 2, 0)));
 
-		assertEpsilonEquals(5f, this.shape.getDistanceLinf(createPoint(-5, 5)));
+		assertEpsilonEquals(5f, this.shape.getDistanceLinf(createPoint(-5, 5, 0)));
 	}
 
 	@Test
 	@Override
 	public void translateIntInt() {
-		this.shape.translate(3, 4);
+		this.shape.translate(3, 4, 0);
 		assertEquals(3, this.shape.getX1());
 		assertEquals(4, this.shape.getY1());
 		assertEquals(13, this.shape.getX2());
@@ -185,7 +185,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	@Test
 	@Override
 	public void translateVector3D() {
-		this.shape.translate(createVector(3, 4));
+		this.shape.translate(createVector(3, 4, 0));
 		assertEquals(3, this.shape.getX1());
 		assertEquals(4, this.shape.getY1());
 		assertEquals(13, this.shape.getX2());
@@ -194,7 +194,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Test
 	public void setIntIntIntInt() {
-		this.shape.set(3, 4, 5, 6);
+		this.shape.set(3, 4, 0, 5, 6, 0);
 		assertEquals(3, this.shape.getX1());
 		assertEquals(4, this.shape.getY1());
 		assertEquals(5, this.shape.getX2());
@@ -203,7 +203,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Test
 	public void setPoint3DPoint3D() {
-		this.shape.set(createPoint(3,  4), createPoint(5, 6));
+		this.shape.set(createPoint(3, 4, 0), createPoint(5, 6, 0));
 		assertEpsilonEquals(3, this.shape.getX1());
 		assertEpsilonEquals(4, this.shape.getY1());
 		assertEpsilonEquals(5, this.shape.getX2());
@@ -223,35 +223,35 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	@Test
 	@Override
 	public void containsPoint3D() {
-		assertTrue(this.shape.contains(createPoint(0, 0)));
-		assertTrue(this.shape.contains(createPoint(10, 5)));
+		assertTrue(this.shape.contains(createPoint(0, 0, 0)));
+		assertTrue(this.shape.contains(createPoint(10, 5, 0)));
 		
-		assertFalse(this.shape.contains(createPoint(1, 1)));
-		assertFalse(this.shape.contains(createPoint(2, 4)));
+		assertFalse(this.shape.contains(createPoint(1, 1, 0)));
+		assertFalse(this.shape.contains(createPoint(2, 4, 0)));
 
-		assertFalse(this.shape.contains(createPoint(2, 2)));
+		assertFalse(this.shape.contains(createPoint(2, 2, 0)));
 
-		assertTrue(this.shape.contains(createPoint(1, 0)));
+		assertTrue(this.shape.contains(createPoint(1, 0, 0)));
 
-		assertFalse(this.shape.contains(createPoint(5, 3)));
-		assertTrue(this.shape.contains(createPoint(5, 2)));
+		assertFalse(this.shape.contains(createPoint(5, 3, 0)));
+		assertTrue(this.shape.contains(createPoint(5, 2, 0)));
 	}
 
 	@Test
 	@Override
 	public void containsIntInt() {
-		assertTrue(this.shape.contains(0, 0));
-		assertTrue(this.shape.contains(10, 5));
+		assertTrue(this.shape.contains(0, 0, 0));
+		assertTrue(this.shape.contains(10, 5, 0));
 		
-		assertFalse(this.shape.contains(1, 1));
-		assertFalse(this.shape.contains(2, 4));
+		assertFalse(this.shape.contains(1, 1, 0));
+		assertFalse(this.shape.contains(2, 4, 0));
 
-		assertFalse(this.shape.contains(2, 2));
+		assertFalse(this.shape.contains(2, 2, 0));
 
-		assertTrue(this.shape.contains(1, 0));
+		assertTrue(this.shape.contains(1, 0, 0));
 
-		assertFalse(this.shape.contains(5, 3));
-		assertTrue(this.shape.contains(5, 2));
+		assertFalse(this.shape.contains(5, 3, 0));
+		assertTrue(this.shape.contains(5, 2, 0));
 	}
 
 	@Test
@@ -259,31 +259,31 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	public void getClosestPointTo() {
 		Point3D p;
 		
-		p = this.shape.getClosestPointTo(createPoint(0,0));
+		p = this.shape.getClosestPointTo(createPoint(0,0, 0));
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
-		p = this.shape.getClosestPointTo(createPoint(1,1));
+		p = this.shape.getClosestPointTo(createPoint(1,1, 0));
 		assertEquals(2, p.ix());
 		assertEquals(1, p.iy());
 
-		p = this.shape.getClosestPointTo(createPoint(2,2));
+		p = this.shape.getClosestPointTo(createPoint(2,2, 0));
 		assertEquals(2, p.ix());
 		assertEquals(1, p.iy());
 
-		p = this.shape.getClosestPointTo(createPoint(-2,2));
+		p = this.shape.getClosestPointTo(createPoint(-2,2, 0));
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
-		p = this.shape.getClosestPointTo(createPoint(0,1));
+		p = this.shape.getClosestPointTo(createPoint(0,1, 0));
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
-		p = this.shape.getClosestPointTo(createPoint(10,-1));
+		p = this.shape.getClosestPointTo(createPoint(10,-1, 0));
 		assertEquals(7, p.ix());
 		assertEquals(3, p.iy());
 
-		p = this.shape.getClosestPointTo(createPoint(2,4));
+		p = this.shape.getClosestPointTo(createPoint(2,4, 0));
 		assertEquals(4, p.ix());
 		assertEquals(2, p.iy());
 	}
@@ -293,31 +293,31 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	public void getFarthestPointTo() {
 		Point3D p;
 		
-		p = this.shape.getFarthestPointTo(createPoint(0,0));
+		p = this.shape.getFarthestPointTo(createPoint(0,0, 0));
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 
-		p = this.shape.getFarthestPointTo(createPoint(1,1));
+		p = this.shape.getFarthestPointTo(createPoint(1,1, 0));
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 
-		p = this.shape.getFarthestPointTo(createPoint(2,2));
+		p = this.shape.getFarthestPointTo(createPoint(2,2, 0));
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 
-		p = this.shape.getFarthestPointTo(createPoint(-2,2));
+		p = this.shape.getFarthestPointTo(createPoint(-2,2, 0));
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 
-		p = this.shape.getFarthestPointTo(createPoint(0,1));
+		p = this.shape.getFarthestPointTo(createPoint(0,1, 0));
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 
-		p = this.shape.getFarthestPointTo(createPoint(10,-1));
+		p = this.shape.getFarthestPointTo(createPoint(10,-1, 0));
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
-		p = this.shape.getFarthestPointTo(createPoint(2,4));
+		p = this.shape.getFarthestPointTo(createPoint(2,4, 0));
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 	}
@@ -326,8 +326,8 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	@Override
 	public void getPathIterator() {
 		PathIterator3ai pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 10, 5);
+		assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
+		assertElement(pi, PathElementType.LINE_TO, 10, 5, 0);
 		assertNoElement(pi);
 	}
 
@@ -339,22 +339,22 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		
 		tr = new Transform3D();
 		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 0,0);
-		assertElement(pi, PathElementType.LINE_TO, 10,5);
+		assertElement(pi, PathElementType.MOVE_TO, 0,0, 0);
+		assertElement(pi, PathElementType.LINE_TO, 10,5, 0);
 		assertNoElement(pi);
 
 		tr = new Transform3D();
-		tr.makeTranslationMatrix(3.4f, 4.5f);
+		tr.makeTranslationMatrix(3.4f, 4.5f, 0);
 		pi = this.shape.getPathIterator(tr);
-		assertElement(pi, PathElementType.MOVE_TO, 3, 5);
-		assertElement(pi, PathElementType.LINE_TO, 13, 10);
+		assertElement(pi, PathElementType.MOVE_TO, 3, 5, 0);
+		assertElement(pi, PathElementType.LINE_TO, 13, 10, 0);
 		assertNoElement(pi);
 
 		tr = new Transform3D();
 		tr.makeRotationMatrix(MathConstants.QUARTER_PI);
 		pi = this.shape.getPathIterator(tr); 
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 4, 11);
+		assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
+		assertElement(pi, PathElementType.LINE_TO, 4, 11, 0);
 		assertNoElement(pi);
 	}
 
@@ -372,7 +372,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEquals(5, s.getY2());
 
     	tr = new Transform3D();
-    	tr.setTranslation(3.4f, 4.5f);
+    	tr.setTranslation(3.4f, 4.5f, 0);
     	s = (T) this.shape.createTransformedShape(tr);
 		assertEquals(3, s.getX1());
 		assertEquals(5, s.getY1());
@@ -410,7 +410,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEquals(5, s.getY2());
 
     	tr = new Transform3D();
-    	tr.makeTranslationMatrix(3.4f, 4.5f);
+    	tr.makeTranslationMatrix(3.4f, 4.5f, 0);
     	s = this.shape.clone();
     	s.transform(tr);
     	assertEquals(3, s.getX1());
@@ -514,168 +514,170 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
     
 	@Test
     public void staticIntersectsSegmentSegment() {
-    	assertTrue(Segment3ai.intersectsSegmentSegment(0, 0, 10, 5, 0, 0, 10, 5));
-    	assertTrue(Segment3ai.intersectsSegmentSegment(0, 0, 10, 5, 0, 0, 5, 2));
-    	assertFalse(Segment3ai.intersectsSegmentSegment(0, 0, 10, 5, 0, 1, 5, 3));
-    	assertFalse(Segment3ai.intersectsSegmentSegment(0, 0, 10, 5, 0, 2, 5, 4));
-    	assertTrue(Segment3ai.intersectsSegmentSegment(0, 0, 10, 5, 5, 0, 4, 3));
-    	assertFalse(Segment3ai.intersectsSegmentSegment(0, 0, 10, 5, -1, 5, -1, 0));
-    	assertTrue(Segment3ai.intersectsSegmentSegment(5, 3, 7, 5, 6, 2, 6, 5));
-    	assertTrue(Segment3ai.intersectsSegmentSegment(5, 3, 7, 5, 9, 4, 6, 6));
-    	assertFalse(Segment3ai.intersectsSegmentSegment(5, 3, 7, 5, 9, 4, 6, 7));
-    	assertTrue(Segment3ai.intersectsSegmentSegment(5, 3, 7, 5, 6, 4, 6, 8));
+    	assertTrue(Segment3ai.intersectsSegmentSegment(0, 0, 0, 10, 5, 0, 0, 0, 0, 10, 5, 0));
+    	assertTrue(Segment3ai.intersectsSegmentSegment(0, 0, 0, 10, 5, 0, 0, 0, 0, 5, 2, 0));
+    	assertFalse(Segment3ai.intersectsSegmentSegment(0, 0, 0, 10, 5, 0, 0, 1, 0, 5, 3, 0));
+    	assertFalse(Segment3ai.intersectsSegmentSegment(0, 0, 0, 10, 5, 0, 0, 2, 0, 5, 4, 0));
+    	assertTrue(Segment3ai.intersectsSegmentSegment(0, 0, 0, 10, 5, 0, 5, 0, 0, 4, 3, 0));
+    	assertFalse(Segment3ai.intersectsSegmentSegment(0, 0, 0, 10, 5, 0, -1, 5, 0, -1, 0, 0));
+    	assertTrue(Segment3ai.intersectsSegmentSegment(5, 3, 0, 7, 5, 0, 6, 2, 0, 6, 5, 0));
+    	assertTrue(Segment3ai.intersectsSegmentSegment(5, 3, 0, 7, 5, 0, 9, 4, 0, 6, 6, 0));
+    	assertFalse(Segment3ai.intersectsSegmentSegment(5, 3, 0, 7, 5, 0, 9, 4, 0, 6, 7, 0));
+    	assertTrue(Segment3ai.intersectsSegmentSegment(5, 3, 0, 7, 5, 0, 6, 4, 0, 6, 8, 0));
     }
     
 	@Test
     public void staticComputeCrossingsFromPoint() {
-    	assertEquals(0, Segment3ai.computeCrossingsFromPoint(0, 5, 3, -1, -1, 0, 0));
-    	assertEquals(0, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 4, -2, 4, 10));
-    	assertEquals(2, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 6, -2, 6, 10));
-    	assertEquals(SHAPE_INTERSECTS, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 5, -2, 5, 10));
-    	assertEquals(-2, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 6, 10, 6, -2));
-    	assertEquals(SHAPE_INTERSECTS, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 5, 10, 5, -2));
-    	assertEquals(2, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 10, -5, 127, 345));
-    	assertEquals(-2, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 127, 345, 10, -5));
-    	assertEquals(1, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 127, 3, 200, 345));
-    	assertEquals(-1, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 127, 345, 200, 3));
-    	assertEquals(1, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 10, 1, 12, 3));
-    	assertEquals(-1, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 12, 3, 10, 1));
-    	assertEquals(1, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 10, 3, 12, 5));
-    	assertEquals(-1, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 12, 5, 10, 3));
-    	assertEquals(0, Segment3ai.computeCrossingsFromPoint(0, 4, -1, 7, -5, 0, 0));
+    	assertEquals(0, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, -1, -1, 0, 0, 0, 0));
+    	assertEquals(0, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 4, -2, 0, 4, 10, 0));
+    	assertEquals(2, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 6, -2, 0, 6, 10, 0));
+    	assertEquals(SHAPE_INTERSECTS, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 5, -2, 0, 5, 10, 0));
+    	assertEquals(-2, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 6, 10, 0, 6, -2, 0));
+    	assertEquals(SHAPE_INTERSECTS, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 5, 10, 0, 5, -2, 0));
+    	assertEquals(2, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 10, -5, 0, 127, 345, 0));
+    	assertEquals(-2, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 127, 345, 0, 10, -5, 0));
+    	assertEquals(1, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 127, 3, 0, 200, 345, 0));
+    	assertEquals(-1, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 127, 345, 0, 200, 3, 0));
+    	assertEquals(1, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 10, 1, 0, 12, 3, 0));
+    	assertEquals(-1, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 12, 3, 0, 10, 1, 0));
+    	assertEquals(1, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 10, 3, 0, 12, 5, 0));
+    	assertEquals(-1, Segment3ai.computeCrossingsFromPoint(0, 5, 3, 0, 12, 5, 0, 10, 3, 0));
+    	assertEquals(0, Segment3ai.computeCrossingsFromPoint(0, 4, -1, 0, 7, -5, 0, 0, 0, 0));
     }
 
 	@Test
     public void staticComputeCrossingsFromRect() {
     	int[] data = new int[] {
-    			-1, -1, 0, 0, 				0,
-    			-1, 0, 10, 0,				0,
-    			10, -2, 12, 4,				1,
-    			12, 4, 50, 10,				1,
-    			10, -2, 50, 10,				2,
-    			10, 3, 12, 4,				0,
-    			12, 4, 50, 5,				0,
-    			12, 3, 50, 5,				0,
-    			12, 5, 50, 5,				0,
-    			12, 4, 50, 10,				1,
-    			12, 3, 50, 10,				1,
-    			12, 5, 50, 10,				1,
-    			0, 5, 3, 7,					0,
-    			6, 2, 6, 4,					SHAPE_INTERSECTS,
-    			6, 4, 6, 8,					SHAPE_INTERSECTS,
-    			7, 4, 7, 8,					SHAPE_INTERSECTS,
-    			5, 4, 5, 8,					SHAPE_INTERSECTS,
-    			4, 4, 6, 6,					SHAPE_INTERSECTS,
-    			6, 6, 8, 4,					SHAPE_INTERSECTS,
-    			5, 4, 7, 4,					SHAPE_INTERSECTS,
-    			0, 4, 7, 4,					SHAPE_INTERSECTS,
-    			6, 6, 12, 8,				0,
-    			6, 2, 12, -3,				0,
+    			-1, -1, 0, 0, 0, 0, 				0,
+    			-1, 0, 0, 10, 0, 0,				    0,
+    			10, -2, 0, 12, 4, 0,				1,
+    			12, 4, 0, 50, 10, 0,				1,
+    			10, -2, 0, 50, 10, 0,				2,
+    			10, 3, 0, 12, 4, 0,				    0,
+    			12, 4, 0, 50, 5, 0,				    0,
+    			12, 3, 0, 50, 5, 0,				    0,
+    			12, 5, 0, 50, 5, 0,				    0,
+    			12, 4, 0, 50, 10, 0,				1,
+    			12, 3, 0, 50, 10, 0,				1,
+    			12, 5, 0, 50, 10, 0,				1,
+    			0, 5, 0, 3, 7, 0,					0,
+    			6, 2, 0, 6, 4, 0,					SHAPE_INTERSECTS,
+    			6, 4, 0, 6, 8, 0,					SHAPE_INTERSECTS,
+    			7, 4, 0, 7, 8, 0,					SHAPE_INTERSECTS,
+    			5, 4, 0, 5, 8, 0,					SHAPE_INTERSECTS,
+    			4, 4, 0, 6, 6, 0,					SHAPE_INTERSECTS,
+    			6, 6, 0, 8, 4, 0,					SHAPE_INTERSECTS,
+    			5, 4, 0, 7, 4, 0,					SHAPE_INTERSECTS,
+    			0, 4, 0, 7, 4, 0,					SHAPE_INTERSECTS,
+    			6, 6, 0, 12, 8, 0,                  0,
+    			6, 2, 0, 12, -3, 0, 				0,
     	};
     	
     	String label;
     	for(int i=0; i<data.length;) {
     		int x1 = data[i++];
     		int y1 = data[i++];
+    		int z1 = data[i++];
     		int x2 = data[i++];
     		int y2 = data[i++];
+    		int z2 = data[i++];
     		int crossing = data[i++];
     		    		
-    		label = x1+";"+y1+";"+x2+";"+y2;  //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-    		assertEquals(label, crossing, Segment3ai.computeCrossingsFromRect(0, 5, 3, 7, 5, x1, y1, x2, y2));
+    		label = x1+";"+y1+";"+z1+";"+x2+";"+y2+";"+z2;  //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+    		assertEquals(label, crossing, Segment3ai.computeCrossingsFromRect(0, 5, 3, 0, 7, 5, 0, x1, y1, z2, x2, y2, z2));
 
-    		label = x2+";"+y2+";"+x1+";"+y1;  //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+    		label = x2+";"+y2+";"+z2+";"+x1+";"+y1+";"+z1;  //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
     		if (crossing!=SHAPE_INTERSECTS) {
     			crossing = -crossing;
     		}
-    		assertEquals(label, crossing, Segment3ai.computeCrossingsFromRect(0, 5, 3, 7, 5, x2, y2, x1, y1));
+    		assertEquals(label, crossing, Segment3ai.computeCrossingsFromRect(0, 5, 3, 0, 7, 5, 0, x2, y2, z2, x1, y1, z1));
     	}
     }
 
 	@Test
     public void staticComputeCrossingsFromSegment() {
-    	assertEquals(0, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ -1, -1, 0, 0));
-    	assertEquals(0, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ -1, 0, 10, 0));
-    	assertEquals(1, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 10, -2, 12, 4));
-    	assertEquals(1, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 12, 4, 50, 10));
-    	assertEquals(2, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 10, -2, 50, 10));
-    	assertEquals(0, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 10, 3, 12, 4));
-    	assertEquals(0, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 12, 4, 50, 5));
-    	assertEquals(0, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 12, 3, 50, 5));
+    	assertEquals(0, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ -1, -1, 0, 0, 0, 0));
+    	assertEquals(0, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ -1, 0, 0, 10, 0, 0));
+    	assertEquals(1, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 10, -2, 0, 12, 4, 0));
+    	assertEquals(1, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 12, 4, 0, 50, 10, 0));
+    	assertEquals(2, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 10, -2, 0, 50, 10, 0));
+    	assertEquals(0, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 10, 3, 0, 12, 4, 0));
+    	assertEquals(0, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 12, 4, 0, 50, 5, 0));
+    	assertEquals(0, Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 12, 3, 0, 50, 5, 0));
     	assertEquals(1,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 2, 6, 3));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 6, 2, 0, 6, 3, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 2, 6, 5));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 6, 2, 0, 6, 5, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 2, 6, 4));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 6, 2, 0, 6, 4, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 4, 6, 8));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 6, 4, 0, 6, 8, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 3, 6, 8));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 6, 3, 0, 6, 8, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 7, 4, 7, 8));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 7, 4, 0, 7, 8, 0));
     	assertEquals(0,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 5, 4, 5, 8));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 5, 4, 0, 5, 8, 0));
     	assertEquals(0,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 4, 4, 6, 6));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 4, 4, 0, 6, 6, 0));
     	assertEquals(0,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 4, 3, 6, 5));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 4, 3, 0, 6, 5, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 8, 4, 6, 6));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 8, 4, 0, 6, 6, 0));
     	assertEquals(1,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 10, 4, 6, 8));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 10, 4, 0, 6, 8, 0));
     	assertEquals(-1,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 8, 10, 4));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 6, 8, 0, 10, 4, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 5, 4, 100, 6));
+    			Segment3ai.computeCrossingsFromSegment(0, /**/ 5, 3, 0, 7, 5, 0, /**/ 5, 4, 0, 100, 6, 0));
     }
 
 	@Test
-    public void staticComputeCrossingsFromCircle() {
-    	assertEquals(0, Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ -1, -1, 0, 0));
-    	assertEquals(0, Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ -1, 0, 10, 0));
-    	assertEquals(1, Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 10, -2, 12, 4));
-    	assertEquals(1, Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 12, 4, 50, 10));
-    	assertEquals(2, Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 10, -2, 50, 10));
-    	assertEquals(0, Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 10, 3, 12, 4));
-    	assertEquals(0, Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 12, 4, 50, 5));
-    	assertEquals(0, Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 12, 3, 50, 5));
+    public void staticcomputeCrossingsFromSphere() {
+    	assertEquals(0, Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ -1, -1, 0, 0, 0, 0));
+    	assertEquals(0, Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ -1, 0, 0, 10, 0, 0));
+    	assertEquals(1, Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 10, -2, 0, 12, 4, 0));
+    	assertEquals(1, Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 12, 4, 0, 50, 10, 0));
+    	assertEquals(2, Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 10, -2, 0, 50, 10, 0));
+    	assertEquals(0, Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 10, 3, 0, 12, 4, 0));
+    	assertEquals(0, Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 12, 4, 0, 50, 5, 0));
+    	assertEquals(0, Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 12, 3, 0, 50, 5, 0));
     	assertEquals(1,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 6, 2, 6, 3));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 6, 2, 0, 6, 3, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 6, 2, 6, 5));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 6, 2, 0, 6, 5, 0));
     	assertEquals(1,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 7, 2, 7, 4));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 7, 2, 0, 7, 4, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 6, 2, 6, 4));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 6, 2, 0, 6, 4, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 6, 4, 6, 8));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 6, 4, 0, 6, 8, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 6, 3, 6, 8));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 6, 3, 0, 6, 8, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 7, 4, 7, 8));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 7, 4, 0, 7, 8, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 5, 4, 5, 8));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 5, 4, 0, 5, 8, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 4, 4, 6, 6));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 4, 4, 0, 6, 6, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 4, 3, 6, 5));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 4, 3, 0, 6, 5, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 8, 4, 6, 6));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 8, 4, 0, 6, 6, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 10, 4, 6, 8));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 10, 4, 0, 6, 8, 0));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 6, 8, 10, 4));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 6, 8, 0, 10, 4, 0));
     	assertEquals(1,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 7, 8, 10, 12));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 7, 8, 0, 10, 12, 0));
     	assertEquals(-1,
-    			Segment3ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 10, 12, 7, 8));
+    			Segment3ai.computeCrossingsFromSphere(0, /**/ 4, 6, 0, 3, /**/ 10, 12, 0, 7, 8, 0));
     }
 
 	@Test
 	@Override
 	public void setIT() {
-		this.shape.set((T) createSegment(10, 12, 14, 16));
+		this.shape.set((T) createSegment(10, 12, 0, 14, 16, 0));
 		assertEquals(10, this.shape.getX1());
 		assertEquals(12, this.shape.getY1());
 		assertEquals(14, this.shape.getX2());
@@ -756,38 +758,38 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	public void staticComputeClosestPointTo() {
 		Point3D p;
 		
-		p = createPoint(0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 10, 5, 0, 0, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, 0, 0, 0, p);
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
-		p = createPoint(0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 10, 5, 1, 1, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, 1, 1, 0, p);
 		assertEquals(2, p.ix());
 		assertEquals(1, p.iy());
 
-		p = createPoint(0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 10, 5, 2, 2, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, 2, 2, 0, p);
 		assertEquals(2, p.ix());
 		assertEquals(1, p.iy());
 
-		p = createPoint(0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 10, 5, -2, 2, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, -2, 2, 0, p);
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
-		p = createPoint(0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 10, 5, 0, 1, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, 0, 1, 0, p);
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
-		p = createPoint(0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 10, 5, 10, -1, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, 10, -1, 0, p);
 		assertEquals(7, p.ix());
 		assertEquals(3, p.iy());
 
-		p = createPoint(0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 10, 5, 2, 4, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, 2, 4, 0, p);
 		assertEquals(4, p.ix());
 		assertEquals(2, p.iy());
 	}
@@ -796,51 +798,51 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	public void staticComputeFarthestPointTo() {
 		Point3D p;
 		
-		p = createPoint(0, 0);
-		Segment3ai.computeFarthestPointTo(0, 0, 10, 5, 0, 0, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeFarthestPointTo(0, 0, 0, 10, 5, 0, 0, 0, 0, p);
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 
-		p = createPoint(0, 0);
-		Segment3ai.computeFarthestPointTo(0, 0, 10, 5, 1, 1, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeFarthestPointTo(0, 0, 0, 10, 5, 0, 1, 1, 0, p);
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 
-		p = createPoint(0, 0);
-		Segment3ai.computeFarthestPointTo(0, 0, 10, 5, 2, 2, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeFarthestPointTo(0, 0, 0, 10, 5, 0, 2, 2, 0, p);
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 
-		p = createPoint(0, 0);
-		Segment3ai.computeFarthestPointTo(0, 0, 10, 5, -2, 2, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeFarthestPointTo(0, 0, 0, 10, 5, 0, -2, 2, 0, p);
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 
-		p = createPoint(0, 0);
-		Segment3ai.computeFarthestPointTo(0, 0, 10, 5, 0, 1, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeFarthestPointTo(0, 0, 0, 10, 5, 0, 0, 1, 0, p);
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 
-		p = createPoint(0, 0);
-		Segment3ai.computeFarthestPointTo(0, 0, 10, 5, 10, -1, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeFarthestPointTo(0, 0, 0, 10, 5, 0, 10, -1, 0, p);
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
-		p = createPoint(0, 0);
-		Segment3ai.computeFarthestPointTo(0, 0, 10, 5, 2, 4, p);
+		p = createPoint(0, 0, 0);
+		Segment3ai.computeFarthestPointTo(0, 0, 0, 10, 5, 0, 2, 4, 0, p);
 		assertEquals(10, p.ix());
 		assertEquals(5, p.iy());
 	}
 
 	@Test
 	public void staticComputeSideLinePoint() {
-		assertEquals(-1, Segment3ai.computeSideLinePoint(0, 0, 10, 5, 7, 0));
-		assertEquals(1, Segment3ai.computeSideLinePoint(0, 0, 10, 5, 4, 4));
+		assertEquals(-1, Segment3ai.computeSideLinePoint(0, 0, 0, 10, 5, 0, 7, 0, 0));
+		assertEquals(1, Segment3ai.computeSideLinePoint(0, 0, 0, 10, 5, 0, 4, 4, 0));
 	}
 
 	@Test
 	public void setP1Point3D() {
-		this.shape.setP1(createPoint(145, 654));
+		this.shape.setP1(createPoint(145, 654, 0));
 		assertEquals(145, this.shape.getX1());
 		assertEquals(654, this.shape.getY1());
 		assertEquals(10, this.shape.getX2());
@@ -849,7 +851,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Test
 	public void setP2Point3D() {
-		this.shape.setP2(createPoint(145, 654));
+		this.shape.setP2(createPoint(145, 654, 0));
 		assertEquals(0, this.shape.getX1());
 		assertEquals(0, this.shape.getY1());
 		assertEquals(145, this.shape.getX2());
@@ -858,7 +860,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Test
 	public void setP1IntInt() {
-		this.shape.setP1(145, 654);
+		this.shape.setP1(145, 654, 0);
 		assertEquals(145, this.shape.getX1());
 		assertEquals(654, this.shape.getY1());
 		assertEquals(10, this.shape.getX2());
@@ -867,7 +869,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Test
 	public void setP2IntInt() {
-		this.shape.setP2(145, 654);
+		this.shape.setP2(145, 654, 0);
 		assertEquals(0, this.shape.getX1());
 		assertEquals(0, this.shape.getY1());
 		assertEquals(145, this.shape.getX2());
@@ -876,7 +878,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Test
 	public void toBoundingBoxB() {
-		B bb = createRectangle(0, 0, 0, 0);
+		B bb = createRectangularPrism(0, 0, 0, 0, 0, 0);
 		this.shape.toBoundingBox(bb);
 		assertEpsilonEquals(0, bb.getMinX());
 		assertEpsilonEquals(0, bb.getMinY());
@@ -886,35 +888,35 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Test
 	public void containsRectangularPrism3ai() {
-		assertFalse(this.shape.contains(createRectangle(0,0,1,1)));
-		assertFalse(this.shape.contains(createRectangle(0,0,8,1)));
-		assertFalse(this.shape.contains(createRectangle(0,0,8,6)));
-		assertFalse(this.shape.contains(createRectangle(0,0,100,100)));
-		assertFalse(this.shape.contains(createRectangle(7,10,1,1)));
-		assertFalse(this.shape.contains(createRectangle(16,0,100,100)));
-		assertFalse(this.shape.contains(createRectangle(0,3,3,10)));
+		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,1,1, 0)));
+		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,8,1, 0)));
+		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,8,6, 0)));
+		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,100,100, 0)));
+		assertFalse(this.shape.contains(createRectangularPrism(7,10, 0,1,1, 0)));
+		assertFalse(this.shape.contains(createRectangularPrism(16,0, 0,100,100, 0)));
+		assertFalse(this.shape.contains(createRectangularPrism(0,3, 0,3,10, 0)));
 		
-		this.shape = (T) createSegment(0, 0, 10, 0);
-		assertTrue(this.shape.contains(createRectangle(0,0,2,0)));
+		this.shape = (T) createSegment(0, 0, 0, 10, 0, 0);
+		assertTrue(this.shape.contains(createRectangularPrism(0,0, 0,2,0, 0)));
 	}
 
 	@Test
 	public void clipToRectangle() {
-		assertTrue(this.shape.clipToRectangle(3, 1, 7, 6));
+		assertTrue(this.shape.clipToRectangle(3, 1, 0, 7, 6, 0));
 		assertEquals(3, this.shape.getX1());
 		assertEquals(1, this.shape.getY1());
 		assertEquals(7, this.shape.getX2());
 		assertEquals(3, this.shape.getY2());
 		
 		this.shape = createShape();
-		assertTrue(this.shape.clipToRectangle(8, 3, 11, 7));
+		assertTrue(this.shape.clipToRectangle(8, 3, 0, 11, 7, 0));
 		assertEquals(8, this.shape.getX1());
 		assertEquals(4, this.shape.getY1());
 		assertEquals(10, this.shape.getX2());
 		assertEquals(5, this.shape.getY2());
 
 		this.shape = createShape();
-		assertFalse(this.shape.clipToRectangle(0, 3, 5, 4));
+		assertFalse(this.shape.clipToRectangle(0, 3, 0, 5, 4, 0));
 		assertEquals(0, this.shape.getX1());
 		assertEquals(0, this.shape.getY1());
 		assertEquals(10, this.shape.getX2());
@@ -923,102 +925,102 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Test
 	public void intersectsRectangularPrism3ai() {
-		assertTrue(this.shape.intersects(createRectangle(0,0,1,1)));
-		assertTrue(this.shape.intersects(createRectangle(0,0,8,1)));
-		assertTrue(this.shape.intersects(createRectangle(0,0,8,6)));
-		assertTrue(this.shape.intersects(createRectangle(0,0,100,100)));
-		assertFalse(this.shape.intersects(createRectangle(7,10,1,1)));
-		assertFalse(this.shape.intersects(createRectangle(16,0,100,100)));
-		assertFalse(this.shape.intersects(createRectangle(0,3,3,10)));
+		assertTrue(this.shape.intersects(createRectangularPrism(0,0, 0,1,1, 0)));
+		assertTrue(this.shape.intersects(createRectangularPrism(0,0, 0,8,1, 0)));
+		assertTrue(this.shape.intersects(createRectangularPrism(0,0, 0,8,6, 0)));
+		assertTrue(this.shape.intersects(createRectangularPrism(0,0, 0,100,100, 0)));
+		assertFalse(this.shape.intersects(createRectangularPrism(7,10, 0,1,1, 0)));
+		assertFalse(this.shape.intersects(createRectangularPrism(16,0, 0,100,100, 0)));
+		assertFalse(this.shape.intersects(createRectangularPrism(0,3, 0,3,10, 0)));
 	}
 
 	@Test
 	public void intersectsSphere3ai() {
-		assertTrue(this.shape.intersects(createCircle(0,0,1)));
-		assertTrue(this.shape.intersects(createCircle(0,0,8)));
-		assertTrue(this.shape.intersects(createCircle(0,0,8)));
-		assertTrue(this.shape.intersects(createCircle(0,0,100)));
-		assertFalse(this.shape.intersects(createCircle(7,10,1)));
-		assertTrue(this.shape.intersects(createCircle(16,0,100)));
-		assertTrue(this.shape.intersects(createCircle(0,3,3)));
-		assertFalse(this.shape.intersects(createCircle(0,3,1)));
+		assertTrue(this.shape.intersects(createSphere(0,0,0,1)));
+		assertTrue(this.shape.intersects(createSphere(0,0,0,8)));
+		assertTrue(this.shape.intersects(createSphere(0,0,0,8)));
+		assertTrue(this.shape.intersects(createSphere(0,0,0,100)));
+		assertFalse(this.shape.intersects(createSphere(7,10,0,1)));
+		assertTrue(this.shape.intersects(createSphere(16,0,0,100)));
+		assertTrue(this.shape.intersects(createSphere(0,3,0,3)));
+		assertFalse(this.shape.intersects(createSphere(0,3,0,1)));
 	}
 
 	@Test
 	@Override
 	public void intersectsSegment3ai() {
-		assertTrue(this.shape.intersects(createSegment(0,0,1,10)));
-		assertTrue(this.shape.intersects(createSegment(0,0,8,0)));
-		assertTrue(this.shape.intersects(createSegment(0,0,8,-1)));
-		assertTrue(this.shape.intersects(createSegment(0,0,100,-100)));
-		assertFalse(this.shape.intersects(createSegment(7,10,1,3)));
-		assertFalse(this.shape.intersects(createSegment(16,0,100,3)));
-		assertFalse(this.shape.intersects(createSegment(0,3,3,3)));
-		assertFalse(this.shape.intersects(createSegment(0,3,5,3)));
-		assertTrue(this.shape.intersects(createSegment(0,3,6,3)));
-		assertFalse(this.shape.intersects(createSegment(0,3,1,2)));
+		assertTrue(this.shape.intersects(createSegment(0,0,0,1,10,0)));
+		assertTrue(this.shape.intersects(createSegment(0,0,0,8,0,0)));
+		assertTrue(this.shape.intersects(createSegment(0,0,0,8,-1,0)));
+		assertTrue(this.shape.intersects(createSegment(0,0,0,100,-100,0)));
+		assertFalse(this.shape.intersects(createSegment(7,10,0,1,3,0)));
+		assertFalse(this.shape.intersects(createSegment(16,0,0,100,3,0)));
+		assertFalse(this.shape.intersects(createSegment(0,3,0,3,3,0)));
+		assertFalse(this.shape.intersects(createSegment(0,3,0,5,3,0)));
+		assertTrue(this.shape.intersects(createSegment(0,3,0,6,3,0)));
+		assertFalse(this.shape.intersects(createSegment(0,3,0,1,2,0)));
 	}
 	
 	@Test
 	public void intersectsPath3ai() {
 		Path3ai path = createPath();
-		path.moveTo(0, 0);
-		path.lineTo(2, 2);
-		path.quadTo(3, 0, 4, 3);
-		path.curveTo(5, -1, 6, 5, 7, -5);
+		path.moveTo(0, 0, 0);
+		path.lineTo(2, 2, 0);
+		path.quadTo(3, 0, 0, 4, 3, 0);
+		path.curveTo(5, -1, 0, 6, 5, 0, 7, -5, 0);
 		path.closePath();
 		
-		assertTrue(createSegment(0, 0, 1, 1).intersects(path));
-		assertTrue(createSegment(4, 3, 1, 1).intersects(path));
-		assertTrue(createSegment(2, 2, 1, 1).intersects(path));
-		assertTrue(createSegment(2, 1, 1, 1).intersects(path));
-		assertTrue(createSegment(3, 0, 1, 1).intersects(path));
-		assertTrue(createSegment(-1, -1, 1, 1).intersects(path));
-		assertTrue(createSegment(4, -3, 1, 1).intersects(path));
-		assertTrue(createSegment(-3, 4, 1, 1).intersects(path));
-		assertTrue(createSegment(6, -5, 1, 1).intersects(path));
-		assertTrue(createSegment(4, 0, 1, 1).intersects(path));
-		assertTrue(createSegment(5, 0, 1, 1).intersects(path));
-		assertFalse(createSegment(-4, -4, -3, -3).intersects(path));
-		assertFalse(createSegment(-1, 0, 2, 3).intersects(path));
-		assertFalse(createSegment(7, 1, 18, 14).intersects(path));
+		assertTrue(createSegment(0, 0, 0, 1, 1, 0).intersects(path));
+		assertTrue(createSegment(4, 3, 0, 1, 1, 0).intersects(path));
+		assertTrue(createSegment(2, 2, 0, 1, 1, 0).intersects(path));
+		assertTrue(createSegment(2, 1, 0, 1, 1, 0).intersects(path));
+		assertTrue(createSegment(3, 0, 0, 1, 1, 0).intersects(path));
+		assertTrue(createSegment(-1, -1, 0, 1, 1, 0).intersects(path));
+		assertTrue(createSegment(4, -3, 0, 1, 1, 0).intersects(path));
+		assertTrue(createSegment(-3, 4, 0, 1, 1, 0).intersects(path));
+		assertTrue(createSegment(6, -5, 0, 1, 1, 0).intersects(path));
+		assertTrue(createSegment(4, 0, 0, 1, 1, 0).intersects(path));
+		assertTrue(createSegment(5, 0, 0, 1, 1, 0).intersects(path));
+		assertFalse(createSegment(-4, -4, 0, -3, -3, 0).intersects(path));
+		assertFalse(createSegment(-1, 0, 0, 2, 3, 0).intersects(path));
+		assertFalse(createSegment(7, 1, 0, 18, 14, 0).intersects(path));
 	}
 
 
 	@Override
 	public void intersectsPathIterator3ai() {
 		Path3ai path = createPath();
-		path.moveTo(0, 0);
-		path.lineTo(2, 2);
-		path.quadTo(3, 0, 4, 3);
-		path.curveTo(5, -1, 6, 5, 7, -5);
+		path.moveTo(0, 0, 0);
+		path.lineTo(2, 2, 0);
+		path.quadTo(3, 0, 0, 4, 3, 0);
+		path.curveTo(5, -1, 0, 6, 5, 0, 7, -5, 0);
 		path.closePath();
 		
-		assertTrue(createSegment(0, 0, 1, 1).intersects((PathIterator3ai) path.getPathIterator()));
-		assertTrue(createSegment(4, 3, 1, 1).intersects((PathIterator3ai) path.getPathIterator()));
-		assertTrue(createSegment(2, 2, 1, 1).intersects((PathIterator3ai) path.getPathIterator()));
-		assertTrue(createSegment(2, 1, 1, 1).intersects((PathIterator3ai) path.getPathIterator()));
-		assertTrue(createSegment(3, 0, 1, 1).intersects((PathIterator3ai) path.getPathIterator()));
-		assertTrue(createSegment(-1, -1, 1, 1).intersects((PathIterator3ai) path.getPathIterator()));
-		assertTrue(createSegment(4, -3, 1, 1).intersects((PathIterator3ai) path.getPathIterator()));
-		assertTrue(createSegment(-3, 4, 1, 1).intersects((PathIterator3ai) path.getPathIterator()));
-		assertTrue(createSegment(6, -5, 1, 1).intersects((PathIterator3ai) path.getPathIterator()));
-		assertTrue(createSegment(4, 0, 1, 1).intersects((PathIterator3ai) path.getPathIterator()));
-		assertTrue(createSegment(5, 0, 1, 1).intersects((PathIterator3ai) path.getPathIterator()));
-		assertFalse(createSegment(-4, -4, -3, -3).intersects((PathIterator3ai) path.getPathIterator()));
-		assertFalse(createSegment(-1, 0, 2, 3).intersects((PathIterator3ai) path.getPathIterator()));
-		assertFalse(createSegment(7, 1, 18, 14).intersects((PathIterator3ai) path.getPathIterator()));
+		assertTrue(createSegment(0, 0, 0, 1, 1, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertTrue(createSegment(4, 3, 0, 1, 1, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertTrue(createSegment(2, 2, 0, 1, 1, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertTrue(createSegment(2, 1, 0, 1, 1, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertTrue(createSegment(3, 0, 0, 1, 1, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertTrue(createSegment(-1, -1, 0, 1, 1, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertTrue(createSegment(4, -3, 0, 1, 1, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertTrue(createSegment(-3, 4, 0, 1, 1, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertTrue(createSegment(6, -5, 0, 1, 1, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertTrue(createSegment(4, 0, 0, 1, 1, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertTrue(createSegment(5, 0, 0, 1, 1, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertFalse(createSegment(-4, -4, 0, -3, -3, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertFalse(createSegment(-1, 0, 0, 2, 3, 0).intersects((PathIterator3ai) path.getPathIterator()));
+		assertFalse(createSegment(7, 1, 0, 18, 14, 0).intersects((PathIterator3ai) path.getPathIterator()));
 	}
 
 	@Override
 	public void intersectsShape3D() {
-		assertTrue(this.shape.intersects((Shape3D) createCircle(16,0,100)));
-		assertTrue(this.shape.intersects((Shape3D) createRectangle(0,0,100,100)));
+		assertTrue(this.shape.intersects((Shape3D) createSphere(16,0, 0,100)));
+		assertTrue(this.shape.intersects((Shape3D) createRectangularPrism(0,0, 0,100,100, 0)));
 	}
 
 	@Override
 	public void operator_addVector3D() {
-		this.shape.operator_add(createVector(3, 4));
+		this.shape.operator_add(createVector(3, 4, 0));
 		assertEquals(3, this.shape.getX1());
 		assertEquals(4, this.shape.getY1());
 		assertEquals(13, this.shape.getX2());
@@ -1027,7 +1029,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Override
 	public void operator_plusVector3D() {
-		T r = this.shape.operator_plus(createVector(3, 4));
+		T r = this.shape.operator_plus(createVector(3, 4, 0));
 		assertEquals(3, r.getX1());
 		assertEquals(4, r.getY1());
 		assertEquals(13, r.getX2());
@@ -1036,7 +1038,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Override
 	public void operator_removeVector3D() {
-		this.shape.operator_remove(createVector(3, 4));
+		this.shape.operator_remove(createVector(3, 4, 0));
 		assertEquals(-3, this.shape.getX1());
 		assertEquals(-4, this.shape.getY1());
 		assertEquals(7, this.shape.getX2());
@@ -1045,7 +1047,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Override
 	public void operator_minusVector3D() {
-		T r = this.shape.operator_minus(createVector(3, 4));
+		T r = this.shape.operator_minus(createVector(3, 4, 0));
 		assertEquals(-3, r.getX1());
 		assertEquals(-4, r.getY1());
 		assertEquals(7, r.getX2());
@@ -1065,7 +1067,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEquals(5, s.getY2());
 
     	tr = new Transform3D();
-    	tr.setTranslation(3.4f, 4.5f);
+    	tr.setTranslation(3.4f, 4.5f, 0);
     	s = (T) this.shape.operator_multiply(tr);
 		assertEquals(3, s.getX1());
 		assertEquals(5, s.getY1());
@@ -1091,33 +1093,33 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 
 	@Override
 	public void operator_andPoint3D() {
-		assertTrue(this.shape.operator_and(createPoint(0, 0)));
-		assertTrue(this.shape.operator_and(createPoint(10, 5)));
+		assertTrue(this.shape.operator_and(createPoint(0, 0, 0)));
+		assertTrue(this.shape.operator_and(createPoint(10, 5, 0)));
 		
-		assertFalse(this.shape.operator_and(createPoint(1, 1)));
-		assertFalse(this.shape.operator_and(createPoint(2, 4)));
+		assertFalse(this.shape.operator_and(createPoint(1, 1, 0)));
+		assertFalse(this.shape.operator_and(createPoint(2, 4, 0)));
 
-		assertFalse(this.shape.operator_and(createPoint(2, 2)));
+		assertFalse(this.shape.operator_and(createPoint(2, 2, 0)));
 
-		assertTrue(this.shape.operator_and(createPoint(1, 0)));
+		assertTrue(this.shape.operator_and(createPoint(1, 0, 0)));
 
-		assertFalse(this.shape.operator_and(createPoint(5, 3)));
-		assertTrue(this.shape.operator_and(createPoint(5, 2)));
+		assertFalse(this.shape.operator_and(createPoint(5, 3, 0)));
+		assertTrue(this.shape.operator_and(createPoint(5, 2, 0)));
 	}
 
 	@Override
 	public void operator_andShape3D() {
-		assertTrue(this.shape.operator_and(createSphere(16,0,100)));
-		assertTrue(this.shape.operator_and(createRectangle(0,0,100,100)));
+		assertTrue(this.shape.operator_and(createSphere(16,0, 0,100)));
+		assertTrue(this.shape.operator_and(createRectangularPrism(0,0, 0,100,100, 0)));
 	}
 
 	@Override
 	public void operator_upToPoint3D() {
-		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(0, 0)));
-		assertEpsilonEquals(1f, this.shape.operator_upTo(createPoint(1, 1)));
-		assertEpsilonEquals(2.828427125f, this.shape.operator_upTo(createPoint(2, 4)));
-		assertEpsilonEquals(1f, this.shape.operator_upTo(createPoint(2, 2)));
-		assertEpsilonEquals(7.071067812f, this.shape.operator_upTo(createPoint(-5, 5)));
+		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(0, 0, 0)));
+		assertEpsilonEquals(1f, this.shape.operator_upTo(createPoint(1, 1, 0)));
+		assertEpsilonEquals(2.828427125f, this.shape.operator_upTo(createPoint(2, 4, 0)));
+		assertEpsilonEquals(1f, this.shape.operator_upTo(createPoint(2, 2, 0)));
+		assertEpsilonEquals(7.071067812f, this.shape.operator_upTo(createPoint(-5, 5, 0)));
 	}
 
 }

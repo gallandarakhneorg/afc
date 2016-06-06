@@ -291,7 +291,7 @@ public interface Segment3ai<
                     --numCrosses;
                 }
 			}
-		} else if (Sphere3ai.intersectsCircleSegment(
+		} else if (Sphere3ai.intersectsSphereSegment(
 				cx, cy, cz, radius,
 				x0, y0, z0, x1, y1, z1)) {
 			return MathConstants.SHAPE_INTERSECTS;
@@ -1404,7 +1404,7 @@ public interface Segment3ai<
 	@Override
 	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : "Sphere must be not be null"; //$NON-NLS-1$
-		return Sphere3ai.intersectsCircleSegment(
+		return Sphere3ai.intersectsSphereSegment(
 				sphere.getX(), sphere.getY(), sphere.getZ(),
 				sphere.getRadius(),
 				getX1(), getY1(), getZ1(),

@@ -428,7 +428,7 @@ public interface Sphere3ai<
 	 * <code>false</code>
 	 */
 	@Pure
-	static boolean intersectsCircleCircle(int x1, int y1, int z1, int radius1, int x2, int y2, int z2, int radius2) {
+	static boolean intersectsSphereSphere(int x1, int y1, int z1, int radius1, int x2, int y2, int z2, int radius2) {
 		assert radius1 >= 0 : "Radius of the first sphere must be positive or zero."; //$NON-NLS-1$
 		assert radius2 >= 0 : "Radius of the second sphere must be positive or zero."; //$NON-NLS-1$
 		final Point3D<?, ?> point = new InnerComputationPoint3ai();
@@ -453,7 +453,8 @@ public interface Sphere3ai<
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
-	static boolean intersectsCircleRectangle(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3, int z3) {
+    static boolean intersectsSphereRectangularPrism(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3,
+            int z3) {
 		assert radius >= 0 : "Circle radius must be positive or zero."; //$NON-NLS-1$
 		final Point3D<?, ?> point = new InnerComputationPoint3ai();
 		RectangularPrism3ai.computeClosestPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1, point);
@@ -476,7 +477,7 @@ public interface Sphere3ai<
 	 * <code>false</code>
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
-	static boolean intersectsCircleSegment(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3, int z3) {
+	static boolean intersectsSphereSegment(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3, int z3) {
 		assert radius >= 0 : "Circle radius must be positive or zero."; //$NON-NLS-1$
 		final Point3D<?, ?> point = new InnerComputationPoint3ai();
 		Segment3ai.computeClosestPointTo(x2, y2, z1, x3, y3, z3, x1, y1, z1, point);
@@ -730,7 +731,7 @@ public interface Sphere3ai<
 	@Override
 	default boolean intersects(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
 		assert rectangularPrism != null : "Rectangle must be not null."; //$NON-NLS-1$
-		return intersectsCircleRectangle(
+		return intersectsSphereRectangularPrism(
 				getX(), getY(), getZ(), getRadius(),
 				rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ(),
 				rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ());
@@ -740,7 +741,7 @@ public interface Sphere3ai<
 	@Override
 	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : "Circle must be not null."; //$NON-NLS-1$
-		return intersectsCircleCircle(
+		return intersectsSphereSphere(
 				getX(), getY(), getZ(), getRadius(),
 				sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
 	}
@@ -749,7 +750,7 @@ public interface Sphere3ai<
 	@Override
 	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : "Segment must be not null."; //$NON-NLS-1$
-		return intersectsCircleSegment(
+		return intersectsSphereSegment(
 				getX(), getY(), getZ(), getRadius(),
 				segment.getX1(), segment.getY1(), segment.getZ1(),
 				segment.getX2(), segment.getY2(), segment.getZ2());

@@ -81,7 +81,7 @@ public abstract class AbstractPrism3aiTest<T extends RectangularPrism3ai<?, T, ?
 
 	@Test
 	public void setIntIntIntInt() {
-		this.shape.set(10, 12, 14, 16);
+		this.shape.set(10, 12, 0, 14, 16, 0);
 		assertEquals(10, this.shape.getMinX());
 		assertEquals(12, this.shape.getMinY());
 		assertEquals(24, this.shape.getMaxX());
@@ -90,7 +90,7 @@ public abstract class AbstractPrism3aiTest<T extends RectangularPrism3ai<?, T, ?
 
 	@Test
 	public void setPoint2DPoint2D() {
-		this.shape.set(createPoint(10, 12), createPoint(14, 16));
+		this.shape.set(createPoint(10, 12, 0), createPoint(14, 16, 0));
 		assertEquals(10, this.shape.getMinX());
 		assertEquals(12, this.shape.getMinY());
 		assertEquals(14, this.shape.getMaxX());
@@ -117,7 +117,7 @@ public abstract class AbstractPrism3aiTest<T extends RectangularPrism3ai<?, T, ?
 	
 	@Test
 	public void setFromCornersIntIntIntInt() {
-		this.shape.setFromCorners(2, 3, 4, 5);
+		this.shape.setFromCorners(2, 3, 0, 4, 5, 0);
 		assertEquals(2, this.shape.getMinX());
 		assertEquals(3, this.shape.getMinY());
 		assertEquals(4, this.shape.getMaxX()); 
@@ -126,7 +126,7 @@ public abstract class AbstractPrism3aiTest<T extends RectangularPrism3ai<?, T, ?
 	
 	@Test
 	public void setFromCornersPoint2DPoint2D() {
-		this.shape.setFromCorners(createPoint(2, 3), createPoint(4, 5));
+		this.shape.setFromCorners(createPoint(2, 3, 0), createPoint(4, 5, 0));
 		assertEquals(2, this.shape.getMinX());
 		assertEquals(3, this.shape.getMinY());
 		assertEquals(4, this.shape.getMaxX()); 
@@ -135,7 +135,7 @@ public abstract class AbstractPrism3aiTest<T extends RectangularPrism3ai<?, T, ?
 
 	@Test
 	public void setFromCenterIntIntIntInt() {
-		this.shape.setFromCenter(2, 3, 4, 5);
+		this.shape.setFromCenter(2, 3, 0, 4, 5, 0);
 		assertEquals(0, this.shape.getMinX());
 		assertEquals(1, this.shape.getMinY());
 		assertEquals(4, this.shape.getMaxX()); 
@@ -144,7 +144,7 @@ public abstract class AbstractPrism3aiTest<T extends RectangularPrism3ai<?, T, ?
 	
 	@Test
 	public void setFromCenterPoint2DPoint2D() {
-		this.shape.setFromCenter(createPoint(2, 3), createPoint(4, 5));
+		this.shape.setFromCenter(createPoint(2, 3, 0), createPoint(4, 5, 0));
 		assertEquals(0, this.shape.getMinX());
 		assertEquals(1, this.shape.getMinY());
 		assertEquals(4, this.shape.getMaxX()); 
@@ -230,7 +230,7 @@ public abstract class AbstractPrism3aiTest<T extends RectangularPrism3ai<?, T, ?
 	@Test
 	@Override
 	public void translateIntInt() {
-		this.shape.translate(3,  4);
+		this.shape.translate(3, 4, 0);
 		assertEquals(8, this.shape.getMinX());
 		assertEquals(12, this.shape.getMinY());
 		assertEquals(18, this.shape.getMaxX());

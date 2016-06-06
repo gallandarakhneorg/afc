@@ -260,7 +260,7 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 		Assume.assumeFalse(isIntCoordinates());
 		assertFalse(createVector(7.15161,6.7545, 0).isUnitVector());
 		assertTrue(createVector(0,-1, 0).isUnitVector());
-		assertTrue((createVector(Math.sqrt(2)/2,Math.sqrt(2)/2,Math.sqrt(2)/2)).isUnitVector());
+		assertTrue((createVector(Math.sqrt(2)/2,Math.sqrt(2)/2,0)).isUnitVector());
 		assertTrue((createVector(1,0,0)).isUnitVector()); 
 	}
 
