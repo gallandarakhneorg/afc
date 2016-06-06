@@ -230,8 +230,7 @@ public final class Android {
 			return cl;
 		} catch (ClassCastException  e) {
 			throw new AndroidException(e);
-		}
-		catch (Throwable e) {
+		} catch (Throwable e) {
 			throw new AndroidException(e);
 		}
 	}
