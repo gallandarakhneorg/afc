@@ -2,10 +2,7 @@
 
 The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may be used to build applications. The Arakhnê Foundation Classes provide tools that are not directly available in the standard Java API.
 
-AFC library is compatible with the languages that are defined with [Xtext](https://eclipse.org/Xtext): SARL, Xtend, etc.
-Indeed, the AFC classes use the annotations (`@Pure`, `@Inline`), and provide the operators' overriding functions (`operator_plus`, `operator_minus`, etc.) that are supported by the compilers of the Xtext-based languages.
-
-[![Compatible with Java](https://img.shields.io/badge/requires-Java 8-red.svg?style=flat-square)](https://www.java.com)
+[![Require Java](https://img.shields.io/badge/requires-Java 8-red.svg?style=flat-square)](https://www.java.com)
 [![Compatible with Java](https://img.shields.io/badge/compatible%20with-Java-yellowgreen.svg?style=flat-square)](https://www.java.com)
 [![Compatible with SARL](https://img.shields.io/badge/compatible%20with-SARL-yellowgreen.svg?style=flat-square)](http://sarl.io)
 [![Compatible with Xtext](https://img.shields.io/badge/compatible%20with-Xtext-yellowgreen.svg?style=flat-square)](https://eclipse.org/Xtext)
@@ -14,6 +11,25 @@ Indeed, the AFC classes use the annotations (`@Pure`, `@Inline`), and provide th
 [![travis build](https://img.shields.io/travis/gallandarakhneorg/afc.svg?style=flat-square)](https://travis-ci.org/gallandarakhneorg/afc)
 
 # 1. Content of the AFC
+
+## 1.1 Compatibility with other Languages than Java
+
+AFC is a Java library that provides extensions for being used with other programming languages.
+
+### 1.1.1 SARL agent-oriented programming language
+
+AFC library is compatible with the [SARL](http://www.sarl.io) agent-oriented programming language, which is a Xtext-based language (see below).
+Indeed, the AFC classes use the specific annotations: `@Pure` for making [pure functions](https://en.wikipedia.org/wiki/Pure_function), and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
+
+### 1.1.2 Xtend object-oriented programming language
+
+AFC library is compatible with the [Xtend](https://www.eclipse.org/xtend/) object-oriented programming language, which is a Xtext-based language (see below).
+Indeed, the AFC classes use the specific annotations: `@Pure` for making [pure functions](https://en.wikipedia.org/wiki/Pure_function), and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
+
+### 1.1.3 Other Xtext-base languages
+
+AFC library is compatible with all the languages that are defined upon the [Xtext](https://www.eclipse.org/Xtext/) framework for development of programming languages and domain-specific languages.
+Indeed, the AFC classes use the specific annotations: `@Pure` for making [pure functions](https://en.wikipedia.org/wiki/Pure_function), and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
 
 ## 1.1. Alive Modules
 
