@@ -260,9 +260,9 @@ public class Path2i extends AbstractShape2i<Path2i>
 
 	@Override
 	public void translate(int dx, int dy) {
-		for (int i = 0; i < this.numCoords;) {
-			this.coords[i++] += dx;
-			this.coords[i++] += dy;
+		for (int i = 0; i < this.numCoords; i += 2) {
+			this.coords[i] += dx;
+			this.coords[i + 1] += dy;
 		}
 		Rectangle2i bb;
 		bb = this.logicalBounds == null ? null : this.logicalBounds.get();
@@ -280,11 +280,11 @@ public class Path2i extends AbstractShape2i<Path2i>
 	public void transform(Transform2D transform) {
 		assert transform != null : AssertMessages.notNullParameter();
 		final Point2D<?, ?> p = new InnerComputationPoint2ai();
-		for (int i = 0; i < this.numCoords;) {
+		for (int i = 0; i < this.numCoords; i += 2) {
 			p.set(this.coords[i], this.coords[i + 1]);
 			transform.transform(p);
-			this.coords[i++] = p.ix();
-			this.coords[i++] = p.iy();
+			this.coords[i] = p.ix();
+			this.coords[i + 1] = p.iy();
 		}
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
@@ -487,11 +487,11 @@ public class Path2i extends AbstractShape2i<Path2i>
 		}
 		final Point2D<?, ?> p = new InnerComputationPoint2ai();
 		final int[] clone = new int[this.numCoords];
-		for (int i = 0; i < clone.length;) {
+		for (int i = 0; i < clone.length; i += 2) {
 			p.set(this.coords[i], this.coords[i + 1]);
 			transform.transform(p);
-			clone[i++] = p.ix();
-			clone[i++] = p.iy();
+			clone[i] = p.ix();
+			clone[i + 1] = p.iy();
 		}
 		return clone;
 	}
@@ -506,11 +506,11 @@ public class Path2i extends AbstractShape2i<Path2i>
 			}
 		} else {
 			final Point2D<?, ?> p = new InnerComputationPoint2ai();
-			for (int i = 0; i < clone.length;) {
+			for (int i = 0; i < clone.length; i += 2) {
 				p.set(this.coords[i], this.coords[i + 1]);
 				transform.transform(p);
-				clone[i++] = p.ix();
-				clone[i++] = p.iy();
+				clone[i] = p.ix();
+				clone[i + 1] = p.iy();
 			}
 		}
 		return clone;
@@ -526,11 +526,11 @@ public class Path2i extends AbstractShape2i<Path2i>
 			}
 		} else {
 			final Point2D<?, ?> p = new InnerComputationPoint2ai();
-			for (int i = 0; i < clone.length;) {
+			for (int i = 0; i < clone.length; i += 2) {
 				p.set(this.coords[i], this.coords[i + 1]);
 				transform.transform(p);
-				clone[i++] = p.ix();
-				clone[i++] = p.iy();
+				clone[i] = p.ix();
+				clone[i + 1] = p.iy();
 			}
 		}
 		return clone;
@@ -541,16 +541,16 @@ public class Path2i extends AbstractShape2i<Path2i>
 	public Point2i[] toPointArray(Transform2D transform) {
 		final Point2i[] clone = new Point2i[this.numCoords / 2];
 		if (transform == null || transform.isIdentity()) {
-			for (int i = 0, j = 0; j < this.numCoords; ++i) {
+			for (int i = 0, j = 0; j < this.numCoords; ++i, j += 2) {
 				clone[i] = getGeomFactory().newPoint(
-						this.coords[j++],
-						this.coords[j++]);
+						this.coords[j],
+						this.coords[j + 1]);
 			}
 		} else {
-			for (int i = 0, j = 0; j < clone.length; ++i) {
+			for (int i = 0, j = 0; j < clone.length; ++i, j += 2) {
 				clone[i] = getGeomFactory().newPoint(
-						this.coords[j++],
-						this.coords[j++]);
+						this.coords[j],
+						this.coords[j + 1]);
 				transform.transform(clone[i]);
 			}
 		}
