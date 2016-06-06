@@ -2201,7 +2201,7 @@ public interface Path2ai<
 	@Pure
 	@Override
 	default PathIterator2ai<IE> getPathIterator(double flatness) {
-		return new FlatteningPathIterator<>(this, getPathIterator(null), flatness, DEFAULT_FLATTENING_LIMIT);
+		return new FlatteningPathIterator<>(getPathIterator(null), flatness, DEFAULT_FLATTENING_LIMIT);
 	}
 
 	@Pure
@@ -2213,8 +2213,23 @@ public interface Path2ai<
 		return new TransformedPathIterator<>(this, transform);
 	}
 
-	@Pure
-	@Override
+    /** Replies a path iterator on this shape that is replacing the
+     * curves by line approximations.
+     *
+     * @return the iterator on the approximation.
+     * @see #getPathIterator()
+     * @see MathConstants#SPLINE_APPROXIMATION_RATIO
+     */
+    @Pure
+    default PathIterator2ai<IE> getFlatteningPathIterator() {
+        return new FlatteningPathIterator<>(
+                getPathIterator(null),
+                MathConstants.SPLINE_APPROXIMATION_RATIO,
+                Path2ai.DEFAULT_FLATTENING_LIMIT);
+    }
+
+    @Pure
+    @Override
 	default Iterator<P> getPointIterator() {
 		final PathIterator2ai<IE> pathIterator = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		return new PixelIterator<>(pathIterator, getGeomFactory());
@@ -2706,13 +2721,9 @@ public interface Path2ai<
 	@SuppressWarnings("checkstyle:magicnumber")
 	class FlatteningPathIterator<E extends PathElement2ai> implements PathIterator2ai<E> {
 
-		/** Path.
-		 */
-		private final Path2ai<?, ?, E, ?, ?, ?> path;
-
 		/** The source iterator.
 		 */
-		private final PathIterator2ai<? extends E> pathIterator;
+		private final PathIterator2ai<E> pathIterator;
 
 		/**
 		 * Square of the flatness parameter for testing against squared lengths.
@@ -2790,20 +2801,17 @@ public interface Path2ai<
 		private int lastNextY;
 
 		/**
-		 * @param path is the path.
 		 * @param pathIterator is the path iterator that may be used to initialize the path.
 		 * @param flatness the maximum allowable distance between the
 		 *     control points and the flattened curve
 		 * @param limit the maximum number of recursive subdivisions
 		 *     allowed for any curved segment
 		 */
-		public FlatteningPathIterator(Path2ai<?, ?, E, ?, ?, ?> path, PathIterator2ai<? extends E> pathIterator,
+		public FlatteningPathIterator(PathIterator2ai<E> pathIterator,
 				double flatness, int limit) {
-			assert path != null : AssertMessages.notNullParameter(0);
-			assert pathIterator != null : AssertMessages.notNullParameter(1);
-			assert flatness > 0f : AssertMessages.positiveOrZeroParameter(2);
-			assert limit >= 0 : AssertMessages.positiveOrZeroParameter(3);
-			this.path = path;
+			assert pathIterator != null : AssertMessages.notNullParameter(0);
+			assert flatness > 0f : AssertMessages.positiveOrZeroParameter(1);
+			assert limit >= 0 : AssertMessages.positiveOrZeroParameter(2);
 			this.pathIterator = pathIterator;
 			this.squaredFlatness = flatness * flatness;
 			this.limit = limit;
@@ -2813,7 +2821,7 @@ public interface Path2ai<
 
 		@Override
 		public PathIterator2ai<E> restartIterations() {
-			return new FlatteningPathIterator<>(this.path, this.pathIterator.restartIterations(),
+			return new FlatteningPathIterator<>(this.pathIterator.restartIterations(),
 					Math.sqrt(this.squaredFlatness), this.limit);
 		}
 
@@ -3200,9 +3208,9 @@ public interface Path2ai<
 				final int x = (int) Math.round(this.hold[this.holdIndex + 0]);
 				final int y = (int) Math.round(this.hold[this.holdIndex + 1]);
 				if (type == PathElementType.MOVE_TO) {
-					element = this.path.getGeomFactory().newMovePathElement(x, y);
+					element = this.pathIterator.getGeomFactory().newMovePathElement(x, y);
 				} else {
-					element = this.path.getGeomFactory().newLinePathElement(
+					element = this.pathIterator.getGeomFactory().newLinePathElement(
 							this.lastNextX, this.lastNextY,
 							x, y);
 				}
@@ -3211,7 +3219,7 @@ public interface Path2ai<
 			} else {
 				final int x = (int) Math.round(this.moveX);
 				final int y = (int) Math.round(this.moveY);
-				element = this.path.getGeomFactory().newClosePathElement(
+				element = this.pathIterator.getGeomFactory().newClosePathElement(
 						this.lastNextX, this.lastNextY,
 						x, y);
 				this.lastNextX = x;
@@ -3230,7 +3238,7 @@ public interface Path2ai<
 
 		@Override
 		public PathWindingRule getWindingRule() {
-			return this.path.getWindingRule();
+			return this.pathIterator.getWindingRule();
 		}
 
 		@Override
@@ -3246,17 +3254,17 @@ public interface Path2ai<
 
 		@Override
 		public boolean isMultiParts() {
-			return this.path.isMultiParts();
+			return this.pathIterator.isMultiParts();
 		}
 
 		@Override
 		public boolean isPolygon() {
-			return this.path.isPolygon();
+			return this.pathIterator.isPolygon();
 		}
 
 		@Override
 		public GeomFactory2ai<E, ?, ?, ?> getGeomFactory() {
-			return this.path.getGeomFactory();
+			return this.pathIterator.getGeomFactory();
 		}
 
 	}

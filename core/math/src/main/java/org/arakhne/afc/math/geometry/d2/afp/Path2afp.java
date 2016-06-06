@@ -66,9 +66,9 @@ public interface Path2afp<
      */
     int GROW_SIZE = 24;
 
-    /** The default flatening depth limit.
+    /** The default flattening depth limit.
      */
-    int DEFAULT_FLATENING_LIMIT = 10;
+    int DEFAULT_FLATTENING_LIMIT = 10;
 
     /** The default winding rule: {@link PathWindingRule#NON_ZERO}.
      */
@@ -3010,7 +3010,7 @@ public interface Path2afp<
     @Pure
     @Override
     default PathIterator2afp<IE> getPathIterator(double flatness) {
-        return new FlatteningPathIterator<>(getPathIterator(null), flatness, DEFAULT_FLATENING_LIMIT);
+        return new FlatteningPathIterator<>(getPathIterator(null), flatness, DEFAULT_FLATTENING_LIMIT);
     }
 
     /** Replies an iterator on the path elements.
@@ -3038,7 +3038,22 @@ public interface Path2afp<
      */
     @Pure
     default PathIterator2afp<IE> getPathIterator(Transform2D transform, double flatness) {
-        return new FlatteningPathIterator<>(getPathIterator(transform), flatness, DEFAULT_FLATENING_LIMIT);
+        return new FlatteningPathIterator<>(getPathIterator(transform), flatness, DEFAULT_FLATTENING_LIMIT);
+    }
+
+    /** Replies a path iterator on this path that is replacing the
+     * curves and corner arcs by line approximations.
+     *
+     * @return the iterator on the approximation.
+     * @see #getPathIterator()
+     * @see MathConstants#SPLINE_APPROXIMATION_RATIO
+     */
+    @Pure
+    default PathIterator2afp<IE> getFlatteningPathIterator() {
+        return new FlatteningPathIterator<>(
+                getPathIterator(null),
+                MathConstants.SPLINE_APPROXIMATION_RATIO,
+                Path2afp.DEFAULT_FLATTENING_LIMIT);
     }
 
     /** Replies the x coordinate of the last point in the path.

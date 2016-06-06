@@ -809,6 +809,21 @@ public interface Ellipse2afp<
         return new TransformedEllipsePathIterator<>(this, transform);
     }
 
+    /** Replies a path iterator on this shape that is replacing the
+     * curves by line approximations.
+     *
+     * @return the iterator on the approximation.
+     * @see #getPathIterator()
+     * @see MathConstants#SPLINE_APPROXIMATION_RATIO
+     */
+    @Pure
+    default PathIterator2afp<IE> getFlatteningPathIterator() {
+        return new Path2afp.FlatteningPathIterator<>(
+                getPathIterator(null),
+                MathConstants.SPLINE_APPROXIMATION_RATIO,
+                Path2afp.DEFAULT_FLATTENING_LIMIT);
+    }
+
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
@@ -833,8 +848,7 @@ public interface Ellipse2afp<
         assert ellipse != null : AssertMessages.notNullParameter();
         final P pointOnSecondEllipse = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(
-                new Path2afp.FlatteningPathIterator<>(ellipse.getPathIterator(), MathConstants.SPLINE_APPROXIMATION_RATIO,
-                        Path2afp.DEFAULT_FLATENING_LIMIT),
+                ellipse.getFlatteningPathIterator(),
                 getPathIterator(), pointOnSecondEllipse);
         return getClosestPointTo(pointOnSecondEllipse);
     }
@@ -893,8 +907,7 @@ public interface Ellipse2afp<
         assert path != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         Path2afp.getClosestPointTo(
-                new Path2afp.FlatteningPathIterator<>(getPathIterator(), MathConstants.SPLINE_APPROXIMATION_RATIO,
-                        Path2afp.DEFAULT_FLATENING_LIMIT),
+                getFlatteningPathIterator(),
                 path.getPathIterator(), point);
         return point;
     }

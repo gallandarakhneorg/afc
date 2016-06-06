@@ -805,17 +805,18 @@ public interface RoundRectangle2afp<
 	 * @see #getPathIterator()
 	 * @see MathConstants#SPLINE_APPROXIMATION_RATIO
 	 */
+	@Pure
 	default PathIterator2afp<IE> getFlatteningPathIterator() {
 		final double approx = MathConstants.SPLINE_APPROXIMATION_RATIO * 2;
 		if (getArcWidth() <= approx || getArcHeight() <= approx) {
 			// Arc sizes is too small for using the default approximation ratio.
-			return new Path2afp.FlatteningPathIterator<>(getPathIterator(),
+			return new Path2afp.FlatteningPathIterator<>(getPathIterator(null),
 					MathConstants.SPLINE_APPROXIMATION_RATIO / 2,
-					Path2afp.DEFAULT_FLATENING_LIMIT);
+					Path2afp.DEFAULT_FLATTENING_LIMIT);
 		}
-		return new Path2afp.FlatteningPathIterator<>(getPathIterator(),
+		return new Path2afp.FlatteningPathIterator<>(getPathIterator(null),
 				MathConstants.SPLINE_APPROXIMATION_RATIO,
-				Path2afp.DEFAULT_FLATENING_LIMIT);
+				Path2afp.DEFAULT_FLATTENING_LIMIT);
 	}
 
 	@Pure

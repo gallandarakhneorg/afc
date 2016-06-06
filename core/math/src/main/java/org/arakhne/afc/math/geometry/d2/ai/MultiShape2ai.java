@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.MultiShape2D;
@@ -236,7 +237,22 @@ public interface MultiShape2ai<
 		return new TransformedMultiShapePathIterator<>(getBackendDataList(), getGeomFactory(), transform);
 	}
 
-	@Override
+    /** Replies a path iterator on this shape that is replacing the
+     * curves by line approximations.
+     *
+     * @return the iterator on the approximation.
+     * @see #getPathIterator()
+     * @see MathConstants#SPLINE_APPROXIMATION_RATIO
+     */
+    @Pure
+    default PathIterator2ai<IE> getFlatteningPathIterator() {
+        return new Path2ai.FlatteningPathIterator<>(
+                getPathIterator(null),
+                MathConstants.SPLINE_APPROXIMATION_RATIO,
+                Path2ai.DEFAULT_FLATTENING_LIMIT);
+    }
+
+    @Override
 	default Iterator<P> getPointIterator() {
 		return new MultiShapePointIterator<>(getBackendDataList());
 	}

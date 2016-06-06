@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.MultiShape2D;
@@ -306,7 +307,22 @@ public interface MultiShape2afp<
 		return new TransformedMultiShapePathIterator<>(getBackendDataList(), getGeomFactory(), transform);
 	}
 
-	@Override
+    /** Replies a path iterator on this multishape that is replacing the
+     * curves and corner arcs by line approximations.
+     *
+     * @return the iterator on the approximation.
+     * @see #getPathIterator()
+     * @see MathConstants#SPLINE_APPROXIMATION_RATIO
+     */
+    @Pure
+    default PathIterator2afp<IE> getFlatteningPathIterator() {
+        return new Path2afp.FlatteningPathIterator<>(
+                getPathIterator(null),
+                MathConstants.SPLINE_APPROXIMATION_RATIO,
+                Path2afp.DEFAULT_FLATTENING_LIMIT);
+    }
+
+    @Override
 	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
 		assert circle != null : AssertMessages.notNullParameter();
 		double min = Double.POSITIVE_INFINITY;
