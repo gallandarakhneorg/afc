@@ -20,11 +20,14 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Ignore;
+import org.junit.Test;
 
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -34,9 +37,6 @@ import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?, ?, ?, B>,
@@ -1256,12 +1256,12 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(5, 14, this.shape.getClosestPointTo(createCircle(-2, 14, 1)));
 		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createCircle(-1, 21, 1)));
 		assertFpPointEquals(7, 18, this.shape.getClosestPointTo(createCircle(7, 21, 1)));
-		assertFpPointEquals(9, 13, this.shape.getClosestPointTo(createCircle(9, 13, 1)));
+		assertClosestPointInBothShapes(this.shape, createCircle(9, 13, 1));
 		assertFpPointEquals(8, 8, this.shape.getClosestPointTo(createCircle(8, 4, 1)));
 		assertFpPointEquals(10, 8, this.shape.getClosestPointTo(createCircle(20, 0, 1)));
 		assertFpPointEquals(10, 14, this.shape.getClosestPointTo(createCircle(19, 14, 1)));
 		assertFpPointEquals(10, 18, this.shape.getClosestPointTo(createCircle(18, 21, 1)));
-		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createCircle(5, 18, 1)));
+		assertClosestPointInBothShapes(this.shape, createCircle(5, 18, 1));
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createCircle(4.3, 7, 1)));
 	}
 
@@ -1395,28 +1395,28 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRectangle(0, 12, 1, 1)));
 		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createRectangle(0, 21, 1, 1)));
 		assertFpPointEquals(7.5, 8, this.shape.getClosestPointTo(createRectangle(7, 0, 1, 1)));
-		assertFpPointEquals(8.5, 12.5, this.shape.getClosestPointTo(createRectangle(8, 12, 1, 1)));
+		assertClosestPointInBothShapes(this.shape, createRectangle(8, 12, 1, 1));
 		assertFpPointEquals(9.5, 18, this.shape.getClosestPointTo(createRectangle(9, 21, 1, 1)));
 		assertFpPointEquals(10, 8, this.shape.getClosestPointTo(createRectangle(15, 0, 1, 1)));
 		assertFpPointEquals(10, 12.5, this.shape.getClosestPointTo(createRectangle(16, 12, 1, 1)));
 		assertFpPointEquals(10, 18, this.shape.getClosestPointTo(createRectangle(17, 21, 1, 1)));
 		assertFpPointEquals(6, 12.5, this.shape.getClosestPointTo(createRectangle(1, 12, 10, 1)));
-		assertFpPointEquals(6, 18, this.shape.getClosestPointTo(createRectangle(1, 12, 10, 20)));
-		assertFpPointEquals(8.5, 10, this.shape.getClosestPointTo(createRectangle(8, 0, 1, 20)));
-		assertFpPointEquals(10, 10, this.shape.getClosestPointTo(createRectangle(8, 0, 10, 20)));
-		assertFpPointEquals(6.5, 10.5, this.shape.getClosestPointTo(createRectangle(6, 10, 1, 1)));
-		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRectangle(4, 12, 1, 1)));
-		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRectangle(4.1, 12, 1, 1)));
-		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRectangle(4.2, 12, 1, 1)));
-		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRectangle(4.3, 12, 1, 1)));
-		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRectangle(4.4, 12, 1, 1)));
-		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRectangle(4.5, 12, 1, 1)));
-		assertFpPointEquals(5.1, 12.5, this.shape.getClosestPointTo(createRectangle(4.6, 12, 1, 1)));
-		assertFpPointEquals(5.2, 12.5, this.shape.getClosestPointTo(createRectangle(4.7, 12, 1, 1)));
-		assertFpPointEquals(5.3, 12.5, this.shape.getClosestPointTo(createRectangle(4.8, 12, 1, 1)));
-		assertFpPointEquals(5.4, 12.5, this.shape.getClosestPointTo(createRectangle(4.9, 12, 1, 1)));
-		assertFpPointEquals(5.5, 12.5, this.shape.getClosestPointTo(createRectangle(5, 12, 1, 1)));
-		assertFpPointEquals(5.6, 12.5, this.shape.getClosestPointTo(createRectangle(5.1, 12, 1, 1)));
+		assertClosestPointInBothShapes(this.shape, createRectangle(1, 12, 10, 20));
+		assertClosestPointInBothShapes(this.shape, createRectangle(8, 0, 1, 20));
+		assertClosestPointInBothShapes(this.shape, createRectangle(8, 0, 10, 20));
+		assertClosestPointInBothShapes(this.shape, createRectangle(6, 10, 1, 1));
+		assertClosestPointInBothShapes(this.shape, createRectangle(4, 12, 1, 1));
+		assertClosestPointInBothShapes(this.shape, createRectangle(4.1, 12, 1, 1));
+		assertClosestPointInBothShapes(this.shape, createRectangle(4.2, 12, 1, 1));
+		assertClosestPointInBothShapes(this.shape, createRectangle(4.3, 12, 1, 1));
+		assertClosestPointInBothShapes(this.shape, createRectangle(4.4, 12, 1, 1));
+		assertClosestPointInBothShapes(this.shape, createRectangle(4.5, 12, 1, 1));
+		assertClosestPointInBothShapes(this.shape, createRectangle(4.6, 12, 1, 1));
+		assertClosestPointInBothShapes(this.shape, createRectangle(4.7, 12, 1, 1));
+		assertClosestPointInBothShapes( this.shape, createRectangle(4.8, 12, 1, 1));
+		assertClosestPointInBothShapes(this.shape, createRectangle(4.9, 12, 1, 1));
+		assertClosestPointInBothShapes(this.shape, createRectangle(5, 12, 1, 1));
+		assertClosestPointInBothShapes(this.shape, createRectangle(5.1, 12, 1, 1));
 	}
 
 	@Test
@@ -1515,16 +1515,16 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createSegment(0, 0, 2, 1)));
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createSegment(0, 0, 1, 2)));
 		assertFpPointEquals(5, 14, this.shape.getClosestPointTo(createSegment(1, 10, 4, 14)));
-		assertFpPointEquals(5, 13.2, this.shape.getClosestPointTo(createSegment(1, 10, 6, 14)));
-		assertFpPointEquals(5, 10.94118, this.shape.getClosestPointTo(createSegment(1, 10, 18, 14)));
-		assertFpPointEquals(7, 10, this.shape.getClosestPointTo(createSegment(7, 10, 18, 14)));
+		assertClosestPointInBothShapes(this.shape, createSegment(1, 10, 6, 14));
+		assertClosestPointInBothShapes(this.shape, createSegment(1, 10, 18, 14));
+		assertClosestPointInBothShapes(this.shape, createSegment(7, 10, 18, 14));
 		assertFpPointEquals(10, 10, this.shape.getClosestPointTo(createSegment(17, 10, 18, 14)));
 		assertFpPointEquals(9, 8, this.shape.getClosestPointTo(createSegment(6, 0, 9, 6)));
-		assertFpPointEquals(7.5, 8, this.shape.getClosestPointTo(createSegment(6, 0, 9, 16)));
-		assertFpPointEquals(7.14286, 8, this.shape.getClosestPointTo(createSegment(6, 0, 9, 21)));
-		assertFpPointEquals(6, 10, this.shape.getClosestPointTo(createSegment(6, 10, 9, 21)));
+		assertClosestPointInBothShapes(this.shape, createSegment(6, 0, 9, 16));
+		assertClosestPointInBothShapes(this.shape, createSegment(6, 0, 9, 21));
+		assertClosestPointInBothShapes(this.shape, createSegment(6, 10, 9, 21));
 		assertFpPointEquals(6, 18, this.shape.getClosestPointTo(createSegment(6, 19, 9, 21)));
-		assertFpPointEquals(9, 18, this.shape.getClosestPointTo(createSegment(8, 20, 14, 8)));
+		assertClosestPointInBothShapes(this.shape, createSegment(8, 20, 14, 8));
 	}
 
 	@Test
@@ -1555,9 +1555,9 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 	public void getClosestPointToMultiShape2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createTestMultiShape(-10, 7)));
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createTestMultiShape(0, -4)));
-		assertFpPointEquals(8, 8, this.shape.getClosestPointTo(createTestMultiShape(4, 6)));
+		assertClosestPointInBothShapes(this.shape, createTestMultiShape(4, 6));
 		assertFpPointEquals(5, 10, this.shape.getClosestPointTo(createTestMultiShape(8, 6)));
-		assertFpPointEquals(5, 10, this.shape.getClosestPointTo(createTestMultiShape(9, 6)));
+		assertClosestPointInBothShapes(this.shape, createTestMultiShape(9, 6));
 	}
 
 	@Test
@@ -1578,9 +1578,9 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 	public void getClosestPointToTriangle2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createTestTriangle(0, 4)));
 		assertFpPointEquals(10, 8, this.shape.getClosestPointTo(createTestTriangle(10, 6)));
-		assertFpPointEquals(6, 18, this.shape.getClosestPointTo(createTestTriangle(4, 16)));
+		assertClosestPointInBothShapes(this.shape, createTestTriangle(4, 16));
 		assertFpPointEquals(6, 18, this.shape.getClosestPointTo(createTestTriangle(6, 19)));
-		assertFpPointEquals(9.6, 18, this.shape.getClosestPointTo(createTestTriangle(10.5, 17.1)));
+		assertClosestPointInBothShapes(this.shape, createTestTriangle(10.5, 17.1));
 	}
 
 	@Test
@@ -1624,23 +1624,23 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
     @Ignore
 	public void getClosestPointToPath2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createSimpleTestPath(0, 0, false)));
-		assertFpPointEquals(10, 8, this.shape.getClosestPointTo(createSimpleTestPath(0, 0, true)));
-		assertFpPointEquals(5, 15.8, this.shape.getClosestPointTo(createSimpleTestPath(0, 10, false)));
-		assertFpPointEquals(5, 15.8, this.shape.getClosestPointTo(createSimpleTestPath(0, 10, true)));
+		assertClosestPointInBothShapes(this.shape, createSimpleTestPath(0, 0, true));
+		assertClosestPointInBothShapes(this.shape, createSimpleTestPath(0, 10, false));
+		assertClosestPointInBothShapes(this.shape, createSimpleTestPath(0, 10, true));
 		assertFpPointEquals(10, 12, this.shape.getClosestPointTo(createSimpleTestPath(14, 2, false)));
 		assertFpPointEquals(10, 12, this.shape.getClosestPointTo(createSimpleTestPath(14, 2, true)));
 		//
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createComplexTestPath(12, 2, false, PathWindingRule.EVEN_ODD)));
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createComplexTestPath(12, 2, true, PathWindingRule.EVEN_ODD)));
 		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createComplexTestPath(3, 8, false, PathWindingRule.EVEN_ODD)));
-		assertFpPointEquals(6, 18, this.shape.getClosestPointTo(createComplexTestPath(3, 8, true, PathWindingRule.EVEN_ODD)));
+		assertClosestPointInBothShapes(this.shape, createComplexTestPath(3, 8, true, PathWindingRule.EVEN_ODD));
 		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createComplexTestPath(-2, 8, false, PathWindingRule.EVEN_ODD)));
 		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createComplexTestPath(-2, 8, true, PathWindingRule.EVEN_ODD)));
 		//
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createComplexTestPath(12, 2, false, PathWindingRule.NON_ZERO)));
-		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createComplexTestPath(12, 2, true, PathWindingRule.NON_ZERO)));
+		assertClosestPointInBothShapes(this.shape, createComplexTestPath(12, 2, true, PathWindingRule.NON_ZERO));
 		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createComplexTestPath(3, 8, false, PathWindingRule.NON_ZERO)));
-		assertFpPointEquals(6, 18, this.shape.getClosestPointTo(createComplexTestPath(3, 8, true, PathWindingRule.NON_ZERO)));
+		assertClosestPointInBothShapes(this.shape, createComplexTestPath(3, 8, true, PathWindingRule.NON_ZERO));
 		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createComplexTestPath(-2, 8, false, PathWindingRule.NON_ZERO)));
 		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createComplexTestPath(-2, 8, true, PathWindingRule.NON_ZERO)));
 	}
@@ -1674,9 +1674,9 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 	public void getClosestPointToEllipse2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createEllipse(0, 0, 2, 1)));
 		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createEllipse(2, 12, 2, 1)));
-		assertFpPointEquals(7, 16.5, this.shape.getClosestPointTo(createEllipse(6, 16, 2, 1)));
+		assertClosestPointInBothShapes(this.shape, createEllipse(6, 16, 2, 1));
 		assertFpPointEquals(10, 8, this.shape.getClosestPointTo(createEllipse(9.897519745562938, 7.003543789189412, 2, 1)));
-		assertFpPointEquals(10, 10, this.shape.getClosestPointTo(createEllipse(9.5, 9.5, 2, 1)));
+		assertClosestPointInBothShapes(this.shape, createEllipse(9.5, 9.5, 2, 1));
 	}
 
 	@Test
@@ -1694,28 +1694,28 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRoundRectangle(0, 12, 1, 1, .1, .1)));
 		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createRoundRectangle(0, 21, 1, 1, .1, .1)));
 		assertFpPointEquals(7.5, 8, this.shape.getClosestPointTo(createRoundRectangle(7, 0, 1, 1, .1, .1)));
-		assertFpPointEquals(8.5, 12.5, this.shape.getClosestPointTo(createRoundRectangle(8, 12, 1, 1, .1, .1)));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(8, 12, 1, 1, .1, .1));
 		assertFpPointEquals(9.5, 18, this.shape.getClosestPointTo(createRoundRectangle(9, 21, 1, 1, .1, .1)));
 		assertFpPointEquals(10, 8, this.shape.getClosestPointTo(createRoundRectangle(15, 0, 1, 1, .1, .1)));
 		assertFpPointEquals(10, 12.5, this.shape.getClosestPointTo(createRoundRectangle(16, 12, 1, 1, .1, .1)));
 		assertFpPointEquals(10, 18, this.shape.getClosestPointTo(createRoundRectangle(17, 21, 1, 1, .1, .1)));
 		assertFpPointEquals(6, 12.5, this.shape.getClosestPointTo(createRoundRectangle(1, 12, 10, 1, .1, .1)));
-		assertFpPointEquals(6, 18, this.shape.getClosestPointTo(createRoundRectangle(1, 12, 10, 20, .1, .1)));
-		assertFpPointEquals(8.5, 10, this.shape.getClosestPointTo(createRoundRectangle(8, 0, 1, 20, .1, .1)));
-		assertFpPointEquals(10, 10, this.shape.getClosestPointTo(createRoundRectangle(8, 0, 10, 20, .1, .1)));
-		assertFpPointEquals(6.5, 10.5, this.shape.getClosestPointTo(createRoundRectangle(6, 10, 1, 1, .1, .1)));
-		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRoundRectangle(4, 12, 1, 1, .1, .1)));
-		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRoundRectangle(4.1, 12, 1, 1, .1, .1)));
-		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRoundRectangle(4.2, 12, 1, 1, .1, .1)));
-		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRoundRectangle(4.3, 12, 1, 1, .1, .1)));
-		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRoundRectangle(4.4, 12, 1, 1, .1, .1)));
-		assertFpPointEquals(5, 12.5, this.shape.getClosestPointTo(createRoundRectangle(4.5, 12, 1, 1, .1, .1)));
-		assertFpPointEquals(5.1, 12.5, this.shape.getClosestPointTo(createRoundRectangle(4.6, 12, 1, 1, .1, .1)));
-		assertFpPointEquals(5.2, 12.5, this.shape.getClosestPointTo(createRoundRectangle(4.7, 12, 1, 1, .1, .1)));
-		assertFpPointEquals(5.3, 12.5, this.shape.getClosestPointTo(createRoundRectangle(4.8, 12, 1, 1, .1, .1)));
-		assertFpPointEquals(5.4, 12.5, this.shape.getClosestPointTo(createRoundRectangle(4.9, 12, 1, 1, .1, .1)));
-		assertFpPointEquals(5.5, 12.5, this.shape.getClosestPointTo(createRoundRectangle(5, 12, 1, 1, .1, .1)));
-		assertFpPointEquals(5.6, 12.5, this.shape.getClosestPointTo(createRoundRectangle(5.1, 12, 1, 1, .1, .1)));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(1, 12, 10, 20, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(8, 0, 1, 20, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(8, 0, 10, 20, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(6, 10, 1, 1, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(4, 12, 1, 1, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(4.1, 12, 1, 1, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(4.2, 12, 1, 1, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(4.3, 12, 1, 1, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(4.4, 12, 1, 1, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(4.5, 12, 1, 1, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(4.6, 12, 1, 1, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(4.7, 12, 1, 1, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(4.8, 12, 1, 1, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(4.9, 12, 1, 1, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(5, 12, 1, 1, .1, .1));
+		assertClosestPointInBothShapes(this.shape, createRoundRectangle(5.1, 12, 1, 1, .1, .1));
 	}
 
 	@Test
@@ -1786,7 +1786,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createTestParallelogram(0, 0)));
 		assertFpPointEquals(5, 9.56018, this.shape.getClosestPointTo(createTestParallelogram(2, 10)));
 		assertFpPointEquals(10, 18, this.shape.getClosestPointTo(createTestParallelogram(14, 18)));
-		assertFpPointEquals(9.48414, 14.43982, this.shape.getClosestPointTo(createTestParallelogram(12, 14)));
+		assertClosestPointInBothShapes(this.shape, createTestParallelogram(12, 14));
 		assertFpPointEquals(10, 8, this.shape.getClosestPointTo(createTestParallelogram(14, 2)));
 	}
 
@@ -1808,8 +1808,8 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 	public void getClosestPointToOrientedRectangle2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createTestOrientedRectangle(0, 0)));
 		assertFpPointEquals(5, 9.41165, this.shape.getClosestPointTo(createTestOrientedRectangle(2, 10)));
-		assertFpPointEquals(9.84272, 8.58835, this.shape.getClosestPointTo(createTestOrientedRectangle(12, 8)));
-		assertFpPointEquals(9.76505, 13.37281, this.shape.getClosestPointTo(createTestOrientedRectangle(8, 12)));
+		assertClosestPointInBothShapes(this.shape, createTestOrientedRectangle(12, 8));
+		assertClosestPointInBothShapes(this.shape, createTestOrientedRectangle(8, 12));
 		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createTestOrientedRectangle(6, 20)));
 	}
 

@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
 
 import java.awt.Color;
@@ -177,7 +177,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	 * @param type
 	 * @param coords
 	 */
-	protected void assertElement(PathIterator2afp<?> pi, PathElementType type, double... coords) {
+	public void assertElement(PathIterator2afp<?> pi, PathElementType type, double... coords) {
 		if (!pi.hasNext()) {
 			fail("expected path element but the iterator is empty"); 
 		}
@@ -238,11 +238,25 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	 * 
 	 * @param pi
 	 */
-	protected void assertNoElement(PathIterator2afp<?> pi) {
+	public static void assertNoElement(PathIterator2afp<?> pi) {
 		if (pi.hasNext()) {
 			fail("expected no path element but the iterator is not empty: " 
 					+ pi.next());
 		}
+	}
+
+	/** Assert that the two shape are intersecting and the closest point on the first shape is also
+	 * on the second shape.
+	 *
+	 * @param shape1 the first shape, on which the closest point is computed.
+	 * @param shape2 the second point.
+	 */
+	public void assertClosestPointInBothShapes(Shape2afp shape1, Shape2afp shape2) {
+	    final Point2D<?, ?> point = shape1.getClosestPointTo(shape2);
+	    assertEpsilonZero("Closest point " + point + " is not in the first shape: " + shape1 + ". Distance: "
+                + shape2.getDistance(point), shape1.getDistance(point));
+	    assertEpsilonZero("Closest point " + point + " is not in the second shape: " + shape2 + ". Distance: "
+                + shape2.getDistance(point), shape2.getDistance(point));
 	}
 
 	@Test

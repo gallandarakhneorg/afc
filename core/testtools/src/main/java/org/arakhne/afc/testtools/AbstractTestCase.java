@@ -215,7 +215,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertNaN(double value) {
 		if (!Double.isNaN(value)) {
-			fail(formatFailMessage(null, "Expected NaN", value)); //$NON-NLS-1$
+			fail(formatFailMessage(null, "Expecting NaN", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -225,7 +225,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertNaN(float value) {
 		if (!Float.isNaN(value)) {
-			fail(formatFailMessage(null, "Expected NaN", value)); //$NON-NLS-1$
+			fail(formatFailMessage(null, "Expecting NaN", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -235,7 +235,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(byte value) {
 		if (value != 0) {
-			fail(formatFailMessage(null, "Expected zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -245,7 +245,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(short value) {
 		if (value != 0) {
-			fail(formatFailMessage(null, "Expected zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -255,7 +255,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(int value) {
 		if (value != 0) {
-			fail(formatFailMessage(null, "Expected zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -265,7 +265,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(long value) {
 		if (value != 0) {
-			fail(formatFailMessage(null, "Expected zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -275,7 +275,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(float value) {
 		if (value != 0f) {
-			fail(formatFailMessage(null, "Expected zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -284,8 +284,36 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param value the value to test.
 	 */
 	public static void assertZero(double value) {
+		assertZero(null, value);
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param message the error message.
+	 * @param value the value to test.
+	 */
+	public static void assertZero(String message, double value) {
 		if (value != 0.) {
-			fail(formatFailMessage(null, "Expected zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(message, "Expecting zero", value)); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is near to zero.
+	 *
+	 * @param value the value to test.
+	 */
+	public void assertEpsilonZero(double value) {
+		assertEpsilonZero(null, value);
+	}
+
+	/** Test if the given value is near to zero.
+	 *
+	 * @param message the error message.
+	 * @param value the value to test.
+	 */
+	public void assertEpsilonZero(String message, double value) {
+		if (!isEpsilonEquals(value, 0.)) {
+			fail(formatFailMessage(message, "Expecting zero", value)); //$NON-NLS-1$
 		}
 	}
 

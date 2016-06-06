@@ -39,7 +39,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class PathShadow2ai {
+class PathShadow2ai {
 
     private final PathIterator2ai<?> pathIterator;
 
@@ -56,7 +56,7 @@ public class PathShadow2ai {
     /** Construct new path shadow.
      * @param path the path that is constituting the shadow.
      */
-    public PathShadow2ai(Path2ai<?, ?, ?, ?, ?, ?> path) {
+    PathShadow2ai(Path2ai<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
         this.pathIterator = path.getPathIterator();
         final Rectangle2ai<?, ?, ?, ?, ?, ?> box = path.toBoundingBox();
@@ -70,7 +70,7 @@ public class PathShadow2ai {
      * @param pathIterator the iterator on the path that is constituting the shadow.
      * @param bounds the bounding box enclosing the primitives of the path iterator.
      */
-    public PathShadow2ai(PathIterator2ai<?> pathIterator, Rectangle2ai<?, ?, ?, ?, ?, ?> bounds) {
+    PathShadow2ai(PathIterator2ai<?> pathIterator, Rectangle2ai<?, ?, ?, ?, ?, ?> bounds) {
         assert pathIterator != null : AssertMessages.notNullParameter(0);
         assert bounds != null : AssertMessages.notNullParameter(1);
         this.pathIterator = pathIterator;
@@ -88,7 +88,7 @@ public class PathShadow2ai {
      * @param maxY maximum y coordinate of the bounding box enclosing the primitives of the path iterator.
      */
     @SuppressWarnings("checkstyle:magicnumber")
-    public PathShadow2ai(PathIterator2ai<?> pathIterator, int minX, int minY, int maxX, int maxY) {
+    PathShadow2ai(PathIterator2ai<?> pathIterator, int minX, int minY, int maxX, int maxY) {
         assert pathIterator != null : AssertMessages.notNullParameter(0);
         assert minX <= maxX : AssertMessages.lowerEqualParameters(1, minX, 3, maxX);
         assert minY <= maxY : AssertMessages.lowerEqualParameters(2, minY, 4, maxY);

@@ -26,7 +26,6 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.generic.Path2D;
 import org.arakhne.afc.math.generic.PathElementType;
 import org.arakhne.afc.math.generic.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.afp.PathShadow2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 
 /** Shadow of a path.

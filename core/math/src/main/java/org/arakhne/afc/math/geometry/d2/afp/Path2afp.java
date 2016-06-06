@@ -38,7 +38,6 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
-import org.arakhne.afc.math.geometry.d2.afp.PathShadow2afp.PathShadowData;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
 
@@ -333,16 +332,11 @@ public interface Path2afp<
         if (!pi.hasNext() || !shape.hasNext()) {
             return false;
         }
-        final GeomFactory2afp<?, ?, ?, ?> factory = pi.getGeomFactory();
-        final Rectangle2afp<?, ?, ?, ?, ?, ?> box = factory.newBox();
-        computeDrawableElementBoundingBox(shape.restartIterations(), box);
-        final PathShadow2afp shadow = new PathShadow2afp(shape.restartIterations());
-        final PathShadowData data = new PathShadowData(box.getMinX(), box.getMinY(), box.getMaxY(), result);
+        final ShadowedPath2afp shadow = new ShadowedPath2afp(shape.restartIterations());
         double curx = pathElement1.getToX();
         double movx = curx;
         double cury = pathElement1.getToY();
         double movy = cury;
-        int numCrossings = 0;
         double endx;
         double endy;
         while (pi.hasNext()) {
@@ -357,9 +351,8 @@ public interface Path2afp<
             case LINE_TO:
                 endx = pathElement1.getToX();
                 endy = pathElement1.getToY();
-                shadow.computeCrossings(numCrossings, curx, cury, endx, endy, data);
-                numCrossings = data.getCrossings();
-                if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+                if (shadow.update(curx, cury, endx, endy)) {
+                    result.set(shadow.getClosestPoint());
                     return true;
                 }
                 curx = endx;
@@ -367,9 +360,8 @@ public interface Path2afp<
                 break;
             case CLOSE:
                 if (curx != movx || cury != movy) {
-                    shadow.computeCrossings(numCrossings, curx, cury, movx, movy, data);
-                    numCrossings = data.getCrossings();
-                    if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+                    if (shadow.update(curx, cury, movx, movy)) {
+                        result.set(shadow.getClosestPoint());
                         return true;
                     }
                 }
@@ -383,16 +375,7 @@ public interface Path2afp<
                 throw new IllegalArgumentException();
             }
         }
-        assert numCrossings != MathConstants.SHAPE_INTERSECTS;
-        final boolean isOpen = (curx != movx) || (cury != movy);
-        if (!isOpen) {
-            final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-            if ((mask & numCrossings) != 0) {
-                // Inside
-                final PathElement2afp element = pi.restartIterations().next();
-                result.set(element.getFromX(), element.getFromY());
-            }
-        }
+        result.set(shadow.getClosestPoint());
         return true;
     }
 

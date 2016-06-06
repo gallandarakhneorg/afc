@@ -28,13 +28,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
+import org.junit.Ignore;
+import org.junit.Test;
+
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai.Side;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?, ?, T>>
@@ -938,71 +940,85 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredRectangle2ai() {
 		assert(false);
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredCircle2ai() {
 		assert(false);
 	}
 
 	@Test
+    @Ignore
 	public void getDistanceSquaredSegment2ai() {
 		assert(false);
 	}
 	
 	@Test
+    @Ignore
 	public void getDistanceSquaredPath2ai() {
 		assert(false);
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToRectangle2ai() {
 		assert(false);
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToCircle2ai() {
 		assert(false);
 	}
 
 	@Test
+    @Ignore
 	public void getClosestPointToSegment2ai() {
 		assert(false);
 	}
 	
 	@Test
+    @Ignore
 	public void getClosestPointToMultiShape2ai() {
 		assert(false);
 	}
 		
 	@Test
+    @Ignore
 	public void getClosestPointToPath2ai() {
 		assert(false);
 	}
 	
 	@Test
+    @Ignore
 	public void getFarthestPointToRectangle2ai() {
 		assert(false);
 	}
 
 	@Test
+    @Ignore
 	public void getFarthestPointToCircle2ai() {
 		assert(false);
 	}
 
 	@Test
+    @Ignore
 	public void getFarthestPointToSegment2ai() {
 		assert(false);
 	}
 	
 	@Test
+    @Ignore
 	public void getFarthestPointToMultiShape2ai() {
 		assert(false);
 	}
 		
 	@Test
+    @Ignore
 	public void getFarthestPointToPath2ai() {
 		assert(false);
 	}
