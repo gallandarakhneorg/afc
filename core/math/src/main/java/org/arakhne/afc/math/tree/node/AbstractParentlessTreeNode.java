@@ -76,7 +76,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 
 	/** Associated user data.
 	 */
-	private List<D> data;
+	private transient List<D> data;
 
 	/** Indicates if a linked list must be used to store the data.
 	 * If <code>false</code>, an ArrayList will be used.
@@ -576,7 +576,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 
 		private static final long serialVersionUID = -8019401625554108057L;
 
-		private final List<D> backgroundList;
+		private final transient List<D> backgroundList;
 
 		/** Construct collection.
 		 * @param list the original list.
