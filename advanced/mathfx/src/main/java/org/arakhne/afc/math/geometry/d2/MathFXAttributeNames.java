@@ -50,6 +50,10 @@ public final class MathFXAttributeNames {
 	 */
 	public static final String CENTER_Y = "centerY"; //$NON-NLS-1$
 
+	/** {@code centerZ}.
+	 */
+	public static final String CENTER_Z = "centerZ"; //$NON-NLS-1$
+
 	/** {@code controlPointBoundingBox}.
 	 */
 	public static final String CONTROL_POINT_BOUNDING_BOX = "controlPointBoundingBox"; //$NON-NLS-1$
@@ -57,6 +61,10 @@ public final class MathFXAttributeNames {
 	/** {@code coordinates}.
 	 */
 	public static final String COORDINATES = "coordinates"; //$NON-NLS-1$
+
+	/** {@code depth}.
+	 */
+	public static final String DEPTH = "depth"; //$NON-NLS-1$
 
 	/** {@code elements}.
 	 */
@@ -110,6 +118,10 @@ public final class MathFXAttributeNames {
 	 */
 	public static final String MAXIMUM_Y = "maxY"; //$NON-NLS-1$
 
+	/** {@code maxZ}.
+	 */
+	public static final String MAXIMUM_Z = "maxZ"; //$NON-NLS-1$
+
 	/** {@code minX}.
 	 */
 	public static final String MINIMUM_X = "minX"; //$NON-NLS-1$
@@ -117,6 +129,10 @@ public final class MathFXAttributeNames {
 	/** {@code minY}.
 	 */
 	public static final String MINIMUM_Y = "minY"; //$NON-NLS-1$
+
+	/** {@code minZ}.
+	 */
+	public static final String MINIMUM_Z = "minZ"; //$NON-NLS-1$
 
 	/** {@code radius}.
 	 */
@@ -173,6 +189,22 @@ public final class MathFXAttributeNames {
 	/** {@code y}.
 	 */
 	public static final String Y3 = "y3"; //$NON-NLS-1$
+
+	/** {@code z}.
+	 */
+	public static final String Z = "z"; //$NON-NLS-1$
+
+	/** {@code z}.
+	 */
+	public static final String Z1 = "z1"; //$NON-NLS-1$
+
+	/** {@code z}.
+	 */
+	public static final String Z2 = "z2"; //$NON-NLS-1$
+
+	/** {@code z}.
+	 */
+	public static final String Z3 = "z3"; //$NON-NLS-1$
 
 	private MathFXAttributeNames() {
 		//
