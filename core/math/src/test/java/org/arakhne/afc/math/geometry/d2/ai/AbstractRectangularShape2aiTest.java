@@ -160,7 +160,15 @@ public abstract class AbstractRectangularShape2aiTest<T extends Rectangle2ai<?, 
 		assertEquals(MAXY, this.shape.getMaxY());
 	}
 
-	@Test
+    @Test
+    public void getCenter() {
+        assertFpPointEquals(
+                MINX + WIDTH / 2,
+                MINY + HEIGHT / 2,
+                this.shape.getCenter());
+    }
+
+    @Test
 	public void getCenterX() {
 		assertEquals(MINX + WIDTH / 2, this.shape.getCenterX());
 	}

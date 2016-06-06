@@ -177,6 +177,15 @@ public interface RectangularShape2ai<
 		return (getMinX() + getMaxX()) / 2;
 	}
 
+	/** Replies the center.
+	 *
+	 * @return the center.
+	 */
+	@Pure
+	default P getCenter() {
+	    return getGeomFactory().newPoint(getCenterX(), getCenterY());
+	}
+
 	/** Replies the max x.
 	 *
 	 * @return the max x.
