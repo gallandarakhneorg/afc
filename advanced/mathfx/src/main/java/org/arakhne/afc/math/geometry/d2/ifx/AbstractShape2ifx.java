@@ -52,6 +52,17 @@ public abstract class AbstractShape2ifx<T extends AbstractShape2ifx<?>> implemen
 		}
 	}
 
+	private boolean isEqualsToShape(Object obj) {
+		try {
+			return equalsToShape((T) obj);
+		} catch (ClassCastException exception) {
+			return equalsToPathIterator((PathIterator2D<?>) obj);
+		} catch (Throwable exception) {
+			//
+		}
+		return  false;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
@@ -59,16 +70,7 @@ public abstract class AbstractShape2ifx<T extends AbstractShape2ifx<?>> implemen
 		if (this == obj) {
 			return true;
 		}
-		try {
-			try {
-				return equalsToShape((T) obj);
-			} catch (ClassCastException exception) {
-				return equalsToPathIterator((PathIterator2D<?>) obj);
-			}
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
+		return isEqualsToShape(obj);
 	}
 
 	@Pure

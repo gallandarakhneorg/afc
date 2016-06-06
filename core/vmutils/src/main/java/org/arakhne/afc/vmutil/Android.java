@@ -223,16 +223,15 @@ public final class Android {
 		try {
 			final Method method = context.getClass().getMethod("getClassLoader"); //$NON-NLS-1$
 			final Object classLoader = method.invoke(context);
-			try {
-				final ClassLoader cl = (ClassLoader) classLoader;
-				synchronized (Android.class) {
-					contextClassLoader = new WeakReference<>(cl);
-				}
-				return cl;
-			} catch (ClassCastException exception) {
-				throw new AndroidException(exception);
+			final ClassLoader cl = (ClassLoader) classLoader;
+			synchronized (Android.class) {
+				contextClassLoader = new WeakReference<>(cl);
 			}
-		} catch (Throwable e) {
+			return cl;
+		} catch (ClassCastException  e) {
+			throw new AndroidException(e);
+		}
+		catch (Throwable e) {
 			throw new AndroidException(e);
 		}
 	}
