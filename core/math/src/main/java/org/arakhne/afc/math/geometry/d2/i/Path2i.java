@@ -487,11 +487,11 @@ public class Path2i extends AbstractShape2i<Path2i>
 		}
 		final Point2D<?, ?> p = new InnerComputationPoint2ai();
 		final int[] clone = new int[this.numCoords];
-		for (int i = 0; i < clone.length;) {
+		for (int i = 0; i < clone.length; i += 2) {
 			p.set(this.coords[i], this.coords[i + 1]);
 			transform.transform(p);
 			clone[i] = p.ix();
-			clone[i+ 1] = p.iy();
+			clone[i + 1] = p.iy();
 		}
 		return clone;
 	}
