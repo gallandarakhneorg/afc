@@ -9,7 +9,7 @@ jdk:
 
 install: true
 
-script: mvn -B -P use-jdt-compiler install
+script: mvn -B install
 
 cache:
   directories:
