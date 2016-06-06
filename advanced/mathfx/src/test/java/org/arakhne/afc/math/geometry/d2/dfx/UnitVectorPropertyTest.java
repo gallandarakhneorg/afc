@@ -20,18 +20,14 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
-import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.math.geometry.d2.dfx.GeomFactory2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.UnitVectorProperty;
-import org.arakhne.afc.math.geometry.d2.dfx.Vector2dfx;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import org.junit.Before;
 import org.junit.Test;
 
-import javafx.beans.property.ReadOnlyDoubleProperty;
+import org.arakhne.afc.math.AbstractMathTestCase;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 
 @SuppressWarnings("all")
 public class UnitVectorPropertyTest extends AbstractMathTestCase {

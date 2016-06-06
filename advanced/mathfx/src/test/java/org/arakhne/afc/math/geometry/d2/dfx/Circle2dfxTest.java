@@ -22,13 +22,11 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractCircle2afpTest;
-import org.arakhne.afc.math.geometry.d2.dfx.Circle2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Rectangle2dfx;
-import org.junit.Test;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d2.afp.AbstractCircle2afpTest;
 
 @SuppressWarnings("all")
 public class Circle2dfxTest extends AbstractCircle2afpTest<Circle2dfx, Rectangle2dfx> {

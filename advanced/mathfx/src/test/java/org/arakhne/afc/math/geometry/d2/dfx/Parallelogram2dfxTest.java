@@ -22,15 +22,11 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractParallelogram2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.dfx.Parallelogram2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Rectangle2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.UnitVectorProperty;
-import org.junit.Test;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d2.afp.AbstractParallelogram2afpTest;
 
 @SuppressWarnings("all")
 public class Parallelogram2dfxTest extends AbstractParallelogram2afpTest<Parallelogram2dfx, Rectangle2dfx> {

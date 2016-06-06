@@ -22,15 +22,12 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractRoundRectangle2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.dfx.Rectangle2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.RoundRectangle2dfx;
-import org.junit.Test;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d2.afp.AbstractRoundRectangle2afpTest;
 
 @SuppressWarnings("all")
 public class RoundRectangle2dfxTest extends AbstractRoundRectangle2afpTest<RoundRectangle2dfx, Rectangle2dfx> {
