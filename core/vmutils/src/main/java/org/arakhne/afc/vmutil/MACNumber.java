@@ -300,8 +300,7 @@ public final class MACNumber {
 					}
 				}
 			}
-		}
-		catch (SocketException exception) {
+		} catch (SocketException exception) {
 		    //
 		}
 		return null;
