@@ -58,85 +58,59 @@ class OperatingSystemAndroidWrapper extends AbstractOperatingSystemWrapper {
 			if (androidContext != null) {
 				final Class<?> contextClass = androidContext.getClass();
 				Method method;
-				Object v;
-
 				// Read the prefs
-				try {
-					method = contextClass.getMethod("getSharedPreferences", String.class, int.class); //$NON-NLS-1$
-					final Object prefs = method.invoke(androidContext, PREFS_FILE, 0);
-					assert prefs != null;
-
-					try {
-
-						method = prefs.getClass().getMethod("getString", String.class, String .class); //$NON-NLS-1$
-						v = method.invoke(prefs, PREFS_DEVICE_ID, null);
-						if (v != null) {
-							serial = v.toString();
-						}
-					} catch (Throwable exception) {
-						serial = null;
-					}
-
-					// Get the id from the Android constant.
-					try {
-						if (serial == null) {
-							final Class<?> secureClass = Android.getSecureSettingsClass();
-
-							final Method getStringMethod = secureClass.getMethod("getString", //$NON-NLS-1$
-									Android.getContextResolverClass(), String.class);
-
-							final Field androidIdField = secureClass.getField("ANDROID_ID"); //$NON-NLS-1$
-							final Object androidId = androidIdField.get(null);
-
-							serial = (String) getStringMethod.invoke(null, Android.getContextResolver(), androidId);
-
-							// Use the Android ID unless it's broken, in which case fallback on deviceId,
-							// unless it's not available, then fallback on the phone id.
-							if ("9774d56d682e549c".equalsIgnoreCase(serial)) { //$NON-NLS-1$
-								// This id is known as the broken id on 2.2 devices.
-								serial = null;
-							}
-						}
-					} catch (Throwable exception) {
-						serial = null;
-					}
-
-					// Read the phone id
-					try {
-						if (serial == null) {
-							method = contextClass.getMethod("getSystemService", String.class); //$NON-NLS-1$
-							final Field field = contextClass.getField("TELEPHONY_SERVICE"); //$NON-NLS-1$
-							final Object telephonyManager = method.invoke(androidContext, field.get(null));
-							if (telephonyManager != null) {
-								method = telephonyManager.getClass().getMethod("getDeviceId"); //$NON-NLS-1$
-								final Object rawSerial = method.invoke(telephonyManager);
-								if (rawSerial != null) {
-									serial = rawSerial.toString();
-								}
-							}
-						}
-					} catch (Throwable exception) {
-						serial = null;
-					}
-
-					// Compute a random id and put it in  the prefs.
-					if (serial == null) {
-						serial = UUID.randomUUID().toString();
-						method = prefs.getClass().getMethod("edit"); //$NON-NLS-1$
-						v = method.invoke(prefs);
-						method = v.getClass().getMethod("putString", String.class, String.class); //$NON-NLS-1$
-						v = method.invoke(v, PREFS_DEVICE_ID, serial);
-						method = v.getClass().getMethod("commit"); //$NON-NLS-1$
-						method.invoke(v);
-					}
-				} catch (Throwable exception) {
-					serial = null;
+				method = contextClass.getMethod("getSharedPreferences", String.class, int.class); //$NON-NLS-1$
+				final Object prefs = method.invoke(androidContext, PREFS_FILE, 0);
+				assert prefs != null;
+				method = prefs.getClass().getMethod("getString", String.class, String .class); //$NON-NLS-1$
+				Object v;
+				v = method.invoke(prefs, PREFS_DEVICE_ID, null);
+				if (v != null) {
+					serial = v.toString();
 				}
+				// Get the id from the Android constant.
+				if (serial == null) {
+					final Class<?> secureClass = Android.getSecureSettingsClass();
+					final Method getStringMethod = secureClass.getMethod("getString", //$NON-NLS-1$
+									Android.getContextResolverClass(), String.class);
+					final Field androidIdField = secureClass.getField("ANDROID_ID"); //$NON-NLS-1$
+					final Object androidId = androidIdField.get(null);
+					serial = (String) getStringMethod.invoke(null, Android.getContextResolver(), androidId);
+					// Use the Android ID unless it's broken, in which case fallback on deviceId,
+					// unless it's not available, then fallback on the phone id.
+					if ("9774d56d682e549c".equalsIgnoreCase(serial)) { //$NON-NLS-1$
+						// This id is known as the broken id on 2.2 devices.
+						serial = null;
+					}
+				}
+				// Read the phone id
+				if (serial == null) {
+					method = contextClass.getMethod("getSystemService", String.class); //$NON-NLS-1$
+					final Field field = contextClass.getField("TELEPHONY_SERVICE"); //$NON-NLS-1$
+					final Object telephonyManager = method.invoke(androidContext, field.get(null));
+					if (telephonyManager != null) {
+						method = telephonyManager.getClass().getMethod("getDeviceId"); //$NON-NLS-1$
+						final Object rawSerial = method.invoke(telephonyManager);
+						if (rawSerial != null) {
+							serial = rawSerial.toString();
+						}
+					}
+				}
+				// Compute a random id and put it in  the prefs.
+				if (serial == null) {
+					serial = UUID.randomUUID().toString();
+					method = prefs.getClass().getMethod("edit"); //$NON-NLS-1$
+					v = method.invoke(prefs);
+					method = v.getClass().getMethod("putString", String.class, String.class); //$NON-NLS-1$
+					v = method.invoke(v, PREFS_DEVICE_ID, serial);
+					method = v.getClass().getMethod("commit"); //$NON-NLS-1$
+					method.invoke(v);
+				}
+
 			}
 		} catch (Throwable exception) {
 			serial = null;
 		}
-
 		return serial;
 	}
 
