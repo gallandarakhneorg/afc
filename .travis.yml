@@ -21,5 +21,5 @@ env:
     - secure: "RE+Lasgu9mUS78kjPRMrx35UpO/AQ1kuUUSd0lrBXwajZjpHSTRwVx0cudjSet2hEjAwRyerbKZ4zLxm+HxeMQBzjws4nhHozar/2XeY6mgvHYQ6G3kRFhNMr5WZn1CAu5Gu2OxqE6az/J6mQUDnMF1/XNL/bPhKEZsUI8o24eA="
 
 after_success:
-  - "[[ ${TRAVIS_PULL_REQUEST} == 'false' ]] && [[ ${TRAVIS_TAG} == '' ]] && mvn -B -P use-jdt-compiler deploy -DskipTests --settings build-tools/src/main/resources/maven/deploy-settings.xml"
+  - "[[ ${TRAVIS_PULL_REQUEST} == 'false' ]] && [[ ${TRAVIS_TAG} == '' ]] && mvn -B deploy -DskipTests --settings build-tools/src/main/resources/maven/deploy-settings.xml"
 
