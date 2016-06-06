@@ -200,13 +200,9 @@ public final class MACNumber {
 				NetworkInterface inter;
 				while (interfaces.hasMoreElements()) {
 					inter = interfaces.nextElement();
-					try {
-						final byte[] addr = inter.getHardwareAddress();
-						if (addr != null) {
-							av.add(new MACNumber(addr));
-						}
-					} catch (SocketException exception) {
-						//
+					final byte[] addr = inter.getHardwareAddress();
+					if (addr != null) {
+					    av.add(new MACNumber(addr));
 					}
 				}
 			}
@@ -239,18 +235,14 @@ public final class MACNumber {
 				InetAddress inet;
 				while (interfaces.hasMoreElements()) {
 					inter = interfaces.nextElement();
-					try {
-						final byte[] addr = inter.getHardwareAddress();
-						if (addr != null) {
-							mac = new MACNumber(addr);
-							final Enumeration<InetAddress> inets = inter.getInetAddresses();
-							while (inets.hasMoreElements()) {
-								inet = inets.nextElement();
-								av.put(inet, mac);
-							}
+					final byte[] addr = inter.getHardwareAddress();
+					if (addr != null) {
+						mac = new MACNumber(addr);
+						final Enumeration<InetAddress> inets = inter.getInetAddresses();
+						while (inets.hasMoreElements()) {
+							inet = inets.nextElement();
+							av.put(inet, mac);
 						}
-					} catch (SocketException exception) {
-						//
 					}
 				}
 			}
@@ -272,13 +264,9 @@ public final class MACNumber {
 				NetworkInterface inter;
 				while (interfaces.hasMoreElements()) {
 					inter = interfaces.nextElement();
-					try {
-						final byte[] addr = inter.getHardwareAddress();
-						if (addr != null) {
-							return new MACNumber(addr);
-						}
-					} catch (SocketException exception) {
-						//
+					final byte[] addr = inter.getHardwareAddress();
+					if (addr != null) {
+						return new MACNumber(addr);
 					}
 				}
 			}
@@ -301,24 +289,20 @@ public final class MACNumber {
 				NetworkInterface inter;
 				while (interfaces.hasMoreElements()) {
 					inter = interfaces.nextElement();
-					try {
-						final byte[] addr = inter.getHardwareAddress();
-						if (addr != null) {
-							final Collection<InetAddress> inetList = new ArrayList<>();
-							final Enumeration<InetAddress> inets = inter.getInetAddresses();
-							while (inets.hasMoreElements()) {
-								inetList.add(inets.nextElement());
-							}
-
-							return inetList;
+					final byte[] addr = inter.getHardwareAddress();
+					if (addr != null) {
+						final Collection<InetAddress> inetList = new ArrayList<>();
+						final Enumeration<InetAddress> inets = inter.getInetAddresses();
+						while (inets.hasMoreElements()) {
+							inetList.add(inets.nextElement());
 						}
-					} catch (SocketException exception) {
-						//
+						return inetList;
 					}
 				}
 			}
-		} catch (SocketException exception) {
-			//
+		}
+		catch (SocketException exception) {
+		    //
 		}
 		return null;
 	}
