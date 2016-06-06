@@ -1911,7 +1911,7 @@ public abstract class AbstractEllipse2afpTest<T extends Ellipse2afp<?, T, ?, ?, 
 		assertFpPointEquals(6.71823, 8.25075, this.shape.getClosestPointTo(createRoundRectangle(0, 0, 2, 1, .1, .1)));
 		assertFpPointEquals(6.22177, 17.29703, this.shape.getClosestPointTo(createRoundRectangle(1, 20, 2, 1, .1, .1)));
 		assertFpPointEquals(9.90516, 14.36881, this.shape.getClosestPointTo(createRoundRectangle(15, 15, 2, 1, .1, .1)));
-		assertFpPointEquals(9, 9, this.shape.getClosestPointTo(createRoundRectangle(9, 8, 2, 1, .1, .1)));
+		assertFpPointEquals(8.98498, 8.97765, this.shape.getClosestPointTo(createRoundRectangle(9, 8, 2, 1, .1, .1)));
 		assertClosestPointInBothShapes(this.shape, createRoundRectangle(9, 9, 2, 1, .1, .1));
 		assertClosestPointInBothShapes(this.shape, createRoundRectangle(6, 11, 2, 1, .1, .1));
 	}
@@ -1920,7 +1920,7 @@ public abstract class AbstractEllipse2afpTest<T extends Ellipse2afp<?, T, ?, ?, 
 	public void getDistanceSquaredRoundRectangle2afp() {
 		assertEpsilonEquals(75.50109, this.shape.getDistanceSquared(createRoundRectangle(0, 0, 2, 1, .1, .1)));
 		assertEpsilonEquals(18.0315, this.shape.getDistanceSquared(createRoundRectangle(1, 20, 2, 1, .1, .1)));
-		assertEpsilonEquals(26.48867, this.shape.getDistanceSquared(createRoundRectangle(15, 15, 2, 1, .1, .1)));
+		assertEpsilonEquals(26.48855, this.shape.getDistanceSquared(createRoundRectangle(15, 15, 2, 1, .1, .1)));
 		assertEpsilonEquals(0.00159, this.shape.getDistanceSquared(createRoundRectangle(9, 8, 2, 1, .1, .1)));
 		assertEpsilonEquals(0, this.shape.getDistanceSquared(createRoundRectangle(9, 9, 2, 1, .1, .1)));
 		assertEpsilonEquals(0, this.shape.getDistanceSquared(createRoundRectangle(6, 11, 2, 1, .1, .1)));
