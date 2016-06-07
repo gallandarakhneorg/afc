@@ -16,6 +16,8 @@ The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may
 
 AFC is a Java library that provides extensions for being used with other programming languages.
 
+For example, [Vector2D](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/geometry/d2/Vector2D.html) provides overloading function for operator `+`. In this way, this operator may be used by typing `v1 + 1` instead of `v1.add(1)`.
+
 ### 1.1.1 SARL agent-oriented programming language
 
 AFC library is compatible with the [SARL](http://www.sarl.io) agent-oriented programming language, which is a Xtext-based language (see below).
