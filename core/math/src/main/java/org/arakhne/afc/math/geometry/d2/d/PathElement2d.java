@@ -164,13 +164,14 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
-			try {
+			if (obj == this) {
+				return true;
+			}
+			if (getClass().isInstance(obj)) {
 				final PathElement2afp elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY();
-			} catch (Throwable exception) {
-				//
 			}
 			return false;
 		}
@@ -272,15 +273,16 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
-			try {
+			if (obj == this) {
+				return true;
+			}
+			if (getClass().isInstance(obj)) {
 				final PathElement2afp elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
 						&& getFromX() == elt.getFromX()
 						&& getFromY() == elt.getFromY();
-			} catch (Throwable exception) {
-				//
 			}
 			return false;
 		}
@@ -399,7 +401,10 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
-			try {
+			if (obj == this) {
+				return true;
+			}
+			if (getClass().isInstance(obj)) {
 				final PathElement2afp elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -408,8 +413,6 @@ public abstract class PathElement2d implements PathElement2afp {
 						&& getCtrlY1() == elt.getCtrlY1()
 						&& getFromX() == elt.getFromX()
 						&& getFromY() == elt.getFromY();
-			} catch (Throwable exception) {
-				//
 			}
 			return false;
 		}
@@ -557,7 +560,10 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
-			try {
+			if (obj == this) {
+				return true;
+			}
+			if (getClass().isInstance(obj)) {
 				final PathElement2afp elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -568,8 +574,6 @@ public abstract class PathElement2d implements PathElement2afp {
 						&& getCtrlY2() == elt.getCtrlY2()
 						&& getFromX() == elt.getFromX()
 						&& getFromY() == elt.getFromY();
-			} catch (Throwable exception) {
-				//
 			}
 			return false;
 		}
@@ -719,15 +723,16 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
-			try {
+			if (obj == this) {
+				return true;
+			}
+			if (getClass().isInstance(obj)) {
 				final PathElement2afp elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
 						&& getFromX() == elt.getFromX()
 						&& getFromY() == elt.getFromY();
-			} catch (Throwable exception) {
-				//
 			}
 			return false;
 		}
