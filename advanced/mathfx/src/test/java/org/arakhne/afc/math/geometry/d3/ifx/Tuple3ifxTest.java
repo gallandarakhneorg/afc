@@ -66,38 +66,38 @@ public class Tuple3ifxTest extends AbstractTuple3DTest<Tuple3ifx, Tuple3ifx> {
 		assertNotNull(property);
 		IntegerProperty property2 = this.t.zProperty();
 		assertSame(property, property2);
-		assertEquals(5, property.get());
+		assertEquals(0, property.get());
 	}
 
 	@Test
 	public void xPropertySetter() {
 		assertEquals(1, this.t.ix());
 		assertEquals(-2, this.t.iy());
-		assertEquals(5, this.t.iz());
+		assertEquals(0, this.t.iz());
 		IntegerProperty property = this.t.xProperty();
 		property.set(345);
 		assertEquals(345, this.t.ix());
 		assertEquals(-2, this.t.iy());
-		assertEquals(5, this.t.iz());
+		assertEquals(0, this.t.iz());
 	}
 	
 	@Test
 	public void yPropertySetter() {
 	    assertEquals(1, this.t.ix());
 	    assertEquals(-2, this.t.iy());
-	    assertEquals(5, this.t.iz());
+	    assertEquals(0, this.t.iz());
 	    IntegerProperty property = this.t.yProperty();
 	    property.set(345);
 	    assertEquals(1, this.t.ix());
 	    assertEquals(345, this.t.iy());
-	    assertEquals(5, this.t.iz());
+	    assertEquals(0, this.t.iz());
 	}
 
 	@Test
 	public void zPropertySetter() {
 		assertEquals(1, this.t.ix());
 		assertEquals(-2, this.t.iy());
-		assertEquals(5, this.t.iy());
+		assertEquals(0, this.t.iz());
 		IntegerProperty property = this.t.zProperty();
 		property.set(345);
 		assertEquals(1, this.t.ix());

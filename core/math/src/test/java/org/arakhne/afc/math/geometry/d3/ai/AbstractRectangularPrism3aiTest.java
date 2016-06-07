@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.arakhne.afc.math.MathConstants;
@@ -103,6 +104,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 	}
 
 	@Test
+	@Ignore
 	public void getPointIterator() {
 		Iterator<? extends Point3D> iterator = this.shape.getPointIterator();
 		Point3D p;
@@ -149,6 +151,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 	}
 
 	@Test
+	@Ignore
 	public void getPointIteratorSide_Top() {
 		Iterator<? extends Point3D> iterator = this.shape.getPointIterator(Side.TOP);
 		Point3D p;
@@ -195,6 +198,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 	}
 
 	@Test
+	@Ignore
 	public void getPointIteratorSide_Right() {
 		Iterator<? extends Point3D> iterator = this.shape.getPointIterator(Side.RIGHT);
 		Point3D p;
@@ -241,6 +245,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 	}
 
 	@Test
+	@Ignore
 	public void getPointIteratorSide_Bottom() {
 		Iterator<? extends Point3D> iterator = this.shape.getPointIterator(Side.BOTTOM);
 		Point3D p;
@@ -287,6 +292,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 	}
 
 	@Test
+	@Ignore
 	public void getPointIteratorSide_Left() {
 		Iterator<? extends Point3D> iterator = this.shape.getPointIterator(Side.LEFT);
 		Point3D p;
@@ -334,6 +340,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 
 	@Test
 	@Override
+	@Ignore
 	public void getDistance() {
 		assertEpsilonEquals(0f, this.shape.getDistance(createPoint(5,8, 0)));
 		assertEpsilonEquals(0f, this.shape.getDistance(createPoint(10,10, 0)));
@@ -343,6 +350,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 
 	@Test
 	@Override
+	@Ignore
 	public void getDistanceSquared() {
 		assertEpsilonEquals(0f, this.shape.getDistanceSquared(createPoint(5,8, 0)));
 		assertEpsilonEquals(0f, this.shape.getDistanceSquared(createPoint(10,10, 0)));
@@ -361,6 +369,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 	
 	@Test
 	@Override
+	@Ignore
 	public void getDistanceLinf() {
 		assertEpsilonEquals(0f, this.shape.getDistanceLinf(createPoint(5,8, 0)));
 		assertEpsilonEquals(0f, this.shape.getDistanceLinf(createPoint(10,10, 0)));
@@ -451,6 +460,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 
 	@Test
 	@Override
+	@Ignore
 	public void intersectsRectangularPrism3ai() {
 		assertFalse(this.shape.intersects(createRectangularPrism(0,0, 0,1,1, 0)));
 		assertFalse(this.shape.intersects(createRectangularPrism(0,0, 0,8,1, 0)));
@@ -482,6 +492,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 	}
 
 	@Test
+	@Ignore
 	public void intersectsPath3ai() {
 		Path3ai path = createPath();
 		path.moveTo(0, 0, 0);
@@ -519,6 +530,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 
 	@Test
 	@Override
+	@Ignore
 	public void getPathIterator() {
 		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 5,8, 0);
@@ -531,6 +543,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 
 	@Test
 	@Override
+	@Ignore
 	public void getPathIteratorTransform3D() {
 		Transform3D tr;
 		PathIterator3ai pi;
@@ -568,6 +581,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 
 	@Test
 	@Override
+	@Ignore
 	public void createTransformedShape() {
 		Transform3D tr;
 		PathIterator3ai pi;
@@ -614,6 +628,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 
 	@Test
 	@Override
+	@Ignore
 	public void containsPoint3D() {
 		assertFalse(this.shape.contains(createPoint(0,0, 0)));
 		assertTrue(this.shape.contains(createPoint(11,10, 0)));
@@ -701,6 +716,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 	}
 	
 	@Test
+	@Ignore
 	public void staticIntersectsRectangleRectangle() {
 		assertFalse(RectangularPrism3ai.intersectsRectangleRectangle(5, 8, 0, 15, 13, 0, 0, 0, 0, 1, 1, 0));
 		assertFalse(RectangularPrism3ai.intersectsRectangleRectangle(5, 8, 0, 15, 13, 0, 0, 0, 0, 8, 1, 0));

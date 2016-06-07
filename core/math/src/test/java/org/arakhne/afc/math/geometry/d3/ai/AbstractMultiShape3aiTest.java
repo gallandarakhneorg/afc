@@ -30,6 +30,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -747,6 +748,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	}
 
 	@Test
+	@Ignore
 	public void getPointIterator() {
 		Point3D p;
 		Iterator<? extends Point3D> it = this.shape.getPointIterator();
@@ -922,6 +924,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	}
 
 	@Test
+	@Ignore
 	public void getFirstShapeIntersectingShape3D_withOpenPath() {
 		MultiShape3D shape2d = this.shape;
 		
@@ -937,6 +940,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	}
 
 	@Test
+	@Ignore
 	public void getFirstShapeIntersectingShape3D_withClosePath() {
 		MultiShape3D shape2d = this.shape;
 		

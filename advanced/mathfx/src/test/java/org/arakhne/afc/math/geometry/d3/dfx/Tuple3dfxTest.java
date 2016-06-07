@@ -65,38 +65,38 @@ public class Tuple3dfxTest extends AbstractTuple3DTest<Tuple3dfx, Tuple3dfx> {
 		assertNotNull(property);
 		DoubleProperty property2 = this.t.zProperty();
 		assertSame(property, property2);
-		assertEpsilonEquals(5, property.get());
+		assertEpsilonEquals(0, property.get());
 	}
 
 	@Test
 	public void xPropertySetter() {
 		assertEpsilonEquals(1, this.t.getX());
 		assertEpsilonEquals(-2, this.t.getY());
-		assertEpsilonEquals(5, this.t.getZ());
+		assertEpsilonEquals(0, this.t.getZ());
 		DoubleProperty property = this.t.xProperty();
 		property.set(345.);
 		assertEpsilonEquals(345., this.t.getX());
 		assertEpsilonEquals(-2, this.t.getY());
-		assertEpsilonEquals(5, this.t.getZ());
+		assertEpsilonEquals(0, this.t.getZ());
 	}
 	
 	@Test
 	public void yPropertySetter() {
 		assertEpsilonEquals(1, this.t.getX());
 		assertEpsilonEquals(-2, this.t.getY());
-		assertEpsilonEquals(5, this.t.getZ());
+		assertEpsilonEquals(0, this.t.getZ());
 		DoubleProperty property = this.t.yProperty();
 		property.set(345.);
 		assertEpsilonEquals(1, this.t.getX());
 		assertEpsilonEquals(345., this.t.getY());
-		assertEpsilonEquals(5, this.t.getZ());
+		assertEpsilonEquals(0, this.t.getZ());
 	}
 
 	@Test
 	public void zPropertySetter() {
 		assertEpsilonEquals(1, this.t.getX());
 		assertEpsilonEquals(-2, this.t.getY());
-		assertEpsilonEquals(5, this.t.getZ());
+		assertEpsilonEquals(0, this.t.getZ());
 		DoubleProperty property = this.t.zProperty();
 		property.set(345.);
 		assertEpsilonEquals(1, this.t.getX());

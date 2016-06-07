@@ -94,7 +94,7 @@ public abstract class PathElement3d implements PathElement3afp {
 	@Override
 	@Pure
 	public final double getToZ() {
-		return this.toY;
+		return this.toZ;
 	}
 
 	@Pure

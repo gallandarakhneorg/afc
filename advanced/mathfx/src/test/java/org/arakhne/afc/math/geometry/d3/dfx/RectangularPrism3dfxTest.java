@@ -96,11 +96,11 @@ public class RectangularPrism3dfxTest extends AbstractRectangularPrism3afpTest<R
 
 	@Test
 	public void minZProperty() {
-		assertEpsilonEquals(2, this.shape.getMinZ());
+		assertEpsilonEquals(0, this.shape.getMinZ());
 		
 		DoubleProperty property = this.shape.minZProperty();
 		assertNotNull(property);
-		assertEpsilonEquals(2, property.get());
+		assertEpsilonEquals(0, property.get());
 		
 		this.shape.setMinZ(456.159);
 		assertEpsilonEquals(456.159, property.get());
@@ -110,16 +110,16 @@ public class RectangularPrism3dfxTest extends AbstractRectangularPrism3afpTest<R
 
 	@Test
 	public void maxZProperty() {
-		assertEpsilonEquals(10, this.shape.getMaxZ());
+		assertEpsilonEquals(0, this.shape.getMaxZ());
 		
 		DoubleProperty property = this.shape.maxZProperty();
 		assertNotNull(property);
-		assertEpsilonEquals(10, property.get());
+		assertEpsilonEquals(0, property.get());
 		
 		this.shape.setMaxZ(456.159);
 		assertEpsilonEquals(456.159, property.get());
 		
-		assertEpsilonEquals(2, this.shape.getMinZ());
+		assertEpsilonEquals(0, this.shape.getMinZ());
 	}
 
 	@Test
@@ -160,17 +160,17 @@ public class RectangularPrism3dfxTest extends AbstractRectangularPrism3afpTest<R
 
 	@Test
 	public void depthProperty() {
-		assertEpsilonEquals(10, this.shape.getDepth());
+		assertEpsilonEquals(0, this.shape.getDepth());
 
 		ReadOnlyDoubleProperty property = this.shape.depthProperty();
 		assertNotNull(property);
-		assertEpsilonEquals(10, property.get());
+		assertEpsilonEquals(0, property.get());
 		
 		this.shape.setMinZ(9);
-		assertEpsilonEquals(1, property.get());
+		assertEpsilonEquals(0, property.get());
 
 		this.shape.setMinZ(-5);
-		assertEpsilonEquals(15, property.get());
+		assertEpsilonEquals(14, property.get());
 
 		this.shape.setMaxZ(0);
 		assertEpsilonEquals(5, property.get());
@@ -184,10 +184,10 @@ public class RectangularPrism3dfxTest extends AbstractRectangularPrism3afpTest<R
 		assertNotNull(box);
 		assertEpsilonEquals(5, box.getMinX());
 		assertEpsilonEquals(8, box.getMinY());
-		assertEpsilonEquals(2, box.getMinZ());
+		assertEpsilonEquals(0, box.getMinZ());
 		assertEpsilonEquals(10, box.getMaxX());
 		assertEpsilonEquals(18, box.getMaxY());
-		assertEpsilonEquals(10, box.getMaxZ());
+		assertEpsilonEquals(0, box.getMaxZ());
 	}
 
 }

@@ -62,11 +62,11 @@ public class Sphere3dfxTest extends AbstractSphere3afpTest<Sphere3dfx, Rectangul
 
 	@Test
 	public void zProperty() {
-		assertEpsilonEquals(2, this.shape.getZ());
+		assertEpsilonEquals(0, this.shape.getZ());
 		
 		DoubleProperty property = this.shape.zProperty();
 		assertNotNull(property);
-		assertEpsilonEquals(2, property.get());
+		assertEpsilonEquals(0, property.get());
 		
 		this.shape.setZ(456.159);
 		assertEpsilonEquals(456.159, property.get());

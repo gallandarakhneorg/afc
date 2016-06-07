@@ -97,8 +97,8 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
      */
 	public RectangularPrism3dfx(double x, double y, double z, double width, double height, double depth) {
 		assert width >= 0. : "Width must be positive or zero"; //$NON-NLS-1$
-		assert height >= 0. : "HeightWidth must be positive or zero"; //$NON-NLS-1$
-		assert depth >= 0. : "HeightWidth must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0. : "Height must be positive or zero"; //$NON-NLS-1$
+		assert depth >= 0. : "Depth must be positive or zero"; //$NON-NLS-1$
         setFromCorners(x, y, z, x + width, y + height, z + depth);
 	}
 
@@ -192,11 +192,11 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 			maxYProperty().set(y1);
 		}
 		if (z1 <= z2) {
-			minZProperty().set(y1);
-			maxZProperty().set(y2);
+			minZProperty().set(z1);
+			maxZProperty().set(z2);
 		} else {
-			minZProperty().set(y2);
-			maxZProperty().set(y1);
+			minZProperty().set(z2);
+			maxZProperty().set(z1);
 		}
 	}
 
@@ -372,8 +372,8 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	}
 
 	@Override
-	public void setMaxZ(double y) {
-		maxZProperty().set(y);
+	public void setMaxZ(double z) {
+		maxZProperty().set(z);
 	}
 
 	/** Replies the property that is the maximum z coordinate of the box.

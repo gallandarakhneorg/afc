@@ -35,8 +35,10 @@ import javax.imageio.ImageIO;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Incubating;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -190,93 +192,122 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	}
 
 	@Test
+	@Ignore
 	public abstract void testClone();
 
 	@Test
+	@Ignore
 	public abstract void equalsObject();
 
 	@Test
+	@Ignore
 	public abstract void equalsObject_withPathIterator();
 
 	@Test
+	@Ignore
 	public abstract void equalsToPathIterator();
 
 	@Test
+	@Ignore
 	public abstract void equalsToShape();
 
 	@Test
+	@Ignore
 	public abstract void isEmpty();
 
 	@Test
 	public abstract void clear();
 
 	@Test
+	@Ignore
 	public abstract void containsPoint3D();
 	
 	@Test
+	@Ignore
 	public abstract void getClosestPointTo();
 	
 	@Test
+	@Ignore
 	public abstract void getFarthestPointTo();
 
 	@Test
+	@Ignore
 	public abstract void getDistance();
 
 	@Test
+	@Ignore
 	public abstract void getDistanceSquared();
 
 	@Test
+	@Ignore
 	public abstract void getDistanceL1();
 
 	@Test
+	@Ignore
 	public abstract void getDistanceLinf();
 
 	@Test
+	@Ignore
 	public abstract void setIT();
 
 	@Test
+	@Ignore
 	public abstract void getPathIterator();
 
 	@Test
+	@Ignore
 	public abstract void getPathIteratorTransform3D();
 
 	@Test
+	@Ignore
 	public abstract void createTransformedShape();
 
 	@Test
+	@Ignore
 	public abstract void translateVector3D(); 
 
 	@Test
+	@Ignore
 	public abstract void toBoundingBox();
 	
 	@Test
+	@Ignore
 	public abstract void toBoundingBoxB();
 
 	@Test
+	@Ignore
 	public abstract void getPointIterator();
 
 	@Test
+	@Ignore
 	public abstract void containsRectangularPrism3ai();
 
 	@Test
+	@Ignore
 	public abstract void intersectsRectangularPrism3ai();
 
 	@Test
+	@Ignore
 	public abstract void intersectsSphere3ai();
 
 	@Test
+	@Ignore
 	public abstract void intersectsSegment3ai();
 	
 	@Test
+	@Ignore
 	public abstract void intersectsPath3ai();
 	
 	@Test
+	@Ignore
 	public abstract void intersectsPathIterator3ai();
 
 	@Test
+	@Ignore
 	public abstract void translateIntInt(); 
 
 	@Test
+	@Ignore
 	public abstract void containsIntInt();
 
 	@Test
@@ -285,30 +316,39 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	}
 	
 	@Test
+	@Ignore
 	public abstract void intersectsShape3D();
 
 	@Test
+	@Ignore
 	public abstract void operator_addVector3D();
 
 	@Test
+	@Ignore
 	public abstract void operator_plusVector3D();
 
 	@Test
+	@Ignore
 	public abstract void operator_removeVector3D();
 
 	@Test
+	@Ignore
 	public abstract void operator_minusVector3D();
 
 	@Test
+	@Ignore
 	public abstract void operator_multiplyTransform3D();
 
 	@Test
+	@Ignore
 	public abstract void operator_andPoint3D();
 
 	@Test
+	@Ignore
 	public abstract void operator_andShape3D();
 
 	@Test
+	@Ignore
 	public abstract void operator_upToPoint3D();
 
 	/** Generate a bitmap containing the given Shape2D.

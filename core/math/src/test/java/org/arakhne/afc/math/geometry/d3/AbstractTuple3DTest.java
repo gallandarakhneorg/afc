@@ -29,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -84,12 +85,12 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 
 	@Test
 	public final void getZ() {
-		assertEpsilonEquals(5., getT().getZ());
+		assertEpsilonEquals(0., getT().getZ());
 	}
 
 	@Test
 	public final void iz() {
-		assertEquals(5, getT().iz());
+		assertEquals(0, getT().iz());
 	}
 
 	@Test
@@ -100,7 +101,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		
 	@Test
 	public final void equals_equals() {
-		Tuple3D c = new Tuple3d(1, -2, 5);
+		Tuple3D c = new Tuple3d(1, -2, 0);
 		assertTrue(getT().equals(c));
 	}
 
@@ -129,7 +130,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().absolute();
 		assertEpsilonEquals(1, getT().getX());
 		assertEpsilonEquals(2, getT().getY());
-		assertEpsilonEquals(5, getT().getZ());
+		assertEpsilonEquals(0, getT().getZ());
 	}
 
 	@Test
@@ -138,18 +139,18 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().absolute(c);
 		assertEpsilonEquals(1, getT().getX());
 		assertEpsilonEquals(-2, getT().getY());
-		assertEpsilonEquals(5, getT().getZ());
+		assertEpsilonEquals(0, getT().getZ());
 		assertEpsilonEquals(1, c.getX());
 		assertEpsilonEquals(2, c.getY());
-		assertEpsilonEquals(5, c.getZ());
+		assertEpsilonEquals(0, c.getZ());
 	}
 
 	@Test
-	public void addIntInt() {
+	public void addIntIntInt() {
 		getT().add(6, 7, 1);
 		assertEpsilonEquals(7, getT().getX());
 		assertEpsilonEquals(5, getT().getY());
-		assertEpsilonEquals(6, getT().getZ());
+		assertEpsilonEquals(1, getT().getZ());
 	}
 
 	@Test
@@ -158,10 +159,11 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().add(6.5, 7.5, 5.5);
 		assertEpsilonEquals(7.5, getT().getX());
 		assertEpsilonEquals(5.5, getT().getY());
-		assertEpsilonEquals(10.5, getT().getY());
+		assertEpsilonEquals(5.5, getT().getY());
 	}
 
 	@Test
+	@Ignore
 	public void addDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().add(6.5, 7.5, 5.5);
@@ -175,7 +177,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().addX(6);
 		assertEpsilonEquals(7, getT().getX());
 		assertEpsilonEquals(-2, getT().getY());
-		assertEpsilonEquals(5, getT().getZ());
+		assertEpsilonEquals(0, getT().getZ());
 	}
 
 	@Test
@@ -184,6 +186,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().addX(6.5);
 		assertEpsilonEquals(7.5, getT().getX());
 		assertEpsilonEquals(-2, getT().getY());
+		assertEpsilonEquals(0, getT().getZ());
 	}
 
 	@Test
@@ -192,7 +195,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().addX(6.5);
 		assertEquals(8, getT().ix());
 		assertEquals(-2, getT().iy());
-		assertEquals(5, getT().iz());
+		assertEquals(0, getT().iz());
 	}
 	
 	@Test
@@ -200,7 +203,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().addY(6);
 		assertEpsilonEquals(1, getT().getX());
 		assertEpsilonEquals(4, getT().getY());
-		assertEpsilonEquals(5, getT().getZ());
+		assertEpsilonEquals(0, getT().getZ());
 	}
 	
 	@Test
@@ -209,7 +212,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().addY(6.5);
 		assertEpsilonEquals(1, getT().getX());
 		assertEpsilonEquals(4.5, getT().getY());
-		assertEpsilonEquals(5, getT().getZ());
+		assertEpsilonEquals(0, getT().getZ());
 	}
 	
 	@Test
@@ -218,7 +221,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().addY(6.5);
 		assertEquals(1, getT().ix());
 		assertEquals(5, getT().iy());
-		assertEquals(5, getT().iz());
+		assertEquals(0, getT().iz());
 	}
 
 	@Test
@@ -235,7 +238,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().addZ(5.5);
 		assertEpsilonEquals(1, getT().getX());
 		assertEpsilonEquals(-2, getT().getY());
-		assertEpsilonEquals(10.5, getT().getZ());
+		assertEpsilonEquals(5.5, getT().getZ());
 	}
 
 	@Test
@@ -244,7 +247,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().addZ(5.5);
 		assertEquals(1, getT().ix());
 		assertEquals(-2, getT().iy());
-		assertEquals(11, getT().iz());
+		assertEquals(6, getT().iz());
 	}
 
 	@Test
@@ -267,7 +270,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().negate();
 		assertEpsilonEquals(-1, getT().getX());
 		assertEpsilonEquals(2, getT().getY());
-		assertEpsilonEquals(-5, getT().getZ());
+		assertEpsilonEquals(-0, getT().getZ());
 	}
 
 	@Test
@@ -276,7 +279,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().scale(4, c);
 		assertEpsilonEquals(8, getT().getX());
 		assertEpsilonEquals(-4, getT().getY());
-		assertEpsilonEquals(-8, getT().getY());
+		assertEpsilonEquals(-8, getT().getZ());
 	}
 
 	@Test
@@ -286,6 +289,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().scale(4.5, c);
 		assertEpsilonEquals(9, getT().getX());
 		assertEpsilonEquals(-4.5, getT().getY());
+		assertEpsilonEquals(0, getT().getZ());
 	}
 
 	@Test
@@ -295,6 +299,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().scale(4.5, c);
 		assertEquals(9, getT().ix());
 		assertEquals(-4, getT().iy());
+		assertEquals(0, getT().iz());
 	}
 
 	@Test
@@ -302,6 +307,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().scale(4);
 		assertEpsilonEquals(4, getT().getX());
 		assertEpsilonEquals(-8, getT().getY());
+		assertEpsilonEquals(0, getT().getZ());
 	}
 
 	@Test
@@ -310,6 +316,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().scale(4.5);
 		assertEpsilonEquals(4.5, getT().getX());
 		assertEpsilonEquals(-9, getT().getY());
+		assertEpsilonEquals(0, getT().getZ());
 	}
 
 	@Test
@@ -318,42 +325,47 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().scale(4.5);
 		assertEquals(5, getT().ix());
 		assertEquals(-9, getT().iy());
+		assertEquals(0, getT().iz());
 	}
 
 	@Test
 	public void setTuple3D() {
-		Tuple3D c = new Tuple3d(-45, 78, 0);
+		Tuple3D c = new Tuple3d(-45, 78, 1);
 		getT().set(c);
 		assertEpsilonEquals(-45, getT().getX());
 		assertEpsilonEquals(78, getT().getY());
+		assertEpsilonEquals(1, getT().getZ());
 	}
 
 	@Test
-	public void setIntInt() {
-		getT().set(-45, 78, 0);
+	public void setIntIntInt() {
+		getT().set(-45, 78, 1);
 		assertEpsilonEquals(-45, getT().getX());
 		assertEpsilonEquals(78, getT().getY());
+		assertEpsilonEquals(1, getT().getZ());
 	}
 
 	@Test
 	public void setDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		getT().set(-45.5, 78.5, 0);
+		getT().set(-45.5, 78.5, 1.1);
 		assertEpsilonEquals(-45.5, getT().getX());
 		assertEpsilonEquals(78.5, getT().getY());
+		assertEpsilonEquals(1.1, getT().getZ());
 	}
 
 	@Test
 	public void setDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		getT().set(-45.5, 78.5, 0);
+		getT().set(-45.5, 78.5, 1.1);
 		assertEquals(-45, getT().ix());
 		assertEquals(79, getT().iy());
+		assertEquals(1, getT().iz());
 	}
 
 	@Test
 	public void setIntArray() {
-		getT().set(new int[]{-45, 78, 0});
+		getT().set(new int[]{-45, 78, 1});
 		assertEpsilonEquals(-45, getT().getX());
 		assertEpsilonEquals(78, getT().getY());
 	}
@@ -361,17 +373,19 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 	@Test
 	public void setDoubleArray_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		getT().set(new double[]{-45.5, 78.5, 0});
+		getT().set(new double[]{-45.5, 78.5, 1.1});
 		assertEpsilonEquals(-45.5, getT().getX());
 		assertEpsilonEquals(78.5, getT().getY());
+		assertEpsilonEquals(1.1, getT().getZ());
 	}
 
 	@Test
 	public void setDoubleArray_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		getT().set(new double[]{-45.5, 78.5, 0});
+		getT().set(new double[]{-45.5, 78.5, 1.1});
 		assertEquals(-45, getT().ix());
 		assertEquals(79, getT().iy());
+		assertEquals(1, getT().iz());
 	}
 
 	@Test
@@ -379,6 +393,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().setX(45);
 		assertEpsilonEquals(45, getT().getX());
 		assertEpsilonEquals(-2, getT().getY());
+		assertEpsilonEquals(0, getT().getZ());
 	}
 
 	@Test
@@ -387,6 +402,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().setX(45.5);
 		assertEpsilonEquals(45.5, getT().getX());
 		assertEpsilonEquals(-2, getT().getY());
+		assertEpsilonEquals(0, getT().getZ());
 	}
 
 	@Test
@@ -395,6 +411,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 		getT().setX(45.5);
 		assertEquals(46, getT().ix());
 		assertEquals(-2, getT().iy());
+		assertEquals(0, getT().iz());
 	}
 
 	@Test
@@ -421,7 +438,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 	}
 
 	@Test
-	public void subIntInt() {
+	public void subIntIntInt() {
 		getT().sub(45, 78, 0);
 		assertEpsilonEquals(-44, getT().getX());
 		assertEpsilonEquals(-80, getT().getY());

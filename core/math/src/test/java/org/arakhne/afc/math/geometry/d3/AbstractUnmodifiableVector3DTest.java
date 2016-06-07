@@ -41,7 +41,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void addIntInt() {
+	public final void addIntIntInt() {
 		getT().add(6, 7, 0);
 	}
 
@@ -59,15 +59,25 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 	public final void addXDouble() {
 		getT().addX(6.5);
 	}
-
+	
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addYInt() {
-		getT().addY(6);
+	    getT().addY(6);
+	}
+	
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addYDouble() {
+	    getT().addY(6.5);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void addYDouble() {
-		getT().addY(6.5);
+	public final void addZInt() {
+		getT().addZ(6);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addZDouble() {
+		getT().addZ(6.5);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -110,7 +120,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void setIntInt() {
+	public final void setIntIntInt() {
 		getT().set(-45, 78, 0);
 	}
 
@@ -150,7 +160,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void subIntInt() {
+	public final void subIntIntInt() {
 		getT().sub(45, 78, 0);
 	}
 
@@ -202,17 +212,29 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		Assume.assumeTrue(isIntCoordinates());
 		getT().addX(12.3);
 	}
-
+	
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addYDouble_iffp() {
-		Assume.assumeFalse(isIntCoordinates());
-		getT().addY(12.3);
+	    Assume.assumeFalse(isIntCoordinates());
+	    getT().addY(12.3);
+	}
+	
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addYDouble_ifi() {
+	    Assume.assumeTrue(isIntCoordinates());
+	    getT().addY(12.3);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void addYDouble_ifi() {
+	public final void addZDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().addZ(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addZDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		getT().addY(12.3);
+		getT().addZ(12.3);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -274,17 +296,29 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		Assume.assumeTrue(isIntCoordinates());
 		getT().setX(12.3);
 	}
-
+	
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setYDouble_ifi() {
-		Assume.assumeTrue(isIntCoordinates());
-		getT().setY(12.3);
+	    Assume.assumeTrue(isIntCoordinates());
+	    getT().setY(12.3);
+	}
+	
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setYDouble_iffp() {
+	    Assume.assumeFalse(isIntCoordinates());
+	    getT().setY(12.3);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void setYDouble_iffp() {
+	public final void setZDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().setZ(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setZDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		getT().setY(12.3);
+		getT().setZ(12.3);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -310,17 +344,29 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		Assume.assumeTrue(isIntCoordinates());
 		getT().subX(12.3);
 	}
-
+	
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subYDouble_iffp() {
-		Assume.assumeFalse(isIntCoordinates());
-		getT().subY(12.3);
+	    Assume.assumeFalse(isIntCoordinates());
+	    getT().subY(12.3);
+	}
+	
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subYDouble_ifi() {
+	    Assume.assumeTrue(isIntCoordinates());
+	    getT().subY(12.3);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void subYDouble_ifi() {
+	public final void subZDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().subZ(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subZDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		getT().subY(12.3);
+		getT().subZ(12.3);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)

@@ -327,7 +327,7 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
 	@Pure
 	@Override
 	public int iz() {
-		return this.y;
+		return this.z;
 	}
 
 	@Override

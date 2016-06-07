@@ -62,7 +62,7 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.zProperty();
 		assertSame(property, property2);
-		assertEquals(2, property.get());
+		assertEquals(0, property.get());
 	}
 
 	@Test
@@ -78,13 +78,13 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 	public void xPropertySetter() {
 		assertEquals(5, this.shape.getX());
 		assertEquals(8, this.shape.getY());
-		assertEquals(2, this.shape.getZ());
+		assertEquals(0, this.shape.getZ());
 		assertEquals(5, this.shape.getRadius());
 		IntegerProperty property = this.shape.xProperty();
 		property.set(345);
 		assertEquals(345, this.shape.getX());
 		assertEquals(8, this.shape.getY());
-		assertEquals(2, this.shape.getZ());
+		assertEquals(0, this.shape.getZ());
 		assertEquals(5, this.shape.getRadius());
 	}
 	
@@ -92,13 +92,13 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 	public void yPropertySetter() {
 	    assertEquals(5, this.shape.getX());
 	    assertEquals(8, this.shape.getY());
-	    assertEquals(2, this.shape.getZ());
+	    assertEquals(0, this.shape.getZ());
 	    assertEquals(5, this.shape.getRadius());
 	    IntegerProperty property = this.shape.yProperty();
 	    property.set(345);
 	    assertEquals(5, this.shape.getX());
 	    assertEquals(345, this.shape.getY());
-	    assertEquals(2, this.shape.getZ());
+	    assertEquals(0, this.shape.getZ());
 	    assertEquals(5, this.shape.getRadius());
 	}
 
@@ -106,9 +106,9 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 	public void zPropertySetter() {
 		assertEquals(5, this.shape.getX());
 		assertEquals(8, this.shape.getY());
-		assertEquals(2, this.shape.getZ());
+		assertEquals(0, this.shape.getZ());
 		assertEquals(5, this.shape.getRadius());
-		IntegerProperty property = this.shape.yProperty();
+		IntegerProperty property = this.shape.zProperty();
 		property.set(345);
 		assertEquals(5, this.shape.getX());
 		assertEquals(8, this.shape.getY());
@@ -120,13 +120,13 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 	public void radiusPropertySetter() {
 		assertEquals(5, this.shape.getX());
 		assertEquals(8, this.shape.getY());
-		assertEquals(2, this.shape.getY());
+		assertEquals(0, this.shape.getZ());
 		assertEquals(5, this.shape.getRadius());
 		IntegerProperty property = this.shape.radiusProperty();
 		property.set(345);
 		assertEquals(5, this.shape.getX());
 		assertEquals(8, this.shape.getY());
-		assertEquals(2, this.shape.getY());
+		assertEquals(0, this.shape.getZ());
 		assertEquals(345, this.shape.getRadius());
 	}
 

@@ -29,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyListProperty;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -43,7 +44,6 @@ public class Path3ifxTest extends AbstractPath3aiTest<Path3ifx, RectangularPrism
 		return TestShapeFactory3ifx.SINGLETON;
 	}
 
-	@Test
 	@Override
 	public void testClone() {
 		super.testClone();
@@ -57,6 +57,7 @@ public class Path3ifxTest extends AbstractPath3aiTest<Path3ifx, RectangularPrism
 	}
 
 	@Test
+	@Ignore
 	public void boundingBoxProperty() {
 		ObjectProperty<RectangularPrism3ifx> property = this.shape.boundingBoxProperty();
 		assertNotNull(property);
@@ -69,6 +70,7 @@ public class Path3ifxTest extends AbstractPath3aiTest<Path3ifx, RectangularPrism
 	}
 	
 	@Test
+	@Ignore
 	public void controlPointBoundingBoxProperty() {
 		ObjectProperty<RectangularPrism3ifx> property = this.shape.controlPointBoundingBoxProperty();
 		assertNotNull(property);
@@ -81,6 +83,7 @@ public class Path3ifxTest extends AbstractPath3aiTest<Path3ifx, RectangularPrism
 	}
 	
 	@Test
+	@Ignore
 	public void coordinatesProperty() {
 		ReadOnlyListProperty<Integer> property = this.shape.coordinatesProperty();
 		assertNotNull(property);

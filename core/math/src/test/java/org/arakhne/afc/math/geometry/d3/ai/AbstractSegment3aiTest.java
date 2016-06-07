@@ -29,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.arakhne.afc.math.MathConstants;
@@ -220,7 +221,6 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEpsilonEquals(5, bb.getMaxY());
 	}
 
-	@Test
 	@Override
 	public void containsPoint3D() {
 		assertTrue(this.shape.contains(createPoint(0, 0, 0)));
@@ -237,7 +237,6 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertTrue(this.shape.contains(createPoint(5, 2, 0)));
 	}
 
-	@Test
 	@Override
 	public void containsIntInt() {
 		assertTrue(this.shape.contains(0, 0, 0));
@@ -322,7 +321,6 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEquals(5, p.iy());
 	}
 
-	@Test
 	@Override
 	public void getPathIterator() {
 		PathIterator3ai pi = this.shape.getPathIterator();
@@ -331,7 +329,6 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertNoElement(pi);
 	}
 
-	@Test
 	@Override
 	public void getPathIteratorTransform3D() {
 		Transform3D tr;
@@ -358,7 +355,6 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertNoElement(pi);
 	}
 
-	@Test
 	@Override
     public void createTransformedShape() {
     	T s;
@@ -397,6 +393,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
     }
 
 	@Test
+	@Ignore
     public void transformTransform3D() {
     	T s;
     	Transform3D tr;
@@ -887,6 +884,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	}
 
 	@Test
+	@Ignore
 	public void containsRectangularPrism3ai() {
 		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,1,1, 0)));
 		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,8,1, 0)));
@@ -962,6 +960,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	}
 	
 	@Test
+	@Ignore
 	public void intersectsPath3ai() {
 		Path3ai path = createPath();
 		path.moveTo(0, 0, 0);
