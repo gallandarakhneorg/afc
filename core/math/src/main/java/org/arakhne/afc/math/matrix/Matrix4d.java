@@ -1471,7 +1471,10 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Override
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public boolean equals(Object t1) {
-		try {
+		if (t1 == this) {
+			return true;
+		}
+		if (getClass().isInstance(t1)) {
 			final Matrix4d m2 = (Matrix4d) t1;
 			return this.m00 == m2.m00 && this.m01 == m2.m01
 					&& this.m02 == m2.m02 && this.m03 == m2.m03
@@ -1481,10 +1484,8 @@ public class Matrix4d implements Serializable, Cloneable {
 					&& this.m22 == m2.m22 && this.m23 == m2.m23
 					&& this.m30 == m2.m30 && this.m31 == m2.m31
 					&& this.m32 == m2.m32 && this.m33 == m2.m33;
-		} catch (ClassCastException | NullPointerException e1) {
-			return false;
 		}
-
+			return false;
 	}
 
 	/**
