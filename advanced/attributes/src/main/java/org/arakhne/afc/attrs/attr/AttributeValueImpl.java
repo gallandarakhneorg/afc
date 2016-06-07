@@ -2128,7 +2128,7 @@ public class AttributeValueImpl implements AttributeValue {
 				return new Point3D[] {};
 			case POINT3D:
 				return new Point3D[] {
-					((Point3D<?,?>)this.value).clone() 
+                        ((Point3D<?, ?>) this.value).clone(),
 				};
 			case POLYLINE:
 				final Point2D<?, ?>[] current = (Point2D<?, ?>[]) this.value;
