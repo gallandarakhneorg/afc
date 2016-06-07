@@ -981,15 +981,13 @@ public class Matrix2d implements Serializable, Cloneable {
 	 */
 	@Pure
 	public boolean equals(Matrix2d matrix) {
-		if (matrix == this) {
-			return true;
-		}
-		if (getClass().isInstance(matrix)) {
+		try {
 			return this.m00 == matrix.m00 && this.m01 == matrix.m01
 					&& this.m10 == matrix.m10
 					&& this.m11 == matrix.m11;
-	    }
-		return false;
+		} catch (NullPointerException e2) {
+			return false;
+		}
 	}
 
 	/**
