@@ -1860,7 +1860,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 
 	@Override
 	public void operator_addVector2D() {
-		this.shape.operator_add(createVector(3, 4));
+		this.shape.operatorAdd(createVector(3, 4));
 		PathIterator2ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 6);
@@ -1872,7 +1872,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 
 	@Override
 	public void operator_plusVector2D() {
-		T r = this.shape.operator_plus(createVector(3, 4));
+		T r = this.shape.operatorPlus(createVector(3, 4));
 		PathIterator2ai pi = r.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 6);
@@ -1884,7 +1884,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 
 	@Override
 	public void operator_removeVector2D() {
-		this.shape.operator_remove(createVector(3, 4));
+		this.shape.operatorRemove(createVector(3, 4));
 		PathIterator2ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -3, -4);
 		assertElement(pi, PathElementType.LINE_TO, -1, -2);
@@ -1896,7 +1896,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 
 	@Override
 	public void operator_minusVector2D() {
-		T r = this.shape.operator_minus(createVector(3, 4));
+		T r = this.shape.operatorMinus(createVector(3, 4));
 		PathIterator2ai pi = r.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -3, -4);
 		assertElement(pi, PathElementType.LINE_TO, -1, -2);
@@ -1915,7 +1915,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		Transform2D tr3 = new Transform2D();
 		tr3.mul(tr, tr2);
 
-		Path2ai clone = (Path2ai) this.shape.operator_multiply(tr3);
+		Path2ai clone = (Path2ai) this.shape.operatorMultiply(tr3);
 
 		PathIterator2ai pi = (PathIterator2ai) clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
@@ -1928,30 +1928,30 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 
 	@Override
 	public void operator_andPoint2D() {
-		assertTrue(this.shape.operator_and(createPoint(0, 0)));
-		assertTrue(this.shape.operator_and(createPoint(4, 3)));
-		assertTrue(this.shape.operator_and(createPoint(2, 2)));
-		assertTrue(this.shape.operator_and(createPoint( 2, 1)));
-		assertTrue(this.shape.operator_and(createPoint(4, 2)));
-		assertFalse(this.shape.operator_and(createPoint(-1, -1)));
-		assertFalse(this.shape.operator_and(createPoint(6, 2)));
-		assertTrue(this.shape.operator_and(createPoint(3, -2)));
-		assertFalse(this.shape.operator_and(createPoint(2, -2)));
+		assertTrue(this.shape.operatorAnd(createPoint(0, 0)));
+		assertTrue(this.shape.operatorAnd(createPoint(4, 3)));
+		assertTrue(this.shape.operatorAnd(createPoint(2, 2)));
+		assertTrue(this.shape.operatorAnd(createPoint( 2, 1)));
+		assertTrue(this.shape.operatorAnd(createPoint(4, 2)));
+		assertFalse(this.shape.operatorAnd(createPoint(-1, -1)));
+		assertFalse(this.shape.operatorAnd(createPoint(6, 2)));
+		assertTrue(this.shape.operatorAnd(createPoint(3, -2)));
+		assertFalse(this.shape.operatorAnd(createPoint(2, -2)));
 	}
 
 	@Override
 	public void operator_andShape2D() {
-		assertTrue(this.shape.operator_and(createCircle(3, 0, 1)));
-		assertTrue(this.shape.operator_and(createRectangle(-1, -1, 1, 1)));
+		assertTrue(this.shape.operatorAnd(createCircle(3, 0, 1)));
+		assertTrue(this.shape.operatorAnd(createRectangle(-1, -1, 1, 1)));
 	}
 
 	@Override
 	public void operator_upToPoint2D() {
-		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(0, 0)));
-		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(1, 0)));
-		assertEpsilonEquals(7.071067812f, this.shape.operator_upTo(createPoint(-5, -5)));
-		assertEpsilonEquals(3f, this.shape.operator_upTo(createPoint(4, 6)));
-		assertEpsilonEquals(1f, this.shape.operator_upTo(createPoint(7, 0)));
+		assertEpsilonEquals(0f, this.shape.operatorUpTo(createPoint(0, 0)));
+		assertEpsilonEquals(0f, this.shape.operatorUpTo(createPoint(1, 0)));
+		assertEpsilonEquals(7.071067812f, this.shape.operatorUpTo(createPoint(-5, -5)));
+		assertEpsilonEquals(3f, this.shape.operatorUpTo(createPoint(4, 6)));
+		assertEpsilonEquals(1f, this.shape.operatorUpTo(createPoint(7, 0)));
 	}
 
 	@Test

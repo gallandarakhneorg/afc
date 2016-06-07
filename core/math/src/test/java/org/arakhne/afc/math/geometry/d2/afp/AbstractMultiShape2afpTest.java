@@ -705,7 +705,7 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 
 	@Override
 	public void operator_addVector2D() {
-		this.shape.operator_add(createVector(10, -2));
+		this.shape.operatorAdd(createVector(10, -2));
 		PathIterator2afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
 		assertElement(pi, PathElementType.LINE_TO, 17, 6);
@@ -723,7 +723,7 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 
 	@Override
 	public void operator_plusVector2D() {
-		T shape = this.shape.operator_plus(createVector(10, -2));
+		T shape = this.shape.operatorPlus(createVector(10, -2));
 		PathIterator2afp pi = shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
 		assertElement(pi, PathElementType.LINE_TO, 17, 6);
@@ -741,7 +741,7 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 
 	@Override
 	public void operator_removeVector2D() {
-		this.shape.operator_remove(createVector(10, -2));
+		this.shape.operatorRemove(createVector(10, -2));
 		PathIterator2afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -5, 10);
 		assertElement(pi, PathElementType.LINE_TO, -3, 10);
@@ -759,7 +759,7 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 
 	@Override
 	public void operator_minusVector2D() {
-		T shape = this.shape.operator_minus(createVector(10, -2));
+		T shape = this.shape.operatorMinus(createVector(10, -2));
 		PathIterator2afp pi = shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -5, 10);
 		assertElement(pi, PathElementType.LINE_TO, -3, 10);
@@ -779,7 +779,7 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 	public void operator_multiplyTransform2D() {
 		Transform2D transform = new Transform2D();
 		transform.setTranslation(10, -2);
-		Shape2afp newShape = this.shape.operator_multiply(transform);
+		Shape2afp newShape = this.shape.operatorMultiply(transform);
 		PathIterator2afp pi = (PathIterator2afp) newShape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
 		assertElement(pi, PathElementType.LINE_TO, 17, 6);
@@ -797,23 +797,23 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 
 	@Override
 	public void operator_andPoint2D() {
-		assertFalse(this.shape.operator_and(createPoint(-10, 2)));
-		assertFalse(this.shape.operator_and(createPoint(-10, 14)));
-		assertFalse(this.shape.operator_and(createPoint(-10, 25)));
-		assertFalse(this.shape.operator_and(createPoint(-1, 25)));
-		assertFalse(this.shape.operator_and(createPoint(1, 2)));
-		assertFalse(this.shape.operator_and(createPoint(12, 2)));
-		assertFalse(this.shape.operator_and(createPoint(12, 14)));
-		assertFalse(this.shape.operator_and(createPoint(12, 25)));
-		assertFalse(this.shape.operator_and(createPoint(-6, 8)));
-		assertFalse(this.shape.operator_and(createPoint(4, 17)));
-		assertTrue(this.shape.operator_and(createPoint(-4, 19)));
-		assertTrue(this.shape.operator_and(createPoint(6, 8.25)));
+		assertFalse(this.shape.operatorAnd(createPoint(-10, 2)));
+		assertFalse(this.shape.operatorAnd(createPoint(-10, 14)));
+		assertFalse(this.shape.operatorAnd(createPoint(-10, 25)));
+		assertFalse(this.shape.operatorAnd(createPoint(-1, 25)));
+		assertFalse(this.shape.operatorAnd(createPoint(1, 2)));
+		assertFalse(this.shape.operatorAnd(createPoint(12, 2)));
+		assertFalse(this.shape.operatorAnd(createPoint(12, 14)));
+		assertFalse(this.shape.operatorAnd(createPoint(12, 25)));
+		assertFalse(this.shape.operatorAnd(createPoint(-6, 8)));
+		assertFalse(this.shape.operatorAnd(createPoint(4, 17)));
+		assertTrue(this.shape.operatorAnd(createPoint(-4, 19)));
+		assertTrue(this.shape.operatorAnd(createPoint(6, 8.25)));
 	}
 
 	@Override
 	public void operator_andShape2D() {
-		assertTrue(this.shape.operator_and(createCircle(4.75, 8, .5)));
+		assertTrue(this.shape.operatorAnd(createCircle(4.75, 8, .5)));
 		Path2afp path = createPath();
 		path.moveTo(-6, 2);
 		path.lineTo(10, 6);
@@ -821,25 +821,25 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 		path.lineTo(-4, 12);
 		path.lineTo(-12, 22);
 		path.lineTo(6, 20);
-		assertFalse(this.shape.operator_and(path));
+		assertFalse(this.shape.operatorAnd(path));
 		path.closePath();
-		assertTrue(this.shape.operator_and(path));
+		assertTrue(this.shape.operatorAnd(path));
 	}
 
 	@Override
 	public void operator_upToPoint2D() {
-		assertEpsilonEquals(14.76305, this.shape.operator_upTo(createPoint(-10, 2)));
-		assertEpsilonEquals(4.40312, this.shape.operator_upTo(createPoint(-10, 14)));
-		assertEpsilonEquals(6.60233, this.shape.operator_upTo(createPoint(-10, 25)));
-		assertEpsilonEquals(6.06226, this.shape.operator_upTo(createPoint(-1, 25)));
-		assertEpsilonEquals(7.21110, this.shape.operator_upTo(createPoint(1, 2)));
-		assertEpsilonEquals(7.81025, this.shape.operator_upTo(createPoint(12, 2)));
-		assertEpsilonEquals(7.07107, this.shape.operator_upTo(createPoint(12, 14)));
-		assertEpsilonEquals(16.38478, this.shape.operator_upTo(createPoint(12, 25)));
-		assertEpsilonEquals(8.04988, this.shape.operator_upTo(createPoint(-6, 8)));
-		assertEpsilonEquals(7.05538, this.shape.operator_upTo(createPoint(4, 17)));
-		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(-4, 19)));
-		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(6, 8.25)));
+		assertEpsilonEquals(14.76305, this.shape.operatorUpTo(createPoint(-10, 2)));
+		assertEpsilonEquals(4.40312, this.shape.operatorUpTo(createPoint(-10, 14)));
+		assertEpsilonEquals(6.60233, this.shape.operatorUpTo(createPoint(-10, 25)));
+		assertEpsilonEquals(6.06226, this.shape.operatorUpTo(createPoint(-1, 25)));
+		assertEpsilonEquals(7.21110, this.shape.operatorUpTo(createPoint(1, 2)));
+		assertEpsilonEquals(7.81025, this.shape.operatorUpTo(createPoint(12, 2)));
+		assertEpsilonEquals(7.07107, this.shape.operatorUpTo(createPoint(12, 14)));
+		assertEpsilonEquals(16.38478, this.shape.operatorUpTo(createPoint(12, 25)));
+		assertEpsilonEquals(8.04988, this.shape.operatorUpTo(createPoint(-6, 8)));
+		assertEpsilonEquals(7.05538, this.shape.operatorUpTo(createPoint(4, 17)));
+		assertEpsilonEquals(0, this.shape.operatorUpTo(createPoint(-4, 19)));
+		assertEpsilonEquals(0, this.shape.operatorUpTo(createPoint(6, 8.25)));
 	}
 
 	@Test

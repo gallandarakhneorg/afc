@@ -314,7 +314,7 @@ public interface Shape2D<
      * @param v the vector
      * @see #translate(Vector2D)
      */
-    default void operator_add(Vector2D<?, ?> v) {
+    default void operatorAdd(Vector2D<?, ?> v) {
         translate(v);
     }
 
@@ -329,7 +329,7 @@ public interface Shape2D<
      * @see #translate(Vector2D)
      */
     @Pure
-    default IT operator_plus(Vector2D<?, ?> v) {
+    default IT operatorPlus(Vector2D<?, ?> v) {
         final IT clone = clone();
         clone.translate(v);
         return clone;
@@ -344,7 +344,7 @@ public interface Shape2D<
      * @param v the vector
      * @see #translate(Vector2D)
      */
-    default void operator_remove(Vector2D<?, ?> v) {
+    default void operatorRemove(Vector2D<?, ?> v) {
         final Vector2D<?, ?> negate = getGeomFactory().newVector();
         negate.negate(v);
         translate(negate);
@@ -361,7 +361,7 @@ public interface Shape2D<
      * @see #translate(Vector2D)
      */
     @Pure
-    default IT operator_minus(Vector2D<?, ?> v) {
+    default IT operatorMinus(Vector2D<?, ?> v) {
         final IT clone = clone();
         final Vector2D<?, ?> negate = getGeomFactory().newVector();
         negate.negate(v);
@@ -380,7 +380,7 @@ public interface Shape2D<
      * @see #createTransformedShape(Transform2D)
      */
     @Pure
-    default ST operator_multiply(Transform2D t) {
+    default ST operatorMultiply(Transform2D t) {
         return createTransformedShape(t);
     }
 
@@ -395,7 +395,7 @@ public interface Shape2D<
      * @see #createTransformedShape(Transform2D)
      */
     @Pure
-    default boolean operator_and(Point2D<?, ?> point) {
+    default boolean operatorAnd(Point2D<?, ?> point) {
         return contains(point);
     }
 
@@ -415,7 +415,7 @@ public interface Shape2D<
      */
     @Pure
     @Unefficient
-    default boolean operator_and(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+    default boolean operatorAnd(Shape2D<?, ?, ?, ?, ?, ?> shape) {
         return intersects(shape);
     }
 
@@ -430,7 +430,7 @@ public interface Shape2D<
      * @see #getDistance(Point2D)
      */
     @Pure
-    default double operator_upTo(Point2D<?, ?> pt) {
+    default double operatorUpTo(Point2D<?, ?> pt) {
         return getDistance(pt);
     }
 

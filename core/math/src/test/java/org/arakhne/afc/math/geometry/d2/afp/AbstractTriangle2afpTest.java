@@ -1180,7 +1180,7 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 
 	@Override
 	public void operator_addVector2D() {
-		this.shape.operator_add(createVector(2, -3));
+		this.shape.operatorAdd(createVector(2, -3));
 		assertEpsilonEquals(7, this.shape.getX1());
 		assertEpsilonEquals(5, this.shape.getY1());
 		assertEpsilonEquals(-8, this.shape.getX2());
@@ -1191,7 +1191,7 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 
 	@Override
 	public void operator_plusVector2D() {
-		T shape = this.shape.operator_plus(createVector(2, -3));
+		T shape = this.shape.operatorPlus(createVector(2, -3));
 		assertEpsilonEquals(7, shape.getX1());
 		assertEpsilonEquals(5, shape.getY1());
 		assertEpsilonEquals(-8, shape.getX2());
@@ -1202,7 +1202,7 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 
 	@Override
 	public void operator_removeVector2D() {
-		this.shape.operator_remove(createVector(2, -3));
+		this.shape.operatorRemove(createVector(2, -3));
 		assertEpsilonEquals(3, this.shape.getX1());
 		assertEpsilonEquals(11, this.shape.getY1());
 		assertEpsilonEquals(-12, this.shape.getX2());
@@ -1213,7 +1213,7 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 
 	@Override
 	public void operator_minusVector2D() {
-		T shape = this.shape.operator_minus(createVector(2, -3));
+		T shape = this.shape.operatorMinus(createVector(2, -3));
 		assertEpsilonEquals(3, shape.getX1());
 		assertEpsilonEquals(11, shape.getY1());
 		assertEpsilonEquals(-12, shape.getX2());
@@ -1227,20 +1227,20 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 		Transform2D tr;
 		Shape2afp newShape;
 		
-		newShape = this.shape.operator_multiply(null);
+		newShape = this.shape.operatorMultiply(null);
 		assertNotNull(newShape);
 		assertNotSame(this.shape, newShape);
 		assertEquals(this.shape, newShape);
 
 		tr = new Transform2D();
-		newShape = this.shape.operator_multiply(tr);
+		newShape = this.shape.operatorMultiply(tr);
 		assertNotNull(newShape);
 		assertNotSame(this.shape, newShape);
 		assertEquals(this.shape, newShape);
 
 		tr = new Transform2D();
 		tr.makeTranslationMatrix(10, -10);
-		newShape = this.shape.operator_multiply(tr);
+		newShape = this.shape.operatorMultiply(tr);
 		assertNotNull(newShape);
 		assertNotSame(this.shape, newShape);
 		assertTrue(newShape instanceof Triangle2afp);
@@ -1254,35 +1254,35 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 
 	@Override
 	public void operator_andPoint2D() {
-		assertTrue(this.shape.operator_and(createPoint(0,0)));
-		assertFalse(this.shape.operator_and(createPoint(11,10)));
-		assertFalse(this.shape.operator_and(createPoint(11,50)));
-		assertFalse(this.shape.operator_and(createPoint(9,12)));
-		assertFalse(this.shape.operator_and(createPoint(9,11)));
-		assertFalse(this.shape.operator_and(createPoint(0,6)));
-		assertFalse(this.shape.operator_and(createPoint(8,12)));
-		assertTrue(this.shape.operator_and(createPoint(3,7)));
-		assertFalse(this.shape.operator_and(createPoint(10,11)));
-		assertFalse(this.shape.operator_and(createPoint(9,10)));
-		assertTrue(this.shape.operator_and(createPoint(-4,2)));
-		assertFalse(this.shape.operator_and(createPoint(-8,-5)));
+		assertTrue(this.shape.operatorAnd(createPoint(0,0)));
+		assertFalse(this.shape.operatorAnd(createPoint(11,10)));
+		assertFalse(this.shape.operatorAnd(createPoint(11,50)));
+		assertFalse(this.shape.operatorAnd(createPoint(9,12)));
+		assertFalse(this.shape.operatorAnd(createPoint(9,11)));
+		assertFalse(this.shape.operatorAnd(createPoint(0,6)));
+		assertFalse(this.shape.operatorAnd(createPoint(8,12)));
+		assertTrue(this.shape.operatorAnd(createPoint(3,7)));
+		assertFalse(this.shape.operatorAnd(createPoint(10,11)));
+		assertFalse(this.shape.operatorAnd(createPoint(9,10)));
+		assertTrue(this.shape.operatorAnd(createPoint(-4,2)));
+		assertFalse(this.shape.operatorAnd(createPoint(-8,-5)));
 	}
 
 	@Override
 	public void operator_andShape2D() {
-		assertTrue(this.shape.operator_and(createCircle(5, 8, 1)));
-		assertTrue(this.shape.operator_and(createEllipse(-10, 1, 2, 1)));
+		assertTrue(this.shape.operatorAnd(createCircle(5, 8, 1)));
+		assertTrue(this.shape.operatorAnd(createEllipse(-10, 1, 2, 1)));
 	}
 
 	@Override
 	public void operator_upToPoint2D() {
-		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(0, 0)));
-		assertEpsilonEquals(5.65685, this.shape.operator_upTo(createPoint(9, 12)));
-		assertEpsilonEquals(0.30206, this.shape.operator_upTo(createPoint(0, 6)));
-		assertEpsilonEquals(10, this.shape.operator_upTo(createPoint(-20, 1)));
-		assertEpsilonEquals(0.63246, this.shape.operator_upTo(createPoint(-6, -1)));
-		assertEpsilonEquals(4, this.shape.operator_upTo(createPoint(-1, -6)));
-		assertEpsilonEquals(3.94446, this.shape.operator_upTo(createPoint(6, 2)));
+		assertEpsilonEquals(0, this.shape.operatorUpTo(createPoint(0, 0)));
+		assertEpsilonEquals(5.65685, this.shape.operatorUpTo(createPoint(9, 12)));
+		assertEpsilonEquals(0.30206, this.shape.operatorUpTo(createPoint(0, 6)));
+		assertEpsilonEquals(10, this.shape.operatorUpTo(createPoint(-20, 1)));
+		assertEpsilonEquals(0.63246, this.shape.operatorUpTo(createPoint(-6, -1)));
+		assertEpsilonEquals(4, this.shape.operatorUpTo(createPoint(-1, -6)));
+		assertEpsilonEquals(3.94446, this.shape.operatorUpTo(createPoint(6, 2)));
 	}
 	
 	@Test

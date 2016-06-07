@@ -1032,7 +1032,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 
 	@Override
 	public void operator_addVector2D() {
-		this.shape.operator_add(createVector(3, 4));
+		this.shape.operatorAdd(createVector(3, 4));
 		assertEquals(3, this.shape.getX1());
 		assertEquals(4, this.shape.getY1());
 		assertEquals(13, this.shape.getX2());
@@ -1041,7 +1041,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 
 	@Override
 	public void operator_plusVector2D() {
-		T r = this.shape.operator_plus(createVector(3, 4));
+		T r = this.shape.operatorPlus(createVector(3, 4));
 		assertEquals(3, r.getX1());
 		assertEquals(4, r.getY1());
 		assertEquals(13, r.getX2());
@@ -1050,7 +1050,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 
 	@Override
 	public void operator_removeVector2D() {
-		this.shape.operator_remove(createVector(3, 4));
+		this.shape.operatorRemove(createVector(3, 4));
 		assertEquals(-3, this.shape.getX1());
 		assertEquals(-4, this.shape.getY1());
 		assertEquals(7, this.shape.getX2());
@@ -1059,7 +1059,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 
 	@Override
 	public void operator_minusVector2D() {
-		T r = this.shape.operator_minus(createVector(3, 4));
+		T r = this.shape.operatorMinus(createVector(3, 4));
 		assertEquals(-3, r.getX1());
 		assertEquals(-4, r.getY1());
 		assertEquals(7, r.getX2());
@@ -1072,7 +1072,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
     	Transform2D tr;
     	
     	tr = new Transform2D();    	
-    	s = (T) this.shape.operator_multiply(tr);
+    	s = (T) this.shape.operatorMultiply(tr);
 		assertEquals(0, s.getX1());
 		assertEquals(0, s.getY1());
 		assertEquals(10, s.getX2());
@@ -1080,7 +1080,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 
     	tr = new Transform2D();
     	tr.setTranslation(3.4f, 4.5f);
-    	s = (T) this.shape.operator_multiply(tr);
+    	s = (T) this.shape.operatorMultiply(tr);
 		assertEquals(3, s.getX1());
 		assertEquals(5, s.getY1());
 		assertEquals(13, s.getX2());
@@ -1088,7 +1088,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 
     	tr = new Transform2D();
     	tr.setRotation(MathConstants.PI);
-    	s = (T) this.shape.operator_multiply(tr);
+    	s = (T) this.shape.operatorMultiply(tr);
 		assertEquals(0, s.getX1());
 		assertEquals(0, s.getY1());
 		assertEquals(-10, s.getX2());
@@ -1096,7 +1096,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 
     	tr = new Transform2D();
     	tr.setRotation(MathConstants.QUARTER_PI);
-    	s = (T) this.shape.operator_multiply(tr);
+    	s = (T) this.shape.operatorMultiply(tr);
 		assertEquals(0, s.getX1());
 		assertEquals(0, s.getY1());
 		assertEquals(4, s.getX2());
@@ -1105,33 +1105,33 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 
 	@Override
 	public void operator_andPoint2D() {
-		assertTrue(this.shape.operator_and(createPoint(0, 0)));
-		assertTrue(this.shape.operator_and(createPoint(10, 5)));
+		assertTrue(this.shape.operatorAnd(createPoint(0, 0)));
+		assertTrue(this.shape.operatorAnd(createPoint(10, 5)));
 		
-		assertFalse(this.shape.operator_and(createPoint(1, 1)));
-		assertFalse(this.shape.operator_and(createPoint(2, 4)));
+		assertFalse(this.shape.operatorAnd(createPoint(1, 1)));
+		assertFalse(this.shape.operatorAnd(createPoint(2, 4)));
 
-		assertFalse(this.shape.operator_and(createPoint(2, 2)));
+		assertFalse(this.shape.operatorAnd(createPoint(2, 2)));
 
-		assertTrue(this.shape.operator_and(createPoint(1, 0)));
+		assertTrue(this.shape.operatorAnd(createPoint(1, 0)));
 
-		assertFalse(this.shape.operator_and(createPoint(5, 3)));
-		assertTrue(this.shape.operator_and(createPoint(5, 2)));
+		assertFalse(this.shape.operatorAnd(createPoint(5, 3)));
+		assertTrue(this.shape.operatorAnd(createPoint(5, 2)));
 	}
 
 	@Override
 	public void operator_andShape2D() {
-		assertTrue(this.shape.operator_and(createCircle(16,0,100)));
-		assertTrue(this.shape.operator_and(createRectangle(0,0,100,100)));
+		assertTrue(this.shape.operatorAnd(createCircle(16,0,100)));
+		assertTrue(this.shape.operatorAnd(createRectangle(0,0,100,100)));
 	}
 
 	@Override
 	public void operator_upToPoint2D() {
-		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(0, 0)));
-		assertEpsilonEquals(1f, this.shape.operator_upTo(createPoint(1, 1)));
-		assertEpsilonEquals(2.828427125f, this.shape.operator_upTo(createPoint(2, 4)));
-		assertEpsilonEquals(1f, this.shape.operator_upTo(createPoint(2, 2)));
-		assertEpsilonEquals(7.071067812f, this.shape.operator_upTo(createPoint(-5, 5)));
+		assertEpsilonEquals(0f, this.shape.operatorUpTo(createPoint(0, 0)));
+		assertEpsilonEquals(1f, this.shape.operatorUpTo(createPoint(1, 1)));
+		assertEpsilonEquals(2.828427125f, this.shape.operatorUpTo(createPoint(2, 4)));
+		assertEpsilonEquals(1f, this.shape.operatorUpTo(createPoint(2, 2)));
+		assertEpsilonEquals(7.071067812f, this.shape.operatorUpTo(createPoint(-5, 5)));
 	}
 
 	@Test
