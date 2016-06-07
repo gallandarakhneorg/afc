@@ -22,6 +22,8 @@ package org.arakhne.afc.math.geometry.d2;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.annotations.XtextOperator;
+
 /** Unmodifiable2D Point.
  *
  * @param <RP> is the type of points that can be returned by this tuple.
@@ -33,122 +35,124 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface UnmodifiablePoint2D<RP extends Point2D<? super RP, ? super RV>,
-		RV extends Vector2D<? super RV, ? super RP>> extends UnmodifiableTuple2D<RP>, Point2D<RP, RV> {
+        RV extends Vector2D<? super RV, ? super RP>> extends UnmodifiableTuple2D<RP>, Point2D<RP, RV> {
 
-	@Override
-	default void add(Point2D<?, ?> point, Vector2D<?, ?> vector) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void add(Point2D<?, ?> point, Vector2D<?, ?> vector) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void add(Vector2D<?, ?> vector, Point2D<?, ?> point) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void add(Vector2D<?, ?> vector, Point2D<?, ?> point) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void add(Vector2D<?, ?> vector) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void add(Vector2D<?, ?> vector) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void scaleAdd(int scale, Vector2D<?, ?> vector, Point2D<?, ?> point) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void scaleAdd(int scale, Vector2D<?, ?> vector, Point2D<?, ?> point) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void scaleAdd(double scale, Vector2D<?, ?> vector, Point2D<?, ?> point) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void scaleAdd(double scale, Vector2D<?, ?> vector, Point2D<?, ?> point) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void scaleAdd(int scale, Point2D<?, ?> point, Vector2D<?, ?> vector) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void scaleAdd(int scale, Point2D<?, ?> point, Vector2D<?, ?> vector) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void scaleAdd(double scale, Point2D<?, ?> point, Vector2D<?, ?> vector) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void scaleAdd(double scale, Point2D<?, ?> point, Vector2D<?, ?> vector) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void scaleAdd(int scale, Vector2D<?, ?> vector) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void scaleAdd(int scale, Vector2D<?, ?> vector) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void scaleAdd(double scale, Vector2D<?, ?> vector) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void scaleAdd(double scale, Vector2D<?, ?> vector) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void sub(Point2D<?, ?> point, Vector2D<?, ?> vector) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void sub(Point2D<?, ?> point, Vector2D<?, ?> vector) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void sub(Vector2D<?, ?> vector) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void sub(Vector2D<?, ?> vector) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Pure
-	@Override
-	default UnmodifiablePoint2D<RP, RV> toUnmodifiable() {
-		return this;
-	}
+    @Pure
+    @Override
+    default UnmodifiablePoint2D<RP, RV> toUnmodifiable() {
+        return this;
+    }
 
-	@Override
-	default void operator_add(Vector2D<?, ?> v) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    @XtextOperator("+=")
+    default void operator_add(Vector2D<?, ?> v) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void operator_remove(Vector2D<?, ?> v) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    @XtextOperator("-=")
+    default void operator_remove(Vector2D<?, ?> v) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void turn(double angle) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void turn(double angle) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void turn(double angle, Point2D<?, ?> pointToTurn) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void turn(double angle, Point2D<?, ?> pointToTurn) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void turn(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void turn(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void turnLeft(double angle) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void turnLeft(double angle) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void turnLeft(double angle, Point2D<?, ?> pointToTurn) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void turnLeft(double angle, Point2D<?, ?> pointToTurn) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void turnLeft(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void turnLeft(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void turnRight(double angle) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void turnRight(double angle) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void turnRight(double angle, Point2D<?, ?> pointToTurn) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void turnRight(double angle, Point2D<?, ?> pointToTurn) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	default void turnRight(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    default void turnRight(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
+        throw new UnsupportedOperationException();
+    }
 
 }

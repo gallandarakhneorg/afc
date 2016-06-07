@@ -215,7 +215,21 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 		assertFpPointEquals(4, -5, r);
 	}
 
-	@Test
+    @Test
+    public final void operator_plusDouble_iffp() {
+        Assume.assumeFalse(isIntCoordinates());
+        Point2D point = createPoint(1, 2);
+        assertFpPointEquals(46.6, 47.6, point.operator_plus(45.6));
+    }
+
+    @Test
+    public final void operator_plusDouble_ifi() {
+        Assume.assumeTrue(isIntCoordinates());
+        Point2D point = createPoint(1, 2);
+        assertIntPointEquals(47, 48, point.operator_plus(45.6));
+    }
+
+    @Test
 	public final void operator_minusVector2D() {
 		Point2D point = createPoint(1, 2);
 		Point2D point2 = createPoint(3, 0);
@@ -275,7 +289,21 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 		assertFpVectorEquals(-1, -2, newVector); 
 	}
 
-	@Test
+    @Test
+    public final void operator_minusDouble_ifi() {
+        Assume.assumeTrue(isIntCoordinates());
+        Point2D point = createPoint(1, 2);
+        assertIntPointEquals(-45, -44, point.operator_minus(45.6));
+    }
+
+    @Test
+    public final void operator_minusDouble_iffp() {
+        Assume.assumeFalse(isIntCoordinates());
+        Point2D point = createPoint(1, 2);
+        assertFpPointEquals(-44.6, -43.6, point.operator_minus(45.6));
+    }
+
+    @Test
 	public final void operator_equalsTuple2D() {
 		Point2D point = createPoint(49, -2);
 		assertFalse(point.operator_equals(null));

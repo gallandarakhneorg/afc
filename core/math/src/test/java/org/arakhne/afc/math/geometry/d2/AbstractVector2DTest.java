@@ -771,7 +771,43 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertIntVectorEquals(1, 2, r);
 	}
 
-	@Test
+    @Test
+    public final void operator_plusDouble_ifi() {
+        Assume.assumeTrue(isIntCoordinates());
+        Vector2D vector = createVector(1,2);
+        assertIntVectorEquals(49, 50, vector.operator_plus(48.2));
+    }
+
+    @Test
+    public final void operator_plusDouble_iffp() {
+        Assume.assumeFalse(isIntCoordinates());
+        Vector2D vector = createVector(1,2);
+        assertFpVectorEquals(49.2, 50.2, vector.operator_plus(48.2));
+    }
+
+    @Test
+    public final void operator_minusDouble_ifi() {
+        Assume.assumeTrue(isIntCoordinates());
+        Vector2D vector = createVector(1,2);
+        assertIntVectorEquals(-47, -46, vector.operator_minus(48.2));
+    }
+
+    @Test
+    public final void operator_minusDouble_iffp() {
+        Assume.assumeFalse(isIntCoordinates());
+        Vector2D vector = createVector(1,2);
+        assertFpVectorEquals(-47.2, -46.2, vector.operator_minus(48.2));
+    }
+
+    @Test
+    public final void operator_minusPoint2D() {
+        Assume.assumeFalse(isIntCoordinates());
+        Vector2D vector = createVector(1,2);
+        Point2D point = createPoint(3, 4);
+        assertFpPointEquals(-2, -2, vector.operator_minus(point));
+    }
+
+    @Test
 	public final void operator_powerVector2D() {
 		Vector2D vector = createVector(1,2);
 		Vector2D vector2 = createVector(3,4);

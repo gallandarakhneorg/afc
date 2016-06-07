@@ -307,7 +307,7 @@ public interface Shape2D<
 
     /** Translate this shape by adding the given vector: {@code this += v}
      *
-     * <p>This function is an implementation of the "-" operator for
+     * <p>This function is an implementation of the operator for
      * the languages that defined or based on the
      * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
      *
@@ -320,7 +320,7 @@ public interface Shape2D<
 
     /** Create a new shape by translating this shape of the given vector: {@code this + v}
      *
-     * <p>This function is an implementation of the "-" operator for
+     * <p>This function is an implementation of the operator for
      * the languages that defined or based on the
      * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
      *
@@ -337,7 +337,7 @@ public interface Shape2D<
 
     /** Translate this shape by substracting the given vector: {@code this -= v}
      *
-     * <p>This function is an implementation of the "-" operator for
+     * <p>This function is an implementation of the operator for
      * the languages that defined or based on the
      * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
      *
@@ -352,7 +352,7 @@ public interface Shape2D<
 
     /** Create a new shape by translating this shape of the given vector: {@code this - v}
      *
-     * <p>This function is an implementation of the "-" operator for
+     * <p>This function is an implementation of the operator for
      * the languages that defined or based on the
      * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
      *
@@ -371,7 +371,7 @@ public interface Shape2D<
 
     /** Create a new shape by applying the given transformation: {@code this * t}
      *
-     * <p>This function is an implementation of the "-" operator for
+     * <p>This function is an implementation of the operator for
      * the languages that defined or based on the
      * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
      *
@@ -386,7 +386,7 @@ public interface Shape2D<
 
     /** Replies if the given point is inside the shape: {@code this && b}
      *
-     * <p>This function is an implementation of the "-" operator for
+     * <p>This function is an implementation of the operator for
      * the languages that defined or based on the
      * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
      *
@@ -405,7 +405,7 @@ public interface Shape2D<
      * this general function. Indeed, the implementation of this function is unefficient due
      * to the tests against the types of the given shape, and the cast operators.
      *
-     * <p>This function is an implementation of the "-" operator for
+     * <p>This function is an implementation of the operator for
      * the languages that defined or based on the
      * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
      *
@@ -421,7 +421,7 @@ public interface Shape2D<
 
     /** Replies the distance between the given point and this shape: {@code this .. p}
      *
-     * <p>This function is an implementation of the "-" operator for
+     * <p>This function is an implementation of the operator for
      * the languages that defined or based on the
      * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
      *
