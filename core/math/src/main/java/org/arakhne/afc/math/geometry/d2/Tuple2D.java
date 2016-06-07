@@ -598,14 +598,11 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 */
 	@Pure
 	default boolean equals(Tuple2D<?> tuple) {
-		if (tuple == this) {
-			return true;
+		try {
+			return getX() == tuple.getX() && getY() == tuple.getY();
+		} catch (Throwable exception) {
+			return false;
 		}
-		if (getClass().isInstance(tuple)) {
-			final Tuple2D<?> object = (Tuple2D<?>) tuple;
-			return object.getX() == getX() && object.getY() == getY();
-		}
-		return false;
 	}
 
 	/**
