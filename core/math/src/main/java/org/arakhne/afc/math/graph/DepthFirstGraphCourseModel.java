@@ -20,8 +20,9 @@
 
 package org.arakhne.afc.math.graph;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
-import java.util.Stack;
+import java.util.Deque;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -40,7 +41,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class DepthFirstGraphCourseModel<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT, ST>>
 		implements GraphCourseModel<ST, PT> {
 
-	private final Stack<GraphIterationElement<ST, PT>> stack = new Stack<>();
+	private final Deque<GraphIterationElement<ST, PT>> stack = new ArrayDeque<>();
 
 	/** Replies if this model restitutes the elements in a reverse order.
 	 *

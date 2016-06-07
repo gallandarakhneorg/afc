@@ -20,10 +20,11 @@
 
 package org.arakhne.afc.math.tree.iterator;
 
+import java.util.ArrayDeque;
 import java.util.ConcurrentModificationException;
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Stack;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -45,7 +46,7 @@ import org.arakhne.afc.math.tree.IterableNode;
 public abstract class AbstractPrefixDepthFirstTreeIterator<P extends IterableNode<? extends C>, C extends IterableNode<?>>
 		implements Iterator<P> {
 
-	private final Stack<P> availableNodes = new Stack<>();
+	private final Deque<P> availableNodes = new ArrayDeque<>();
 
 	private boolean isStarted;
 
