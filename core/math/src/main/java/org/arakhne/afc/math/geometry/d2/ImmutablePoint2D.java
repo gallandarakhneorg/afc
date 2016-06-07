@@ -65,14 +65,14 @@ public final class ImmutablePoint2D implements UnmodifiablePoint2D<ImmutablePoin
 	@Pure
 	@Override
 	public boolean equals(Object object) {
-		try {
+		if(object == this) {
+			return true;
+		}
+		if (getClass().isInstance(object)) {
 			final Tuple2D<?> tuple = (Tuple2D<?>) object;
 			return tuple.getX() == getX() && tuple.getY() == getY();
-		} catch (AssertionError e) {
-			throw e;
-		} catch (Throwable e2) {
-			return false;
 		}
+		return false;
 	}
 
 	@Pure
