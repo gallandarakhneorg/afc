@@ -28,6 +28,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -44,9 +46,12 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+
 public class AttributeImpl extends AttributeValueImpl implements Attribute {
 
 	private static final long serialVersionUID = -3805997544158892016L;
+
+	private static final Logger LOGGER = Logger.getLogger(AttributeImpl.class.getName());
 
 	/**
 	 * Name of the metadata.
@@ -443,6 +448,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 					? "???" //$NON-NLS-1$
 					: getValue().toString());
 		} catch (AttributeException e) {
+			LOGGER.log(Level.WARNING, e.getMessage());
 			str.append("???"); //$NON-NLS-1$
 		}
 		str.append(':');
