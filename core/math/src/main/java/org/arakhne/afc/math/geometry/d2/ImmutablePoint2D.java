@@ -65,7 +65,7 @@ public final class ImmutablePoint2D implements UnmodifiablePoint2D<ImmutablePoin
 	@Pure
 	@Override
 	public boolean equals(Object object) {
-		if(object == this) {
+		if (object == this) {
 			return true;
 		}
 		if (getClass().isInstance(object)) {

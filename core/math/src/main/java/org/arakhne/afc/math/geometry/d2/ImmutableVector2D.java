@@ -61,7 +61,7 @@ public final class ImmutableVector2D implements UnmodifiableVector2D<ImmutableVe
 	@Override
 	public boolean equals(Object object) {
 
-		if(object == this) {
+		if (object == this) {
 			return true;
 		}
 		if (getClass().isInstance(object)) {

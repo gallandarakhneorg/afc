@@ -598,7 +598,7 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 */
 	@Pure
 	default boolean equals(Tuple2D<?> tuple) {
-		if(tuple == this) {
+		if (tuple == this) {
 			return true;
 		}
 		if (getClass().isInstance(tuple)) {
