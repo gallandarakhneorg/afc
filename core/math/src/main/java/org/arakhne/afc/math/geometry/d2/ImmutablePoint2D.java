@@ -20,8 +20,11 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
-import org.arakhne.afc.math.MathUtil;
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.MathUtil;
+
+
 
 /**
  * Immutable point 2D.
