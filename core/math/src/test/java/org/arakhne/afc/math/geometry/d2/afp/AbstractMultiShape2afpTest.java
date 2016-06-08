@@ -29,6 +29,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
+import org.junit.Test;
+
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.MultiShape2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -37,8 +39,6 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
 
-import org.junit.Ignore;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, C, ?, ?, ?, B>,
