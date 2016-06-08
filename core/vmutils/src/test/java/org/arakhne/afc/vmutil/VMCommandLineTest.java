@@ -158,9 +158,9 @@ public class VMCommandLineTest {
 		values = VMCommandLine.getCommandLineOption("S"); 
 		assertNotNull(values);
 		assertEquals(1, values.size());
-		assertEquals("-b", values.get(0)); 
+		assertEquals("-b", values.get(0));
 
-		assertNull(VMCommandLine.getCommandLineOption("nob")); 
+		assertEquals(new ArrayList<>(0), VMCommandLine.getCommandLineOption("nob"));
 	}
 
 	@Test
