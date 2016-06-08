@@ -1142,7 +1142,13 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		assert(false);
 	}
 
-	@Test
+    @Test
+    @Ignore
+    public void getDistanceSquaredMultiShape2ai() {
+        assert(false);
+    }
+
+    @Test
     @Ignore
 	public void getClosestPointToRectangle2ai() {
 		assert(false);

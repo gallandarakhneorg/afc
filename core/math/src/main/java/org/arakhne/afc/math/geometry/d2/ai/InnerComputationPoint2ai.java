@@ -34,84 +34,89 @@ import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
  */
 public class InnerComputationPoint2ai implements Point2D<InnerComputationPoint2ai, InnerComputationVector2ai> {
 
-	private static final long serialVersionUID = 8578192819251519051L;
+    private static final long serialVersionUID = 8578192819251519051L;
 
-	private int x;
+    private int x;
 
-	private int y;
+    private int y;
 
-	/** Construct point.
-	 */
-	public InnerComputationPoint2ai() {
-		//
-	}
+    /** Construct point.
+     */
+    public InnerComputationPoint2ai() {
+        //
+    }
 
-	/** Construct point.
-	 * @param x x coordinate of the point.
-	 * @param y y coordinate of the point.
-	 */
-	public InnerComputationPoint2ai(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
+    /** Construct point.
+     * @param x x coordinate of the point.
+     * @param y y coordinate of the point.
+     */
+    public InnerComputationPoint2ai(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
-	@Override
-	public InnerComputationPoint2ai clone() {
-		try {
-			return (InnerComputationPoint2ai) super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new Error(e);
-		}
-	}
+    @Override
+    public InnerComputationPoint2ai clone() {
+        try {
+            return (InnerComputationPoint2ai) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new Error(e);
+        }
+    }
 
-	@Override
-	public double getX() {
-		return this.x;
-	}
+    @Override
+    public double getX() {
+        return this.x;
+    }
 
-	@Override
-	public int ix() {
-		return this.x;
-	}
+    @Override
+    public int ix() {
+        return this.x;
+    }
 
-	@Override
-	public void setX(int x) {
-		this.x = x;
-	}
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
 
-	@Override
-	public void setX(double x) {
-		this.x = (int) Math.round(x);
-	}
+    @Override
+    public void setX(double x) {
+        this.x = (int) Math.round(x);
+    }
 
-	@Override
-	public double getY() {
-		return this.y;
-	}
+    @Override
+    public double getY() {
+        return this.y;
+    }
 
-	@Override
-	public int iy() {
-		return this.y;
-	}
+    @Override
+    public int iy() {
+        return this.y;
+    }
 
-	@Override
-	public void setY(int y) {
-		this.y = y;
-	}
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
 
-	@Override
-	public void setY(double y) {
-		this.y = (int) Math.round(y);
-	}
+    @Override
+    public void setY(double y) {
+        this.y = (int) Math.round(y);
+    }
 
-	@Override
-	public GeomFactory<InnerComputationVector2ai, InnerComputationPoint2ai> getGeomFactory() {
-		return InnerComputationGeomFactory.SINGLETON;
-	}
+    @Override
+    public GeomFactory<InnerComputationVector2ai, InnerComputationPoint2ai> getGeomFactory() {
+        return InnerComputationGeomFactory.SINGLETON;
+    }
 
-	@Override
-	public UnmodifiablePoint2D<InnerComputationPoint2ai, InnerComputationVector2ai> toUnmodifiable() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public UnmodifiablePoint2D<InnerComputationPoint2ai, InnerComputationVector2ai> toUnmodifiable() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String toString() {
+        return "(" + ix() + ", " + iy() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
 
 }

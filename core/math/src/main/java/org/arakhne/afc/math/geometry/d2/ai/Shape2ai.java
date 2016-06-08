@@ -32,7 +32,6 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 2D shape with 2d floating coordinates.
@@ -134,12 +133,12 @@ public interface Shape2ai<
                 maxX = rect.getMaxX();
                 maxY = rect.getMaxY();
             } else {
-                assert originalBounds instanceof Rectangle2afp;
-                final Rectangle2afp<?, ?, ?, ?, ?, ?> rect = (Rectangle2afp<?, ?, ?, ?, ?, ?>) originalBounds;
-                minX = (int) Math.round(rect.getMinX());
-                minY = (int) Math.round(rect.getMinY());
-                maxX = (int) Math.round(rect.getMaxX());
-                maxY = (int) Math.round(rect.getMaxY());
+                assert originalBounds instanceof Rectangle2ai;
+                final Rectangle2ai<?, ?, ?, ?, ?, ?> rect = (Rectangle2ai<?, ?, ?, ?, ?, ?>) originalBounds;
+                minX = rect.getMinX();
+                minY = rect.getMinY();
+                maxX = rect.getMaxX();
+                maxY = rect.getMaxY();
             }
             final PathIterator2ai<?> shapePathIterator = iterator.getGeomFactory().convert(shape.getPathIterator());
             crossings = Path2ai.computeCrossingsFromPath(
@@ -312,7 +311,15 @@ public interface Shape2ai<
     @Pure
     default double getDistanceSquared(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
         assert multishape != null : AssertMessages.notNullParameter();
-        return multishape.getDistanceSquared(getClosestPointTo(multishape));
+        double minDist = Double.POSITIVE_INFINITY;
+        double dist;
+        for (final Shape2ai<?, ?, ?, ?, ?, ?> shape : multishape) {
+            dist = getDistanceSquared(shape);
+            if (dist < minDist) {
+                minDist = dist;
+            }
+        }
+        return minDist;
     }
 
     /** Replies the minimum distance between this shape and the given path.
@@ -332,6 +339,9 @@ public interface Shape2ai<
     default P getClosestPointTo(Shape2D<?, ?, ?, ?, ?, ?> shape) {
         if (shape instanceof Circle2ai) {
             return getClosestPointTo((Circle2ai<?, ?, ?, ?, ?, ?>) shape);
+        }
+        if (shape instanceof MultiShape2ai) {
+            return getClosestPointTo((MultiShape2ai<?, ?, ?, ?, ?, ?, ?>) shape);
         }
         if (shape instanceof Path2ai) {
             return getClosestPointTo((Path2ai<?, ?, ?, ?, ?, ?>) shape);
@@ -379,7 +389,23 @@ public interface Shape2ai<
      *     if the point is in this shape.
      */
     @Pure
-    P getClosestPointTo(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape);
+    default P getClosestPointTo(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+        assert multishape != null : AssertMessages.notNullParameter();
+        Shape2ai<?, ?, ?, ?, ?, ?> closest = null;
+        double minDist = Double.POSITIVE_INFINITY;
+        double dist;
+        for (final Shape2ai<?, ?, ?, ?, ?, ?> shape : multishape) {
+            dist = getDistanceSquared(shape);
+            if (dist < minDist) {
+                minDist = dist;
+                closest = shape;
+            }
+        }
+        if (closest == null) {
+            return getGeomFactory().newPoint();
+        }
+        return getClosestPointTo(closest);
+    }
 
     /** Replies the closest point on this shape to the given rectangle.
      *

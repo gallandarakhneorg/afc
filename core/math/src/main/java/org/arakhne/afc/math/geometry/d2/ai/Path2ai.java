@@ -27,6 +27,7 @@ import java.util.NoSuchElementException;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -1476,7 +1477,7 @@ public interface Path2ai<
 			case LINE_TO:
 				isClosed = false;
 				candidate = new InnerComputationPoint2ai();
-				Segment2ai.computeClosestPointTo(pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(), x, y, candidate);
+				Segment2ai.computeClosestPointToPoint(pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(), x, y, candidate);
 				if (crossings != MathConstants.SHAPE_INTERSECTS) {
 					crossings = Segment2ai.computeCrossingsFromPoint(
 							crossings,
@@ -1488,7 +1489,8 @@ public interface Path2ai<
 				isClosed = true;
 				if (!pe.isEmpty()) {
 					candidate = new InnerComputationPoint2ai();
-					Segment2ai.computeClosestPointTo(pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(), x, y, candidate);
+					Segment2ai.computeClosestPointToPoint(pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(),
+					        x, y, candidate);
 					if (crossings != MathConstants.SHAPE_INTERSECTS) {
 						crossings = Segment2ai.computeCrossingsFromPoint(
 								crossings,
@@ -1532,6 +1534,100 @@ public interface Path2ai<
 		if (crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0) {
 			result.set(x, y);
 		}
+	}
+
+	/** Replies the point on the path of pi that is closest to the given shape.
+	 *
+	 * <p><strong>CAUTION:</strong> This function works only on path iterators
+	 * that are replying not-curved primitives, ie. if the
+	 * {@link PathIterator2D#isCurved()} of {@code pi} is replying
+	 * <code>false</code>.
+	 *
+	 * @param pi is the iterator of path elements, on one of which the closest point is located.
+	 * @param shape the shape to which the closest point must be computed.
+	 * @param result the closest point on pi.
+	 * @return <code>true</code> if a point was found. Otherwise <code>false</code>.
+	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+	@Unefficient
+	static boolean getClosestPointTo(PathIterator2ai<? extends PathElement2ai> pi,
+	        PathIterator2ai<? extends PathElement2ai> shape, Point2D<?, ?> result) {
+	    assert pi != null : AssertMessages.notNullParameter(0);
+	    assert shape != null : AssertMessages.notNullParameter(1);
+	    assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+	    assert result != null : AssertMessages.notNullParameter(2);
+	    if (!pi.hasNext() || !shape.hasNext()) {
+	        return false;
+	    }
+	    PathElement2ai pathElement1 = pi.next();
+	    if (pathElement1.getType() != PathElementType.MOVE_TO) {
+	        throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
+	    }
+	    if (shape.next().getType() != PathElementType.MOVE_TO) {
+	        throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
+	    }
+	    if (!pi.hasNext() || !shape.hasNext()) {
+	        return false;
+	    }
+	    final Rectangle2ai<?, ?, ?, ?, ?, ?> box = pi.getGeomFactory().newBox();
+	    computeDrawableElementBoundingBox(shape.restartIterations(), box);
+	    final ClosestPointPathShadow2ai shadow = new ClosestPointPathShadow2ai(shape.restartIterations(), box);
+	    int crossings = 0;
+	    int curx = pathElement1.getToX();
+	    int movx = curx;
+	    int cury = pathElement1.getToY();
+	    int movy = cury;
+	    int endx;
+	    int endy;
+	    while (pi.hasNext()) {
+	        pathElement1 = pi.next();
+	        switch (pathElement1.getType()) {
+	        case MOVE_TO:
+	            movx = pathElement1.getToX();
+	            curx = movx;
+	            movy = pathElement1.getToY();
+	            cury = movy;
+	            break;
+	        case LINE_TO:
+	            endx = pathElement1.getToX();
+	            endy = pathElement1.getToY();
+	            crossings = shadow.computeCrossings(crossings, curx, cury, endx, endy);
+	            if (crossings == MathConstants.SHAPE_INTERSECTS) {
+	                result.set(shadow.getClosestPointInOtherShape());
+	                return true;
+	            }
+	            curx = endx;
+	            cury = endy;
+	            break;
+	        case CLOSE:
+	            if (curx != movx || cury != movy) {
+	                crossings = shadow.computeCrossings(crossings, curx, cury, movx, movy);
+	                if (crossings == MathConstants.SHAPE_INTERSECTS) {
+	                    result.set(shadow.getClosestPointInOtherShape());
+	                    return true;
+	                }
+	            }
+	            curx = movx;
+	            cury = movy;
+	            break;
+	        case QUAD_TO:
+	        case CURVE_TO:
+	        case ARC_TO:
+	        default:
+	            throw new IllegalArgumentException();
+	        }
+	    }
+	    if (curx == movx && cury == movy) {
+	        assert crossings != MathConstants.SHAPE_INTERSECTS;
+	        final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+	        if ((crossings & mask) != 0) {
+	            // Second path is inside the first shape
+	            result.set(shadow.getClosestPointInShadowShape());
+	            return true;
+	        }
+	    }
+	    result.set(shadow.getClosestPointInOtherShape());
+	    return true;
 	}
 
 	@Override
@@ -1605,7 +1701,7 @@ public interface Path2ai<
 				break;
 			case LINE_TO:
 			case CLOSE:
-				Segment2ai.computeFarthestPointTo(
+				Segment2ai.computeFarthestPointToPoint(
 						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(),
 						x, y, point);
 				foundCandidate = true;

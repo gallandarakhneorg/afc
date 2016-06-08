@@ -33,19 +33,17 @@ import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
@@ -141,7 +139,23 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 		}
 	}
 	
-	/**
+    /** Assert that the two shape are intersecting and the closest point on the first shape is also
+     * on the second shape.
+     *
+     * @param shape1 the first shape, on which the closest point is computed.
+     * @param shape2 the second point.
+     */
+    public void assertClosestPointInBothShapes(Shape2ai shape1, Shape2ai shape2) {
+        final Point2D<?, ?> point = shape1.getClosestPointTo(shape2);
+        double distance;
+        //TODO: The following test may fail since MathConstants#SPLINE_APPROXIMATION_RATIO is too high; see Issue #89.
+        //distance = shape1.getDistance(point); 
+        //assertEpsilonZero("Closest point " + point + " is not in the first shape: " + shape1 + ". Distance: " + distance, distance);
+        distance = shape2.getDistance(point); 
+        assertEpsilonZero("Closest point " + point + " is not in the second shape: " + shape2 + ". Distance: " + distance, distance);
+    }
+
+    /**
 	 * Replies if two arrays have the same values at epsilon.
 	 * 
 	 * @param a
@@ -299,7 +313,10 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	@Test
 	public abstract void getDistanceSquaredCircle2ai();
 
-	@Test
+    @Test
+    public abstract void getDistanceSquaredMultiShape2ai();
+
+    @Test
 	public abstract void getDistanceSquaredSegment2ai();
 	
 	@Test

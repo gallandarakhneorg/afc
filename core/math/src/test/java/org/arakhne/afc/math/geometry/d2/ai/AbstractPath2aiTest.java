@@ -1431,7 +1431,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Test
-	public void staticGetClosestPointTo() {
+	public void staticGetClosestPointToPoint() {
 		Point2D p;
 		
 		p = createPoint(0, 0);
@@ -1466,7 +1466,52 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		assertEquals(p.toString(), -2, p.iy());
 	}
 
-	@Test
+    protected Path2ai createTestPath() {
+        Path2ai path = createPath();
+        path.moveTo(3, -20);
+        path.lineTo(10, -5);
+        path.lineTo(5, 25);
+        path.lineTo(-4, 0);
+        return path;
+    }
+
+    protected Path2ai createTestPath(PathWindingRule rule) {
+        Path2ai path = createPath(rule);
+        path.moveTo(3, -20);
+        path.lineTo(10, -5);
+        path.lineTo(5, 25);
+        path.lineTo(-4, 0);
+        path.closePath();
+        return path;
+    }
+
+    @Test
+    @Ignore
+    public void staticGetClosestPointToPathIterator() {
+        Point2D<?, ?> result;
+        result = createPoint(0, 0);
+        Path2ai.getClosestPointTo(
+                (PathIterator2ai) this.shape.getFlatteningPathIterator(),
+                (PathIterator2ai) createTestPath().getPathIterator(),
+                result);
+        assertIntPointEquals(0, 0, result);
+
+        result = createPoint(0, 0);
+        Path2ai.getClosestPointTo(
+                (PathIterator2ai) this.shape.getFlatteningPathIterator(),
+                (PathIterator2ai) createTestPath(PathWindingRule.EVEN_ODD).getPathIterator(),
+                result);
+        assertIntPointEquals(0, 0, result);
+
+        result = createPoint(0, 0);
+        Path2ai.getClosestPointTo(
+                (PathIterator2ai) this.shape.getFlatteningPathIterator(),
+                (PathIterator2ai) createTestPath(PathWindingRule.NON_ZERO).getPathIterator(),
+                result);
+        assertIntPointEquals(0, 0, result);
+    }
+
+    @Test
 	public void staticGetFarthestPointTo() {
 		Point2D p;
 		
@@ -2217,7 +2262,13 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		assert(false);
 	}
 
-	@Test
+    @Test
+    @Ignore
+    public void getDistanceSquaredMultiShape2ai() {
+        assert(false);
+    }
+
+    @Test
     @Ignore
 	public void getClosestPointToRectangle2ai() {
 		assert(false);

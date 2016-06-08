@@ -130,4 +130,9 @@ public class InnerComputationVector2ai implements Vector2D<InnerComputationVecto
 		throw new UnsupportedOperationException();
 	}
 
+    @Override
+    public String toString() {
+        return "(" + ix() + ", " + iy() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
+
 }

@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d2.afp;
+package org.arakhne.afc.math.geometry.d2.ai;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
@@ -36,25 +36,25 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-class ClosestPointPathShadow2afp {
+class ClosestPointPathShadow2ai {
 
-    private final PathIterator2afp<?> pathIterator;
+    private final PathIterator2ai<?> pathIterator;
 
-    private final Point2D<?, ?> otherShapeClosestPoint = new InnerComputationPoint2afp();
+    private final Point2D<?, ?> otherShapeClosestPoint = new InnerComputationPoint2ai();
 
-    private final Point2D<?, ?> shadowShapeClosestPoint = new InnerComputationPoint2afp();
+    private final Point2D<?, ?> shadowShapeClosestPoint = new InnerComputationPoint2ai();
 
-    private final Point2D<?, ?> temporaryPoint1 = new InnerComputationPoint2afp();
+    private final Point2D<?, ?> temporaryPoint1 = new InnerComputationPoint2ai();
 
-    private final Point2D<?, ?> temporaryPoint2 = new InnerComputationPoint2afp();
+    private final Point2D<?, ?> temporaryPoint2 = new InnerComputationPoint2ai();
 
     private double minDistance = Double.POSITIVE_INFINITY;
 
-    private final double boundingMinX;
+    private final int boundingMinX;
 
-    private final double boundingMinY;
+    private final int boundingMinY;
 
-    private final double boundingMaxY;
+    private final int boundingMaxY;
 
     private boolean started;
 
@@ -64,15 +64,15 @@ class ClosestPointPathShadow2afp {
 
     private boolean hasX4ymax;
 
-    private double x4ymin;
+    private int x4ymin;
 
-    private double x4ymax;
+    private int x4ymax;
 
     /** Construct new path shadow.
      * @param pathIterator the iterator on the path that is constituting the shadow.
      * @param bounds the bounds of the shadow.
      */
-    ClosestPointPathShadow2afp(PathIterator2afp<?> pathIterator, Rectangle2afp<?, ?, ?, ?, ?, ?> bounds) {
+    ClosestPointPathShadow2ai(PathIterator2ai<?> pathIterator, Rectangle2ai<?, ?, ?, ?, ?, ?> bounds) {
         assert pathIterator != null : AssertMessages.notNullParameter(0);
         assert bounds != null : AssertMessages.notNullParameter(1);
         this.pathIterator = pathIterator;
@@ -94,8 +94,8 @@ class ClosestPointPathShadow2afp {
     @SuppressWarnings("checkstyle:npathcomplexity")
     public int computeCrossings(
             int crossings,
-            double x0, double y0,
-            double x1, double y1) {
+            int x0, int y0,
+            int x1, int y1) {
         // The segment is intersecting the bounds of the shadow path.
         // We must consider the shape of shadow path now.
         this.x4ymin = this.boundingMinX;
@@ -103,7 +103,7 @@ class ClosestPointPathShadow2afp {
         this.crossings = 0;
         this.hasX4ymin = false;
         this.hasX4ymax = false;
-        final PathIterator2afp<?> iterator;
+        final PathIterator2ai<?> iterator;
         if (this.started) {
             iterator = this.pathIterator.restartIterations();
         } else {
@@ -145,25 +145,25 @@ class ClosestPointPathShadow2afp {
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
         "checkstyle:npathcomplexity", "checkstyle:returncount"})
     private void discretizePathIterator(
-            PathIterator2afp<?> pi,
-            double x1, double y1, double x2, double y2) {
+            PathIterator2ai<?> pi,
+            int x1, int y1, int x2, int y2) {
         if (!pi.hasNext() || this.crossings == MathConstants.SHAPE_INTERSECTS) {
             return;
         }
-        PathElement2afp element;
+        PathElement2ai element;
 
         element = pi.next();
         if (element.getType() != PathElementType.MOVE_TO) {
-            throw new IllegalArgumentException(Locale.getString(Path2afp.class, "E1")); //$NON-NLS-1$
+            throw new IllegalArgumentException(Locale.getString(Path2ai.class, "E1")); //$NON-NLS-1$
         }
 
-        Path2afp<?, ?, ?, ?, ?, ?> localPath;
-        double movx = element.getToX();
-        double movy = element.getToY();
-        double curx = movx;
-        double cury = movy;
-        double endx;
-        double endy;
+        Path2ai<?, ?, ?, ?, ?, ?> localPath;
+        int movx = element.getToX();
+        int movy = element.getToY();
+        int curx = movx;
+        int cury = movy;
+        int endx;
+        int endy;
         double distance;
         while (pi.hasNext()) {
             element = pi.next();
@@ -177,7 +177,7 @@ class ClosestPointPathShadow2afp {
             case LINE_TO:
                 endx = element.getToX();
                 endy = element.getToY();
-                distance = Segment2afp.computeClosestPointToSegment(x1, y1, x2, y2, curx, cury, endx, endy,
+                distance = Segment2ai.computeClosestPointToSegment(x1, y1, x2, y2, curx, cury, endx, endy,
                         this.temporaryPoint1, this.temporaryPoint2);
                 if (distance <= 0.) {
                     this.otherShapeClosestPoint.set(this.temporaryPoint1);
@@ -258,7 +258,7 @@ class ClosestPointPathShadow2afp {
                 break;
             case CLOSE:
                 if (cury != movy || curx != movx) {
-                    distance = Segment2afp.computeClosestPointToSegment(x1, y1, x2, y2, curx, cury, movx, movy,
+                    distance = Segment2ai.computeClosestPointToSegment(x1, y1, x2, y2, curx, cury, movx, movy,
                             this.temporaryPoint1, this.temporaryPoint2);
                     if (distance <= 0.) {
                         this.otherShapeClosestPoint.set(this.temporaryPoint1);
@@ -293,18 +293,35 @@ class ClosestPointPathShadow2afp {
         }
     }
 
-    private void setCrossingCoordinateForYMax(double x, double y) {
+    private void setCrossingCoordinateForYMax(int x, int y) {
         if (MathUtil.compareEpsilon(y, this.boundingMaxY) >= 0 && x > this.x4ymax) {
             this.x4ymax = x;
             this.hasX4ymax = true;
         }
     }
 
-    private void setCrossingCoordinateForYMin(double x, double y) {
+    private void setCrossingCoordinateForYMin(int x, int y) {
         if (MathUtil.compareEpsilon(y, this.boundingMinY) <= 0 && x > this.x4ymin) {
             this.x4ymin = x;
             this.hasX4ymin = true;
         }
+    }
+
+    private static int getFirstX(int sx0, int sy0, int sx1, int sy1, int y) {
+        final Segment2ai.BresenhamLineIterator<? extends Point2D<?, ?>, ?> iterator;
+        if (sx0 <= sx1) {
+            iterator = new Segment2ai.BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, sx0, sy0, sx1, sy1);
+        } else {
+            iterator = new Segment2ai.BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, sx1, sy1, sx0, sy0);
+        }
+        final Point2D<?, ?> point = new InnerComputationPoint2ai();
+        while (iterator.hasNext()) {
+            iterator.next(point);
+            if (point.iy() == y) {
+                return point.ix();
+            }
+        }
+        throw new IllegalStateException();
     }
 
     /** Determine where the segment is crossing the two shadow lines.
@@ -321,15 +338,15 @@ class ClosestPointPathShadow2afp {
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
             "checkstyle:npathcomplexity"})
     private void crossSegmentTwoShadowLines(
-            double shadowX0, double shadowY0,
-            double shadowX1, double shadowY1,
-            double sx0, double sy0,
-            double sx1, double sy1) {
+            int shadowX0, int shadowY0,
+            int shadowX1, int shadowY1,
+            int sx0, int sy0,
+            int sx1, int sy1) {
         // Update the global bounds of the shadow.
-        final double shadowXmin = Math.min(shadowX0, shadowX1);
-        final double shadowXmax = Math.max(shadowX0, shadowX1);
-        final double shadowYmin = Math.min(shadowY0, shadowY1);
-        final double shadowYmax = Math.max(shadowY0, shadowY1);
+        final int shadowXmin = Math.min(shadowX0, shadowX1);
+        final int shadowXmax = Math.max(shadowX0, shadowX1);
+        final int shadowYmin = Math.min(shadowY0, shadowY1);
+        final int shadowYmax = Math.max(shadowY0, shadowY1);
 
         if (sy0 < shadowYmin && sy1 < shadowYmin) {
             // The segment is entirely at the bottom of the shadow.
@@ -345,31 +362,30 @@ class ClosestPointPathShadow2afp {
         }
         if (sx0 >= shadowXmax && sx1 >= shadowXmax) {
             // The line is entirely at the right of the shadow
-            final double alpha = (sx1 - sx0) / (sy1 - sy0);
             if (sy0 < sy1) {
                 if (sy0 <= shadowYmin) {
-                    final double xintercept = sx0 + (shadowYmin - sy0) * alpha;
+                    final int xintercept = getFirstX(sx0, sy0, sx1, sy1, shadowYmin);
                     setCrossingCoordinateForYMin(xintercept, shadowYmin);
                     ++this.crossings;
                 }
                 if (sy1 >= shadowYmax) {
-                    final double xintercept = sx0 + (shadowYmax - sy0) * alpha;
+                    final int xintercept = getFirstX(sx0, sy0, sx1, sy1, shadowYmax);
                     setCrossingCoordinateForYMax(xintercept, shadowYmax);
                     ++this.crossings;
                 }
             } else {
                 if (sy1 <= shadowYmin) {
-                    final double xintercept = sx0 + (shadowYmin - sy0) * alpha;
+                    final int xintercept = getFirstX(sx0, sy0, sx1, sy1, shadowYmin);
                     setCrossingCoordinateForYMin(xintercept, shadowYmin);
                     --this.crossings;
                 }
                 if (sy0 >= shadowYmax) {
-                    final double xintercept = sx0 + (shadowYmax - sy0) * alpha;
+                    final int xintercept = getFirstX(sx0, sy0, sx1, sy1, shadowYmax);
                     setCrossingCoordinateForYMax(xintercept, shadowYmax);
                     --this.crossings;
                 }
             }
-        } else if (Segment2afp.intersectsSegmentSegmentWithoutEnds(
+        } else if (Segment2ai.intersectsSegmentSegment(
                 shadowX0, shadowY0, shadowX1, shadowY1,
                 sx0, sy0, sx1, sy1)) {
             // The segment is intersecting the shadowed segment.
@@ -378,27 +394,27 @@ class ClosestPointPathShadow2afp {
             final int side1;
             final int side2;
             if (shadowY0 <= shadowY1) {
-                side1 = Segment2afp.computeSideLinePoint(
+                side1 = Segment2ai.computeSideLinePoint(
                         shadowX0, shadowY0,
                         shadowX1, shadowY1,
-                        sx0, sy0, 0.);
-                side2 = Segment2afp.computeSideLinePoint(
+                        sx0, sy0);
+                side2 = Segment2ai.computeSideLinePoint(
                         shadowX0, shadowY0,
                         shadowX1, shadowY1,
-                        sx1, sy1, 0.);
+                        sx1, sy1);
             } else {
-                side1 = Segment2afp.computeSideLinePoint(
+                side1 = Segment2ai.computeSideLinePoint(
                         shadowX1, shadowY1,
                         shadowX0, shadowY0,
-                        sx0, sy0, 0.);
-                side2 = Segment2afp.computeSideLinePoint(
+                        sx0, sy0);
+                side2 = Segment2ai.computeSideLinePoint(
                         shadowX1, shadowY1,
                         shadowX0, shadowY0,
-                        sx1, sy1, 0.);
+                        sx1, sy1);
             }
             if (side1 > 0 || side2 > 0) {
-                final double x0;
-                final double x1;
+                final int x0;
+                final int x1;
                 if (shadowYmin == shadowY0) {
                     x0 = shadowX0;
                     x1 = shadowX1;
@@ -426,9 +442,9 @@ class ClosestPointPathShadow2afp {
      * @param sy1 y coordinate of the second point of the segment.
      */
     private void crossSegmentShadowLine(
-            double shadowx, double shadowy,
-            double sx0, double sy0,
-            double sx1, double sy1) {
+            int shadowx, int shadowy,
+            int sx0, int sy0,
+            int sx1, int sy1) {
         if (shadowy <  sy0 && shadowy <  sy1) {
             // Segment is entirely at the top of shadow line
             return;
@@ -442,7 +458,7 @@ class ClosestPointPathShadow2afp {
             return;
         }
         // Compute the intersection point between the segment and the shadow line
-        final double xintercept = sx0 + (shadowy - sy0) * (sx1 - sx0) / (sy1 - sy0);
+        final int xintercept = getFirstX(sx0, sy0, sx1, sy1, shadowy);
         if (shadowx > xintercept) {
             // The intersection point is on the left of the shadow line.
             return;

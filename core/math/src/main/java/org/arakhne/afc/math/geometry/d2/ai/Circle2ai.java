@@ -466,7 +466,7 @@ public interface Circle2ai<
     static boolean intersectsCircleSegment(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
         final Point2D<?, ?> point = new InnerComputationPoint2ai();
-        Segment2ai.computeClosestPointTo(x2, y2, x3, y3, x1, y1, point);
+        Segment2ai.computeClosestPointToPoint(x2, y2, x3, y3, x1, y1, point);
         return contains(x1, y1, radius, point.ix(), point.iy());
     }
 

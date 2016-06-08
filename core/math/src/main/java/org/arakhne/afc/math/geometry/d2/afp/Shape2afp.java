@@ -466,8 +466,16 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default double getDistanceSquared(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : AssertMessages.notNullParameter();
-		return multishape.getDistanceSquared(getClosestPointTo(multishape));
+	    assert multishape != null : AssertMessages.notNullParameter();
+        double minDist = Double.POSITIVE_INFINITY;
+        double dist;
+        for (final Shape2afp<?, ?, ?, ?, ?, ?> shape : multishape) {
+            dist = getDistanceSquared(shape);
+            if (dist < minDist) {
+                minDist = dist;
+            }
+        }
+        return minDist;
 	}
 
 	@Pure

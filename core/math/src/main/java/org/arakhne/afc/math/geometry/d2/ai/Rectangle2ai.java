@@ -252,8 +252,120 @@ public interface Rectangle2ai<
 		result.set(x, y);
 	}
 
-	@Pure
-	@Override
+    /** Update the given Cohen-Sutherland code that corresponds to the given segment in order
+     * to obtain a segment restricted to a single Cohen-Sutherland zone.
+     * This function is at the heart of the
+     * <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
+     *
+     * <p>The result of this function may be: <ul>
+     * <li>the code for a single zone, or</li>
+     * <li>the code that corresponds to a single column, or </li>
+     * <li>the code that corresponds to a single row.</li>
+     * </ul>
+     *
+     * @param rx1 is the first corner of the rectangle.
+     * @param ry1 is the first corner of the rectangle.
+     * @param rx2 is the second corner of the rectangle.
+     * @param ry2 is the second corner of the rectangle.
+     * @param sx1 is the first point of the segment.
+     * @param sy1 is the first point of the segment.
+     * @param sx2 is the second point of the segment.
+     * @param sy2 is the second point of the segment.
+     * @param codePoint1 the Cohen-Sutherland code for the first point of the segment.
+     * @param codePoint2 the Cohen-Sutherland code for the second point of the segment.
+     * @param newSegmentP1 is set with the new coordinates of the segment first point. If <code>null</code>,
+     *     this parameter is ignored.
+     * @param newSegmentP2 is set with the new coordinates of the segment second point. If <code>null</code>,
+     *     this parameter is ignored.
+     * @return the rectricted Cohen-Sutherland zone.
+     */
+    @Pure
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
+    static int reduceCohenSutherlandZoneRectangleSegment(int rx1, int ry1, int rx2, int ry2,
+            int sx1, int sy1, int sx2, int sy2, int codePoint1, int codePoint2,
+            Point2D<?, ?> newSegmentP1, Point2D<?, ?> newSegmentP2) {
+        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
+        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 3, ry2);
+        assert codePoint1 == MathUtil.getCohenSutherlandCode(sx1, sy1, rx1, ry1, rx2, ry2) : AssertMessages.invalidValue(8);
+        assert codePoint2 == MathUtil.getCohenSutherlandCode(sx2, sy2, rx1, ry1, rx2, ry2) : AssertMessages.invalidValue(9);
+        int segmentX1 = sx1;
+        int segmentY1 = sy1;
+        int segmentX2 = sx2;
+        int segmentY2 = sy2;
+
+        int code1 = codePoint1;
+        int code2 = codePoint2;
+
+        while (true) {
+            if ((code1 | code2) == 0) {
+                // Bitwise OR is 0. Trivially accept and get out of loop
+                if (newSegmentP1 != null) {
+                    newSegmentP1.set(segmentX1, segmentY1);
+                }
+                if (newSegmentP2 != null) {
+                    newSegmentP2.set(segmentX2, segmentY2);
+                }
+                return 0;
+            }
+            if ((code1 & code2) != 0) {
+                // Bitwise AND is not 0. Trivially reject and get out of loop
+                if (newSegmentP1 != null) {
+                    newSegmentP1.set(segmentX1, segmentY1);
+                }
+                if (newSegmentP2 != null) {
+                    newSegmentP2.set(segmentX2, segmentY2);
+                }
+                return code1 & code2;
+            }
+
+            // failed both tests, so calculate the line segment intersection
+
+            // At least one endpoint is outside the clip rectangle; pick it.
+            int code3 = (code1 != 0) ? code1 : code2;
+
+            int x = 0;
+            int y = 0;
+
+            // Now find the intersection point;
+            // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
+            if ((code3 & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
+                // point is above the clip rectangle
+                x = segmentX1 + (segmentX2 - segmentX1) * (ry2 - segmentY1) / (segmentY2 - segmentY1);
+                y = ry2;
+            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
+                // point is below the clip rectangle
+                x = segmentX1 + (segmentX2 - segmentX1) * (ry1 - segmentY1) / (segmentY2 - segmentY1);
+                y = ry1;
+            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
+                // point is to the right of clip rectangle
+                y = segmentY1 + (segmentY2 - segmentY1) * (rx2 - segmentX1) / (segmentX2 - segmentX1);
+                x = rx2;
+            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
+                // point is to the left of clip rectangle
+                y = segmentY1 + (segmentY2 - segmentY1) * (rx1 - segmentX1) / (segmentX2 - segmentX1);
+                x = rx1;
+            } else {
+                code3 = 0;
+            }
+
+            if (code3 != 0) {
+                // Now we move outside point to intersection point to clip
+                // and get ready for next pass.
+                if (code3 == code1) {
+                    segmentX1 = x;
+                    segmentY1 = y;
+                    code1 = MathUtil.getCohenSutherlandCode(segmentX1, segmentY1, rx1, ry1, rx2, ry2);
+                } else {
+                    segmentX2 = x;
+                    segmentY2 = y;
+                    code2 = MathUtil.getCohenSutherlandCode(segmentX2, segmentY2, rx1, ry1, rx2, ry2);
+                }
+            }
+        }
+    }
+
+    @Pure
+    @Override
 	default boolean equalsToShape(IT shape) {
 		if (shape == null) {
 			return false;

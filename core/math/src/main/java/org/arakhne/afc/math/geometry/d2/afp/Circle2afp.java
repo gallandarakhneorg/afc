@@ -235,6 +235,18 @@ public interface Circle2afp<
     @Pure
     double getY();
 
+    @Override
+    @Pure
+    default double getCenterX() {
+        return getX();
+    }
+
+    @Override
+    @Pure
+    default double getCenterY() {
+        return getY();
+    }
+
     @Pure
     @Override
     default P getCenter() {

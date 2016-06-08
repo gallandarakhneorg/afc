@@ -922,7 +922,13 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		assert(false);
 	}
 
-	@Test
+    @Test
+    @Ignore
+    public void getDistanceSquaredMultiShape2ai() {
+        assert(false);
+    }
+
+    @Test
     @Ignore
 	public void getDistanceSquaredSegment2ai() {
 		assert(false);
