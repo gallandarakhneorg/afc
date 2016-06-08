@@ -221,21 +221,11 @@ public class MultiShape2i<T extends Shape2i<?>> extends AbstractShape2i<MultiSha
 		}
 
 		public boolean equals(Object obj) {
-			if (!super.equals(obj)) {
-				return false;
-			}
-			final ListResponseModel lObj = (ListResponseModel) obj;
-			if (delegate.equals(lObj.delegate)) {
-				return delegate.equals(lObj.delegate);
-			}
-			return false;
+			return this.delegate.equals(obj);
 		}
 
 		public int hashCode() {
-			int hash = 1;
-			final int prime = 31;
-			hash = hash * prime + (int) (delegate.hashCode());
-			return hash;
+			return this.delegate.hashCode();
 		}
 
 	}
