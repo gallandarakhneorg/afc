@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.coordinatesystem;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d2.ImmutableVector2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
@@ -279,7 +280,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 */
 	@Pure
 	public static CoordinateSystem2D fromVectors(double ly) {
-		assert ly != 0.;
+		assert !MathUtil.isZero(ly);
 		return (ly < 0.) ? XY_LEFT_HAND : XY_RIGHT_HAND;
 	}
 

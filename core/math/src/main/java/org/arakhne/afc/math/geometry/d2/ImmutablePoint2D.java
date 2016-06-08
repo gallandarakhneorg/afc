@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
+import org.arakhne.afc.math.MathUtil;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -67,7 +68,7 @@ public final class ImmutablePoint2D implements UnmodifiablePoint2D<ImmutablePoin
 	public boolean equals(Object object) {
 		try {
 			final Tuple2D<?> tuple = (Tuple2D<?>) object;
-			return tuple.getX() == getX() && tuple.getY() == getY();
+			return MathUtil.areFloatsEqual(tuple.getX(), getX()) && MathUtil.areFloatsEqual(tuple.getY(), getY());
 		} catch (AssertionError e) {
 			throw e;
 		} catch (Throwable e2) {

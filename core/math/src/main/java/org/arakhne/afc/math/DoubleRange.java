@@ -67,7 +67,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	public boolean equals(Object obj) {
 		if (obj instanceof DoubleRange) {
 			final DoubleRange range = (DoubleRange) obj;
-			return this.min == range.getMin() && this.max == range.getMax();
+			return MathUtil.areFloatsEqual(this.min, range.getMin()) && MathUtil.areFloatsEqual(this.max, range.getMax());
 		}
 		return false;
 	}

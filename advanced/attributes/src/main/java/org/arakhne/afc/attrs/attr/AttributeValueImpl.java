@@ -52,6 +52,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.arakhne.afc.math.MathUtil;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -1305,7 +1306,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case TIMESTAMP:
 				return ((Timestamp) this.value).longValue() != 0;
 			case REAL:
-				return ((Double) this.value).doubleValue() != 0.;
+				return !MathUtil.isZero(((Double) this.value).doubleValue());
 			case OBJECT:
 				if (this.value instanceof Boolean) {
 					return ((Boolean) this.value).booleanValue();

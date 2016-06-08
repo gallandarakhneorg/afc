@@ -46,6 +46,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
 @SuppressWarnings({"checkstyle:methodcount", "checkstyle:magicnumber"})
 public final class MathUtil {
 
+	private static final double EPSILON = 0.000001;
+
 	private MathUtil() {
 		//
 	}
@@ -64,7 +66,7 @@ public final class MathUtil {
 	@Pure
 	@Inline(value = "($1 == 0.) ? 0 : (($1 < -0.) ? -1 : 1)")
 	public static int sign(double value) {
-		return (value == 0.) ? 0 : ((value < -0.) ? -1 : 1);
+		return isZero(value) ? 0 : ((value < -0.) ? -1 : 1);
 	}
 
 
@@ -185,7 +187,7 @@ public final class MathUtil {
 	@Pure
 	public static boolean isEpsilonEqual(double v1, double v2, double epsilon) {
 		if (Double.isInfinite(v1)) {
-			return Double.isInfinite(v2) && Math.signum(v1) == Math.signum(v2);
+			return Double.isInfinite(v2) && areFloatsEqual(Math.signum(v1), Math.signum(v2));
 		} else if (Double.isNaN(v1)) {
 			return false;
 		}
@@ -2474,4 +2476,11 @@ public final class MathUtil {
 		return accept;
 	}
 
+	public static boolean isZero(double value) {
+		return value >= -EPSILON && value <= EPSILON;
+	}
+
+	public static boolean areFloatsEqual(double value1, double value2) {
+		return (Math.abs(value1 - value2)) <= EPSILON;
+	}
 }
