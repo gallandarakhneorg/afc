@@ -38,7 +38,6 @@ import java.util.Map;
 
 import javax.activation.MimetypesFileTypeMap;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
