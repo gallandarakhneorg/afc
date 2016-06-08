@@ -23,12 +23,7 @@ package org.arakhne.afc.vmutil;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -320,7 +315,7 @@ public final class MACNumber {
 		} catch (SocketException exception) {
 			//
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override
