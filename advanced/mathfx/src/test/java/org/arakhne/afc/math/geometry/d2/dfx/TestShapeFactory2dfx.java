@@ -21,6 +21,8 @@
 package org.arakhne.afc.math.geometry.d2.dfx;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
+import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
@@ -115,5 +117,10 @@ public class TestShapeFactory2dfx implements TestShapeFactory<Point2dfx, Vector2
 	public MultiShape2afp<?, ?, ?, ?, Point2dfx, Vector2dfx, Rectangle2dfx> createMultiShape() {
 		return new MultiShape2dfx();
 	}
+
+    @Override
+    public OrientedPoint2dfx createOrientedPoint(double x, double y, double length, double dirX, double dirY) {
+        return new OrientedPoint2dfx(x, y, length, dirX, dirY);
+    }
 	
 }

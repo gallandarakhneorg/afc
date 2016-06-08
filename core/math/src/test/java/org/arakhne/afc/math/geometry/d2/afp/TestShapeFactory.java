@@ -20,21 +20,10 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-import java.util.Arrays;
-
-import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
+import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public interface TestShapeFactory<P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>, B extends Rectangle2afp<?, ?, ?, P, V, B>> {
@@ -66,5 +55,7 @@ public interface TestShapeFactory<P extends Point2D<? super P, ? super V>, V ext
 	Path2afp<?, ?, ?, P, V, B> createPath(PathWindingRule rule);
 
 	MultiShape2afp<?, ?, ?, ?, P, V, B> createMultiShape();
+
+    OrientedPoint2D createOrientedPoint(double x, double y, double length, double dirX, double dirY);
 
 }
