@@ -59,6 +59,8 @@ public final class ExtendedArtifact implements Artifact {
 	 */
 	public static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
+	private static final String EMAIL_TEXT = ";EMAIL=";
+
 	private final String artifactName;
 
 	private final Artifact original;
@@ -192,7 +194,7 @@ public final class ExtendedArtifact implements Artifact {
 							"Comparing '" + login //$NON-NLS-1$
 							+ " to the developer [ID=" + devel.getId() //$NON-NLS-1$
 							+ ";NAME=" + devel.getName() //$NON-NLS-1$
-							+ ";EMAIL=" + devel.getEmail() //$NON-NLS-1$
+							+ EMAIL_TEXT + devel.getEmail() //$NON-NLS-1$
 							+ "]"); //$NON-NLS-1$
 				}
 				String idprop = null;
@@ -211,7 +213,7 @@ public final class ExtendedArtifact implements Artifact {
 						logger.debug(
 								"Selecting the developer [ID=" + devel.getId() //$NON-NLS-1$
 								+ ";NAME=" + devel.getName() //$NON-NLS-1$
-								+ ";EMAIL=" + devel.getEmail() //$NON-NLS-1$
+								+ EMAIL_TEXT + devel.getEmail() //$NON-NLS-1$
 								+ "]"); //$NON-NLS-1$
 					}
 					return devel;
@@ -224,7 +226,7 @@ public final class ExtendedArtifact implements Artifact {
 					logger.debug(
 							"Comparing '" + login //$NON-NLS-1$
 							+ " to the contributor [NAME=" + contrib.getName() //$NON-NLS-1$
-							+ ";EMAIL=" + contrib.getEmail() //$NON-NLS-1$
+							+ EMAIL_TEXT + contrib.getEmail() //$NON-NLS-1$
 							+ "]"); //$NON-NLS-1$
 				}
 				String idprop = null;
@@ -241,7 +243,7 @@ public final class ExtendedArtifact implements Artifact {
 					if (logger != null && logger.isDebugEnabled()) {
 						logger.debug(
 								"Selecting the contributor [NAME=" + contrib.getName() //$NON-NLS-1$
-								+ ";EMAIL=" + contrib.getEmail() //$NON-NLS-1$
+								+ EMAIL_TEXT + contrib.getEmail() //$NON-NLS-1$
 								+ "]"); //$NON-NLS-1$
 					}
 					return contrib;

@@ -101,6 +101,8 @@ public enum OperatingSystem {
 	private static String osUUID;
 	private static OperatingSystem currentOSInstance;
 
+	private static final String OS_NAME = "os.name";
+
 	//@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	static {
 		OperatingSystemIdentificationType type = OperatingSystemIdentificationType.BIOS;
@@ -133,7 +135,7 @@ public enum OperatingSystem {
 			try {
 				LibraryLoader.loadPlatformDependentLibrary(
 						"josuuid", //$NON-NLS-1$
-						System.getProperty("os.name").trim().toLowerCase(), //$NON-NLS-1$
+						System.getProperty(OS_NAME).trim().toLowerCase(), //$NON-NLS-1$
 						"org/arakhne/vmutil"); //$NON-NLS-1$
 				nativeWrapper = new OperatingSystemNativeWrapper(type);
 			} catch (Throwable e) {
@@ -202,7 +204,7 @@ public enum OperatingSystem {
 	@Pure
 	@Inline("System.getProperty(\"os.name\")")
 	public static String getCurrentOSName() {
-		return System.getProperty("os.name"); //$NON-NLS-1$
+		return System.getProperty(OS_NAME); //$NON-NLS-1$
 	}
 
 	/** Replies the version of the current OS.
@@ -237,7 +239,7 @@ public enum OperatingSystem {
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public static OperatingSystem getCurrentOS() {
 		if (currentOSInstance == null) {
-			final String os = System.getProperty("os.name").trim().toLowerCase(); //$NON-NLS-1$
+			final String os = System.getProperty(OS_NAME).trim().toLowerCase(); //$NON-NLS-1$
 			/* Let's try to figure canonical OS name, just in case some
 			 * JVMs use funny values (unlikely)
 			 */

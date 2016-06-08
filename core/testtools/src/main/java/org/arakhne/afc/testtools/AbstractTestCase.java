@@ -61,6 +61,8 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static final double EPSILON = 10 * 1.110223024E-16;
 
+	private static final String EXPECTING_ZERO = "Expecting zero";
+
 	private int decimalPrecision = DEFAULT_DECIMAL_COUNT;
 
 	/** Random number sequence.
@@ -235,7 +237,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(byte value) {
 		if (value != 0) {
-			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(null, EXPECTING_ZERO, value)); //$NON-NLS-1$
 		}
 	}
 
@@ -245,7 +247,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(short value) {
 		if (value != 0) {
-			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(null, EXPECTING_ZERO, value)); //$NON-NLS-1$
 		}
 	}
 
@@ -255,7 +257,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(int value) {
 		if (value != 0) {
-			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(null, EXPECTING_ZERO, value)); //$NON-NLS-1$
 		}
 	}
 
@@ -265,7 +267,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(long value) {
 		if (value != 0) {
-			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(null, EXPECTING_ZERO, value)); //$NON-NLS-1$
 		}
 	}
 
@@ -275,7 +277,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(float value) {
 		if (value != 0f) {
-			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(null, EXPECTING_ZERO, value)); //$NON-NLS-1$
 		}
 	}
 
@@ -294,7 +296,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(String message, double value) {
 		if (value != 0.) {
-			fail(formatFailMessage(message, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(message, EXPECTING_ZERO, value)); //$NON-NLS-1$
 		}
 	}
 
@@ -313,7 +315,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public void assertEpsilonZero(String message, double value) {
 		if (!isEpsilonEquals(value, 0.)) {
-			fail(formatFailMessage(message, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(message, EXPECTING_ZERO, value)); //$NON-NLS-1$
 		}
 	}
 

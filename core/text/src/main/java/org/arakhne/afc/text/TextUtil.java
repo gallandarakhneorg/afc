@@ -57,6 +57,8 @@ public final class TextUtil {
 
 	private static SoftReference<Map<Character, String>> javaToHtmlTransTbl;
 
+	private static final String SPLIT_REGEX = "(\\}\\{)|\\{|\\}";
+
 	private TextUtil() {
 		//
 	}
@@ -149,7 +151,7 @@ public final class TextUtil {
 
 		map = new TreeMap<>();
 
-		final String[] pairs = result.split("(\\}\\{)|\\{|\\}"); //$NON-NLS-1$
+		final String[] pairs = result.split(SPLIT_REGEX); //$NON-NLS-1$
 		Integer isoCode;
 		String entity;
 		String code;
@@ -222,7 +224,7 @@ public final class TextUtil {
 
 		map = new TreeMap<>();
 
-		final String[] pairs = result.split("(\\}\\{)|\\{|\\}"); //$NON-NLS-1$
+		final String[] pairs = result.split(SPLIT_REGEX); //$NON-NLS-1$
 		Integer isoCode;
 		String entity;
 		String code;
@@ -523,7 +525,7 @@ public final class TextUtil {
 
 		map = new TreeMap<>();
 
-		final String[] pairs = result.split("(\\}\\{)|\\{|\\}"); //$NON-NLS-1$
+		final String[] pairs = result.split(SPLIT_REGEX); //$NON-NLS-1$
 		for (final String pair : pairs) {
 			if (pair.length() > 1) {
 				map.put(pair.charAt(0), pair.substring(1));
