@@ -90,11 +90,13 @@ public interface OrientedPoint2D<
     @Pure int iy();
 
     /**  Sets a new value in the Y of the point.
+     *
      * @param y the new value double y.
      */
     void setY(int y);
 
     /**  Sets a new value in the Y of the point.
+     *
      * @param y the new value double y.
      */
     void setY(double y);
@@ -115,15 +117,15 @@ public interface OrientedPoint2D<
 
     /** Sets a new value in the X direction of the point.
      *
-     * @param x the new value double x.
+     * @param dirX the new value double x.
      */
-    void setDirectionX(int x);
+    void setDirectionX(int dirX);
 
     /** Sets a new value in the X direction of the point.
      *
-     * @param x the new value double x.
+     * @param dirX the new value double x.
      */
-    void setDirectionX(double x);
+    void setDirectionX(double dirX);
 
     /** Replies the Y coordinate of the direction vector.
      * If this point is not part of a polyline, the direction vector is null.
@@ -141,15 +143,15 @@ public interface OrientedPoint2D<
 
     /**  Sets a new value in the Y direction of the point.
      *
-     * @param y the new value double y.
+     * @param dirY the new value double y.
      */
-    void setDirectionY(int y);
+    void setDirectionY(int dirY);
 
     /**  Sets a new value in the Y direction of the point.
      *
-     * @param y the new value double y.
+     * @param dirY the new value double y.
      */
-    void setDirectionY(double y);
+    void setDirectionY(double dirY);
 
     /** Replies the X coordinate of the normal vector.
      *  If this point is not part of a polyline, the normal vector is null.
@@ -283,8 +285,10 @@ public interface OrientedPoint2D<
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
      */
-    // No default implementation to ensure atomic change
-    void set(int x, int y);
+    default void set(int x, int y) {
+        setX(x);
+        setY(y);
+    }
 
     /** Change the point.
      *
@@ -292,8 +296,11 @@ public interface OrientedPoint2D<
      * @param y y coordinate of the point.
      * @param length the length of the point on the polyline.
      */
-    // No default implementation to ensure atomic change
-    void set(int x, int y, int length);
+    default void set(int x, int y, int length) {
+        setX(x);
+        setY(y);
+        setLength(length);
+    }
 
     /** Change the point and its orientation vector.
      *
@@ -302,8 +309,12 @@ public interface OrientedPoint2D<
      * @param dirX x coordinate of the vector.
      * @param dirY y coordinate of the vector.
      */
-    // No default implementation to ensure atomic change
-    void set(int x, int y, int dirX, int dirY);
+    default void set(int x, int y, int dirX, int dirY) {
+        setX(x);
+        setY(y);
+        setDirectionX(dirX);
+        setDirectionY(dirY);
+    }
 
     /** Change the point and its orientation vector.
      *
@@ -313,16 +324,23 @@ public interface OrientedPoint2D<
      * @param dirX x coordinate of the vector.
      * @param dirY y coordinate of the vector.
      */
-    // No default implementation to ensure atomic change
-    void set(int x, int y, int length, int dirX, int dirY);
+    default void set(int x, int y, int length, int dirX, int dirY) {
+        setX(x);
+        setY(y);
+        setLength(length);
+        setDirectionX(dirX);
+        setDirectionY(dirY);
+    }
 
     /** Change the point.
      *
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
      */
-    // No default implementation to ensure atomic change
-    void set(double x, double y);
+    default void set(double x, double y) {
+        setX(x);
+        setY(y);
+    }
 
     /** Change the point.
      *
@@ -330,8 +348,11 @@ public interface OrientedPoint2D<
      * @param y y coordinate of the point.
      * @param length the length of the point on the polyline.
      */
-    // No default implementation to ensure atomic change
-    void set(double x, double y, double length);
+    default void set(double x, double y, double length) {
+        setX(x);
+        setY(y);
+        setLength(length);
+    }
 
     /** Change the point and its orientation vector.
      *
@@ -340,8 +361,12 @@ public interface OrientedPoint2D<
      * @param dirX x coordinate of the vector.
      * @param dirY y coordinate of the vector.
      */
-    // No default implementation to ensure atomic change
-    void set(double x, double y, double dirX, double dirY);
+    default void set(double x, double y, double dirX, double dirY) {
+        setX(x);
+        setY(y);
+        setDirectionX(dirX);
+        setDirectionY(dirY);
+    }
 
     /** Change the point and its orientation vector.
      *
@@ -351,8 +376,13 @@ public interface OrientedPoint2D<
      * @param dirX x coordinate of the vector.
      * @param dirY y coordinate of the vector.
      */
-    // No default implementation to ensure atomic change
-    void set(double x, double y, double length, double dirX, double dirY);
+    default void set(double x, double y, double length, double dirX, double dirY) {
+        setX(x);
+        setY(y);
+        setLength(length);
+        setDirectionX(dirX);
+        setDirectionY(dirY);
+    }
 
     @Override
     default void set(IT shape) {
