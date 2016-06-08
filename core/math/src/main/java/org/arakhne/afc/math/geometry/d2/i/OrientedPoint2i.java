@@ -18,64 +18,64 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d2.d;
+package org.arakhne.afc.math.geometry.d2.i;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.OrientedPoint2afp;
+import org.arakhne.afc.math.geometry.d2.ai.OrientedPoint2ai;
 
-/** 2D oriented point with double precision floating-point numbers.
+/** 2D oriented point with int precision floating-point numbers.
  *
  * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class OrientedPoint2d
-    extends AbstractShape2d<OrientedPoint2d>
-    implements OrientedPoint2afp<Shape2d<?>, OrientedPoint2d, PathElement2d, Point2d, Vector2d, Rectangle2d> {
+public class OrientedPoint2i
+    extends AbstractShape2i<OrientedPoint2i>
+    implements OrientedPoint2ai<Shape2i<?>, OrientedPoint2i, PathElement2i, Point2i, Vector2i, Rectangle2i> {
 
     private static final long serialVersionUID = 6296312122530686621L;
 
-    private double px;
+    private int px;
 
-    private double py;
+    private int py;
 
-    private double dx;
+    private int dx;
 
-    private double dy;
+    private int dy;
 
-    private double len;
+    private int len;
 
     /** Construct an empty oriented point.
      */
-    public OrientedPoint2d() {
+    public OrientedPoint2i() {
         //
     }
 
     /** Construct an oriented point from a point.
      * @param point the point.
      */
-    public OrientedPoint2d(Point2D<?, ?> point) {
-        this(point.getX(), point.getY());
+    public OrientedPoint2i(Point2D<?, ?> point) {
+        this(point.ix(), point.iy());
     }
 
     /** Construct an oriented point from a point and its length on a polyline.
      * @param point the point.
      * @param length the length.
      */
-    public OrientedPoint2d(Point2D<?, ?> point, double length) {
-        this(point.getX(), point.getY(), length);
+    public OrientedPoint2i(Point2D<?, ?> point, int length) {
+        this(point.ix(), point.iy(), length);
     }
 
     /** Construct an oriented point from the two given coordinates.
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
      */
-    public OrientedPoint2d(double x, double y) {
+    public OrientedPoint2i(int x, int y) {
         set(x, y);
     }
 
@@ -84,7 +84,7 @@ public class OrientedPoint2d
      * @param y y coordinate of the point.
      * @param length the length
      */
-    public OrientedPoint2d(double x, double y, double length) {
+    public OrientedPoint2i(int x, int y, int length) {
         set(x, y, length);
     }
 
@@ -92,8 +92,8 @@ public class OrientedPoint2d
      * @param point the point.
      * @param vector the direction vector.
      */
-    public OrientedPoint2d(Point2D<?, ?> point, Vector2D<?, ?> vector) {
-        this(point.getX(), point.getY(), vector.getX(), vector.getY());
+    public OrientedPoint2i(Point2D<?, ?> point, Vector2D<?, ?> vector) {
+        this(point.ix(), point.iy(), vector.ix(), vector.iy());
     }
 
     /** Construct an oriented point from a point, its length, and a direction vector.
@@ -101,8 +101,8 @@ public class OrientedPoint2d
      * @param length the length of the point
      * @param vector the direction vector.
      */
-    public OrientedPoint2d(Point2D<?, ?> point, double length, Vector2D<?, ?> vector) {
-        this(point.getX(), point.getY(), length, vector.getX(), vector.getY());
+    public OrientedPoint2i(Point2D<?, ?> point, int length, Vector2D<?, ?> vector) {
+        this(point.ix(), point.iy(), length, vector.ix(), vector.iy());
     }
 
     /** Construct an oriented point from the two given coordinates.
@@ -111,7 +111,7 @@ public class OrientedPoint2d
      * @param dirX x coordinate of the vector.
      * @param dirY y coordinate of the vector.
      */
-    public OrientedPoint2d(double x, double y, double dirX, double dirY) {
+    public OrientedPoint2i(int x, int y, int dirX, int dirY) {
         set(x, y, dirX, dirY);
     }
 
@@ -122,7 +122,7 @@ public class OrientedPoint2d
      * @param dirX x coordinate of the vector.
      * @param dirY y coordinate of the vector.
      */
-    public OrientedPoint2d(double x, double y, double length, double dirX, double dirY) {
+    public OrientedPoint2i(int x, int y, int length, int dirX, int dirY) {
         set(x, y, length, dirX, dirY);
     }
 
@@ -130,11 +130,11 @@ public class OrientedPoint2d
     @Override
     public int hashCode() {
         long bits = 1;
-        bits = 31 * bits + Double.hashCode(this.px);
-        bits = 31 * bits + Double.hashCode(this.py);
-        bits = 31 * bits + Double.hashCode(this.dx);
-        bits = 31 * bits + Double.hashCode(this.dy);
-        bits = 31 * bits + Double.hashCode(this.len);
+        bits = 31 * bits + Integer.hashCode(this.px);
+        bits = 31 * bits + Integer.hashCode(this.py);
+        bits = 31 * bits + Integer.hashCode(this.dx);
+        bits = 31 * bits + Integer.hashCode(this.dy);
+        bits = 31 * bits + Integer.hashCode(this.len);
         final int b = (int) bits;
         return b ^ (b >> 31);
     }
@@ -162,17 +162,17 @@ public class OrientedPoint2d
     }
 
     @Override
-    public OrientedPoint2d createTransformedShape(Transform2D transform) {
+    public OrientedPoint2i createTransformedShape(Transform2D transform) {
         if (transform == null || transform.isIdentity()) {
             return clone();
         }
-        final Point2d point = getGeomFactory().newPoint(getX(), getY());
+        final Point2i point = getGeomFactory().newPoint(ix(), iy());
         transform.transform(point);
-        final double x1 = point.getX();
-        final double y1 = point.getY();
-        point.set(getDirectionX(), getDirectionY());
+        final int x1 = point.ix();
+        final int y1 = point.iy();
+        point.set(idx(), idy());
         transform.transform(point);
-        return getGeomFactory().newOrientedPoint(x1, y1, point.getX(), point.getY());
+        return getGeomFactory().newOrientedPoint(x1, y1, point.ix(), point.iy());
     }
 
     @Override
@@ -220,8 +220,8 @@ public class OrientedPoint2d
     @Override
     public void set(double x, double y) {
         if (this.px != x || this.py != y) {
-            this.px = x;
-            this.py = y;
+            this.px = (int) Math.round(x);
+            this.py = (int) Math.round(y);
             fireGeometryChange();
         }
     }
@@ -229,9 +229,9 @@ public class OrientedPoint2d
     @Override
     public void set(double x, double y, double length) {
         if (this.px != x || this.py != y || this.len != length) {
-            this.px = x;
-            this.py = y;
-            this.len = length;
+            this.px = (int) Math.round(x);
+            this.py = (int) Math.round(y);
+            this.len = (int) Math.round(length);
             fireGeometryChange();
         }
     }
@@ -239,10 +239,10 @@ public class OrientedPoint2d
     @Override
     public void set(double x, double y, double dirX, double dirY) {
         if (this.px != x || this.py != y || this.dx != dirX || this.dy != dirY) {
-            this.px = x;
-            this.py = y;
-            this.dx = dirX;
-            this.dy = dirY;
+            this.px = (int) Math.round(x);
+            this.py = (int) Math.round(y);
+            this.dx = (int) Math.round(dirX);
+            this.dy = (int) Math.round(dirY);
             fireGeometryChange();
         }
     }
@@ -250,11 +250,11 @@ public class OrientedPoint2d
     @Override
     public void set(double x, double y, double length, double dirX, double dirY) {
         if (this.px != x || this.py != y || this.len != length || this.dx != dirX || this.dy != dirY) {
-            this.px = x;
-            this.py = y;
-            this.dx = dirX;
-            this.dy = dirY;
-            this.len = length;
+            this.px = (int) Math.round(x);
+            this.py = (int) Math.round(y);
+            this.dx = (int) Math.round(dirX);
+            this.dy = (int) Math.round(dirY);
+            this.len = (int) Math.round(length);
             fireGeometryChange();
         }
     }
@@ -270,7 +270,7 @@ public class OrientedPoint2d
     @Override
     public void setX(double x) {
         if (this.px != x) {
-            this.px = x;
+            this.px = (int) Math.round(x);
             fireGeometryChange();
         }
     }
@@ -286,7 +286,7 @@ public class OrientedPoint2d
     @Override
     public void setY(double y) {
         if (this.py != y) {
-            this.py = y;
+            this.py = (int) Math.round(y);
             fireGeometryChange();
         }
     }
@@ -302,7 +302,7 @@ public class OrientedPoint2d
     @Override
     public void setDirectionX(double dirX) {
         if (this.dx != dirX) {
-            this.dx = dirX;
+            this.dx = (int) Math.round(dirX);
             fireGeometryChange();
         }
     }
@@ -318,7 +318,7 @@ public class OrientedPoint2d
     @Override
     public void setDirectionY(double dirY) {
         if (this.dy != dirY) {
-            this.dy = dirY;
+            this.dy = (int) Math.round(dirY);
             fireGeometryChange();
         }
     }
@@ -334,7 +334,7 @@ public class OrientedPoint2d
     @Override
     public void setLength(double length) {
         if (this.len != length) {
-            this.len = length;
+            this.len = (int) Math.round(length);
             fireGeometryChange();
         }
     }
@@ -346,7 +346,7 @@ public class OrientedPoint2d
 
     @Override
     public int ix() {
-        return (int) Math.round(this.px);
+        return this.px;
     }
 
     @Override
@@ -356,7 +356,7 @@ public class OrientedPoint2d
 
     @Override
     public int iy() {
-        return (int) Math.round(this.py);
+        return this.py;
     }
 
     @Override
@@ -366,7 +366,7 @@ public class OrientedPoint2d
 
     @Override
     public int idx() {
-        return (int) Math.round(this.dx);
+        return this.dx;
     }
 
     @Override
@@ -376,7 +376,7 @@ public class OrientedPoint2d
 
     @Override
     public int idy() {
-        return (int) Math.round(this.dy);
+        return this.dy;
     }
 
     @Override
@@ -386,6 +386,6 @@ public class OrientedPoint2d
 
     @Override
     public int ilen() {
-        return (int) Math.round(this.len);
+        return this.len;
     }
 }

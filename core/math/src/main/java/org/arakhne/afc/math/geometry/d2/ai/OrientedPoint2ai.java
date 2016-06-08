@@ -20,12 +20,14 @@
 
 package org.arakhne.afc.math.geometry.d2.ai;
 
-import org.eclipse.xtext.xbase.lib.Pure;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
@@ -50,78 +52,157 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("unused")
-public interface OrientedPointShape2ai<
+public interface OrientedPoint2ai<
         ST extends Shape2ai<?, ?, IE, P, V, B>,
-        IT extends OrientedPointShape2ai<?, ?, IE, P, V, B>,
+        IT extends OrientedPoint2ai<?, ?, IE, P, V, B>,
         IE extends PathElement2ai,
         P extends Point2D<? super P, ? super V>,
         V extends Vector2D<? super V, ? super P>,
-        B extends Rectangle2ai<?, ?, IE, P, V, B>> extends Shape2ai<ST, IT, IE, P, V, B> {
-
-    /** Replies the X coordinate of the point.
+        B extends Rectangle2ai<?, ?, IE, P, V, B>>
+        extends Shape2ai<ST, IT, IE, P, V, B>, OrientedPoint2D<ST, IT, PathIterator2ai<IE>, P, V, B> {
+    /** Iterator on the elements of the oriented points.
+     * It replies : the point and the extremities of the
+     * two orientation vectors.
      *
-     * @return the x coordinate of the point.
+     * @param <T> the type of the path elements.
+     * @author $Author: tpiotrow$
+     * @version $FullVersion$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
      */
-    @Pure int getX();
+    // TODO : complete point iterator. The iterator may return only the point or the point and its
+    // orientation vectors. As such, it may or may not contain multiple moveto elements.
+    class OrientedPointPathIterator<T extends PathElement2ai> implements PathIterator2ai<T> {
 
-    /** Replies the Y coordinate of the point.
-     *
-     * @return the y coordinate of the point.
-     */
-    @Pure int getY();
+        private int index;
 
-    /** Sets a new value in the X of the point.
-     *
-     * @param x the new value double x.
-     */
-    void setX(int x);
+        private OrientedPoint2ai<?, ?, T, ?, ?, ?> point;
 
-    /**  Sets a new value in the Y of the point.
-     * @param y the new value double y.
-     */
-    void setY(int y);
+        private Transform2D transform;
 
-    /** Replies the X coordinate of the direction vector.
-     * If this point is not part of a polyline, the direction vector is null.
-     *
-     * @return the x coordinate of the direction vector.
-     */
-    @Pure int getDirectionX();
+        private int px;
 
-    /** Replies the Y coordinate of the direction vector.
-     * If this point is not part of a polyline, the direction vector is null.
-     *
-     * @return the y coordinate of the direction vector.
-     */
-    @Pure int getDirectionY();
+        private int py;
 
-    /** Sets a new value in the X direction of the point.
-     *
-     * @param x the new value double x.
-     */
-    void setDirectionX(int x);
+        private int dx;
 
-    /**  Sets a new value in the Y direction of the point.
-     * @param y the new value double y.
-     */
-    void setDirectionY(int y);
+        private int dy;
 
-    /** Replies the X coordinate of the normal vector.
-     *  If this point is not part of a polyline, the normal vector is null.
-     *
-     * @return the x coordinate of the normal vector.
-     */
-    @Pure default int getNormalX() {
-        return -getDirectionY();
+        /**
+         * @param point the iterated oriented point.
+         * @param transform the transformation, or <code>null</code>.
+         */
+        public OrientedPointPathIterator(OrientedPoint2ai<?, ?, T, ?, ?, ?> point, Transform2D transform) {
+            assert point != null : AssertMessages.notNullParameter();
+            this.point = point;
+            this.transform = transform == null || transform.isIdentity() ? null : transform;
+            this.px = point.ix();
+            this.py = point.iy();
+            this.dx = point.idx();
+            this.dy = point.idy();
+        }
+
+        @Override
+        public PathWindingRule getWindingRule() {
+            return PathWindingRule.NON_ZERO;
+        }
+
+        @Override
+        public boolean isPolyline() {
+            return false;
+        }
+
+        @Override
+        public boolean isCurved() {
+            return false;
+        }
+
+        @Override
+        public boolean isMultiParts() {
+            return true;
+        }
+
+        @Override
+        public boolean isPolygon() {
+            return false;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.index <= 2;
+        }
+
+        @Override
+        public T next() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public GeomFactory2ai<T, ?, ?, ?> getGeomFactory() {
+            return this.point.getGeomFactory();
+        }
+
+        @Override
+        public PathIterator2ai<T> restartIterations() {
+            return new OrientedPointPathIterator<>(this.point, this.transform);
+        }
+
     }
 
-    /** Replies the Y coordinate of the normal vector.
-     *  If this point is not part of a polyline, the normal vector is null.
+    /** Iterator on the points of this oriented point, which replies the point itself
+     * and the extremities of the orientation vectors.
      *
-     * @return the y coordinate of the normal vector.
+     * @param <P> the type of the points.
+     * @param <V> the type of the vectors.
+     * @author $Author: tpiotrow$
+     * @version $FullVersion$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
      */
-    @Pure default int getNormalY() {
-        return getDirectionX();
+    class OrientedPointPointIterator<P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>>
+            implements Iterator<P> {
+        private int index;
+
+        private OrientedPoint2ai<?, ?, ?, P, V, ?> point;
+
+        /**
+         * @param pt the oriented point to iterate on.
+         */
+        public OrientedPointPointIterator(OrientedPoint2ai<?, ?, ?, P, V, ?> pt) {
+            assert pt != null : AssertMessages.notNullParameter();
+            this.point = pt;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.index <= 2;
+        }
+
+        @Override
+        public P next() {
+            switch (this.index++) {
+            case 0:
+                return this.point.getGeomFactory().newPoint(this.point.ix(), this.point.iy());
+            case 1:
+                return this.point.getGeomFactory().newPoint(this.point.idx(), this.point.idy());
+            case 2:
+                return this.point.getGeomFactory().newPoint(this.point.inx(), this.point.iny());
+            default:
+                throw new NoSuchElementException();
+            }
+        }
+
+    }
+
+    @Override
+    default PathIterator2ai<IE> getPathIterator(Transform2D transform) {
+        return new OrientedPointPathIterator<>(this, transform);
+    }
+
+    @Override
+    default Iterator<P> getPointIterator() {
+        return new OrientedPointPointIterator<>(this);
     }
 
     @Override
@@ -147,38 +228,12 @@ public interface OrientedPointShape2ai<
     }
 
     @Override
-    default boolean equalsToShape(IT shape) {
-        if (shape == null) {
-            return false;
-        }
-        if (shape == this) {
-            return true;
-        }
-        // We don't need to check normal because it depends of direction
-        return getX() == shape.getX() && getY() == shape.getY()
-                && getDirectionX() == shape.getDirectionX()
-                && getDirectionY() == shape.getDirectionY();
-    }
-
-    /** Replies this point.
-     * @return this point
-     */
-    default P getPoint() {
-        return getGeomFactory().newPoint(getX(), getY());
-    }
-
-    @Override
     default P getClosestPointTo(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
         return getPoint();
     }
 
     @Override
     default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
-        return getPoint();
-    }
-
-    @Override
-    default P getClosestPointTo(Point2D<?, ?> point) {
         return getPoint();
     }
 
@@ -198,44 +253,20 @@ public interface OrientedPointShape2ai<
     }
 
     @Override
-    default double getDistanceL1(Point2D<?, ?> pt) {
-        assert pt != null : AssertMessages.notNullParameter();
-        return Point2D.getDistanceL1PointPoint(getX(), getY(), pt.getX(), pt.getY());
-    }
-
-    @Override
-    default double getDistanceLinf(Point2D<?, ?> pt) {
-        assert pt != null : AssertMessages.notNullParameter();
-        return Point2D.getDistanceLinfPointPoint(getX(), getY(), pt.getX(), pt.getY());
-    }
-
-    @Override
-    default double getDistanceSquared(Point2D<?, ?> pt) {
-        assert pt != null : AssertMessages.notNullParameter();
-        return Point2D.getDistanceSquaredPointPoint(getX(), getY(), pt.getX(), pt.getY());
-    }
-
-    @Override
-    default double getDistance(Point2D<?, ?> pt) {
-        assert pt != null : AssertMessages.notNullParameter();
-        return Point2D.getDistancePointPoint(getX(), getY(), pt.getX(), pt.getY());
-    }
-
-    @Override
-    default P getFarthestPointTo(Point2D<?, ?> point) {
+    default P getClosestPointTo(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
         return getPoint();
     }
 
     @Override
     default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
         assert circle != null : AssertMessages.notNullParameter();
-        return circle.contains(getX(), getY());
+        return circle.contains(ix(), iy());
     }
 
     @Override
     default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
         assert multishape != null : AssertMessages.notNullParameter();
-        return multishape.contains(getX(), getY());
+        return multishape.contains(ix(), iy());
     }
 
     @Override
@@ -245,7 +276,7 @@ public interface OrientedPointShape2ai<
         final int crossings = Path2ai.computeCrossingsFromPoint(
                 0,
                 iterator,
-                getX(), getY(),
+                ix(), iy(),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
         return crossings == MathConstants.SHAPE_INTERSECTS
                 || (crossings & mask) != 0;
@@ -254,35 +285,22 @@ public interface OrientedPointShape2ai<
     @Override
     default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
-        return rectangle.contains(getX(), getY());
+        return rectangle.contains(ix(), iy());
     }
 
     @Override
     default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
-        return segment.contains(getX(), getY());
+        return segment.contains(ix(), iy());
     }
-
-    @Override
-    default boolean isEmpty() {
-        return false;
-    }
-
-    /** Change the point.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     */
-    // No default implementation to ensure atomic change
-    void set(double x, double y);
 
     @Override
     default void toBoundingBox(B box) {
         assert box != null : AssertMessages.notNullParameter();
-        final int x1 = MathUtil.min(getX(), getDirectionX(), getNormalX());
-        final int y1 = MathUtil.min(getY(), getDirectionY(), getNormalY());
-        final int x2 = MathUtil.max(getX(), getDirectionX(), getNormalX());
-        final int y2 = MathUtil.max(getY(), getDirectionY(), getNormalY());
+        final int x1 = MathUtil.min(ix(), idx(), inx());
+        final int y1 = MathUtil.min(iy(), idy(), iny());
+        final int x2 = MathUtil.max(ix(), idx(), inx());
+        final int y2 = MathUtil.max(iy(), idy(), iny());
         box.setFromCorners(x1, y1, x2, y2);
     }
 
@@ -294,15 +312,13 @@ public interface OrientedPointShape2ai<
      */
     default void transforn(Transform2D transform) {
         assert transform != null : AssertMessages.notNullParameter();
-        final Point2D<?, ?> p = new InnerComputationPoint2ai(getX(), getY());
+        final Point2D<?, ?> p = new InnerComputationPoint2ai(ix(), iy());
         transform.transform(p);
-        set(p.getX(), p.getY());
+        set(p.ix(), p.iy());
     }
 
     @Override
     default void translate(int dx, int dy) {
-        set(getX() + dx, getY() + dy);
-        setDirectionX(getDirectionX() + dx);
-        setDirectionY(getDirectionY() + dy);
+        set(ix() + dx, iy() + dy, idx() + dx, idy() + dy);
     }
 }

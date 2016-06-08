@@ -20,23 +20,18 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
-/** A point 2D with two orientation vectors relative to the polyline: the direction and the normal to the point.
- *
- *  <p>The orientation vectors have no physical existence, i.e. they exist only to represent the direction of the
- *  point and its normal when the point is part of a polyline. The normal vector is always perpendicular to the
- *  direction vector..
+/** Fonctional interface representing a 2D oriented point on a plane.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -45,19 +40,20 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: tpiotrow$
+ * @author $Author: sgalland$
+ * @author $Author: olamotte$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("unused")
-// TODO : add geometrical length
 public interface OrientedPoint2afp<
         ST extends Shape2afp<?, ?, IE, P, V, B>,
         IT extends OrientedPoint2afp<?, ?, IE, P, V, B>,
         IE extends PathElement2afp,
         P extends Point2D<? super P, ? super V>,
         V extends Vector2D<? super V, ? super P>,
-        B extends Rectangle2afp<?, ?, IE, P, V, B>> extends Shape2afp<ST, IT, IE, P, V, B> {
+        B extends Rectangle2afp<?, ?, IE, P, V, B>>
+        extends Shape2afp<ST, IT, IE, P, V, B>, OrientedPoint2D<ST, IT, PathIterator2afp<IE>, P, V, B> {
 
     /** Iterator on the elements of the oriented points.
      * It replies : the point and the extremities of the
@@ -69,6 +65,8 @@ public interface OrientedPoint2afp<
      * @mavengroupid $GroupId$
      * @mavenartifactid $ArtifactId$
      */
+    // TODO : complete point iterator. The iterator may return only the point or the point and its
+    // orientation vectors. As such, it may or may not contain multiple moveto elements.
     class OrientedPointPathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
 
         private int index;
@@ -152,72 +150,6 @@ public interface OrientedPoint2afp<
         return new OrientedPointPathIterator<>(this, transform);
     }
 
-    /** Replies the X coordinate of the point.
-     *
-     * @return the x coordinate of the point.
-     */
-    @Pure double getX();
-
-    /** Replies the Y coordinate of the point.
-     *
-     * @return the y coordinate of the point.
-     */
-    @Pure double getY();
-
-    /** Sets a new value in the X of the point.
-     *
-     * @param x the new value double x.
-     */
-    void setX(double x);
-
-    /**  Sets a new value in the Y of the point.
-     * @param y the new value double y.
-     */
-    void setY(double y);
-
-    /** Replies the X coordinate of the direction vector.
-     * If this point is not part of a polyline, the direction vector is null.
-     *
-     * @return the x coordinate of the direction vector.
-     */
-    @Pure double getDirectionX();
-
-    /** Replies the Y coordinate of the direction vector.
-     * If this point is not part of a polyline, the direction vector is null.
-     *
-     * @return the y coordinate of the direction vector.
-     */
-    @Pure double getDirectionY();
-
-    /** Sets a new value in the X direction of the point.
-     *
-     * @param x the new value double x.
-     */
-    void setDirectionX(double x);
-
-    /**  Sets a new value in the Y direction of the point.
-     * @param y the new value double y.
-     */
-    void setDirectionY(double y);
-
-    /** Replies the X coordinate of the normal vector.
-     *  If this point is not part of a polyline, the normal vector is null.
-     *
-     * @return the x coordinate of the normal vector.
-     */
-    @Pure default double getNormalX() {
-        return -getDirectionY();
-    }
-
-    /** Replies the Y coordinate of the normal vector.
-     *  If this point is not part of a polyline, the normal vector is null.
-     *
-     * @return the y coordinate of the normal vector.
-     */
-    @Pure default double getNormalY() {
-        return getDirectionX();
-    }
-
     @Override
     default boolean contains(double x, double y) {
         return x == getX() && y == getY();
@@ -238,27 +170,6 @@ public interface OrientedPoint2afp<
     @Override
     default boolean contains(Point2D<?, ?> pt) {
         return getX() == pt.getX() && getY() == pt.getY();
-    }
-
-    @Override
-    default boolean equalsToShape(IT shape) {
-        if (shape == null) {
-            return false;
-        }
-        if (shape == this) {
-            return true;
-        }
-        // We don't need to check normal because it depends of direction
-        return getX() == shape.getX() && getY() == shape.getY()
-                && getDirectionX() == shape.getDirectionX()
-                && getDirectionY() == shape.getDirectionY();
-    }
-
-    /** Replies this point.
-     * @return this point
-     */
-    default P getPoint() {
-        return getGeomFactory().newPoint(getX(), getY());
     }
 
     @Override
@@ -287,11 +198,6 @@ public interface OrientedPoint2afp<
     }
 
     @Override
-    default P getClosestPointTo(Point2D<?, ?> point) {
-        return getPoint();
-    }
-
-    @Override
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
         return getPoint();
     }
@@ -312,36 +218,12 @@ public interface OrientedPoint2afp<
     }
 
     @Override
-    default P getClosestPointTo(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+    default P getClosestPointTo(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
         return getPoint();
     }
 
     @Override
-    default double getDistanceL1(Point2D<?, ?> pt) {
-        assert pt != null : AssertMessages.notNullParameter();
-        return Point2D.getDistanceL1PointPoint(getX(), getY(), pt.getX(), pt.getY());
-    }
-
-    @Override
-    default double getDistanceLinf(Point2D<?, ?> pt) {
-        assert pt != null : AssertMessages.notNullParameter();
-        return Point2D.getDistanceLinfPointPoint(getX(), getY(), pt.getX(), pt.getY());
-    }
-
-    @Override
-    default double getDistanceSquared(Point2D<?, ?> pt) {
-        assert pt != null : AssertMessages.notNullParameter();
-        return Point2D.getDistanceSquaredPointPoint(getX(), getY(), pt.getX(), pt.getY());
-    }
-
-    @Override
-    default double getDistance(Point2D<?, ?> pt) {
-        assert pt != null : AssertMessages.notNullParameter();
-        return Point2D.getDistancePointPoint(getX(), getY(), pt.getX(), pt.getY());
-    }
-
-    @Override
-    default P getFarthestPointTo(Point2D<?, ?> point) {
+    default P getClosestPointTo(Shape2D<?, ?, ?, ?, ?, ?> shape) {
         return getPoint();
     }
 
@@ -413,35 +295,6 @@ public interface OrientedPoint2afp<
     }
 
     @Override
-    default boolean isEmpty() {
-        return false;
-    }
-
-    /** Change the point.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     */
-    // No default implementation to ensure atomic change
-    void set(double x, double y);
-
-    /** Change the point and its orientation vector.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     */
-    // No default implementation to ensure atomic change
-    void set(double x, double y, double dirX, double dirY);
-
-    @Override
-    default void set(IT shape) {
-        assert shape != null : AssertMessages.notNullParameter();
-        set(shape.getX(), shape.getY(), shape.getDirectionX(), shape.getDirectionY());
-    }
-
-    @Override
     default void toBoundingBox(B box) {
         assert box != null : AssertMessages.notNullParameter();
         final double x1 = MathUtil.min(getX(), getDirectionX(), getNormalX());
@@ -473,8 +326,4 @@ public interface OrientedPoint2afp<
         set(getX() + dx, getY() + dy, getDirectionX() + dx, getDirectionY() + dy);
     }
 
-    @Override
-    default void clear() {
-        set(0, 0, 0, 0);
-    }
 }
