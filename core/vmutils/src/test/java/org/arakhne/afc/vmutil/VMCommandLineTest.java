@@ -29,6 +29,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -149,8 +150,7 @@ public class VMCommandLineTest {
 
 	@Test
 	public void getCommandLineOption() {
-		assertNull(VMCommandLine.getCommandLineOption("S")); 
-		
+		assertEquals(new ArrayList<>(0), VMCommandLine.getCommandLineOption("S"));
 		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
 		VMCommandLine.splitOptionsAndParameters(optionDefinitions);
 		
@@ -209,7 +209,7 @@ public class VMCommandLineTest {
 	public void getOptionValues() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
 		List<Object> values;
-		
+
 		values = c.getOptionValues("D"); 
 		assertNotNull(values);
 		assertEquals(1, values.size());
@@ -234,9 +234,9 @@ public class VMCommandLineTest {
 		values = c.getOptionValues("S"); 
 		assertNotNull(values);
 		assertEquals(1, values.size());
-		assertEquals("-b", values.get(0)); 
+		assertEquals("-b", values.get(0));
+		assertEquals(new ArrayList<>(0), c.getOptionValues("nob"));
 
-		assertNull(c.getOptionValues("nob")); 
 	}
 
 	@Test
