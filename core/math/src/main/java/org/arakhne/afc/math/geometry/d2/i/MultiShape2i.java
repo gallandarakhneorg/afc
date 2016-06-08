@@ -220,6 +220,24 @@ public class MultiShape2i<T extends Shape2i<?>> extends AbstractShape2i<MultiSha
 			onContentGeometryChange();
 		}
 
+		public boolean equals(Object obj) {
+			if (!super.equals(obj)) {
+				return false;
+			}
+			final ListResponseModel lObj = (ListResponseModel) obj;
+			if (delegate.equals(lObj.delegate)) {
+				return delegate.equals(lObj.delegate);
+			}
+			return false;
+		}
+
+		public int hashCode() {
+			int hash = 1;
+			final int prime = 31;
+			hash = hash * prime + (int) (delegate.hashCode());
+			return hash;
+		}
+
 	}
 
 }
