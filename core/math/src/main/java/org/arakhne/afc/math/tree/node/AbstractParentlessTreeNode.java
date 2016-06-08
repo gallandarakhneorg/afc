@@ -21,7 +21,6 @@
 package org.arakhne.afc.math.tree.node;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -248,7 +247,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 	@Override
 	public D[] getAllUserData(D[] array) {
 		if (this.data == null) {
-			return  (D[]) Array.newInstance(array.getClass(),0);
+			return null;
 		}
 		return this.data.toArray(array);
 	}
