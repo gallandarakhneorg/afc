@@ -227,15 +227,15 @@ public class Transform2D extends Matrix3d {
 	public void rotate(double theta) {
 		// Copied from AWT API
 		final double sin = Math.sin(theta);
-		if (sin == 1.) {
+		if (MathUtil.areFloatsEqual(sin, 1.)) {
 			rotate90();
-		} else if (sin == -1.) {
+		} else if (MathUtil.areFloatsEqual(sin, -1.)) {
 			rotate270();
 		} else {
 			final double cos = Math.cos(theta);
-			if (cos == -1.) {
+			if (MathUtil.areFloatsEqual(cos, -1.)) {
 				rotate180();
-			} else if (cos != 1.) {
+			} else if (!MathUtil.areFloatsEqual(cos, 1.)) {
 				double m0 = this.m00;
 				double m1 = this.m01;
 				this.m00 =  cos * m0 + sin * m1;
@@ -315,7 +315,7 @@ public class Transform2D extends Matrix3d {
 		final double[] tmpScale = new double[3];
 		final double[] tmpRot = new double[9];
 		getScaleRotate2x2(tmpScale, tmpRot);
-		if (Math.signum(tmpRot[0]) != Math.signum(tmpRot[4])) {
+		if (!MathUtil.areFloatsEqual(Math.signum(tmpRot[0]), Math.signum(tmpRot[4]))) {
 			// Sinuses are on the top-left to bottom-right diagonal
 			// -s   c   0
 			//  c   s   0

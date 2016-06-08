@@ -22,6 +22,8 @@ package org.arakhne.afc.math.geometry.d2;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.MathUtil;
+
 /**
  * Immutable vector 2D.
  *
@@ -62,7 +64,7 @@ public final class ImmutableVector2D implements UnmodifiableVector2D<ImmutableVe
 	public boolean equals(Object object) {
 		try {
 			final Tuple2D<?> tuple = (Tuple2D<?>) object;
-			return tuple.getX() == getX() && tuple.getY() == getY();
+			return MathUtil.areFloatsEqual(tuple.getX(), getX()) && MathUtil.areFloatsEqual(tuple.getY(), getY());
 		} catch (AssertionError e) {
 			throw e;
 		} catch (Throwable e2) {
@@ -132,7 +134,7 @@ public final class ImmutableVector2D implements UnmodifiableVector2D<ImmutableVe
 	@Override
 	public ImmutableVector2D toUnitVector() {
 		final double length = getLength();
-		if (length == 0.) {
+		if (MathUtil.isZero(length)) {
 			return new ImmutableVector2D(0, 0);
 		}
 		return new ImmutableVector2D(getX() / length, getY() / length);
