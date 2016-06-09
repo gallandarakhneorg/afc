@@ -31,6 +31,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
@@ -1937,7 +1938,7 @@ public interface Segment2ai<
     class BresenhamLineIterator<P extends Point2D<? super P, ? super V>,
             V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
 
-        private final GeomFactory<V, P> factory;
+        private final GeomFactory2D<V, P> factory;
 
         private final boolean steep;
 
@@ -1964,7 +1965,7 @@ public interface Segment2ai<
          * @param x1 is the x-coordinate of the last point of the Bresenham line.
          * @param y1 is the y-coordinate of the last point of the Bresenham line.
          */
-        public BresenhamLineIterator(GeomFactory<V, P> factory, int x0, int y0, int x1, int y1) {
+        public BresenhamLineIterator(GeomFactory2D<V, P> factory, int x0, int y0, int x1, int y1) {
             assert factory != null : AssertMessages.notNullParameter(0);
             this.factory = factory;
             int localx0 = x0;

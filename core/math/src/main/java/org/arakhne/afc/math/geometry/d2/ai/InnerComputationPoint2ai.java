@@ -105,7 +105,7 @@ public class InnerComputationPoint2ai implements Point2D<InnerComputationPoint2a
     }
 
     @Override
-    public GeomFactory<InnerComputationVector2ai, InnerComputationPoint2ai> getGeomFactory() {
+    public GeomFactory2D<InnerComputationVector2ai, InnerComputationPoint2ai> getGeomFactory() {
         return InnerComputationGeomFactory.SINGLETON;
     }
 
