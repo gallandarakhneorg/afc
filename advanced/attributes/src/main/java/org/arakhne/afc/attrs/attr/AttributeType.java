@@ -590,34 +590,11 @@ public enum AttributeType {
 		}
 		switch (this) {
 		case INTEGER:
-			// Possible ClassCastException
-			if (obj == null) {
-				throw new NullPointerException();
-			}
-			if (obj instanceof Enum<?>) {
-				return (long) ((Enum<?>) obj).ordinal();
-			}
-			return ((Number) obj).longValue();
+			return caseInteger(obj);
 		case REAL:
-			// Possible ClassCastException
-			if (obj == null) {
-				throw new NullPointerException();
-			}
-			if (obj instanceof Enum<?>) {
-				return (double) ((Enum<?>) obj).ordinal();
-			}
-			return ((Number) obj).doubleValue();
+			return caseReal(obj);
 		case STRING:
-			if (obj == null) {
-				return ""; //$NON-NLS-1$
-			}
-			if (obj instanceof Enum<?>) {
-				final Enum<?> enumValue = (Enum<?>) obj;
-				return enumValue.getClass().getCanonicalName()
-						+ "." //$NON-NLS-1$
-						+ enumValue.name();
-			}
-			return obj.toString();
+			return caseString(obj);
 		case BOOLEAN:
 			// Possible ClassCastException
 			if (obj == null) {
@@ -625,17 +602,7 @@ public enum AttributeType {
 			}
 			return Boolean.class.cast(obj);
 		case DATE:
-			// Possible ClassCastException
-			if (obj == null) {
-				throw new NullPointerException();
-			}
-			if (obj instanceof Number) {
-				return new Date(((Number) obj).longValue());
-			}
-			if (obj instanceof Calendar) {
-				return ((Calendar) obj).getTime();
-			}
-			return Date.class.cast(obj);
+			return caseDate(obj);
 		case TIMESTAMP:
 			// Possible ClassCastException
 			if (obj == null) {
@@ -652,134 +619,19 @@ public enum AttributeType {
 			}
 			return Timestamp.class.cast(obj);
 		case POINT3D:
-			// Possible ClassCastException
-			if (obj == null) {
-				throw new NullPointerException();
-			}
-			if (obj instanceof Tuple3D && !(obj instanceof Point3D)) {
-				// TODO: Fix code: new Point3f((Tuple3D)obj);
-				return null;
-			}
-			return Point3D.class.cast(obj);
+			return casePoint3D(obj);
 		case POINT:
-			// Possible ClassCastException
-			if (obj == null) {
-				throw new NullPointerException();
-			}
-			if (obj instanceof Tuple2D && !(obj instanceof Point2D)) {
-				return new Point2d((Tuple2D) obj);
-			}
-			return Point2D.class.cast(obj);
+			return casePoint(obj);
 		case COLOR:
-			// Possible ClassCastException
-			if (obj == null) {
-				throw new NullPointerException();
-			}
-			if (obj instanceof Number) {
-				return VectorToolkit.color(((Number) obj).intValue());
-			}
-			return Color.class.cast(obj);
-		case UUID:
-			// Possible ClassCastException
-			if (obj == null) {
-				throw new NullPointerException();
-			}
-			return UUID.class.cast(obj);
+			return caseColor(obj);
 		case URL:
-			// Possible ClassCastException
-			if (obj == null) {
-				return null;
-			}
-			if (obj instanceof java.net.URI) {
-				try {
-					return ((java.net.URI) obj).toURL();
-				} catch (MalformedURLException e) {
-					//
-				}
-			}
-			if (obj instanceof InetAddress) {
-				try {
-					return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
-							((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
-				} catch (MalformedURLException e) {
-					//
-				}
-			}
-			if (obj instanceof InetSocketAddress) {
-				try {
-					return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
-							((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
-				} catch (MalformedURLException e) {
-					//
-				}
-			}
-			return java.net.URL.class.cast(obj);
+			return caseUrl(obj);
 		case URI:
-			// Possible ClassCastException
-			if (obj == null) {
-				return null;
-			}
-			if (obj instanceof java.net.URL) {
-				try {
-					return ((java.net.URL) obj).toURI();
-				} catch (URISyntaxException e) {
-					//
-				}
-			}
-			if (obj instanceof InetAddress) {
-				try {
-					return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
-							((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
-				} catch (URISyntaxException e) {
-					//
-				}
-			}
-			if (obj instanceof InetSocketAddress) {
-				try {
-					return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
-							((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
-				} catch (URISyntaxException e) {
-					//
-				}
-			}
-			return java.net.URI.class.cast(obj);
+			return caseUri(obj);
 		case POLYLINE3D:
-			// Possible ClassCastException
-			if (obj == null) {
-				throw new NullPointerException();
-			}
-			if (obj.getClass().isArray()) {
-				final Class<?> elementType = obj.getClass().getComponentType();
-				if (Tuple3D.class.isAssignableFrom(elementType)
-						&& !Point3D.class.isAssignableFrom(elementType)) {
-					final int length = Array.getLength(obj);
-					final Point3D[] tab = new Point3D[length];
-					for (int i = 0; i < length; ++i) {
-						//FIXME: Fi code: new Point3fp((Tuple3D)Array.get(obj, i));
-						tab[i] = null;
-					}
-					return tab;
-				}
-			}
-			return Point3D[].class.cast(obj);
+			return casePolyline3D(obj);
 		case POLYLINE:
-			// Possible ClassCastException
-			if (obj == null) {
-				throw new NullPointerException();
-			}
-			if (obj.getClass().isArray()) {
-				final Class<?> elementType = obj.getClass().getComponentType();
-				if (Tuple2D.class.isAssignableFrom(elementType)
-						&& !Point2D.class.isAssignableFrom(elementType)) {
-					final int length = Array.getLength(obj);
-					final Point2D[] tab = new Point2D[length];
-					for (int i = 0; i < length; ++i) {
-						tab[i] = new Point2d((Tuple2D) Array.get(obj, i));
-					}
-					return tab;
-				}
-			}
-			return Point2D[].class.cast(obj);
+			return casePolyline(obj);
 		case IMAGE:
 			if (obj == null) {
 				return null;
@@ -791,86 +643,284 @@ public enum AttributeType {
 			}
 			break;
 		case INET_ADDRESS:
-			if (obj == null) {
-				return null;
-			}
-			if (obj instanceof InetSocketAddress) {
-				return ((InetSocketAddress) obj).getAddress();
-			}
-			if (obj instanceof java.net.URL) {
-				final java.net.URL url = (java.net.URL) obj;
-				try {
-					return InetAddress.getByName(url.getHost());
-				} catch (UnknownHostException exception) {
-					//
-				}
-			}
-			if (obj instanceof java.net.URI) {
-				final java.net.URI uri = (java.net.URI) obj;
-				try {
-					return InetAddress.getByName(uri.getHost());
-				} catch (UnknownHostException exception) {
-					//
-				}
-			}
-			if (obj instanceof CharSequence) {
-				try {
-					final String ipStr = obj.toString();
-					final int index = ipStr.lastIndexOf("/"); //$NON-NLS-1$
-					if (index >= 0) {
-						try {
-							return InetAddress.getByName(ipStr.substring(index + 1));
-						} catch (UnknownHostException exception) {
-							//
-						}
-					}
-					return InetAddress.getByName(ipStr);
-				} catch (UnknownHostException exception) {
-					//
-				}
-			}
-			return InetAddress.class.cast(obj);
+			return caseInetAddress(obj);
 		case ENUMERATION:
-			if (obj == null) {
-				return null;
-			}
-			if (obj instanceof CharSequence) {
-				final String enumStr = obj.toString();
-				final int index = enumStr.lastIndexOf('.');
-				if (index > 0) {
-					final String enumName = enumStr.substring(0, index);
-					final String constantName = enumStr.substring(index + 1);
-					try {
-						final Class type = Class.forName(enumName);
-						if (Enum.class.isAssignableFrom(type)) {
-							final Enum<?> v = Enum.valueOf(type, constantName.toUpperCase());
-							if (v != null) {
-								return v;
-							}
-						}
-					} catch (Throwable exception) {
-						//
-					}
-				}
-			}
-			return Enum.class.cast(obj);
+			return caseEnumeration(obj);
 		case TYPE:
-			// Possible ClassCastException
-			if (obj == null) {
-				throw new NullPointerException();
-			}
-			if (obj instanceof CharSequence) {
-				try {
-					return Class.forName(((CharSequence) obj).toString());
-				} catch (ClassNotFoundException e) {
-					//
-				}
-			}
-			return Class.class.cast(obj);
+			return caseType(obj);
 		default:
 			throw new ClassCastException();
 		}
 		return obj;
+	}
+
+	private  Class caseType(Object obj) {
+		// Possible ClassCastException
+		if (obj == null) {
+			throw new NullPointerException();
+		}
+		if (obj instanceof CharSequence) {
+			try {
+				return Class.forName(((CharSequence) obj).toString());
+			} catch (ClassNotFoundException e) {
+				//
+			}
+		}
+		return Class.class.cast(obj);
+	}
+
+	private  long caseInteger(Object obj) {
+		// Possible ClassCastException
+		if (obj == null) {
+			throw new NullPointerException();
+		}
+		if (obj instanceof Enum<?>) {
+			return (long) ((Enum<?>) obj).ordinal();
+		}
+		return ((Number) obj).longValue();
+	}
+
+	private  double caseReal(Object obj) {
+		// Possible ClassCastException
+		if (obj == null) {
+			throw new NullPointerException();
+		}
+		if (obj instanceof Enum<?>) {
+			return (double) ((Enum<?>) obj).ordinal();
+		}
+		return ((Number) obj).doubleValue();
+	}
+
+	private  String caseString(Object obj) {
+		if (obj == null) {
+			return ""; //$NON-NLS-1$
+		}
+		if (obj instanceof Enum<?>) {
+			final Enum<?> enumValue = (Enum<?>) obj;
+			return enumValue.getClass().getCanonicalName()
+					+ "." //$NON-NLS-1$
+					+ enumValue.name();
+		}
+		return obj.toString();
+	}
+
+	private  Date caseDate(Object obj) {
+		// Possible ClassCastException
+		if (obj == null) {
+			throw new NullPointerException();
+		}
+		if (obj instanceof Number) {
+			return new Date(((Number) obj).longValue());
+		}
+		if (obj instanceof Calendar) {
+			return ((Calendar) obj).getTime();
+		}
+		return Date.class.cast(obj);
+	}
+
+	private  Point3D casePoint3D(Object obj) {
+		// Possible ClassCastException
+		if (obj == null) {
+			throw new NullPointerException();
+		}
+		if (obj instanceof Tuple3D && !(obj instanceof Point3D)) {
+			// TODO: Fix code: new Point3f((Tuple3D)obj);
+			return null;
+		}
+		return Point3D.class.cast(obj);
+	}
+
+	private  Point2D casePoint(Object obj) {
+		// Possible ClassCastException
+		if (obj == null) {
+			throw new NullPointerException();
+		}
+		if (obj instanceof Tuple2D && !(obj instanceof Point2D)) {
+			return new Point2d((Tuple2D) obj);
+		}
+		return Point2D.class.cast(obj);
+	}
+
+	private  Color caseColor(Object obj) {
+		// Possible ClassCastException
+		if (obj == null) {
+			throw new NullPointerException();
+		}
+		if (obj instanceof Number) {
+			return VectorToolkit.color(((Number) obj).intValue());
+		}
+		return Color.class.cast(obj);
+	}
+
+	private  java.net.URL caseUrl(Object obj) {
+		// Possible ClassCastException
+		if (obj == null) {
+			return null;
+		}
+		if (obj instanceof java.net.URI) {
+			try {
+				return ((java.net.URI) obj).toURL();
+			} catch (MalformedURLException e) {
+				//
+			}
+		}
+		if (obj instanceof InetAddress) {
+			try {
+				return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
+						((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
+			} catch (MalformedURLException e) {
+				//
+			}
+		}
+		if (obj instanceof InetSocketAddress) {
+			try {
+				return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
+						((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
+			} catch (MalformedURLException e) {
+				//
+			}
+		}
+		return java.net.URL.class.cast(obj);
+	}
+
+	private  java.net.URI caseUri(Object obj) {
+		// Possible ClassCastException
+		if (obj == null) {
+			return null;
+		}
+		if (obj instanceof java.net.URL) {
+			try {
+				return ((java.net.URL) obj).toURI();
+			} catch (URISyntaxException e) {
+				//
+			}
+		}
+		if (obj instanceof InetAddress) {
+			try {
+				return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
+						((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
+			} catch (URISyntaxException e) {
+				//
+			}
+		}
+		if (obj instanceof InetSocketAddress) {
+			try {
+				return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
+						((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
+			} catch (URISyntaxException e) {
+				//
+			}
+		}
+		return java.net.URI.class.cast(obj);
+	}
+
+	private  Enum caseEnumeration(Object obj) {
+		if (obj == null) {
+			return null;
+		}
+		if (obj instanceof CharSequence) {
+			final String enumStr = obj.toString();
+			final int index = enumStr.lastIndexOf('.');
+			if (index > 0) {
+				final String enumName = enumStr.substring(0, index);
+				final String constantName = enumStr.substring(index + 1);
+				try {
+					final Class type = Class.forName(enumName);
+					if (Enum.class.isAssignableFrom(type)) {
+						final Enum<?> v = Enum.valueOf(type, constantName.toUpperCase());
+						if (v != null) {
+							return v;
+						}
+					}
+				} catch (Throwable exception) {
+					//
+				}
+			}
+		}
+		return Enum.class.cast(obj);
+	}
+
+	private  Point2D[] casePolyline(Object obj) {
+		// Possible ClassCastException
+		if (obj == null) {
+			throw new NullPointerException();
+		}
+		if (obj.getClass().isArray()) {
+			final Class<?> elementType = obj.getClass().getComponentType();
+			if (Tuple2D.class.isAssignableFrom(elementType)
+					&& !Point2D.class.isAssignableFrom(elementType)) {
+				final int length = Array.getLength(obj);
+				final Point2D[] tab = new Point2D[length];
+				for (int i = 0; i < length; ++i) {
+					tab[i] = new Point2d((Tuple2D) Array.get(obj, i));
+				}
+				return tab;
+			}
+		}
+		return Point2D[].class.cast(obj);
+	}
+
+	private  InetAddress caseInetAddress(Object obj) {
+		if (obj == null) {
+			return null;
+		}
+		if (obj instanceof InetSocketAddress) {
+			return ((InetSocketAddress) obj).getAddress();
+		}
+		if (obj instanceof java.net.URL) {
+			final java.net.URL url = (java.net.URL) obj;
+			try {
+				return InetAddress.getByName(url.getHost());
+			} catch (UnknownHostException exception) {
+				//
+			}
+		}
+		if (obj instanceof java.net.URI) {
+			final java.net.URI uri = (java.net.URI) obj;
+			try {
+				return InetAddress.getByName(uri.getHost());
+			} catch (UnknownHostException exception) {
+				//
+			}
+		}
+		if (obj instanceof CharSequence) {
+			try {
+				final String ipStr = obj.toString();
+				final int index = ipStr.lastIndexOf("/"); //$NON-NLS-1$
+				if (index >= 0) {
+					try {
+						return InetAddress.getByName(ipStr.substring(index + 1));
+					} catch (UnknownHostException exception) {
+						//
+					}
+				}
+				return InetAddress.getByName(ipStr);
+			} catch (UnknownHostException exception) {
+				//
+			}
+		}
+		return InetAddress.class.cast(obj);
+	}
+
+	private  Point3D[] casePolyline3D(Object obj) {
+		// Possible ClassCastException
+		if (obj == null) {
+			throw new NullPointerException();
+		}
+		if (obj.getClass().isArray()) {
+			final Class<?> elementType = obj.getClass().getComponentType();
+			if (Tuple3D.class.isAssignableFrom(elementType)
+					&& !Point3D.class.isAssignableFrom(elementType)) {
+				final int length = Array.getLength(obj);
+				final Point3D[] tab = new Point3D[length];
+				for (int i = 0; i < length; ++i) {
+					//FIXME: Fi code: new Point3fp((Tuple3D)Array.get(obj, i));
+					tab[i] = null;
+				}
+				return tab;
+			}
+		}
+		return Point3D[].class.cast(obj);
 	}
 
 }
