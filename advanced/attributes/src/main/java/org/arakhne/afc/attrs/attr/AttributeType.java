@@ -884,22 +884,23 @@ public enum AttributeType {
 			}
 		}
 		if (obj instanceof CharSequence) {
-			try {
-				final String ipStr = obj.toString();
-				final int index = ipStr.lastIndexOf("/"); //$NON-NLS-1$
-				if (index >= 0) {
-					try {
-						return InetAddress.getByName(ipStr.substring(index + 1));
-					} catch (UnknownHostException exception) {
-						//
-					}
-				}
-				return InetAddress.getByName(ipStr);
-			} catch (UnknownHostException exception) {
-				//
-			}
+			return getInetAddressFromCharacterSequence(obj);
 		}
 		return InetAddress.class.cast(obj);
+	}
+
+	private InetAddress getInetAddressFromCharacterSequence(Object obj) {
+		try {
+			final String ipStr = obj.toString();
+			final int index = ipStr.lastIndexOf("/"); //$NON-NLS-1$
+			if (index >= 0) {
+				return InetAddress.getByName(ipStr.substring(index + 1));
+			}
+			return InetAddress.getByName(ipStr);
+		} catch (UnknownHostException exception) {
+				//
+		}
+		return null;
 	}
 
 	private  Point3D[] casePolyline3D(Object obj) {
