@@ -326,10 +326,13 @@ class ClosestPointPathShadow2afp {
             double sx0, double sy0,
             double sx1, double sy1) {
         // Update the global bounds of the shadow.
-        final double shadowXmin = Math.min(shadowX0, shadowX1);
-        final double shadowXmax = Math.max(shadowX0, shadowX1);
         final double shadowYmin = Math.min(shadowY0, shadowY1);
         final double shadowYmax = Math.max(shadowY0, shadowY1);
+
+        if (shadowYmin > this.boundingMinY && shadowYmax < this.boundingMaxY) {
+            // Shadow is not contributing to the crossing computation.
+            return;
+        }
 
         if (sy0 < shadowYmin && sy1 < shadowYmin) {
             // The segment is entirely at the bottom of the shadow.
@@ -339,6 +342,10 @@ class ClosestPointPathShadow2afp {
             // The segment is entirely at the top of the shadow.
             return;
         }
+
+        final double shadowXmin = Math.min(shadowX0, shadowX1);
+        final double shadowXmax = Math.max(shadowX0, shadowX1);
+
         if (sx0 < shadowXmin && sx1 < shadowXmin) {
             // The segment is entirely at the left of the shadow.
             return;
