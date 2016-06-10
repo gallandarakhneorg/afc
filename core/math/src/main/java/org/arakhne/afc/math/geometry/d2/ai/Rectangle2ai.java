@@ -219,7 +219,7 @@ public interface Rectangle2ai<
         assert rmaxx1 >= rx1 : AssertMessages.lowerEqualParameters(0, rx1, 2, rmaxx1);
         assert rmaxy1 >= ry1 : AssertMessages.lowerEqualParameters(1, ry1, 3, rmaxy1);
         assert rmaxx2 >= rx2 : AssertMessages.lowerEqualParameters(4, rx2, 6, rmaxx2);
-        assert rmaxy2 >= ry2 : AssertMessages.lowerEqualParameters(5, rx2, 7, rmaxx2);
+        assert rmaxy2 >= ry2 : AssertMessages.lowerEqualParameters(5, ry2, 7, rmaxy2);
         final int px;
         final int cx = (rx2 + rmaxx2) / 2;
         if (cx <= rx1) {
@@ -231,7 +231,7 @@ public interface Rectangle2ai<
         }
         final int py;
         final int cy = (ry2 + rmaxy2) / 2;
-        if (cy <= rx1) {
+        if (cy <= ry1) {
             py = ry1;
         } else if (cy >= rmaxy1) {
             py = rmaxy1;
