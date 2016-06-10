@@ -33,7 +33,14 @@ public class PNGFileFilter extends AbstractFileFilter {
 
 	/** Default extension for the PNG pictures.
 	 */
-	public static final String EXTENSION = "png"; //$NON-NLS-1$
+	public static final String EXTENSION_PNG = "png"; //$NON-NLS-1$
+
+	/** Default extension for the PNG pictures.
+	 *
+	 * @deprecated since 13.0, see {@link #EXTENSION_PNG}
+	 */
+	@Deprecated
+	public static final String EXTENSION = EXTENSION_PNG;
 
 	/** Construct.
 	 */
@@ -51,7 +58,7 @@ public class PNGFileFilter extends AbstractFileFilter {
 		super(
 				acceptDirectories,
 				Locale.getString(PNGFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
-				EXTENSION);
+				EXTENSION_PNG);
 	}
 
 }

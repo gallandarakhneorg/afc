@@ -33,7 +33,14 @@ public class GIFFileFilter extends AbstractFileFilter {
 
 	/** Default extension for the GIF pictures.
 	 */
-	public static final String EXTENSION = "gif"; //$NON-NLS-1$
+	public static final String EXTENSION_GIF = "gif"; //$NON-NLS-1$
+
+	/** Default extension for the GIF pictures.
+	 *
+	 * @deprecated since 13.0, see {@link #EXTENSION_GIF}
+	 */
+	@Deprecated
+	public static final String EXTENSION = EXTENSION_GIF;
 
 	/** Construct.
 	 */
@@ -51,7 +58,7 @@ public class GIFFileFilter extends AbstractFileFilter {
 		super(
 				acceptDirectories,
 				Locale.getString(GIFFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
-				EXTENSION);
+				EXTENSION_GIF);
 	}
 
 }

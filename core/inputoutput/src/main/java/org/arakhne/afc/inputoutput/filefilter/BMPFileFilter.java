@@ -33,7 +33,14 @@ public class BMPFileFilter extends AbstractFileFilter {
 
 	/** Default extension for the Microsoft/IBM bitmap files.
 	 */
-	public static final String EXTENSION = "bmp"; //$NON-NLS-1$
+	public static final String EXTENSION_BMP = "bmp"; //$NON-NLS-1$
+
+	/** Default extension for the Microsoft/IBM bitmap files.
+	 *
+	 * @deprecated since 13.0, see {@link #EXTENSION_BMP}
+	 */
+	@Deprecated
+	public static final String EXTENSION = EXTENSION_BMP;
 
 	/** Construct.
 	 */
@@ -51,7 +58,7 @@ public class BMPFileFilter extends AbstractFileFilter {
 		super(
 				acceptDirectories,
 				Locale.getString(BMPFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
-				EXTENSION);
+				EXTENSION_BMP);
 	}
 
 }

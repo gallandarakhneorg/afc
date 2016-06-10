@@ -34,11 +34,25 @@ public class EPSTeXFileFilter extends AbstractFileFilter {
 
 	/** Historical extension for TeX part of the EPS documents combined with TeX macros.
 	 */
-	public static final String EXTENSION1 = "pstex_t"; //$NON-NLS-1$
+	public static final String EXTENSION_PSTEX_T = "pstex_t"; //$NON-NLS-1$
+
+	/** Historical extension for TeX part of the EPS documents combined with TeX macros.
+	 *
+	 * @deprecated since 13.0, see {@link #EXTENSION_PSTEX_T}
+	 */
+	@Deprecated
+	public static final String EXTENSION1 = EXTENSION_PSTEX_T;
 
 	/** Modern extension for TeX part of the EPS documents combined with TeX macros.
 	 */
-	public static final String EXTENSION2 = "ps_tex"; //$NON-NLS-1$
+	public static final String EXTENSION_PS_TEX = "ps_tex"; //$NON-NLS-1$
+
+	/** Modern extension for TeX part of the EPS documents combined with TeX macros.
+	 *
+	 * @deprecated since 13.0, see {@link #EXTENSION_PS_TEX}
+	 */
+	@Deprecated
+	public static final String EXTENSION2 = EXTENSION_PS_TEX;
 
 	/** Construct.
 	 */
@@ -56,7 +70,7 @@ public class EPSTeXFileFilter extends AbstractFileFilter {
 		super(
 				acceptDirectories,
 				Locale.getString(EPSTeXFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
-				EXTENSION1, EXTENSION2);
+				EXTENSION_PSTEX_T, EXTENSION_PS_TEX);
 	}
 
 }

@@ -34,7 +34,14 @@ public class GMLFileFilter extends AbstractFileFilter {
 
 	/** Default extension for the "GML" files.
 	 */
-	public static final String EXTENSION = "gml"; //$NON-NLS-1$
+	public static final String EXTENSION_GML = "gml"; //$NON-NLS-1$
+
+	/** Default extension for the "GML" files.
+	 *
+	 * @deprecated since 13.0, see {@link #EXTENSION_GML}
+	 */
+	@Deprecated
+	public static final String EXTENSION = EXTENSION_GML;
 
 	/** Construct.
 	 */
@@ -52,7 +59,7 @@ public class GMLFileFilter extends AbstractFileFilter {
 		super(
 				acceptDirectories,
 				Locale.getString(GMLFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
-				EXTENSION);
+				EXTENSION_GML);
 	}
 
 }

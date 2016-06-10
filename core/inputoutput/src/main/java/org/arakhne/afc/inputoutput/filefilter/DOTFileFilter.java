@@ -33,7 +33,14 @@ public class DOTFileFilter extends AbstractFileFilter {
 
 	/** Default extension for the Graphviz DOT files.
 	 */
-	public static final String EXTENSION = "dot"; //$NON-NLS-1$
+	public static final String EXTENSION_DOT = "dot"; //$NON-NLS-1$
+
+	/** Default extension for the Graphviz DOT files.
+	 *
+	 * @deprecated since 13.0, see {@link #EXTENSION_DOT}
+	 */
+	@Deprecated
+	public static final String EXTENSION = EXTENSION_DOT;
 
 	/** Construct.
 	 */
@@ -51,7 +58,7 @@ public class DOTFileFilter extends AbstractFileFilter {
 		super(
 				acceptDirectories,
 				Locale.getString(DOTFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
-				EXTENSION);
+				EXTENSION_DOT);
 	}
 
 }

@@ -33,7 +33,14 @@ public class XMLFileFilter extends AbstractFileFilter {
 
 	/** Default extension for the XML files.
 	 */
-	public static final String EXTENSION = "xml"; //$NON-NLS-1$
+	public static final String EXTENSION_XML = "xml"; //$NON-NLS-1$
+
+	/** Default extension for the XML files.
+	 *
+	 * @deprecated since 13.0, see {@link #EXTENSION_XML}.
+	 */
+	@Deprecated
+	public static final String EXTENSION = EXTENSION_XML;
 
 	/** Construct.
 	 */
@@ -51,7 +58,7 @@ public class XMLFileFilter extends AbstractFileFilter {
 		super(
 				acceptDirectories,
 				Locale.getString(XMLFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
-				EXTENSION);
+				EXTENSION_XML);
 	}
 
 }

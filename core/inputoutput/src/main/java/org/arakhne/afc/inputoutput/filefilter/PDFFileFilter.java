@@ -33,7 +33,14 @@ public class PDFFileFilter extends AbstractFileFilter {
 
 	/** Default extension for the PDF documents.
 	 */
-	public static final String EXTENSION = "pdf"; //$NON-NLS-1$
+	public static final String EXTENSION_PDF = "pdf"; //$NON-NLS-1$
+
+	/** Default extension for the PDF documents.
+	 *
+	 * @deprecated since 13.0, see {@link #EXTENSION_PDF}
+	 */
+	@Deprecated
+	public static final String EXTENSION = EXTENSION_PDF;
 
 	/** Construct.
 	 */
@@ -51,7 +58,7 @@ public class PDFFileFilter extends AbstractFileFilter {
 		super(
 				acceptDirectories,
 				Locale.getString(PDFFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
-				EXTENSION);
+				EXTENSION_PDF);
 	}
 
 }

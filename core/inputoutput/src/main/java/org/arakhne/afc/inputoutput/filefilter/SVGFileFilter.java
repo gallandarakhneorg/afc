@@ -33,7 +33,14 @@ public class SVGFileFilter extends AbstractFileFilter {
 
 	/** Default extension for the SVG files.
 	 */
-	public static final String EXTENSION = "svg"; //$NON-NLS-1$
+	public static final String EXTENSION_SVG = "svg"; //$NON-NLS-1$
+
+	/** Default extension for the SVG files.
+	 *
+	 * @deprecated since 13.0, see {@link #EXTENSION_SVG}
+	 */
+	@Deprecated
+	public static final String EXTENSION = EXTENSION_SVG;
 
 	/** Construct.
 	 */
@@ -51,7 +58,7 @@ public class SVGFileFilter extends AbstractFileFilter {
 		super(
 				acceptDirectories,
 				Locale.getString(SVGFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
-				EXTENSION);
+				EXTENSION_SVG);
 	}
 
 }

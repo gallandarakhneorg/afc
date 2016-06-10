@@ -33,7 +33,14 @@ public class GXLFileFilter extends AbstractFileFilter {
 
 	/** Default extension for the "Graph Exchange Format" files.
 	 */
-	public static final String EXTENSION = "gxl"; //$NON-NLS-1$
+	public static final String EXTENSION_GXL = "gxl"; //$NON-NLS-1$
+
+	/** Default extension for the "Graph Exchange Format" files.
+	 *
+	 * @deprecated since 13.0, see {@link #EXTENSION_GXL}
+	 */
+	@Deprecated
+	public static final String EXTENSION = EXTENSION_GXL;
 
 	/** Construct.
 	 */
@@ -51,7 +58,7 @@ public class GXLFileFilter extends AbstractFileFilter {
 		super(
 				acceptDirectories,
 				Locale.getString(GXLFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
-				EXTENSION);
+				EXTENSION_GXL);
 	}
 
 }
