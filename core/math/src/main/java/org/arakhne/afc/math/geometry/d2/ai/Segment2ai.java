@@ -23,10 +23,12 @@ package org.arakhne.afc.math.geometry.d2.ai;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.GeomFactory;
@@ -34,6 +36,8 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
+import org.arakhne.afc.util.OutputParameter;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a 2D segment/line on a plane.
@@ -89,7 +93,6 @@ public interface Segment2ai<
         // case into account.
 
         int minDist = Integer.MAX_VALUE;
-        boolean oneBestFound = false;
         result.set(ax, ay);
         // Only for internal use
         final InnerComputationPoint2ai cp = new InnerComputationPoint2ai();
@@ -106,27 +109,9 @@ public interface Segment2ai<
                 result.set(cp);
                 return;
             }
-            if (d > minDist) {
-                // here we have found a good candidate, but
-                // but due to the rasterization the optimal solution
-                // may be one pixel after the already found.
-                // See the special case configuration at the beginning
-                // of this function.
-                if (oneBestFound) {
-                    return;
-                }
-                oneBestFound = true;
-            } else {
+            if (d < minDist) {
                 minDist = d;
                 result.set(cp);
-                // here we have found a good candidate, but
-                // but due to the rasterization the optimal solution
-                // may be one pixel after the already found.
-                // See the special case configuration at the beginning
-                // of this function.
-                if (oneBestFound) {
-                    return;
-                }
             }
         }
     }
@@ -229,85 +214,42 @@ public interface Segment2ai<
      */
     @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+    @Unefficient
     static double computeClosestPointToSegment(
             int s1x1, int s1y1, int s1x2, int s1y2,
             int s2x1, int s2y1, int s2x2, int s2y2,
             Point2D<?, ?> resultOnFirstSegment, Point2D<?, ?> resultOnSecondSegment) {
-        final BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> it1 =
-                new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, s1x1, s1y1, s1x2, s1y2);
-        final BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> it2 =
-                new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, s2x1, s2y1, s2x2, s2y2);
-
-        final Point2D<?, ?> p1 = new InnerComputationPoint2ai();
-        final Point2D<?, ?> p2 = new InnerComputationPoint2ai();
-
-        assert it1.hasNext();
-        it1.next(p1);
-        assert it2.hasNext();
-        it2.next(p2);
+        final Point2D<?, ?> c1 = new InnerComputationPoint2ai();
+        final Point2D<?, ?> c2 = new InnerComputationPoint2ai();
+        Segment2afp.computeClosestPointToSegment(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1, s2x2, s2y2, c1, c2);
+        final int a = c1.ix();
+        final int b = c1.iy();
+        final int c = c2.ix();
+        final int d = c2.iy();
+        computeClosestPointToPoint(s1x1, s1y1, s1x2, s1y2, c, d, c1);
+        computeClosestPointToPoint(s2x1, s2y1, s2x2, s2y2, a, b, c2);
         if (resultOnFirstSegment != null) {
-            resultOnFirstSegment.set(p1);
+            resultOnFirstSegment.set(c1);
         }
         if (resultOnSecondSegment != null) {
-            resultOnSecondSegment.set(p2);
+            resultOnSecondSegment.set(c2);
         }
-        double minDistance = p1.getDistanceSquared(p2);
-        if (minDistance == 0) {
-            return 0;
+
+        final double distance = c1.getDistanceSquared(c2);
+
+        if (distance > 0. && distance <= 1.) {
+            final int side1 = computeSideLinePoint(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1);
+            final int side2 = computeSideLinePoint(s1x1, s1y1, s1x2, s1y2, s2x2, s2y2);
+            final int side3 = computeSideLinePoint(s2x1, s2y1, s2x2, s2y2, s1x1, s1y1);
+            final int side4 = computeSideLinePoint(s2x1, s2y1, s2x2, s2y2, s1x2, s1y2);
+            if (side1 == -side2 && side3 == -side4) {
+                // Segment are intersecting
+                return 0;
+            }
         }
-        boolean changed1;
-        boolean changed2;
-        do {
-            changed1 = false;
-            while (it1.hasNext()) {
-                it1.next(p1);
-                double distance = p1.getDistanceSquared(p2);
-                if (distance > minDistance) {
-                    break;
-                } else if (distance <= 1) {
-                    // Special case: may at distance 1 due to no shared pixel,
-                    // but segments are intersecting. So that distance must be zero.
-                    final int side1 = computeSideLinePoint(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1);
-                    final int side2 = computeSideLinePoint(s1x1, s1y1, s1x2, s1y2, s2x2, s2y2);
-                    if (side1 == -side2) {
-                        distance = 0;
-                    }
-                }
-                if (resultOnFirstSegment != null) {
-                    resultOnFirstSegment.set(p1);
-                }
-                if (resultOnSecondSegment != null) {
-                    resultOnSecondSegment.set(p2);
-                }
-                minDistance = distance;
-                changed1 = true;
-            }
-            changed2 = false;
-            while (it2.hasNext()) {
-                it2.next(p2);
-                double distance = p1.getDistanceSquared(p2);
-                if (distance > minDistance) {
-                    break;
-                } else if (distance <= 1) {
-                    // Special case: may at distance 1 due to no shared pixel,
-                    // but segments are intersecting. So that distance must be zero.
-                    final int side1 = computeSideLinePoint(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1);
-                    final int side2 = computeSideLinePoint(s1x1, s1y1, s1x2, s1y2, s2x2, s2y2);
-                    if (side1 == -side2) {
-                        distance = 0;
-                    }
-                }
-                if (resultOnFirstSegment != null) {
-                    resultOnFirstSegment.set(p1);
-                }
-                if (resultOnSecondSegment != null) {
-                    resultOnSecondSegment.set(p2);
-                }
-                minDistance = distance;
-                changed2 = true;
-            }
-        } while (changed1 || changed2);
-        return minDistance;
+
+        // General case
+        return distance;
     }
 
     /** Replies the farthest point in a circle to a point.
@@ -365,11 +307,11 @@ public interface Segment2ai<
      */
     @Pure
     static int computeSideLinePoint(int x1, int y1, int x2, int y2, int px, int py) {
-        final int segmentX = x2 - x1;
-        final int segmentY = y2 - y1;
-        final int targetX = px - x1;
-        final int targetY = py - y1;
-        final int side = segmentX * targetY - segmentY * targetX;
+        final int  x21 = x2 - x1;
+        final int  y21 = y2 - y1;
+        final int  xp1 = px - x1;
+        final int  yp1 = py - y1;
+        final int side = xp1 * y21 - yp1 * x21;
         return (side < 0) ? -1 : ((side > 0) ? 1 : 0);
     }
 
@@ -448,8 +390,8 @@ public interface Segment2ai<
                 x0, y0, x1, y1)) {
             return MathConstants.SHAPE_INTERSECTS;
         } else {
-            numCrosses = computeCrossingsFromPoint(numCrosses, cx, ymin, x0, y0, x1, y1, true, false);
-            numCrosses = computeCrossingsFromPoint(numCrosses, cx, ymax, x0, y0, x1, y1, false, true);
+            numCrosses = computeCrossingsAndXFromPoint(numCrosses, cx, ymin, x0, y0, x1, y1, true, false, null);
+            numCrosses = computeCrossingsAndXFromPoint(numCrosses, cx, ymax, x0, y0, x1, y1, false, true, null);
         }
 
         return numCrosses;
@@ -491,9 +433,9 @@ public interface Segment2ai<
             int x1, int y1) {
         /* CAUTION:
          * --------
-         * In the comment of this function, it is assumed that y0<=y1,
+         * In the comments of this function, it is assumed that y0<=y1,
          * to simplify the explanations.
-         * The source code is handled y0<=y1 and y0>y1.
+         * The source code is supporting y0<=y1 and y0>y1.
          */
         int numCrosses = crossings;
 
@@ -549,13 +491,13 @@ public interface Segment2ai<
                 side1 = computeSideLinePoint(sx2, sy2, sx1, sy1, x0, y0);
                 side2 = computeSideLinePoint(sx2, sy2, sx1, sy1, x1, y1);
             }
-            if (side1 <= 0 || side2 <= 0) {
+            if (side1 >= 0 || side2 >= 0) {
                 // At least one point is on the side of the shadow.
                 // Now we compute the intersection with the up and bottom borders.
                 // Intersection is obtained by computed the crossing value from
                 // the two points of the segment.
-                final int n1 = computeCrossingsFromPoint(0, sx1, sy1, x0, y0, x1, y1, firstIsTop, !firstIsTop);
-                final int n2 = computeCrossingsFromPoint(0, sx2, sy2, x0, y0, x1, y1, !firstIsTop, firstIsTop);
+                final int n1 = computeCrossingsAndXFromPoint(0, sx1, sy1, x0, y0, x1, y1, firstIsTop, !firstIsTop, null);
+                final int n2 = computeCrossingsAndXFromPoint(0, sx2, sy2, x0, y0, x1, y1, !firstIsTop, firstIsTop, null);
 
                 // The total crossing value must be updated with the border's crossing values.
                 numCrosses += n1 + n2;
@@ -787,7 +729,7 @@ public interface Segment2ai<
             int px, int py,
             int x0, int y0,
             int x1, int y1) {
-        return computeCrossingsFromPoint(crossing, px, py, x0, y0, x1, y1, true, true);
+        return computeCrossingsAndXFromPoint(crossing, px, py, x0, y0, x1, y1, true, true, null);
     }
 
     /**
@@ -815,10 +757,13 @@ public interface Segment2ai<
      * @param enableTopBorder indicates if the top border must be enabled in the crossing computation.
      * @param enableBottomBorder indicates if the bottom border must be enabled in the crossing computation.
      * @return the crossing; or {@link MathConstants#SHAPE_INTERSECTS} if the segment is on the point.
+     * @deprecated see {@link #computeCrossingsAndXFromPoint(int, int, int, int, int, int, int, boolean,
+     *     boolean, OutputParameter)}
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-            "checkstyle:npathcomplexity"})
+    @Inline("Segment2ai.computeCrossingsAndXFromPoint($1,$2,$3,$4,$5,$6,$7,$8,$9,null)")
+    @Deprecated
+    @SuppressWarnings("checkstyle:parameternumber")
     static int computeCrossingsFromPoint(
             int crossing,
             int px, int py,
@@ -826,6 +771,47 @@ public interface Segment2ai<
             int x1, int y1,
             boolean enableTopBorder,
             boolean enableBottomBorder) {
+        return computeCrossingsAndXFromPoint(crossing, px, py, x0, y0, x1, y1, enableTopBorder, enableBottomBorder, null);
+    }
+
+    /**
+     * Calculates the number of times the line from (x0, y0) to (x1, y1)
+     * crosses the up/bottom borders of the ray extending to the right from (px, py).
+     * +x is returned for a crossing where the Y coordinate is increasing.
+     * -x is returned for a crossing where the Y coordinate is decreasing.
+     * x is the number of border crossed by the lines.
+     *
+     * <p>The borders of the segment are the two side limits between the cells covered by the segment
+     * and the adjacents cells (not covered by the segment).
+     * In the following figure, the point (px;py) is represented.
+     * The "shadow line" is the projection of (px;py) on the right.
+     * The red lines represent the up and bottom borders.
+     *
+     * <p><a href="doc-files/crossing_point.png"><img src="doc-files/crossing_point.png" width="300"/></a>
+     *
+     * @param crossing is the initial value of the crossing.
+     * @param px is the reference point to test.
+     * @param py is the reference point to test.
+     * @param x0 is the first point of the line.
+     * @param y0 is the first point of the line.
+     * @param x1 is the second point of the line.
+     * @param y1 is the secondpoint of the line.
+     * @param enableTopBorder indicates if the top border must be enabled in the crossing computation.
+     * @param enableBottomBorder indicates if the bottom border must be enabled in the crossing computation.
+     * @param xCoordinate output parameter for the x coordinate that is intersecting.
+     * @return the crossing; or {@link MathConstants#SHAPE_INTERSECTS} if the segment is on the point.
+     */
+    @Pure
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
+            "checkstyle:npathcomplexity"})
+    static int computeCrossingsAndXFromPoint(
+            int crossing,
+            int px, int py,
+            int x0, int y0,
+            int x1, int y1,
+            boolean enableTopBorder,
+            boolean enableBottomBorder,
+            OutputParameter<Integer> xCoordinate) {
         // The line is horizontal, impossible to intersect the borders.
         if (y0 == y1) {
             return crossing;
@@ -873,6 +859,9 @@ public interface Segment2ai<
                         if (y1 < py && enableTopBorder) {
                             --numCrosses;
                         }
+                    }
+                    if (xCoordinate != null) {
+                        xCoordinate.set(Integer.valueOf(p.ix()));
                     }
                     return numCrosses;
                 }
@@ -1351,7 +1340,10 @@ public interface Segment2ai<
 
     @Override
     default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
-        throw new UnsupportedOperationException();
+        assert path != null : AssertMessages.notNullParameter();
+        final P point = getGeomFactory().newPoint();
+        Path2ai.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
+        return point;
     }
 
     @Pure
@@ -1804,16 +1796,12 @@ public interface Segment2ai<
             super(segment);
             assert transform != null : AssertMessages.notNullParameter(1);
             this.transform = transform;
-            if (segment.getX1() == segment.getX2() && segment.getY1() == segment.getY2()) {
-                this.index = 2;
-            } else {
-                this.p1 = new InnerComputationPoint2ai();
-                this.p2 = new InnerComputationPoint2ai();
-                this.x1 = segment.getX1();
-                this.y1 = segment.getY1();
-                this.x2 = segment.getX2();
-                this.y2 = segment.getY2();
-            }
+            this.p1 = new InnerComputationPoint2ai();
+            this.p2 = new InnerComputationPoint2ai();
+            this.x1 = segment.getX1();
+            this.y1 = segment.getY1();
+            this.x2 = segment.getX2();
+            this.y2 = segment.getY2();
         }
 
         @Override
@@ -1884,14 +1872,10 @@ public interface Segment2ai<
          */
         public SegmentPathIterator(Segment2ai<?, ?, IE, ?, ?, ?> segment) {
             super(segment);
-            if (segment.getX1() == segment.getX2() && segment.getY1() == segment.getY2()) {
-                this.index = 2;
-            } else {
-                this.x1 = segment.getX1();
-                this.y1 = segment.getY1();
-                this.x2 = segment.getX2();
-                this.y2 = segment.getY2();
-            }
+            this.x1 = segment.getX1();
+            this.y1 = segment.getY1();
+            this.x2 = segment.getX2();
+            this.y2 = segment.getY2();
         }
 
         @Override

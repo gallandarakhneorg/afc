@@ -666,32 +666,102 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
     }
 
     @Test
-    public void staticComputeClosestPoint() {
+    public void staticComputeClosestPointRectanglePoint() {
         Point2D p;
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPoint(5, 8, 15, 13, 5, 8, p);
+        Rectangle2ai.computeClosestPointRectanglePoint(5, 8, 15, 13, 5, 8, p);
         assertNotNull(p);
         assertEquals(5, p.ix());
         assertEquals(8, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPoint(5, 8, 15, 13, 10, 10, p);
+        Rectangle2ai.computeClosestPointRectanglePoint(5, 8, 15, 13, 10, 10, p);
         assertNotNull(p);
         assertEquals(10, p.ix());
         assertEquals(10, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPoint(5, 8, 15, 13, 4, 8, p);
+        Rectangle2ai.computeClosestPointRectanglePoint(5, 8, 15, 13, 4, 8, p);
         assertNotNull(p);
         assertEquals(5, p.ix());
         assertEquals(8, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPoint(5, 8, 15, 13, 0, 0, p);
+        Rectangle2ai.computeClosestPointRectanglePoint(5, 8, 15, 13, 0, 0, p);
         assertNotNull(p);
         assertEquals(5, p.ix());
         assertEquals(8, p.iy());
+    }
+
+    @Test
+    public void staticComputeClosestPointRectangleRectangle() {
+        Point2D p;
+
+        p = createPoint(0, 0);
+        Rectangle2ai.computeClosestPointRectangleRectangle(5, 8, 15, 13, 5, 8, 7, 9, p);
+        assertNotNull(p);
+        assertEquals(6, p.ix());
+        assertEquals(8, p.iy());
+
+        p = createPoint(0, 0);
+        Rectangle2ai.computeClosestPointRectangleRectangle(5, 8, 15, 13, 10, 10, 12, 12, p);
+        assertNotNull(p);
+        assertEquals(11, p.ix());
+        assertEquals(11, p.iy());
+
+        p = createPoint(0, 0);
+        Rectangle2ai.computeClosestPointRectangleRectangle(5, 8, 15, 13, 4, 8, 6, 10, p);
+        assertNotNull(p);
+        assertEquals(5, p.ix());
+        assertEquals(9, p.iy());
+
+        p = createPoint(0, 0);
+        Rectangle2ai.computeClosestPointRectangleRectangle(5, 8, 15, 13, 0, 0, 2, 2, p);
+        assertNotNull(p);
+        assertEquals(5, p.ix());
+        assertEquals(8, p.iy());
+
+        p = createPoint(0, 0);
+        Rectangle2ai.computeClosestPointRectangleRectangle(5, 8, 15, 13, 7, 20, 50, 32, p);
+        assertNotNull(p);
+        assertEquals(15, p.ix());
+        assertEquals(13, p.iy());
+    }
+
+    @Test
+    public void staticComputeClosestPointRectangleSegment() {
+        Point2D p;
+
+        p = createPoint(0, 0);
+        Rectangle2ai.computeClosestPointRectangleSegment(5, 8, 15, 13, 5, 8, 7, 9, p);
+        assertNotNull(p);
+        assertEquals(5, p.ix());
+        assertEquals(8, p.iy());
+
+        p = createPoint(0, 0);
+        Rectangle2ai.computeClosestPointRectangleSegment(5, 8, 15, 13, 10, 10, 12, 12, p);
+        assertNotNull(p);
+        assertEquals(10, p.ix());
+        assertEquals(10, p.iy());
+
+        p = createPoint(0, 0);
+        Rectangle2ai.computeClosestPointRectangleSegment(5, 8, 15, 13, 4, 8, 6, 10, p);
+        assertNotNull(p);
+        assertEquals(5, p.ix());
+        assertEquals(9, p.iy());
+
+        p = createPoint(0, 0);
+        Rectangle2ai.computeClosestPointRectangleSegment(5, 8, 15, 13, 0, 0, 2, 2, p);
+        assertNotNull(p);
+        assertEquals(5, p.ix());
+        assertEquals(8, p.iy());
+
+        p = createPoint(0, 0);
+        Rectangle2ai.computeClosestPointRectangleSegment(5, 8, 15, 13, 7, 20, 50, 32, p);
+        assertNotNull(p);
+        assertEquals(7, p.ix());
+        assertEquals(13, p.iy());
     }
 
     @Test
@@ -963,93 +1033,101 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
     }
 
     @Test
-    @Ignore
-    public void getDistanceSquaredRectangle2ai() {
-        assert(false);
-    }
-
-    @Test
-    @Ignore
-    public void getDistanceSquaredCircle2ai() {
-        assert(false);
-    }
-
-    @Test
-    @Ignore
-    public void getDistanceSquaredMultiShape2ai() {
-        assert(false);
-    }
-
-    @Test
-    @Ignore
-    public void getDistanceSquaredSegment2ai() {
-        assert(false);
-    }
-
-    @Test
-    @Ignore
-    public void getDistanceSquaredPath2ai() {
-        assert(false);
-    }
-
-    @Test
-    @Ignore
-    public void getClosestPointToRectangle2ai() {
-        assert(false);
-    }
-
-    @Test
-    @Ignore
     public void getClosestPointToCircle2ai() {
-        assert(false);
+        assertIntPointEquals(5, 8, this.shape.getClosestPointTo(createCircle(0, 0, 2)));
+        assertIntPointEquals(11, 13, this.shape.getClosestPointTo(createCircle(11, 20, 2)));
+        assertIntPointEquals(5, 10, this.shape.getClosestPointTo(createCircle(2, 10, 2)));
+        assertClosestPointInBothShapes(this.shape, createCircle(16, 14, 2));
+        assertClosestPointInBothShapes(this.shape, createCircle(11, 10, 2));
     }
 
     @Test
-    @Ignore
+    public void getDistanceSquaredCircle2ai() {
+        assertEpsilonEquals(52, this.shape.getDistanceSquared(createCircle(0, 0, 2)));
+        assertEpsilonEquals(25, this.shape.getDistanceSquared(createCircle(11, 20, 2)));
+        assertEpsilonEquals(1, this.shape.getDistanceSquared(createCircle(2, 10, 2)));
+        assertEpsilonEquals(0, this.shape.getDistanceSquared(createCircle(16, 14, 2)));
+        assertEpsilonEquals(0, this.shape.getDistanceSquared(createCircle(11, 10, 2)));
+    }
+
+    @Test
+    public void getClosestPointToRectangle2ai() {
+        assertIntPointEquals(5, 8, this.shape.getClosestPointTo(createRectangle(0, 0, 2, 2)));
+        assertIntPointEquals(12, 13, this.shape.getClosestPointTo(createRectangle(11, 20, 2, 2)));
+        assertIntPointEquals(5, 11, this.shape.getClosestPointTo(createRectangle(2, 10, 2, 2)));
+        assertClosestPointInBothShapes(this.shape, createRectangle(15, 13, 2, 2));
+        assertClosestPointInBothShapes(this.shape, createRectangle(11, 10, 2, 2));
+    }
+
+    @Test
+    public void getDistanceSquaredRectangle2ai() {
+        assertEpsilonEquals(45, this.shape.getDistanceSquared(createRectangle(0, 0, 2, 2)));
+        assertEpsilonEquals(49, this.shape.getDistanceSquared(createRectangle(11, 20, 2, 2)));
+        assertEpsilonEquals(1, this.shape.getDistanceSquared(createRectangle(2, 10, 2, 2)));
+        assertEpsilonEquals(0, this.shape.getDistanceSquared(createRectangle(15, 13, 2, 2)));
+        assertEpsilonEquals(0, this.shape.getDistanceSquared(createRectangle(11, 10, 2, 2)));
+    }
+
+    @Test
     public void getClosestPointToSegment2ai() {
-        assert(false);
+        assertIntPointEquals(5, 8, this.shape.getClosestPointTo(createSegment(0, 0, 2, 2)));
+        assertIntPointEquals(15, 8, this.shape.getClosestPointTo(createSegment(0, 0, 18, 8)));
+        assertIntPointEquals(15, 13, this.shape.getClosestPointTo(createRectangle(18, 8, 15, 14)));
+        assertClosestPointInBothShapes(this.shape, createRectangle(6, 10, 13, 12));
     }
 
     @Test
-    @Ignore
+    public void getDistanceSquaredSegment2ai() {
+        assertEpsilonEquals(45, this.shape.getDistanceSquared(createSegment(0, 0, 2, 2)));
+        assertEpsilonEquals(1, this.shape.getDistanceSquared(createSegment(0, 0, 18, 8)));
+        assertEpsilonEquals(1, this.shape.getDistanceSquared(createSegment(18, 8, 15, 14)));
+        assertEpsilonEquals(0, this.shape.getDistanceSquared(createSegment(6, 10, 13, 12)));
+    }
+
+    protected MultiShape2ai createTestMultiShape(int dx, int dy) {
+        MultiShape2ai multishape = createMultiShape();
+        Segment2ai segment = createSegment(dx - 5, dy - 4, dx - 8, dy - 1);
+        Rectangle2ai rectangle = createRectangle(dx + 2, dy + 1, 3, 2);
+        multishape.add(segment);
+        multishape.add(rectangle);
+        return multishape;
+    }
+
+    @Test
     public void getClosestPointToMultiShape2ai() {
-        assert(false);
+        assertIntPointEquals(5, 8, this.shape.getClosestPointTo(createTestMultiShape(0, 0)));
+        assertIntPointEquals(10, 8, this.shape.getClosestPointTo(createTestMultiShape(18, 8)));
+        assertClosestPointInBothShapes(this.shape, createTestMultiShape(6, 10));
     }
 
     @Test
-    @Ignore
+    public void getDistanceSquaredMultiShape2ai() {
+        assertEpsilonEquals(25, this.shape.getDistanceSquared(createTestMultiShape(0, 0)));
+        assertEpsilonEquals(1, this.shape.getDistanceSquared(createTestMultiShape(18, 8)));
+        assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestMultiShape(6, 10)));
+    }
+
+    protected Path2ai createTestPath(int dx, int dy) {
+        Path2ai path = createPath();
+        path.moveTo(dx + 5, dy - 5);
+        path.lineTo(dx + 20, dy + 5);
+        path.lineTo(dx + 0, dy + 20);
+        path.lineTo(dx - 5, dy);
+        return path;
+    }
+
+    @Test
     public void getClosestPointToPath2ai() {
-        assert(false);
+        assertClosestPointInBothShapes(this.shape, createTestPath(0, 0));
+        assertIntPointEquals(15, 8, this.shape.getClosestPointTo(createTestPath(47, 8)));
+        assertClosestPointInBothShapes(this.shape, createTestPath(6, 10));
     }
 
     @Test
-    @Ignore
-    public void getFarthestPointToRectangle2ai() {
-        assert(false);
-    }
-
-    @Test
-    @Ignore
-    public void getFarthestPointToCircle2ai() {
-        assert(false);
-    }
-
-    @Test
-    @Ignore
-    public void getFarthestPointToSegment2ai() {
-        assert(false);
-    }
-
-    @Test
-    @Ignore
-    public void getFarthestPointToMultiShape2ai() {
-        assert(false);
-    }
-
-    @Test
-    @Ignore
-    public void getFarthestPointToPath2ai() {
-        assert(false);
+    public void getDistanceSquaredPath2ai() {
+        assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(0, 0)));
+        assertEpsilonEquals(729, this.shape.getDistanceSquared(createTestPath(47, 8)));
+        assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(6, 10)));
     }
 
 }

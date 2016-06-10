@@ -259,27 +259,92 @@ public interface MultiShape2ai<
 
 	@Override
 	default P getClosestPointTo(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
-		throw new UnsupportedOperationException();
+	    assert rectangle != null : AssertMessages.notNullParameter();
+        double min = Double.POSITIVE_INFINITY;
+        final P closest = getGeomFactory().newPoint();
+        P point;
+        double dist;
+        for (final CT innerShape : getBackendDataList()) {
+            point = innerShape.getClosestPointTo(rectangle);
+            dist = rectangle.getDistanceSquared(point);
+            if (dist < min) {
+                min = dist;
+                closest.set(point);
+            }
+        }
+        return closest;
 	}
 
 	@Override
 	default P getClosestPointTo(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-		throw new UnsupportedOperationException();
+	    assert circle != null : AssertMessages.notNullParameter();
+        double min = Double.POSITIVE_INFINITY;
+        final P closest = getGeomFactory().newPoint();
+        P point;
+        double dist;
+        for (final CT innerShape : getBackendDataList()) {
+            point = innerShape.getClosestPointTo(circle);
+            dist = circle.getDistanceSquared(point);
+            if (dist < min) {
+                min = dist;
+                closest.set(point);
+            }
+        }
+        return closest;
 	}
 
 	@Override
 	default P getClosestPointTo(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
-		throw new UnsupportedOperationException();
+	    assert segment != null : AssertMessages.notNullParameter();
+        double min = Double.POSITIVE_INFINITY;
+        final P closest = getGeomFactory().newPoint();
+        P point;
+        double dist;
+        for (final CT innerShape : getBackendDataList()) {
+            point = innerShape.getClosestPointTo(segment);
+            dist = segment.getDistanceSquared(point);
+            if (dist < min) {
+                min = dist;
+                closest.set(point);
+            }
+        }
+        return closest;
 	}
 
 	@Override
 	default P getClosestPointTo(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-		throw new UnsupportedOperationException();
+	    assert multishape != null : AssertMessages.notNullParameter();
+        double min = Double.POSITIVE_INFINITY;
+        final P closest = getGeomFactory().newPoint();
+        P point;
+        double dist;
+        for (final CT innerShape : getBackendDataList()) {
+            point = innerShape.getClosestPointTo(multishape);
+            dist = multishape.getDistanceSquared(point);
+            if (dist < min) {
+                min = dist;
+                closest.set(point);
+            }
+        }
+        return closest;
 	}
 
 	@Override
 	default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
-		throw new UnsupportedOperationException();
+	    assert path != null : AssertMessages.notNullParameter();
+        double min = Double.POSITIVE_INFINITY;
+        final P closest = getGeomFactory().newPoint();
+        P point;
+        double dist;
+        for (final CT innerShape : getBackendDataList()) {
+            point = innerShape.getClosestPointTo(path);
+            dist = path.getDistanceSquared(point);
+            if (dist < min) {
+                min = dist;
+                closest.set(point);
+            }
+        }
+        return closest;
 	}
 
 	/** Abstract iterator on the path elements of the multishape.

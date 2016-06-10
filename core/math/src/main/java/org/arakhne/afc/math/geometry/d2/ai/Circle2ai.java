@@ -447,7 +447,7 @@ public interface Circle2ai<
     static boolean intersectsCircleRectangle(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
         final Point2D<?, ?> point = new InnerComputationPoint2ai();
-        Rectangle2ai.computeClosestPoint(x2, y2, x3, y3, x1, y1, point);
+        Rectangle2ai.computeClosestPointRectanglePoint(x2, y2, x3, y3, x1, y1, point);
         return contains(x1, y1, radius, point.ix(), point.iy());
     }
 
@@ -686,27 +686,30 @@ public interface Circle2ai<
 
     @Override
     default P getClosestPointTo(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
-        throw new UnsupportedOperationException();
+        assert rectangle != null : AssertMessages.notNullParameter();
+        final Point2D<?, ?> point = rectangle.getClosestPointTo(getCenter());
+        return getClosestPointTo(point);
     }
 
     @Override
     default P getClosestPointTo(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-        throw new UnsupportedOperationException();
+        assert circle != null : AssertMessages.notNullParameter();
+        final Point2D<?, ?> point = circle.getClosestPointTo(getCenter());
+        return getClosestPointTo(point);
     }
 
     @Override
     default P getClosestPointTo(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    default P getClosestPointTo(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-        throw new UnsupportedOperationException();
+        assert segment != null : AssertMessages.notNullParameter();
+        final Point2D<?, ?> point = segment.getClosestPointTo(getCenter());
+        return getClosestPointTo(point);
     }
 
     @Override
     default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
-        throw new UnsupportedOperationException();
+        assert path != null : AssertMessages.notNullParameter();
+        final Point2D<?, ?> point = path.getClosestPointTo(getCenter());
+        return getClosestPointTo(point);
     }
 
     @Pure
@@ -925,13 +928,9 @@ public interface Circle2ai<
          */
         public CirclePathIterator(Circle2ai<?, ?, IE, ?, ?, ?> circle) {
             super(circle);
-            if (circle.isEmpty()) {
-                this.index = 6;
-            } else {
-                this.radius = circle.getRadius();
-                this.x = circle.getX() - this.radius;
-                this.y = circle.getY() - this.radius;
-            }
+            this.radius = circle.getRadius();
+            this.x = circle.getX() - this.radius;
+            this.y = circle.getY() - this.radius;
         }
 
         @Override
@@ -1029,17 +1028,13 @@ public interface Circle2ai<
             super(circle);
             assert transform != null : AssertMessages.notNullParameter(1);
             this.transform = transform;
-            if (circle.isEmpty()) {
-                this.index = 6;
-            } else {
-                this.p1 = new InnerComputationPoint2ai();
-                this.p2 = new InnerComputationPoint2ai();
-                this.ptmp1 = new InnerComputationPoint2ai();
-                this.ptmp2 = new InnerComputationPoint2ai();
-                this.radius = circle.getRadius();
-                this.x = circle.getX() - this.radius;
-                this.y = circle.getY() - this.radius;
-            }
+            this.p1 = new InnerComputationPoint2ai();
+            this.p2 = new InnerComputationPoint2ai();
+            this.ptmp1 = new InnerComputationPoint2ai();
+            this.ptmp2 = new InnerComputationPoint2ai();
+            this.radius = circle.getRadius();
+            this.x = circle.getX() - this.radius;
+            this.y = circle.getY() - this.radius;
         }
 
         @Override

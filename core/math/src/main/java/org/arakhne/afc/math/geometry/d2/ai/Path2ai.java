@@ -1640,27 +1640,50 @@ public interface Path2ai<
 
 	@Override
 	default P getClosestPointTo(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
-		throw new UnsupportedOperationException();
+	    final P result = getGeomFactory().newPoint();
+        if (isCurved()) {
+            Path2ai.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                    rectangle.getPathIterator(), result);
+        } else {
+            Path2ai.getClosestPointTo(getPathIterator(), rectangle.getPathIterator(), result);
+        }
+        return result;
 	}
 
 	@Override
 	default P getClosestPointTo(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
-		throw new UnsupportedOperationException();
+	    final P result = getGeomFactory().newPoint();
+        if (isCurved()) {
+            Path2ai.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                    circle.getX(), circle.getY(), result);
+        } else {
+            Path2ai.getClosestPointTo(getPathIterator(), circle.getX(), circle.getY(), result);
+        }
+        return result;
 	}
 
 	@Override
 	default P getClosestPointTo(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	default P getClosestPointTo(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-		throw new UnsupportedOperationException();
+	    final P result = getGeomFactory().newPoint();
+        if (isCurved()) {
+            Path2ai.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                    segment.getPathIterator(), result);
+        } else {
+            Path2ai.getClosestPointTo(getPathIterator(), segment.getPathIterator(), result);
+        }
+        return result;
 	}
 
 	@Override
 	default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
-		throw new UnsupportedOperationException();
+	    final P result = getGeomFactory().newPoint();
+        if (isCurved()) {
+            Path2ai.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                    path.getPathIterator(), result);
+        } else {
+            Path2ai.getClosestPointTo(getPathIterator(), path.getPathIterator(), result);
+        }
+        return result;
 	}
 
 	/** Replies the point on the path that is farthest to the given point.

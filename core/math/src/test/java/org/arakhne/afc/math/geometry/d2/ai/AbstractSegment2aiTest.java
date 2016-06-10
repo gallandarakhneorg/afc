@@ -262,32 +262,25 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 		Point2D p;
 		
 		p = this.shape.getClosestPointTo(createPoint(0,0));
-		assertEquals(0, p.ix());
-		assertEquals(0, p.iy());
+		assertIntPointEquals(0, 0, p);
 
 		p = this.shape.getClosestPointTo(createPoint(1,1));
-		assertEquals(2, p.ix());
-		assertEquals(1, p.iy());
+		assertIntPointEquals(1, 0, p);
 
 		p = this.shape.getClosestPointTo(createPoint(2,2));
-		assertEquals(2, p.ix());
-		assertEquals(1, p.iy());
+		assertIntPointEquals(2, 1, p);
 
 		p = this.shape.getClosestPointTo(createPoint(-2,2));
-		assertEquals(0, p.ix());
-		assertEquals(0, p.iy());
+		assertIntPointEquals(0, 0, p);
 
 		p = this.shape.getClosestPointTo(createPoint(0,1));
-		assertEquals(0, p.ix());
-		assertEquals(0, p.iy());
+		assertIntPointEquals(0, 0, p);
 
 		p = this.shape.getClosestPointTo(createPoint(10,-1));
-		assertEquals(7, p.ix());
-		assertEquals(3, p.iy());
+		assertIntPointEquals(7, 3, p);
 
 		p = this.shape.getClosestPointTo(createPoint(2,4));
-		assertEquals(4, p.ix());
-		assertEquals(2, p.iy());
+		assertIntPointEquals(4, 2, p);
 	}
 
 	@Test
@@ -765,8 +758,8 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 
 		p = createPoint(0, 0);
 		Segment2ai.computeClosestPointToPoint(0, 0, 10, 5, 1, 1, p);
-		assertEquals(2, p.ix());
-		assertEquals(1, p.iy());
+		assertEquals(1, p.ix());
+		assertEquals(0, p.iy());
 
 		p = createPoint(0, 0);
 		Segment2ai.computeClosestPointToPoint(0, 0, 10, 5, 2, 2, p);
@@ -800,38 +793,31 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 		
 		p = createPoint(0, 0);
 		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, 0, 0, p);
-		assertEquals(10, p.ix());
-		assertEquals(5, p.iy());
+		assertIntPointEquals(10, 5, p);
 
 		p = createPoint(0, 0);
 		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, 1, 1, p);
-		assertEquals(10, p.ix());
-		assertEquals(5, p.iy());
+		assertIntPointEquals(10, 5, p);
 
 		p = createPoint(0, 0);
 		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, 2, 2, p);
-		assertEquals(10, p.ix());
-		assertEquals(5, p.iy());
+		assertIntPointEquals(10, 5, p);
 
 		p = createPoint(0, 0);
 		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, -2, 2, p);
-		assertEquals(10, p.ix());
-		assertEquals(5, p.iy());
+		assertIntPointEquals(10, 5, p);
 
 		p = createPoint(0, 0);
 		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, 0, 1, p);
-		assertEquals(10, p.ix());
-		assertEquals(5, p.iy());
+		assertIntPointEquals(10, 5, p);
 
 		p = createPoint(0, 0);
 		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, 10, -1, p);
-		assertEquals(0, p.ix());
-		assertEquals(0, p.iy());
+		assertIntPointEquals(0, 0, p);
 
 		p = createPoint(0, 0);
 		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, 2, 4, p);
-		assertEquals(10, p.ix());
-		assertEquals(5, p.iy());
+		assertIntPointEquals(10, 5, p);
 	}
 	
 	@Test
@@ -866,8 +852,26 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
         p1 = createPoint(0, 0);
         p2 = createPoint(0, 0);
         assertEpsilonEquals(0, Segment2ai.computeClosestPointToSegment(0, 0, 10, 5, 0, 15, 10, 0, p1, p2));
-        assertIntPointEquals(7, 3, p1);
-        assertIntPointEquals(8, 3, p2);
+        assertIntPointEquals(8, 4, p1);
+        assertIntPointEquals(7, 4, p2);
+
+        p1 = createPoint(0, 0);
+        p2 = createPoint(0, 0);
+        assertEpsilonEquals(1, Segment2ai.computeClosestPointToSegment(2, 2, 3, 1, 3, -1, 8, 8, p1, p2));
+        assertIntPointEquals(3, 1, p1);
+        assertIntPointEquals(4, 1, p2);
+
+        p1 = createPoint(0, 0);
+        p2 = createPoint(0, 0);
+        assertEpsilonEquals(0, Segment2ai.computeClosestPointToSegment(0, 0, 2, 2, 3, -1, 1, 1, p1, p2));
+        assertIntPointEquals(1, 1, p1);
+        assertIntPointEquals(1, 1, p2);
+
+        p1 = createPoint(0, 0);
+        p2 = createPoint(0, 0);
+        assertEpsilonEquals(89, Segment2ai.computeClosestPointToSegment(0, 0, 10, 5, 0, 15, 5, 13, p1, p2));
+        assertIntPointEquals(10, 5, p1);
+        assertIntPointEquals(5, 13, p2);
 	}
 
     @Test
@@ -893,8 +897,13 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 
     @Test
 	public void staticComputeSideLinePoint() {
-		assertEquals(-1, Segment2ai.computeSideLinePoint(0, 0, 10, 5, 7, 0));
-		assertEquals(1, Segment2ai.computeSideLinePoint(0, 0, 10, 5, 4, 4));
+        assertEquals(0, Segment2ai.computeSideLinePoint(0, 0, 1, 1, 0, 0));
+        assertEquals(0, Segment2ai.computeSideLinePoint(0, 0, 1, 1, 1, 1));
+        assertEquals(0, Segment2ai.computeSideLinePoint(0, 0, 1, 1, 2, 2));
+        assertEquals(1, Segment2ai.computeSideLinePoint(0, 0, 1, 1, 120, 0));
+        assertEquals(0, Segment2ai.computeSideLinePoint(0, 0, 1, 1, -20, -20));
+        assertEquals(-1, Segment2ai.computeSideLinePoint(0, 0, 1, 1, 0, 1));
+        assertEquals(-1, Segment2ai.computeSideLinePoint(0, 0, 1, 1, 0, 120));
 	}
 
 	@Test
@@ -1194,7 +1203,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
     @Test
     public void getClosestPointToCircle2ai() {
         assertClosestPointInBothShapes(this.shape, createCircle(0, 0, 2));
-        assertIntPointEquals(2, 1, this.shape.getClosestPointTo(createCircle(0, 15, 2)));
+        assertIntPointEquals(6, 3, this.shape.getClosestPointTo(createCircle(0, 15, 2)));
         assertIntPointEquals(10, 5, this.shape.getClosestPointTo(createCircle(15, 0, 2)));
         assertIntPointEquals(6, 3, this.shape.getClosestPointTo(createCircle(4, 5, 2)));
     }
@@ -1202,7 +1211,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
     @Test
     public void getDistanceSquaredCircle2ai() {
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createCircle(0, 0, 2)));
-        assertEpsilonEquals(145, this.shape.getDistanceSquared(createCircle(0, 15, 2)));
+        assertEpsilonEquals(125, this.shape.getDistanceSquared(createCircle(0, 15, 2)));
         assertEpsilonEquals(25, this.shape.getDistanceSquared(createCircle(15, 0, 2)));
         assertEpsilonEquals(1, this.shape.getDistanceSquared(createCircle(4, 5, 2)));
     }
@@ -1227,7 +1236,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
     public void getClosestPointToRectangle2ai() {
         assertClosestPointInBothShapes(this.shape, createRectangle(0, 0, 3, 2));
         assertIntPointEquals(8, 4, this.shape.getClosestPointTo(createRectangle(2, 11, 3, 2)));
-        assertIntPointEquals(6, 3, this.shape.getClosestPointTo(createRectangle(2, 3, 3, 2)));
+        assertIntPointEquals(5, 2, this.shape.getClosestPointTo(createRectangle(2, 3, 3, 2)));
         assertClosestPointInBothShapes(this.shape, createRectangle(3, 3, 3, 2));
         assertIntPointEquals(9, 4, this.shape.getClosestPointTo(createRectangle(15, -10, 3, 2)));
     }
@@ -1254,49 +1263,37 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
     public void getClosestPointToMultiShape2ai() {
         assertClosestPointInBothShapes(this.shape, createTestMultiShape(0, 0));
         assertIntPointEquals(0, 0, this.shape.getClosestPointTo(createTestMultiShape(0, 15)));
-        assertIntPointEquals(7, 3, this.shape.getClosestPointTo(createTestMultiShape(15, 0)));
+        assertIntPointEquals(5, 2, this.shape.getClosestPointTo(createTestMultiShape(15, 0)));
     }
         
     @Test
     public void getDistanceSquaredMultiShape2ai() {
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestMultiShape(0, 0)));
         assertEpsilonEquals(146, this.shape.getDistanceSquared(createTestMultiShape(0, 15)));
-        assertEpsilonEquals(16, this.shape.getDistanceSquared(createTestMultiShape(15, 0)));
+        assertEpsilonEquals(13, this.shape.getDistanceSquared(createTestMultiShape(15, 0)));
     }
 
     protected Path2ai createTestPath(int dx, int dy) {
         Path2ai path = createPath();
-        path.moveTo(5, -5);
-        path.lineTo(20, 5);
-        path.lineTo(0, 20);
-        path.lineTo(-5, 0);
-        return path;
-    }
-
-    protected Path2ai createTestPath(int dx, int dy, PathWindingRule rule) {
-        Path2ai path = createPath(rule);
-        path.moveTo(5, -5);
-        path.lineTo(20, 5);
-        path.lineTo(0, 20);
-        path.lineTo(-5, 0);
-        path.closePath();
+        path.moveTo(dx + 5, dy - 5);
+        path.lineTo(dx + 20, dy + 5);
+        path.lineTo(dx + 0, dy + 20);
+        path.lineTo(dx - 5, dy);
         return path;
     }
 
     @Test
-    @Ignore
     public void getClosestPointToPath2ai() {
         assertClosestPointInBothShapes(this.shape, createTestPath(0, 0));
-        assertIntPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(0, 15)));
-        assertIntPointEquals(7, 3, this.shape.getClosestPointTo(createTestPath(15, 0)));
+        assertIntPointEquals(8, 4, this.shape.getClosestPointTo(createTestPath(0, 15)));
+        assertIntPointEquals(10, 5, this.shape.getClosestPointTo(createTestPath(15, 0)));
     }
 
     @Test
-    @Ignore
     public void getDistanceSquaredPath2ai() {
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(0, 0)));
-        assertEpsilonEquals(146, this.shape.getDistanceSquared(createTestPath(0, 15)));
-        assertEpsilonEquals(16, this.shape.getDistanceSquared(createTestPath(15, 0)));
+        assertEpsilonEquals(45, this.shape.getDistanceSquared(createTestPath(0, 15)));
+        assertEpsilonEquals(1, this.shape.getDistanceSquared(createTestPath(15, 0)));
     }
 
 }

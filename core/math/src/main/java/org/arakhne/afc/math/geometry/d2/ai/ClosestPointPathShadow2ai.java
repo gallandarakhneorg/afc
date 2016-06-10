@@ -21,9 +21,9 @@
 package org.arakhne.afc.math.geometry.d2.ai;
 
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.util.OutputParameter;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
 
@@ -294,34 +294,17 @@ class ClosestPointPathShadow2ai {
     }
 
     private void setCrossingCoordinateForYMax(int x, int y) {
-        if (MathUtil.compareEpsilon(y, this.boundingMaxY) >= 0 && x > this.x4ymax) {
+        if (y >= this.boundingMaxY && x > this.x4ymax) {
             this.x4ymax = x;
             this.hasX4ymax = true;
         }
     }
 
     private void setCrossingCoordinateForYMin(int x, int y) {
-        if (MathUtil.compareEpsilon(y, this.boundingMinY) <= 0 && x > this.x4ymin) {
+        if (y <= this.boundingMinY && x > this.x4ymin) {
             this.x4ymin = x;
             this.hasX4ymin = true;
         }
-    }
-
-    private static int getFirstX(int sx0, int sy0, int sx1, int sy1, int y) {
-        final Segment2ai.BresenhamLineIterator<? extends Point2D<?, ?>, ?> iterator;
-        if (sx0 <= sx1) {
-            iterator = new Segment2ai.BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, sx0, sy0, sx1, sy1);
-        } else {
-            iterator = new Segment2ai.BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, sx1, sy1, sx0, sy0);
-        }
-        final Point2D<?, ?> point = new InnerComputationPoint2ai();
-        while (iterator.hasNext()) {
-            iterator.next(point);
-            if (point.iy() == y) {
-                return point.ix();
-            }
-        }
-        throw new IllegalStateException();
     }
 
     /** Determine where the segment is crossing the two shadow lines.
@@ -343,10 +326,13 @@ class ClosestPointPathShadow2ai {
             int sx0, int sy0,
             int sx1, int sy1) {
         // Update the global bounds of the shadow.
-        final int shadowXmin = Math.min(shadowX0, shadowX1);
-        final int shadowXmax = Math.max(shadowX0, shadowX1);
         final int shadowYmin = Math.min(shadowY0, shadowY1);
         final int shadowYmax = Math.max(shadowY0, shadowY1);
+
+        if (shadowYmin != this.boundingMinY && shadowYmax != this.boundingMaxY) {
+            // Shadow is not contributing to the crossing computation.
+            return;
+        }
 
         if (sy0 < shadowYmin && sy1 < shadowYmin) {
             // The segment is entirely at the bottom of the shadow.
@@ -356,33 +342,56 @@ class ClosestPointPathShadow2ai {
             // The segment is entirely at the top of the shadow.
             return;
         }
+
+        final int shadowXmin = Math.min(shadowX0, shadowX1);
+        final int shadowXmax = Math.max(shadowX0, shadowX1);
+
         if (sx0 < shadowXmin && sx1 < shadowXmin) {
             // The segment is entirely at the left of the shadow.
             return;
         }
-        if (sx0 >= shadowXmax && sx1 >= shadowXmax) {
+        if (sx0 > shadowXmax && sx1 > shadowXmax) {
             // The line is entirely at the right of the shadow
-            if (sy0 < sy1) {
-                if (sy0 <= shadowYmin) {
-                    final int xintercept = getFirstX(sx0, sy0, sx1, sy1, shadowYmin);
+            final OutputParameter<Integer> param = new OutputParameter<>();
+            if (shadowYmin == shadowYmax) {
+                final int cross = this.crossings;
+                this.crossings = Segment2ai.computeCrossingsAndXFromPoint(
+                        cross,
+                        shadowXmax, shadowYmin,
+                        sx0, sy0, sx1, sy1,
+                        shadowYmin == this.boundingMinY, shadowYmax == this.boundingMaxY, param);
+                if (cross != this.crossings) {
+                    final int xintercept = param.get().intValue();
+                    setCrossingCoordinateForYMax(xintercept, shadowYmin);
                     setCrossingCoordinateForYMin(xintercept, shadowYmin);
-                    ++this.crossings;
-                }
-                if (sy1 >= shadowYmax) {
-                    final int xintercept = getFirstX(sx0, sy0, sx1, sy1, shadowYmax);
-                    setCrossingCoordinateForYMax(xintercept, shadowYmax);
-                    ++this.crossings;
+                    this.crossings = cross;
                 }
             } else {
-                if (sy1 <= shadowYmin) {
-                    final int xintercept = getFirstX(sx0, sy0, sx1, sy1, shadowYmin);
-                    setCrossingCoordinateForYMin(xintercept, shadowYmin);
-                    --this.crossings;
+                if (shadowYmin == this.boundingMinY) {
+                    final int cross = Segment2ai.computeCrossingsAndXFromPoint(
+                            this.crossings,
+                            shadowXmax, shadowYmin,
+                            sx0, sy0, sx1, sy1,
+                            shadowYmin == this.boundingMinY, false, param);
+                    if (cross != this.crossings) {
+                        final int xintercept = param.get().intValue();
+                        setCrossingCoordinateForYMax(xintercept, shadowYmin);
+                        setCrossingCoordinateForYMin(xintercept, shadowYmin);
+                        this.crossings = cross;
+                    }
                 }
-                if (sy0 >= shadowYmax) {
-                    final int xintercept = getFirstX(sx0, sy0, sx1, sy1, shadowYmax);
-                    setCrossingCoordinateForYMax(xintercept, shadowYmax);
-                    --this.crossings;
+                if (shadowYmax == this.boundingMaxY) {
+                    final int cross = Segment2ai.computeCrossingsAndXFromPoint(
+                            this.crossings,
+                            shadowXmax, shadowYmax,
+                            sx0, sy0, sx1, sy1,
+                            false, shadowYmax == this.boundingMaxY, param);
+                    if (cross != this.crossings) {
+                        final int xintercept = param.get().intValue();
+                        setCrossingCoordinateForYMax(xintercept, shadowYmax);
+                        setCrossingCoordinateForYMin(xintercept, shadowYmax);
+                        this.crossings = cross;
+                    }
                 }
             }
         } else if (Segment2ai.intersectsSegmentSegment(
@@ -412,7 +421,7 @@ class ClosestPointPathShadow2ai {
                         shadowX0, shadowY0,
                         sx1, sy1);
             }
-            if (side1 > 0 || side2 > 0) {
+            if (side1 >= 0 || side2 >= 0) {
                 final int x0;
                 final int x1;
                 if (shadowYmin == shadowY0) {
@@ -424,10 +433,10 @@ class ClosestPointPathShadow2ai {
                 }
                 crossSegmentShadowLine(
                         x0, shadowYmin,
-                        sx0, sy0, sx1, sy1);
+                        sx0, sy0, sx1, sy1, true, false);
                 crossSegmentShadowLine(
                         x1, shadowYmax,
-                        sx0, sy0, sx1, sy1);
+                        sx0, sy0, sx1, sy1, false, true);
             }
         }
     }
@@ -444,7 +453,8 @@ class ClosestPointPathShadow2ai {
     private void crossSegmentShadowLine(
             int shadowx, int shadowy,
             int sx0, int sy0,
-            int sx1, int sy1) {
+            int sx1, int sy1,
+            boolean top, boolean bottom) {
         if (shadowy <  sy0 && shadowy <  sy1) {
             // Segment is entirely at the top of shadow line
             return;
@@ -458,19 +468,15 @@ class ClosestPointPathShadow2ai {
             return;
         }
         // Compute the intersection point between the segment and the shadow line
-        final int xintercept = getFirstX(sx0, sy0, sx1, sy1, shadowy);
-        if (shadowx > xintercept) {
-            // The intersection point is on the left of the shadow line.
-            return;
-        }
-
-        setCrossingCoordinateForYMax(xintercept, shadowy);
-        setCrossingCoordinateForYMin(xintercept, shadowy);
-
-        if (sy0 < sy1) {
-            ++this.crossings;
-        } else {
-            --this.crossings;
+        final OutputParameter<Integer> param = new OutputParameter<>();
+        final int cross = Segment2ai.computeCrossingsAndXFromPoint(
+                this.crossings,
+                shadowx, shadowy, sx0, sy0, sx1, sy1, top, bottom, param);
+        if (cross != this.crossings) {
+            final int xintercept = param.get().intValue();
+            setCrossingCoordinateForYMax(xintercept, shadowy);
+            setCrossingCoordinateForYMin(xintercept, shadowy);
+            this.crossings = cross;
         }
     }
 
