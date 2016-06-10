@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
@@ -41,7 +42,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  */
 @SuppressWarnings("checkstyle:methodcount")
 public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends Vector2D<? super RV, ? super RP>>
-            extends Tuple2D<RP> {
+        extends Tuple2D<RP> {
 
     /**
      * Replies if three points are colinear, ie. one the same line.
@@ -588,6 +589,104 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
     @XtextOperator("&&")
     default boolean operator_and(Shape2D<?, ?, ?, ?, ?, ?> shape) {
         return shape.contains(this);
+    }
+
+    /** Sum of this point and a vector: {@code this + v}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param v the vector to add
+     * @return the result.
+     * @see #add(Point2D, Vector2D)
+     */
+    @Pure
+    @ScalaOperator("+")
+    default RP $plus(Vector2D<?, ?> v) {
+        return operator_plus(v);
+    }
+
+    /** Sum of this point and a scalar: {@code this + scalar}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code v + this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.Tuple2DExtensions#$plus(double, Point2D)}.
+     *
+     * @param scalar the scalar
+     * @return the result.
+     * @see #add(Point2D, Vector2D)
+     * @see org.arakhne.afc.math.extensions.scala.Tuple2DExtensions#$plus(double, Point2D)
+     */
+    @Pure
+    @ScalaOperator("+")
+    default RP $plus(double scalar) {
+        return operator_plus(scalar);
+    }
+
+    /** Subtract the v vector to this point: {@code this - v}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param v the vector to substract.
+     * @return the result.
+     * @see #sub(Point2D, Vector2D)
+     */
+    @Pure
+    @ScalaOperator("-")
+    default RP $minus(Vector2D<?, ?> v) {
+        return operator_minus(v);
+    }
+
+    /** Subtract the scalar to this point: {@code this - scalar}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code scalar - this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.Tuple2DExtensions#$minus(double, Point2D)}.
+     *
+     * @param scalar the scalar.
+     * @return the result.
+     * @see #sub(Point2D, Vector2D)
+     * @see org.arakhne.afc.math.extensions.scala.Tuple2DExtensions#$minus(double, Point2D)
+     */
+    @Pure
+    @ScalaOperator("-")
+    default RP $minus(double scalar) {
+        return operator_minus(scalar);
+    }
+
+    /** Subtract the p point to this point: {@code this - p}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param pt the point to substract
+     * @return the vector from the p to this.
+     * @see Vector2D#sub(Point2D, Point2D)
+     */
+    @Pure
+    @ScalaOperator("-")
+    default RV $minus(Point2D<?, ?> pt) {
+        return operator_minus(pt);
+    }
+
+    /** Replies if the this point is inside the given shape: {@code this && s}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param shape the shape to test.
+     * @return <code>true</code> if the point is inside the shape. Otherwise, <code>false</code>.
+     * @see Shape2D#contains(Point2D)
+     */
+    @Pure
+    @ScalaOperator("&&")
+    default boolean $amp$amp(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+        return operator_and(shape);
     }
 
     /** Turn this point about the given rotation angle around the origin point.

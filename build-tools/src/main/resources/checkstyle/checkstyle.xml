@@ -193,7 +193,7 @@
 
 		<!-- Check method names. -->
 		<module name="MethodName">
-			<property name="format" value="^((operator)?_)?([a-z][a-zA-Z0-9]*)$" />
+			<property name="format" value="^((operator_)|([$_]))?([a-z][a-zA-Z0-9$]*)$" />
 			<message key="name.invalidPattern"
 				value="Method name ''{0}'' must match pattern ''{1}''." />
 		</module>

@@ -33,6 +33,7 @@ import org.arakhne.afc.math.extensions.xtext.MatrixExtensions;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
@@ -1621,6 +1622,154 @@ public class Matrix2d implements Serializable, Cloneable {
         final Matrix2d result = new Matrix2d();
         result.transpose(this);
         return result;
+    }
+
+    /** Replies the addition of the given matrix to this matrix: {@code this + matrix}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param matrix the matrix.
+     * @return the sum of the matrices.
+     * @see #add(Matrix2d)
+     */
+    @Pure
+    @ScalaOperator("+")
+    public Matrix2d $plus(Matrix2d matrix) {
+        return operator_plus(matrix);
+    }
+
+    /** Replies the addition of the given scalar to this matrix: {@code this + scalar}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code scalar + this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.MatrixExtensions#$plus(double, Matrix2d)}.
+     *
+     * @param scalar the scalar.
+     * @return the sum of the matrix and the scalar.
+     * @see #add(double)
+     * @see org.arakhne.afc.math.extensions.scala.MatrixExtensions#$plus(double, Matrix2d)
+     */
+    @Pure
+    @ScalaOperator("+")
+    public Matrix2d $plus(double scalar) {
+        return operator_plus(scalar);
+    }
+
+    /** Replies the substraction of the given matrix to this matrix: {@code this + matrix}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param matrix the matrix.
+     * @return the result of the substraction.
+     * @see #sub(Matrix2d)
+     */
+    @Pure
+    @ScalaOperator("-")
+    public Matrix2d $minus(Matrix2d matrix) {
+        return operator_minus(matrix);
+    }
+
+    /** Replies the substraction of the given scalar to this matrix: {@code this - scalar}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code scalar - this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.MatrixExtensions#$minus(double, Matrix2d)}.
+     *
+     * @param scalar the scalar.
+     * @return the result of the substraction.
+     * @see #add(double)
+     * @see org.arakhne.afc.math.extensions.scala.MatrixExtensions#$minus(double, Matrix2d)
+     */
+    @Pure
+    @ScalaOperator("-")
+    public Matrix2d $minus(double scalar) {
+        return operator_minus(scalar);
+    }
+
+    /** Replies the negation of this matrix: {@code -this}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @return the negation of this matrix.
+     * @see #negate()
+     */
+    @Pure
+    @ScalaOperator("(-)")
+    public Matrix2d $minus() {
+        return operator_minus();
+    }
+
+    /** Replies the multiplication of the given matrix and this matrix: {@code this * matrix}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param matrix the matrix.
+     * @return the multiplication of the matrices.
+     * @see #mul(Matrix2d)
+     */
+    @Pure
+    @ScalaOperator("*")
+    public Matrix2d $times(Matrix2d matrix) {
+        return operator_multiply(matrix);
+    }
+
+    /** Replies the multiplication of the given scalar and this matrix: {@code this * scalar}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code scalar * this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.MatrixExtensions#$times(double, Matrix2d)}.
+     *
+     * @param scalar the scalar.
+     * @return the multiplication of the scalar and the matrix.
+     * @see #mul(Matrix2d)
+     * @see org.arakhne.afc.math.extensions.scala.MatrixExtensions#$times(double, Matrix2d)
+     */
+    @Pure
+    @ScalaOperator("*")
+    public Matrix2d $times(double scalar) {
+        return operator_multiply(scalar);
+    }
+
+    /** Replies the division of this matrix by the given scalar: {@code this / scalar}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code this / scalar} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.MatrixExtensions#$div(double, Matrix2d)}.
+     *
+     * @param scalar the scalar.
+     * @return the division of the matrix by the scalar.
+     * @see #mul(double)
+     * @see org.arakhne.afc.math.extensions.scala.MatrixExtensions#$div(double, Matrix2d)
+     */
+    @Pure
+    @ScalaOperator("/")
+    public Matrix2d $div(double scalar) {
+        return operator_divide(scalar);
+    }
+
+    /** Replies the transposition of this matrix: {@code !this}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @return the transpose
+     * @see #add(double)
+     */
+    @ScalaOperator("!")
+    public Matrix2d $bang() {
+        return operator_not();
     }
 
 }

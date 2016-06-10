@@ -8,8 +8,10 @@ The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may
 [![Maven Compliant](https://img.shields.io/badge/compliant-Maven-yellowgreen.svg?style=flat-square)](http://maven.apache.com)
 [![Java Compliant](https://img.shields.io/badge/compliant-Java-yellowgreen.svg?style=flat-square)](https://www.java.com)
 [![SARL Compliant](https://img.shields.io/badge/compliant-SARL-yellowgreen.svg?style=flat-square)](http://sarl.io)
+[![Scala Compliant](https://img.shields.io/badge/compliant-Scala-yellowgreen.svg?style=flat-square)](http://scala-lang.org)
 [![Xtext Compliant](https://img.shields.io/badge/compliant-Xtext-yellowgreen.svg?style=flat-square)](https://eclipse.org/Xtext)
-[![Xtend Compliant](https://img.shields.io/badge/compliant-Xtext-yellowgreen.svg?style=flat-square)](https://eclipse.org/Xtext)
+[![Xtend Compliant](https://img.shields.io/badge/compliant-Xtend-yellowgreen.svg?style=flat-square)](https://eclipse.org/Xtext)
+[![OSGI Compliant](https://img.shields.io/badge/compliant-OSGI-yellowgreen.svg?style=flat-square)](https://www.osgi.org)
 
 [![Apache 2.0 License](https://img.shields.io/github/license/gallandarakhneorg/afc.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
@@ -26,12 +28,17 @@ For example, [Vector2D](http://arakhne.org/afc/apidocs/index.html?org/arakhne/af
 AFC library is compatible with the [SARL](http://www.sarl.io) agent-oriented programming language, which is a Xtext-based language (see below).
 Indeed, the AFC classes use the specific annotations: `@Pure` for making [pure functions](https://en.wikipedia.org/wiki/Pure_function), and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
 
-### 1.1.2 Xtend object-oriented programming language
+### 1.1.2 Scala object-oriented programming language
+
+AFC library is compatible with the [Scala](http://scala-lang.org) object-oriented programming language.
+Indeed, the AFC classes provide the overridings of the operators (`$plus`, `$minus`, etc.) for vectors, matrices, etc.
+
+### 1.1.3 Xtend object-oriented programming language
 
 AFC library is compatible with the [Xtend](https://www.eclipse.org/xtend/) object-oriented programming language, which is a Xtext-based language (see below).
 Indeed, the AFC classes use the specific annotations: `@Pure` for making [pure functions](https://en.wikipedia.org/wiki/Pure_function), and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
 
-### 1.1.3 Other Xtext-base languages
+### 1.1.4 Other Xtext-base languages
 
 AFC library is compatible with all the languages that are defined upon the [Xtext](https://www.eclipse.org/Xtext/) framework for development of programming languages and domain-specific languages.
 Indeed, the AFC classes use the specific annotations: `@Pure` for making [pure functions](https://en.wikipedia.org/wiki/Pure_function), and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.

@@ -29,6 +29,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
@@ -1152,6 +1153,204 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
     @XtextOperator("**")
     default PowerResult<RV> operator_power(int power) {
         return power(power);
+    }
+
+    /** Dot product: {@code this * v}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param v the vector
+     * @return the result.
+     * @see #dot(Vector2D)
+     */
+    @Pure
+    @ScalaOperator("*")
+    default double $times(Vector2D<?, ?> v) {
+        return operator_multiply(v);
+    }
+
+    /** Scale this vector: {@code this * factor}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code factor * this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.Tuple2DExtensions#$times(double, Vector2D)}.
+     *
+     * @param factor the scaling factor.
+     * @return the scaled vector.
+     * @see #scale(double)
+     * @see org.arakhne.afc.math.extensions.scala.Tuple2DExtensions#$times(double, Vector2D)
+     */
+    @Pure
+    @ScalaOperator("*")
+    default RV $times(double factor) {
+        return operator_multiply(factor);
+    }
+
+    /** Negation of this vector: {@code -this}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @return the result.
+     * @see #negate(Tuple2D)
+     */
+    @Pure
+    @ScalaOperator("(-)")
+    default RV $minus() {
+        return operator_minus();
+    }
+
+    /** Subtract a vector to this vector: {@code this - v}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param v the vector
+     * @return the result.
+     * @see #sub(Vector2D)
+     */
+    @Pure
+    @ScalaOperator("-")
+    default RV $minus(Vector2D<?, ?> v) {
+        return operator_minus(v);
+    }
+
+    /** Subtract a vector to this scalar: {@code this - scalar}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code scalar - this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.Tuple2DExtensions#$minus(double, Vector2D)}.
+     *
+     * @param scalar the scalar.
+     * @return the result.
+     * @see #sub(Vector2D)
+     * @see org.arakhne.afc.math.extensions.scala.Tuple2DExtensions#$minus(double, Vector2D)
+     */
+    @Pure
+    @ScalaOperator("-")
+    default RV $minus(double scalar) {
+        return operator_minus(scalar);
+    }
+
+    /** Subtract a vector to this point: {@code this - point}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param point the point.
+     * @return the result.
+     * @see #sub(Vector2D)
+     */
+    @Pure
+    @ScalaOperator("-")
+    default RP $minus(Point2D<?, ?> point) {
+        return operator_minus(point);
+    }
+
+    /** Scale this vector: {@code this / factor}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code scalar / this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.Tuple2DExtensions#$div(double, Vector2D)}.
+     *
+     * @param factor the scaling factor
+     * @return the scaled vector.
+     * @see org.arakhne.afc.math.extensions.scala.Tuple2DExtensions#$div(double, Vector2D)
+     */
+    @Pure
+    @ScalaOperator("/")
+    default RV $div(double factor) {
+        return operator_divide(factor);
+    }
+
+    /** Sum of this vector and the given vector: {@code this + v}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param v the vector
+     * @return the result.
+     * @see #add(Vector2D, Vector2D)
+     */
+    @Pure
+    @ScalaOperator("+")
+    default RV $plus(Vector2D<?, ?> v) {
+        return operator_plus(v);
+    }
+
+    /** Add this vector to a point: {@code this + p}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param pt the point.
+     * @return the result.
+     * @see Point2D#add(Vector2D, Point2D)
+     */
+    @Pure
+    @ScalaOperator("+")
+    default RP $plus(Point2D<?, ?> pt) {
+        return operator_plus(pt);
+    }
+
+    /** Sum of this vector and the given scalar: {@code this + scalar}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code scalar + this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.Tuple2DExtensions#$plus(double, Vector2D)}.
+     *
+     * @param scalar the scalar.
+     * @return the result.
+     * @see #add(Vector2D, Vector2D)
+     * @see org.arakhne.afc.math.extensions.scala.Tuple2DExtensions#$plus(double, Vector2D)
+     */
+    @Pure
+    @ScalaOperator("+")
+    default RV $plus(double scalar) {
+        return operator_plus(scalar);
+    }
+
+    /** Perp product of this vector and the given vector: {@code this ^ v}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param v the other vector.
+     * @return the result.
+     * @see #perp(Vector2D)
+     */
+    @Pure
+    @ScalaOperator("^")
+    default double $up(Vector2D<?, ?> v) {
+        return operator_power(v);
+    }
+
+    /** Compute the power of this vector: {@code this ^ n}.
+     *
+     * <p>If the power is even, the result is a scalar.
+     * If the power is odd, the result is a vector.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param power the power factor.
+     * @return the power of this vector.
+     * @see #power(int)
+     * @see "http://www.euclideanspace.com/maths/algebra/vectors/vecAlgebra/powers/index.htm"
+     */
+    @Pure
+    @ScalaOperator("^")
+    default PowerResult<RV> $up(int power) {
+        return operator_power(power);
     }
 
     /** Result of the power of a Vector2D.

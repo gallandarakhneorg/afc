@@ -32,6 +32,7 @@ import org.arakhne.afc.math.extensions.xtext.MatrixExtensions;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
@@ -103,24 +104,15 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Constructs and initializes a Matrix3f from the specified nine values.
      *
-     * @param m00
-     *            the [0][0] element
-     * @param m01
-     *            the [0][1] element
-     * @param m02
-     *            the [0][2] element
-     * @param m10
-     *            the [1][0] element
-     * @param m11
-     *            the [1][1] element
-     * @param m12
-     *            the [1][2] element
-     * @param m20
-     *            the [2][0] element
-     * @param m21
-     *            the [2][1] element
-     * @param m22
-     *            the [2][2] element
+     * @param m00 the [0][0] element
+     * @param m01 the [0][1] element
+     * @param m02 the [0][2] element
+     * @param m10 the [1][0] element
+     * @param m11 the [1][1] element
+     * @param m12 the [1][2] element
+     * @param m20 the [2][0] element
+     * @param m21 the [2][1] element
+     * @param m22 the [2][2] element
      */
     public Matrix3d(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22) {
         this.m00 = m00;
@@ -140,8 +132,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * Constructs and initializes a Matrix3f from the specified nine- element
      * array.
      *
-     * @param values
-     *            the array of length 9 containing in order
+     * @param values the array of length 9 containing in order
      */
     public Matrix3d(double[] values) {
         assert values != null : AssertMessages.notNullParameter();
@@ -162,8 +153,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Constructs a new matrix with the same values as the Matrix3f parameter.
      *
-     * @param matrix
-     *            the source matrix
+     * @param matrix the source matrix
      */
     public Matrix3d(Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -238,12 +228,9 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Sets the specified element of this matrix3f to the value provided.
      *
-     * @param row
-     *            the row number to be modified (zero indexed)
-     * @param column
-     *            the column number to be modified (zero indexed)
-     * @param value
-     *            the new value
+     * @param row the row number to be modified (zero indexed)
+     * @param column the column number to be modified (zero indexed)
+     * @param value the new value
      */
     public void setElement(int row, int column, double value) {
         assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
@@ -308,10 +295,8 @@ public class Matrix3d implements Serializable, Cloneable {
      * Retrieves the value at the specified row and column of the specified
      * matrix.
      *
-     * @param row
-     *            the row number to be retrieved (zero indexed)
-     * @param column
-     *            the column number to be retrieved (zero indexed)
+     * @param row the row number to be retrieved (zero indexed)
+     * @param column the column number to be retrieved (zero indexed)
      * @return the value at the indexed element.
      */
     @Pure
@@ -368,10 +353,8 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Copies the matrix values in the specified row into the vector parameter.
      *
-     * @param row
-     *            the matrix row
-     * @param vector
-     *            the vector into which the matrix row values will be copied
+     * @param row the matrix row
+     * @param vector the vector into which the matrix row values will be copied
      */
     public void getRow(int row, Vector3D vector) {
         assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
@@ -391,10 +374,8 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Copies the matrix values in the specified row into the array parameter.
      *
-     * @param row
-     *            the matrix row
-     * @param vector
-     *            the array into which the matrix row values will be copied
+     * @param row the matrix row
+     * @param vector the array into which the matrix row values will be copied
      */
     public void getRow(int row, double[] vector) {
         assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
@@ -422,10 +403,8 @@ public class Matrix3d implements Serializable, Cloneable {
      * Copies the matrix values in the specified column into the vector
      * parameter.
      *
-     * @param column
-     *            the matrix column
-     * @param vector
-     *            the vector into which the matrix row values will be copied
+     * @param column the matrix column
+     * @param vector the vector into which the matrix row values will be copied
      */
     public void getColumn(int column, Vector3D vector) {
         assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
@@ -446,10 +425,8 @@ public class Matrix3d implements Serializable, Cloneable {
      * Copies the matrix values in the specified column into the array
      * parameter.
      *
-     * @param column
-     *            the matrix column
-     * @param vector
-     *            the array into which the matrix row values will be copied
+     * @param column the matrix column
+     * @param vector the array into which the matrix row values will be copied
      */
     public void getColumn(int column, double[] vector) {
         assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
@@ -476,14 +453,10 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Sets the specified row of this Matrix3f to the 3 values provided.
      *
-     * @param row
-     *            the row number to be modified (zero indexed)
-     * @param x
-     *            the first column element
-     * @param y
-     *            the second column element
-     * @param z
-     *            the third column element
+     * @param row the row number to be modified (zero indexed)
+     * @param x the first column element
+     * @param y the second column element
+     * @param z the third column element
      */
     public void setRow(int row, double x, double y, double z) {
         assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
@@ -516,10 +489,8 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Sets the specified row of this Matrix3f to the Vector provided.
      *
-     * @param row
-     *            the row number to be modified (zero indexed)
-     * @param vector
-     *            the replacement row
+     * @param row the row number to be modified (zero indexed)
+     * @param vector the replacement row
      */
     public void setRow(int row, Vector3D vector) {
         assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
@@ -553,10 +524,8 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Sets the specified row of this Matrix3f to the three values provided.
      *
-     * @param row
-     *            the row number to be modified (zero indexed)
-     * @param vector
-     *            the replacement row
+     * @param row the row number to be modified (zero indexed)
+     * @param vector the replacement row
      */
     public void setRow(int row, double[] vector) {
         assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
@@ -591,14 +560,10 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Sets the specified column of this Matrix3f to the three values provided.
      *
-     * @param column
-     *            the column number to be modified (zero indexed)
-     * @param x
-     *            the first row element
-     * @param y
-     *            the second row element
-     * @param z
-     *            the third row element
+     * @param column the column number to be modified (zero indexed)
+     * @param x the first row element
+     * @param y the second row element
+     * @param z the third row element
      */
     public void setColumn(int column, double x, double y, double z) {
         assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
@@ -631,10 +596,8 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Sets the specified column of this Matrix3f to the vector provided.
      *
-     * @param column
-     *            the column number to be modified (zero indexed)
-     * @param vector
-     *            the replacement column
+     * @param column the column number to be modified (zero indexed)
+     * @param vector the replacement column
      */
     public void setColumn(int column, Vector3D vector) {
         assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
@@ -668,10 +631,8 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Sets the specified column of this Matrix3f to the three values provided.
      *
-     * @param column
-     *            the column number to be modified (zero indexed)
-     * @param vector
-     *            the replacement column
+     * @param column the column number to be modified (zero indexed)
+     * @param vector the replacement column
      */
     public void setColumn(int column, double[] vector) {
         assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
@@ -706,8 +667,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Adds a scalar to each component of this matrix.
      *
-     * @param scalar
-     *            the scalar adder
+     * @param scalar the scalar adder
      */
     public void add(double scalar) {
         this.m00 += scalar;
@@ -729,10 +689,8 @@ public class Matrix3d implements Serializable, Cloneable {
      * Adds a scalar to each component of the matrix m1 and places the result
      * into this. Matrix m1 is not modified.
      *
-     * @param scalar
-     *            the scalar adder
-     * @param matrix
-     *            the original matrix values
+     * @param scalar the scalar adder
+     * @param matrix the original matrix values
      */
     public void add(double scalar, Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter(1);
@@ -754,10 +712,8 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Sets the value of this matrix to the matrix sum of matrices m1 and m2.
      *
-     * @param matrix1
-     *            the first matrix
-     * @param matrix2
-     *            the second matrix
+     * @param matrix1 the first matrix
+     * @param matrix2 the second matrix
      */
     public void add(Matrix3d matrix1, Matrix3d matrix2) {
         assert matrix1 != null : AssertMessages.notNullParameter(0);
@@ -780,8 +736,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Sets the value of this matrix to the sum of itself and matrix m1.
      *
-     * @param matrix
-     *            the other matrix
+     * @param matrix the other matrix
      */
     public void add(Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -804,10 +759,8 @@ public class Matrix3d implements Serializable, Cloneable {
      * Sets the value of this matrix to the matrix difference of matrices m1 and
      * m2.
      *
-     * @param matrix1
-     *            the first matrix
-     * @param matrix2
-     *            the second matrix
+     * @param matrix1 the first matrix
+     * @param matrix2 the second matrix
      */
     public void sub(Matrix3d matrix1, Matrix3d matrix2) {
         assert matrix1 != null : AssertMessages.notNullParameter(0);
@@ -831,8 +784,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * Sets the value of this matrix to the matrix difference of itself and
      * matrix m1 (this = this - m1).
      *
-     * @param matrix
-     *            the other matrix
+     * @param matrix the other matrix
      */
     public void sub(Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -875,8 +827,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Sets the value of this matrix to the transpose of the argument matrix.
      *
-     * @param matrix
-     *            the matrix to be transposed
+     * @param matrix the matrix to be transposed
      */
     public void transpose(Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -903,8 +854,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * Sets the value of this matrix to the double value of the Matrix3f
      * argument.
      *
-     * @param matrix
-     *            the Matrix3f to be converted to double
+     * @param matrix the Matrix3f to be converted to double
      */
     public void set(Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -928,8 +878,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * (ie, the first three elements of the array will be copied into the first
      * row of this matrix, etc.).
      *
-     * @param matrix
-     *            the double precision array of length 9
+     * @param matrix the double precision array of length 9
      */
     public void set(double[] matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -952,24 +901,15 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Set the components of the matrix.
      *
-     * @param m00
-     *            the [0][0] element
-     * @param m01
-     *            the [0][1] element
-     * @param m02
-     *            the [0][2] element
-     * @param m10
-     *            the [1][0] element
-     * @param m11
-     *            the [1][1] element
-     * @param m12
-     *            the [1][2] element
-     * @param m20
-     *            the [2][0] element
-     * @param m21
-     *            the [2][1] element
-     * @param m22
-     *            the [2][2] element
+     * @param m00 the [0][0] element
+     * @param m01 the [0][1] element
+     * @param m02 the [0][2] element
+     * @param m10 the [1][0] element
+     * @param m11 the [1][1] element
+     * @param m12 the [1][2] element
+     * @param m20 the [2][0] element
+     * @param m21 the [2][1] element
+     * @param m22 the [2][2] element
      */
     @SuppressWarnings("checkstyle:parameternumber")
     public void set(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22) {
@@ -992,8 +932,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * Sets the value of this matrix to the matrix inverse of the passed matrix
      * m1.
      *
-     * @param matrix
-     *            the matrix to be inverted
+     * @param matrix the matrix to be inverted
      */
     public void invert(Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -1291,8 +1230,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Multiplies each element of this matrix by a scalar.
      *
-     * @param scalar
-     *            The scalar multiplier.
+     * @param scalar The scalar multiplier.
      */
     public void mul(double scalar) {
         this.m00 *= scalar;
@@ -1314,10 +1252,8 @@ public class Matrix3d implements Serializable, Cloneable {
      * Multiplies each element of matrix m1 by a scalar and places the result
      * into this. Matrix m1 is not modified.
      *
-     * @param scalar
-     *            the scalar multiplier
-     * @param matrix
-     *            the original matrix
+     * @param scalar the scalar multiplier
+     * @param matrix the original matrix
      */
     public void mul(double scalar, Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -1340,8 +1276,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * Sets the value of this matrix to the result of multiplying itself with
      * matrix m1.
      *
-     * @param matrix
-     *            the other matrix
+     * @param matrix the other matrix
      */
     public void mul(Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -1375,10 +1310,8 @@ public class Matrix3d implements Serializable, Cloneable {
      * Sets the value of this matrix to the result of multiplying the two
      * argument matrices together.
      *
-     * @param matrix1
-     *            the first matrix
-     * @param matrix2
-     *            the second matrix
+     * @param matrix1 the first matrix
+     * @param matrix2 the second matrix
      */
     public void mul(Matrix3d matrix1, Matrix3d matrix2) {
         assert matrix1 != null : AssertMessages.notNullParameter(0);
@@ -1456,10 +1389,8 @@ public class Matrix3d implements Serializable, Cloneable {
      * Multiplies the transpose of matrix m1 times matrix m2, and places the
      * result into this.
      *
-     * @param matrix1
-     *            the matrix on the left hand side of the multiplication
-     * @param matrix2
-     *            the matrix on the right hand side of the multiplication
+     * @param matrix1 the matrix on the left hand side of the multiplication
+     * @param matrix2 the matrix on the right hand side of the multiplication
      */
     public void mulTransposeLeft(Matrix3d matrix1, Matrix3d matrix2) {
         assert matrix1 != null : AssertMessages.notNullParameter(0);
@@ -1508,8 +1439,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * result, and places the result back into this matrix this =
      * SVDnorm(this*m1).
      *
-     * @param matrix
-     *            the matrix on the right hand side of the multiplication
+     * @param matrix the matrix on the right hand side of the multiplication
      */
     public void mulNormalize(Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -1551,10 +1481,8 @@ public class Matrix3d implements Serializable, Cloneable {
      * Multiplies matrix m1 by matrix m2, does an SVD normalization of the
      * result, and places the result into this matrix this = SVDnorm(m1*m2).
      *
-     * @param matrix1
-     *            the matrix on the left hand side of the multiplication
-     * @param matrix2
-     *            the matrix on the right hand side of the multiplication
+     * @param matrix1 the matrix on the left hand side of the multiplication
+     * @param matrix2 the matrix on the right hand side of the multiplication
      */
     public void mulNormalize(Matrix3d matrix1, Matrix3d matrix2) {
         assert matrix1 != null : AssertMessages.notNullParameter(0);
@@ -1597,10 +1525,8 @@ public class Matrix3d implements Serializable, Cloneable {
      * Multiplies the transpose of matrix m1 times the transpose of matrix m2,
      * and places the result into this.
      *
-     * @param matrix1
-     *            the matrix on the left hand side of the multiplication
-     * @param matrix2
-     *            the matrix on the right hand side of the multiplication
+     * @param matrix1 the matrix on the left hand side of the multiplication
+     * @param matrix2 the matrix on the right hand side of the multiplication
      */
     public void mulTransposeBoth(Matrix3d matrix1, Matrix3d matrix2) {
         assert matrix1 != null : AssertMessages.notNullParameter(0);
@@ -1648,10 +1574,8 @@ public class Matrix3d implements Serializable, Cloneable {
      * Multiplies matrix m1 times the transpose of matrix m2, and places the
      * result into this.
      *
-     * @param matrix1
-     *            the matrix on the left hand side of the multiplication
-     * @param matrix2
-     *            the matrix on the right hand side of the multiplication
+     * @param matrix1 the matrix on the left hand side of the multiplication
+     * @param matrix2 the matrix on the right hand side of the multiplication
      */
     public void mulTransposeRight(Matrix3d matrix1, Matrix3d matrix2) {
         assert matrix1 != null : AssertMessages.notNullParameter(0);
@@ -1699,8 +1623,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * Perform singular value decomposition normalization of matrix m1 and place
      * the normalized values into this.
      *
-     * @param matrix
-     *            Provides the matrix values to be normalized
+     * @param matrix Provides the matrix values to be normalized
      */
     public void normalize(Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -1788,8 +1711,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * Perform cross product normalization of matrix m1 and place the normalized
      * values into this.
      *
-     * @param matrix
-     *            Provides the matrix values to be normalized
+     * @param matrix Provides the matrix values to be normalized
      */
     public void normalizeCP(Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -1816,8 +1738,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * Returns true if all of the data members of Matrix3f m1 are equal to the
      * corresponding data members in this Matrix3f.
      *
-     * @param matrix
-     *            the matrix with which the comparison is made
+     * @param matrix the matrix with which the comparison is made
      * @return true or false
      */
     @Pure
@@ -1838,8 +1759,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * members of t1 are equal to the corresponding data members in this
      * Matrix3f.
      *
-     * @param object
-     *            the matrix with which the comparison is made
+     * @param object the matrix with which the comparison is made
      * @return true or false
      */
     @Pure
@@ -1867,10 +1787,8 @@ public class Matrix3d implements Serializable, Cloneable {
      * The L-infinite distance is equal to MAX[i=0, 1, 2 ; j=0, 1, 2 ;
      * abs(this.m(i, j) - m1.m(i, j)]
      *
-     * @param matrix
-     *            the matrix to be compared to this matrix
-     * @param epsilon
-     *            the threshold value
+     * @param matrix the matrix to be compared to this matrix
+     * @param epsilon the threshold value
      * @return <code>true</code> if this matrix is equals to the specified matrix at epsilon.
      */
     @Pure
@@ -1974,12 +1892,9 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Sets this matrix as diagonal.
      *
-     * @param m00
-     *            the first element of the diagonal
-     * @param m11
-     *            the second element of the diagonal
-     * @param m22
-     *            the third element of the diagonal
+     * @param m00 the first element of the diagonal
+     * @param m11 the second element of the diagonal
+     * @param m22 the third element of the diagonal
      */
     public void setDiagonal(double m00, double m11, double m22) {
         this.m00 = m00;
@@ -2018,8 +1933,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * Sets the value of this matrix equal to the negation of of the Matrix3f
      * parameter.
      *
-     * @param matrix
-     *            the source matrix
+     * @param matrix the source matrix
      */
     public void negate(Matrix3d matrix) {
         assert matrix != null : AssertMessages.notNullParameter();
@@ -3037,8 +2951,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * Creates a new object of the same class as this object.
      *
      * @return a clone of this instance.
-     * @exception OutOfMemoryError
-     *                if there is not enough memory.
+     * @exception OutOfMemoryError     if there is not enough memory.
      * @see java.lang.Cloneable
      */
     @Pure
@@ -3060,7 +2973,6 @@ public class Matrix3d implements Serializable, Cloneable {
      * Get the first matrix element in the first row.
      *
      * @return Returns the m00.
-     * @since vecmath 1.5
      */
     @Pure
     public double getM00() {
@@ -3070,10 +2982,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Set the first matrix element in the first row.
      *
-     * @param m00
-     *            The m00 to set.
-     *
-     * @since vecmath 1.5
+     * @param m00 The m00 to set.
      */
     public void setM00(double m00) {
         this.m00 = m00;
@@ -3084,8 +2993,6 @@ public class Matrix3d implements Serializable, Cloneable {
      * Get the second matrix element in the first row.
      *
      * @return Returns the m01.
-     *
-     * @since vecmath 1.5
      */
     @Pure
     public double getM01() {
@@ -3095,10 +3002,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Set the second matrix element in the first row.
      *
-     * @param m01
-     *            The m01 to set.
-     *
-     * @since vecmath 1.5
+     * @param m01 The m01 to set.
      */
     public void setM01(double m01) {
         this.m01 = m01;
@@ -3109,8 +3013,6 @@ public class Matrix3d implements Serializable, Cloneable {
      * Get the third matrix element in the first row.
      *
      * @return Returns the m02.
-     *
-     * @since vecmath 1.5
      */
     @Pure
     public double getM02() {
@@ -3120,10 +3022,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Set the third matrix element in the first row.
      *
-     * @param m02
-     *            The m02 to set.
-     *
-     * @since vecmath 1.5
+     * @param m02 The m02 to set.
      */
     public void setM02(double m02) {
         this.m02 = m02;
@@ -3134,8 +3033,6 @@ public class Matrix3d implements Serializable, Cloneable {
      * Get first matrix element in the second row.
      *
      * @return Returns the m10.
-     *
-     * @since vecmath 1.5
      */
     @Pure
     public double getM10() {
@@ -3145,10 +3042,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Set first matrix element in the second row.
      *
-     * @param m10
-     *            The m10 to set.
-     *
-     * @since vecmath 1.5
+     * @param m10 The m10 to set.
      */
     public void setM10(double m10) {
         this.m10 = m10;
@@ -3159,8 +3053,6 @@ public class Matrix3d implements Serializable, Cloneable {
      * Get second matrix element in the second row.
      *
      * @return Returns the m11.
-     *
-     * @since vecmath 1.5
      */
     @Pure
     public double getM11() {
@@ -3170,10 +3062,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Set the second matrix element in the second row.
      *
-     * @param m11
-     *            The m11 to set.
-     *
-     * @since vecmath 1.5
+     * @param m11 The m11 to set.
      */
     public void setM11(double m11) {
         this.m11 = m11;
@@ -3184,8 +3073,6 @@ public class Matrix3d implements Serializable, Cloneable {
      * Get the third matrix element in the second row.
      *
      * @return Returns the m12.
-     *
-     * @since vecmath 1.5
      */
     @Pure
     public double getM12() {
@@ -3195,10 +3082,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Set the third matrix element in the second row.
      *
-     * @param m11
-     *            The m12 to set.
-     *
-     * @since vecmath 1.5
+     * @param m11 The m12 to set.
      */
     public void setM12(double m11) {
         this.m12 = m11;
@@ -3209,8 +3093,6 @@ public class Matrix3d implements Serializable, Cloneable {
      * Get the first matrix element in the third row.
      *
      * @return Returns the m20
-     *
-     * @since vecmath 1.5
      */
     @Pure
     public double getM20() {
@@ -3220,10 +3102,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Set the first matrix element in the third row.
      *
-     * @param m20
-     *            The m20 to set.
-     *
-     * @since vecmath 1.5
+     * @param m20 The m20 to set.
      */
     public void setM20(double m20) {
         this.m20 = m20;
@@ -3234,8 +3113,6 @@ public class Matrix3d implements Serializable, Cloneable {
      * Get the second matrix element in the third row.
      *
      * @return Returns the m21.
-     *
-     * @since vecmath 1.5
      */
     @Pure
     public double getM21() {
@@ -3245,10 +3122,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Set the second matrix element in the third row.
      *
-     * @param m21
-     *            The m21 to set.
-     *
-     * @since vecmath 1.5
+     * @param m21 The m21 to set.
      */
     public void setM21(double m21) {
         this.m21 = m21;
@@ -3259,8 +3133,6 @@ public class Matrix3d implements Serializable, Cloneable {
      * Get the third matrix element in the third row .
      *
      * @return Returns the m22.
-     *
-     * @since vecmath 1.5
      */
     @Pure
     public double getM22() {
@@ -3270,10 +3142,7 @@ public class Matrix3d implements Serializable, Cloneable {
     /**
      * Set the third matrix element in the third row.
      *
-     * @param m22
-     *            The m22 to set.
-     *
-     * @since vecmath 1.5
+     * @param m22 The m22 to set.
      */
     public void setM22(double m22) {
         this.m22 = m22;
@@ -3882,6 +3751,154 @@ public class Matrix3d implements Serializable, Cloneable {
         final Matrix3d result = new Matrix3d();
         result.transpose(this);
         return result;
+    }
+
+    /** Replies the addition of the given matrix to this matrix: {@code this + matrix}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param matrix the matrix.
+     * @return the sum of the matrices.
+     * @see #add(Matrix3d)
+     */
+    @Pure
+    @ScalaOperator("+")
+    public Matrix3d $plus(Matrix3d matrix) {
+        return operator_plus(matrix);
+    }
+
+    /** Replies the addition of the given scalar to this matrix: {@code this + scalar}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code scalar + this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.MatrixExtensions#$plus(double, Matrix3d)}.
+     *
+     * @param scalar the scalar.
+     * @return the sum of the matrix and the scalar.
+     * @see #add(double)
+     * @see org.arakhne.afc.math.extensions.scala.MatrixExtensions#$plus(double, Matrix3d)
+     */
+    @Pure
+    @ScalaOperator("+")
+    public Matrix3d $plus(double scalar) {
+        return operator_plus(scalar);
+    }
+
+    /** Replies the substraction of the given matrix to this matrix: {@code this - matrix}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param matrix the matrix.
+     * @return the result of the substraction.
+     * @see #sub(Matrix3d)
+     */
+    @Pure
+    @ScalaOperator("-")
+    public Matrix3d $minus(Matrix3d matrix) {
+        return operator_minus(matrix);
+    }
+
+    /** Replies the substraction of the given scalar to this matrix: {@code this - scalar}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code scalar - this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.MatrixExtensions#$minus(double, Matrix3d)}.
+     *
+     * @param scalar the scalar.
+     * @return the result of the substraction.
+     * @see #add(double)
+     * @see org.arakhne.afc.math.extensions.scala.MatrixExtensions#$minus(double, Matrix3d)
+     */
+    @Pure
+    @ScalaOperator("-")
+    public Matrix3d $minus(double scalar) {
+        return operator_minus(scalar);
+    }
+
+    /** Replies the negation of this matrix: {@code -this}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @return the negation of this matrix.
+     * @see #negate()
+     */
+    @Pure
+    @ScalaOperator("(-)")
+    public Matrix3d $minus() {
+        return operator_minus();
+    }
+
+    /** Replies the multiplication of the given matrix and this matrix: {@code this * matrix}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @param matrix the matrix.
+     * @return the multiplication of the matrices.
+     * @see #mul(Matrix3d)
+     */
+    @Pure
+    @ScalaOperator("*")
+    public Matrix3d $times(Matrix3d matrix) {
+        return operator_multiply(matrix);
+    }
+
+    /** Replies the multiplication of the given scalar and this matrix: {@code this * scalar}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code scalar * this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.MatrixExtensions#$times(double, Matrix2d)}.
+     *
+     * @param scalar the scalar.
+     * @return the multiplication of the scalar and the matrix.
+     * @see #mul(Matrix3d)
+     * @see org.arakhne.afc.math.extensions.scala.MatrixExtensions#$times(double, Matrix3d)
+     */
+    @Pure
+    @ScalaOperator("*")
+    public Matrix3d $times(double scalar) {
+        return operator_multiply(scalar);
+    }
+
+    /** Replies the division of this matrix by the given scalar: {@code this / scalar}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * <p>The operation {@code scalar / this} is supported by
+     * {@link org.arakhne.afc.math.extensions.scala.MatrixExtensions#$div(double, Matrix2d)}.
+     *
+     * @param scalar the scalar.
+     * @return the division of the matrix by the scalar.
+     * @see #mul(double)
+     * @see org.arakhne.afc.math.extensions.scala.MatrixExtensions#$div(double, Matrix3d)
+     */
+    @Pure
+    @ScalaOperator("/")
+    public Matrix3d $div(double scalar) {
+        return operator_divide(scalar);
+    }
+
+    /** Replies the transposition of this matrix: {@code !this}.
+     *
+     * <p>This function is an implementation of the operator for
+     * the <a href="http://scala-lang.org/">Scala Language</a>.
+     *
+     * @return the transpose
+     * @see #add(double)
+     */
+    @ScalaOperator("!")
+    public Matrix3d $bang() {
+        return operator_not();
     }
 
 }

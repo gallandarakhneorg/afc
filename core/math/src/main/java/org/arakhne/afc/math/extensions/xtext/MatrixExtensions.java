@@ -133,7 +133,7 @@ public final class MatrixExtensions {
      * @see Matrix2d#operator_minus(double)
      */
     @Pure
-    @XtextOperator("+")
+    @XtextOperator("-")
     @SuppressWarnings("unchecked")
     public static <M extends Matrix2d> M operator_minus(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
@@ -162,7 +162,7 @@ public final class MatrixExtensions {
      * @see Matrix3d#operator_minus(double)
      */
     @Pure
-    @XtextOperator("+")
+    @XtextOperator("-")
     @SuppressWarnings("unchecked")
     public static <M extends Matrix3d> M operator_minus(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
@@ -196,7 +196,7 @@ public final class MatrixExtensions {
      * @see Matrix4d#operator_minus(double)
      */
     @Pure
-    @XtextOperator("+")
+    @XtextOperator("-")
     @SuppressWarnings("unchecked")
     public static <M extends Matrix4d> M operator_minus(double left, M right) {
         assert right != null : AssertMessages.notNullParameter(1);
