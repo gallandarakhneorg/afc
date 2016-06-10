@@ -30,14 +30,13 @@ import java.util.Iterator;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Incubating;
 
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
-import org.arakhne.afc.math.geometry.d3.afp.Path3afp.CrossingComputationType;
 import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
 
 @SuppressWarnings("all")
@@ -54,11 +53,11 @@ extends AbstractShape3afpTest<T, B> {
 		return path;
 	}
 
-	protected PathShadow3afp<B> createShadow(int x1, int y1, int z1, int x2, int y2, int z2) {
+	protected BasicPathShadow3afp createShadow(int x1, int y1, int z1, int x2, int y2, int z2) {
 		T path = (T) createPath();
 		path.moveTo(x1, y1, z1);
 		path.lineTo(x2, y2, z2);
-		return new PathShadow3afp<>(path);
+		return new BasicPathShadow3afp(path);
 	}
 
 	@Test

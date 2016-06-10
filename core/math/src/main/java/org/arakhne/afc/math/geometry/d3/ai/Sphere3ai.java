@@ -28,13 +28,13 @@ import java.util.TreeSet;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3iComparator;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.ai.Path3ai.CrossingComputationType;
 
 /** Fonctional interface that represented a 3D sphere.
  *
@@ -480,7 +480,7 @@ public interface Sphere3ai<
 	static boolean intersectsSphereSegment(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3, int z3) {
 		assert radius >= 0 : "Circle radius must be positive or zero."; //$NON-NLS-1$
 		final Point3D<?, ?> point = new InnerComputationPoint3ai();
-		Segment3ai.computeClosestPointTo(x2, y2, z1, x3, y3, z3, x1, y1, z1, point);
+		Segment3ai.computeClosestPointToPoint(x2, y2, z1, x3, y3, z3, x1, y1, z1, point);
 		return contains(x1, y1, z1, radius, point.ix(), point.iy(), point.iz());
 	}
 
@@ -717,6 +717,31 @@ public interface Sphere3ai<
 		computeClosestPointTo(getX(), getY(), getZ(), getRadius(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
 	}
+
+    @Override
+    default P getClosestPointTo(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangle) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?> circle) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?> path) {
+        throw new UnsupportedOperationException();
+    }
 
 	@Pure
 	@Override

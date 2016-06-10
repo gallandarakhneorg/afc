@@ -28,6 +28,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Path3D;
@@ -35,6 +37,8 @@ import org.arakhne.afc.math.geometry.d3.PathIterator3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * Fonctional interface that represented a 2D path on a plane.
@@ -93,7 +97,7 @@ public interface Path3afp<
      * @see "Weiler–Atherton clipping algorithm"
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-    static int computeCrossingsFromPath(int crossings, PathIterator3afp<?> iterator, PathShadow3afp<?> shadow,
+    static int computeCrossingsFromPath(int crossings, PathIterator3afp<?> iterator, BasicPathShadow3afp shadow,
             CrossingComputationType type) {
         assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
         assert shadow != null : "Shadow to the right must be not null"; //$NON-NLS-1$
@@ -319,6 +323,109 @@ public interface Path3afp<
         }
     }
 
+    /** Replies the point on the path of pi that is closest to the given shape.
+     *
+     * <p><strong>CAUTION:</strong> This function works only on path iterators
+     * that are replying not-curved primitives, ie. if the
+     * {@link PathIterator3D#isCurved()} of {@code pi} is replying
+     * <code>false</code>.
+     * {@link #getClosestPointTo(org.arakhne.afc.math.geometry.d3.Shape3D)} avoids this restriction.
+     *
+     * @param pi is the iterator of path elements, on one of which the closest point is located.
+     * @param shape the shape to which the closest point must be computed.
+     * @param result the closest point on pi.
+     * @return <code>true</code> if a point was found. Otherwise <code>false</code>.
+     */
+    @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+    @Unefficient
+    static boolean getClosestPointTo(PathIterator3afp<? extends PathElement3afp> pi,
+            PathIterator3afp<? extends PathElement3afp> shape, Point3D<?, ?> result) {
+        assert pi != null : AssertMessages.notNullParameter(0);
+        assert shape != null : AssertMessages.notNullParameter(1);
+        assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+        assert result != null : AssertMessages.notNullParameter(2);
+        if (!pi.hasNext() || !shape.hasNext()) {
+            return false;
+        }
+        PathElement3afp pathElement1 = pi.next();
+        if (pathElement1.getType() != PathElementType.MOVE_TO) {
+            throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
+        }
+        if (shape.next().getType() != PathElementType.MOVE_TO) {
+            throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
+        }
+        if (!pi.hasNext() || !shape.hasNext()) {
+            return false;
+        }
+        final RectangularPrism3afp<?, ?, ?, ?, ?, ?> box = pi.getGeomFactory().newBox();
+        computeDrawableElementBoundingBox(shape.restartIterations(), box);
+        final ClosestPointPathShadow3afp shadow = new ClosestPointPathShadow3afp(shape.restartIterations(), box);
+        int crossings = 0;
+        double curx = pathElement1.getToX();
+        double movx = curx;
+        double cury = pathElement1.getToY();
+        double movy = cury;
+        double curz = pathElement1.getToZ();
+        double movz = curz;
+        double endx;
+        double endy;
+        double endz;
+        while (pi.hasNext()) {
+            pathElement1 = pi.next();
+            switch (pathElement1.getType()) {
+            case MOVE_TO:
+                movx = pathElement1.getToX();
+                curx = movx;
+                movy = pathElement1.getToY();
+                cury = movy;
+                movz = pathElement1.getToZ();
+                curz = movz;
+                break;
+            case LINE_TO:
+                endx = pathElement1.getToX();
+                endy = pathElement1.getToY();
+                endz = pathElement1.getToZ();
+                crossings = shadow.computeCrossings(crossings, curx, cury, curz, endx, endy, endz);
+                if (crossings == MathConstants.SHAPE_INTERSECTS) {
+                    result.set(shadow.getClosestPointInOtherShape());
+                    return true;
+                }
+                curx = endx;
+                cury = endy;
+                curz = endz;
+                break;
+            case CLOSE:
+                if (curx != movx || cury != movy || curz != movz) {
+                    crossings = shadow.computeCrossings(crossings, curx, cury, curz, movx, movy, movz);
+                    if (crossings == MathConstants.SHAPE_INTERSECTS) {
+                        result.set(shadow.getClosestPointInOtherShape());
+                        return true;
+                    }
+                }
+                curx = movx;
+                cury = movy;
+                curz = movz;
+                break;
+            case QUAD_TO:
+            case CURVE_TO:
+            case ARC_TO:
+            default:
+                throw new IllegalArgumentException();
+            }
+        }
+        if (curx == movx && cury == movy && curz == movz) {
+            assert crossings != MathConstants.SHAPE_INTERSECTS;
+            final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+            if ((crossings & mask) != 0) {
+                // Second path is inside the first shape
+                result.set(shadow.getClosestPointInShadowShape());
+                return true;
+            }
+        }
+        result.set(shadow.getClosestPointInOtherShape());
+        return true;
+    }
+
     @Pure
     @Override
     default P getClosestPointTo(Point3D<?, ?> pt) {
@@ -327,6 +434,62 @@ public interface Path3afp<
         Path3afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), pt.getX(), pt.getY(), pt.getZ(),
                 point);
         return point;
+    }
+
+    @Pure
+    @Unefficient
+    @Override
+    default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+        final P result = getGeomFactory().newPoint();
+        if (isCurved()) {
+            Path3afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                    sphere.getCenterX(), sphere.getCenterY(), sphere.getCenterZ(), result);
+        } else {
+            Path3afp.getClosestPointTo(getPathIterator(), sphere.getCenterX(), sphere.getCenterY(), sphere.getCenterZ(), result);
+        }
+        return result;
+    }
+
+    @Pure
+    @Unefficient
+    @Override
+    default P getClosestPointTo(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
+        final P result = getGeomFactory().newPoint();
+        if (isCurved()) {
+            Path3afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                    rectangularPrism.getPathIterator(), result);
+        } else {
+            Path3afp.getClosestPointTo(getPathIterator(), rectangularPrism.getPathIterator(), result);
+        }
+        return result;
+    }
+
+    @Pure
+    @Unefficient
+    @Override
+    default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+        final P result = getGeomFactory().newPoint();
+        if (isCurved()) {
+            Path3afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                    segment.getPathIterator(), result);
+        } else {
+            Path3afp.getClosestPointTo(getPathIterator(), segment.getPathIterator(), result);
+        }
+        return result;
+    }
+
+    @Pure
+    @Unefficient
+    @Override
+    default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
+        final P result = getGeomFactory().newPoint();
+        if (isCurved()) {
+            Path3afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                    path.getPathIterator(), result);
+        } else {
+            Path3afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), result);
+        }
+        return result;
     }
 
     /**
@@ -1759,7 +1922,7 @@ public interface Path3afp<
     }
 
     @Override
-    default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, B> prism) {
+    default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
         assert prism != null : "Rectangle must be not null"; //$NON-NLS-1$
         return containsRectangle(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), prism.getMinX(), prism.getMinY(),
                 prism.getMinZ(), prism.getWidth(), prism.getHeight(), prism.getDepth());
@@ -1767,8 +1930,8 @@ public interface Path3afp<
 
     @Pure
     @Override
-    default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
-        assert prism != null : "Rectangle must be not null"; //$NON-NLS-1$
+    default boolean intersects(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
+        assert prism != null : "Rectangular prism must be not null"; //$NON-NLS-1$
         // Copied from AWT API
         if (prism.isEmpty()) {
             return false;
@@ -1805,7 +1968,7 @@ public interface Path3afp<
         assert path != null : "Path must be not null"; //$NON-NLS-1$
         final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
         final int crossings = computeCrossingsFromPath(0, path.getPathIterator(),
-                new PathShadow3afp<>(this.getPathIterator(), this.toBoundingBox()),
+                new BasicPathShadow3afp(this),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
         return crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
     }
@@ -1816,7 +1979,7 @@ public interface Path3afp<
         assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
         final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
         final int crossings = computeCrossingsFromPath(0, iterator,
-                new PathShadow3afp<>(this.getPathIterator(), this.toBoundingBox()),
+                new BasicPathShadow3afp(this),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
         return crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
     }
@@ -3046,33 +3209,6 @@ public interface Path3afp<
             this.path.remove(p.getX(), p.getY(), p.getZ());
         }
 
-    }
-
-    /**
-     * Type of computation for the crossing of the path's shadow with a shape.
-     *
-     * @author $Author: sgalland$
-     * @version $FullVersion$
-     * @mavengroupid $GroupId$
-     * @mavenartifactid $ArtifactId$
-     * @since 13.0
-     */
-    enum CrossingComputationType {
-        /**
-         * The crossing is computed with the default standard approach.
-         */
-        STANDARD,
-
-        /**
-         * The path is automatically close by the crossing computation function.
-         */
-        AUTO_CLOSE,
-
-        /**
-         * When the path is not a polygon, i.e. not closed,the crossings will only consider the shape intersection only. The other
-         * crossing values will be assumed to be always equal to zero.
-         */
-        SIMPLE_INTERSECTION_WHEN_NOT_POLYGON;
     }
 
 }

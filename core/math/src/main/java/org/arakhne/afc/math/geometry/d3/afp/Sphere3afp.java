@@ -26,11 +26,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.afp.Path3afp.CrossingComputationType;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a 2D sphere on a plane.
  *
@@ -442,7 +443,7 @@ public interface Sphere3afp<
 	}
 
 	@Override
-	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, B> rectangularPrism) {
+	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
 		assert rectangularPrism != null : "Rectangle must be not null"; //$NON-NLS-1$
         return containsSphereRectangularPrism(getX(), getY(), getZ(), getRadius(), rectangularPrism.getMinX(),
                 rectangularPrism.getMinY(), rectangularPrism.getMinZ(), rectangularPrism.getMaxX(), rectangularPrism.getMaxY(),
@@ -456,7 +457,7 @@ public interface Sphere3afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
+	default boolean intersects(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
 		assert prism != null : "Rectangle must be not null"; //$NON-NLS-1$
 		return intersectsSpherePrism(
 				getX(), getY(), getZ(), getRadius(),
@@ -521,6 +522,46 @@ public interface Sphere3afp<
 		final double s = radius / Math.sqrt(sqLength);
 		return getGeomFactory().newPoint(x + vx * s, y + vy * s, z + vz * s);
 	}
+
+    @Pure
+    @Override
+    default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+        assert sphere != null : AssertMessages.notNullParameter();
+        final Point3D<?, ?> point = sphere.getClosestPointTo(getCenter());
+        return getClosestPointTo(point);
+    }
+
+    @Pure
+    @Override
+    default P getClosestPointTo(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
+        assert rectangularPrism != null : AssertMessages.notNullParameter();
+        final Point3D<?, ?> point = rectangularPrism.getClosestPointTo(getCenter());
+        return getClosestPointTo(point);
+    }
+
+    @Pure
+    @Override
+    default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+        assert segment != null : AssertMessages.notNullParameter();
+        final Point3D<?, ?> point = segment.getClosestPointTo(getCenter());
+        return getClosestPointTo(point);
+    }
+
+    @Pure
+    @Override
+    default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
+        assert path != null : AssertMessages.notNullParameter();
+        final Point3D<?, ?> point = path.getClosestPointTo(getCenter());
+        return getClosestPointTo(point);
+    }
+
+    @Pure
+    @Override
+    default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+        assert multishape != null : AssertMessages.notNullParameter();
+        final Point3D<?, ?> point = multishape.getClosestPointTo(getCenter());
+        return getClosestPointTo(point);
+    }
 
 	@Pure
 	@Override

@@ -240,6 +240,31 @@ public interface MultiShape3ai<
 		return new MultiShapePointIterator<>(getBackendDataList());
 	}
 
+    @Override
+    default P getClosestPointTo(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangle) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?> circle) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?> path) {
+        throw new UnsupportedOperationException();
+    }
+
 	/** Abstract iterator on the path elements of the multishape.
 	 *
 	 * @param <IE> the type of the path elements.

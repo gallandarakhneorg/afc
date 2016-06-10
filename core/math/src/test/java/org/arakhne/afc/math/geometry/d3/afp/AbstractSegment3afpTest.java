@@ -85,31 +85,31 @@ B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> extends AbstractShape3afpTest<
 		Point3D result;
 
 		result = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.computeClosestPointTo(0, 0, 0, 1, 1, 1, 0, 0, 0, result);
+		Segment3afp.computeClosestPointToPoint(0, 0, 0, 1, 1, 1, 0, 0, 0, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 		assertEpsilonEquals(0, result.getZ());
 
 		result = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.computeClosestPointTo(0, 0, 0, 1, 1, 1, .75, .75, .75, result);
+		Segment3afp.computeClosestPointToPoint(0, 0, 0, 1, 1, 1, .75, .75, .75, result);
 		assertEpsilonEquals(.75, result.getX());
 		assertEpsilonEquals(.75, result.getY());
 		assertEpsilonEquals(.75, result.getZ());
 
 		result = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.computeClosestPointTo(0, 0, 0, 1, 1, 1, -10, -50, 0, result);
+		Segment3afp.computeClosestPointToPoint(0, 0, 0, 1, 1, 1, -10, -50, 0, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 		assertEpsilonEquals(0, result.getZ());
 
 		result = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.computeClosestPointTo(0, 0, 0, 1, 1, 1, 200, -50, 0, result);
+		Segment3afp.computeClosestPointToPoint(0, 0, 0, 1, 1, 1, 200, -50, 0, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(1, result.getY());
 		assertEpsilonEquals(1, result.getZ());
 
 		result = createPoint(Double.NaN, Double.NaN, Double.NaN);
-		Segment3afp.computeClosestPointTo(0, 0, 0, 1, 1, 1, 0, 1, 0, result);
+		Segment3afp.computeClosestPointToPoint(0, 0, 0, 1, 1, 1, 0, 1, 0, result);
 		assertEpsilonEquals(.5, result.getX());
 		assertEpsilonEquals(.5, result.getY());
 		assertEpsilonEquals(.5, result.getZ());

@@ -27,12 +27,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.ai.Path3ai.CrossingComputationType;
 import org.arakhne.afc.math.geometry.d3.ai.Segment3ai.BresenhamLineIterator;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a 2D rectangle on a plane.
  *
@@ -298,6 +299,145 @@ public interface RectangularPrism3ai<
 		result.set(x, y, z);
 	}
 
+    /** Update the given Cohen-Sutherland code that corresponds to the given segment in order
+     * to obtain a segment restricted to a single Cohen-Sutherland zone.
+     * This function is at the heart of the
+     * <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
+     *
+     * <p>The result of this function may be: <ul>
+     * <li>the code for a single zone, or</li>
+     * <li>the code that corresponds to a single column, or </li>
+     * <li>the code that corresponds to a single row.</li>
+     * </ul>
+     *
+     * @param rx1 is the first corner of the rectangle.
+     * @param ry1 is the first corner of the rectangle.
+     * @param rz1 is the first corner of the rectangle.
+     * @param rx2 is the second corner of the rectangle.
+     * @param ry2 is the second corner of the rectangle.
+     * @param rz2 is the second corner of the rectangle.
+     * @param sx1 is the first point of the segment.
+     * @param sy1 is the first point of the segment.
+     * @param sz1 is the first point of the segment.
+     * @param sx2 is the second point of the segment.
+     * @param sy2 is the second point of the segment.
+     * @param sz2 is the second point of the segment.
+     * @param codePoint1 the Cohen-Sutherland code for the first point of the segment.
+     * @param codePoint2 the Cohen-Sutherland code for the second point of the segment.
+     * @param newSegmentP1 is set with the new coordinates of the segment first point. If <code>null</code>,
+     *     this parameter is ignored.
+     * @param newSegmentP2 is set with the new coordinates of the segment second point. If <code>null</code>,
+     *     this parameter is ignored.
+     * @return the rectricted Cohen-Sutherland zone.
+     */
+    @Pure
+    @SuppressWarnings({ "checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:magicnumber",
+            "checkstyle:cyclomaticcomplexity" })
+    static int reduceCohenSutherlandZoneRectangularPrismSegment(int rx1, int ry1, int rz1, int rx2, int ry2, int rz2,
+            int sx1, int sy1, int sz1, int sx2, int sy2, int sz2, int codePoint1, int codePoint2,
+            Point3D<?, ?> newSegmentP1, Point3D<?, ?> newSegmentP2) {
+        assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 3, rx2);
+        assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 4, ry2);
+        assert rz1 <= rz2 : AssertMessages.lowerEqualParameters(2, ry1, 5, ry2);
+        assert codePoint1 == MathUtil.getCohenSutherlandCode3D(sx1, sy1, sz1, rx1, ry1, rz1, rx2, ry2, rz2) : AssertMessages
+                .invalidValue(8);
+        assert codePoint2 == MathUtil.getCohenSutherlandCode3D(sx2, sy2, sz2, rx1, ry1, rz1, rx2, ry2, rz2) : AssertMessages
+                .invalidValue(9);
+        int segmentX1 = sx1;
+        int segmentY1 = sy1;
+        int segmentZ1 = sz1;
+        int segmentX2 = sx2;
+        int segmentY2 = sy2;
+        int segmentZ2 = sz2;
+
+        int code1 = codePoint1;
+        int code2 = codePoint2;
+
+        while (true) {
+            if ((code1 | code2) == 0) {
+                // Bitwise OR is 0. Trivially accept and get out of loop
+                if (newSegmentP1 != null) {
+                    newSegmentP1.set(segmentX1, segmentY1, segmentZ1);
+                }
+                if (newSegmentP2 != null) {
+                    newSegmentP2.set(segmentX2, segmentY2, segmentZ2);
+                }
+                return 0;
+            }
+            if ((code1 & code2) != 0) {
+                // Bitwise AND is not 0. Trivially reject and get out of loop
+                if (newSegmentP1 != null) {
+                    newSegmentP1.set(segmentX1, segmentY1, segmentZ1);
+                }
+                if (newSegmentP2 != null) {
+                    newSegmentP2.set(segmentX2, segmentY2, segmentZ2);
+                }
+                return code1 & code2;
+            }
+
+            // failed both tests, so calculate the line segment intersection
+
+            // At least one endpoint is outside the clip rectangle; pick it.
+            int code3 = (code1 != 0) ? code1 : code2;
+
+            int x = 0;
+            int y = 0;
+            int z = 0;
+
+            // Now find the intersection point;
+            // use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
+            if ((code3 & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
+                // point is above the clip rectangle
+                x = segmentX1 + (segmentX2 - segmentX1) * (ry2 - segmentY1) / (segmentY2 - segmentY1);
+                y = ry2;
+                z = rz2;
+            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
+                // point is below the clip rectangle
+                x = segmentX1 + (segmentX2 - segmentX1) * (ry1 - segmentY1) / (segmentY2 - segmentY1);
+                y = ry1;
+                z = rz1;
+            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
+                // point is to the right of clip rectangle
+                y = segmentY1 + (segmentY2 - segmentY1) * (rx2 - segmentX1) / (segmentX2 - segmentX1);
+                x = rx2;
+                z = rz2;
+            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
+                // point is to the left of clip rectangle
+                y = segmentY1 + (segmentY2 - segmentY1) * (rx1 - segmentX1) / (segmentX2 - segmentX1);
+                x = rx1;
+                z = rz1;
+            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_FRONT) != 0) {
+                // point is to the front of clip rectangle
+                z = segmentZ1 + (segmentZ2 - segmentZ1) * (rz2 - segmentZ1) / (segmentZ2 - segmentZ1);
+                x = rx2;
+                y = ry2;
+            } else if ((code3 & MathConstants.COHEN_SUTHERLAND_BACK) != 0) {
+                // point is to the back of clip rectangle
+                z = segmentZ1 + (segmentZ2 - segmentZ1) * (rz1 - segmentZ1) / (segmentZ2 - segmentZ1);
+                x = rx1;
+                y = ry1;
+            } else {
+                code3 = 0;
+            }
+
+            if (code3 != 0) {
+                // Now we move outside point to intersection point to clip
+                // and get ready for next pass.
+                if (code3 == code1) {
+                    segmentX1 = x;
+                    segmentY1 = y;
+                    segmentZ1 = z;
+                    code1 = MathUtil.getCohenSutherlandCode3D(segmentX1, segmentY1, segmentZ1, rx1, ry1, rz1, rx2, ry2, rz2);
+                } else {
+                    segmentX2 = x;
+                    segmentY2 = y;
+                    segmentZ2 = z;
+                    code2 = MathUtil.getCohenSutherlandCode3D(segmentX2, segmentY2, segmentZ2, rx1, ry1, rz1, rx2, ry2, rz2);
+                }
+            }
+        }
+    }
+
 	@Pure
 	@Override
 	default boolean equalsToShape(IT shape) {
@@ -398,6 +538,31 @@ public interface RectangularPrism3ai<
 		computeClosestPoint(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
 	}
+
+    @Override
+    default P getClosestPointTo(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangle) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?> circle) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?> path) {
+        throw new UnsupportedOperationException();
+    }
 
 	@Pure
 	@Override

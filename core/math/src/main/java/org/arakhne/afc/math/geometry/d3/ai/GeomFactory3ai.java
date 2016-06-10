@@ -22,8 +22,10 @@ package org.arakhne.afc.math.geometry.d3.ai;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
+import org.arakhne.afc.math.geometry.d3.PathIterator3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
 
 /** Factory of geometrical elements.
  *
@@ -154,4 +156,19 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	E newCurvePathElement(int startX, int startY, int startZ, int controlX1, int controlY1, int controlZ1,
 			int controlX2, int controlY2, int controlZ2, int targetX, int targetY, int targetZ);
 
+
+    /** Replies the {@link PathIterator3ai} that is corresponding to the given element.
+     *
+     * <p>If the given element is already a {@link PathIterator3ai}, returns {@code this}.
+     *
+     * @param iterator the iterator.
+     * @return the iterator.
+     */
+    default PathIterator3ai<?> convert(PathIterator3D<?> iterator) {
+        if (iterator instanceof PathIterator3ai) {
+            return (PathIterator3ai<?>) iterator;
+        }
+        assert iterator instanceof PathIterator3afp;
+        return new PathIteratorWrapper(this, (PathIterator3afp<?>) iterator);
+    }
 }

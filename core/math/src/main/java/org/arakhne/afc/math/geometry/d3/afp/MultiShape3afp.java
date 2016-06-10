@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.d3.MultiShape3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Container for grouping of shapes.
  *
@@ -78,7 +79,7 @@ public interface MultiShape3afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
+	default boolean intersects(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
 		assert prism != null : "Rectangle must be not null"; //$NON-NLS-1$
 		if (prism.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
@@ -149,7 +150,7 @@ public interface MultiShape3afp<
 
 	@Pure
 	@Override
-	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, B> rectangularPrism) {
+	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
 		assert rectangularPrism != null : "Rectangle must be not null"; //$NON-NLS-1$
 		if (rectangularPrism.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
@@ -234,6 +235,97 @@ public interface MultiShape3afp<
 		}
 		return new TransformedMultiShapePathIterator<>(getBackendDataList(), getGeomFactory(), transform);
 	}
+
+    @Override
+    default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> circle) {
+        assert circle != null : AssertMessages.notNullParameter();
+        double min = Double.POSITIVE_INFINITY;
+        final P closest = getGeomFactory().newPoint();
+        P point;
+        double dist;
+        for (final CT innerShape : getBackendDataList()) {
+            point = innerShape.getClosestPointTo(circle);
+            dist = circle.getDistanceSquared(point);
+            if (dist < min) {
+                min = dist;
+                closest.set(point);
+            }
+        }
+        return closest;
+    }
+
+    @Override
+    default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+        assert segment != null : AssertMessages.notNullParameter();
+        double min = Double.POSITIVE_INFINITY;
+        final P closest = getGeomFactory().newPoint();
+        P point;
+        double dist;
+        for (final CT innerShape : getBackendDataList()) {
+            point = innerShape.getClosestPointTo(segment);
+            dist = segment.getDistanceSquared(point);
+            if (dist < min) {
+                min = dist;
+                closest.set(point);
+            }
+        }
+        return closest;
+    }
+
+    @Override
+    default P getClosestPointTo(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangle) {
+        assert rectangle != null : AssertMessages.notNullParameter();
+        double min = Double.POSITIVE_INFINITY;
+        final P closest = getGeomFactory().newPoint();
+        P point;
+        double dist;
+        for (final CT innerShape : getBackendDataList()) {
+            point = innerShape.getClosestPointTo(rectangle);
+            dist = rectangle.getDistanceSquared(point);
+            if (dist < min) {
+                min = dist;
+                closest.set(point);
+            }
+        }
+        return closest;
+    }
+
+    @Override
+    default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
+        assert path != null : AssertMessages.notNullParameter();
+        double min = Double.POSITIVE_INFINITY;
+        final P closest = getGeomFactory().newPoint();
+        P point;
+        double dist;
+        for (final CT innerShape : getBackendDataList()) {
+            point = innerShape.getClosestPointTo(path);
+            dist = path.getDistanceSquared(point);
+            if (dist < min) {
+                min = dist;
+                closest.set(point);
+            }
+        }
+        return closest;
+    }
+
+    @Override
+    default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+        assert multishape != null : AssertMessages.notNullParameter();
+        double min = Double.POSITIVE_INFINITY;
+        final P closest = getGeomFactory().newPoint();
+        P point;
+        double dist;
+        for (final CT innerShape : getBackendDataList()) {
+            point = innerShape.getClosestPointTo(multishape);
+            dist = multishape.getDistanceSquared(point);
+            if (dist < min) {
+                min = dist;
+                closest.set(point);
+            }
+        }
+        return closest;
+    }
+
 
 	/** Abstract iterator on the path elements of the multishape.
 	 *

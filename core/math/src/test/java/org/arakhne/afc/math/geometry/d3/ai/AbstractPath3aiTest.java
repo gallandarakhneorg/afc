@@ -35,6 +35,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
@@ -487,9 +488,10 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103, 0);
 		path2.lineTo(-34, 103, 0);
 		assertEquals(1, Path3ai.computeCrossingsFromPath(
+		        0,
 				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				false, false));
+				new BasicPathShadow3ai(path1),
+				CrossingComputationType.STANDARD));
 
 		path1 = createPath();
 		path1.moveTo(-33, 98, 0);
@@ -503,9 +505,10 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103, 0);
 		path2.lineTo(-34, 103, 0);
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+		        0,
 				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				false, false));
+				new BasicPathShadow3ai(path1),
+				CrossingComputationType.STANDARD));
 
 		path1 = createPath();
 		path1.moveTo(-33, 98, 0);
@@ -519,9 +522,10 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-34, 103, 0);
 		path2.closePath();
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+		        0,
 				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				false, false));
+				new BasicPathShadow3ai(path1),
+				CrossingComputationType.STANDARD));
 
 		path1 = createPath();
 		path1.moveTo(-33, 98, 0);
@@ -536,9 +540,10 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-34, 103, 0);
 		path2.closePath();
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+		        0,
 				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				false, false));
+				new BasicPathShadow3ai(path1),
+				CrossingComputationType.STANDARD));
 	}
 	
 	@Test
@@ -558,9 +563,10 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103, 0);
 		path2.lineTo(-34, 103, 0);
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+		        0,
 				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				true, false));
+				new BasicPathShadow3ai(path1),
+				CrossingComputationType.AUTO_CLOSE));
 
 		path1 = createPath();
 		path1.moveTo(-33, 98, 0);
@@ -574,9 +580,10 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103, 0);
 		path2.lineTo(-34, 103, 0);
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				true, false));
+				0,
+		        (PathIterator3ai) path2.getPathIterator(),
+				new BasicPathShadow3ai(path1),
+				CrossingComputationType.AUTO_CLOSE));
 
 		path1 = createPath();
 		path1.moveTo(-33, 98, 0);
@@ -590,9 +597,10 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-34, 103, 0);
 		path2.closePath();
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+		        0,
 				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				true, false));
+				new BasicPathShadow3ai(path1),
+				CrossingComputationType.AUTO_CLOSE));
 
 		path1 = createPath();
 		path1.moveTo(-33, 98, 0);
@@ -607,82 +615,12 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-34, 103, 0);
 		path2.closePath();
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+		        0,
 				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				true, false));
+				new BasicPathShadow3ai(path1),
+				CrossingComputationType.AUTO_CLOSE));
 	}
 		
-	@Test
-	@Ignore
-	public void staticComputeCrossingsFromPath_closeable_onlyIntersectWhenOpen() {
-		Path3ai path1;
-		Path3ai path2;
-		
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				true, true));
-
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path1.closePath();
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				true, true));
-
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		path2.closePath();
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				true, true));
-
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path1.closePath();
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		path2.closePath();
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				true, true));
-	}
-
 	@Test
 	@Ignore
 	public void staticComputeCrossingsFromPath_noCloseable_onlyIntersectWhenOpen() {
@@ -700,9 +638,10 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103, 0);
 		path2.lineTo(-34, 103, 0);
 		assertEquals(0, Path3ai.computeCrossingsFromPath(
+		        0,
 				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				false, true));
+				new BasicPathShadow3ai(path1),
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 
 		path1 = createPath();
 		path1.moveTo(-33, 98, 0);
@@ -716,9 +655,10 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103, 0);
 		path2.lineTo(-34, 103, 0);
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+		        0,
 				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				false, true));
+				new BasicPathShadow3ai(path1),
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 
 		path1 = createPath();
 		path1.moveTo(-33, 98, 0);
@@ -732,9 +672,10 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-34, 103, 0);
 		path2.closePath();
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+		        0,
 				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				false, true));
+				new BasicPathShadow3ai(path1),
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 
 		path1 = createPath();
 		path1.moveTo(-33, 98, 0);
@@ -749,9 +690,10 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-34, 103, 0);
 		path2.closePath();
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+		        0,
 				(PathIterator3ai) path2.getPathIterator(),
-				new PathShadow3ai(path1),
-				false, true));
+				new BasicPathShadow3ai(path1),
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 	}
 
 	@Test

@@ -26,6 +26,7 @@ import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 3D shape.
  *
@@ -133,6 +134,20 @@ public interface Shape3D<
 	@Pure
 	boolean contains(Point3D<?, ?> point);
 
+    /** Replies if this shape is inside the given shape.
+     *
+     * <p>You must use the containing functions with a specific parameter type in place of
+     * this general function. Indeed, the implementation of this function is unefficient due
+     * to the tests against the types of the given shape, and the cast operators.
+     *
+     * @param shape the shape to compare to.
+     * @return <code>true</code> if the given shape is inside this shape;
+     * <code>false</code> otherwise.
+     */
+    @Pure
+    @Unefficient
+    boolean contains(Shape3D<?, ?, ?, ?, ?, ?> shape);
+
 	/** Replies the point on the shape that is closest to the given point.
 	 *
 	 * @param point the point.
@@ -141,6 +156,21 @@ public interface Shape3D<
 	 */
 	@Pure
 	P getClosestPointTo(Point3D<?, ?> point);
+
+    /** Replies the point on the shape that is closest to the given shape.
+     *
+     * <p>If the two shapes are intersecting, the replied point is always at the intersection
+     * of the two shapes. This function does not enforce the meaning of the replied point
+     * in the case of shape intersection. In other words, this function is warranting that
+     * the reply point is the either the penetration point, nor a perimeter point, nor any point
+     * with a specific meaning.
+     *
+     * @param shape the shape.
+     * @return the closest point on the shape.
+     */
+    @Pure
+    @Unefficient
+    P getClosestPointTo(Shape3D<?, ?, ?, ?, ?, ?> shape);
 
 	/** Replies the point on the shape that is farthest the given point.
 	 *
@@ -161,6 +191,18 @@ public interface Shape3D<
 		return Math.sqrt(getDistanceSquared(point));
 	}
 
+    /** Replies the minimal distance from this shape to the given shape.
+     *
+     * @param shape the shape.
+     * @return the minimal distance between this shape and the given shape.
+     */
+    @Pure
+    @Unefficient
+    default double getDistance(Shape3D<?, ?, ?, ?, ?, ?> shape) {
+        assert shape != null : AssertMessages.notNullParameter();
+        return Math.sqrt(getDistanceSquared(shape));
+    }
+
 	/** Replies the squared value of the minimal distance from this shape to the given point.
 	 *
 	 * @param point the point.
@@ -168,6 +210,15 @@ public interface Shape3D<
 	 */
 	@Pure
 	double getDistanceSquared(Point3D<?, ?> point);
+
+    /** Replies the squared value of the minimal distance from this shape to the given shape.
+     *
+     * @param shape the shape.
+     * @return squared value of the minimal distance between this shape and the given shape.
+     */
+    @Pure
+    @Unefficient
+    double getDistanceSquared(Shape3D<?, ?, ?, ?, ?, ?> shape);
 
 	/**
 	 * Computes the L-1 (Manhattan) distance between this shape and

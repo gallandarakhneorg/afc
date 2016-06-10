@@ -756,37 +756,37 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		Point3D p;
 		
 		p = createPoint(0, 0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, 0, 0, 0, p);
+		Segment3ai.computeClosestPointToPoint(0, 0, 0, 10, 5, 0, 0, 0, 0, p);
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
 		p = createPoint(0, 0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, 1, 1, 0, p);
+		Segment3ai.computeClosestPointToPoint(0, 0, 0, 10, 5, 0, 1, 1, 0, p);
 		assertEquals(2, p.ix());
 		assertEquals(1, p.iy());
 
 		p = createPoint(0, 0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, 2, 2, 0, p);
+		Segment3ai.computeClosestPointToPoint(0, 0, 0, 10, 5, 0, 2, 2, 0, p);
 		assertEquals(2, p.ix());
 		assertEquals(1, p.iy());
 
 		p = createPoint(0, 0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, -2, 2, 0, p);
+		Segment3ai.computeClosestPointToPoint(0, 0, 0, 10, 5, 0, -2, 2, 0, p);
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
 		p = createPoint(0, 0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, 0, 1, 0, p);
+		Segment3ai.computeClosestPointToPoint(0, 0, 0, 10, 5, 0, 0, 1, 0, p);
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
 		p = createPoint(0, 0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, 10, -1, 0, p);
+		Segment3ai.computeClosestPointToPoint(0, 0, 0, 10, 5, 0, 10, -1, 0, p);
 		assertEquals(7, p.ix());
 		assertEquals(3, p.iy());
 
 		p = createPoint(0, 0, 0);
-		Segment3ai.computeClosestPointTo(0, 0, 0, 10, 5, 0, 2, 4, 0, p);
+		Segment3ai.computeClosestPointToPoint(0, 0, 0, 10, 5, 0, 2, 4, 0, p);
 		assertEquals(4, p.ix());
 		assertEquals(2, p.iy());
 	}

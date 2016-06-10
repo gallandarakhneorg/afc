@@ -28,6 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Path3D;
@@ -922,18 +923,17 @@ public interface Path3ai<
 	 * thrown.
 	 * The caller must check r[xy]{min,max} for NaN values.
 	 *
+	 * @param crossings the intial crossing.
 	 * @param iterator is the iterator on the path elements.
 	 * @param shadow is the description of the shape to project to the right.
-	 * @param closeable indicates if the shape is automatically closed or not.
-	 * @param onlyIntersectWhenOpen indicates if the crossings is set to 0 when
-	 *     the path is open and there is not SHAPE_INTERSECT. If <code>true</code> assumes that
-	 *     the function can only reply <code>0</code> or {@link MathConstants#SHAPE_INTERSECTS}.
+     * @param type is the type of special computation to apply. If <code>null</code>, it
+     *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossings.
 	 * @see "Weiler–Atherton clipping algorithm"
 	 */
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
-    static int computeCrossingsFromPath(PathIterator3ai<?> iterator, PathShadow3ai<?> shadow, boolean closeable,
-            boolean onlyIntersectWhenOpen) {
+    static int computeCrossingsFromPath(int crossings, PathIterator3ai<?> iterator, BasicPathShadow3ai shadow,
+            CrossingComputationType type) {
 		assert iterator != null : "Iterator must not be null"; //$NON-NLS-1$
 		assert shadow != null : "The shadow projected on the right must not be null"; //$NON-NLS-1$
 
@@ -955,11 +955,11 @@ public interface Path3ai<
         int cury = movy;
         int movz = pathElement1.getToZ();
         int curz = movz;
-		int crossings = 0;
+		int numCrossings = crossings;
 		int endx;
 		int endy;
 		int endz;
-		while (crossings != MathConstants.SHAPE_INTERSECTS
+		while (numCrossings != MathConstants.SHAPE_INTERSECTS
 				&& iterator.hasNext()) {
 			pathElement1 = iterator.next();
 			switch (pathElement1.getType()) {
@@ -977,11 +977,11 @@ public interface Path3ai<
 				endx = pathElement1.getToX();
 				endy = pathElement1.getToY();
 				endz = pathElement1.getToZ();
-				crossings = shadow.computeCrossings(crossings,
+				numCrossings = shadow.computeCrossings(numCrossings,
 						curx, cury, curz,
 						endx, endy, endz);
-                if (crossings == MathConstants.SHAPE_INTERSECTS) {
-                    return crossings;
+                if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+                    return numCrossings;
                 }
 				curx = endx;
 				cury = endy;
@@ -997,15 +997,14 @@ public interface Path3ai<
 				subPath.quadTo(
 						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(), pathElement1.getCtrlZ1(),
 						endx, endy, endz);
-				final int n1 = computeCrossingsFromPath(
+				numCrossings = computeCrossingsFromPath(
+				        numCrossings,
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
-						false,
-						false);
-                if (n1 == MathConstants.SHAPE_INTERSECTS) {
-                    return n1;
+						CrossingComputationType.STANDARD);
+                if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+                    return numCrossings;
                 }
-				crossings += n1;
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1021,28 +1020,27 @@ public interface Path3ai<
 						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(), pathElement1.getCtrlZ1(),
 						pathElement1.getCtrlX2(), pathElement1.getCtrlY2(), pathElement1.getCtrlZ2(),
 						endx, endy, endz);
-				final int n2 = computeCrossingsFromPath(
+				numCrossings = computeCrossingsFromPath(
+				        numCrossings,
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
-						false,
-						false);
-                if (n2 == MathConstants.SHAPE_INTERSECTS) {
-                    return n2;
+						CrossingComputationType.STANDARD);
+                if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+                    return numCrossings;
                 }
-				crossings += n2;
 				curx = endx;
 				cury = endy;
 				curz = endz;
 				break;
 			case CLOSE:
 				if (curx != movx || cury != movy || curz != movz) {
-					crossings = shadow.computeCrossings(crossings,
+					numCrossings = shadow.computeCrossings(numCrossings,
 							curx, cury, curz,
 							movx, movy, movz);
 				}
 				// Stop as soon as possible
-				if (crossings != 0) {
-                    return crossings;
+				if (numCrossings != 0) {
+                    return numCrossings;
                 }
 				curx = movx;
 				cury = movy;
@@ -1053,24 +1051,30 @@ public interface Path3ai<
 			}
 		}
 
-        assert crossings != MathConstants.SHAPE_INTERSECTS;
+        assert numCrossings != MathConstants.SHAPE_INTERSECTS;
 
 		final boolean isOpen = (curx != movx) || (cury != movy) || (curz != movz);
 
-		if (isOpen) {
-			if (closeable) {
+		if (isOpen && type != null) {
+			switch (type) {
+			case AUTO_CLOSE:
 				// Not closed
-				crossings = shadow.computeCrossings(crossings,
+				numCrossings = shadow.computeCrossings(numCrossings,
 						curx, cury, curz,
 						movx, movy, movz);
-			} else if (onlyIntersectWhenOpen) {
+				break;
+			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
 				// Assume that when is the path is open, only
-				// SHAPE_INTERSECTS may be return
-				crossings = 0;
+				// SHAPE_INTERSECTS may be returned
+				numCrossings = 0;
+				break;
+			case STANDARD:
+			default:
+			    break;
 			}
 		}
 
-		return crossings;
+		return numCrossings;
 	}
 
 	/**
@@ -1407,10 +1411,9 @@ public interface Path3ai<
 	    assert iterator != null : "Iterator must not be null"; //$NON-NLS-1$
 	    final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 	    final int crossings = computeCrossingsFromPath(
-	            iterator,
-	            new PathShadow3ai<>(this),
-	            false,
-	            true);
+	            0, iterator,
+	            new BasicPathShadow3ai(this),
+	            CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
         return crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
 	}
 
@@ -1474,7 +1477,7 @@ public interface Path3ai<
 			case LINE_TO:
                 isClosed = false;
                 candidate = new InnerComputationPoint3ai();
-                Segment3ai.computeClosestPointTo(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(),
+                Segment3ai.computeClosestPointToPoint(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(),
                         pe.getToZ(), x, y, z, candidate);
                 if (crossings != MathConstants.SHAPE_INTERSECTS) {
 					crossings = Segment3ai.computeCrossingsFromPoint(
@@ -1487,7 +1490,7 @@ public interface Path3ai<
 				isClosed = true;
 				if (!pe.isEmpty()) {
 					candidate = new InnerComputationPoint3ai();
-                    Segment3ai.computeClosestPointTo(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(),
+                    Segment3ai.computeClosestPointToPoint(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(),
                             pe.getToZ(), x, y, z, candidate);
                     if (crossings != MathConstants.SHAPE_INTERSECTS) {
 						crossings = Segment3ai.computeCrossingsFromPoint(
@@ -1541,6 +1544,31 @@ public interface Path3ai<
         final P point = getGeomFactory().newPoint();
         getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), pt.ix(), pt.iy(), pt.iz(), point);
         return point;
+    }
+
+    @Override
+    default P getClosestPointTo(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangle) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?> circle) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?> path) {
+        throw new UnsupportedOperationException();
     }
 
 	/** Replies the point on the path that is farthest to the given point.
@@ -3200,30 +3228,6 @@ public interface Path3ai<
 			return this.path.getGeomFactory();
 		}
 
-	}
-
-	/** Type of computation for the crossing of the path's shadow with a shape.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	enum CrossingComputationType {
-	    /** The crossing is computed with the default standard approach.
-	     */
-	    STANDARD,
-
-	    /** The path is automatically close by the crossing computation function.
-	     */
-	    AUTO_CLOSE,
-
-	    /** When the path is not a polygon, i.e. not closed,the crossings will
-	     * only consider the shape intersection only. The other crossing values
-	     * will be assumed to be always equal to zero.
-	     */
-	    SIMPLE_INTERSECTION_WHEN_NOT_POLYGON;
 	}
 
 }

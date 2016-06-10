@@ -27,13 +27,15 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.afp.Path3afp.CrossingComputationType;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 
 /** Fonctional interface that represented a 2D segment/line on a plane.
@@ -940,7 +942,7 @@ public interface Segment3afp<
 	 * @param result the is point on the shape.
 	 */
 	@Pure
-	static void computeClosestPointTo(
+	static void computeClosestPointToPoint(
 			double ax, double ay, double az, double bx, double by, double bz, double px, double py, double pz,
 			Point3D<?, ?> result) {
 		assert result != null : "Result must be not null"; //$NON-NLS-1$
@@ -957,6 +959,216 @@ public interface Segment3afp<
 		}
 	}
 
+    /** Replies the point on the segment that is closest to the rectangle.
+     *
+     * @param sx1 is the x coordinate of the first point of the segment.
+     * @param sy1 is the y coordinate of the first point of the segment.
+     * @param sz1 is the z coordinate of the first point of the segment.
+     * @param sx2 is the x coordinate of the second point of the segment.
+     * @param sy2 is the y coordinate of the second point of the segment.
+     * @param sz2 is the z coordinate of the second point of the segment.
+     * @param rx is the x coordinate of the rectangle.
+     * @param ry is the y coordinate of the rectangle.
+     * @param rz is the z coordinate of the rectangle.
+     * @param rwidth is the width of the rectangle.
+     * @param rheight is the height of the rectangle.
+     * @param rdepth is the depth of the rectangle.
+     * @param result the is point on the segment.
+     */
+    @Pure
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
+    static void computeClosestPointToRectangle(double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
+            double rx, double ry, double rz, double rwidth, double rheight, double rdepth, Point3D<?, ?> result) {
+        assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(10);
+        assert rheight >= 0. : AssertMessages.positiveOrZeroParameter(11);
+        assert rdepth >= 0. : AssertMessages.positiveOrZeroParameter(12);
+        final double rmaxx = rx + rwidth;
+        final double rmaxy = ry + rheight;
+        final double rmaxz = rz + rdepth;
+        final int code1 = MathUtil.getCohenSutherlandCode3D(sx1, sy1, sz1, rx, ry, rz, rmaxx, rmaxy, rmaxz);
+        final int code2 = MathUtil.getCohenSutherlandCode3D(sx2, sy2, sz1, rx, ry, rz, rmaxx, rmaxy, rmaxz);
+        final Point3D<?, ?> tmp1 = new InnerComputationPoint3afp();
+        final Point3D<?, ?> tmp2 = new InnerComputationPoint3afp();
+        final int zone = RectangularPrism3afp.reduceCohenSutherlandZoneRectangleSegment(
+                rx, ry, rz, rmaxx, rmaxy, rmaxz,
+                sx1, sy1, sz1, sx2, sy2, sz2,
+                code1, code2,
+                tmp1, tmp2);
+        if ((zone & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
+            computeClosestPointToSegment(
+                    sx1, sy1, sz1, sx2, sy2, sz2,
+                    rx, ry, rz, rx, rmaxy, rmaxz, result);
+        } else if ((zone & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
+            computeClosestPointToSegment(
+                    sx1, sy1, sz1, sx2, sy2, sz2,
+                    rmaxx, ry, rz, rmaxx, rmaxy, rmaxz, result);
+        } else if ((zone & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
+            computeClosestPointToSegment(
+                    sx1, sy1, sz1, sx2, sy2, sz2,
+                    rx, ry, rz, rmaxx, ry, rmaxz, result);
+        } else if ((zone & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
+            computeClosestPointToSegment(
+                    sx1, sy1, sz1, sx2, sy2, sz2,
+                    rx, rmaxy, rz, rmaxx, rmaxy, rmaxz, result);
+        } else if ((zone & MathConstants.COHEN_SUTHERLAND_FRONT) != 0) {
+            computeClosestPointToSegment(
+                    sx1, sy1, sz1, sx2, sy2, sz2,
+                    rx, ry, rz, rmaxx, rmaxy, rz, result);
+        } else if ((zone & MathConstants.COHEN_SUTHERLAND_BACK) != 0) {
+            computeClosestPointToSegment(
+                    sx1, sy1, sz1, sx2, sy2, sz2,
+                    rx, ry, rmaxz, rmaxx, rmaxy, rmaxz, result);
+        } else {
+            computeClosestPointToPoint(
+                    tmp1.getX(), tmp1.getY(), tmp1.getZ(), tmp2.getX(), tmp2.getY(), tmp2.getZ(),
+                    (rx + rmaxx) / 2., (ry + rmaxy) / 2., (rz + rmaxz) / 2., result);
+        }
+    }
+
+    /** Replies the point on the first segment that is closest to the second segment.
+     *
+     * @param s1x1 is the x coordinate of the first point of the first segment.
+     * @param s1y1 is the y coordinate of the first point of the first segment.
+     * @param s1z1 is the z coordinate of the first point of the first segment.
+     * @param s1x2 is the x coordinate of the second point of the first segment.
+     * @param s1y2 is the y coordinate of the second point of the first segment.
+     * @param s1z2 is the z coordinate of the second point of the first segment.
+     * @param s2x1 is the x coordinate of the first point of the second segment.
+     * @param s2y1 is the y coordinate of the first point of the second segment.
+     * @param s2z1 is the z coordinate of the first point of the second segment.
+     * @param s2x2 is the x coordinate of the second point of the second segment.
+     * @param s2y2 is the y coordinate of the second point of the second segment.
+     * @param s2z2 is the z coordinate of the second point of the second segment.
+     * @param result the is point on the shape.
+     * @return the square distance between the segments.
+     */
+    @Pure
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
+    static double computeClosestPointToSegment(
+            double s1x1, double s1y1, double s1z1, double s1x2, double s1y2, double s1z2,
+            double s2x1, double s2y1, double s2z1, double s2x2, double s2y2, double s2z2,
+            Point3D<?, ?> result) {
+        return computeClosestPointToSegment(
+                s1x1, s1y1, s1z1, s1x2, s1y2, s1z2, s2x1, s2y1, s2z1, s2x2, s2y2, s2z2,
+                result, null);
+    }
+
+    /** Replies the point on the first segment that is closest to the second segment.
+     *
+     * @param s1x1 is the x coordinate of the first point of the first segment.
+     * @param s1y1 is the y coordinate of the first point of the first segment.
+     * @param s1z1 is the z coordinate of the first point of the first segment.
+     * @param s1x2 is the x coordinate of the second point of the first segment.
+     * @param s1y2 is the y coordinate of the second point of the first segment.
+     * @param s1z2 is the z coordinate of the second point of the first segment.
+     * @param s2x1 is the x coordinate of the first point of the second segment.
+     * @param s2y1 is the y coordinate of the first point of the second segment.
+     * @param s2z1 is the z coordinate of the first point of the second segment.
+     * @param s2x2 is the x coordinate of the second point of the second segment.
+     * @param s2y2 is the y coordinate of the second point of the second segment.
+     * @param s2z2 is the z coordinate of the second point of the second segment.
+     * @param resultOnFirstSegment the point on the first segment.
+     * @param resultOnSecondSegment the point on the second segment.
+     * @return the square distance between the segments.
+     */
+    @Pure
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
+    static double computeClosestPointToSegment(
+            double s1x1, double s1y1, double s1z1, double s1x2, double s1y2, double s1z2,
+            double s2x1, double s2y1, double s2z1, double s2x2, double s2y2, double s2z2,
+            Point3D<?, ?> resultOnFirstSegment, Point3D<?, ?> resultOnSecondSegment) {
+        final double ux = s1x2 - s1x1;
+        final double uy = s1y2 - s1y1;
+        final double uz = s1z2 - s1z1;
+        final double vx = s2x2 - s2x1;
+        final double vy = s2y2 - s2y1;
+        final double vz = s2z2 - s2z1;
+        final double wx = s1x1 - s2x1;
+        final double wy = s1y1 - s2y1;
+        final double wz = s1z1 - s2z1;
+        final double a = Vector2D.dotProduct(ux, uy, ux, uy);
+        final double b = Vector2D.dotProduct(ux, uy, vx, vy);
+        final double c = Vector2D.dotProduct(vx, vy, vx, vy);
+        final double d = Vector2D.dotProduct(ux, uy, wx, wy);
+        final double e = Vector2D.dotProduct(vx, vy, wx, wy);
+        final double bigD = a * c - b * b;
+        double svD = bigD;
+        double tvD = bigD;
+        double svN;
+        double tvN;
+        // compute the line parameters of the two closest points
+        if (MathUtil.isEpsilonZero(bigD)) {
+            // the lines are almost parallel
+            // force using point P0 on segment S1
+            svN = 0.;
+            // to prevent possible division by 0.0 later
+            svD = 1.;
+            tvN = e;
+            tvD = c;
+        } else {
+            // get the closest points on the infinite lines
+            svN = b * e - c * d;
+            tvN = a * e - b * d;
+            if (svN < 0.) {
+                // sc < 0 => the s=0 edge is visible
+                svN = 0.;
+                tvN = e;
+                tvD = c;
+            } else if (svN > svD) {
+                // sc > 1  => the s=1 edge is visible
+                svN = svD;
+                tvN = e + b;
+                tvD = c;
+            }
+        }
+
+        if (tvN < 0.) {
+            // tc < 0 => the t=0 edge is visible
+            tvN = 0.;
+            // recompute sc for this edge
+            if (-d < 0.) {
+                svN = 0.0;
+            } else if (-d > a) {
+                svN = svD;
+            } else {
+                svN = -d;
+                svD = a;
+            }
+        } else if (tvN > tvD) {
+            // tc > 1  => the t=1 edge is visible
+            tvN = tvD;
+            // recompute sc for this edge
+            if ((-d + b) < 0.) {
+                svN = 0;
+            } else if ((-d + b) > a) {
+                svN = svD;
+            } else {
+                svN = -d +  b;
+                svD = a;
+            }
+        }
+
+        // finally do the division to get sc and tc
+        final double sc = MathUtil.isEpsilonZero(svN) ? 0. : (svN / svD);
+        final double tc = MathUtil.isEpsilonZero(tvN) ? 0. : (tvN / tvD);
+
+        // get the difference of the two closest points
+        // =  S1(sc) - S2(tc)
+        final double dPx = wx + (sc * ux) - (tc * vx);
+        final double dPy = wy + (sc * uy) - (tc * vy);
+        final double dPz = wz + (sc * uz) - (tc * vz);
+
+        if (resultOnFirstSegment != null) {
+            resultOnFirstSegment.set(s1x1 + sc * ux, s1y1 + sc * uy, s1z1 + sc * uz);
+        }
+
+        if (resultOnSecondSegment != null) {
+            resultOnSecondSegment.set(s2x1 + tc * vx, s2y1 + tc * vy, s2z1 + tc * vz);
+        }
+
+        return dPx * dPx + dPy * dPy + dPz * dPz;
+    }
+
 	/**
 	 * Calculates the number of times the line from (x0,y0,z0) to (x1,y1,z1)
 	 * crosses the ray extending to the right from (px,py,pz).
@@ -965,7 +1177,7 @@ public interface Segment3afp<
 	 * -1 is returned for a crossing where the Y coordinate is decreasing
 	 *
 	 * <p>This function differs from
-	 * {@link #computeCrossingsFromPointWithoutEquality(double, double, double, double, double, double)}.
+	 * {@link #computeCrossingsFromPointWithoutEquality(double, double, double, double, double, double, double, double, double)}.
 	 * The equality test is used in this function.
 	 *
 	 * @param px is the reference point to test.
@@ -1890,7 +2102,7 @@ public interface Segment3afp<
 	}
 
 	@Override
-	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, B> rectangularPrism) {
+	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
 		assert rectangularPrism != null : "Rectangle must be not null"; //$NON-NLS-1$
 		return (getX1() == getX2() || getY1() == getY2() || getZ1() == getZ2())
 				&& contains(rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ())
@@ -2033,7 +2245,7 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
+	default boolean intersects(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
 		assert prism != null : "Rectangle must be not null"; //$NON-NLS-1$
 		return RectangularPrism3afp.intersectsRectangleSegment(
 				prism.getMinX(), prism.getMinY(),
@@ -2082,7 +2294,8 @@ public interface Segment3afp<
      * @mavengroupid $GroupId$
      * @mavenartifactid $ArtifactId$
      * @since 13.0
-     * @see Segment3afp#getNoSegmentSegmentWithEndsIntersection(double, double, double, double, double, double, double, double)
+     * @see Segment3afp#getNoSegmentSegmentWithEndsIntersection(double, double, double, double, double, double, double, double,
+     *      double, double, double, double)
      * @see Segment3afp#getNoSegmentSegmentWithoutEndsIntersection(double, double, double, double, double, double, double, double,
      *      double, double, double, double)
      */
@@ -2135,13 +2348,50 @@ public interface Segment3afp<
 	default P getClosestPointTo(Point3D<?, ?> pt) {
 		assert pt != null : "Point must be not null"; //$NON-NLS-1$
 		final P point = getGeomFactory().newPoint();
-		Segment3afp.computeClosestPointTo(
+		Segment3afp.computeClosestPointToPoint(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
 				pt.getX(), pt.getY(), pt.getZ(),
 				point);
 		return point;
 	}
+
+    @Pure
+    @Override
+    default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+        assert sphere != null : AssertMessages.notNullParameter();
+        return getClosestPointTo(sphere.getCenter());
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
+        assert path != null : AssertMessages.notNullParameter();
+        final P point = getGeomFactory().newPoint();
+        Path3afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
+        return point;
+    }
+
+    @Pure
+    @Override
+    default P getClosestPointTo(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangle) {
+        assert rectangle != null : AssertMessages.notNullParameter();
+        final P point = getGeomFactory().newPoint();
+        computeClosestPointToRectangle(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), rectangle.getMinX(),
+                rectangle.getMinY(), rectangle.getMinZ(), rectangle.getWidth(), rectangle.getHeight(), rectangle.getDepth(),
+                point);
+        return point;
+    }
+
+    @Pure
+    @Override
+    default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+        assert segment != null : AssertMessages.notNullParameter();
+        final P point = getGeomFactory().newPoint();
+        computeClosestPointToSegment(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
+                segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2(), point);
+        return point;
+    }
 
 	@Pure
 	@Override

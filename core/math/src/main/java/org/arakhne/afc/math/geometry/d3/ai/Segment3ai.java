@@ -27,12 +27,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.ai.Path3ai.CrossingComputationType;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a 2D segment/line on a plane.
  *
@@ -72,7 +73,7 @@ public interface Segment3ai<
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
-    static void computeClosestPointTo(int ax, int ay, int az, int bx, int by, int bz, int px, int py, int pz,
+    static void computeClosestPointToPoint(int ax, int ay, int az, int bx, int by, int bz, int px, int py, int pz,
             Point3D<?, ?> result) {
 		assert result != null : "Result must be not be null"; //$NON-NLS-1$
 
@@ -136,6 +137,209 @@ public interface Segment3ai<
 			}
 		}
 	}
+
+    /** Replies the point on the first segment that is closest to the second segment.
+     *
+     * @param s1x1 is the x coordinate of the first point of the first segment.
+     * @param s1y1 is the y coordinate of the first point of the first segment.
+     * @param s1z1 is the z coordinate of the first point of the first segment.
+     * @param s1x2 is the x coordinate of the second point of the first segment.
+     * @param s1y2 is the y coordinate of the second point of the first segment.
+     * @param s1z2 is the z coordinate of the second point of the first segment.
+     * @param s2x1 is the x coordinate of the first point of the second segment.
+     * @param s2y1 is the y coordinate of the first point of the second segment.
+     * @param s2z1 is the z coordinate of the first point of the second segment.
+     * @param s2x2 is the x coordinate of the second point of the second segment.
+     * @param s2y2 is the y coordinate of the second point of the second segment.
+     * @param s2z2 is the z coordinate of the second point of the second segment.
+     * @param result the is point on the shape.
+     * @return the square distance between the segments.
+     */
+    @Pure
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
+    static double computeClosestPointToSegment(
+            int s1x1, int s1y1, int s1z1, int s1x2, int s1y2, int s1z2,
+            int s2x1, int s2y1, int s2z1, int s2x2, int s2y2, int s2z2,
+            Point3D<?, ?> result) {
+        return computeClosestPointToSegment(
+                s1x1, s1y1, s1z1, s1x2, s1y2, s1z2, s2x1, s2y1, s2z1, s2x2, s2y2, s2z2,
+                result, null);
+    }
+
+    /** Replies the point on the first segment that is closest to the second segment.
+     *
+     * @param s1x1 is the x coordinate of the first point of the first segment.
+     * @param s1y1 is the y coordinate of the first point of the first segment.
+     * @param s1z1 is the z coordinate of the first point of the first segment.
+     * @param s1x2 is the x coordinate of the second point of the first segment.
+     * @param s1y2 is the y coordinate of the second point of the first segment.
+     * @param s1z2 is the z coordinate of the second point of the first segment.
+     * @param s2x1 is the x coordinate of the first point of the second segment.
+     * @param s2y1 is the y coordinate of the first point of the second segment.
+     * @param s2z1 is the z coordinate of the first point of the second segment.
+     * @param s2x2 is the x coordinate of the second point of the second segment.
+     * @param s2y2 is the y coordinate of the second point of the second segment.
+     * @param s2z2 is the z coordinate of the second point of the second segment.
+     * @param resultOnFirstSegment the point on the first segment.
+     * @param resultOnSecondSegment the point on the second segment.
+     * @return the square distance between the segments.
+     */
+    @Pure
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+    static double computeClosestPointToSegment(
+            int s1x1, int s1y1, int s1z1, int s1x2, int s1y2, int s1z2,
+            int s2x1, int s2y1, int s2z1, int s2x2, int s2y2, int s2z2,
+            Point3D<?, ?> resultOnFirstSegment, Point3D<?, ?> resultOnSecondSegment) {
+        final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai> it1 =
+                new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, s1x1, s1y1, s1z1, s1x2, s1y2, s1z2);
+        final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai> it2 =
+                new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, s2x1, s2y1, s2z1, s2x2, s2y2, s2z2);
+
+        final Point3D<?, ?> p1 = new InnerComputationPoint3ai();
+        final Point3D<?, ?> p2 = new InnerComputationPoint3ai();
+
+        assert it1.hasNext();
+        it1.next(p1);
+        assert it2.hasNext();
+        it2.next(p2);
+        if (resultOnFirstSegment != null) {
+            resultOnFirstSegment.set(p1);
+        }
+        if (resultOnSecondSegment != null) {
+            resultOnSecondSegment.set(p2);
+        }
+        double minDistance = p1.getDistanceSquared(p2);
+        if (minDistance == 0) {
+            return 0;
+        }
+        boolean changed1;
+        boolean changed2;
+        do {
+            changed1 = false;
+            while (it1.hasNext()) {
+                it1.next(p1);
+                double distance = p1.getDistanceSquared(p2);
+                if (distance > minDistance) {
+                    break;
+                } else if (distance <= 1) {
+                    // Special case: may at distance 1 due to no shared pixel,
+                    // but segments are intersecting. So that distance must be zero.
+                    final int side1 = computeSideLinePoint(s1x1, s1y1, s1z1, s1x2, s1y2, s1z2, s2x1, s2y1, s2z1);
+                    final int side2 = computeSideLinePoint(s1x1, s1y1, s1z1, s1x2, s1y2, s1z2, s2x2, s2y2, s2z2);
+                    if (side1 == -side2) {
+                        distance = 0;
+                    }
+                }
+                if (resultOnFirstSegment != null) {
+                    resultOnFirstSegment.set(p1);
+                }
+                if (resultOnSecondSegment != null) {
+                    resultOnSecondSegment.set(p2);
+                }
+                minDistance = distance;
+                changed1 = true;
+            }
+            changed2 = false;
+            while (it2.hasNext()) {
+                it2.next(p2);
+                double distance = p1.getDistanceSquared(p2);
+                if (distance > minDistance) {
+                    break;
+                } else if (distance <= 1) {
+                    // Special case: may at distance 1 due to no shared pixel,
+                    // but segments are intersecting. So that distance must be zero.
+                    final int side1 = computeSideLinePoint(s1x1, s1y1, s1z1, s1x2, s1y2, s1z2, s2x1, s2y1, s2z1);
+                    final int side2 = computeSideLinePoint(s1x1, s1y1, s1z1, s1x2, s1y2, s1z2, s2x2, s2y2, s2z2);
+                    if (side1 == -side2) {
+                        distance = 0;
+                    }
+                }
+                if (resultOnFirstSegment != null) {
+                    resultOnFirstSegment.set(p1);
+                }
+                if (resultOnSecondSegment != null) {
+                    resultOnSecondSegment.set(p2);
+                }
+                minDistance = distance;
+                changed2 = true;
+            }
+        } while (changed1 || changed2);
+        return minDistance;
+    }
+
+    /** Replies the point on the segment that is closest to the rectangle.
+     *
+     * @param sx1 is the x coordinate of the first point of the segment.
+     * @param sy1 is the y coordinate of the first point of the segment.
+     * @param sz1 is the z coordinate of the first point of the segment.
+     * @param sx2 is the x coordinate of the second point of the segment.
+     * @param sy2 is the y coordinate of the second point of the segment.
+     * @param sz2 is the z coordinate of the second point of the segment.
+     * @param rx is the x coordinate of the rectangle.
+     * @param ry is the y coordinate of the rectangle.
+     * @param rz is the z coordinate of the rectangle.
+     * @param rwidth is the width of the rectangle.
+     * @param rheight is the height of the rectangle.
+     * @param rdepth is the depth of the rectangle.
+     * @param result the is point on the segment.
+     * @return the square distance between the segments.
+     */
+    @Pure
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber", "checkstyle:npathcomplexity"})
+    static double computeClosestPointToRectangle(int sx1, int sy1, int sz1, int sx2, int sy2, int sz2,
+            int rx, int ry, int rz, int rwidth, int rheight, int rdepth, Point3D<?, ?> result) {
+        assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(9);
+        assert rheight >= 0. : AssertMessages.positiveOrZeroParameter(10);
+        assert rdepth >= 0. : AssertMessages.positiveOrZeroParameter(11);
+        final int rmaxx = rx + rwidth;
+        final int rmaxy = ry + rheight;
+        final int rmaxz = rz + rdepth;
+        final int code1 = MathUtil.getCohenSutherlandCode3D(sx1, sy1, sz1, rx, ry, rz, rmaxx, rmaxy, rmaxz);
+        final int code2 = MathUtil.getCohenSutherlandCode3D(sx2, sy2, sz2, rx, ry, rz, rmaxx, rmaxy, rmaxz);
+        final Point3D<?, ?> tmp1 = new InnerComputationPoint3ai();
+        final Point3D<?, ?> tmp2 = new InnerComputationPoint3ai();
+        final int zone = RectangularPrism3ai.reduceCohenSutherlandZoneRectangularPrismSegment(
+                rx, ry, rz, rmaxx, rmaxy, rmaxz,
+                sx1, sy1, sz1, sx2, sy2, sz2,
+                code1, code2,
+                tmp1, tmp2);
+        if ((zone & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
+            return computeClosestPointToSegment(
+                    sx1, sy1, sz1, sx2, sy2, sz2,
+                    rx, ry, rz, rx, rmaxy, rmaxz, result, null);
+        }
+        if ((zone & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
+            return computeClosestPointToSegment(
+                    sx1, sy1, sz1, sx2, sy2, sz2,
+                    rmaxx, ry, rz, rmaxx, rmaxy, rmaxz, result, null);
+        }
+        if ((zone & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
+            return computeClosestPointToSegment(
+                    sx1, sy1, sz1, sx2, sy2, sz2,
+                    rx, ry, rz, rmaxx, ry, rmaxz, result, null);
+        }
+        if ((zone & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
+            return computeClosestPointToSegment(
+                    sx1, sy1, sz1, sx2, sy2, sz2,
+                    rx, rmaxy, rz, rmaxx, rmaxy, rmaxz, result, null);
+        }
+        if ((zone & MathConstants.COHEN_SUTHERLAND_FRONT) != 0) {
+            return computeClosestPointToSegment(
+                    sx1, sy1, sz1, sx2, sy2, sz2,
+                    rx, ry, rz, rmaxx, rmaxy, rz, result, null);
+        }
+        if ((zone & MathConstants.COHEN_SUTHERLAND_BACK) != 0) {
+            return computeClosestPointToSegment(
+                    sx1, sy1, sz1, sx2, sy2, sz2,
+                    rx, ry, rmaxz, rmaxx, rmaxy, rmaxz, result, null);
+        }
+        if (result != null) {
+            computeClosestPointToPoint(
+                        tmp1.ix(), tmp1.iy(), tmp1.iz(), tmp2.ix(), tmp2.iy(), tmp2.iz(),
+                        (rx + rmaxx) / 2, (ry + rmaxy) / 2, (rz + rmaxz) / 2, result);
+        }
+        return 0;
+    }
 
 	/** Replies the farthest point in a circle to a point.
 	 *
@@ -1198,25 +1402,6 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default boolean contains(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : "Rectangle must be not be null"; //$NON-NLS-1$
-		if (rectangularPrism.isEmpty()) {
-			return contains(rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ());
-		}
-		if (rectangularPrism.getMinX() == rectangularPrism.getMaxX()) {
-            return getX1() == getX2()
-                    && contains(rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ())
-                    && contains(rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ());
-		}
-		if (rectangularPrism.getMinY() == rectangularPrism.getMaxY()) {
-            return getY1() == getY2()
-                    && contains(rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ())
-                    && contains(rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ());
-		}
-		if (rectangularPrism.getMinZ() == rectangularPrism.getMaxZ()) {
-            return getZ1() == getZ2()
-                    && contains(rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ())
-                    && contains(rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ());
-		}
 		return false;
 	}
 
@@ -1225,9 +1410,39 @@ public interface Segment3ai<
 	default P getClosestPointTo(Point3D<?, ?> pt) {
 		assert pt != null : "Point must be not be null"; //$NON-NLS-1$
 		final P point = getGeomFactory().newPoint();
-		computeClosestPointTo(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), pt.ix(), pt.iy(), pt.iz(), point);
+		computeClosestPointToPoint(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
 	}
+
+    @Override
+    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?> circle) {
+        assert circle != null : AssertMessages.notNullParameter();
+        return getClosestPointTo(circle.getCenter());
+    }
+
+    @Override
+    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+        assert segment != null : AssertMessages.notNullParameter();
+        final P point = getGeomFactory().newPoint();
+        computeClosestPointToSegment(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), segment.getX1(), segment.getY1(),
+                segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2(), point, null);
+        return point;
+    }
+
+    @Override
+    default P getClosestPointTo(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangle) {
+        assert rectangle != null : AssertMessages.notNullParameter();
+        final P point = getGeomFactory().newPoint();
+        computeClosestPointToRectangle(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), rectangle.getMinX(),
+                rectangle.getMinY(), rectangle.getMinZ(), rectangle.getWidth(), rectangle.getHeight(), rectangle.getDepth(),
+                point);
+        return point;
+    }
+
+    @Override
+    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?> path) {
+        throw new UnsupportedOperationException();
+    }
 
 	@Pure
 	@Override

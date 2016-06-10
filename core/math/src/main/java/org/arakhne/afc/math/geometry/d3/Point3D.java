@@ -570,4 +570,6 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 		return shape.contains(this);
 	}
 
+	// TODO : implements turn() methods
+
 }
