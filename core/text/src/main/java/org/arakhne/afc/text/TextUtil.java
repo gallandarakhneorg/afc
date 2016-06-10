@@ -36,6 +36,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
@@ -71,6 +74,7 @@ public final class TextUtil {
 	 *     is assimilated to the empty string.
 	 * @return <code>true</code> if a is equal to b; otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean equalsIgnoreCase(String firstText, String secondText, boolean isNullEmptyEquivalence) {
 		final String aa = (firstText != null || !isNullEmptyEquivalence) ? firstText : ""; //$NON-NLS-1$
 		final String bb = (secondText != null || !isNullEmptyEquivalence) ? secondText : ""; //$NON-NLS-1$
@@ -90,6 +94,7 @@ public final class TextUtil {
 	 * @return the base 26 encoding.
 	 * @since 4.0
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	public static String encodeBase26(int number) {
 		final StringBuilder value = new StringBuilder();
@@ -112,6 +117,7 @@ public final class TextUtil {
 	 *     The translation table maps an HTML entity to its corresponding ISO chararacter code.
 	 * @since 4.0
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static Map<String, Integer> getHtmlToJavaTranslationTable() {
 		Map<String, Integer> map = null;
@@ -185,6 +191,7 @@ public final class TextUtil {
 	 *     The translation table maps an ISO character code to its corresponding HTML entity.
 	 * @since 4.0
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static Map<Character, String> getJavaToHTMLTranslationTable() {
 		Map<Character, String> map = null;
@@ -258,6 +265,7 @@ public final class TextUtil {
 	 * @since 4.0
 	 * @see #toHTML(String)
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	public static String parseHTML(String html) {
 		if (html == null) {
@@ -315,6 +323,7 @@ public final class TextUtil {
 	 *  @since 4.0
 	 *  @see #parseHTML(String)
 	 */
+	@Pure
 	public static String toHTML(String text) {
 		if (text == null) {
 			return null;
@@ -367,6 +376,7 @@ public final class TextUtil {
 	 * @param column is the column number that corresponds to the splitting point.
 	 * @return the given {@code text} splitted in lines separated by <code>\n</code>.
 	 */
+	@Pure
 	public static String cutString(String text, int column) {
 		final StringBuilder buffer = new StringBuilder();
 		cutStringAlgo(text, new CutStringColumnCritera(column), new CutStringToString(buffer));
@@ -380,6 +390,7 @@ public final class TextUtil {
 	 * @param column is the column number that corresponds to the splitting point.
 	 * @return the given {@code text} splitted in lines separated by <code>\n</code>.
 	 */
+	@Pure
 	public static String[] cutStringAsArray(String text, int column) {
 		final List<String> list = new ArrayList<>();
 		cutStringAlgo(text, new CutStringColumnCritera(column), new CutStringToArray(list));
@@ -457,6 +468,7 @@ public final class TextUtil {
 	 * @param text is the text to scan.
 	 * @return the character that is following the first '&amp;' or '<code>\0</code>'
 	 */
+	@Pure
 	public static char getMnemonicChar(String text) {
 		if (text != null) {
 			final int pos = text.indexOf('&');
@@ -472,6 +484,7 @@ public final class TextUtil {
 	 * @param text is the text to scan.
 	 * @return the given text without the mnemonic character.
 	 */
+	@Pure
 	public static String removeMnemonicChar(String text) {
 		if (text == null) {
 			return text;
@@ -486,6 +499,7 @@ public final class TextUtil {
 	 *
 	 *  @return the translation table or <code>null</code> if none was found.
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static Map<Character, String> getAccentTranslationTable() {
 		Map<Character, String> map = null;
@@ -545,6 +559,7 @@ public final class TextUtil {
 	 * @param text is the string into which the accents must be removed.
 	 * @return the given string without the accents
 	 */
+	@Pure
 	public static String removeAccents(String text) {
 		final Map<Character, String> map = getAccentTranslationTable();
 		if ((map == null) || (map.isEmpty())) {
@@ -560,6 +575,7 @@ public final class TextUtil {
 	 *     unaccentuated character.
 	 * @return the given string without the accents
 	 */
+	@Pure
 	public static String removeAccents(String text, Map<Character, String> map) {
 		if (text == null) {
 			return text;
@@ -593,6 +609,8 @@ public final class TextUtil {
 	 * @param str is the strig with brackets.
 	 * @return the groups of strings
 	 */
+	@Pure
+	@Inline(value = "textUtil.split('{', '}', $1)", imported = {TextUtil.class})
 	public static String[] splitBrackets(String str) {
 		return split('{', '}', str);
 	}
@@ -617,6 +635,7 @@ public final class TextUtil {
 	 * @return the groups of strings
 	 * @since 4.0
 	 */
+	@Pure
 	public static String[] split(char leftSeparator, char rightSeparator, String str) {
 		final SplitSeparatorToArrayAlgorithm algo = new SplitSeparatorToArrayAlgorithm();
 		splitSeparatorAlgorithm(leftSeparator, rightSeparator, str, algo);
@@ -640,6 +659,8 @@ public final class TextUtil {
 	 * @param str is the elements enclosed by backets.
 	 * @return the groups of strings
 	 */
+	@Pure
+	@Inline(value = "textUtil.splitAsList('{', '}', $1)", imported = {TextUtil.class})
 	public static List<String> splitBracketsAsList(String str) {
 		return splitAsList('{', '}', str);
 	}
@@ -663,6 +684,7 @@ public final class TextUtil {
 	 * @param str is the elements enclosed by backets.
 	 * @return the groups of strings
 	 */
+	@Pure
 	public static List<String> splitAsList(char leftSeparator, char rightSeparator, String str) {
 		final List<String> list = new ArrayList<>();
 		splitSeparatorAlgorithm(
@@ -767,6 +789,8 @@ public final class TextUtil {
 	 * @param str is the elements enclosed by backets.
 	 * @return the groups of strings
 	 */
+	@Pure
+	@Inline(value = "textUtil.splitAsUUIDs('{', '}', $1)", imported = {TextUtil.class})
 	public static List<UUID> splitBracketsAsUUIDs(String str) {
 		return splitAsUUIDs('{', '}', str);
 	}
@@ -791,6 +815,7 @@ public final class TextUtil {
 	 * @return the groups of strings
 	 * @since 4.0
 	 */
+	@Pure
 	public static List<UUID> splitAsUUIDs(char leftSeparator, char rightSeparator, String str) {
 		final List<UUID> list = new ArrayList<>();
 		splitSeparatorAlgorithm(leftSeparator, rightSeparator, str, new UUIDSplitSeparatorAlgorithm(list));
@@ -813,6 +838,8 @@ public final class TextUtil {
 	 * @param strs is the array of strings.
 	 * @return the string with bracketed strings.
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join('{', '}', $1)", imported = {TextUtil.class})
 	public static <T> String mergeBrackets(@SuppressWarnings("unchecked") T... strs) {
 		return join('{', '}', strs);
 	}
@@ -833,6 +860,8 @@ public final class TextUtil {
 	 * @return the string with bracketed strings.
 	 * @see #join(char, char, Iterable)
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join('{', '}', $1)", imported = {TextUtil.class})
 	public static String mergeBrackets(Iterable<?> strs) {
 		return join('{', '}', strs);
 	}
@@ -856,6 +885,7 @@ public final class TextUtil {
 	 * @return the string with merged strings.
 	 * @since 4.0
 	 */
+	@Pure
 	public static <T> String join(char leftSeparator, char rightSeparator, @SuppressWarnings("unchecked") T... strs) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final Object s : strs) {
@@ -886,6 +916,7 @@ public final class TextUtil {
 	 * @return the string with merged strings.
 	 * @since 4.0
 	 */
+	@Pure
 	public static String join(char leftSeparator, char rightSeparator, Iterable<?> strs) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final Object s : strs) {
@@ -905,6 +936,8 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join($1, null, null, Arrays.asList($2))", imported = {TextUtil.class, Arrays.class})
 	public static <T> String join(String joinText, @SuppressWarnings("unchecked") T... elements) {
 		return join(joinText, null, null, elements);
 	}
@@ -915,6 +948,8 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join($1, null, null, $2)", imported = {TextUtil.class})
 	public static String join(String joinText, boolean... elements) {
 		return join(joinText, null, null, elements);
 	}
@@ -925,6 +960,8 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join($1, null, null, $2)", imported = {TextUtil.class})
 	public static String join(String joinText, byte... elements) {
 		return join(joinText, null, null, elements);
 	}
@@ -935,6 +972,8 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join($1, null, null, $2)", imported = {TextUtil.class})
 	public static String join(String joinText, char... elements) {
 		return join(joinText, null, null, elements);
 	}
@@ -945,6 +984,8 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join($1, null, null, $2)", imported = {TextUtil.class})
 	public static String join(String joinText, short... elements) {
 		return join(joinText, null, null, elements);
 	}
@@ -955,6 +996,8 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join($1, null, null, $2)", imported = {TextUtil.class})
 	public static String join(String joinText, int... elements) {
 		return join(joinText, null, null, elements);
 	}
@@ -965,6 +1008,8 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join($1, null, null, $2)", imported = {TextUtil.class})
 	public static String join(String joinText, long... elements) {
 		return join(joinText, null, null, elements);
 	}
@@ -975,6 +1020,8 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join($1, null, null, $2)", imported = {TextUtil.class})
 	public static String join(String joinText, float... elements) {
 		return join(joinText, null, null, elements);
 	}
@@ -985,6 +1032,8 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join($1, null, null, $2)", imported = {TextUtil.class})
 	public static String join(String joinText, double... elements) {
 		return join(joinText, null, null, elements);
 	}
@@ -995,6 +1044,8 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join($1, null, null, $2)", imported = {TextUtil.class})
 	public static String join(String joinText, Iterable<?> elements) {
 		return join(joinText, null, null, elements);
 	}
@@ -1011,6 +1062,8 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
+	@Inline(value = "TextUtil.join($1, $2, $3, Arrays.asList($4))", imported = {TextUtil.class, Arrays.class})
 	public static <T> String join(String joinText, String prefix, String postfix, @SuppressWarnings("unchecked") T... elements) {
 		return join(joinText, prefix, postfix, Arrays.asList(elements));
 	}
@@ -1025,6 +1078,7 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
 	public static String join(String joinText, String prefix, String postfix, Iterable<?> elements) {
 		final StringBuilder buffer = new StringBuilder();
 		String txt;
@@ -1058,6 +1112,7 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
 	public static String join(String joinText, String prefix, String postfix, boolean... elements) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final boolean e : elements) {
@@ -1085,6 +1140,7 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
 	public static String join(String joinText, String prefix, String postfix, byte... elements) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final byte e : elements) {
@@ -1112,6 +1168,7 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
 	public static String join(String joinText, String prefix, String postfix, char... elements) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final char e : elements) {
@@ -1139,6 +1196,7 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
 	public static String join(String joinText, String prefix, String postfix, short... elements) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final short e : elements) {
@@ -1166,6 +1224,7 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
 	public static String join(String joinText, String prefix, String postfix, int... elements) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final int e : elements) {
@@ -1193,6 +1252,7 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
 	public static String join(String joinText, String prefix, String postfix, long... elements) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final long e : elements) {
@@ -1220,6 +1280,7 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
 	public static String join(String joinText, String prefix, String postfix, float... elements) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final float e : elements) {
@@ -1247,6 +1308,7 @@ public final class TextUtil {
 	 * @param elements the parts of text to join.
 	 * @return the joining text
 	 */
+	@Pure
 	public static String join(String joinText, String prefix, String postfix, double... elements) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final double e : elements) {
@@ -1284,6 +1346,8 @@ public final class TextUtil {
 	 *          ignoring case; <code>false</code> otherwise.
 	 * @see     #removeAccents(String, Map)
 	 */
+	@Pure
+	@Inline(value = "TextUtil.removeAccents($1, $3).equals(TextUtil.removeAccents($2, $3))", imported = {TextUtil.class})
 	public static boolean equalsIgnoreAccents(String s1, String s2, Map<Character, String> map) {
 		return removeAccents(s1, map).equals(removeAccents(s2, map));
 	}
@@ -1308,6 +1372,9 @@ public final class TextUtil {
 	 *          ignoring case; <code>false</code> otherwise.
 	 * @see     #removeAccents(String, Map)
 	 */
+	@Pure
+	@Inline(value = "TextUtil.removeAccents($1, $3).equalsIgnoreCase(TextUtil.removeAccents($2, $3))",
+			imported = {TextUtil.class})
 	public static boolean equalsIgnoreCaseAccents(String s1, String s2, Map<Character, String> map) {
 		return removeAccents(s1, map).equalsIgnoreCase(removeAccents(s2, map));
 	}
@@ -1317,6 +1384,7 @@ public final class TextUtil {
 	 * @param text is the text to scan.
 	 * @return the given string without the accents and lower cased
 	 */
+	@Pure
 	public static String toLowerCaseWithoutAccent(String text) {
 		final Map<Character, String> map = getAccentTranslationTable();
 		if ((map == null) || (map.isEmpty())) {
@@ -1332,6 +1400,7 @@ public final class TextUtil {
 	 *     unaccentuated character.
 	 * @return the given string without the accents and lower cased
 	 */
+	@Pure
 	public static String toLowerCaseWithoutAccent(String text, Map<Character, String> map) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final char c : text.toCharArray()) {
@@ -1350,6 +1419,7 @@ public final class TextUtil {
 	 * @param text is the text to scan.
 	 * @return the given string without the accents and upper cased
 	 */
+	@Pure
 	public static String toUpperCaseWithoutAccent(String text) {
 		final Map<Character, String> map = getAccentTranslationTable();
 		if ((map == null) || (map.isEmpty())) {
@@ -1365,6 +1435,7 @@ public final class TextUtil {
 	 *     unaccentuated character.
 	 * @return the given string without the accents and upper cased
 	 */
+	@Pure
 	public static String toUpperCaseWithoutAccent(String text, Map<Character, String> map) {
 		final StringBuilder buffer = new StringBuilder();
 		for (final char c : text.toCharArray()) {
@@ -1388,6 +1459,7 @@ public final class TextUtil {
 	 * @param unit is the unit of the given amount.
 	 * @return a string representation of the given amount.
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static String formatTime(double amount, TimeUnit unit) {
 		double amt;
@@ -1550,6 +1622,7 @@ public final class TextUtil {
 	 * @param decimalCount is the maximal count of decimal to put in the string.
 	 * @return a string representation of the given value.
 	 */
+	@Pure
 	public static String formatDouble(double amount, int decimalCount) {
 		final int dc = (decimalCount < 0) ? 0 : decimalCount;
 
@@ -1572,6 +1645,7 @@ public final class TextUtil {
 	 * @param decimalCount is the maximal count of decimal to put in the string.
 	 * @return a string representation of the given value.
 	 */
+	@Pure
 	public static String formatFloat(float amount, int decimalCount) {
 		final int dc = (decimalCount < 0) ? 0 : decimalCount;
 

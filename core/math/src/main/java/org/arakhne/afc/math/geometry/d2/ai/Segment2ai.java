@@ -73,7 +73,6 @@ public interface Segment2ai<
      * @param py is the x-coordinate of the point
      * @param result the closest point in the segment to the point.
      */
-    @Pure
     @SuppressWarnings("checkstyle:magicnumber")
     static void computeClosestPointToPoint(int ax, int ay, int bx, int by, int px, int py, Point2D<?, ?> result) {
         assert result != null : AssertMessages.notNullParameter(6);
@@ -129,7 +128,6 @@ public interface Segment2ai<
      * @param result the is point on the segment.
      * @return the square distance between the segments.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static double computeClosestPointToRectangle(int sx1, int sy1, int sx2, int sy2,
             int rx, int ry, int rwidth, int rheight, Point2D<?, ?> result) {
@@ -187,7 +185,6 @@ public interface Segment2ai<
      * @param result the is point on the shape.
      * @return the square distance between the segments.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
     static double computeClosestPointToSegment(
             int s1x1, int s1y1, int s1x2, int s1y2,
@@ -212,7 +209,6 @@ public interface Segment2ai<
      * @param resultOnSecondSegment the point on the second segment.
      * @return the square distance between the segments.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
     @Unefficient
     static double computeClosestPointToSegment(
@@ -262,7 +258,6 @@ public interface Segment2ai<
      * @param py is the x-coordinate of the point
      * @param result the farthest point in the segment to the point.
      */
-    @Pure
     @SuppressWarnings("checkstyle:magicnumber")
     static void computeFarthestPointToPoint(int ax, int ay, int bx, int by, int px, int py, Point2D<?, ?> result) {
         assert result != null : AssertMessages.notNullParameter(6);
@@ -801,7 +796,6 @@ public interface Segment2ai<
      * @param xCoordinate output parameter for the x coordinate that is intersecting.
      * @return the crossing; or {@link MathConstants#SHAPE_INTERSECTS} if the segment is on the point.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
             "checkstyle:npathcomplexity"})
     static int computeCrossingsAndXFromPoint(

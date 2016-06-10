@@ -189,7 +189,6 @@ public interface Rectangle2ai<
      * @param rmaxy2 the maximum y coordinate of the second rectangle.
      * @param closest is set with the closest point on the first rectangle.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void computeClosestPointRectangleRectangle(
             int rx1, int ry1, int rmaxx1, int rmaxy1,
@@ -232,7 +231,6 @@ public interface Rectangle2ai<
      * @param sy2 the y coordinate of the second point of the segment.
      * @param closest is set with the closest point on the rectangle.
      */
-    @Pure
     @SuppressWarnings("checkstyle:parameternumber")
     static void computeClosestPointRectangleSegment(
             int rx, int ry, int rmaxx, int rmaxy,
@@ -295,7 +293,6 @@ public interface Rectangle2ai<
      * @param py is the y-coordinate of the point.
      * @param result the closest point.
      */
-    @Pure
     @SuppressWarnings("checkstyle:magicnumber")
     static void computeClosestPointRectanglePoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
         assert minx <= maxx : AssertMessages.lowerEqualParameters(0, minx, 2, maxx);
@@ -338,7 +335,6 @@ public interface Rectangle2ai<
      * @param py is the y-coordinate of the point.
      * @param result the farthest point.
      */
-    @Pure
     @SuppressWarnings("checkstyle:magicnumber")
     static void computeFarthestPoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
         assert minx <= maxx : AssertMessages.lowerEqualParameters(0, minx, 2, maxx);
@@ -387,7 +383,6 @@ public interface Rectangle2ai<
      *     this parameter is ignored.
      * @return the rectricted Cohen-Sutherland zone.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
     static int reduceCohenSutherlandZoneRectangleSegment(int rx1, int ry1, int rx2, int ry2,
             int sx1, int sy1, int sx2, int sy2, int codePoint1, int codePoint2,

@@ -228,7 +228,6 @@ public interface Triangle2afp<
      * @param closest the closest point.
      * @param farthest the farthest point.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void computeClosestFarthestPoints(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double px, double py, Point2D<?, ?> closest, Point2D<?, ?> farthest) {

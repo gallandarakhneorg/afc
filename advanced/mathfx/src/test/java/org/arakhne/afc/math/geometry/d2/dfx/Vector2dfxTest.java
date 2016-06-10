@@ -22,6 +22,8 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 
 import static org.junit.Assert.assertNotNull;
 
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.*;
+
 import org.arakhne.afc.math.geometry.d2.AbstractVector2DTest;
 import org.junit.Test;
 
@@ -56,6 +58,8 @@ public class Vector2dfxTest extends AbstractVector2DTest<Vector2dfx, Point2dfx, 
 		assertFpVectorEquals(-1, 0, Vector2dfx.toOrientationVector(Math.PI));
 		assertFpVectorEquals(0, 1, Vector2dfx.toOrientationVector(Math.PI/2));
 		assertFpVectorEquals(0, -1, Vector2dfx.toOrientationVector(-Math.PI/2));
+
+		assertInlineParameterUsage(Vector2dfx.class, "toOrientationVector", double.class);
 	}
 
 	@Test

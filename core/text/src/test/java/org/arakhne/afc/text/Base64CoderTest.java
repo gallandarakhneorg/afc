@@ -18,34 +18,35 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.vmutil.annotations;
+package org.arakhne.afc.text;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
-import org.eclipse.xtext.xbase.lib.Pure;
+import org.junit.Test;
 
-/**
- * Annotation for marking functions that are implementations of
- * <a href="http://www.scala-lang.org/">Scala</a> operators.
- *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 13.0
- */
-@Retention(RetentionPolicy.SOURCE)
-@Target(ElementType.METHOD)
-public @interface ScalaOperator {
+import org.arakhne.afc.testtools.AbstractTestCase;
 
-	/** Replies the description or the name of the operator.
-	 *
-	 * @return the name or the description of the operator.
-	 */
-	@Pure
-	String value() default "";
+@SuppressWarnings("all")
+public class Base64CoderTest extends AbstractTestCase {
+
+	@Test
+	public void decodeString() {
+		assertInlineParameterUsage(Base64Coder.class, "decode", String.class);
+	}
+
+	@Test
+	public void decodeStringString() {
+		assertInlineParameterUsage(Base64Coder.class, "decodeString", String.class);
+	}
+
+	@Test
+	public void encodeByteArray() {
+		assertInlineParameterUsage(Base64Coder.class, "encode", byte[].class);
+	}
+
+	@Test
+	public void encodeStringString() {
+		assertInlineParameterUsage(Base64Coder.class, "encodeString", String.class);
+	}
 
 }

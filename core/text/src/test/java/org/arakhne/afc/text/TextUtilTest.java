@@ -27,6 +27,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,18 +35,11 @@ import org.junit.Test;
 import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.vmutil.locale.Locale;
 
-/**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.*;
+
 @SuppressWarnings("all")
 public class TextUtilTest extends AbstractTestCase {
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void cutStringAsArray() throws Exception {
 		String src;
@@ -93,9 +87,6 @@ public class TextUtilTest extends AbstractTestCase {
 		}
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void cutString() throws Exception {
 		String src, res, actual;
@@ -125,9 +116,6 @@ public class TextUtilTest extends AbstractTestCase {
 		Assert.assertEquals("D:", res, actual); 
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void splitBrackets() throws Exception {
 		String[] tab;
@@ -185,9 +173,6 @@ public class TextUtilTest extends AbstractTestCase {
 			}, tab);
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void splitCharCharStr() throws Exception {
 		String[] tab;
@@ -245,9 +230,6 @@ public class TextUtilTest extends AbstractTestCase {
 			}, tab);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void splitBracketsAsList() throws Exception {
 		List<String> tab;
@@ -305,9 +287,6 @@ public class TextUtilTest extends AbstractTestCase {
 			), tab);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void splitAsListCharCharStr() throws Exception {
 		List<String> tab;
@@ -365,8 +344,6 @@ public class TextUtilTest extends AbstractTestCase {
 			), tab);
 	}
 	
-	/**
-	 */
 	@Test
 	public void parseHTML() {
 		String source, expected, actual;
@@ -380,8 +357,6 @@ public class TextUtilTest extends AbstractTestCase {
 		Assert.assertEquals(expected, actual);
 	}
 
-	/**
-	 */
 	@Test
 	public void toHTML() {
 		String source, expected, actual;
@@ -393,6 +368,96 @@ public class TextUtilTest extends AbstractTestCase {
 		
 		actual = TextUtil.toHTML(source);
 		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void equalsIgnoreAccentsStringStringMap() {
+		assertInlineParameterUsage(TextUtil.class, "equalsIgnoreAccents", String.class, String.class, Map.class);
+	}
+
+	@Test
+	public void equalsIgnoreCaseAccentsStringStringMap() {
+		assertInlineParameterUsage(TextUtil.class, "equalsIgnoreCaseAccents", String.class, String.class, Map.class);
+	}
+
+	@Test
+	public void joinStringBooleanArray() {
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, boolean[].class);
+	}
+
+	@Test
+	public void joinStringByteArray() {
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, byte[].class);
+	}
+
+	@Test
+	public void joinStringCharArray() {
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, char[].class);
+	}
+
+	@Test
+	public void joinStringShortArray() {
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, short[].class);
+	}
+
+	@Test
+	public void joinStringDoubleArray() {
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, double[].class);
+	}
+
+	@Test
+	public void joinStringFloatArray() {
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, float[].class);
+	}
+
+	@Test
+	public void joinStringIntArray() {
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, int[].class);
+	}
+
+	@Test
+	public void joinStringLongArray() {
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, long[].class);
+	}
+
+	@Test
+	public void joinStringIterable() {
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, Iterable.class);
+	}
+	
+	@Test
+	public void joinStringStringStringObjectArray() {
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, String.class, String.class, Object[].class);
+	}
+
+	@Test
+	public void joinStringObjectArray() {
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, Object[].class);
+	}
+	
+	@Test
+	public void mergeBracketsIterable() {
+		assertInlineParameterUsage(TextUtil.class, "mergeBrackets", Iterable.class);
+	}
+
+	@Test
+	public void mergeBracketsObjectArray() {
+		assertInlineParameterUsage(TextUtil.class, "mergeBrackets", Object[].class);
+	}
+
+	@Test
+	public void splitBracketsString() {
+		assertInlineParameterUsage(TextUtil.class, "splitBrackets", String.class);
+	}
+
+	@Test
+	public void splitBracketsAsListString() {
+		assertInlineParameterUsage(TextUtil.class, "splitBracketsAsList", String.class);
+	}
+
+	@Test
+	public void splitBracketsAsUUIDsString() {
+		assertInlineParameterUsage(TextUtil.class, "splitBracketsAsUUIDs", String.class);
 	}
 
 }

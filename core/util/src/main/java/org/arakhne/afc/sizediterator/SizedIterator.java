@@ -50,7 +50,9 @@ public interface SizedIterator<M> extends Iterator<M> {
 	 * @return the count of elements which are not replied by the iterator.
 	 */
 	@Pure
-	int rest();
+	default int rest() {
+		return totalSize() - index();
+	}
 
 	/** Replies the position of the last replied element in the iterated collection.
 	 *

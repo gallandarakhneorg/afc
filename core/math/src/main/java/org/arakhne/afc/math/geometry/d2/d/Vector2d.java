@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.d;
 
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.GeomFactory;
@@ -38,255 +39,256 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Point2d> {
-	private static final long serialVersionUID = 9183440606977893371L;
+    private static final long serialVersionUID = 9183440606977893371L;
 
-	/** Construct a zero vector.
-	 */
-	public Vector2d() {
-		//
-	}
+    /** Construct a zero vector.
+     */
+    public Vector2d() {
+        //
+    }
 
-	/** Constructor by copy.
-	 *
-	 * @param tuple is the tuple to copy.
-	 */
-	public Vector2d(Tuple2D<?> tuple) {
-		super(tuple);
-	}
+    /** Constructor by copy.
+     *
+     * @param tuple is the tuple to copy.
+     */
+    public Vector2d(Tuple2D<?> tuple) {
+        super(tuple);
+    }
 
-	/** Constructor by copy.
-	 * @param tuple is the tuple to copy.
-	 */
-	public Vector2d(int[] tuple) {
-		super(tuple);
-	}
+    /** Constructor by copy.
+     * @param tuple is the tuple to copy.
+     */
+    public Vector2d(int[] tuple) {
+        super(tuple);
+    }
 
-	/** Constructor by copy.
-	 * @param tuple is the tuple to copy.
-	 */
-	public Vector2d(double[] tuple) {
-		super(tuple);
-	}
+    /** Constructor by copy.
+     * @param tuple is the tuple to copy.
+     */
+    public Vector2d(double[] tuple) {
+        super(tuple);
+    }
 
-	/** Construct a vector with the given coordinates.
-	 * @param x x coordinate.
-	 * @param y y coordinate.
-	 */
-	public Vector2d(int x, int y) {
-		super(x, y);
-	}
+    /** Construct a vector with the given coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     */
+    public Vector2d(int x, int y) {
+        super(x, y);
+    }
 
-	/** Construct a vector with the given coordinates.
-	 * @param x x coordinate.
-	 * @param y y coordinate.
-	 */
-	public Vector2d(float x, float y) {
-		super(x, y);
-	}
+    /** Construct a vector with the given coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     */
+    public Vector2d(float x, float y) {
+        super(x, y);
+    }
 
-	/** Construct a vector with the given coordinates.
-	 * @param x x coordinate.
-	 * @param y y coordinate.
-	 */
-	public Vector2d(double x, double y) {
-		super(x, y);
-	}
+    /** Construct a vector with the given coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     */
+    public Vector2d(double x, double y) {
+        super(x, y);
+    }
 
-	/** Construct a vector with the given coordinates.
-	 * @param x x coordinate.
-	 * @param y y coordinate.
-	 */
-	public Vector2d(long x, long y) {
-		super(x, y);
-	}
+    /** Construct a vector with the given coordinates.
+     * @param x x coordinate.
+     * @param y y coordinate.
+     */
+    public Vector2d(long x, long y) {
+        super(x, y);
+    }
 
-	/** Replies the orientation vector, which is corresponding
-	 * to the given angle on a trigonometric circle.
-	 *
-	 * @param angle is the angle in radians to translate.
-	 * @return the orientation vector which is corresponding to the given angle.
-	 */
-	@Pure
-	public static Vector2d toOrientationVector(double angle) {
-		return new Vector2d(Math.cos(angle), Math.sin(angle));
-	}
+    /** Replies the orientation vector, which is corresponding
+     * to the given angle on a trigonometric circle.
+     *
+     * @param angle is the angle in radians to translate.
+     * @return the orientation vector which is corresponding to the given angle.
+     */
+    @Pure
+    @Inline(value = "new Vector2d(Math.cos($1), Math.sin($1))", imported = {Vector2d.class})
+    public static Vector2d toOrientationVector(double angle) {
+        return new Vector2d(Math.cos(angle), Math.sin(angle));
+    }
 
-	@Override
-	public GeomFactory2d getGeomFactory() {
-		return GeomFactory2d.SINGLETON;
-	}
+    @Override
+    public GeomFactory2d getGeomFactory() {
+        return GeomFactory2d.SINGLETON;
+    }
 
-	@Pure
-	@Override
-	public double dot(Vector2D<?, ?> vector) {
-		assert vector != null : AssertMessages.notNullParameter();
-		return this.x * vector.getX() + this.y * vector.getY();
-	}
+    @Pure
+    @Override
+    public double dot(Vector2D<?, ?> vector) {
+        assert vector != null : AssertMessages.notNullParameter();
+        return this.x * vector.getX() + this.y * vector.getY();
+    }
 
-	@Pure
-	@Override
-	public double perp(Vector2D<?, ?> vector) {
-		assert vector != null : AssertMessages.notNullParameter();
-		return this.x * vector.getY() - vector.getX() * this.y;
-	}
+    @Pure
+    @Override
+    public double perp(Vector2D<?, ?> vector) {
+        assert vector != null : AssertMessages.notNullParameter();
+        return this.x * vector.getY() - vector.getX() * this.y;
+    }
 
-	@Pure
-	@Override
-	public double getLength() {
-		return Math.sqrt(this.x * this.x + this.y * this.y);
-	}
+    @Pure
+    @Override
+    public double getLength() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    }
 
-	@Pure
-	@Override
-	public double getLengthSquared() {
-		return this.x * this.x + this.y * this.y;
-	}
+    @Pure
+    @Override
+    public double getLengthSquared() {
+        return this.x * this.x + this.y * this.y;
+    }
 
-	@Override
-	public void add(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : AssertMessages.notNullParameter(0);
-		assert vector2 != null : AssertMessages.notNullParameter(1);
-		this.x = vector1.getX() + vector2.getX();
-		this.y = vector1.getY() + vector2.getY();
-	}
+    @Override
+    public void add(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
+        assert vector1 != null : AssertMessages.notNullParameter(0);
+        assert vector2 != null : AssertMessages.notNullParameter(1);
+        this.x = vector1.getX() + vector2.getX();
+        this.y = vector1.getY() + vector2.getY();
+    }
 
-	@Override
-	public void add(Vector2D<?, ?> vector) {
-		assert vector != null : AssertMessages.notNullParameter();
-		this.x = this.x + vector.getX();
-		this.y = this.y + vector.getY();
-	}
+    @Override
+    public void add(Vector2D<?, ?> vector) {
+        assert vector != null : AssertMessages.notNullParameter();
+        this.x = this.x + vector.getX();
+        this.y = this.y + vector.getY();
+    }
 
-	@Override
-	public void scaleAdd(int scale, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : AssertMessages.notNullParameter(0);
-		assert vector2 != null : AssertMessages.notNullParameter(1);
-		this.x = scale * vector1.getX() + vector2.getX();
-		this.y = scale * vector1.getY() + vector2.getY();
-	}
+    @Override
+    public void scaleAdd(int scale, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
+        assert vector1 != null : AssertMessages.notNullParameter(0);
+        assert vector2 != null : AssertMessages.notNullParameter(1);
+        this.x = scale * vector1.getX() + vector2.getX();
+        this.y = scale * vector1.getY() + vector2.getY();
+    }
 
-	@Override
-	public void scaleAdd(double scale, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : AssertMessages.notNullParameter(0);
-		assert vector2 != null : AssertMessages.notNullParameter(1);
-		this.x = scale * vector1.getX() + vector2.getX();
-		this.y = scale * vector1.getY() + vector2.getY();
-	}
+    @Override
+    public void scaleAdd(double scale, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
+        assert vector1 != null : AssertMessages.notNullParameter(0);
+        assert vector2 != null : AssertMessages.notNullParameter(1);
+        this.x = scale * vector1.getX() + vector2.getX();
+        this.y = scale * vector1.getY() + vector2.getY();
+    }
 
-	@Override
-	public void scaleAdd(int scale, Vector2D<?, ?> vector) {
-		assert vector != null : AssertMessages.notNullParameter();
-		this.x = scale * this.x + vector.getX();
-		this.y = scale * this.y + vector.getY();
-	}
+    @Override
+    public void scaleAdd(int scale, Vector2D<?, ?> vector) {
+        assert vector != null : AssertMessages.notNullParameter();
+        this.x = scale * this.x + vector.getX();
+        this.y = scale * this.y + vector.getY();
+    }
 
-	@Override
-	public void scaleAdd(double scale, Vector2D<?, ?> vector) {
-		assert vector != null : AssertMessages.notNullParameter();
-		this.x = scale * this.x + vector.getX();
-		this.y = scale * this.y + vector.getY();
-	}
+    @Override
+    public void scaleAdd(double scale, Vector2D<?, ?> vector) {
+        assert vector != null : AssertMessages.notNullParameter();
+        this.x = scale * this.x + vector.getX();
+        this.y = scale * this.y + vector.getY();
+    }
 
-	@Override
-	public void sub(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : AssertMessages.notNullParameter(0);
-		assert vector2 != null : AssertMessages.notNullParameter(1);
-		this.x = vector1.getX() - vector2.getX();
-		this.y = vector1.getY() - vector2.getY();
-	}
+    @Override
+    public void sub(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
+        assert vector1 != null : AssertMessages.notNullParameter(0);
+        assert vector2 != null : AssertMessages.notNullParameter(1);
+        this.x = vector1.getX() - vector2.getX();
+        this.y = vector1.getY() - vector2.getY();
+    }
 
-	@Override
-	public void sub(Point2D<?, ?> point1, Point2D<?, ?> point2) {
-		assert point1 != null : AssertMessages.notNullParameter(0);
-		assert point2 != null : AssertMessages.notNullParameter(1);
-		this.x = point1.getX() - point2.getX();
-		this.y = point1.getY() - point2.getY();
-	}
+    @Override
+    public void sub(Point2D<?, ?> point1, Point2D<?, ?> point2) {
+        assert point1 != null : AssertMessages.notNullParameter(0);
+        assert point2 != null : AssertMessages.notNullParameter(1);
+        this.x = point1.getX() - point2.getX();
+        this.y = point1.getY() - point2.getY();
+    }
 
-	@Override
-	public void sub(Vector2D<?, ?> vector) {
-		assert vector != null : AssertMessages.notNullParameter();
-		this.x -= vector.getX();
-		this.y -= vector.getY();
-	}
+    @Override
+    public void sub(Vector2D<?, ?> vector) {
+        assert vector != null : AssertMessages.notNullParameter();
+        this.x -= vector.getX();
+        this.y -= vector.getY();
+    }
 
-	@Override
-	public void setLength(double newLength) {
-		assert newLength >= 0. : AssertMessages.positiveOrZeroParameter();
-		final double l = getLength();
-		if (l != 0) {
-			final double f = newLength / l;
-			this.x *= f;
-			this.y *= f;
-		} else {
-			this.x = newLength;
-			this.y = 0;
-		}
-	}
+    @Override
+    public void setLength(double newLength) {
+        assert newLength >= 0. : AssertMessages.positiveOrZeroParameter();
+        final double l = getLength();
+        if (l != 0) {
+            final double f = newLength / l;
+            this.x *= f;
+            this.y *= f;
+        } else {
+            this.x = newLength;
+            this.y = 0;
+        }
+    }
 
-	@Override
-	public Vector2d toUnitVector() {
-		final double length = getLength();
-		if (length == 0.) {
-			return getGeomFactory().newVector();
-		}
-		return getGeomFactory().newVector(getX() / length, getY() / length);
-	}
+    @Override
+    public Vector2d toUnitVector() {
+        final double length = getLength();
+        if (length == 0.) {
+            return getGeomFactory().newVector();
+        }
+        return getGeomFactory().newVector(getX() / length, getY() / length);
+    }
 
-	@Override
-	public Vector2d toOrthogonalVector() {
-		return getGeomFactory().newVector(-getY(), getX());
-	}
+    @Override
+    public Vector2d toOrthogonalVector() {
+        return getGeomFactory().newVector(-getY(), getX());
+    }
 
-	@Pure
-	@Override
-	public UnmodifiableVector2D<Vector2d, Point2d> toUnmodifiable() {
-		return new UnmodifiableVector2D<Vector2d, Point2d>() {
+    @Pure
+    @Override
+    public UnmodifiableVector2D<Vector2d, Point2d> toUnmodifiable() {
+        return new UnmodifiableVector2D<Vector2d, Point2d>() {
 
-			private static final long serialVersionUID = 6848610371671516804L;
+            private static final long serialVersionUID = 6848610371671516804L;
 
-			@Override
-			public GeomFactory<Vector2d, Point2d> getGeomFactory() {
-				return Vector2d.this.getGeomFactory();
-			}
+            @Override
+            public GeomFactory<Vector2d, Point2d> getGeomFactory() {
+                return Vector2d.this.getGeomFactory();
+            }
 
-			@Override
-			public Vector2d toUnitVector() {
-				return Vector2d.this.toUnitVector();
-			}
+            @Override
+            public Vector2d toUnitVector() {
+                return Vector2d.this.toUnitVector();
+            }
 
-			@Override
-			public Vector2d toOrthogonalVector() {
-				return Vector2d.this.toOrthogonalVector();
-			}
+            @Override
+            public Vector2d toOrthogonalVector() {
+                return Vector2d.this.toOrthogonalVector();
+            }
 
-			@Override
-			@SuppressWarnings("checkstyle:superclone")
-			public Vector2d clone() {
-				return Vector2d.this.getGeomFactory().newVector(Vector2d.this.getX(), Vector2d.this.getY());
-			}
+            @Override
+            @SuppressWarnings("checkstyle:superclone")
+            public Vector2d clone() {
+                return Vector2d.this.getGeomFactory().newVector(Vector2d.this.getX(), Vector2d.this.getY());
+            }
 
-			@Override
-			public double getX() {
-				return Vector2d.this.getX();
-			}
+            @Override
+            public double getX() {
+                return Vector2d.this.getX();
+            }
 
-			@Override
-			public int ix() {
-				return Vector2d.this.ix();
-			}
+            @Override
+            public int ix() {
+                return Vector2d.this.ix();
+            }
 
-			@Override
-			public double getY() {
-				return Vector2d.this.getY();
-			}
+            @Override
+            public double getY() {
+                return Vector2d.this.getY();
+            }
 
-			@Override
-			public int iy() {
-				return Vector2d.this.iy();
-			}
+            @Override
+            public int iy() {
+                return Vector2d.this.iy();
+            }
 
-		};
-	}
+        };
+    }
 
 }

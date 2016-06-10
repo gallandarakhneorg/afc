@@ -24,6 +24,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.GeomFactory;
@@ -128,6 +129,7 @@ public class Vector2dfx extends Tuple2dfx<Vector2dfx> implements Vector2D<Vector
 	 * @return the orientation vector which is corresponding to the given angle.
 	 */
 	@Pure
+	@Inline(value = "new Vector2dfx(Math.cos($1), Math.sin($1))", imported = {Vector2dfx.class})
 	public static Vector2dfx toOrientationVector(double angle) {
 		return new Vector2dfx(Math.cos(angle), Math.sin(angle));
 	}

@@ -1150,7 +1150,6 @@ public interface Parallelogram2afp<
      *         the interior of the specified set of rectangular
      *         coordinates intersect each other; <code>false</code> otherwise.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static <T extends PathElement2afp> boolean intersectsParallelogramPathIterator(
             double centerX, double centerY, double axis1X, double axis1Y, double extent1,

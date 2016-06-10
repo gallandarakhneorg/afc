@@ -20,6 +20,10 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
+
+import org.junit.Test;
+
 import org.arakhne.afc.math.geometry.d2.AbstractVector2DTest;
 
 @SuppressWarnings("all")
@@ -44,5 +48,16 @@ public class Vector2ifxTest extends AbstractVector2DTest<Vector2ifx, Point2ifx, 
 	public Point2ifx createPoint(double x, double y) {
 		return new Point2ifx(x, y);
 	}
+
+    @Test
+    public void staticToOrientationVector() {
+        assertFpVectorEquals(1, 0, Vector2ifx.toOrientationVector(0));
+        assertFpVectorEquals(-1, 0, Vector2ifx.toOrientationVector(Math.PI));
+        assertFpVectorEquals(0, 1, Vector2ifx.toOrientationVector(Math.PI/2));
+        assertFpVectorEquals(0, -1, Vector2ifx.toOrientationVector(-Math.PI/2));
+
+        assertInlineParameterUsage(Vector2ifx.class, "toOrientationVector", double.class);
+    }
+
 
 }

@@ -42,142 +42,143 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class TriangularStochasticLaw extends StochasticLaw {
 
-	private final double minX;
+    private final double minX;
 
-	private final double mode;
+    private final double mode;
 
-	private final double maxX;
+    private final double maxX;
 
-	private final double dxmode;
+    private final double dxmode;
 
-	private final double delta1;
+    private final double delta1;
 
-	private final double delta2;
+    private final double delta2;
 
-	/**
-	 * Construct a law with the following parameters.
-	 * <ul>
-	 * <li><code>minX</code></li>
-	 * <li><code>mode</code></li>
-	 * <li><code>maxX</code></li>
-	 * </ul>
-	 *
-	 * @param parameters is the set of accepted paramters.
-	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
-	 */
-	public TriangularStochasticLaw(Map<String, String> parameters) throws LawParameterNotFoundException {
-		this(paramFloat("minX", parameters), //$NON-NLS-1$
-			paramFloat("mode", parameters), //$NON-NLS-1$
-			paramFloat("maxX", parameters)); //$NON-NLS-1$
-	}
+    /**
+     * Construct a law with the following parameters.
+     * <ul>
+     * <li><code>minX</code></li>
+     * <li><code>mode</code></li>
+     * <li><code>maxX</code></li>
+     * </ul>
+     *
+     * @param parameters is the set of accepted paramters.
+     * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
+     */
+    public TriangularStochasticLaw(Map<String, String> parameters) throws LawParameterNotFoundException {
+        this(paramFloat("minX", parameters), //$NON-NLS-1$
+                paramFloat("mode", parameters), //$NON-NLS-1$
+                paramFloat("maxX", parameters)); //$NON-NLS-1$
+    }
 
-	/** Construct the law.
-	 * @param minX1 is the lower bound where {@code f(minX) = 0}
-	 * @param mode is the maxima point of the distribution {@code f(mode) = max(f(x))}
-	 * @param maxX1 is the upper bound where {@code f(maxX) = 0}
-	 */
-	public TriangularStochasticLaw(double minX1, double mode, double maxX1) {
-		double i = minX1;
-		double a = maxX1;
-		double mod = mode;
-		if (i > a) {
-			final double t = a;
-			a = i;
-			i = t;
-		}
-		if (i > mod) {
-			final double t = mod;
-			mod = i;
-			i = t;
-		}
-		if (mod > a) {
-			final double t = a;
-			a = mod;
-			mod = t;
-		}
-		this.minX = i;
-		this.mode = mod;
-		this.maxX = a;
+    /** Construct the law.
+     * @param minX1 is the lower bound where {@code f(minX) = 0}
+     * @param mode is the maxima point of the distribution {@code f(mode) = max(f(x))}
+     * @param maxX1 is the upper bound where {@code f(maxX) = 0}
+     */
+    public TriangularStochasticLaw(double minX1, double mode, double maxX1) {
+        double i = minX1;
+        double a = maxX1;
+        double mod = mode;
+        if (i > a) {
+            final double t = a;
+            a = i;
+            i = t;
+        }
+        if (i > mod) {
+            final double t = mod;
+            mod = i;
+            i = t;
+        }
+        if (mod > a) {
+            final double t = a;
+            a = mod;
+            mod = t;
+        }
+        this.minX = i;
+        this.mode = mod;
+        this.maxX = a;
 
 
-		this.delta1 = (this.maxX - this.minX) * (this.mode - this.minX);
-		this.delta2 = (this.maxX - this.minX) * (this.maxX - this.mode);
+        this.delta1 = (this.maxX - this.minX) * (this.mode - this.minX);
+        this.delta2 = (this.maxX - this.minX) * (this.maxX - this.mode);
 
-		this.dxmode = (this.mode - this.minX) / (this.maxX - this.minX);
-	}
+        this.dxmode = (this.mode - this.minX) / (this.maxX - this.minX);
+    }
 
-	/** Replies a random value that respect
-	 * the current stochastic law.
-	 *
-	 * @param minX is the lower bound where {@code f(minX) = 0}
-	 * @param mode is the maxima point of the distribution {@code f(mode) = max(f(x))}
-	 * @param maxX is the upper bound where {@code f(maxX) = 0}
-	 * @return a value depending of the stochastic law parameters
-	 * @throws MathException when math definition error.
-	 */
-	@Inline(value = "StochasticGenerator.generateRandomValue(new TriangularStochasticLaw(($1), ($2), ($3)))",
-			imported = {StochasticGenerator.class, TriangularStochasticLaw.class})
-	public static double random(double minX, double mode, double maxX) throws MathException {
-		return StochasticGenerator.generateRandomValue(new TriangularStochasticLaw(minX, mode, maxX));
-	}
+    /** Replies a random value that respect
+     * the current stochastic law.
+     *
+     * @param minX is the lower bound where {@code f(minX) = 0}
+     * @param mode is the maxima point of the distribution {@code f(mode) = max(f(x))}
+     * @param maxX is the upper bound where {@code f(maxX) = 0}
+     * @return a value depending of the stochastic law parameters
+     * @throws MathException when math definition error.
+     */
+    @Pure
+    @Inline(value = "StochasticGenerator.generateRandomValue(new TriangularStochasticLaw(($1), ($2), ($3)))",
+            imported = {StochasticGenerator.class, TriangularStochasticLaw.class})
+    public static double random(double minX, double mode, double maxX) throws MathException {
+        return StochasticGenerator.generateRandomValue(new TriangularStochasticLaw(minX, mode, maxX));
+    }
 
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("TRIANGULAR(minX="); //$NON-NLS-1$
-		b.append(this.minX);
-		b.append(", mode="); //$NON-NLS-1$
-		b.append(this.mode);
-		b.append(", maxX="); //$NON-NLS-1$
-		b.append(this.maxX);
-		b.append(')');
-		return b.toString();
-	}
+    @Pure
+    @Override
+    public String toString() {
+        final StringBuilder b = new StringBuilder();
+        b.append("TRIANGULAR(minX="); //$NON-NLS-1$
+        b.append(this.minX);
+        b.append(", mode="); //$NON-NLS-1$
+        b.append(this.mode);
+        b.append(", maxX="); //$NON-NLS-1$
+        b.append(this.maxX);
+        b.append(')');
+        return b.toString();
+    }
 
-	@Pure
-	@Override
-	public double f(double x)  throws MathException {
-		if ((x < this.minX) || (x > this.maxX)) {
-			throw new OutsideDomainException(x);
-		}
+    @Pure
+    @Override
+    public double f(double x)  throws MathException {
+        if ((x < this.minX) || (x > this.maxX)) {
+            throw new OutsideDomainException(x);
+        }
 
-		final double denom = this.maxX - this.minX;
+        final double denom = this.maxX - this.minX;
 
-		if (x <= this.mode) {
-			final double xm = 2. * (x - this.minX);
-			return xm / (denom * (this.mode - this.minX));
-		}
+        if (x <= this.mode) {
+            final double xm = 2. * (x - this.minX);
+            return xm / (denom * (this.mode - this.minX));
+        }
 
-		final double xm = 2. * (this.maxX - x);
-		return 1.f - (xm / (denom * (this.maxX - this.mode)));
+        final double xm = 2. * (this.maxX - x);
+        return 1.f - (xm / (denom * (this.maxX - this.mode)));
 
-	}
+    }
 
-	@Pure
-	@Override
-	public MathFunctionRange[] getRange() {
-		return MathFunctionRange.createSet(this.minX, this.maxX);
-	}
+    @Pure
+    @Override
+    public MathFunctionRange[] getRange() {
+        return MathFunctionRange.createSet(this.minX, this.maxX);
+    }
 
-	/** Replies the x according to the value of the distribution function.
-	 *
-	 * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
-	 * @return {@code F<sup>-1</sup>(u)}
-	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
-	 */
-	@Pure
-	@Override
-	public double inverseF(double u) throws MathException {
-		if ((u < 0) || (u > 1)) {
-			throw new OutsideDomainException(u);
-		}
+    /** Replies the x according to the value of the distribution function.
+     *
+     * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
+     * @return {@code F<sup>-1</sup>(u)}
+     * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
+     */
+    @Pure
+    @Override
+    public double inverseF(double u) throws MathException {
+        if ((u < 0) || (u > 1)) {
+            throw new OutsideDomainException(u);
+        }
 
-		if (u < this.dxmode) {
-			return Math.sqrt(u * this.delta1) + this.minX;
-		}
+        if (u < this.dxmode) {
+            return Math.sqrt(u * this.delta1) + this.minX;
+        }
 
-		return this.maxX - Math.sqrt((1 - u) * this.delta2);
-	}
+        return this.maxX - Math.sqrt((1 - u) * this.delta2);
+    }
 
 }

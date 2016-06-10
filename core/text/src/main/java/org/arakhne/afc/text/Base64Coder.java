@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.text;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
@@ -72,6 +75,8 @@ public final class Base64Coder {
 	 * @param string  a String to be encoded.
 	 * @return   A String with the Base64 encoded data.
 	 */
+	@Pure
+	@Inline(value = "new String(Base64Coder.encode(($1).getBytes()))", imported = {Base64Coder.class})
 	public static String encodeString(String string) {
 		return new String(encode(string.getBytes()));
 	}
@@ -83,6 +88,8 @@ public final class Base64Coder {
 	 * @param in is an array containing the data bytes to be encoded.
 	 * @return a character array with the Base64 encoded data.
 	 */
+	@Pure
+	@Inline(value = "Base64Coder.encode($1, ($1).length)", imported = {Base64Coder.class})
 	public static char[] encode(byte[] in) {
 		return encode(in, in.length);
 	}
@@ -94,6 +101,7 @@ public final class Base64Coder {
 	 * @param ilen number of bytes to process in <code>in</code>.
 	 * @return     A character array with the Base64 encoded data.
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	public static char[] encode(byte[] in, int ilen) {
 		// output length without padding
@@ -128,6 +136,8 @@ public final class Base64Coder {
 	 * @return   A String containing the decoded data.
 	 * @throws   IllegalArgumentException if the input is not valid Base64 encoded data.
 	 */
+	@Pure
+	@Inline(value = "new String(Base64Coder.decode($1))", imported = {Base64Coder.class})
 	public static String decodeString(String string) {
 		return new String(decode(string));
 	}
@@ -139,6 +149,8 @@ public final class Base64Coder {
 	 * @return   An array containing the decoded data bytes.
 	 * @throws   IllegalArgumentException if the input is not valid Base64 encoded data.
 	 */
+	@Pure
+	@Inline(value = "Base64Coder.decode(($1).toCharArray())", imported = {Base64Coder.class})
 	public static byte[] decode(String string) {
 		return decode(string.toCharArray());
 	}
@@ -150,6 +162,7 @@ public final class Base64Coder {
 	 * @return    An array containing the decoded data bytes.
 	 * @throws    IllegalArgumentException if the input is not valid Base64 encoded data.
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static byte[] decode(char[] in) {
 		int ilen = in.length;

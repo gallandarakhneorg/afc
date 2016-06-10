@@ -291,7 +291,6 @@ public interface Circle2ai<
      * @param y is the point
      * @param result the closest point in the circle to the point.
      */
-    @Pure
     @SuppressWarnings("checkstyle:magicnumber")
     static void computeClosestPointTo(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
         assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
@@ -361,7 +360,6 @@ public interface Circle2ai<
      * @param y is the point
      * @param result the farthest point in the circle to the point.
      */
-    @Pure
     @SuppressWarnings("checkstyle:magicnumber")
     static void computeFarthestPointTo(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
         assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
@@ -463,6 +461,7 @@ public interface Circle2ai<
      * @return <code>true</code> if the two shapes are intersecting; otherwise
      * <code>false</code>
      */
+    @Pure
     static boolean intersectsCircleSegment(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
         final Point2D<?, ?> point = new InnerComputationPoint2ai();

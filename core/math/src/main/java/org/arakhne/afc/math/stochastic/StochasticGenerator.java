@@ -22,6 +22,8 @@ package org.arakhne.afc.math.stochastic;
 
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Generator of random values according to stochastic laws.
  *
@@ -33,62 +35,64 @@ import java.util.Random;
  */
 public final class StochasticGenerator {
 
-	private static Random uniformRandomVariableList;
+    private static Random uniformRandomVariableList;
 
-	private StochasticGenerator() {
-		//
-	}
+    private StochasticGenerator() {
+        //
+    }
 
-	private static void initRandomNumberList() {
-		if (uniformRandomVariableList == null) {
-			uniformRandomVariableList = new Random();
-		}
-	}
+    private static void initRandomNumberList() {
+        if (uniformRandomVariableList == null) {
+            uniformRandomVariableList = new Random();
+        }
+    }
 
-	/** Generate a stochastic value according to the given law.
-	 *
-	 * <p>A probability {@code p} is randomly selected using the specified random number list.
-	 * The returned value
-	 * is when a randomly selected value inside the set of available values.
-	 *
-	 * <p>This method uses a {@link UniformStochasticLaw uniform distribution random number generation}.
-	 *
-	 * @param law is the stochastic law to use.
-	 * @return a value which was randomly selected according to a stochastic law.
-	 * @throws MathException in case the value could not be computed.
-	 */
-	public static double generateRandomValue(StochasticLaw law) throws MathException {
-		initRandomNumberList();
-		return law.inverseF(uniformRandomVariableList);
-	}
+    /** Generate a stochastic value according to the given law.
+     *
+     * <p>A probability {@code p} is randomly selected using the specified random number list.
+     * The returned value
+     * is when a randomly selected value inside the set of available values.
+     *
+     * <p>This method uses a {@link UniformStochasticLaw uniform distribution random number generation}.
+     *
+     * @param law is the stochastic law to use.
+     * @return a value which was randomly selected according to a stochastic law.
+     * @throws MathException in case the value could not be computed.
+     */
+    @Pure
+    public static double generateRandomValue(StochasticLaw law) throws MathException {
+        initRandomNumberList();
+        return law.inverseF(uniformRandomVariableList);
+    }
 
-	/** Add a noise to the specified value.
-	 *
-	 * <p>The returned value is given by:
-	 * {@code (value-noise) &lt; value &lt; (value+noise)}
-	 * where {@code 0 &lt;= noise &lt;= max(abs(value), noiseLaw(value))}.
-	 * The {@code noise} is randomly selected according to the
-	 * given random number list.
-	 *
-	 * <p>This method uses a {@link UniformStochasticLaw uniform distribution random number generation}.
-	 *
-	 * @param value is the value to noise
-	 * @param noiseLaw is the law used to selected tyhe noise amount.
-	 * @return the value
-	 * @throws MathException is case the value is not valid
-	 */
-	public static double noiseValue(double value, MathFunction noiseLaw) throws MathException {
-		try {
-			double noise = Math.abs(noiseLaw.f(value));
-			initRandomNumberList();
-			noise *= uniformRandomVariableList.nextFloat();
-			if (uniformRandomVariableList.nextBoolean()) {
-				noise = -noise;
-			}
-			return value + noise;
-		} catch (MathException e) {
-			return value;
-		}
-	}
+    /** Add a noise to the specified value.
+     *
+     * <p>The returned value is given by:
+     * {@code (value-noise) &lt; value &lt; (value+noise)}
+     * where {@code 0 &lt;= noise &lt;= max(abs(value), noiseLaw(value))}.
+     * The {@code noise} is randomly selected according to the
+     * given random number list.
+     *
+     * <p>This method uses a {@link UniformStochasticLaw uniform distribution random number generation}.
+     *
+     * @param value is the value to noise
+     * @param noiseLaw is the law used to selected tyhe noise amount.
+     * @return the value
+     * @throws MathException is case the value is not valid
+     */
+    @Pure
+    public static double noiseValue(double value, MathFunction noiseLaw) throws MathException {
+        try {
+            double noise = Math.abs(noiseLaw.f(value));
+            initRandomNumberList();
+            noise *= uniformRandomVariableList.nextFloat();
+            if (uniformRandomVariableList.nextBoolean()) {
+                noise = -noise;
+            }
+            return value + noise;
+        } catch (MathException e) {
+            return value;
+        }
+    }
 
 }

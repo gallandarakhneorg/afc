@@ -24,6 +24,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.GeomFactory;
@@ -117,6 +118,18 @@ public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector
 	 */
 	public Vector2ifx(long x, long y) {
 		super(x, y);
+	}
+
+	/** Replies the orientation vector, which is corresponding
+	 * to the given angle on a trigonometric circle.
+	 *
+	 * @param angle is the angle in radians to translate.
+	 * @return the orientation vector which is corresponding to the given angle.
+	 */
+	@Pure
+	@Inline(value = "new Vector2ifx(Math.cos($1), Math.sin($1))", imported = {Vector2ifx.class})
+	public static Vector2ifx toOrientationVector(double angle) {
+		return new Vector2ifx(Math.cos(angle), Math.sin(angle));
 	}
 
 	@Override

@@ -69,7 +69,6 @@ public interface Rectangle2afp<
 	 * @param py the y coordinate of the point.
 	 * @param closest is set with the closest point on the rectangle.
 	 */
-	@Pure
 	static void computeClosestPointRectanglePoint(
 			double rx, double ry, double rmaxx, double rmaxy,
 			double px, double py,
@@ -107,7 +106,6 @@ public interface Rectangle2afp<
 	 * @param rmaxy2 the maximum y coordinate of the second rectangle.
 	 * @param closest is set with the closest point on the first rectangle.
 	 */
-	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static void computeClosestPointRectangleRectangle(
 			double rx1, double ry1, double rmaxx1, double rmaxy1,
@@ -150,7 +148,6 @@ public interface Rectangle2afp<
 	 * @param sy2 the y coordinate of the second point of the segment.
 	 * @param closest is set with the closest point on the rectangle.
 	 */
-	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
     static void computeClosestPointRectangleSegment(
 			double rx, double ry, double rmaxx, double rmaxy,
@@ -219,7 +216,6 @@ public interface Rectangle2afp<
 	 * @param axis2Extent the size of the parallelogram along its second axis.
 	 * @param closest is set with the closest point on the first rectangle.
 	 */
-	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static void computeClosestPointRectangleParallelogram(
 			double rx, double ry, double rmaxx, double rmaxy,
@@ -295,7 +291,6 @@ public interface Rectangle2afp<
 	 *     this parameter is ignored.
 	 * @return the rectricted Cohen-Sutherland zone.
 	 */
-	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
 	static int reduceCohenSutherlandZoneRectangleSegment(double rx1, double ry1, double rx2, double ry2,
 			double sx1, double sy1, double sx2, double sy2, int codePoint1, int codePoint2,

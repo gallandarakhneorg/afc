@@ -98,7 +98,6 @@ public interface Ellipse2afp<
      * @param result the closest point in the ellipse.
      * @see #computeClosestPointToShallowEllipse(double, double, double, double, double, double, Point2D)
      */
-    @Pure
     @Unefficient
     @SuppressWarnings("checkstyle:magicnumber")
     static void computeClosestPointToSolidEllipse(
@@ -183,7 +182,6 @@ public interface Ellipse2afp<
      * @param result the closest point in the ellipse.
      * @see #computeClosestPointToSolidEllipse(double, double, double, double, double, double, Point2D)
      */
-    @Pure
     @Unefficient
     @SuppressWarnings("checkstyle:magicnumber")
     static void computeClosestPointToShallowEllipse(double px, double py, double ex, double ey, double ew, double eh,
@@ -266,7 +264,6 @@ public interface Ellipse2afp<
      * @param eh is the height of the ellipse
      * @param result the farthest point in the ellipse.
      */
-    @Pure
     @Unefficient
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void computeFarthestPointToShallowEllipse(double px, double py, double ex, double ey,

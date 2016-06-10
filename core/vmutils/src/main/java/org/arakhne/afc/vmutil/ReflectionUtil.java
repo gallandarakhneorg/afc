@@ -429,7 +429,6 @@ public final class ReflectionUtil {
 	 * @param allowEnum is <code>true</code> to allow enumeration to be put in the replied list.
 	 * @param result is the list of subclasses which will be filled by this function.
 	 */
-	@Pure
 	public static <T> void getSubClasses(Class<T> className, boolean allowAbstract, boolean allowInterface,
 			boolean allowEnum, Collection<Class<? extends T>> result) {
 		final String[] entries = System.getProperty("java.class.path") //$NON-NLS-1$

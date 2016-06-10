@@ -41,90 +41,91 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class LogisticStochasticLaw extends StochasticLaw {
 
-	private final double mu;
+    private final double mu;
 
-	private final double scale;
+    private final double scale;
 
-	/**
-	 * Construct a law with the following parameters.
-	 * <ul>
-	 * <li><code>mu</code></li>
-	 * <li><code>scale</code></li>
-	 * </ul>
-	 *
-	 * @param parameters is the set of accepted paramters.
-	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
-	 * @throws OutsideDomainException when scale is negative.
-	 */
-	public LogisticStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
-		this.mu = paramFloat("mu", parameters); //$NON-NLS-1$
-		this.scale = paramFloat("scale", parameters); //$NON-NLS-1$
-		if (this.scale <= 0) {
-			throw new OutsideDomainException(this.scale);
-		}
-	}
+    /**
+     * Construct a law with the following parameters.
+     * <ul>
+     * <li><code>mu</code></li>
+     * <li><code>scale</code></li>
+     * </ul>
+     *
+     * @param parameters is the set of accepted paramters.
+     * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
+     * @throws OutsideDomainException when scale is negative.
+     */
+    public LogisticStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
+        this.mu = paramFloat("mu", parameters); //$NON-NLS-1$
+        this.scale = paramFloat("scale", parameters); //$NON-NLS-1$
+        if (this.scale <= 0) {
+            throw new OutsideDomainException(this.scale);
+        }
+    }
 
-	/**
-	 * @param mu1 is the location of the distribution
-	 * @param scale is the scale of the distristibution ({@code &gt;0})
-	 * @throws OutsideDomainException when scale is negative.
-	 */
-	public LogisticStochasticLaw(double mu1, double scale) throws OutsideDomainException {
-		if (scale <= 0) {
-			throw new OutsideDomainException(scale);
-		}
-		this.mu = mu1;
-		this.scale = scale;
-	}
+    /**
+     * @param mu1 is the location of the distribution
+     * @param scale is the scale of the distristibution ({@code &gt;0})
+     * @throws OutsideDomainException when scale is negative.
+     */
+    public LogisticStochasticLaw(double mu1, double scale) throws OutsideDomainException {
+        if (scale <= 0) {
+            throw new OutsideDomainException(scale);
+        }
+        this.mu = mu1;
+        this.scale = scale;
+    }
 
-	/** Replies a random value that respect
-	 * the current stochastic law.
-	 *
-	 * @param mu is the location of the distribution
-	 * @param scale is the scale of the distristibution ({@code &gt;0})
-	 * @return a value depending of the stochastic law parameters
-	 * @throws MathException when error in math definition.
-	 */
-	public static double random(double mu, double scale) throws MathException {
-		return StochasticGenerator.generateRandomValue(new LogisticStochasticLaw(mu, scale));
-	}
+    /** Replies a random value that respect
+     * the current stochastic law.
+     *
+     * @param mu is the location of the distribution
+     * @param scale is the scale of the distristibution ({@code &gt;0})
+     * @return a value depending of the stochastic law parameters
+     * @throws MathException when error in math definition.
+     */
+    @Pure
+    public static double random(double mu, double scale) throws MathException {
+        return StochasticGenerator.generateRandomValue(new LogisticStochasticLaw(mu, scale));
+    }
 
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("LOGISTIC(mu="); //$NON-NLS-1$
-		b.append(this.mu);
-		b.append(", scale="); //$NON-NLS-1$
-		b.append(this.scale);
-		b.append(')');
-		return b.toString();
-	}
+    @Pure
+    @Override
+    public String toString() {
+        final StringBuilder b = new StringBuilder();
+        b.append("LOGISTIC(mu="); //$NON-NLS-1$
+        b.append(this.mu);
+        b.append(", scale="); //$NON-NLS-1$
+        b.append(this.scale);
+        b.append(')');
+        return b.toString();
+    }
 
-	@Pure
-	@Override
-	public double f(double x)  throws MathException {
-		final double ex = Math.exp((this.mu - x) / this.scale);
-		final double denom = (1. + ex) * (1. + ex);
-		return ex / (this.scale * denom);
-	}
+    @Pure
+    @Override
+    public double f(double x)  throws MathException {
+        final double ex = Math.exp((this.mu - x) / this.scale);
+        final double denom = (1. + ex) * (1. + ex);
+        return ex / (this.scale * denom);
+    }
 
-	@Pure
-	@Override
-	public MathFunctionRange[] getRange() {
-		return MathFunctionRange.createInfinitySet();
-	}
+    @Pure
+    @Override
+    public MathFunctionRange[] getRange() {
+        return MathFunctionRange.createInfinitySet();
+    }
 
-	/** Replies the x according to the value of the distribution function.
-	 *
-	 * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
-	 * @return {@code F<sup>-1</sup>(u)}
-	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
-	 */
-	@Pure
-	@Override
-	public double inverseF(double u) throws MathException {
-		return this.mu + this.scale * Math.log(u / (1. - u));
-	}
+    /** Replies the x according to the value of the distribution function.
+     *
+     * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
+     * @return {@code F<sup>-1</sup>(u)}
+     * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
+     */
+    @Pure
+    @Override
+    public double inverseF(double u) throws MathException {
+        return this.mu + this.scale * Math.log(u / (1. - u));
+    }
 
 }

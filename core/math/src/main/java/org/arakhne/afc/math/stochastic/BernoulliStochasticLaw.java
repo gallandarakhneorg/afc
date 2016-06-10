@@ -45,77 +45,78 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SuppressWarnings({"checkstyle:parametername", "checkstyle:membername"})
 public class BernoulliStochasticLaw extends StochasticLaw {
 
-	private final double p;
+    private final double p;
 
-	/**
-	 * Construct a law with the following parameters.
-	 * <ul>
-	 * <li><code>p</code></li>
-	 * </ul>
-	 *
-	 * @param parameters is the set of accepted paramters.
-	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
-	 */
-	public BernoulliStochasticLaw(Map<String, String> parameters) throws LawParameterNotFoundException {
-		this.p = paramFloat("p", parameters); //$NON-NLS-1$
-	}
+    /**
+     * Construct a law with the following parameters.
+     * <ul>
+     * <li><code>p</code></li>
+     * </ul>
+     *
+     * @param parameters is the set of accepted paramters.
+     * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
+     */
+    public BernoulliStochasticLaw(Map<String, String> parameters) throws LawParameterNotFoundException {
+        this.p = paramFloat("p", parameters); //$NON-NLS-1$
+    }
 
-	/**Construct a law with the p parameter.
-	 *
-	 * @param p is the probability where the value is {@code 1}
-	 */
-	public BernoulliStochasticLaw(double p) {
-		this.p = p;
-	}
+    /**Construct a law with the p parameter.
+     *
+     * @param p is the probability where the value is {@code 1}
+     */
+    public BernoulliStochasticLaw(double p) {
+        this.p = p;
+    }
 
-	/** Replies a random value that respect
-	 * the current stochastic law.
-	 *
-	 * @param p is the probability where the value is {@code 1}
-	 * @return a value depending of the stochastic law parameters
-	 * @throws MathException when error in the math definition.
-	 */
-	public static double random(double p) throws MathException {
-		return StochasticGenerator.generateRandomValue(new BernoulliStochasticLaw(p));
-	}
+    /** Replies a random value that respect
+     * the current stochastic law.
+     *
+     * @param p is the probability where the value is {@code 1}
+     * @return a value depending of the stochastic law parameters
+     * @throws MathException when error in the math definition.
+     */
+    @Pure
+    public static double random(double p) throws MathException {
+        return StochasticGenerator.generateRandomValue(new BernoulliStochasticLaw(p));
+    }
 
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("BERNOUILLI(P(0)="); //$NON-NLS-1$
-		b.append(1. - this.p);
-		b.append(";P(1)="); //$NON-NLS-1$
-		b.append(this.p);
-		b.append(')');
-		return b.toString();
-	}
+    @Pure
+    @Override
+    public String toString() {
+        final StringBuilder b = new StringBuilder();
+        b.append("BERNOUILLI(P(0)="); //$NON-NLS-1$
+        b.append(1. - this.p);
+        b.append(";P(1)="); //$NON-NLS-1$
+        b.append(this.p);
+        b.append(')');
+        return b.toString();
+    }
 
-	@Pure
-	@Override
-	public double f(double x)  throws MathException {
-		if ((x != 0.) && (x != 1.)) {
-			throw new OutsideDomainException(x);
-		}
-		return (x == 1.) ? this.p : (1. - this.p);
-	}
+    @Pure
+    @Override
+    public double f(double x)  throws MathException {
+        if ((x != 0.) && (x != 1.)) {
+            throw new OutsideDomainException(x);
+        }
+        return (x == 1.) ? this.p : (1. - this.p);
+    }
 
-	@Pure
-	@Override
-	public MathFunctionRange[] getRange() {
-		return MathFunctionRange.createDiscreteSet(0., 1.);
-	}
+    @Pure
+    @Override
+    public MathFunctionRange[] getRange() {
+        return MathFunctionRange.createDiscreteSet(0., 1.);
+    }
 
-	/** Replies the x according to the value of the distribution function.
-	 *
-	 * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
-	 * @return {@code F<sup>-1</sup>(u)}
-	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
-	 */
-	@Pure
-	@Override
-	public double inverseF(double u) throws MathException {
-		return (u <= this.p) ? 1. : 0.;
-	}
+    /** Replies the x according to the value of the distribution function.
+     *
+     * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
+     * @return {@code F<sup>-1</sup>(u)}
+     * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
+     */
+    @Pure
+    @Override
+    public double inverseF(double u) throws MathException {
+        return (u <= this.p) ? 1. : 0.;
+    }
 
 }

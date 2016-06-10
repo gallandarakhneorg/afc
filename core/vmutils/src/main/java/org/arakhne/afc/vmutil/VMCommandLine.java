@@ -161,7 +161,6 @@ public class VMCommandLine {
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
-	@Pure
 	@Inline(value = "VMCommandLine.launchVMWithClassPath(($1).getCanonicalName(), ($2), ($3))",
 			imported = {VMCommandLine.class})
 	public static Process launchVMWithClassPath(Class<?> classToLaunch, String classpath,
@@ -178,7 +177,6 @@ public class VMCommandLine {
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
-	@Pure
 	@SuppressWarnings({"checkstyle:magicnumber"})
 	public static Process launchVMWithClassPath(String classToLaunch, String classpath,
 			String... additionalParams) throws IOException {
@@ -218,7 +216,6 @@ public class VMCommandLine {
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
-	@Pure
 	@Inline(value = "VMCommandLine.launchVMWithClassPath(($1).getCanonicalName(), ($2), ($3))",
 			imported = {VMCommandLine.class})
 	public static Process launchVMWithClassPath(Class<?> classToLaunch, File[] classpath,
@@ -235,7 +232,6 @@ public class VMCommandLine {
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
-	@Pure
 	public static Process launchVMWithClassPath(String classToLaunch, File[] classpath,
 			String... additionalParams) throws IOException {
 		final StringBuilder b = new StringBuilder();
@@ -256,7 +252,6 @@ public class VMCommandLine {
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
-	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	public static Process launchVMWithJar(File jarFile, String... additionalParams) throws IOException {
 		final String javaBin = getVMBinary();
@@ -282,7 +277,6 @@ public class VMCommandLine {
 	 * @return the process that is running the new virtual machine, neither <code>null</code>
 	 * @throws IOException when a IO error occurs.
 	 */
-	@Pure
 	@Inline(value = "VMCommandLine.launchVM(($1).getCanonicalName(), ($2))", imported = {VMCommandLine.class})
 	public static Process launchVM(Class<?> classToLaunch, String... additionalParams) throws IOException {
 		return launchVM(classToLaunch.getCanonicalName(), additionalParams);

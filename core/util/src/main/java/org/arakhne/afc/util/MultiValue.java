@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.util;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -35,7 +36,9 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class MultiValue<T> {
+public class MultiValue<T> implements Serializable {
+
+	private static final long serialVersionUID = -3030110135594544927L;
 
 	private boolean isSet;
 

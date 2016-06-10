@@ -74,15 +74,6 @@ public final class ThreadServiceFinder {
 
     /**
      * Remove a provider.
-	 *
-     * @param provider is the preferred thread service provider
-     */
-    public static void removeProvider(ThreadServiceProvider provider) {
-    	SERVICES.remove(provider);
-    }
-
-    /**
-     * Remove a provider.
      */
     public static void removeProvider() {
     	SERVICES.pop();

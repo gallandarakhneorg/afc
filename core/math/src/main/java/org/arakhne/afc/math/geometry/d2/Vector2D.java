@@ -255,6 +255,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
      * @see #signedAngle(double, double, double, double)
      * @see #perpProduct(double, double, double, double)
      */
+    @Pure
     @Inline("(($1) * ($4) - ($2) * ($3)) >= 0.")
     static boolean isCCW(double x1, double y1, double x2, double y2) {
         return (x1 * y2 - y1 * x2) >= 0.;

@@ -329,7 +329,6 @@ public interface Segment2afp<
      * @param py is the y coordinate of the point.
      * @param result the is point on the shape.
      */
-    @Pure
     @SuppressWarnings("checkstyle:magicnumber")
     static void computeClosestPointToPoint(
             double ax, double ay, double bx, double by, double px, double py,
@@ -359,7 +358,6 @@ public interface Segment2afp<
      * @param rheight is the height of the rectangle.
      * @param result the is point on the segment.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void computeClosestPointToRectangle(double sx1, double sy1, double sx2, double sy2,
             double rx, double ry, double rwidth, double rheight, Point2D<?, ?> result) {
@@ -412,7 +410,6 @@ public interface Segment2afp<
      * @param result the is point on the shape.
      * @return the square distance between the segments.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
     static double computeClosestPointToSegment(
             double s1x1, double s1y1, double s1x2, double s1y2,
@@ -437,7 +434,6 @@ public interface Segment2afp<
      * @param resultOnSecondSegment the point on the second segment.
      * @return the square distance between the segments.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
     static double computeClosestPointToSegment(
             double s1x1, double s1y1, double s1x2, double s1y2,
@@ -1314,7 +1310,6 @@ public interface Segment2afp<
      * @param py is the y coordinate of the point.
      * @param result the farthest point on the shape.
      */
-    @Pure
     @SuppressWarnings("checkstyle:magicnumber")
     static void computeFarthestPointToPoint(
             double ax, double ay, double bx, double by, double px, double py, Point2D<?, ?> result) {
@@ -1342,7 +1337,6 @@ public interface Segment2afp<
      * @param rheight is the height of the rectangle.
      * @param result the is point on the segment.
      */
-    @Pure
     @SuppressWarnings("checkstyle:parameternumber")
     static void computeFarthestPointToRectangle(double sx1, double sy1, double sx2, double sy2,
             double rx, double ry, double rwidth, double rheight, Point2D<?, ?> result) {
@@ -1404,7 +1398,6 @@ public interface Segment2afp<
      * @param result the is point on the shape.
      * @return the minimal square distance between the point on the first segment and any point on the second segment.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
     static double computeFarthestPointToSegment(
             double s1x1, double s1y1, double s1x2, double s1y2,
@@ -1510,7 +1503,6 @@ public interface Segment2afp<
      * @param result the intersection point.
      * @return <code>true</code> if there is an intersection.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean computeLineLineIntersection(double x1, double y1, double x2, double y2,
             double x3, double y3, double x4, double y4,
@@ -1680,7 +1672,6 @@ public interface Segment2afp<
      * @param result the intersection point.
      * @return <code>true</code> if an intersection exists.
      */
-    @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean computeSegmentSegmentIntersection(double x1, double y1, double x2, double y2,
             double x3, double y3, double x4, double y4,
@@ -1997,7 +1988,6 @@ public interface Segment2afp<
      * @param factor is between 0 and 1; 0 for p1, and 1 for p2.
      * @param result the interpolate point.
      */
-    @Pure
     @SuppressWarnings("checkstyle:magicnumber")
     static void interpolate(double p1x, double p1y, double p2x, double p2y, double factor, Point2D<?, ?> result) {
         assert result != null : AssertMessages.notNullParameter(5);

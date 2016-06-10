@@ -25,6 +25,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Annotation for marking functions that are implementations of
  * <a href="http://groovy-lang.org/">Groovy</a> operators.
@@ -43,6 +45,7 @@ public @interface GroovyOperator {
 	 *
 	 * @return the name or the description of the operator.
 	 */
+	@Pure
 	String value() default "";
 
 }
