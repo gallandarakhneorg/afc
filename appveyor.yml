@@ -16,7 +16,7 @@ install:
   - cmd: mvn --version
   - cmd: java -version
 build_script:
-  - mvn -B clean install -Dmaven.test.skip=true -Dcheckstyle.skip=true
+  - mvn -B clean install -Dcheckstyle.skip=true
 cache:
   - C:\maven\
   - C:\Users\appveyor\.m2
