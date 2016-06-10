@@ -292,21 +292,21 @@ public class PathShadow2f {
 			int side1, side2;
 			boolean isUp = (shadow_y0<=shadow_y1);
 			if (isUp) {
-				side1 = Segment2afp.computeSideLinePoint(
+				side1 = Segment2afp.findsSideLinePoint(
 						shadow_x0, shadow_y0,
 						shadow_x1, shadow_y1,
 						sx0, sy0, 0);
-				side2 = Segment2afp.computeSideLinePoint(
+				side2 = Segment2afp.findsSideLinePoint(
 						shadow_x0, shadow_y0,
 						shadow_x1, shadow_y1,
 						sx1, sy1, 0);
 			}
 			else {
-				side1 = Segment2afp.computeSideLinePoint(
+				side1 = Segment2afp.findsSideLinePoint(
 						shadow_x1, shadow_y1,
 						shadow_x0, shadow_y0,
 						sx0, sy0, 0);
-				side2 = Segment2afp.computeSideLinePoint(
+				side2 = Segment2afp.findsSideLinePoint(
 						shadow_x1, shadow_y1,
 						shadow_x0, shadow_y0,
 						sx1, sy1, 0);

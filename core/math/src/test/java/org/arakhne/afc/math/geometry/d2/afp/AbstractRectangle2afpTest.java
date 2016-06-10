@@ -111,12 +111,12 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 	}
 
 	@Test
-	public void staticReduceCohenSutherlandZoneRectangleSegment() {
+	public void staticReducesCohenSutherlandZoneRectangleSegment() {
 		Point2D p1 = createPoint(0, 0);
 		Point2D p2 = createPoint(0, 0);
 		
 		assertEquals(0,
-				Rectangle2afp.reduceCohenSutherlandZoneRectangleSegment(10, 12, 40, 37, 20, 45, 43, 15,
+				Rectangle2afp.reducesCohenSutherlandZoneRectangleSegment(10, 12, 40, 37, 20, 45, 43, 15,
 				MathUtil.getCohenSutherlandCode(20, 45, 0, 12, 40, 37),
 				MathUtil.getCohenSutherlandCode(43, 15, 0, 12, 40, 37),
 				p1, p2));
@@ -124,7 +124,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(40, 18.91304, p2);
 
 		assertEquals(0, 
-				Rectangle2afp.reduceCohenSutherlandZoneRectangleSegment(10, 12, 40, 37, 20, 55, 43, 15,
+				Rectangle2afp.reducesCohenSutherlandZoneRectangleSegment(10, 12, 40, 37, 20, 55, 43, 15,
 				MathUtil.getCohenSutherlandCode(20, 55, 0, 12, 40, 37),
 				MathUtil.getCohenSutherlandCode(43, 15, 0, 12, 40, 37),
 				p1, p2));
@@ -400,47 +400,47 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 	}
 
 	@Test
-	public void staticComputeClosestPointRectanglePoint() {
+	public void staticFindsClosestPointRectanglePoint() {
 		Point2D p;
 		
 		p = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectanglePoint(5, 8, 10, 18, 0, 0, p);
+		Rectangle2afp.findsClosestPointRectanglePoint(5, 8, 10, 18, 0, 0, p);
 		assertFpPointEquals(5, 8, p);
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectanglePoint(5, 8, 10, 18, 100, 0, p);
+		Rectangle2afp.findsClosestPointRectanglePoint(5, 8, 10, 18, 100, 0, p);
 		assertFpPointEquals(10, 8, p);
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectanglePoint(5, 8, 10, 18, 100, 100, p);
+		Rectangle2afp.findsClosestPointRectanglePoint(5, 8, 10, 18, 100, 100, p);
 		assertFpPointEquals(10, 18, p);
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectanglePoint(5, 8, 10, 18, 0, 100, p);
+		Rectangle2afp.findsClosestPointRectanglePoint(5, 8, 10, 18, 0, 100, p);
 		assertFpPointEquals(5, 18, p);
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectanglePoint(5, 8, 10, 18, 0, 10, p);
+		Rectangle2afp.findsClosestPointRectanglePoint(5, 8, 10, 18, 0, 10, p);
 		assertFpPointEquals(5, 10, p);
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectanglePoint(5, 8, 10, 18, 7, 0, p);
+		Rectangle2afp.findsClosestPointRectanglePoint(5, 8, 10, 18, 7, 0, p);
 		assertFpPointEquals(7, 8, p);
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectanglePoint(5, 8, 10, 18, 154, 17, p);
+		Rectangle2afp.findsClosestPointRectanglePoint(5, 8, 10, 18, 154, 17, p);
 		assertFpPointEquals(10, 17, p);
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectanglePoint(5, 8, 10, 18, 9, 154, p);
+		Rectangle2afp.findsClosestPointRectanglePoint(5, 8, 10, 18, 9, 154, p);
 		assertFpPointEquals(9, 18, p);
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectanglePoint(5, 8, 10, 18, 8, 18, p);
+		Rectangle2afp.findsClosestPointRectanglePoint(5, 8, 10, 18, 8, 18, p);
 		assertFpPointEquals(8, 18, p);
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectanglePoint(5, 8, 10, 18, 7, 12, p);
+		Rectangle2afp.findsClosestPointRectanglePoint(5, 8, 10, 18, 7, 12, p);
 		assertFpPointEquals(7, 12, p);
 	}
 
@@ -549,17 +549,17 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 	}
 
 	@Test
-	public void staticComputeDistanceSquaredRectanglePoint() {
-		assertEpsilonEquals(88.99998, Rectangle2afp.computeDistanceSquaredRectanglePoint(5, 8, 10, 18, 0, 0));
-		assertEpsilonEquals(8164, Rectangle2afp.computeDistanceSquaredRectanglePoint(5, 8, 10, 18, 100, 0));
-		assertEpsilonEquals(14823.99999, Rectangle2afp.computeDistanceSquaredRectanglePoint(5, 8, 10, 18, 100, 100));
-		assertEpsilonEquals(6749, Rectangle2afp.computeDistanceSquaredRectanglePoint(5, 8, 10, 18, 0, 100));
-		assertEpsilonEquals(25, Rectangle2afp.computeDistanceSquaredRectanglePoint(5, 8, 10, 18, 0, 10));
-		assertEpsilonEquals(64, Rectangle2afp.computeDistanceSquaredRectanglePoint(5, 8, 10, 18, 7, 0));
-		assertEpsilonEquals(20736, Rectangle2afp.computeDistanceSquaredRectanglePoint(5, 8, 10, 18, 154, 17));
-		assertEpsilonEquals(18496, Rectangle2afp.computeDistanceSquaredRectanglePoint(5, 8, 10, 18, 9, 154));
-		assertEpsilonEquals(0, Rectangle2afp.computeDistanceSquaredRectanglePoint(5, 8, 10, 18, 8, 18));
-		assertEpsilonEquals(0, Rectangle2afp.computeDistanceSquaredRectanglePoint(5, 8, 10, 18, 7, 12));
+	public void staticCalculatesDistanceSquaredRectanglePoint() {
+		assertEpsilonEquals(88.99998, Rectangle2afp.calculatesDistanceSquaredRectanglePoint(5, 8, 10, 18, 0, 0));
+		assertEpsilonEquals(8164, Rectangle2afp.calculatesDistanceSquaredRectanglePoint(5, 8, 10, 18, 100, 0));
+		assertEpsilonEquals(14823.99999, Rectangle2afp.calculatesDistanceSquaredRectanglePoint(5, 8, 10, 18, 100, 100));
+		assertEpsilonEquals(6749, Rectangle2afp.calculatesDistanceSquaredRectanglePoint(5, 8, 10, 18, 0, 100));
+		assertEpsilonEquals(25, Rectangle2afp.calculatesDistanceSquaredRectanglePoint(5, 8, 10, 18, 0, 10));
+		assertEpsilonEquals(64, Rectangle2afp.calculatesDistanceSquaredRectanglePoint(5, 8, 10, 18, 7, 0));
+		assertEpsilonEquals(20736, Rectangle2afp.calculatesDistanceSquaredRectanglePoint(5, 8, 10, 18, 154, 17));
+		assertEpsilonEquals(18496, Rectangle2afp.calculatesDistanceSquaredRectanglePoint(5, 8, 10, 18, 9, 154));
+		assertEpsilonEquals(0, Rectangle2afp.calculatesDistanceSquaredRectanglePoint(5, 8, 10, 18, 8, 18));
+		assertEpsilonEquals(0, Rectangle2afp.calculatesDistanceSquaredRectanglePoint(5, 8, 10, 18, 7, 12));
 	}
 
 	@Override
@@ -1281,111 +1281,111 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 	}
 
 	@Test
-	public void staticComputeClosestPointToRectangle() {
+	public void staticFindsClosestPointRectangleRectangle() {
 		Point2D result;
 		
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 0, 0, 1, 1, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 0, 0, 1, 1, result);
 		assertFpPointEquals(5, 8, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 0, 12, 1, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 0, 12, 1, 13, result);
 		assertFpPointEquals(5, 12.5, result);
 		
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 0, 21, 1, 22, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 0, 21, 1, 22, result);
 		assertFpPointEquals(5, 18, result);
 		
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 7, 0, 8, 1, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 7, 0, 8, 1, result);
 		assertFpPointEquals(7.5, 8, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 8, 12, 9, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 8, 12, 9, 13, result);
 		assertFpPointEquals(8.5, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 9, 21, 10, 22, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 9, 21, 10, 22, result);
 		assertFpPointEquals(9.5, 18, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 15, 0, 16, 1, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 15, 0, 16, 1, result);
 		assertFpPointEquals(10, 8, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 16, 12, 17, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 16, 12, 17, 13, result);
 		assertFpPointEquals(10, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 17, 21, 18, 22, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 17, 21, 18, 22, result);
 		assertFpPointEquals(10, 18, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 1, 12, 11, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 1, 12, 11, 13, result);
 		assertFpPointEquals(6, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 1, 12, 11, 32, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 1, 12, 11, 32, result);
 		assertFpPointEquals(6, 18, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 8, 0, 9, 20, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 8, 0, 9, 20, result);
 		assertFpPointEquals(8.5, 10, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 8, 0, 18, 20, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 8, 0, 18, 20, result);
 		assertFpPointEquals(10, 10, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 6, 10, 7, 11, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 6, 10, 7, 11, result);
 		assertFpPointEquals(6.5, 10.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 4, 12, 5, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 4, 12, 5, 13, result);
 		assertFpPointEquals(5, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 4.1, 12, 5.1, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 4.1, 12, 5.1, 13, result);
 		assertFpPointEquals(5, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 4.2, 12, 5.2, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 4.2, 12, 5.2, 13, result);
 		assertFpPointEquals(5, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 4.3, 12, 5.3, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 4.3, 12, 5.3, 13, result);
 		assertFpPointEquals(5, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 4.4, 12, 5.4, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 4.4, 12, 5.4, 13, result);
 		assertFpPointEquals(5, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 4.5, 12, 5.5, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 4.5, 12, 5.5, 13, result);
 		assertFpPointEquals(5, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 4.6, 12, 5.6, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 4.6, 12, 5.6, 13, result);
 		assertFpPointEquals(5.1, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 4.7, 12, 5.7, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 4.7, 12, 5.7, 13, result);
 		assertFpPointEquals(5.2, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 4.8, 12, 5.8, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 4.8, 12, 5.8, 13, result);
 		assertFpPointEquals(5.3, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 4.9, 12, 5.9, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 4.9, 12, 5.9, 13, result);
 		assertFpPointEquals(5.4, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 5, 12, 6, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 5, 12, 6, 13, result);
 		assertFpPointEquals(5.5, 12.5, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleRectangle(5, 8, 10, 18, 5.1, 12, 6.1, 13, result);
+		Rectangle2afp.findsClosestPointRectangleRectangle(5, 8, 10, 18, 5.1, 12, 6.1, 13, result);
 		assertFpPointEquals(5.6, 12.5, result);
 	}
 
@@ -1450,63 +1450,63 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 	}
 
 	@Test
-	public void staticComputeClosestPointRectangleSegment() {
+	public void staticFindsClosestPointRectangleSegment() {
 		Point2D<?, ?> result;
 		
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 0, 0, 2, 1, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 0, 0, 2, 1, result);
 		assertFpPointEquals(5, 8, result);
 		
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 0, 0, 1, 2, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 0, 0, 1, 2, result);
 		assertFpPointEquals(5, 8, result);
 		
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 1, 10, 4, 14, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 1, 10, 4, 14, result);
 		assertFpPointEquals(5, 14, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 1, 10, 6, 14, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 1, 10, 6, 14, result);
 		assertFpPointEquals(5, 13.2, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 1, 10, 18, 14, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 1, 10, 18, 14, result);
 		assertFpPointEquals(5, 10.94118, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 7, 10, 18, 14, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 7, 10, 18, 14, result);
 		assertFpPointEquals(7, 10, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 17, 10, 18, 14, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 17, 10, 18, 14, result);
 		assertFpPointEquals(10, 10, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 6, 0, 9, 6, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 6, 0, 9, 6, result);
 		assertFpPointEquals(9, 8, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 6, 0, 9, 16, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 6, 0, 9, 16, result);
 		assertFpPointEquals(7.5, 8, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 6, 0, 9, 21, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 6, 0, 9, 21, result);
 		assertFpPointEquals(7.14286, 8, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 6, 10, 9, 21, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 6, 10, 9, 21, result);
 		assertFpPointEquals(6, 10, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 6, 19, 9, 21, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 6, 19, 9, 21, result);
 		assertFpPointEquals(6, 18, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 8, 20, 14, 8, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 8, 20, 14, 8, result);
 		assertFpPointEquals(9, 18, result);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleSegment(5, 8, 10, 18, 10.593538844843389, 12.775717435385788, 9.484138452392932, 14.439818024061475, result);
+		Rectangle2afp.findsClosestPointRectangleSegment(5, 8, 10, 18, 10.593538844843389, 12.775717435385788, 9.484138452392932, 14.439818024061475, result);
 		assertFpPointEquals(10, 13.66603, result);
 	}
 
@@ -1750,25 +1750,25 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		return createParallelogram(cx, cy, u.getX(), u.getY(), 2, v.getX(), v.getY(), 1);
 	}
 	
-	private Point2D<?, ?> runComputeClosestPointRetangleParallelogram(double cx, double cy) {
+	private Point2D<?, ?> runFindsClosestPointRectangleParallelogram(double cx, double cy) {
 		Parallelogram2afp p = createTestParallelogram(cx, cy);
 		Point2D<?, ?> result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleParallelogram(5, 8, 10, 18,
+		Rectangle2afp.findsClosestPointRectangleParallelogram(5, 8, 10, 18,
 				p.getCenterX(), p.getCenterY(), p.getFirstAxisX(), p.getFirstAxisY(), p.getFirstAxisExtent(),
 				p.getSecondAxisX(), p.getSecondAxisY(), p.getSecondAxisExtent(), result);
 		return result;
 	}
 
 	@Test
-	public void staticComputeClosestPointRetangleParallelogram() {
-		assertFpPointEquals(5, 8, runComputeClosestPointRetangleParallelogram(0, 0));
-		assertFpPointEquals(5, 9.56018, runComputeClosestPointRetangleParallelogram(2, 10));
-		assertFpPointEquals(10, 18, runComputeClosestPointRetangleParallelogram(14, 18));
-		assertFpPointEquals(9.48414, 14.43982, runComputeClosestPointRetangleParallelogram(12, 14));
-		assertFpPointEquals(10, 8, runComputeClosestPointRetangleParallelogram(14, 2));
+	public void staticFindsClosestPointRectangleParallelogram() {
+		assertFpPointEquals(5, 8, runFindsClosestPointRectangleParallelogram(0, 0));
+		assertFpPointEquals(5, 9.56018, runFindsClosestPointRectangleParallelogram(2, 10));
+		assertFpPointEquals(10, 18, runFindsClosestPointRectangleParallelogram(14, 18));
+		assertFpPointEquals(9.48414, 14.43982, runFindsClosestPointRectangleParallelogram(12, 14));
+		assertFpPointEquals(10, 8, runFindsClosestPointRectangleParallelogram(14, 2));
 		// In multishape.ggb
 		Point2D<?, ?> result = createPoint(Double.NaN, Double.NaN);
-		Rectangle2afp.computeClosestPointRectangleParallelogram(
+		Rectangle2afp.findsClosestPointRectangleParallelogram(
 				5, 8, 7, 9,
 				9, 5,
 				-0.624695047554424, 0.780868809443031, 2,

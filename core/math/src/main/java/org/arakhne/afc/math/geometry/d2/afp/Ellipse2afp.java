@@ -96,11 +96,33 @@ public interface Ellipse2afp<
      * @param ew is the width of the ellipse
      * @param eh is the height of the ellipse
      * @param result the closest point in the ellipse.
-     * @see #computeClosestPointToShallowEllipse(double, double, double, double, double, double, Point2D)
+     * @see #findsClosestPointShallowEllipsePoint(double, double, double, double, double, double, Point2D)
+     * @deprecated since 13.0, see {@link #findsClosestPointSolidEllipsePoint(double,
+     *     double, double, double, double, double, Point2D)}
+     */
+    @Deprecated
+    @Unefficient
+    static void computeClosestPointToSolidEllipse(
+            double px, double py, double ex, double ey, double ew, double eh,
+            Point2D<?, ?> result) {
+        findsClosestPointSolidEllipsePoint(px, py, ex, ey, ew, eh, result);
+    }
+
+    /** Replies the closest point from the given point in the solid ellipse.
+     * A solid ellipse is an ellipse with a border and an interior area.
+     *
+     * @param px is the coordinate of the point.
+     * @param py is the coordinate of the point.
+     * @param ex is the coordinate of the min corner of the ellipse
+     * @param ey is the coordinate of the min corner of the ellipse
+     * @param ew is the width of the ellipse
+     * @param eh is the height of the ellipse
+     * @param result the closest point in the ellipse.
+     * @see #findsClosestPointShallowEllipsePoint(double, double, double, double, double, double, Point2D)
      */
     @Unefficient
     @SuppressWarnings("checkstyle:magicnumber")
-    static void computeClosestPointToSolidEllipse(
+    static void findsClosestPointSolidEllipsePoint(
             double px, double py, double ex, double ey, double ew, double eh,
             Point2D<?, ?> result) {
         assert ew >= 0. : AssertMessages.positiveOrZeroParameter(4);
@@ -180,11 +202,31 @@ public interface Ellipse2afp<
      * @param ew is the width of the ellipse
      * @param eh is the height of the ellipse
      * @param result the closest point in the ellipse.
-     * @see #computeClosestPointToSolidEllipse(double, double, double, double, double, double, Point2D)
+     * @see #findsClosestPointSolidEllipsePoint(double, double, double, double, double, double, Point2D)
+     * @deprecated since 13.0, see {@link #findsClosestPointShallowEllipsePoint(double,
+     *     double, double, double, double, double, Point2D)}
+     */
+    @Deprecated
+    static void computeClosestPointToShallowEllipse(double px, double py, double ex, double ey, double ew, double eh,
+            Point2D<?, ?> result) {
+        findsClosestPointShallowEllipsePoint(px, py, ex, ey, ew, eh, result);
+    }
+
+    /** Replies the closest point from the given point in the shallow ellipse.
+     * A shallow ellipse is an ellipse with a border and not an interior area.
+     *
+     * @param px is the coordinate of the point.
+     * @param py is the coordinate of the point.
+     * @param ex is the coordinate of the min corner of the ellipse
+     * @param ey is the coordinate of the min corner of the ellipse
+     * @param ew is the width of the ellipse
+     * @param eh is the height of the ellipse
+     * @param result the closest point in the ellipse.
+     * @see #findsClosestPointSolidEllipsePoint(double, double, double, double, double, double, Point2D)
      */
     @Unefficient
     @SuppressWarnings("checkstyle:magicnumber")
-    static void computeClosestPointToShallowEllipse(double px, double py, double ex, double ey, double ew, double eh,
+    static void findsClosestPointShallowEllipsePoint(double px, double py, double ex, double ey, double ew, double eh,
             Point2D<?, ?> result) {
         assert ew >= 0. : AssertMessages.positiveOrZeroParameter(4);
         assert eh >= 0. : AssertMessages.positiveOrZeroParameter(5);
@@ -263,10 +305,29 @@ public interface Ellipse2afp<
      * @param ew is the width of the ellipse
      * @param eh is the height of the ellipse
      * @param result the farthest point in the ellipse.
+     * @deprecated since 13.0, see {@link #findsFarthestPointShallowEllipsePoint(double,
+     *     double, double, double, double, double, Point2D)}
+     */
+    @Deprecated
+    static void computeFarthestPointToShallowEllipse(double px, double py, double ex, double ey,
+            double ew, double eh, Point2D<?, ?> result) {
+        findsFarthestPointShallowEllipsePoint(px, py, ex, ey, ew, eh, result);
+    }
+
+    /** Replies the farthest point from the given point in the shallow ellipse.
+     * A shallow ellipse is an ellipse with a border and not an interior area.
+     *
+     * @param px is the coordinate of the point.
+     * @param py is the coordinate of the point.
+     * @param ex is the coordinate of the min corner of the ellipse
+     * @param ey is the coordinate of the min corner of the ellipse
+     * @param ew is the width of the ellipse
+     * @param eh is the height of the ellipse
+     * @param result the farthest point in the ellipse.
      */
     @Unefficient
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
-    static void computeFarthestPointToShallowEllipse(double px, double py, double ex, double ey,
+    static void findsFarthestPointShallowEllipsePoint(double px, double py, double ex, double ey,
             double ew, double eh, Point2D<?, ?> result) {
         assert ew >= 0. : AssertMessages.positiveOrZeroParameter(4);
         assert eh >= 0. : AssertMessages.positiveOrZeroParameter(5);
@@ -436,7 +497,7 @@ public interface Ellipse2afp<
         assert eheight >= 0. : AssertMessages.positiveOrZeroParameter(3);
         assert cradius >= 0. : AssertMessages.positiveOrZeroParameter(6);
         final Point2D<?, ?> p = new InnerComputationPoint2afp();
-        computeClosestPointToSolidEllipse(cx, cy, ex, ey, ewidth, eheight, p);
+        findsClosestPointSolidEllipsePoint(cx, cy, ex, ey, ewidth, eheight, p);
         final double dx = p.getX() - cx;
         final double dy = p.getY() - cy;
         return (dx * dx + dy * dy) < (cradius * cradius);
@@ -781,7 +842,7 @@ public interface Ellipse2afp<
     default boolean intersects(PathIterator2afp<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
         final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = Path2afp.computeCrossingsFromEllipse(
+        final int crossings = Path2afp.calculatesCrossingsPathIteratorEllipseShadow(
                 0,
                 iterator,
                 getMinX(), getMinY(), getWidth(), getHeight(),
@@ -825,7 +886,7 @@ public interface Ellipse2afp<
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Ellipse2afp.computeClosestPointToSolidEllipse(
+        Ellipse2afp.findsClosestPointSolidEllipsePoint(
                 pt.getX(), pt.getY(),
                 getMinX(), getMinY(),
                 getWidth(), getHeight(),
@@ -844,7 +905,7 @@ public interface Ellipse2afp<
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
         assert ellipse != null : AssertMessages.notNullParameter();
         final P pointOnSecondEllipse = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(
+        Path2afp.findsClosestPointPathIteratorPathIterator(
                 ellipse.getFlatteningPathIterator(),
                 getPathIterator(), pointOnSecondEllipse);
         return getClosestPointTo(pointOnSecondEllipse);
@@ -903,7 +964,7 @@ public interface Ellipse2afp<
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(
+        Path2afp.findsClosestPointPathIteratorPathIterator(
                 getFlatteningPathIterator(),
                 path.getPathIterator(), point);
         return point;
@@ -913,7 +974,7 @@ public interface Ellipse2afp<
     default P getFarthestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Ellipse2afp.computeFarthestPointToShallowEllipse(
+        Ellipse2afp.findsFarthestPointShallowEllipsePoint(
                 pt.getX(), pt.getY(),
                 getMinX(), getMinY(),
                 getWidth(), getHeight(),
@@ -1343,7 +1404,7 @@ public interface Ellipse2afp<
             assert horizontalRadius >= 0 : AssertMessages.positiveOrZeroParameter(2);
             assert verticalRadius >= 0 : AssertMessages.positiveOrZeroParameter(3);
             assert verticalRadius <= horizontalRadius
-                : AssertMessages.lowerEqualParameters(3, verticalRadius, 2, horizontalRadius);
+                    : AssertMessages.lowerEqualParameters(3, verticalRadius, 2, horizontalRadius);
             final double closeX;
             final double closeY;
             double distance = 0;

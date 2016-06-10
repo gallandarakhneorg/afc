@@ -177,7 +177,7 @@ class ClosestPointPathShadow2afp {
             case LINE_TO:
                 endx = element.getToX();
                 endy = element.getToY();
-                distance = Segment2afp.computeClosestPointToSegment(x1, y1, x2, y2, curx, cury, endx, endy,
+                distance = Segment2afp.findsClosestPointSegmentSegment(x1, y1, x2, y2, curx, cury, endx, endy,
                         this.temporaryPoint1, this.temporaryPoint2);
                 if (distance <= 0.) {
                     this.otherShapeClosestPoint.set(this.temporaryPoint1);
@@ -258,7 +258,7 @@ class ClosestPointPathShadow2afp {
                 break;
             case CLOSE:
                 if (cury != movy || curx != movx) {
-                    distance = Segment2afp.computeClosestPointToSegment(x1, y1, x2, y2, curx, cury, movx, movy,
+                    distance = Segment2afp.findsClosestPointSegmentSegment(x1, y1, x2, y2, curx, cury, movx, movy,
                             this.temporaryPoint1, this.temporaryPoint2);
                     if (distance <= 0.) {
                         this.otherShapeClosestPoint.set(this.temporaryPoint1);
@@ -385,20 +385,20 @@ class ClosestPointPathShadow2afp {
             final int side1;
             final int side2;
             if (shadowY0 <= shadowY1) {
-                side1 = Segment2afp.computeSideLinePoint(
+                side1 = Segment2afp.findsSideLinePoint(
                         shadowX0, shadowY0,
                         shadowX1, shadowY1,
                         sx0, sy0, 0.);
-                side2 = Segment2afp.computeSideLinePoint(
+                side2 = Segment2afp.findsSideLinePoint(
                         shadowX0, shadowY0,
                         shadowX1, shadowY1,
                         sx1, sy1, 0.);
             } else {
-                side1 = Segment2afp.computeSideLinePoint(
+                side1 = Segment2afp.findsSideLinePoint(
                         shadowX1, shadowY1,
                         shadowX0, shadowY0,
                         sx0, sy0, 0.);
-                side2 = Segment2afp.computeSideLinePoint(
+                side2 = Segment2afp.findsSideLinePoint(
                         shadowX1, shadowY1,
                         shadowX0, shadowY0,
                         sx1, sy1, 0.);

@@ -854,7 +854,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 		if (this.length == null) {
 			this.length = new ReadOnlyDoubleWrapper();
 			this.length.bind(Bindings.createDoubleBinding(() -> {
-				return Path2afp.computeLength(getPathIterator());
+				return Path2afp.calculatesPathLength(getPathIterator());
 			},
 					innerTypesProperty(), innerCoordinatesProperty()));
 		}
@@ -867,7 +867,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 			this.boundingBox = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				final Rectangle2dfx bb = getGeomFactory().newBox();
-				Path2afp.computeDrawableElementBoundingBox(
+				Path2afp.calculatesDrawableElementBoundingBox(
 						getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						bb);
 				return bb;
@@ -889,7 +889,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.CONTROL_POINT_BOUNDING_BOX);
 			this.logicalBounds.bind(Bindings.createObjectBinding(() -> {
 				final Rectangle2dfx bb = getGeomFactory().newBox();
-				Path2afp.computeControlPointBoundingBox(
+				Path2afp.calculatesControlPointBoundingBox(
 						getPathIterator(),
 						bb);
 				return bb;

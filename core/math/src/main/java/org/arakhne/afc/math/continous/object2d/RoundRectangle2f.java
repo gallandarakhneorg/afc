@@ -315,7 +315,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 		if (px<rx1+aw) {
 			if (py<ry1+ah) {
 				Point2d pts = new Point2d();
-				Ellipse2afp.computeClosestPointToSolidEllipse(
+				Ellipse2afp.findsClosestPointSolidEllipsePoint(
 						px, py,
 						rx1, ry1,
 						aw, ah,
@@ -324,7 +324,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 			}
 			if (py>ry2-ah) {
 				Point2d pts = new Point2d();
-				Ellipse2afp.computeClosestPointToSolidEllipse(
+				Ellipse2afp.findsClosestPointSolidEllipsePoint(
 						px, py,
 						rx1, ry2-ah,
 						aw, ah,
@@ -335,7 +335,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 		else if (px>rx2-aw) {
 			if (py<ry1+ah) {
 				Point2d pts = new Point2d();
-				Ellipse2afp.computeClosestPointToSolidEllipse(
+				Ellipse2afp.findsClosestPointSolidEllipsePoint(
 						px, py,
 						rx2-aw, ry1,
 						aw, ah,
@@ -344,7 +344,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 			}
 			if (py>ry2-ah) {
 				Point2d pts = new Point2d();
-				Ellipse2afp.computeClosestPointToSolidEllipse(
+				Ellipse2afp.findsClosestPointSolidEllipsePoint(
 						px, py,
 						rx2-aw, ry2-ah,
 						aw, ah,

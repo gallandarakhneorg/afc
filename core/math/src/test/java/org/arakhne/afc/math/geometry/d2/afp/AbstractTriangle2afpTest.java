@@ -49,38 +49,38 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 	}
 
 	@Test
-	public void staticGetClosestFeatureTrianglePoint() {
+	public void staticFindsClosestFeatureTrianglePoint() {
 		assertSame(TriangleFeature.THIRD_CORNER,
-				Triangle2afp.getClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -12, 8));
+				Triangle2afp.findsClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -12, 8));
 		assertSame(TriangleFeature.SECOND_SEGMENT,
-				Triangle2afp.getClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -7, 10));
+				Triangle2afp.findsClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -7, 10));
 		assertSame(TriangleFeature.SECOND_CORNER,
-				Triangle2afp.getClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, 0, 1));
+				Triangle2afp.findsClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, 0, 1));
 		assertSame(TriangleFeature.FIRST_SEGMENT,
-				Triangle2afp.getClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -10, 1));
+				Triangle2afp.findsClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -10, 1));
 		assertSame(TriangleFeature.FIRST_CORNER,
-				Triangle2afp.getClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -12, 1));
+				Triangle2afp.findsClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -12, 1));
 		assertSame(TriangleFeature.THIRD_SEGMENT,
-				Triangle2afp.getClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -12, 5.5));
+				Triangle2afp.findsClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -12, 5.5));
 		assertSame(TriangleFeature.INSIDE,
-				Triangle2afp.getClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -9.9, 5.1));
+				Triangle2afp.findsClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -9.9, 5.1));
 		assertSame(TriangleFeature.INSIDE,
-				Triangle2afp.getClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -9.9, 5.1));
+				Triangle2afp.findsClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -9.9, 5.1));
 		assertSame(TriangleFeature.INSIDE,
-				Triangle2afp.getClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -9.9, 5.1));
+				Triangle2afp.findsClosestFeatureTrianglePoint(-10, 5, -9, 5, -10, 5.5, -9.9, 5.1));
 	}
 	
 	@Test
-	public void staticIsCCWOrderDefinition() {
-		assertTrue(Triangle2afp.isCCWOrderDefinition(5, 8, -10, 1, -1, -2));
-		assertTrue(Triangle2afp.isCCWOrderDefinition(-10, 1, -1, -2, 5, 8));
-		assertTrue(Triangle2afp.isCCWOrderDefinition(-1, -2, 5, 8, -10, 1));
-		assertFalse(Triangle2afp.isCCWOrderDefinition(5, 8, -1, -2, -10, 1));
-		assertFalse(Triangle2afp.isCCWOrderDefinition(-1, -2, -10, 1, 5, 8));
-		assertFalse(Triangle2afp.isCCWOrderDefinition(-10, 1, 5, 8, -1, -2));
+	public void staticIsCCW() {
+		assertTrue(Triangle2afp.isCCW(5, 8, -10, 1, -1, -2));
+		assertTrue(Triangle2afp.isCCW(-10, 1, -1, -2, 5, 8));
+		assertTrue(Triangle2afp.isCCW(-1, -2, 5, 8, -10, 1));
+		assertFalse(Triangle2afp.isCCW(5, 8, -1, -2, -10, 1));
+		assertFalse(Triangle2afp.isCCW(-1, -2, -10, 1, 5, 8));
+		assertFalse(Triangle2afp.isCCW(-10, 1, 5, 8, -1, -2));
 		
-		assertFalse(Triangle2afp.isCCWOrderDefinition(-6, 8, -4, 2, -6, 0));
-		assertTrue(Triangle2afp.isCCWOrderDefinition(-6, 8, -6, 0, -4, 2));
+		assertFalse(Triangle2afp.isCCW(-6, 8, -4, 2, -6, 0));
+		assertTrue(Triangle2afp.isCCW(-6, 8, -6, 0, -4, 2));
 	}
 
 	@Test
@@ -108,12 +108,12 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 	}
 
 	@Test
-	public void staticComputeClosestFarthestPoints() {
+	public void staticFindsClosestFarthestPointsTrianglePoint() {
 		Point2D closest, farthest;
 		
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		Triangle2afp.computeClosestFarthestPoints(5, 8, -10, 1, -1, -2, 0, 0, closest, farthest);
+		Triangle2afp.findsClosestFarthestPointsTrianglePoint(5, 8, -10, 1, -1, -2, 0, 0, closest, farthest);
 		assertEpsilonEquals(0, closest.getX());
 		assertEpsilonEquals(0, closest.getY());
 		assertEpsilonEquals(-10, farthest.getX());
@@ -121,7 +121,7 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 		
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		Triangle2afp.computeClosestFarthestPoints(5, 8, -10, 1, -1, -2, 9, 12, closest, farthest);
+		Triangle2afp.findsClosestFarthestPointsTrianglePoint(5, 8, -10, 1, -1, -2, 9, 12, closest, farthest);
 		assertEpsilonEquals(5, closest.getX());
 		assertEpsilonEquals(8, closest.getY());
 		assertEpsilonEquals(-10, farthest.getX());
@@ -129,7 +129,7 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 	
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		Triangle2afp.computeClosestFarthestPoints(5, 8, -10, 1, -1, -2, 0, 6, closest, farthest);
+		Triangle2afp.findsClosestFarthestPointsTrianglePoint(5, 8, -10, 1, -1, -2, 0, 6, closest, farthest);
 		assertEpsilonEquals(0.12774, closest.getX());
 		assertEpsilonEquals(5.72628, closest.getY());
 		assertEpsilonEquals(-10, farthest.getX());
@@ -137,7 +137,7 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 		
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		Triangle2afp.computeClosestFarthestPoints(5, 8, -10, 1, -1, -2, -20, 1, closest, farthest);
+		Triangle2afp.findsClosestFarthestPointsTrianglePoint(5, 8, -10, 1, -1, -2, -20, 1, closest, farthest);
 		assertEpsilonEquals(-10, closest.getX());
 		assertEpsilonEquals(1, closest.getY());
 		assertEpsilonEquals(5, farthest.getX());
@@ -145,7 +145,7 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		Triangle2afp.computeClosestFarthestPoints(5, 8, -10, 1, -1, -2, -6, -1, closest, farthest);
+		Triangle2afp.findsClosestFarthestPointsTrianglePoint(5, 8, -10, 1, -1, -2, -6, -1, closest, farthest);
 		assertEpsilonEquals(-5.8, closest.getX());
 		assertEpsilonEquals(-0.4, closest.getY());
 		assertEpsilonEquals(5, farthest.getX());
@@ -153,7 +153,7 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		Triangle2afp.computeClosestFarthestPoints(5, 8, -10, 1, -1, -2, -1, -6, closest, farthest);
+		Triangle2afp.findsClosestFarthestPointsTrianglePoint(5, 8, -10, 1, -1, -2, -1, -6, closest, farthest);
 		assertEpsilonEquals(-1, closest.getX());
 		assertEpsilonEquals(-2, closest.getY());
 		assertEpsilonEquals(5, farthest.getX());
@@ -161,7 +161,7 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		Triangle2afp.computeClosestFarthestPoints(5, 8, -10, 1, -1, -2, 6, 2, closest, farthest);
+		Triangle2afp.findsClosestFarthestPointsTrianglePoint(5, 8, -10, 1, -1, -2, 6, 2, closest, farthest);
 		assertEpsilonEquals(2.61765, closest.getX());
 		assertEpsilonEquals(4.02941, closest.getY());
 		assertEpsilonEquals(-10, farthest.getX());
@@ -169,7 +169,7 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		Triangle2afp.computeClosestFarthestPoints(5, 8, -10, 1, -1, -2, 5, 9, closest, farthest);
+		Triangle2afp.findsClosestFarthestPointsTrianglePoint(5, 8, -10, 1, -1, -2, 5, 9, closest, farthest);
 		assertEpsilonEquals(5, closest.getX());
 		assertEpsilonEquals(8, closest.getY());
 		assertEpsilonEquals(-10, farthest.getX());
@@ -177,31 +177,31 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 	}
 
 	@Test
-	public void staticComputeSquaredDistanceTrianglePoint() {
-		assertEpsilonEquals(0, Triangle2afp.computeSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, 0, 0));
-		assertEpsilonEquals(32, Triangle2afp.computeSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, 9, 12));
-		assertEpsilonEquals(.09124, Triangle2afp.computeSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, 0, 6));
-		assertEpsilonEquals(100, Triangle2afp.computeSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, -20, 1));
-		assertEpsilonEquals(0.40001, Triangle2afp.computeSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, -6, -1));
-		assertEpsilonEquals(16, Triangle2afp.computeSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, -1, -6));
-		assertEpsilonEquals(15.55876, Triangle2afp.computeSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, 6, 2));
-		assertEpsilonEquals(1, Triangle2afp.computeSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, 5, 9));
+	public void staticCalculatesSquaredDistanceTrianglePoint() {
+		assertEpsilonEquals(0, Triangle2afp.calculatesSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, 0, 0));
+		assertEpsilonEquals(32, Triangle2afp.calculatesSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, 9, 12));
+		assertEpsilonEquals(.09124, Triangle2afp.calculatesSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, 0, 6));
+		assertEpsilonEquals(100, Triangle2afp.calculatesSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, -20, 1));
+		assertEpsilonEquals(0.40001, Triangle2afp.calculatesSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, -6, -1));
+		assertEpsilonEquals(16, Triangle2afp.calculatesSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, -1, -6));
+		assertEpsilonEquals(15.55876, Triangle2afp.calculatesSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, 6, 2));
+		assertEpsilonEquals(1, Triangle2afp.calculatesSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, 5, 9));
 		
-		assertEpsilonEquals(3.97445, Triangle2afp.computeSquaredDistanceTrianglePoint(
+		assertEpsilonEquals(3.97445, Triangle2afp.calculatesSquaredDistanceTrianglePoint(
 		        -10, 7, -4, 6, -10, 6,
 		        -3.156934306569343, 4.193430656934306));
 
-        assertEpsilonEquals(0, Triangle2afp.computeSquaredDistanceTrianglePoint(
+        assertEpsilonEquals(0, Triangle2afp.calculatesSquaredDistanceTrianglePoint(
                 4, 16, 7, 19, 3, 17,
                 5, 18));
-        assertEpsilonEquals(0, Triangle2afp.computeSquaredDistanceTrianglePoint(
+        assertEpsilonEquals(0, Triangle2afp.calculatesSquaredDistanceTrianglePoint(
                 4, 16, 3, 17, 7, 19,
                 5, 18));
 
-        assertEpsilonEquals(0, Triangle2afp.computeSquaredDistanceTrianglePoint(
+        assertEpsilonEquals(0, Triangle2afp.calculatesSquaredDistanceTrianglePoint(
                 6, 10, 8, 11.5, 7.5, 8.4,
                 7.5, 8.4));
-        assertEpsilonEquals(0, Triangle2afp.computeSquaredDistanceTrianglePoint(
+        assertEpsilonEquals(0, Triangle2afp.calculatesSquaredDistanceTrianglePoint(
                 6, 10, 7.5, 8.4, 8, 11.5,
                 7.5, 8.4));
 	}

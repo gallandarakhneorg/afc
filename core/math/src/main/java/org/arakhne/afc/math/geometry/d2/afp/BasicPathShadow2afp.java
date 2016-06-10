@@ -116,7 +116,7 @@ class BasicPathShadow2afp {
             double x0, double y0,
             double x1, double y1) {
         int numCrosses =
-                Segment2afp.computeCrossingsFromRect(crossings,
+                Segment2afp.calculatesCrossingsRectangleShadowSegment(crossings,
                         this.boundingMinX,
                         this.boundingMinY,
                         this.boundingMaxX,
@@ -390,20 +390,20 @@ class BasicPathShadow2afp {
             final int side2;
             final boolean isUp = shadowY0 <= shadowY1;
             if (isUp) {
-                side1 = Segment2afp.computeSideLinePoint(
+                side1 = Segment2afp.findsSideLinePoint(
                         shadowX0, shadowY0,
                         shadowX1, shadowY1,
                         sx0, sy0, 0.);
-                side2 = Segment2afp.computeSideLinePoint(
+                side2 = Segment2afp.findsSideLinePoint(
                         shadowX0, shadowY0,
                         shadowX1, shadowY1,
                         sx1, sy1, 0.);
             } else {
-                side1 = Segment2afp.computeSideLinePoint(
+                side1 = Segment2afp.findsSideLinePoint(
                         shadowX1, shadowY1,
                         shadowX0, shadowY0,
                         sx0, sy0, 0.);
-                side2 = Segment2afp.computeSideLinePoint(
+                side2 = Segment2afp.findsSideLinePoint(
                         shadowX1, shadowY1,
                         shadowX0, shadowY0,
                         sx1, sy1, 0.);

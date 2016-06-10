@@ -120,7 +120,7 @@ class BasicPathShadow2ai {
             int x0, int y0,
             int x1, int y1) {
         int numCrosses =
-                Segment2ai.computeCrossingsFromRect(crossings,
+                Segment2ai.calculatesCrossingsRectangleShadowSegment(crossings,
                         this.boundingMinX,
                         this.boundingMinY,
                         this.boundingMaxX,
@@ -396,20 +396,20 @@ class BasicPathShadow2ai {
             final int side2;
             final boolean isUp = shadowY0 <= shadowY1;
             if (isUp) {
-                side1 = Segment2ai.computeSideLinePoint(
+                side1 = Segment2ai.findsSideLinePoint(
                         shadowX0, shadowY0,
                         shadowX1, shadowY1,
                         sx0, sy0);
-                side2 = Segment2ai.computeSideLinePoint(
+                side2 = Segment2ai.findsSideLinePoint(
                         shadowX0, shadowY0,
                         shadowX1, shadowY1,
                         sx1, sy1);
             } else {
-                side1 = Segment2ai.computeSideLinePoint(
+                side1 = Segment2ai.findsSideLinePoint(
                         shadowX1, shadowY1,
                         shadowX0, shadowY0,
                         sx0, sy0);
-                side2 = Segment2ai.computeSideLinePoint(
+                side2 = Segment2ai.findsSideLinePoint(
                         shadowX1, shadowY1,
                         shadowX0, shadowY0,
                         sx1, sy1);

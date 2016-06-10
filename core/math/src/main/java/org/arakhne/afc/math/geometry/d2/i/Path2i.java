@@ -313,7 +313,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 		Rectangle2i bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
-			Path2ai.computeDrawableElementBoundingBox(
+			Path2ai.calculatesDrawableElementBoundingBox(
 					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
@@ -329,7 +329,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 		Rectangle2i bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
-			Path2ai.computeDrawableElementBoundingBox(
+			Path2ai.calculatesDrawableElementBoundingBox(
 					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);

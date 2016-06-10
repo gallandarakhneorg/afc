@@ -522,26 +522,26 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
     }
     
 	@Test
-    public void staticComputeCrossingsFromPoint() {
-    	assertEquals(0, Segment2ai.computeCrossingsFromPoint(0, 5, 3, -1, -1, 0, 0));
-    	assertEquals(0, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 4, -2, 4, 10));
-    	assertEquals(2, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 6, -2, 6, 10));
-    	assertEquals(SHAPE_INTERSECTS, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 5, -2, 5, 10));
-    	assertEquals(-2, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 6, 10, 6, -2));
-    	assertEquals(SHAPE_INTERSECTS, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 5, 10, 5, -2));
-    	assertEquals(2, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 10, -5, 127, 345));
-    	assertEquals(-2, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 127, 345, 10, -5));
-    	assertEquals(1, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 127, 3, 200, 345));
-    	assertEquals(-1, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 127, 345, 200, 3));
-    	assertEquals(1, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 10, 1, 12, 3));
-    	assertEquals(-1, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 12, 3, 10, 1));
-    	assertEquals(1, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 10, 3, 12, 5));
-    	assertEquals(-1, Segment2ai.computeCrossingsFromPoint(0, 5, 3, 12, 5, 10, 3));
-    	assertEquals(0, Segment2ai.computeCrossingsFromPoint(0, 4, -1, 7, -5, 0, 0));
+    public void staticCalculatesCrossingsPointShadowSegment() {
+    	assertEquals(0, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, -1, -1, 0, 0));
+    	assertEquals(0, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 4, -2, 4, 10));
+    	assertEquals(2, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 6, -2, 6, 10));
+    	assertEquals(SHAPE_INTERSECTS, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 5, -2, 5, 10));
+    	assertEquals(-2, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 6, 10, 6, -2));
+    	assertEquals(SHAPE_INTERSECTS, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 5, 10, 5, -2));
+    	assertEquals(2, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 10, -5, 127, 345));
+    	assertEquals(-2, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 127, 345, 10, -5));
+    	assertEquals(1, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 127, 3, 200, 345));
+    	assertEquals(-1, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 127, 345, 200, 3));
+    	assertEquals(1, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 10, 1, 12, 3));
+    	assertEquals(-1, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 12, 3, 10, 1));
+    	assertEquals(1, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 10, 3, 12, 5));
+    	assertEquals(-1, Segment2ai.calculatesCrossingsPointShadowSegment(0, 5, 3, 12, 5, 10, 3));
+    	assertEquals(0, Segment2ai.calculatesCrossingsPointShadowSegment(0, 4, -1, 7, -5, 0, 0));
     }
 
 	@Test
-    public void staticComputeCrossingsFromRect() {
+    public void staticCalculatesCrossingsRectangleShadowSegment() {
     	int[] data = new int[] {
     			-1, -1, 0, 0, 				0,
     			-1, 0, 10, 0,				0,
@@ -577,94 +577,94 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
     		int crossing = data[i++];
     		    		
     		label = x1+";"+y1+";"+x2+";"+y2;  
-    		assertEquals(label, crossing, Segment2ai.computeCrossingsFromRect(0, 5, 3, 7, 5, x1, y1, x2, y2));
+    		assertEquals(label, crossing, Segment2ai.calculatesCrossingsRectangleShadowSegment(0, 5, 3, 7, 5, x1, y1, x2, y2));
 
     		label = x2+";"+y2+";"+x1+";"+y1;  
     		if (crossing!=SHAPE_INTERSECTS) {
     			crossing = -crossing;
     		}
-    		assertEquals(label, crossing, Segment2ai.computeCrossingsFromRect(0, 5, 3, 7, 5, x2, y2, x1, y1));
+    		assertEquals(label, crossing, Segment2ai.calculatesCrossingsRectangleShadowSegment(0, 5, 3, 7, 5, x2, y2, x1, y1));
     	}
     }
 
 	@Test
-    public void staticComputeCrossingsFromSegment() {
-    	assertEquals(0, Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ -1, -1, 0, 0));
-    	assertEquals(0, Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ -1, 0, 10, 0));
-    	assertEquals(1, Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 10, -2, 12, 4));
-    	assertEquals(1, Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 12, 4, 50, 10));
-    	assertEquals(2, Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 10, -2, 50, 10));
-    	assertEquals(0, Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 10, 3, 12, 4));
-    	assertEquals(0, Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 12, 4, 50, 5));
-    	assertEquals(0, Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 12, 3, 50, 5));
+    public void staticCalculatesCrossingsSegmentShadowSegment() {
+    	assertEquals(0, Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ -1, -1, 0, 0));
+    	assertEquals(0, Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ -1, 0, 10, 0));
+    	assertEquals(1, Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 10, -2, 12, 4));
+    	assertEquals(1, Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 12, 4, 50, 10));
+    	assertEquals(2, Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 10, -2, 50, 10));
+    	assertEquals(0, Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 10, 3, 12, 4));
+    	assertEquals(0, Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 12, 4, 50, 5));
+    	assertEquals(0, Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 12, 3, 50, 5));
     	assertEquals(1,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 2, 6, 3));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 2, 6, 3));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 2, 6, 5));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 2, 6, 5));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 2, 6, 4));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 2, 6, 4));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 4, 6, 8));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 4, 6, 8));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 3, 6, 8));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 3, 6, 8));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 7, 4, 7, 8));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 7, 4, 7, 8));
     	assertEquals(0,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 5, 4, 5, 8));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 5, 4, 5, 8));
     	assertEquals(0,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 4, 4, 6, 6));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 4, 4, 6, 6));
     	assertEquals(0,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 4, 3, 6, 5));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 4, 3, 6, 5));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 8, 4, 6, 6));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 8, 4, 6, 6));
     	assertEquals(1,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 10, 4, 6, 8));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 10, 4, 6, 8));
     	assertEquals(-1,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 8, 10, 4));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 6, 8, 10, 4));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromSegment(0, /**/ 5, 3, 7, 5, /**/ 5, 4, 100, 6));
+    			Segment2ai.calculatesCrossingsSegmentShadowSegment(0, /**/ 5, 3, 7, 5, /**/ 5, 4, 100, 6));
     }
 
 	@Test
-    public void staticComputeCrossingsFromCircle() {
-    	assertEquals(0, Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ -1, -1, 0, 0));
-    	assertEquals(0, Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ -1, 0, 10, 0));
-    	assertEquals(1, Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 10, -2, 12, 4));
-    	assertEquals(1, Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 12, 4, 50, 10));
-    	assertEquals(2, Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 10, -2, 50, 10));
-    	assertEquals(0, Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 10, 3, 12, 4));
-    	assertEquals(0, Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 12, 4, 50, 5));
-    	assertEquals(0, Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 12, 3, 50, 5));
+    public void staticCalculatesCrossingsCircleShadowSegment() {
+    	assertEquals(0, Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ -1, -1, 0, 0));
+    	assertEquals(0, Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ -1, 0, 10, 0));
+    	assertEquals(1, Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 10, -2, 12, 4));
+    	assertEquals(1, Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 12, 4, 50, 10));
+    	assertEquals(2, Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 10, -2, 50, 10));
+    	assertEquals(0, Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 10, 3, 12, 4));
+    	assertEquals(0, Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 12, 4, 50, 5));
+    	assertEquals(0, Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 12, 3, 50, 5));
     	assertEquals(1,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 6, 2, 6, 3));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 6, 2, 6, 3));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 6, 2, 6, 5));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 6, 2, 6, 5));
     	assertEquals(1,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 7, 2, 7, 4));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 7, 2, 7, 4));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 6, 2, 6, 4));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 6, 2, 6, 4));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 6, 4, 6, 8));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 6, 4, 6, 8));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 6, 3, 6, 8));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 6, 3, 6, 8));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 7, 4, 7, 8));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 7, 4, 7, 8));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 5, 4, 5, 8));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 5, 4, 5, 8));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 4, 4, 6, 6));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 4, 4, 6, 6));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 4, 3, 6, 5));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 4, 3, 6, 5));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 8, 4, 6, 6));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 8, 4, 6, 6));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 10, 4, 6, 8));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 10, 4, 6, 8));
     	assertEquals(SHAPE_INTERSECTS,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 6, 8, 10, 4));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 6, 8, 10, 4));
     	assertEquals(1,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 7, 8, 10, 12));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 7, 8, 10, 12));
     	assertEquals(-1,
-    			Segment2ai.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 10, 12, 7, 8));
+    			Segment2ai.calculatesCrossingsCircleShadowSegment(0, /**/ 4, 6, 3, /**/ 10, 12, 7, 8));
     }
 
 	@Test
@@ -748,162 +748,162 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 	}
 
 	@Test
-	public void staticComputeClosestPointToPoint() {
+	public void staticFindsClosestPointSegmentPoint() {
 		Point2D p;
 		
 		p = createPoint(0, 0);
-		Segment2ai.computeClosestPointToPoint(0, 0, 10, 5, 0, 0, p);
+		Segment2ai.findsClosestPointSegmentPoint(0, 0, 10, 5, 0, 0, p);
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
 		p = createPoint(0, 0);
-		Segment2ai.computeClosestPointToPoint(0, 0, 10, 5, 1, 1, p);
+		Segment2ai.findsClosestPointSegmentPoint(0, 0, 10, 5, 1, 1, p);
 		assertEquals(1, p.ix());
 		assertEquals(0, p.iy());
 
 		p = createPoint(0, 0);
-		Segment2ai.computeClosestPointToPoint(0, 0, 10, 5, 2, 2, p);
+		Segment2ai.findsClosestPointSegmentPoint(0, 0, 10, 5, 2, 2, p);
 		assertEquals(2, p.ix());
 		assertEquals(1, p.iy());
 
 		p = createPoint(0, 0);
-		Segment2ai.computeClosestPointToPoint(0, 0, 10, 5, -2, 2, p);
+		Segment2ai.findsClosestPointSegmentPoint(0, 0, 10, 5, -2, 2, p);
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
 		p = createPoint(0, 0);
-		Segment2ai.computeClosestPointToPoint(0, 0, 10, 5, 0, 1, p);
+		Segment2ai.findsClosestPointSegmentPoint(0, 0, 10, 5, 0, 1, p);
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
 
 		p = createPoint(0, 0);
-		Segment2ai.computeClosestPointToPoint(0, 0, 10, 5, 10, -1, p);
+		Segment2ai.findsClosestPointSegmentPoint(0, 0, 10, 5, 10, -1, p);
 		assertEquals(7, p.ix());
 		assertEquals(3, p.iy());
 
 		p = createPoint(0, 0);
-		Segment2ai.computeClosestPointToPoint(0, 0, 10, 5, 2, 4, p);
+		Segment2ai.findsClosestPointSegmentPoint(0, 0, 10, 5, 2, 4, p);
 		assertEquals(4, p.ix());
 		assertEquals(2, p.iy());
 	}
 
 	@Test
-	public void staticComputeFarthestPointToPoint() {
+	public void staticFindsFarthestPointSegmentPoint() {
 		Point2D p;
 		
 		p = createPoint(0, 0);
-		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, 0, 0, p);
+		Segment2ai.findsFarthestPointSegmentPoint(0, 0, 10, 5, 0, 0, p);
 		assertIntPointEquals(10, 5, p);
 
 		p = createPoint(0, 0);
-		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, 1, 1, p);
+		Segment2ai.findsFarthestPointSegmentPoint(0, 0, 10, 5, 1, 1, p);
 		assertIntPointEquals(10, 5, p);
 
 		p = createPoint(0, 0);
-		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, 2, 2, p);
+		Segment2ai.findsFarthestPointSegmentPoint(0, 0, 10, 5, 2, 2, p);
 		assertIntPointEquals(10, 5, p);
 
 		p = createPoint(0, 0);
-		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, -2, 2, p);
+		Segment2ai.findsFarthestPointSegmentPoint(0, 0, 10, 5, -2, 2, p);
 		assertIntPointEquals(10, 5, p);
 
 		p = createPoint(0, 0);
-		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, 0, 1, p);
+		Segment2ai.findsFarthestPointSegmentPoint(0, 0, 10, 5, 0, 1, p);
 		assertIntPointEquals(10, 5, p);
 
 		p = createPoint(0, 0);
-		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, 10, -1, p);
+		Segment2ai.findsFarthestPointSegmentPoint(0, 0, 10, 5, 10, -1, p);
 		assertIntPointEquals(0, 0, p);
 
 		p = createPoint(0, 0);
-		Segment2ai.computeFarthestPointToPoint(0, 0, 10, 5, 2, 4, p);
+		Segment2ai.findsFarthestPointSegmentPoint(0, 0, 10, 5, 2, 4, p);
 		assertIntPointEquals(10, 5, p);
 	}
 	
 	@Test
-	public void staticComputeClosestPointToSegment() {
+	public void staticFindsClosestPointsSegmentSegment() {
         Point2D p1;
         Point2D p2;
 
         p1 = createPoint(0, 0);
         p2 = createPoint(0, 0);
-        assertEpsilonEquals(0, Segment2ai.computeClosestPointToSegment(0, 0, 10, 5, 0, 0, 1, 15, p1, p2));
+        assertEpsilonEquals(0, Segment2ai.findsClosestPointsSegmentSegment(0, 0, 10, 5, 0, 0, 1, 15, p1, p2));
         assertIntPointEquals(0, 0, p1);
         assertIntPointEquals(0, 0, p2);
 	    
         p1 = createPoint(0, 0);
         p2 = createPoint(0, 0);
-        assertEpsilonEquals(4, Segment2ai.computeClosestPointToSegment(0, 0, 10, 5, 0, 2, 1, 15, p1, p2));
+        assertEpsilonEquals(4, Segment2ai.findsClosestPointsSegmentSegment(0, 0, 10, 5, 0, 2, 1, 15, p1, p2));
         assertIntPointEquals(0, 0, p1);
         assertIntPointEquals(0, 2, p2);
 
         p1 = createPoint(0, 0);
         p2 = createPoint(0, 0);
-        assertEpsilonEquals(58, Segment2ai.computeClosestPointToSegment(0, 0, 10, 5, 0, 15, 5, 11, p1, p2));
+        assertEpsilonEquals(58, Segment2ai.findsClosestPointsSegmentSegment(0, 0, 10, 5, 0, 15, 5, 11, p1, p2));
         assertIntPointEquals(8, 4, p1);
         assertIntPointEquals(5, 11, p2);
 
         p1 = createPoint(0, 0);
         p2 = createPoint(0, 0);
-        assertEpsilonEquals(4, Segment2ai.computeClosestPointToSegment(0, 0, 10, 5, 0, 2, 10, 17, p1, p2));
+        assertEpsilonEquals(4, Segment2ai.findsClosestPointsSegmentSegment(0, 0, 10, 5, 0, 2, 10, 17, p1, p2));
         assertIntPointEquals(0, 0, p1);
         assertIntPointEquals(0, 2, p2);
 
         p1 = createPoint(0, 0);
         p2 = createPoint(0, 0);
-        assertEpsilonEquals(0, Segment2ai.computeClosestPointToSegment(0, 0, 10, 5, 0, 15, 10, 0, p1, p2));
+        assertEpsilonEquals(0, Segment2ai.findsClosestPointsSegmentSegment(0, 0, 10, 5, 0, 15, 10, 0, p1, p2));
         assertIntPointEquals(8, 4, p1);
         assertIntPointEquals(7, 4, p2);
 
         p1 = createPoint(0, 0);
         p2 = createPoint(0, 0);
-        assertEpsilonEquals(1, Segment2ai.computeClosestPointToSegment(2, 2, 3, 1, 3, -1, 8, 8, p1, p2));
+        assertEpsilonEquals(1, Segment2ai.findsClosestPointsSegmentSegment(2, 2, 3, 1, 3, -1, 8, 8, p1, p2));
         assertIntPointEquals(3, 1, p1);
         assertIntPointEquals(4, 1, p2);
 
         p1 = createPoint(0, 0);
         p2 = createPoint(0, 0);
-        assertEpsilonEquals(0, Segment2ai.computeClosestPointToSegment(0, 0, 2, 2, 3, -1, 1, 1, p1, p2));
+        assertEpsilonEquals(0, Segment2ai.findsClosestPointsSegmentSegment(0, 0, 2, 2, 3, -1, 1, 1, p1, p2));
         assertIntPointEquals(1, 1, p1);
         assertIntPointEquals(1, 1, p2);
 
         p1 = createPoint(0, 0);
         p2 = createPoint(0, 0);
-        assertEpsilonEquals(89, Segment2ai.computeClosestPointToSegment(0, 0, 10, 5, 0, 15, 5, 13, p1, p2));
+        assertEpsilonEquals(89, Segment2ai.findsClosestPointsSegmentSegment(0, 0, 10, 5, 0, 15, 5, 13, p1, p2));
         assertIntPointEquals(10, 5, p1);
         assertIntPointEquals(5, 13, p2);
 	}
 
     @Test
-    public void staticComputeClosestPointToRectangle() {
+    public void staticFindsClosestPointSegmentRectangle() {
         Point2D p1;
 
         p1 = createPoint(0, 0);
-        assertEpsilonEquals(0, Segment2ai.computeClosestPointToRectangle(0, 0, 10, 5, 0, 0, 5, 2, p1));
+        assertEpsilonEquals(0, Segment2ai.findsClosestPointSegmentRectangle(0, 0, 10, 5, 0, 0, 5, 2, p1));
         assertIntPointEquals(2, 1, p1);
         
         p1 = createPoint(0, 0);
-        assertEpsilonEquals(0, Segment2ai.computeClosestPointToRectangle(0, 0, 10, 5, 0, 2, 5, 2, p1));
+        assertEpsilonEquals(0, Segment2ai.findsClosestPointSegmentRectangle(0, 0, 10, 5, 0, 2, 5, 2, p1));
         assertIntPointEquals(4, 2, p1);
 
         p1 = createPoint(0, 0);
-        assertEpsilonEquals(34, Segment2ai.computeClosestPointToRectangle(0, 0, 10, 5, 15, 0, 5, 2, p1));
+        assertEpsilonEquals(34, Segment2ai.findsClosestPointSegmentRectangle(0, 0, 10, 5, 15, 0, 5, 2, p1));
         assertIntPointEquals(10, 5, p1);
 
         p1 = createPoint(0, 0);
-        assertEpsilonEquals(125, Segment2ai.computeClosestPointToRectangle(0, 0, 10, 5, 0, 15, 5, 2, p1));
+        assertEpsilonEquals(125, Segment2ai.findsClosestPointSegmentRectangle(0, 0, 10, 5, 0, 15, 5, 2, p1));
         assertIntPointEquals(10, 5, p1);
     }
 
     @Test
-	public void staticComputeSideLinePoint() {
-        assertEquals(0, Segment2ai.computeSideLinePoint(0, 0, 1, 1, 0, 0));
-        assertEquals(0, Segment2ai.computeSideLinePoint(0, 0, 1, 1, 1, 1));
-        assertEquals(0, Segment2ai.computeSideLinePoint(0, 0, 1, 1, 2, 2));
-        assertEquals(1, Segment2ai.computeSideLinePoint(0, 0, 1, 1, 120, 0));
-        assertEquals(0, Segment2ai.computeSideLinePoint(0, 0, 1, 1, -20, -20));
-        assertEquals(-1, Segment2ai.computeSideLinePoint(0, 0, 1, 1, 0, 1));
-        assertEquals(-1, Segment2ai.computeSideLinePoint(0, 0, 1, 1, 0, 120));
+	public void staticFindsSideLinePoint() {
+        assertEquals(0, Segment2ai.findsSideLinePoint(0, 0, 1, 1, 0, 0));
+        assertEquals(0, Segment2ai.findsSideLinePoint(0, 0, 1, 1, 1, 1));
+        assertEquals(0, Segment2ai.findsSideLinePoint(0, 0, 1, 1, 2, 2));
+        assertEquals(1, Segment2ai.findsSideLinePoint(0, 0, 1, 1, 120, 0));
+        assertEquals(0, Segment2ai.findsSideLinePoint(0, 0, 1, 1, -20, -20));
+        assertEquals(-1, Segment2ai.findsSideLinePoint(0, 0, 1, 1, 0, 1));
+        assertEquals(-1, Segment2ai.findsSideLinePoint(0, 0, 1, 1, 0, 120));
 	}
 
 	@Test

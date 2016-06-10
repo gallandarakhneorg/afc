@@ -164,7 +164,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * <code>false</code>
 	 */
 	public static boolean intersectsCircleLine(float x1, float y1, float radius, float x2, float y2, float x3, float y3) {
-		float d = (float) Segment2afp.computeDistanceLinePoint(x2, y2, x3, y3, x1, y1);
+		float d = (float) Segment2afp.calculatesDistanceLinePoint(x2, y2, x3, y3, x1, y1);
 		return d<(radius*radius);
 	}
 
@@ -181,7 +181,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * <code>false</code>
 	 */
 	public static boolean intersectsCircleSegment(float x1, float y1, float radius, float x2, float y2, float x3, float y3) {
-		float d = (float) Segment2afp.computeDistanceSegmentPoint(x2, y2, x3, y3, x1, y1);
+		float d = (float) Segment2afp.calculatesDistanceSegmentPoint(x2, y2, x3, y3, x1, y1);
 		return d<(radius*radius);
 	}
 

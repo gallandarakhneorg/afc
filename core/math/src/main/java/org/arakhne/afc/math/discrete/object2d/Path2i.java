@@ -2397,7 +2397,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		 *          values in the specified array at the specified index.
 		 */
 		private static float getQuadSquaredFlatness(float coords[], int offset) {
-			return (float) Segment2afp.computeDistanceSquaredLinePoint(
+			return (float) Segment2afp.calculatesDistanceSquaredLinePoint(
 					coords[offset + 2], coords[offset + 3],
 					coords[offset + 0], coords[offset + 1],
 					coords[offset + 4], coords[offset + 5]);
@@ -2481,14 +2481,14 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		 */
 		private static float getCurveSquaredFlatness(float coords[], int offset) {
 			return Math.max(
-					(float) Segment2afp.computeDistanceSquaredLinePoint(
+					(float) Segment2afp.calculatesDistanceSquaredLinePoint(
 							coords[offset + 0],
 							coords[offset + 1],
 							coords[offset + 6],
 							coords[offset + 7],
 							coords[offset + 2],
 							coords[offset + 3]),
-							(float) Segment2afp.computeDistanceSquaredLinePoint(
+							(float) Segment2afp.calculatesDistanceSquaredLinePoint(
 									coords[offset + 0],
 									coords[offset + 1],
 									coords[offset + 6],

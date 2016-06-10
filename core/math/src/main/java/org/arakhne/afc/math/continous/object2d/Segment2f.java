@@ -157,12 +157,12 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 		else {
 			int side1, side2;
 			if (sy1<=sy2) {
-				side1 = Segment2afp.computeSideLinePoint(sx1, sy1, sx2, sy2, x0, y0, 0);
-				side2 = Segment2afp.computeSideLinePoint(sx1, sy1, sx2, sy2, x1, y1, 0);
+				side1 = Segment2afp.findsSideLinePoint(sx1, sy1, sx2, sy2, x0, y0, 0);
+				side2 = Segment2afp.findsSideLinePoint(sx1, sy1, sx2, sy2, x1, y1, 0);
 			}
 			else {
-				side1 = Segment2afp.computeSideLinePoint(sx2, sy2, sx1, sy1, x0, y0, 0);
-				side2 = Segment2afp.computeSideLinePoint(sx2, sy2, sx1, sy1, x1, y1, 0);
+				side1 = Segment2afp.findsSideLinePoint(sx2, sy2, sx1, sy1, x0, y0, 0);
+				side2 = Segment2afp.findsSideLinePoint(sx2, sy2, sx1, sy1, x1, y1, 0);
 			}
 			if (side1>0 || side2>0) {
 				int n1 = computeCrossingsFromPoint(sx1, sy1, x0, y0, x1, y1);
@@ -416,8 +416,8 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * <code>false</code>
 	 */
 	public static boolean intersectsSegmentLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-		return (Segment2afp.computeSideLinePoint(x3, y3, x4, y4, x1, y1, 0) *
-				Segment2afp.computeSideLinePoint(x3, y3, x4, y4, x2, y2, 0)) <= 0;
+		return (Segment2afp.findsSideLinePoint(x3, y3, x4, y4, x1, y1, 0) *
+				Segment2afp.findsSideLinePoint(x3, y3, x4, y4, x2, y2, 0)) <= 0;
 	}
 
 	private static boolean intersectsSSWE(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
@@ -779,7 +779,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	@Override
 	public float distanceSquared(Point2D p) {
-		return (float) Segment2afp.computeDistanceSquaredSegmentPoint(
+		return (float) Segment2afp.calculatesDistanceSquaredSegmentPoint(
 				this.ax, this.ay,
 				this.bx, this.by,
 				p.getX(), p.getY());
@@ -789,7 +789,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	@Override
 	public float distanceL1(Point2D p) {
-		float ratio = (float) Segment2afp.computeProjectedPointOnLine(p.getX(), p.getY(), this.ax, this.ay, this.bx, this.by);
+		float ratio = (float) Segment2afp.findsProjectedPointPointLine(p.getX(), p.getY(), this.ax, this.ay, this.bx, this.by);
 		ratio = MathUtil.clamp(ratio, 0f, 1f);
 		Vector2f v = new Vector2f(this.bx, this.by);
 		v.sub(this.ax, this.ay);
@@ -802,7 +802,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	@Override
 	public float distanceLinf(Point2D p) {
-		float ratio = (float) Segment2afp.computeProjectedPointOnLine(p.getX(), p.getY(), this.ax, this.ay, this.bx, this.by);
+		float ratio = (float) Segment2afp.findsProjectedPointPointLine(p.getX(), p.getY(), this.ax, this.ay, this.bx, this.by);
 		ratio = MathUtil.clamp(ratio, 0f, 1f);
 		Vector2f v = new Vector2f(this.bx, this.by);
 		v.sub(this.ax, this.ay);
@@ -820,7 +820,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	@Override
 	public boolean contains(float x, float y) {
-		return MathUtil.isEpsilonZero(Segment2afp.computeDistanceSquaredSegmentPoint(
+		return MathUtil.isEpsilonZero(Segment2afp.calculatesDistanceSquaredSegmentPoint(
 				this.ax, this.ay,
 				this.bx, this.by,
 				x, y));
@@ -838,7 +838,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	@Override
 	public Point2f getClosestPointTo(Point2D p) {
-		float ratio = (float) Segment2afp.computeProjectedPointOnLine(p.getX(), p.getY(),
+		float ratio = (float) Segment2afp.findsProjectedPointPointLine(p.getX(), p.getY(),
 				this.ax, this.ay,
 				this.bx, this.by);
 		if (ratio<=0f) return new Point2f(this.ax, this.ay);

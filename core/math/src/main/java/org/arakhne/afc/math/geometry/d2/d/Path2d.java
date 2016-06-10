@@ -291,7 +291,7 @@ public class Path2d
 		Rectangle2d bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
-			Path2afp.computeDrawableElementBoundingBox(
+			Path2afp.calculatesDrawableElementBoundingBox(
 					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
@@ -306,7 +306,7 @@ public class Path2d
 		Rectangle2d bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
-			Path2afp.computeDrawableElementBoundingBox(
+			Path2afp.calculatesDrawableElementBoundingBox(
 					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
@@ -432,7 +432,7 @@ public class Path2d
 		Rectangle2d bb = this.logicalBounds == null ? null : this.logicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
-			Path2afp.computeControlPointBoundingBox(
+			Path2afp.calculatesControlPointBoundingBox(
 					getPathIterator(),
 					bb);
 			this.logicalBounds = new SoftReference<>(bb);
@@ -447,7 +447,7 @@ public class Path2d
 		Rectangle2d bb = this.logicalBounds == null ? null : this.logicalBounds.get();
 		if (bb == null) {
 			bb = getGeomFactory().newBox();
-			Path2afp.computeControlPointBoundingBox(
+			Path2afp.calculatesControlPointBoundingBox(
 					getPathIterator(),
 					bb);
 			this.logicalBounds = new SoftReference<>(bb);
@@ -804,7 +804,7 @@ public class Path2d
 	@Pure
 	public double getLength() {
 		if (this.length == null) {
-			this.length = Double.valueOf(Path2afp.computeLength(getPathIterator()));
+			this.length = Double.valueOf(Path2afp.calculatesPathLength(getPathIterator()));
 		}
 		return this.length.doubleValue();
 	}

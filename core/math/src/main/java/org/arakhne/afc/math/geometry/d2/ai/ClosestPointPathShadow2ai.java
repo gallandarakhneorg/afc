@@ -177,7 +177,7 @@ class ClosestPointPathShadow2ai {
             case LINE_TO:
                 endx = element.getToX();
                 endy = element.getToY();
-                distance = Segment2ai.computeClosestPointToSegment(x1, y1, x2, y2, curx, cury, endx, endy,
+                distance = Segment2ai.findsClosestPointsSegmentSegment(x1, y1, x2, y2, curx, cury, endx, endy,
                         this.temporaryPoint1, this.temporaryPoint2);
                 if (distance <= 0.) {
                     this.otherShapeClosestPoint.set(this.temporaryPoint1);
@@ -258,7 +258,7 @@ class ClosestPointPathShadow2ai {
                 break;
             case CLOSE:
                 if (cury != movy || curx != movx) {
-                    distance = Segment2ai.computeClosestPointToSegment(x1, y1, x2, y2, curx, cury, movx, movy,
+                    distance = Segment2ai.findsClosestPointsSegmentSegment(x1, y1, x2, y2, curx, cury, movx, movy,
                             this.temporaryPoint1, this.temporaryPoint2);
                     if (distance <= 0.) {
                         this.otherShapeClosestPoint.set(this.temporaryPoint1);
@@ -355,7 +355,7 @@ class ClosestPointPathShadow2ai {
             final OutputParameter<Integer> param = new OutputParameter<>();
             if (shadowYmin == shadowYmax) {
                 final int cross = this.crossings;
-                this.crossings = Segment2ai.computeCrossingsAndXFromPoint(
+                this.crossings = Segment2ai.calculatesCrossingsAndXPointShadowSegment(
                         cross,
                         shadowXmax, shadowYmin,
                         sx0, sy0, sx1, sy1,
@@ -368,7 +368,7 @@ class ClosestPointPathShadow2ai {
                 }
             } else {
                 if (shadowYmin == this.boundingMinY) {
-                    final int cross = Segment2ai.computeCrossingsAndXFromPoint(
+                    final int cross = Segment2ai.calculatesCrossingsAndXPointShadowSegment(
                             this.crossings,
                             shadowXmax, shadowYmin,
                             sx0, sy0, sx1, sy1,
@@ -381,7 +381,7 @@ class ClosestPointPathShadow2ai {
                     }
                 }
                 if (shadowYmax == this.boundingMaxY) {
-                    final int cross = Segment2ai.computeCrossingsAndXFromPoint(
+                    final int cross = Segment2ai.calculatesCrossingsAndXPointShadowSegment(
                             this.crossings,
                             shadowXmax, shadowYmax,
                             sx0, sy0, sx1, sy1,
@@ -403,20 +403,20 @@ class ClosestPointPathShadow2ai {
             final int side1;
             final int side2;
             if (shadowY0 <= shadowY1) {
-                side1 = Segment2ai.computeSideLinePoint(
+                side1 = Segment2ai.findsSideLinePoint(
                         shadowX0, shadowY0,
                         shadowX1, shadowY1,
                         sx0, sy0);
-                side2 = Segment2ai.computeSideLinePoint(
+                side2 = Segment2ai.findsSideLinePoint(
                         shadowX0, shadowY0,
                         shadowX1, shadowY1,
                         sx1, sy1);
             } else {
-                side1 = Segment2ai.computeSideLinePoint(
+                side1 = Segment2ai.findsSideLinePoint(
                         shadowX1, shadowY1,
                         shadowX0, shadowY0,
                         sx0, sy0);
-                side2 = Segment2ai.computeSideLinePoint(
+                side2 = Segment2ai.findsSideLinePoint(
                         shadowX1, shadowY1,
                         shadowX0, shadowY0,
                         sx1, sy1);
@@ -469,7 +469,7 @@ class ClosestPointPathShadow2ai {
         }
         // Compute the intersection point between the segment and the shadow line
         final OutputParameter<Integer> param = new OutputParameter<>();
-        final int cross = Segment2ai.computeCrossingsAndXFromPoint(
+        final int cross = Segment2ai.calculatesCrossingsAndXPointShadowSegment(
                 this.crossings,
                 shadowx, shadowy, sx0, sy0, sx1, sy1, top, bottom, param);
         if (cross != this.crossings) {

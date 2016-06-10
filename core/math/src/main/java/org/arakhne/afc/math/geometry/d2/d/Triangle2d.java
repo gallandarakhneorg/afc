@@ -249,7 +249,7 @@ public class Triangle2d
 	@Override
 	public boolean isCCW() {
 		if (this.isCCW == null) {
-			this.isCCW = Boolean.valueOf(Triangle2afp.isCCWOrderDefinition(
+			this.isCCW = Boolean.valueOf(Triangle2afp.isCCW(
 					getX1(), getY1(), getX2(), getY2(), getX3(), getY3()));
 		}
 		return this.isCCW.booleanValue();

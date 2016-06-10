@@ -402,7 +402,7 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
 		Point2d pts = new Point2d();
-		Ellipse2afp.computeClosestPointToSolidEllipse(
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(
 				p.getX(), p.getY(),
 				getMinX(), getMinY(),
 				getWidth(), getHeight(),

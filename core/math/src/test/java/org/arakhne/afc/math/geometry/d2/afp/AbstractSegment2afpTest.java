@@ -77,659 +77,659 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test
-	public void staticComputeClosestPointToPoint2D() {
+	public void staticFindsClosestPointSegmentPoint() {
 		Point2D result;
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeClosestPointToPoint(0, 0, 1, 1, 0, 0, result);
+		Segment2afp.findsClosestPointSegmentPoint(0, 0, 1, 1, 0, 0, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeClosestPointToPoint(0, 0, 1, 1, .75, .75, result);
+		Segment2afp.findsClosestPointSegmentPoint(0, 0, 1, 1, .75, .75, result);
 		assertEpsilonEquals(.75, result.getX());
 		assertEpsilonEquals(.75, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeClosestPointToPoint(0, 0, 1, 1, -10, -50, result);
+		Segment2afp.findsClosestPointSegmentPoint(0, 0, 1, 1, -10, -50, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeClosestPointToPoint(0, 0, 1, 1, 200, -50, result);
+		Segment2afp.findsClosestPointSegmentPoint(0, 0, 1, 1, 200, -50, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(1, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeClosestPointToPoint(0, 0, 1, 1, 0, 1, result);
+		Segment2afp.findsClosestPointSegmentPoint(0, 0, 1, 1, 0, 1, result);
 		assertEpsilonEquals(.5, result.getX());
 		assertEpsilonEquals(.5, result.getY());
 	}
 
 	@Test
-	public void staticComputeClosestPointToSegment() {
+	public void staticFindsClosestPointSegmentSegment() {
 		Point2D result;
 		double dist;
 
 		result = createPoint(Double.NaN, Double.NaN);
-		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, -2, 3, -1, 1, result);
+		dist = Segment2afp.findsClosestPointSegmentSegment(0, 0, 1, 1, -2, 3, -1, 1, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 		assertEpsilonEquals(2, dist);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, -1, 1, -3, 2, result);
+		dist = Segment2afp.findsClosestPointSegmentSegment(0, 0, 1, 1, -1, 1, -3, 2, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 		assertEpsilonEquals(2, dist);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 1, 0, -1, 0, result);
+		dist = Segment2afp.findsClosestPointSegmentSegment(0, 0, 1, 1, 1, 0, -1, 0, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 		assertEpsilonEquals(0, dist);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, -2, 0, 2, 1, result);
+		dist = Segment2afp.findsClosestPointSegmentSegment(0, 0, 1, 1, -2, 0, 2, 1, result);
 		assertEpsilonEquals(0.66667, result.getX());
 		assertEpsilonEquals(0.66667, result.getY());
 		assertEpsilonEquals(0, dist);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 0, -1, -3, 0, result);
+		dist = Segment2afp.findsClosestPointSegmentSegment(0, 0, 1, 1, 0, -1, -3, 0, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 		assertEpsilonEquals(.9, dist);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 0, 4, 3, 3, result);
+		dist = Segment2afp.findsClosestPointSegmentSegment(0, 0, 1, 1, 0, 4, 3, 3, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(1, result.getY());
 		assertEpsilonEquals(6.4, dist);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 1, 0, 4, 1, result);
+		dist = Segment2afp.findsClosestPointSegmentSegment(0, 0, 1, 1, 1, 0, 4, 1, result);
 		assertEpsilonEquals(.5, result.getX());
 		assertEpsilonEquals(.5, result.getY());
 		assertEpsilonEquals(.5, dist);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 1, 0, 3, -1, result);
+		dist = Segment2afp.findsClosestPointSegmentSegment(0, 0, 1, 1, 1, 0, 3, -1, result);
 		assertEpsilonEquals(.5, result.getX());
 		assertEpsilonEquals(.5, result.getY());
 		assertEpsilonEquals(.5, dist);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 2, 0, 1, -1, result);
+		dist = Segment2afp.findsClosestPointSegmentSegment(0, 0, 1, 1, 2, 0, 1, -1, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 		assertEpsilonEquals(2, dist);
 
 		result = createPoint(Double.NaN, Double.NaN);
-		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 3, -1, 1, .4, result);
+		dist = Segment2afp.findsClosestPointSegmentSegment(0, 0, 1, 1, 3, -1, 1, .4, result);
 		assertEpsilonEquals(.7, result.getX());
 		assertEpsilonEquals(.7, result.getY());
 		assertEpsilonEquals(.18, dist);
 	}
 
 	@Test
-	public void staticComputeFarthestPointToSegment() {
+	public void staticFindsFarthestPointSegmentSegment() {
 		Point2D result;
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, -2, 3, -1, 1, result);
+		Segment2afp.findsFarthestPointSegmentSegment(0, 0, 1, 1, -2, 3, -1, 1, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(1, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, -1, 1, -3, 2, result);
+		Segment2afp.findsFarthestPointSegmentSegment(0, 0, 1, 1, -1, 1, -3, 2, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(1, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 1, 0, -1, 0, result);
+		Segment2afp.findsFarthestPointSegmentSegment(0, 0, 1, 1, 1, 0, -1, 0, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(1, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, -2, 0, 2, 1, result);
+		Segment2afp.findsFarthestPointSegmentSegment(0, 0, 1, 1, -2, 0, 2, 1, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 0, -1, -3, 0, result);
+		Segment2afp.findsFarthestPointSegmentSegment(0, 0, 1, 1, 0, -1, -3, 0, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(1, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 0, 4, 3, 3, result);
+		Segment2afp.findsFarthestPointSegmentSegment(0, 0, 1, 1, 0, 4, 3, 3, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 1, 0, 4, 1, result);
+		Segment2afp.findsFarthestPointSegmentSegment(0, 0, 1, 1, 1, 0, 4, 1, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(1, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 1, 0, 3, -1, result);
+		Segment2afp.findsFarthestPointSegmentSegment(0, 0, 1, 1, 1, 0, 3, -1, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(1, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 2, 0, 1, -1, result);
+		Segment2afp.findsFarthestPointSegmentSegment(0, 0, 1, 1, 2, 0, 1, -1, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(1, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 3, -1, 1, .4, result);
+		Segment2afp.findsFarthestPointSegmentSegment(0, 0, 1, 1, 3, -1, 1, .4, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 	}
 
 	@Test
-	public void staticComputeCrossingsFromCircle() {
-		assertEquals(0, Segment2afp.computeCrossingsFromCircle(
+	public void staticCalculatesCrossingsCircleShadowSegment() {
+		assertEquals(0, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				5, -4, -1, -5));
-		assertEquals(0, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(0, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				-7, -3, -5, -1));
-		assertEquals(0, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(0, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				11, -2, 10, -1));
-		assertEquals(0, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(0, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				3, 5, 1, 6));
-		assertEquals(-1, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(-1, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				5, .5, 6, -1));
-		assertEquals(-2, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(-2, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				5, 2, 6, -1));
-		assertEquals(-1, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(-1, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				5, 2, 6, .5));
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				.5, .5, 3, 0));
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				0, 2, 3, 0));
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				.5, 4, .5, -1));
-		assertEquals(-2, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(-2, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				1, 3, 3, 0));
 
-		assertEquals(0, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(0, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				-1, -5, 5, -4));
-		assertEquals(0, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(0, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				-5, -1, -7, 3));
-		assertEquals(0, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(0, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				10, -1, 11, -2));
-		assertEquals(0, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(0, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				1, 6, 3, 5));
-		assertEquals(1, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(1, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				6, -1, 5, .5));
-		assertEquals(2, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(2, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				6, -1, 5, 2));
-		assertEquals(1, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(1, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				6, .5, 5, 2));
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				3, 0, .5, .5));
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				3, 0, 0, 2));
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				.5, -1, .5, 4));
-		assertEquals(2, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(2, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				1, 1, 1,
 				3, 0, 1, 3));
 		// One side of the paralleogram in "parallelogram.ggb"
-		assertEquals(-2, Segment2afp.computeCrossingsFromCircle(
+		assertEquals(-2, Segment2afp.calculatesCrossingsCircleShadowSegment(
 				0,
 				0, 2, 1,
 				-5.18034, 9, 12.7082, -8.88854));
 	}
 
 	@Test
-	public void staticComputeCrossingsFromEllipse() {
+	public void staticCalculatesCrossingsEllipseShadowSegment() {
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						5, -4, -1, -5));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						-7, 3, -5, -1));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						11, -2, 10, -1));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						3, 5, 1, 6));
 		assertEquals(
 				-1,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						5, .5, 6, -1));
 		assertEquals(
 				-2,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						5, 2, 6, -1));
 		assertEquals(
 				-1,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						5, 2, 6, .5));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						.5, .5, 3, 0));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						0, 1, 3, 0));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						0, 1, 3, 0));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						.5, 2, .5, -1));
 		assertEquals(
 				-2,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 1, 1,
 						1, 1, 7, -5));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						4, -3, 1, 2,
 						1, 1, 7, -5));
 		assertEquals(
 				-2,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						4, -3, 1, 2,
 						4.2, 0, 7, -5));
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						-1, -5, 5, -4));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						-5, -1, -7, 3));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						10, -1, 11, -2));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						1, 6, 3, 5));
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						6, -1, 5, .5));
 		assertEquals(
 				2,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						6, -1, 5, 2));
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						6, .5, 5, 2));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						3, 0, .5, .5));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						3, 0, 0, 1));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						3, 0, 0, 1));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 2, 1,
 						.5, -1, .5, 2));
 		assertEquals(
 				2,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						0, 0, 1, 1,
 						7, -5, 1, 1));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						4, -3, 1, 2,
 						7, -5, 1, 1));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						4, -3, 1, 2,
 						7, -5, 4, 0));
 		assertEquals(
 				2,
-				Segment2afp.computeCrossingsFromEllipse(
+				Segment2afp.calculatesCrossingsEllipseShadowSegment(
 						0,
 						4, -3, 1, 2,
 						7, -5, 4.2, 0));
 	}
 
 	@Test
-	public void staticComputeCrossingsFromPoint() {
+	public void staticCalculatesCrossingsPointShadowSegment() {
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromPoint(
+				Segment2afp.calculatesCrossingsPointShadowSegment(
 						0, 0,
 						10, -1, 10, 1));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromPoint(
+				Segment2afp.calculatesCrossingsPointShadowSegment(
 						0, 0,
 						10, -1, 10, -.5));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromPoint(
+				Segment2afp.calculatesCrossingsPointShadowSegment(
 						0, 0,
 						-10, -1, -10, 1));
 	}
 
 	@Test
-	public void staticComputeCrossingsFromPointWithoutEquality() {
+	public void staticCalculatesCrossingsPointShadowSegmentWithoutEquality() {
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromPointWithoutEquality(
+				Segment2afp.calculatesCrossingsPointShadowSegmentWithoutEquality(
 						0, 0,
 						10, -1, 10, 1));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromPointWithoutEquality(
+				Segment2afp.calculatesCrossingsPointShadowSegmentWithoutEquality(
 						0, 0,
 						10, -1, 10, -.5));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromPointWithoutEquality(
+				Segment2afp.calculatesCrossingsPointShadowSegmentWithoutEquality(
 						0, 0,
 						-10, -1, -10, 1));
 	}
 
 	@Test
-	public void staticComputeCrossingsFromRect() {
+	public void staticCalculatesCrossingsRectangleShadowSegment() {
 		assertEquals(
 				2,
-				Segment2afp.computeCrossingsFromRect(
+				Segment2afp.calculatesCrossingsRectangleShadowSegment(
 						0,
 						0, 0, 1, 1,
 						10, -5, 10, 5));
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromRect(
+				Segment2afp.calculatesCrossingsRectangleShadowSegment(
 						0,
 						0, 0, 1, 1,
 						10, -5, 10, .5));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromRect(
+				Segment2afp.calculatesCrossingsRectangleShadowSegment(
 						0,
 						0, 0, 1, 1,
 						10, -5, 10, -1));
 	}
 
 	@Test
-	public void staticComputeCrossingsFromTriangle() {
+	public void staticCalculatesCrossingsTriangleShadowSegment() {
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromTriangle(
+				Segment2afp.calculatesCrossingsTriangleShadowSegment(
 						0,
 						5, 8, -10, 1, -1, -2,
 						10, -5, 10, 5));
 		assertEquals(
 				-1,
-				Segment2afp.computeCrossingsFromTriangle(
+				Segment2afp.calculatesCrossingsTriangleShadowSegment(
 						0,
 						5, 8, -10, 1, -1, -2,
 						10, 5, 10, -5));
 		assertEquals(
 				-1,
-				Segment2afp.computeCrossingsFromTriangle(
+				Segment2afp.calculatesCrossingsTriangleShadowSegment(
 						0,
 						5, 8, -10, 1, -1, -2,
 						10, 5, 0, -4));
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromTriangle(
+				Segment2afp.calculatesCrossingsTriangleShadowSegment(
 						0,
 						5, 8, -10, 1, -1, -2,
 						0, -4, 10, 5));
 		assertEquals(
 				2,
-				Segment2afp.computeCrossingsFromTriangle(
+				Segment2afp.calculatesCrossingsTriangleShadowSegment(
 						0,
 						5, 8, -10, 1, -1, -2,
 						0, -4, 8, 10));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromTriangle(
+				Segment2afp.calculatesCrossingsTriangleShadowSegment(
 						0,
 						5, 8, -10, 1, -1, -2,
 						-20, 0, 8, 10));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromTriangle(
+				Segment2afp.calculatesCrossingsTriangleShadowSegment(
 						0,
 						5, 8, -10, 1, -1, -2,
 						8, 10, -8, 0));
 	}
 
 	@Test
-	public void staticComputeCrossingsFromRoundRect() {
+	public void staticCalculatesCrossingsRoundRectangleShadowSegment() {
 		assertEquals(
 				2,
-				Segment2afp.computeCrossingsFromRoundRect(
+				Segment2afp.calculatesCrossingsRoundRectangleShadowSegment(
 						0,
 						0, 0, 1, 1, .1, .2,
 						10, -5, 10, 5));
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromRoundRect(
+				Segment2afp.calculatesCrossingsRoundRectangleShadowSegment(
 						0,
 						0, 0, 1, 1, .1, .2,
 						10, -5, 10, .5));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromRoundRect(
+				Segment2afp.calculatesCrossingsRoundRectangleShadowSegment(
 						0,
 						0, 0, 1, 1, .1, .2,
 						10, -5, 10, -1));
 	}
 
 	@Test
-	public void staticComputeCrossingsFromSegment() {
+	public void staticCalculatesCrossingsSegmentShadowSegment() {
 		// 0011
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						10, -5, 10, -4));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						10, 5, 10, 4));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						-5, .5, 0, .6));
 
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						10, -1, 11, .6));
 		assertEquals(
 				2,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						10, -1, 11, 2));
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						10, .5, 11, 2));
 
 		assertEquals(
 				-1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						10, 2, 11, .6));
 		assertEquals(
 				-2,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						10, 2, 11, -1));
 		assertEquals(
 				-1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						10, .6, 11, -1));
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						0, .5, .25, .5));
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						.75, .5, 1, .5));
 
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						5, -5, .75, .5));
 
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						5, -5, 0, 1));
 
 		assertEquals(
 				2,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						5, -5, 1, 1));
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 0, 1, 1,
 						-2, 1, 5, -5));
@@ -738,99 +738,99 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						10, -5, 10, -4));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						10, 5, 10, 4));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						-5, .5, 0, .6));
 
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						10, -1, 11, .6));
 		assertEquals(
 				2,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						10, -1, 11, 2));
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						10, .5, 11, 2));
 
 		assertEquals(
 				-1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						10, 2, 11, .6));
 		assertEquals(
 				-2,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						10, 2, 11, -1));
 		assertEquals(
 				-1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						10, .6, 11, -1));
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						0, .5, .25, .5));
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						.75, .5, 1, .5));
 
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						5, -5, .75, .5));
 
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						5, -5, 0, 1));
 
 		assertEquals(
 				2,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						5, -5, 1, 1));
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 0, 0,
 						-2, 1, 5, -5));
@@ -839,92 +839,92 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						10, -5, 10, -4));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						10, 5, 10, 4));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						-5, .5, 0, .6));
 
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						10, -1, 11, .6));
 		assertEquals(
 				2,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						10, -1, 11, 2));
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						10, .5, 11, 2));
 
 		assertEquals(
 				-1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						10, 2, 11, .6));
 		assertEquals(
 				-2,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						10, 2, 11, -1));
 		assertEquals(
 				-1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						10, .6, 11, -1));
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						0, .5, .25, .5));
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						.75, .5, 1, .5));
 
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						5, -.01, .75, .5));
 
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						20, -5, -1, 1));
 
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						0, 1, 1, 0,
 						5, 10, .25, .5));
@@ -933,92 +933,92 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						10, -5, 10, -4));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						10, 5, 10, 4));
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						-5, .5, 0, .6));
 
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						10, -1, 11, .6));
 		assertEquals(
 				2,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						10, -1, 11, 2));
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						10, .5, 11, 2));
 
 		assertEquals(
 				-1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						10, 2, 11, .6));
 		assertEquals(
 				-2,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						10, 2, 11, -1));
 		assertEquals(
 				-1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						10, .6, 11, -1));
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						0, .5, .25, .5));
 
 		assertEquals(
 				0,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						.75, .5, 1, .5));
 
 		assertEquals(
 				1,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						20, -5, .75, .5));
 
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						20, -5, 0, 1));
 
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 0, 0, 1,
 						5, 10, .25, .5));
@@ -1027,82 +1027,82 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						7, -5, 1, 1,
 						4, -3, 1, 1));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						4, -3, 1, 1,
 						7, -5, 1, 1));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 4, -3,
 						7, -5, 1, 1));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						4, -3, 1, 1,
 						1, 1, 7, -5));
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
-				Segment2afp.computeCrossingsFromSegment(
+				Segment2afp.calculatesCrossingsSegmentShadowSegment(
 						0,
 						1, 1, 4, -3,
 						1, 1, 7, -5));
 	}
 
 	@Test
-	public void staticComputeFarthestPointToPoint2D() {
+	public void staticFindsFarthestPointSegmentPoint() {
 		Point2D p;
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, 0, 0, p);
+		Segment2afp.findsFarthestPointSegmentPoint(0, 0, 1, 1, 0, 0, p);
 		assertEpsilonEquals(1, p.getX());
 		assertEpsilonEquals(1, p.getY());
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, .5, .5, p);
+		Segment2afp.findsFarthestPointSegmentPoint(0, 0, 1, 1, .5, .5, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, 1, 1, p);
+		Segment2afp.findsFarthestPointSegmentPoint(0, 0, 1, 1, 1, 1, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, 2, 2, p);
+		Segment2afp.findsFarthestPointSegmentPoint(0, 0, 1, 1, 2, 2, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, -2, 2, p);
+		Segment2afp.findsFarthestPointSegmentPoint(0, 0, 1, 1, -2, 2, p);
 		assertEpsilonEquals(1, p.getX());
 		assertEpsilonEquals(1, p.getY());
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, 0.1, 1.2, p);
+		Segment2afp.findsFarthestPointSegmentPoint(0, 0, 1, 1, 0.1, 1.2, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, 10.1, -.2, p);
+		Segment2afp.findsFarthestPointSegmentPoint(0, 0, 1, 1, 10.1, -.2, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 	}
 
 	@Test
-	public void staticComputeLineLineIntersection() {
+	public void staticFindsLineLineIntersection() {
 		Point2D result;
 
 		result = createPoint(Double.NaN, Double.NaN);
-		assertTrue(Segment2afp.computeLineLineIntersection(
+		assertTrue(Segment2afp.findsLineLineIntersection(
 				1000, 1.5325000286102295, 2500, 1.5325000286102295,
 				1184.001080023255, 1.6651813832907332, 1200.7014393876193, 1.372326130924099,
 				result));
@@ -1110,7 +1110,7 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		assertEpsilonEquals(1.532500028610229, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		assertTrue(Segment2afp.computeLineLineIntersection(
+		assertTrue(Segment2afp.findsLineLineIntersection(
 				100, 50, 100, 60,
 				90, 55, 2000, 55,
 				result));
@@ -1118,7 +1118,7 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		assertEpsilonEquals(55, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		assertFalse(Segment2afp.computeLineLineIntersection(
+		assertFalse(Segment2afp.findsLineLineIntersection(
 				100, 50, 100, 60,
 				200, 0, 200, 10,
 				result));
@@ -1126,7 +1126,7 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		assertNaN(result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		assertTrue(Segment2afp.computeLineLineIntersection(
+		assertTrue(Segment2afp.findsLineLineIntersection(
 				100, -50, 100, -60,
 				90, 55, 2000, 55,
 				result));
@@ -1135,91 +1135,91 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test
-	public void staticComputeLineLineIntersectionFactor() {
-		assertEpsilonEquals(.1277115766843605, Segment2afp.computeLineLineIntersectionFactor(
+	public void staticCalculatesLineLineIntersectionFactor() {
+		assertEpsilonEquals(.1277115766843605, Segment2afp.calculatesLineLineIntersectionFactor(
 				1000, 1.5325000286102295, 2500, 1.5325000286102295,
 				1184.001080023255, 1.6651813832907332, 1200.7014393876193, 1.372326130924099));
 
-		assertEpsilonEquals(.5, Segment2afp.computeLineLineIntersectionFactor(
+		assertEpsilonEquals(.5, Segment2afp.calculatesLineLineIntersectionFactor(
 				100, 50, 100, 60,
 				90, 55, 2000, 55));
 
-		assertNaN(Segment2afp.computeLineLineIntersectionFactor(
+		assertNaN(Segment2afp.calculatesLineLineIntersectionFactor(
 				100, 50, 100, 60,
 				200, 0, 200, 10));
 
-		assertEpsilonEquals(-10.5, Segment2afp.computeLineLineIntersectionFactor(
+		assertEpsilonEquals(-10.5, Segment2afp.calculatesLineLineIntersectionFactor(
 				100, -50, 100, -60,
 				90, 55, 2000, 55));
 	}
 
 	@Test
-	public void staticComputeProjectedPointOnLine() {
-		assertEpsilonEquals(.3076923076923077, Segment2afp.computeProjectedPointOnLine(
+	public void staticFindsProjectedPointPointLine() {
+		assertEpsilonEquals(.3076923076923077, Segment2afp.findsProjectedPointPointLine(
 				2, 1,
 				0, 0, 3, -2));
 
-		assertEpsilonEquals(.6666666666666666, Segment2afp.computeProjectedPointOnLine(
+		assertEpsilonEquals(.6666666666666666, Segment2afp.findsProjectedPointPointLine(
 				2, 1,
 				0, 0, 3, 0));
 
-		assertEpsilonEquals(-.7, Segment2afp.computeProjectedPointOnLine(
+		assertEpsilonEquals(-.7, Segment2afp.findsProjectedPointPointLine(
 				2, -1,
 				0, 0, -3, 1));
 
-		assertEpsilonEquals(14.4, Segment2afp.computeProjectedPointOnLine(
+		assertEpsilonEquals(14.4, Segment2afp.findsProjectedPointPointLine(
 				2, 150,
 				0, 0, -3, 1));
 
-		assertEpsilonEquals(.5, Segment2afp.computeProjectedPointOnLine(
+		assertEpsilonEquals(.5, Segment2afp.findsProjectedPointPointLine(
 				.5, .5,
 				0, 0, 1, 1));
 	}
 
 	@Test
-	public void staticComputeRelativeDistanceLinePoint() {
-		assertEpsilonEquals(-1.941450686788302, Segment2afp.computeRelativeDistanceLinePoint(
+	public void staticCalculatesRelativeDistanceLinePoint() {
+		assertEpsilonEquals(-1.941450686788302, Segment2afp.calculatesRelativeDistanceLinePoint(
 				0, 0, 3, -2,
 				2, 1));
-		assertEpsilonEquals(1.941450686788302, Segment2afp.computeRelativeDistanceLinePoint(
+		assertEpsilonEquals(1.941450686788302, Segment2afp.calculatesRelativeDistanceLinePoint(
 				3, -2, 0, 0,
 				2, 1));
 
-		assertEpsilonEquals(-1, Segment2afp.computeRelativeDistanceLinePoint(
+		assertEpsilonEquals(-1, Segment2afp.calculatesRelativeDistanceLinePoint(
 				0, 0, 3, 0,
 				2, 1));
-		assertEpsilonEquals(1, Segment2afp.computeRelativeDistanceLinePoint(
+		assertEpsilonEquals(1, Segment2afp.calculatesRelativeDistanceLinePoint(
 				3, 0, 0, 0,
 				2, 1));
 
-		assertEpsilonEquals(-.3162277660168379, Segment2afp.computeRelativeDistanceLinePoint(
+		assertEpsilonEquals(-.3162277660168379, Segment2afp.calculatesRelativeDistanceLinePoint(
 				0, 0, -3, 1,
 				2, -1));
-		assertEpsilonEquals(.3162277660168379, Segment2afp.computeRelativeDistanceLinePoint(
+		assertEpsilonEquals(.3162277660168379, Segment2afp.calculatesRelativeDistanceLinePoint(
 				-3, 1, 0, 0,
 				2, -1));
 
-		assertEpsilonEquals(142.9349502396107, Segment2afp.computeRelativeDistanceLinePoint(
+		assertEpsilonEquals(142.9349502396107, Segment2afp.calculatesRelativeDistanceLinePoint(
 				0, 0, -3, 1,
 				2, 150));
-		assertEpsilonEquals(-142.9349502396107, Segment2afp.computeRelativeDistanceLinePoint(
+		assertEpsilonEquals(-142.9349502396107, Segment2afp.calculatesRelativeDistanceLinePoint(
 				-3, 1, 0, 0,
 				2, 150));
 
-		assertEpsilonEquals(0, Segment2afp.computeRelativeDistanceLinePoint(
+		assertEpsilonEquals(0, Segment2afp.calculatesRelativeDistanceLinePoint(
 				0, 0, 1, 1,
 				.5, .5));
-		assertEpsilonEquals(0, Segment2afp.computeRelativeDistanceLinePoint(
+		assertEpsilonEquals(0, Segment2afp.calculatesRelativeDistanceLinePoint(
 				1, 1, 0, 0,
 				.5, .5));
 	}
 
 	@Test
-	public void staticComputeSegmentSegmentIntersection() {
+	public void staticFindsSegmentSegmentIntersection() {
 		Point2D result;
 
 		result = createPoint(Double.NaN, Double.NaN);
-		assertTrue(Segment2afp.computeSegmentSegmentIntersection(
+		assertTrue(Segment2afp.findsSegmentSegmentIntersection(
 				1000, 1.5325000286102295, 2500, 1.5325000286102295,
 				1184.001080023255, 1.6651813832907332, 1200.7014393876193, 1.372326130924099,
 				result));
@@ -1227,7 +1227,7 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		assertEpsilonEquals(1.532500028610229, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		assertTrue(Segment2afp.computeSegmentSegmentIntersection(
+		assertTrue(Segment2afp.findsSegmentSegmentIntersection(
 				100, 50, 100, 60,
 				90, 55, 2000, 55,
 				result));
@@ -1235,7 +1235,7 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		assertEpsilonEquals(55, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		assertFalse(Segment2afp.computeSegmentSegmentIntersection(
+		assertFalse(Segment2afp.findsSegmentSegmentIntersection(
 				100, 50, 100, 60,
 				200, 0, 200, 10,
 				result));
@@ -1243,7 +1243,7 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		assertNaN(result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		assertFalse(Segment2afp.computeSegmentSegmentIntersection(
+		assertFalse(Segment2afp.findsSegmentSegmentIntersection(
 				-100, 50, -100, 60,
 				90, 55, 2000, 55,
 				result));
@@ -1252,384 +1252,384 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test
-	public void staticComputeSegmentSegmentIntersectionFactor() {
-		assertEpsilonEquals(.1277115766843605, Segment2afp.computeSegmentSegmentIntersectionFactor(
+	public void staticCalculatesSegmentSegmentIntersectionFactor() {
+		assertEpsilonEquals(.1277115766843605, Segment2afp.calculatesSegmentSegmentIntersectionFactor(
 				1000, 1.5325000286102295, 2500, 1.5325000286102295,
 				1184.001080023255, 1.6651813832907332, 1200.7014393876193, 1.372326130924099));
 
-		assertEpsilonEquals(.5, Segment2afp.computeSegmentSegmentIntersectionFactor(
+		assertEpsilonEquals(.5, Segment2afp.calculatesSegmentSegmentIntersectionFactor(
 				100, 50, 100, 60,
 				90, 55, 2000, 55));
 
-		assertNaN(Segment2afp.computeSegmentSegmentIntersectionFactor(
+		assertNaN(Segment2afp.calculatesSegmentSegmentIntersectionFactor(
 				100, 50, 100, 60,
 				200, 0, 200, 10));
 
-		assertNaN(Segment2afp.computeSegmentSegmentIntersectionFactor(
+		assertNaN(Segment2afp.calculatesSegmentSegmentIntersectionFactor(
 				100, -50, 100, -60,
 				90, 55, 2000, 55));
 	}
 
 	@Test
-	public void staticComputeSideLinePoint() {
-		assertEquals(0, Segment2afp.computeSideLinePoint(0, 0, 1, 1, 0, 0, 0.1));
-		assertEquals(0, Segment2afp.computeSideLinePoint(0, 0, 1, 1, 1, 1, 0.1));
-		assertEquals(0, Segment2afp.computeSideLinePoint(0, 0, 1, 1, .25, .25, 0.1));
-		assertEquals(1, Segment2afp.computeSideLinePoint(0, 0, 1, 1, 0.2, 0, 0.1));
-		assertEquals(1, Segment2afp.computeSideLinePoint(0, 0, 1, 1, 120, 0, 0.1));
-		assertEquals(0, Segment2afp.computeSideLinePoint(0, 0, 1, 1, -20.05, -20, 0.1));
-		assertEquals(-1, Segment2afp.computeSideLinePoint(0, 0, 1, 1, 0, 0.2, 0.1));
-		assertEquals(-1, Segment2afp.computeSideLinePoint(0, 0, 1, 1, 0, 120, 0.1));
+	public void staticFindsSideLinePoint() {
+		assertEquals(0, Segment2afp.findsSideLinePoint(0, 0, 1, 1, 0, 0, 0.1));
+		assertEquals(0, Segment2afp.findsSideLinePoint(0, 0, 1, 1, 1, 1, 0.1));
+		assertEquals(0, Segment2afp.findsSideLinePoint(0, 0, 1, 1, .25, .25, 0.1));
+		assertEquals(1, Segment2afp.findsSideLinePoint(0, 0, 1, 1, 0.2, 0, 0.1));
+		assertEquals(1, Segment2afp.findsSideLinePoint(0, 0, 1, 1, 120, 0, 0.1));
+		assertEquals(0, Segment2afp.findsSideLinePoint(0, 0, 1, 1, -20.05, -20, 0.1));
+		assertEquals(-1, Segment2afp.findsSideLinePoint(0, 0, 1, 1, 0, 0.2, 0.1));
+		assertEquals(-1, Segment2afp.findsSideLinePoint(0, 0, 1, 1, 0, 120, 0.1));
 	}
 
 	@Test
-	public void staticGetNoSegmentSegmentWithEndsIntersection() {
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+	public void staticFindsUncertainIntersectionSegmentSegmentWithEnds() {
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				0, .5, 1, .5));
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				0, 0, 1, 1));
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				0, 0, 2, 2));
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				0, 0, .5, .5));
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				-3, -3, .5, .5));
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				-3, -3, 0, 0));
-		assertSame(UncertainIntersection.NO, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.NO, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				-3, -3, -1, -1));
 
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				-3, 0, 4, 0));
 
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				-3, -1, 4, -1));
 
-		assertSame(UncertainIntersection.NO, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.NO, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				-3, -1, -1, -1));
 
-		assertSame(UncertainIntersection.NO, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.NO, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				-3, 0, -2, 1));
 
-		assertSame(UncertainIntersection.NO, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.NO, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				10, 0, 9, -1));
 
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				7, -5, 1, 1,
 				4, -3, 1, 1));
 	}
 
 	@Test
-	public void staticGetNoSegmentSegmentWithoutEndsIntersection() {
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithoutEndsIntersection(
+	public void staticFindsUncertainIntersectionSegmentSegmentWithoutEnds() {
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithoutEnds(
 				0, 0, 1, 1,
 				0, .5, 1, .5));
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithoutEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithoutEnds(
 				0, 0, 1, 1,
 				0, 0, 1, 1));
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithEnds(
 				0, 0, 1, 1,
 				0, 0, 2, 2));
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithoutEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithoutEnds(
 				0, 0, 1, 1,
 				0, 0, .5, .5));
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithoutEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithoutEnds(
 				0, 0, 1, 1,
 				-3, -3, .5, .5));
-		assertSame(UncertainIntersection.NO, Segment2afp.getNoSegmentSegmentWithoutEndsIntersection(
+		assertSame(UncertainIntersection.NO, Segment2afp.findsUncertainIntersectionSegmentSegmentWithoutEnds(
 				0, 0, 1, 1,
 				-3, -3, 0, 0));
-		assertSame(UncertainIntersection.NO, Segment2afp.getNoSegmentSegmentWithoutEndsIntersection(
+		assertSame(UncertainIntersection.NO, Segment2afp.findsUncertainIntersectionSegmentSegmentWithoutEnds(
 				0, 0, 1, 1,
 				-3, -3, -1, -1));
 
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithoutEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithoutEnds(
 				0, 0, 1, 1,
 				-3, 0, 4, 0));
 
-		assertSame(UncertainIntersection.PERHAPS, Segment2afp.getNoSegmentSegmentWithoutEndsIntersection(
+		assertSame(UncertainIntersection.PERHAPS, Segment2afp.findsUncertainIntersectionSegmentSegmentWithoutEnds(
 				0, 0, 1, 1,
 				-3, -1, 4, -1));
 
-		assertSame(UncertainIntersection.NO, Segment2afp.getNoSegmentSegmentWithoutEndsIntersection(
+		assertSame(UncertainIntersection.NO, Segment2afp.findsUncertainIntersectionSegmentSegmentWithoutEnds(
 				0, 0, 1, 1,
 				-3, -1, -1, -1));
 
-		assertSame(UncertainIntersection.NO, Segment2afp.getNoSegmentSegmentWithoutEndsIntersection(
+		assertSame(UncertainIntersection.NO, Segment2afp.findsUncertainIntersectionSegmentSegmentWithoutEnds(
 				0, 0, 1, 1,
 				-3, 0, -2, 1));
 
-		assertSame(UncertainIntersection.NO, Segment2afp.getNoSegmentSegmentWithoutEndsIntersection(
+		assertSame(UncertainIntersection.NO, Segment2afp.findsUncertainIntersectionSegmentSegmentWithoutEnds(
 				0, 0, 1, 1,
 				10, 0, 9, -1));
 
-		assertSame(UncertainIntersection.NO, Segment2afp.getNoSegmentSegmentWithoutEndsIntersection(
+		assertSame(UncertainIntersection.NO, Segment2afp.findsUncertainIntersectionSegmentSegmentWithoutEnds(
 				7, -5, 1, 1,
 				4, -3, 1, 1));
 	}
 
 	@Test
-	public void staticComputeDistanceLinePoint() {
-		assertEpsilonEquals(1.941450686788302, Segment2afp.computeDistanceLinePoint(
+	public void staticCalculatesDistanceLinePoint() {
+		assertEpsilonEquals(1.941450686788302, Segment2afp.calculatesDistanceLinePoint(
 				0, 0, 3, -2,
 				2, 1));
-		assertEpsilonEquals(1.941450686788302, Segment2afp.computeDistanceLinePoint(
+		assertEpsilonEquals(1.941450686788302, Segment2afp.calculatesDistanceLinePoint(
 				3, -2, 0, 0,
 				2, 1));
 
-		assertEpsilonEquals(1, Segment2afp.computeDistanceLinePoint(
+		assertEpsilonEquals(1, Segment2afp.calculatesDistanceLinePoint(
 				0, 0, 3, 0,
 				2, 1));
-		assertEpsilonEquals(1, Segment2afp.computeDistanceLinePoint(
+		assertEpsilonEquals(1, Segment2afp.calculatesDistanceLinePoint(
 				3, 0, 0, 0,
 				2, 1));
 
-		assertEpsilonEquals(.3162277660168379, Segment2afp.computeDistanceLinePoint(
+		assertEpsilonEquals(.3162277660168379, Segment2afp.calculatesDistanceLinePoint(
 				0, 0, -3, 1,
 				2, -1));
-		assertEpsilonEquals(.3162277660168379, Segment2afp.computeDistanceLinePoint(
+		assertEpsilonEquals(.3162277660168379, Segment2afp.calculatesDistanceLinePoint(
 				-3, 1, 0, 0,
 				2, -1));
 
-		assertEpsilonEquals(142.9349502396107, Segment2afp.computeDistanceLinePoint(
+		assertEpsilonEquals(142.9349502396107, Segment2afp.calculatesDistanceLinePoint(
 				0, 0, -3, 1,
 				2, 150));
-		assertEpsilonEquals(142.9349502396107, Segment2afp.computeDistanceLinePoint(
+		assertEpsilonEquals(142.9349502396107, Segment2afp.calculatesDistanceLinePoint(
 				-3, 1, 0, 0,
 				2, 150));
 
-		assertEpsilonEquals(0, Segment2afp.computeDistanceLinePoint(
+		assertEpsilonEquals(0, Segment2afp.calculatesDistanceLinePoint(
 				0, 0, 1, 1,
 				.5, .5));
-		assertEpsilonEquals(0, Segment2afp.computeDistanceLinePoint(
+		assertEpsilonEquals(0, Segment2afp.calculatesDistanceLinePoint(
 				1, 1, 0, 0,
 				.5, .5));
 	}
 
 	@Test
-	public void staticComputeDistanceSegmentPoint() {
-		assertEpsilonEquals(1.941450686788302, Segment2afp.computeDistanceSegmentPoint(
+	public void staticCalculatesDistanceSegmentPoint() {
+		assertEpsilonEquals(1.941450686788302, Segment2afp.calculatesDistanceSegmentPoint(
 				0, 0, 3, -2,
 				2, 1));
-		assertEpsilonEquals(1.941450686788302, Segment2afp.computeDistanceSegmentPoint(
+		assertEpsilonEquals(1.941450686788302, Segment2afp.calculatesDistanceSegmentPoint(
 				3, -2, 0, 0,
 				2, 1));
 
-		assertEpsilonEquals(1, Segment2afp.computeDistanceSegmentPoint(
+		assertEpsilonEquals(1, Segment2afp.calculatesDistanceSegmentPoint(
 				0, 0, 3, 0,
 				2, 1));
-		assertEpsilonEquals(1, Segment2afp.computeDistanceSegmentPoint(
+		assertEpsilonEquals(1, Segment2afp.calculatesDistanceSegmentPoint(
 				3, 0, 0, 0,
 				2, 1));
 
-		assertEpsilonEquals(2.23606797749979, Segment2afp.computeDistanceSegmentPoint(
+		assertEpsilonEquals(2.23606797749979, Segment2afp.calculatesDistanceSegmentPoint(
 				0, 0, -3, 1,
 				2, -1));
-		assertEpsilonEquals(2.23606797749979, Segment2afp.computeDistanceSegmentPoint(
+		assertEpsilonEquals(2.23606797749979, Segment2afp.calculatesDistanceSegmentPoint(
 				-3, 1, 0, 0,
 				2, -1));
 
-		assertEpsilonEquals(149.0838690133845, Segment2afp.computeDistanceSegmentPoint(
+		assertEpsilonEquals(149.0838690133845, Segment2afp.calculatesDistanceSegmentPoint(
 				0, 0, -3, 1,
 				2, 150));
-		assertEpsilonEquals(149.0838690133845, Segment2afp.computeDistanceSegmentPoint(
+		assertEpsilonEquals(149.0838690133845, Segment2afp.calculatesDistanceSegmentPoint(
 				-3, 1, 0, 0,
 				2, 150));
 
-		assertEpsilonEquals(0, Segment2afp.computeDistanceSegmentPoint(
+		assertEpsilonEquals(0, Segment2afp.calculatesDistanceSegmentPoint(
 				0, 0, 1, 1,
 				.5, .5));
-		assertEpsilonEquals(0, Segment2afp.computeDistanceSegmentPoint(
+		assertEpsilonEquals(0, Segment2afp.calculatesDistanceSegmentPoint(
 				1, 1, 0, 0,
 				.5, .5));
 	}
 
 	@Test
-	public void staticComputeDistanceSquaredLinePoint() {
-		assertEpsilonEquals(3.769230769230769, Segment2afp.computeDistanceSquaredLinePoint(
+	public void staticCalculatesDistanceSquaredLinePoint() {
+		assertEpsilonEquals(3.769230769230769, Segment2afp.calculatesDistanceSquaredLinePoint(
 				0, 0, 3, -2,
 				2, 1));
-		assertEpsilonEquals(3.769230769230769, Segment2afp.computeDistanceSquaredLinePoint(
+		assertEpsilonEquals(3.769230769230769, Segment2afp.calculatesDistanceSquaredLinePoint(
 				3, -2, 0, 0,
 				2, 1));
 
-		assertEpsilonEquals(1, Segment2afp.computeDistanceSquaredLinePoint(
+		assertEpsilonEquals(1, Segment2afp.calculatesDistanceSquaredLinePoint(
 				0, 0, 3, 0,
 				2, 1));
-		assertEpsilonEquals(1, Segment2afp.computeDistanceSquaredLinePoint(
+		assertEpsilonEquals(1, Segment2afp.calculatesDistanceSquaredLinePoint(
 				3, 0, 0, 0,
 				2, 1));
 
-		assertEpsilonEquals(.09999999999999996, Segment2afp.computeDistanceSquaredLinePoint(
+		assertEpsilonEquals(.09999999999999996, Segment2afp.calculatesDistanceSquaredLinePoint(
 				0, 0, -3, 1,
 				2, -1));
-		assertEpsilonEquals(.09999999999999996, Segment2afp.computeDistanceSquaredLinePoint(
+		assertEpsilonEquals(.09999999999999996, Segment2afp.calculatesDistanceSquaredLinePoint(
 				-3, 1, 0, 0,
 				2, -1));
 
-		assertEpsilonEquals(20430.39999999979, Segment2afp.computeDistanceSquaredLinePoint(
+		assertEpsilonEquals(20430.39999999979, Segment2afp.calculatesDistanceSquaredLinePoint(
 				0, 0, -3, 1,
 				2, 150));
-		assertEpsilonEquals(20430.39999999979, Segment2afp.computeDistanceSquaredLinePoint(
+		assertEpsilonEquals(20430.39999999979, Segment2afp.calculatesDistanceSquaredLinePoint(
 				-3, 1, 0, 0,
 				2, 150));
 
-		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredLinePoint(
+		assertEpsilonEquals(0, Segment2afp.calculatesDistanceSquaredLinePoint(
 				0, 0, 1, 1,
 				.5, .5));
-		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredLinePoint(
+		assertEpsilonEquals(0, Segment2afp.calculatesDistanceSquaredLinePoint(
 				1, 1, 0, 0,
 				.5, .5));
 	}
 
 	@Test
-	public void staticComputeDistanceSquaredSegmentPoint() {
-		assertEpsilonEquals(3.769230769230769, Segment2afp.computeDistanceSquaredSegmentPoint(
+	public void staticCalculatesDistanceSquaredSegmentPoint() {
+		assertEpsilonEquals(3.769230769230769, Segment2afp.calculatesDistanceSquaredSegmentPoint(
 				0, 0, 3, -2,
 				2, 1));
-		assertEpsilonEquals(3.769230769230769, Segment2afp.computeDistanceSquaredSegmentPoint(
+		assertEpsilonEquals(3.769230769230769, Segment2afp.calculatesDistanceSquaredSegmentPoint(
 				3, -2, 0, 0,
 				2, 1));
 
-		assertEpsilonEquals(1, Segment2afp.computeDistanceSquaredSegmentPoint(
+		assertEpsilonEquals(1, Segment2afp.calculatesDistanceSquaredSegmentPoint(
 				0, 0, 3, 0,
 				2, 1));
-		assertEpsilonEquals(1, Segment2afp.computeDistanceSquaredSegmentPoint(
+		assertEpsilonEquals(1, Segment2afp.calculatesDistanceSquaredSegmentPoint(
 				3, 0, 0, 0,
 				2, 1));
 
-		assertEpsilonEquals(5, Segment2afp.computeDistanceSquaredSegmentPoint(
+		assertEpsilonEquals(5, Segment2afp.calculatesDistanceSquaredSegmentPoint(
 				0, 0, -3, 1,
 				2, -1));
-		assertEpsilonEquals(5, Segment2afp.computeDistanceSquaredSegmentPoint(
+		assertEpsilonEquals(5, Segment2afp.calculatesDistanceSquaredSegmentPoint(
 				-3, 1, 0, 0,
 				2, -1));
 
-		assertEpsilonEquals(22225.99999999998, Segment2afp.computeDistanceSquaredSegmentPoint(
+		assertEpsilonEquals(22225.99999999998, Segment2afp.calculatesDistanceSquaredSegmentPoint(
 				0, 0, -3, 1,
 				2, 150));
-		assertEpsilonEquals(22225.99999999998, Segment2afp.computeDistanceSquaredSegmentPoint(
+		assertEpsilonEquals(22225.99999999998, Segment2afp.calculatesDistanceSquaredSegmentPoint(
 				-3, 1, 0, 0,
 				2, 150));
 
-		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredSegmentPoint(
+		assertEpsilonEquals(0, Segment2afp.calculatesDistanceSquaredSegmentPoint(
 				0, 0, 1, 1,
 				.5, .5));
-		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredSegmentPoint(
+		assertEpsilonEquals(0, Segment2afp.calculatesDistanceSquaredSegmentPoint(
 				1, 1, 0, 0,
 				.5, .5));
 	}
 
 	@Test
-	public void staticComputeDistanceSquaredSegmentSegment_v1() {
+	public void staticCalculatesDistanceSquaredSegmentSegment_v1() {
 		// A->B   &   C->D
-		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -2, 3, -1, 1));
-		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -1, 1, -3, 2));
-		assertEpsilonEquals(.9, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 0, -1, -3, 0));
-		assertEpsilonEquals(6.4, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 0, 4, 3, 3));
-		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 1, 0, 4, 1));
-		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 1, 0, 3, -1));
-		assertEpsilonEquals(0.18, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 3, -1, 1, .4));
+		assertEpsilonEquals(2, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, -2, 3, -1, 1));
+		assertEpsilonEquals(2, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, -1, 1, -3, 2));
+		assertEpsilonEquals(.9, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 0, -1, -3, 0));
+		assertEpsilonEquals(6.4, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 0, 4, 3, 3));
+		assertEpsilonEquals(.5, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 1, 0, 4, 1));
+		assertEpsilonEquals(.5, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 1, 0, 3, -1));
+		assertEpsilonEquals(0.18, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 3, -1, 1, .4));
 		// Intersecting segment
-		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -2, 0, 2, 1));
+		assertEpsilonEquals(0, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, -2, 0, 2, 1));
 		// Parallel
-		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 2, 0, 1, -1));
-		assertEpsilonEquals(16, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -4, 0, -5, -1));
-		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 0, 1, -1, 0));
+		assertEpsilonEquals(2, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 2, 0, 1, -1));
+		assertEpsilonEquals(16, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, -4, 0, -5, -1));
+		assertEpsilonEquals(.5, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 0, 1, -1, 0));
 	}
 
 	@Test
-	public void staticComputeDistanceSquaredSegmentSegment_v2() {
+	public void staticCalculatesDistanceSquaredSegmentSegment_v2() {
 		// A->B   &   D->C
-		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -1, 1, -2, 3));
-		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -3, 2, -1, 1));
-		assertEpsilonEquals(.9, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -3, 0, 0, -1));
-		assertEpsilonEquals(6.4, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 3, 3, 0, 4));
-		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 4, 1, 1, 0));
-		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 3, -1, 1, 0));
-		assertEpsilonEquals(0.18, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 1, .4, 3, -1));
+		assertEpsilonEquals(2, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, -1, 1, -2, 3));
+		assertEpsilonEquals(2, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, -3, 2, -1, 1));
+		assertEpsilonEquals(.9, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, -3, 0, 0, -1));
+		assertEpsilonEquals(6.4, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 3, 3, 0, 4));
+		assertEpsilonEquals(.5, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 4, 1, 1, 0));
+		assertEpsilonEquals(.5, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 3, -1, 1, 0));
+		assertEpsilonEquals(0.18, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 1, .4, 3, -1));
 		// Intersecting segment
-		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 2, 1, -2, 0));
+		assertEpsilonEquals(0, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 2, 1, -2, 0));
 		// Parallel
-		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 1, -1, 2, 0));
-		assertEpsilonEquals(16, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -5, -1, -4, 0));
-		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -1, 0, 0, 1));
+		assertEpsilonEquals(2, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, 1, -1, 2, 0));
+		assertEpsilonEquals(16, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, -5, -1, -4, 0));
+		assertEpsilonEquals(.5, Segment2afp.calculatesDistanceSquaredSegmentSegment(0, 0, 1, 1, -1, 0, 0, 1));
 	}
 
 	@Test
-	public void staticComputeDistanceSquaredSegmentSegment_v3() {
+	public void staticCalculatesDistanceSquaredSegmentSegment_v3() {
 		// B->A   &   D->C
-		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -1, 1, -2, 3));
-		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -3, 2, -1, 1));
-		assertEpsilonEquals(.9, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -3, 0, 0, -1));
-		assertEpsilonEquals(6.4, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 3, 3, 0, 4));
-		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 4, 1, 1, 0));
-		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 3, -1, 1, 0));
-		assertEpsilonEquals(0.18, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 1, .4, 3, -1));
+		assertEpsilonEquals(2, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, -1, 1, -2, 3));
+		assertEpsilonEquals(2, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, -3, 2, -1, 1));
+		assertEpsilonEquals(.9, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, -3, 0, 0, -1));
+		assertEpsilonEquals(6.4, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 3, 3, 0, 4));
+		assertEpsilonEquals(.5, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 4, 1, 1, 0));
+		assertEpsilonEquals(.5, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 3, -1, 1, 0));
+		assertEpsilonEquals(0.18, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 1, .4, 3, -1));
 		// Intersecting segment
-		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 2, 1, -2, 0));
+		assertEpsilonEquals(0, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 2, 1, -2, 0));
 		// Parallel
-		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 1, -1, 2, 0));
-		assertEpsilonEquals(16, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -5, -1, -4, 0));
-		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -1, 0, 0, 1));
+		assertEpsilonEquals(2, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 1, -1, 2, 0));
+		assertEpsilonEquals(16, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, -5, -1, -4, 0));
+		assertEpsilonEquals(.5, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, -1, 0, 0, 1));
 	}
 
 	@Test
-	public void staticComputeDistanceSquaredSegmentSegment_v4() {
+	public void staticCalculatesDistanceSquaredSegmentSegment_v4() {
 		// B->A   &   C->D
-		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -2, 3, -1, 1));
-		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -1, 1, -3, 2));
-		assertEpsilonEquals(.9, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 0, -1, -3, 0));
-		assertEpsilonEquals(6.4, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 0, 4, 3, 3));
-		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 1, 0, 4, 1));
-		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 1, 0, 3, -1));
-		assertEpsilonEquals(0.18, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 3, -1, 1, .4));
+		assertEpsilonEquals(2, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, -2, 3, -1, 1));
+		assertEpsilonEquals(2, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, -1, 1, -3, 2));
+		assertEpsilonEquals(.9, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 0, -1, -3, 0));
+		assertEpsilonEquals(6.4, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 0, 4, 3, 3));
+		assertEpsilonEquals(.5, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 1, 0, 4, 1));
+		assertEpsilonEquals(.5, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 1, 0, 3, -1));
+		assertEpsilonEquals(0.18, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 3, -1, 1, .4));
 		// Intersecting segment
-		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -2, 0, 2, 1));
+		assertEpsilonEquals(0, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, -2, 0, 2, 1));
 		// Parallel
-		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 2, 0, 1, -1));
-		assertEpsilonEquals(16, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -4, 0, -5, -1));
-		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 0, 1, -1, 0));
+		assertEpsilonEquals(2, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 2, 0, 1, -1));
+		assertEpsilonEquals(16, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, -4, 0, -5, -1));
+		assertEpsilonEquals(.5, Segment2afp.calculatesDistanceSquaredSegmentSegment(1, 1, 0, 0, 0, 1, -1, 0));
 	}
 
 	@Test
-	public void staticInterpolate() {
+	public void staticInterpolates() {
 		Point2D result;
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.interpolate(1., 2., 3., 4., 0., result);
+		Segment2afp.interpolates(1., 2., 3., 4., 0., result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(2, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.interpolate(1., 2., 3., 4., .25, result);
+		Segment2afp.interpolates(1., 2., 3., 4., .25, result);
 		assertEpsilonEquals(1.5, result.getX());
 		assertEpsilonEquals(2.5, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.interpolate(1., 2., 3., 4., .5, result);
+		Segment2afp.interpolates(1., 2., 3., 4., .5, result);
 		assertEpsilonEquals(2, result.getX());
 		assertEpsilonEquals(3., result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.interpolate(1., 2., 3., 4., .75, result);
+		Segment2afp.interpolates(1., 2., 3., 4., .75, result);
 		assertEpsilonEquals(2.5, result.getX());
 		assertEpsilonEquals(3.5, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.interpolate(1., 2., 3., 4., 1., result);
+		Segment2afp.interpolates(1., 2., 3., 4., 1., result);
 		assertEpsilonEquals(3, result.getX());
 		assertEpsilonEquals(4, result.getY());
 	}

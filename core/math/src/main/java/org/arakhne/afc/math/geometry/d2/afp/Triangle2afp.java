@@ -48,6 +48,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:methodcount")
 public interface Triangle2afp<
         ST extends Shape2afp<?, ?, IE, P, V, B>,
         IT extends Triangle2afp<?, ?, IE, P, V, B>,
@@ -68,9 +69,29 @@ public interface Triangle2afp<
      * @param px x coordinate of the reference point.
      * @param py y coordinate of the reference point.
      * @return the closest triangle feature to the reference point.
+     * @deprecated since 13.0, see {@link #findsClosestFeatureTrianglePoint(double, double,
+     *     double, double, double, double, double, double)}
+     */
+    @Deprecated
+    static TriangleFeature getClosestFeatureTrianglePoint(double tx1, double ty1, double tx2, double ty2,
+            double tx3, double ty3, double px, double py) {
+        return findsClosestFeatureTrianglePoint(tx1, ty1, tx2, ty2, tx3, ty3, px, py);
+    }
+
+    /** Replies the closest feature of the triangle to the given point.
+     *
+     * @param tx1 x coordinate of the first point of the triangle.
+     * @param ty1 y coordinate of the first point of the triangle.
+     * @param tx2 x coordinate of the second point of the triangle.
+     * @param ty2 y coordinate of the second point of the triangle.
+     * @param tx3 x coordinate of the third point of the triangle.
+     * @param ty3 y coordinate of the third point of the triangle.
+     * @param px x coordinate of the reference point.
+     * @param py y coordinate of the reference point.
+     * @return the closest triangle feature to the reference point.
      */
     @SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
-    static TriangleFeature getClosestFeatureTrianglePoint(double tx1, double ty1, double tx2, double ty2,
+    static TriangleFeature findsClosestFeatureTrianglePoint(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double px, double py) {
         final double apx = px - tx1;
         final double apy = py - ty1;
@@ -146,11 +167,41 @@ public interface Triangle2afp<
      * @param y3
      *            is the Y coordinate of the third point
      * @return <code>true</code> if the three given points are defined in a counter-clockwise order.
+     * @deprecated since 13.0, see {@link #isCCW(double, double, double, double, double, double)}
      */
+    @Deprecated
     @Pure
     static boolean isCCWOrderDefinition(double x1, double y1, double x2, double y2, double x3, double y3) {
+        return isCCW(x1, y1, x2, y2, x3, y3);
+    }
+
+    /**
+     * Replies if three points of a triangle are defined in a counter-clockwise order.
+     *
+     * @param x1
+     *            is the X coordinate of the first point
+     * @param y1
+     *            is the Y coordinate of the first point
+     * @param x2
+     *            is the X coordinate of the second point
+     * @param y2
+     *            is the Y coordinate of the second point
+     * @param x3
+     *            is the X coordinate of the third point
+     * @param y3
+     *            is the Y coordinate of the third point
+     * @return <code>true</code> if the three given points are defined in a counter-clockwise order.
+     */
+    @Pure
+    static boolean isCCW(double x1, double y1, double x2, double y2, double x3, double y3) {
         return Vector2D.perpProduct(x2 - x1, y2 - y1, x3 - x1, y3 - y1) >= 0.;
     }
+
+    /** Replies if the points of the triangle are defined in a counter-clockwise order.
+     *
+     * @return <code>true</code> if the triangle points are defined in a counter-clockwise order.
+     */
+    boolean isCCW();
 
     /**
      * Replies if the given point is inside the given triangle.
@@ -227,9 +278,32 @@ public interface Triangle2afp<
      * @param py is the point to test.
      * @param closest the closest point.
      * @param farthest the farthest point.
+     * @deprecated since 13.0, {@link #findsClosestFarthestPointsTrianglePoint(double, double, double, double,
+     *     double, double, double, double, Point2D, Point2D)}
+     */
+    @Deprecated
+    @SuppressWarnings("checkstyle:parameternumber")
+    static void computeClosestFarthestPoints(double tx1, double ty1, double tx2, double ty2,
+            double tx3, double ty3, double px, double py, Point2D<?, ?> closest, Point2D<?, ?> farthest) {
+        findsClosestFarthestPointsTrianglePoint(tx1, ty1, tx2, ty2, tx3, ty3, px, py, closest, farthest);
+    }
+
+    /**
+     * Replies the closest point to the given point inside the given triangle.
+     *
+     * @param tx1 x coordinate of the first point of the triangle.
+     * @param ty1 y coordinate of the first point of the triangle.
+     * @param tx2 x coordinate of the second point of the triangle.
+     * @param ty2 y coordinate of the second point of the triangle.
+     * @param tx3 x coordinate of the third point of the triangle.
+     * @param ty3 y coordinate of the third point of the triangle.
+     * @param px is the point to test.
+     * @param py is the point to test.
+     * @param closest the closest point.
+     * @param farthest the farthest point.
      */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
-    static void computeClosestFarthestPoints(double tx1, double ty1, double tx2, double ty2,
+    static void findsClosestFarthestPointsTrianglePoint(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double px, double py, Point2D<?, ?> closest, Point2D<?, ?> farthest) {
         assert closest != null || farthest != null : AssertMessages.oneNotNullParameter(8, 9);
         if (closest != null) {
@@ -242,16 +316,16 @@ public interface Triangle2afp<
                 } else if (side3 <= 0) {
                     closest.set(tx1, ty1);
                 } else {
-                    Segment2afp.computeClosestPointToPoint(tx1, ty1, tx2, ty2, px, py, closest);
+                    Segment2afp.findsClosestPointSegmentPoint(tx1, ty1, tx2, ty2, px, py, closest);
                 }
             } else if (side2 <= 0) {
                 if (side3 <= 0) {
                     closest.set(tx3, ty3);
                 } else {
-                    Segment2afp.computeClosestPointToPoint(tx2, ty2, tx3, ty3, px, py, closest);
+                    Segment2afp.findsClosestPointSegmentPoint(tx2, ty2, tx3, ty3, px, py, closest);
                 }
             } else if (side3 <= 0) {
-                Segment2afp.computeClosestPointToPoint(tx3, ty3, tx1, ty1, px, py, closest);
+                Segment2afp.findsClosestPointSegmentPoint(tx3, ty3, tx1, ty1, px, py, closest);
             } else {
                 closest.set(px, py);
             }
@@ -292,17 +366,43 @@ public interface Triangle2afp<
      * @param px is the point.
      * @param py is the point.
      * @return the squared distance from the triangle to the point.
-     * @see #isCCWOrderDefinition(double, double, double, double, double, double)
+     * @see #isCCW(double, double, double, double, double, double)
+     * @deprecated since 13.0, see {@link #calculatesSquaredDistanceTrianglePoint(double, double,
+     *     double, double, double, double, double, double)}
+     */
+    @Deprecated
+    @Pure
+    @SuppressWarnings("checkstyle:parameternumber")
+    static double getSquaredDistanceTrianglePoint(double tx1, double ty1, double tx2, double ty2,
+            double tx3, double ty3, double px, double py) {
+        return calculatesSquaredDistanceTrianglePoint(tx1, ty1, tx2, ty2, tx3, ty3, px, py);
+    }
+
+    /**
+     * Replies the squared distance from the given triangle to the given point.
+     *
+     * <p>Caution: The points of the triangle must be defined in a CCW order.
+     *
+     * @param tx1 x coordinate of the first point of the triangle.
+     * @param ty1 y coordinate of the first point of the triangle.
+     * @param tx2 x coordinate of the second point of the triangle.
+     * @param ty2 y coordinate of the second point of the triangle.
+     * @param tx3 x coordinate of the third point of the triangle.
+     * @param ty3 y coordinate of the third point of the triangle.
+     * @param px is the point.
+     * @param py is the point.
+     * @return the squared distance from the triangle to the point.
+     * @see #isCCW(double, double, double, double, double, double)
      */
     @Pure
     @SuppressWarnings("checkstyle:parameternumber")
-    static double computeSquaredDistanceTrianglePoint(double tx1, double ty1, double tx2, double ty2,
+    static double calculatesSquaredDistanceTrianglePoint(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double px, double py) {
         final double bx;
         final double by;
         final double cx;
         final double cy;
-        if (isCCWOrderDefinition(tx1, ty1, tx2, ty2, tx3, ty3)) {
+        if (isCCW(tx1, ty1, tx2, ty2, tx3, ty3)) {
             bx = tx2;
             by = ty2;
             cx = tx3;
@@ -323,16 +423,16 @@ public interface Triangle2afp<
             if (side3 < 0) {
                 return Point2D.getDistanceSquaredPointPoint(px, py, tx1, ty1);
             }
-            return Segment2afp.computeDistanceSquaredSegmentPoint(tx1, ty1, tx2, ty2, px, py);
+            return Segment2afp.calculatesDistanceSquaredSegmentPoint(tx1, ty1, tx2, ty2, px, py);
         }
         if (side2 < 0) {
             if (side3 < 0) {
                 return Point2D.getDistanceSquaredPointPoint(px, py, tx3, ty3);
             }
-            return Segment2afp.computeDistanceSquaredSegmentPoint(tx2, ty2, tx3, ty3, px, py);
+            return Segment2afp.calculatesDistanceSquaredSegmentPoint(tx2, ty2, tx3, ty3, px, py);
         }
         if (side3 < 0) {
-            return Segment2afp.computeDistanceSquaredSegmentPoint(tx3, ty3, tx1, ty1, px, py);
+            return Segment2afp.calculatesDistanceSquaredSegmentPoint(tx3, ty3, tx1, ty1, px, py);
         }
         return 0.;
     }
@@ -356,7 +456,7 @@ public interface Triangle2afp<
     static boolean intersectsTriangleCircle(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double cx, double cy, double cradius) {
         assert cradius >= 0 : AssertMessages.positiveOrZeroParameter(8);
-        final double distance = computeSquaredDistanceTrianglePoint(
+        final double distance = calculatesSquaredDistanceTrianglePoint(
                 tx1, ty1, tx2, ty2, tx3, ty3, cx, cy);
         return distance < cradius * cradius;
     }
@@ -392,7 +492,7 @@ public interface Triangle2afp<
         final double y2 = (ty2 - centerY) / b;
         final double x3 = (tx3 - centerX) / a;
         final double y3 = (ty3 - centerY) / b;
-        final double distance = computeSquaredDistanceTrianglePoint(
+        final double distance = calculatesSquaredDistanceTrianglePoint(
                 x1, y1, x2, y2, x3, y3, 0, 0);
         return distance < 1.;
     }
@@ -488,7 +588,7 @@ public interface Triangle2afp<
     static boolean intersectsTriangleTriangle(double t1x1, double t1y1, double t1x2, double t1y2,
             double t1x3, double t1y3, double t2x1, double t2y1, double t2x2, double t2y2,
             double t2x3, double t2y3) {
-        assert isCCWOrderDefinition(t1x1, t1y1, t1x2, t1y2, t1x3, t1y3) : AssertMessages.ccwParameters(0, 1, 2, 3, 4, 5);
+        assert isCCW(t1x1, t1y1, t1x2, t1y2, t1x3, t1y3) : AssertMessages.ccwParameters(0, 1, 2, 3, 4, 5);
 
         final double[] coordinates = new double[] {
             t1x2 - t1x1, t1x1, t1y2 - t1y1, t1y1,
@@ -754,12 +854,6 @@ public interface Triangle2afp<
         set(shape.getX1(), shape.getY1(), shape.getX2(), shape.getY2(), shape.getX3(), shape.getY3());
     }
 
-    /** Replies if the points of the triangle are defined in a counter-clockwise order.
-     *
-     * @return <code>true</code> if the triangle points are defined in a counter-clockwise order.
-     */
-    boolean isCCW();
-
     @Override
     default void clear() {
         set(0, 0, 0, 0, 0, 0);
@@ -811,7 +905,7 @@ public interface Triangle2afp<
     @Override
     default double getDistanceSquared(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
-        return computeSquaredDistanceTrianglePoint(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(), pt.getX(), pt.getY());
+        return calculatesSquaredDistanceTrianglePoint(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(), pt.getX(), pt.getY());
     }
 
     @Pure
@@ -927,7 +1021,7 @@ public interface Triangle2afp<
     default boolean intersects(PathIterator2afp<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
         final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = Path2afp.computeCrossingsFromTriangle(
+        final int crossings = Path2afp.calculatesCrossingsPathIteratorTriangleShadow(
                 0,
                 iterator,
                 getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
@@ -955,7 +1049,7 @@ public interface Triangle2afp<
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        computeClosestFarthestPoints(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
+        findsClosestFarthestPointsTrianglePoint(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
                 pt.getX(), pt.getY(), point, null);
         return point;
     }
@@ -971,7 +1065,7 @@ public interface Triangle2afp<
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
         assert ellipse != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), ellipse.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), ellipse.getPathIterator(), point);
         return point;
     }
 
@@ -980,7 +1074,7 @@ public interface Triangle2afp<
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), rectangle.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), rectangle.getPathIterator(), point);
         return point;
     }
 
@@ -989,7 +1083,7 @@ public interface Triangle2afp<
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), segment.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), segment.getPathIterator(), point);
         return point;
     }
 
@@ -998,7 +1092,7 @@ public interface Triangle2afp<
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
         assert triangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), triangle.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), triangle.getPathIterator(), point);
         return point;
     }
 
@@ -1007,7 +1101,7 @@ public interface Triangle2afp<
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
         assert orientedRectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), orientedRectangle.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), orientedRectangle.getPathIterator(), point);
         return point;
     }
 
@@ -1016,7 +1110,7 @@ public interface Triangle2afp<
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
         assert parallelogram != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), parallelogram.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), parallelogram.getPathIterator(), point);
         return point;
     }
 
@@ -1025,7 +1119,7 @@ public interface Triangle2afp<
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
         assert roundRectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), roundRectangle.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), roundRectangle.getPathIterator(), point);
         return point;
     }
 
@@ -1034,7 +1128,7 @@ public interface Triangle2afp<
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), path.getPathIterator(), point);
         return point;
     }
 
@@ -1043,7 +1137,7 @@ public interface Triangle2afp<
     default P getFarthestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        computeClosestFarthestPoints(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
+        findsClosestFarthestPointsTrianglePoint(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
                 pt.getX(), pt.getY(), null, point);
         return point;
     }

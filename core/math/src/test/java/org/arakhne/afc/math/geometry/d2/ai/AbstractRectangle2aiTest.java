@@ -49,12 +49,12 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
     }
 
     @Test
-    public void staticReduceCohenSutherlandZoneRectangleSegment() {
+    public void staticReducesCohenSutherlandZoneRectangleSegment() {
         Point2D p1 = createPoint(0, 0);
         Point2D p2 = createPoint(0, 0);
 
         assertEquals(0,
-                Rectangle2ai.reduceCohenSutherlandZoneRectangleSegment(10, 12, 40, 37, 20, 45, 43, 15,
+                Rectangle2ai.reducesCohenSutherlandZoneRectangleSegment(10, 12, 40, 37, 20, 45, 43, 15,
                         MathUtil.getCohenSutherlandCode(20, 45, 0, 12, 40, 37),
                         MathUtil.getCohenSutherlandCode(43, 15, 0, 12, 40, 37),
                         p1, p2));
@@ -62,7 +62,7 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
         assertIntPointEquals(40, 19, p2);
 
         assertEquals(0, 
-                Rectangle2ai.reduceCohenSutherlandZoneRectangleSegment(10, 12, 40, 37, 20, 55, 43, 15,
+                Rectangle2ai.reducesCohenSutherlandZoneRectangleSegment(10, 12, 40, 37, 20, 55, 43, 15,
                         MathUtil.getCohenSutherlandCode(20, 55, 0, 12, 40, 37),
                         MathUtil.getCohenSutherlandCode(43, 15, 0, 12, 40, 37),
                         p1, p2));
@@ -666,140 +666,140 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
     }
 
     @Test
-    public void staticComputeClosestPointRectanglePoint() {
+    public void staticFindsClosestPointRectanglePoint() {
         Point2D p;
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectanglePoint(5, 8, 15, 13, 5, 8, p);
+        Rectangle2ai.findsClosestPointRectanglePoint(5, 8, 15, 13, 5, 8, p);
         assertNotNull(p);
         assertEquals(5, p.ix());
         assertEquals(8, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectanglePoint(5, 8, 15, 13, 10, 10, p);
+        Rectangle2ai.findsClosestPointRectanglePoint(5, 8, 15, 13, 10, 10, p);
         assertNotNull(p);
         assertEquals(10, p.ix());
         assertEquals(10, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectanglePoint(5, 8, 15, 13, 4, 8, p);
+        Rectangle2ai.findsClosestPointRectanglePoint(5, 8, 15, 13, 4, 8, p);
         assertNotNull(p);
         assertEquals(5, p.ix());
         assertEquals(8, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectanglePoint(5, 8, 15, 13, 0, 0, p);
+        Rectangle2ai.findsClosestPointRectanglePoint(5, 8, 15, 13, 0, 0, p);
         assertNotNull(p);
         assertEquals(5, p.ix());
         assertEquals(8, p.iy());
     }
 
     @Test
-    public void staticComputeClosestPointRectangleRectangle() {
+    public void staticFindsClosestPointRectangleRectangle() {
         Point2D p;
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectangleRectangle(5, 8, 15, 13, 5, 8, 7, 9, p);
+        Rectangle2ai.findsClosestPointRectangleRectangle(5, 8, 15, 13, 5, 8, 7, 9, p);
         assertNotNull(p);
         assertEquals(6, p.ix());
         assertEquals(8, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectangleRectangle(5, 8, 15, 13, 10, 10, 12, 12, p);
+        Rectangle2ai.findsClosestPointRectangleRectangle(5, 8, 15, 13, 10, 10, 12, 12, p);
         assertNotNull(p);
         assertEquals(11, p.ix());
         assertEquals(11, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectangleRectangle(5, 8, 15, 13, 4, 8, 6, 10, p);
+        Rectangle2ai.findsClosestPointRectangleRectangle(5, 8, 15, 13, 4, 8, 6, 10, p);
         assertNotNull(p);
         assertEquals(5, p.ix());
         assertEquals(9, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectangleRectangle(5, 8, 15, 13, 0, 0, 2, 2, p);
+        Rectangle2ai.findsClosestPointRectangleRectangle(5, 8, 15, 13, 0, 0, 2, 2, p);
         assertNotNull(p);
         assertEquals(5, p.ix());
         assertEquals(8, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectangleRectangle(5, 8, 15, 13, 7, 20, 50, 32, p);
+        Rectangle2ai.findsClosestPointRectangleRectangle(5, 8, 15, 13, 7, 20, 50, 32, p);
         assertNotNull(p);
         assertEquals(15, p.ix());
         assertEquals(13, p.iy());
     }
 
     @Test
-    public void staticComputeClosestPointRectangleSegment() {
+    public void staticFindsClosestPointRectangleSegment() {
         Point2D p;
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectangleSegment(5, 8, 15, 13, 5, 8, 7, 9, p);
+        Rectangle2ai.findsClosestPointRectangleSegment(5, 8, 15, 13, 5, 8, 7, 9, p);
         assertNotNull(p);
         assertEquals(5, p.ix());
         assertEquals(8, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectangleSegment(5, 8, 15, 13, 10, 10, 12, 12, p);
+        Rectangle2ai.findsClosestPointRectangleSegment(5, 8, 15, 13, 10, 10, 12, 12, p);
         assertNotNull(p);
         assertEquals(10, p.ix());
         assertEquals(10, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectangleSegment(5, 8, 15, 13, 4, 8, 6, 10, p);
+        Rectangle2ai.findsClosestPointRectangleSegment(5, 8, 15, 13, 4, 8, 6, 10, p);
         assertNotNull(p);
         assertEquals(5, p.ix());
         assertEquals(9, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectangleSegment(5, 8, 15, 13, 0, 0, 2, 2, p);
+        Rectangle2ai.findsClosestPointRectangleSegment(5, 8, 15, 13, 0, 0, 2, 2, p);
         assertNotNull(p);
         assertEquals(5, p.ix());
         assertEquals(8, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeClosestPointRectangleSegment(5, 8, 15, 13, 7, 20, 50, 32, p);
+        Rectangle2ai.findsClosestPointRectangleSegment(5, 8, 15, 13, 7, 20, 50, 32, p);
         assertNotNull(p);
         assertEquals(7, p.ix());
         assertEquals(13, p.iy());
     }
 
     @Test
-    public void staticComputeFarthestPoint() {
+    public void staticFindsFarthestPointRectanglePoint() {
         Point2D p;
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeFarthestPoint(5, 8, 15, 13, 5, 8, p);
+        Rectangle2ai.findsFarthestPointRectanglePoint(5, 8, 15, 13, 5, 8, p);
         assertNotNull(p);
         assertEquals(15, p.ix());
         assertEquals(13, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeFarthestPoint(5, 8, 15, 13, 10, 10, p);
+        Rectangle2ai.findsFarthestPointRectanglePoint(5, 8, 15, 13, 10, 10, p);
         assertNotNull(p);
         assertEquals(15, p.ix());
         assertEquals(13, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeFarthestPoint(5, 8, 15, 13, 4, 8, p);
+        Rectangle2ai.findsFarthestPointRectanglePoint(5, 8, 15, 13, 4, 8, p);
         assertNotNull(p);
         assertEquals(15, p.ix());
         assertEquals(13, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeFarthestPoint(5, 8, 15, 13, 0, 0, p);
+        Rectangle2ai.findsFarthestPointRectanglePoint(5, 8, 15, 13, 0, 0, p);
         assertNotNull(p);
         assertEquals(15, p.ix());
         assertEquals(13, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeFarthestPoint(5, 8, 15, 13, 24, 0, p);
+        Rectangle2ai.findsFarthestPointRectanglePoint(5, 8, 15, 13, 24, 0, p);
         assertNotNull(p);
         assertEquals(5, p.ix());
         assertEquals(13, p.iy());
 
         p = createPoint(0, 0);
-        Rectangle2ai.computeFarthestPoint(5, 8, 15, 13, 0, 32, p);
+        Rectangle2ai.findsFarthestPointRectanglePoint(5, 8, 15, 13, 0, 32, p);
         assertNotNull(p);
         assertEquals(15, p.ix());
         assertEquals(8, p.iy());

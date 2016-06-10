@@ -769,7 +769,7 @@ public interface RoundRectangle2afp<
     default boolean intersects(PathIterator2afp<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
         final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = Path2afp.computeCrossingsFromRoundRect(
+        final int crossings = Path2afp.calculatesCrossingsPathIteratorRoundRectangleShadow(
                 0,
                 iterator,
                 getMinX(), getMinY(), getMaxX(), getMaxY(), getArcWidth(), getArcHeight(),
@@ -834,7 +834,7 @@ public interface RoundRectangle2afp<
         if (px < rx1 + aw) {
             if (py < ry1 + ah) {
                 final P point = factory.newPoint();
-                Ellipse2afp.computeClosestPointToSolidEllipse(
+                Ellipse2afp.findsClosestPointSolidEllipsePoint(
                         px, py,
                         rx1, ry1,
                         aw * 2, ah * 2,
@@ -844,7 +844,7 @@ public interface RoundRectangle2afp<
             if (py > ry2 - ah) {
                 final double eh = ah * 2;
                 final P point = factory.newPoint();
-                Ellipse2afp.computeClosestPointToSolidEllipse(
+                Ellipse2afp.findsClosestPointSolidEllipsePoint(
                         px, py,
                         rx1, ry2 - eh,
                         aw * 2, eh,
@@ -855,7 +855,7 @@ public interface RoundRectangle2afp<
             if (py < ry1 + ah) {
                 final double ew = aw * 2;
                 final P point = factory.newPoint();
-                Ellipse2afp.computeClosestPointToSolidEllipse(
+                Ellipse2afp.findsClosestPointSolidEllipsePoint(
                         px, py,
                         rx2 - ew, ry1,
                         ew, ah * 2,
@@ -866,7 +866,7 @@ public interface RoundRectangle2afp<
                 final double ew = aw * 2;
                 final double eh = ah * 2;
                 final P point = factory.newPoint();
-                Ellipse2afp.computeClosestPointToSolidEllipse(
+                Ellipse2afp.findsClosestPointSolidEllipsePoint(
                         px, py,
                         rx2 - ew, ry2 - eh,
                         ew, eh,
@@ -914,7 +914,7 @@ public interface RoundRectangle2afp<
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
         assert ellipse != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getFlatteningPathIterator(), ellipse.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(), ellipse.getPathIterator(), point);
         return point;
     }
 
@@ -923,7 +923,7 @@ public interface RoundRectangle2afp<
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getFlatteningPathIterator(), rectangle.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(), rectangle.getPathIterator(), point);
         return point;
     }
 
@@ -940,7 +940,7 @@ public interface RoundRectangle2afp<
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
         assert triangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getFlatteningPathIterator(), triangle.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(), triangle.getPathIterator(), point);
         return point;
     }
 
@@ -949,7 +949,8 @@ public interface RoundRectangle2afp<
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
         assert orientedRectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getFlatteningPathIterator(), orientedRectangle.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(),
+                orientedRectangle.getPathIterator(), point);
         return point;
     }
 
@@ -958,7 +959,7 @@ public interface RoundRectangle2afp<
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
         assert parallelogram != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getFlatteningPathIterator(), parallelogram.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(), parallelogram.getPathIterator(), point);
         return point;
     }
 
@@ -967,7 +968,7 @@ public interface RoundRectangle2afp<
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
         assert roundRectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getFlatteningPathIterator(), roundRectangle.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(), roundRectangle.getPathIterator(), point);
         return point;
     }
 
@@ -976,7 +977,7 @@ public interface RoundRectangle2afp<
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getFlatteningPathIterator(), path.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getFlatteningPathIterator(), path.getPathIterator(), point);
         return point;
     }
 
@@ -1002,14 +1003,14 @@ public interface RoundRectangle2afp<
             if (py <= centerY) {
                 final double ew = aw * 2;
                 final double eh = ah * 2;
-                Ellipse2afp.computeFarthestPointToShallowEllipse(
+                Ellipse2afp.findsFarthestPointShallowEllipsePoint(
                         px, py,
                         rx2 - ew, ry2 - eh,
                         ew, eh,
                         point);
             } else {
                 final double ew = aw * 2;
-                Ellipse2afp.computeFarthestPointToShallowEllipse(
+                Ellipse2afp.findsFarthestPointShallowEllipsePoint(
                         px, py,
                         rx2 - ew, ry1,
                         ew, ah * 2,
@@ -1017,13 +1018,13 @@ public interface RoundRectangle2afp<
             }
         } else if (px <= centerY) {
             final double eh = ah * 2;
-            Ellipse2afp.computeFarthestPointToShallowEllipse(
+            Ellipse2afp.findsFarthestPointShallowEllipsePoint(
                     px, py,
                     rx1, ry2 - eh,
                     aw * 2, eh,
                     point);
         } else {
-            Ellipse2afp.computeFarthestPointToShallowEllipse(
+            Ellipse2afp.findsFarthestPointShallowEllipsePoint(
                     px, py,
                     rx1, ry1,
                     aw * 2, ah * 2,

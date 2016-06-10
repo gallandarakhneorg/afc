@@ -340,7 +340,7 @@ public class Triangle2dfx
 		if (this.ccw == null) {
 			this.ccw = new ReadOnlyBooleanWrapper(this, "ccw"); //$NON-NLS-1$
 			this.ccw.bind(Bindings.createBooleanBinding(() -> {
-				return Triangle2afp.isCCWOrderDefinition(
+				return Triangle2afp.isCCW(
 						getX1(), getY1(), getX2(), getY2(),
 						getX3(), getY3());
 			},

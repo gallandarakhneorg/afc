@@ -288,7 +288,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 			this.boundingBox = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				final Rectangle2ifx bb = getGeomFactory().newBox();
-				Path2ai.computeDrawableElementBoundingBox(
+				Path2ai.calculatesDrawableElementBoundingBox(
 						getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						bb);
 				return bb;
@@ -309,7 +309,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.CONTROL_POINT_BOUNDING_BOX);
 			this.logicalBounds.bind(Bindings.createObjectBinding(() -> {
 				final Rectangle2ifx bb = getGeomFactory().newBox();
-				Path2ai.computeControlPointBoundingBox(
+				Path2ai.calculatesControlPointBoundingBox(
 						getPathIterator(),
 						bb);
 				return bb;

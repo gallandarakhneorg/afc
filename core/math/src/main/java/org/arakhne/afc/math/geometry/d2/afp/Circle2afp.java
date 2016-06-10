@@ -184,7 +184,7 @@ public interface Circle2afp<
     @Pure
     static boolean intersectsCircleLine(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
-        final double d = Segment2afp.computeDistanceSquaredLinePoint(x2, y2, x3, y3, x1, y1);
+        final double d = Segment2afp.calculatesDistanceSquaredLinePoint(x2, y2, x3, y3, x1, y1);
         return d < (radius * radius);
     }
 
@@ -203,7 +203,7 @@ public interface Circle2afp<
     @Pure
     static boolean intersectsCircleSegment(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
-        final double d = Segment2afp.computeDistanceSquaredSegmentPoint(x2, y2, x3, y3, x1, y1);
+        final double d = Segment2afp.calculatesDistanceSquaredSegmentPoint(x2, y2, x3, y3, x1, y1);
         return d < (radius * radius);
     }
 
@@ -480,7 +480,7 @@ public interface Circle2afp<
     default boolean intersects(PathIterator2afp<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
         final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = Path2afp.computeCrossingsFromCircle(
+        final int crossings = Path2afp.calculatesCrossingsPathIteratorCircleShadow(
                 0,
                 iterator,
                 getX(), getY(), getRadius(),

@@ -78,19 +78,19 @@ public interface Shape2afp<
 		final int crossings;
 		if (shape instanceof Circle2afp) {
 			final Circle2afp<?, ?, ?, ?, ?, ?> circle = (Circle2afp<?, ?, ?, ?, ?, ?>) shape;
-			crossings = Path2afp.computeCrossingsFromCircle(
+			crossings = Path2afp.calculatesCrossingsPathIteratorCircleShadow(
 					0, iterator,
 					circle.getCenterX(), circle.getCenterY(), circle.getRadius(),
 					CrossingComputationType.STANDARD);
 		} else if (shape instanceof Ellipse2afp) {
 			final Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse = (Ellipse2afp<?, ?, ?, ?, ?, ?>) shape;
-			crossings = Path2afp.computeCrossingsFromEllipse(
+			crossings = Path2afp.calculatesCrossingsPathIteratorEllipseShadow(
 					0, iterator,
 					ellipse.getMinX(), ellipse.getMinY(), ellipse.getWidth(), ellipse.getHeight(),
 					CrossingComputationType.STANDARD);
 		} else if (shape instanceof RoundRectangle2afp) {
 			final RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle = (RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape;
-			crossings = Path2afp.computeCrossingsFromRoundRect(
+			crossings = Path2afp.calculatesCrossingsPathIteratorRoundRectangleShadow(
 					0, iterator,
 					roundRectangle.getMinX(), roundRectangle.getMinY(),
 					roundRectangle.getMaxX(), roundRectangle.getMaxY(),
@@ -98,14 +98,14 @@ public interface Shape2afp<
 					CrossingComputationType.STANDARD);
 		} else if (shape instanceof Segment2afp) {
 			final Segment2afp<?, ?, ?, ?, ?, ?> segment = (Segment2afp<?, ?, ?, ?, ?, ?>) shape;
-			crossings = Path2afp.computeCrossingsFromSegment(
+			crossings = Path2afp.calculatesCrossingsPathIteratorSegmentShadow(
 					0, iterator,
 					segment.getX1(), segment.getY1(),
 					segment.getX2(), segment.getY2(),
 					CrossingComputationType.STANDARD);
 		} else if (shape instanceof Triangle2afp) {
 			final Triangle2afp<?, ?, ?, ?, ?, ?> triangle = (Triangle2afp<?, ?, ?, ?, ?, ?>) shape;
-			crossings = Path2afp.computeCrossingsFromTriangle(
+			crossings = Path2afp.calculatesCrossingsPathIteratorTriangleShadow(
 					0, iterator,
 					triangle.getX1(), triangle.getY1(),
 					triangle.getX2(), triangle.getY2(),
@@ -135,7 +135,7 @@ public interface Shape2afp<
                 maxY = rect.getMaxY();
 			}
 			final PathIterator2afp<?> shapePathIterator = iterator.getGeomFactory().convert(shape.getPathIterator());
-			crossings = Path2afp.computeCrossingsFromPath(
+			crossings = Path2afp.calculatesCrossingsPathIteratorPathShadow(
 					0, iterator,
 					new BasicPathShadow2afp(shapePathIterator, minX, minY, maxX, maxY),
 					CrossingComputationType.STANDARD);

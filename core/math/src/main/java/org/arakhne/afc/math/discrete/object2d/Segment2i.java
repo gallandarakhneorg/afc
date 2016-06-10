@@ -187,12 +187,12 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 			int side1, side2;
 			boolean firstIsTop = (sy1<=sy2);
 			if (firstIsTop) {
-				side1 = Segment2ai.computeSideLinePoint(sx1, sy1, sx2, sy2, x0, y0);
-				side2 = Segment2ai.computeSideLinePoint(sx1, sy1, sx2, sy2, x1, y1);
+				side1 = Segment2ai.findsSideLinePoint(sx1, sy1, sx2, sy2, x0, y0);
+				side2 = Segment2ai.findsSideLinePoint(sx1, sy1, sx2, sy2, x1, y1);
 			}
 			else {
-				side1 = Segment2ai.computeSideLinePoint(sx2, sy2, sx1, sy1, x0, y0);
-				side2 = Segment2ai.computeSideLinePoint(sx2, sy2, sx1, sy1, x1, y1);
+				side1 = Segment2ai.findsSideLinePoint(sx2, sy2, sx1, sy1, x0, y0);
+				side2 = Segment2ai.findsSideLinePoint(sx2, sy2, sx1, sy1, x1, y1);
 			}
 			if (side1>=0 || side2>=0) {
 				// At least one point is on the side of the shadow.
@@ -509,8 +509,8 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * <code>false</code>
 	 */
 	public static boolean intersectsSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-		int side1 = Segment2ai.computeSideLinePoint(x1, y1, x2, y2, x3, y3);
-		int side2 = Segment2ai.computeSideLinePoint(x1, y1, x2, y2, x4, y4);
+		int side1 = Segment2ai.findsSideLinePoint(x1, y1, x2, y2, x3, y3);
+		int side2 = Segment2ai.findsSideLinePoint(x1, y1, x2, y2, x4, y4);
 		if ((side1*side2)<=0) {
 			return intersectsSegmentSegment1(x1, y1, x2, y2, x3, y3, x4, y4, true, true, null)!=0;
 		}

@@ -75,16 +75,25 @@ public interface Path2afp<
     PathWindingRule DEFAULT_WINDING_RULE = PathWindingRule.NON_ZERO;
 
     /**
-     * Accumulate the number of times the path crosses the shadow
-     * extending to the right of the second path.  See the comment
-     * for the SHAPE_INTERSECTS constant for more complete details.
-     * The return value is the sum of all crossings for both the
-     * top and bottom of the shadow for every segment in the path,
-     * or the special value SHAPE_INTERSECTS if the path ever enters
-     * the interior of the rectangle.
-     * The path must start with a SEG_MOVETO, otherwise an exception is
-     * thrown.
-     * The caller must check r[xy]{min, max} for NaN values.
+     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorPathShadow(int,
+     *     PathIterator2afp, BasicPathShadow2afp, CrossingComputationType)}
+     */
+    @SuppressWarnings("all")
+    @Deprecated
+    static int computeCrossingsFromPath(
+            int crossings,
+            PathIterator2afp<?> iterator,
+            BasicPathShadow2afp shadow,
+            CrossingComputationType type) {
+        return calculatesCrossingsPathIteratorPathShadow(crossings, iterator, shadow, type);
+    }
+
+    /**
+     * Accumulate the number of times the path crosses the shadow extending to the right of the second path.  See the comment
+     * for the SHAPE_INTERSECTS constant for more complete details. The return value is the sum of all crossings for both the
+     * top and bottom of the shadow for every segment in the path, or the special value SHAPE_INTERSECTS if the path ever enters
+     * the interior of the rectangle. The path must start with a SEG_MOVETO, otherwise an exception is
+     * thrown. The caller must check r[xy]{min, max} for NaN values.
      * @param crossings is the initial value for crossing.
      * @param iterator is the iterator on the path elements.
      * @param shadow is the description of the shape to project to the right.
@@ -94,11 +103,8 @@ public interface Path2afp<
      * @see "Weiler–Atherton clipping algorithm"
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-    static int computeCrossingsFromPath(
-            int crossings,
-            PathIterator2afp<?> iterator,
-            BasicPathShadow2afp shadow,
-            CrossingComputationType type) {
+    static int calculatesCrossingsPathIteratorPathShadow(int crossings, PathIterator2afp<?> iterator,
+            BasicPathShadow2afp shadow, CrossingComputationType type) {
         assert iterator != null : AssertMessages.notNullParameter(1);
         assert shadow != null : AssertMessages.notNullParameter(2);
         if (!iterator.hasNext()) {
@@ -144,7 +150,7 @@ public interface Path2afp<
                 subPath.moveTo(curx, cury);
                 subPath.quadTo(
                         pathElement1.getCtrlX1(), pathElement1.getCtrlY1(), endx, endy);
-                numCrossings = computeCrossingsFromPath(
+                numCrossings = calculatesCrossingsPathIteratorPathShadow(
                         numCrossings, subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         shadow, CrossingComputationType.STANDARD);
                 if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
@@ -160,7 +166,7 @@ public interface Path2afp<
                 subPath.moveTo(curx, cury);
                 subPath.curveTo(pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
                         pathElement1.getCtrlX2(), pathElement1.getCtrlY2(), endx, endy);
-                numCrossings = computeCrossingsFromPath(
+                numCrossings = calculatesCrossingsPathIteratorPathShadow(
                         numCrossings, subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         shadow, CrossingComputationType.STANDARD);
                 if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
@@ -177,7 +183,7 @@ public interface Path2afp<
                 subPath.arcTo(endx, endy, pathElement1.getRadiusX(), pathElement1.getRadiusY(),
                         pathElement1.getRotationX(), pathElement1.getLargeArcFlag(),
                         pathElement1.getSweepFlag());
-                numCrossings = computeCrossingsFromPath(
+                numCrossings = calculatesCrossingsPathIteratorPathShadow(
                         numCrossings, subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         shadow, CrossingComputationType.STANDARD);
                 if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
@@ -221,17 +227,15 @@ public interface Path2afp<
     /** Replies the point on the path that is closest to the given point.
      *
      * <p><strong>CAUTION:</strong> This function works only on path iterators
-     * that are replying not-curved primitives, ie. if the
-     * {@link PathIterator2D#isCurved()} of {@code pi} is replying
-     * <code>false</code>.
-     * {@link #getClosestPointTo(Point2D)} avoids this restriction.
+     * that are replying not-curved primitives, ie. if the {@link PathIterator2D#isCurved()} of {@code pi} is replying
+     * <code>false</code>. {@link #getClosestPointTo(Point2D)} avoids this restriction.
      * @param pi is the iterator on the elements of the path.
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
-     * @param result the closest point on the shape; or the point itself
-     *     if it is inside the shape.
+     * @param result the closest point on the shape; or the point itself if it is inside the shape.
      */
-    static void getClosestPointTo(PathIterator2afp<? extends PathElement2afp> pi, double x, double y, Point2D<?, ?> result) {
+    static void findsClosestPointPathIteratorPoint(PathIterator2afp<? extends PathElement2afp> pi, double x,
+            double y, Point2D<?, ?> result) {
         assert pi != null : AssertMessages.notNullParameter(0);
         assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
         assert result != null : AssertMessages.notNullParameter(3);
@@ -252,7 +256,7 @@ public interface Path2afp<
                 candidateY = pe.getToY();
                 break;
             case LINE_TO:
-                double factor =  Segment2afp.computeProjectedPointOnLine(x, y,
+                double factor =  Segment2afp.findsProjectedPointPointLine(x, y,
                         pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
                 factor = MathUtil.clamp(factor, 0, 1);
                 double vx = (pe.getToX() - pe.getFromX()) * factor;
@@ -260,18 +264,18 @@ public interface Path2afp<
                 foundCandidate = true;
                 candidateX = pe.getFromX() + vx;
                 candidateY = pe.getFromY() + vy;
-                crossings += Segment2afp.computeCrossingsFromPoint(x, y,
+                crossings += Segment2afp.calculatesCrossingsPointShadowSegment(x, y,
                         pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
                 break;
             case CLOSE:
-                crossings += Segment2afp.computeCrossingsFromPoint(x, y,
+                crossings += Segment2afp.calculatesCrossingsPointShadowSegment(x, y,
                         pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
                 if ((crossings & mask) != 0) {
                     result.set(x, y);
                     return;
                 }
                 if (!pe.isEmpty()) {
-                    factor =  Segment2afp.computeProjectedPointOnLine(x, y,
+                    factor =  Segment2afp.findsProjectedPointPointLine(x, y,
                             pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
                     factor = MathUtil.clamp(factor, 0, 1);
                     vx = (pe.getToX() - pe.getFromX()) * factor;
@@ -301,10 +305,8 @@ public interface Path2afp<
     /** Replies the point on the path of pi that is closest to the given shape.
      *
      * <p><strong>CAUTION:</strong> This function works only on path iterators
-     * that are replying not-curved primitives, ie. if the
-     * {@link PathIterator2D#isCurved()} of {@code pi} is replying
-     * <code>false</code>.
-     * {@link #getClosestPointTo(org.arakhne.afc.math.geometry.d2.Shape2D)} avoids this restriction.
+     * that are replying not-curved primitives, ie. if the {@link PathIterator2D#isCurved()} of {@code pi} is replying
+     * <code>false</code>. {@link #getClosestPointTo(org.arakhne.afc.math.geometry.d2.Shape2D)} avoids this restriction.
      *
      * @param pi is the iterator of path elements, on one of which the closest point is located.
      * @param shape the shape to which the closest point must be computed.
@@ -313,7 +315,7 @@ public interface Path2afp<
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
     @Unefficient
-    static boolean getClosestPointTo(PathIterator2afp<? extends PathElement2afp> pi,
+    static boolean findsClosestPointPathIteratorPathIterator(PathIterator2afp<? extends PathElement2afp> pi,
             PathIterator2afp<? extends PathElement2afp> shape, Point2D<?, ?> result) {
         assert pi != null : AssertMessages.notNullParameter(0);
         assert shape != null : AssertMessages.notNullParameter(1);
@@ -333,7 +335,7 @@ public interface Path2afp<
             return false;
         }
         final Rectangle2afp<?, ?, ?, ?, ?, ?> box = pi.getGeomFactory().newBox();
-        computeDrawableElementBoundingBox(shape.restartIterations(), box);
+        calculatesDrawableElementBoundingBox(shape.restartIterations(), box);
         final ClosestPointPathShadow2afp shadow = new ClosestPointPathShadow2afp(shape.restartIterations(), box);
         int crossings = 0;
         double curx = pathElement1.getToX();
@@ -393,12 +395,32 @@ public interface Path2afp<
         return true;
     }
 
+    /**
+     * @deprecated since 13.0, see {@link #findsClosestPointPathIteratorPoint(PathIterator2afp, double, double, Point2D)}
+     */
+    @SuppressWarnings("all")
+    @Deprecated
+    static void getClosestPointTo(PathIterator2afp<? extends PathElement2afp> pi, double x, double y, Point2D<?, ?> result) {
+        findsClosestPointPathIteratorPoint(pi, x, y, result);
+    }
+
+    /**
+     * @deprecated since 13.0, see {@link #findsClosestPointPathIteratorPathIterator(PathIterator2afp,
+     *      PathIterator2afp, Point2D)}
+     */
+    @SuppressWarnings("all")
+    @Deprecated
+    static boolean getClosestPointTo(PathIterator2afp<? extends PathElement2afp> pi,
+            PathIterator2afp<? extends PathElement2afp> shape, Point2D<?, ?> result) {
+        return findsClosestPointPathIteratorPathIterator(pi, shape, result);
+    }
+
     @Pure
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(
+        Path2afp.findsClosestPointPathIteratorPoint(
                 getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                 pt.getX(), pt.getY(),
                 point);
@@ -411,10 +433,10 @@ public interface Path2afp<
     default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
         final P result = getGeomFactory().newPoint();
         if (isCurved()) {
-            Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+            Path2afp.findsClosestPointPathIteratorPoint(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                     circle.getCenterX(), circle.getCenterY(), result);
         } else {
-            Path2afp.getClosestPointTo(getPathIterator(), circle.getCenterX(), circle.getCenterY(), result);
+            Path2afp.findsClosestPointPathIteratorPoint(getPathIterator(), circle.getCenterX(), circle.getCenterY(), result);
         }
         return result;
     }
@@ -425,10 +447,10 @@ public interface Path2afp<
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
         final P result = getGeomFactory().newPoint();
         if (isCurved()) {
-            Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                     ellipse.getPathIterator(), result);
         } else {
-            Path2afp.getClosestPointTo(getPathIterator(), ellipse.getPathIterator(), result);
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), ellipse.getPathIterator(), result);
         }
         return result;
     }
@@ -439,10 +461,10 @@ public interface Path2afp<
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
         final P result = getGeomFactory().newPoint();
         if (isCurved()) {
-            Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                     rectangle.getPathIterator(), result);
         } else {
-            Path2afp.getClosestPointTo(getPathIterator(), rectangle.getPathIterator(), result);
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), rectangle.getPathIterator(), result);
         }
         return result;
     }
@@ -453,10 +475,10 @@ public interface Path2afp<
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
         final P result = getGeomFactory().newPoint();
         if (isCurved()) {
-            Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                     segment.getPathIterator(), result);
         } else {
-            Path2afp.getClosestPointTo(getPathIterator(), segment.getPathIterator(), result);
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), segment.getPathIterator(), result);
         }
         return result;
     }
@@ -467,10 +489,10 @@ public interface Path2afp<
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
         final P result = getGeomFactory().newPoint();
         if (isCurved()) {
-            Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                     triangle.getPathIterator(), result);
         } else {
-            Path2afp.getClosestPointTo(getPathIterator(), triangle.getPathIterator(), result);
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), triangle.getPathIterator(), result);
         }
         return result;
     }
@@ -481,10 +503,10 @@ public interface Path2afp<
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
         final P result = getGeomFactory().newPoint();
         if (isCurved()) {
-            Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                     path.getPathIterator(), result);
         } else {
-            Path2afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), result);
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), path.getPathIterator(), result);
         }
         return result;
     }
@@ -495,10 +517,10 @@ public interface Path2afp<
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
         final P result = getGeomFactory().newPoint();
         if (isCurved()) {
-            Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                     orientedRectangle.getPathIterator(), result);
         } else {
-            Path2afp.getClosestPointTo(getPathIterator(), orientedRectangle.getPathIterator(), result);
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), orientedRectangle.getPathIterator(), result);
         }
         return result;
     }
@@ -509,10 +531,10 @@ public interface Path2afp<
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
         final P result = getGeomFactory().newPoint();
         if (isCurved()) {
-            Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                     parallelogram.getPathIterator(), result);
         } else {
-            Path2afp.getClosestPointTo(getPathIterator(), parallelogram.getPathIterator(), result);
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), parallelogram.getPathIterator(), result);
         }
         return result;
     }
@@ -523,27 +545,47 @@ public interface Path2afp<
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
         final P result = getGeomFactory().newPoint();
         if (isCurved()) {
-            Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                     roundRectangle.getPathIterator(), result);
         } else {
-            Path2afp.getClosestPointTo(getPathIterator(), roundRectangle.getPathIterator(), result);
+            Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), roundRectangle.getPathIterator(), result);
         }
         return result;
+    }
+
+    /**
+     * @deprecated since 13.0, see {@link #findsFarthestPointPathIteratorPoint(PathIterator2afp, double, double, Point2D)}
+     */
+    @SuppressWarnings("all")
+    @Deprecated
+    static void getFarthestPointTo(PathIterator2afp<? extends PathElement2afp> pi, double x, double y, Point2D<?, ?> result) {
+        findsFarthestPointPathIteratorPoint(pi, x, y, result);
+    }
+
+    @Pure
+    @Override
+    default P getFarthestPointTo(Point2D<?, ?> pt) {
+        assert pt != null : AssertMessages.notNullParameter();
+        final P point = getGeomFactory().newPoint();
+        Path2afp.findsFarthestPointPathIteratorPoint(
+                getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                pt.getX(), pt.getY(),
+                point);
+        return point;
     }
 
     /** Replies the point on the path that is farthest to the given point.
      *
      * <p><strong>CAUTION:</strong> This function works only on path iterators
-     * that are replying not-curved primitives, ie. if the
-     * {@link PathIterator2D#isCurved()} of {@code pi} is replying
-     * <code>false</code>.
-     * {@link #getFarthestPointTo(Point2D)} avoids this restriction.
+     * that are replying not-curved primitives, ie. if the {@link PathIterator2D#isCurved()} of {@code pi} is replying
+     * <code>false</code>. {@link #getFarthestPointTo(Point2D)} avoids this restriction.
      * @param pi is the iterator on the elements of the path.
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
      * @param result the farthest point on the shape.
      */
-    static void getFarthestPointTo(PathIterator2afp<? extends PathElement2afp> pi, double x, double y, Point2D<?, ?> result) {
+    static void findsFarthestPointPathIteratorPoint(PathIterator2afp<? extends PathElement2afp> pi, double x,
+            double y, Point2D<?, ?> result) {
         assert pi != null : AssertMessages.notNullParameter(0);
         assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
         assert result != null : AssertMessages.notNullParameter(3);
@@ -557,7 +599,7 @@ public interface Path2afp<
                 break;
             case LINE_TO:
             case CLOSE:
-                Segment2afp.computeFarthestPointToPoint(
+                Segment2afp.findsFarthestPointSegmentPoint(
                         pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(),
                         x, y, point);
                 final double d = Point2D.getDistanceSquaredPointPoint(x, y, point.getX(), point.getY());
@@ -575,54 +617,35 @@ public interface Path2afp<
         }
     }
 
-    @Pure
-    @Override
-    default P getFarthestPointTo(Point2D<?, ?> pt) {
-        assert pt != null : AssertMessages.notNullParameter();
-        final P point = getGeomFactory().newPoint();
-        Path2afp.getFarthestPointTo(
-                getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                pt.getX(), pt.getY(),
-                point);
-        return point;
-    }
-
-    /**
-     * Tests if the specified coordinates are inside the closed
-     * boundary of the specified {@link PathIterator2afp}.
+    /** Tests if the specified coordinates are inside the closed boundary of the specified {@link PathIterator2afp}.
      *
-     * <p>This method provides a basic facility for implementors of
-     * the {@link Shape2afp} interface to implement support for the
+     * <p>This method provides a basic facility for implementors of the {@link Shape2afp} interface to implement support for the
      * {@link Shape2afp#contains(double, double)} method.
      *
      * @param pi the specified {@code PathIterator2f}
      * @param x the specified X coordinate
      * @param y the specified Y coordinate
-     * @return {@code true} if the specified coordinates are inside the
-     *         specified {@code PathIterator2f}; {@code false} otherwise
+     * @return {@code true} if the specified coordinates are inside the specified {@code PathIterator2f}; {@code false} otherwise
      */
     static boolean containsPoint(PathIterator2afp<? extends PathElement2afp> pi, double x, double y) {
         assert pi != null : AssertMessages.notNullParameter(0);
         // Copied from the AWT API
         final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
-        final int cross = computeCrossingsFromPoint(0, pi, x, y, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
+        final int cross = calculatesCrossingsPathIteratorPointShadow(0, pi, x, y,
+                CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
         return (cross & mask) != 0;
     }
 
-    /**
-     * Tests if the specified rectangle is inside the closed
-     * boundary of the specified {@link PathIterator2afp}.
+    /** Tests if the specified rectangle is inside the closed boundary of the specified {@link PathIterator2afp}.
      *
-     * <p>This method provides a basic facility for implementors of
-     * the {@link Shape2afp} interface to implement support for the
+     * <p>This method provides a basic facility for implementors of the {@link Shape2afp} interface to implement support for the
      * {@link Shape2afp#contains(Rectangle2afp)} method.
      * @param pi the specified {@code PathIterator2f}
      * @param rx the lowest corner of the rectangle.
      * @param ry the lowest corner of the rectangle.
      * @param rwidth is the width of the rectangle.
      * @param rheight is the width of the rectangle.
-     * @return {@code true} if the specified rectangle is inside the
-     *         specified {@code PathIterator2f}; {@code false} otherwise.
+     * @return {@code true} if the specified rectangle is inside the specified {@code PathIterator2f}; {@code false} otherwise.
      */
     @SuppressWarnings("checkstyle:magicnumber")
     static boolean containsRectangle(PathIterator2afp<? extends PathElement2afp> pi, double rx, double ry,
@@ -635,29 +658,26 @@ public interface Path2afp<
             return false;
         }
         final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = computeCrossingsFromRect(
+        final int crossings = calculatesCrossingsPathIteratorRectangleShadow(
                 0, pi, rx, ry, rx + rwidth, ry + rheight,
                 CrossingComputationType.AUTO_CLOSE);
         return crossings != MathConstants.SHAPE_INTERSECTS
                 && (crossings & mask) != 0;
     }
 
-    /**
-     * Tests if the interior of the specified {@link PathIterator2afp}
-     * intersects the interior of a specified set of rectangular
+    /** Tests if the interior of the specified {@link PathIterator2afp} intersects the interior of a specified set of rectangular
      * coordinates.
      * @param pi the specified {@link PathIterator2afp}.
      * @param x the specified X coordinate of the rectangle.
      * @param y the specified Y coordinate of the rectangle.
      * @param width the width of the specified rectangular coordinates.
      * @param height the height of the specified rectangular coordinates.
-     * @return <code>true</code> if the specified {@link PathIterator2afp} and
-     *         the interior of the specified set of rectangular
+     * @return <code>true</code> if the specified {@link PathIterator2afp} and the interior of the specified set of rectangular
      *         coordinates intersect each other; <code>false</code> otherwise.
      */
     @SuppressWarnings("checkstyle:magicnumber")
-    static boolean intersectsPathIteratorRectangle(PathIterator2afp<? extends PathElement2afp> pi,
-            double x, double y, double width, double height) {
+    static boolean intersectsPathIteratorRectangle(PathIterator2afp<? extends PathElement2afp> pi, double x, double y,
+            double width, double height) {
         assert pi != null : AssertMessages.notNullParameter(0);
         assert width >= 0. : AssertMessages.notNullParameter(3);
         assert height >= 0. : AssertMessages.notNullParameter(4);
@@ -665,24 +685,31 @@ public interface Path2afp<
             return false;
         }
         final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = computeCrossingsFromRect(0, pi, x, y, x + width, y + height,
+        final int crossings = calculatesCrossingsPathIteratorRectangleShadow(0, pi, x, y, x + width, y + height,
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
         return crossings == MathConstants.SHAPE_INTERSECTS
                 || (crossings & mask) != 0;
     }
 
     /**
-     * Calculates the number of times the given path
-     * crosses the ray extending to the right from (px, py).
-     * If the point lies on a part of the path,
-     * then no crossings are counted for that intersection.
-     * +1 is added for each crossing where the Y coordinate is increasing
-     * -1 is added for each crossing where the Y coordinate is decreasing
-     * The return value is the sum of all crossings for every segment in
-     * the path.
-     * The path must start with a MOVE_TO, otherwise an exception is
-     * thrown.
-     *
+     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorPointShadow(int,
+     *     PathIterator2afp, double, double, CrossingComputationType)}
+     */
+    @Deprecated
+    @SuppressWarnings("all")
+    static int computeCrossingsFromPoint(
+            int crossings,
+            PathIterator2afp<? extends PathElement2afp> iterator,
+            double px, double py,
+            CrossingComputationType type) {
+        return calculatesCrossingsPathIteratorPointShadow(crossings, iterator, px, py, type);
+    }
+
+    /** Calculates the number of times the given path crosses the ray extending to the right from (px, py).
+     * If the point lies on a part of the path, then no crossings are counted for that intersection.
+     * +1 is added for each crossing where the Y coordinate is increasing -1 is added for each crossing where the Y
+     * coordinate is decreasing. The return value is the sum of all crossings for every segment in the path.
+     * The path must start with a MOVE_TO, otherwise an exception is thrown.
      * @param crossings is the initial value for crossing.
      * @param iterator is the description of the path.
      * @param px is the reference point to test.
@@ -693,11 +720,8 @@ public interface Path2afp<
      */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
             "checkstyle:npathcomplexity"})
-    static int computeCrossingsFromPoint(
-            int crossings,
-            PathIterator2afp<? extends PathElement2afp> iterator,
-            double px, double py,
-            CrossingComputationType type) {
+    static int calculatesCrossingsPathIteratorPointShadow(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
+            double px, double py, CrossingComputationType type) {
         assert iterator != null : AssertMessages.notNullParameter(1);
         // Copied from the AWT API
         if (!iterator.hasNext()) {
@@ -732,7 +756,7 @@ public interface Path2afp<
                 if (endx == px && endy == py) {
                     return MathConstants.SHAPE_INTERSECTS;
                 }
-                numCrossings += Segment2afp.computeCrossingsFromPoint(
+                numCrossings += Segment2afp.calculatesCrossingsPointShadowSegment(
                         px, py,
                         curx, cury,
                         endx, endy);
@@ -750,7 +774,7 @@ public interface Path2afp<
                 subPath.quadTo(
                         element.getCtrlX1(), element.getCtrlY1(),
                         endx, endy);
-                numCrossings = computeCrossingsFromPoint(
+                numCrossings = calculatesCrossingsPathIteratorPointShadow(
                         numCrossings,
                         subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         px, py,
@@ -773,7 +797,7 @@ public interface Path2afp<
                         element.getCtrlX1(), element.getCtrlY1(),
                         element.getCtrlX2(), element.getCtrlY2(),
                         endx, endy);
-                numCrossings = computeCrossingsFromPoint(
+                numCrossings = calculatesCrossingsPathIteratorPointShadow(
                         numCrossings,
                         subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         px, py,
@@ -797,7 +821,7 @@ public interface Path2afp<
                         element.getRadiusX(), element.getRadiusY(),
                         element.getRotationX(), element.getLargeArcFlag(),
                         element.getSweepFlag());
-                numCrossings = computeCrossingsFromPoint(
+                numCrossings = calculatesCrossingsPathIteratorPointShadow(
                         numCrossings,
                         subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         px, py,
@@ -813,7 +837,7 @@ public interface Path2afp<
                     if (movx == px && movy == py) {
                         return MathConstants.SHAPE_INTERSECTS;
                     }
-                    numCrossings += Segment2afp.computeCrossingsFromPoint(
+                    numCrossings += Segment2afp.calculatesCrossingsPointShadowSegment(
                             px, py,
                             curx, cury,
                             movx, movy);
@@ -833,7 +857,7 @@ public interface Path2afp<
                 if (movx == px && movy == py) {
                     return MathConstants.SHAPE_INTERSECTS;
                 }
-                numCrossings += Segment2afp.computeCrossingsFromPoint(
+                numCrossings += Segment2afp.calculatesCrossingsPointShadowSegment(
                         px, py,
                         curx, cury,
                         movx, movy);
@@ -851,8 +875,20 @@ public interface Path2afp<
     }
 
     /**
-     * Calculates the number of times the given path
-     * crosses the given ellipse extending to the right.
+     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorEllipseShadow(int,
+     *     PathIterator2afp, double, double, double, double, CrossingComputationType)}
+     */
+    @Deprecated
+    @SuppressWarnings("all")
+    static int computeCrossingsFromEllipse(
+            int crossings,
+            PathIterator2afp<? extends PathElement2afp> iterator,
+            double ex, double ey, double ew, double eh,
+            CrossingComputationType type) {
+        return calculatesCrossingsPathIteratorEllipseShadow(crossings, iterator, ex, ey, ew, eh, type);
+    }
+
+    /** Calculates the number of times the given path crosses the given ellipse extending to the right.
      * @param crossings is the initial value for crossing.
      * @param iterator is the description of the path.
      * @param ex is the first point of the ellipse.
@@ -865,11 +901,8 @@ public interface Path2afp<
      */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
         "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
-    static int computeCrossingsFromEllipse(
-            int crossings,
-            PathIterator2afp<? extends PathElement2afp> iterator,
-            double ex, double ey, double ew, double eh,
-            CrossingComputationType type) {
+    static int calculatesCrossingsPathIteratorEllipseShadow(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
+            double ex, double ey, double ew, double eh, CrossingComputationType type) {
         assert iterator != null : AssertMessages.notNullParameter(1);
         assert ew >= 0. : AssertMessages.notNullParameter(4);
         assert eh >= 0. : AssertMessages.notNullParameter(5);
@@ -905,7 +938,7 @@ public interface Path2afp<
             case LINE_TO:
                 endx = element.getToX();
                 endy = element.getToY();
-                numCrosses = Segment2afp.computeCrossingsFromEllipse(
+                numCrosses = Segment2afp.calculatesCrossingsEllipseShadowSegment(
                         numCrosses,
                         ex, ey, ew, eh,
                         curx, cury,
@@ -924,7 +957,7 @@ public interface Path2afp<
                 localPath.quadTo(
                         element.getCtrlX1(), element.getCtrlY1(),
                         endx, endy);
-                numCrosses = computeCrossingsFromEllipse(
+                numCrosses = calculatesCrossingsPathIteratorEllipseShadow(
                         numCrosses,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         ex, ey, ew, eh,
@@ -945,7 +978,7 @@ public interface Path2afp<
                         element.getCtrlX1(), element.getCtrlY1(),
                         element.getCtrlX2(), element.getCtrlY2(),
                         endx, endy);
-                numCrosses = computeCrossingsFromEllipse(
+                numCrosses = calculatesCrossingsPathIteratorEllipseShadow(
                         numCrosses,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         ex, ey, ew, eh,
@@ -967,7 +1000,7 @@ public interface Path2afp<
                         element.getRadiusX(), element.getRadiusY(),
                         element.getRotationX(), element.getLargeArcFlag(),
                         element.getSweepFlag());
-                numCrosses = computeCrossingsFromEllipse(
+                numCrosses = calculatesCrossingsPathIteratorEllipseShadow(
                         numCrosses,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         ex, ey, ew, eh,
@@ -980,7 +1013,7 @@ public interface Path2afp<
                 break;
             case CLOSE:
                 if (cury != movy || curx != movx) {
-                    numCrosses = Segment2afp.computeCrossingsFromEllipse(
+                    numCrosses = Segment2afp.calculatesCrossingsEllipseShadowSegment(
                             numCrosses,
                             ex, ey, ew, eh,
                             curx, cury,
@@ -1003,15 +1036,14 @@ public interface Path2afp<
         if (isOpen && type != null) {
             switch (type) {
             case AUTO_CLOSE:
-                numCrosses = Segment2afp.computeCrossingsFromEllipse(
+                numCrosses = Segment2afp.calculatesCrossingsEllipseShadowSegment(
                         numCrosses,
                         ex, ey, ew, eh,
                         curx, cury,
                         movx, movy);
                 break;
             case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
-                // Assume that when is the path is open, only
-                // SHAPE_INTERSECTS may be return
+                // Assume that when is the path is open, only. SHAPE_INTERSECTS may be return.
                 numCrosses = 0;
                 break;
             case STANDARD:
@@ -1024,9 +1056,22 @@ public interface Path2afp<
     }
 
     /**
-     * Calculates the number of times the given path
-     * crosses the given round rectangle extending to the right.
-     *
+     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorRoundRectangleShadow(int,
+     *      PathIterator2afp, double, double, double, double, double, double, CrossingComputationType)}
+     */
+    @Deprecated
+    @SuppressWarnings("all")
+    static int computeCrossingsFromRoundRect(
+            int crossings,
+            PathIterator2afp<? extends PathElement2afp> iterator,
+            double x1, double y1, double x2, double y2,
+            double arcWidth, double arcHeight,
+            CrossingComputationType type) {
+        return calculatesCrossingsPathIteratorRoundRectangleShadow(crossings, iterator, x1, y1, x2, y2,
+                arcWidth, arcHeight, type);
+    }
+
+    /** Calculates the number of times the given path crosses the given round rectangle extending to the right.
      * @param crossings is the initial value for crossing.
      * @param iterator is the description of the path.
      * @param x1 is the first corner of the rectangle.
@@ -1041,26 +1086,19 @@ public interface Path2afp<
      */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
         "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
-    static int computeCrossingsFromRoundRect(
-            int crossings,
-            PathIterator2afp<? extends PathElement2afp> iterator,
-            double x1, double y1, double x2, double y2,
-            double arcWidth, double arcHeight,
-            CrossingComputationType type) {
+    static int calculatesCrossingsPathIteratorRoundRectangleShadow(int crossings,
+            PathIterator2afp<? extends PathElement2afp> iterator, double x1, double y1, double x2, double y2,
+            double arcWidth, double arcHeight, CrossingComputationType type) {
         assert iterator != null : AssertMessages.notNullParameter(1);
         assert x1 <= x2 : AssertMessages.lowerEqualParameters(2, x1, 4, x2);
         assert y1 <= y2 : AssertMessages.lowerEqualParameters(3, y1, 5, y2);
-
         if (!iterator.hasNext()) {
             return 0;
         }
-
         PathElement2afp pathElement = iterator.next();
-
         if (pathElement.getType() != PathElementType.MOVE_TO) {
             throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
         }
-
         final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
         double curx = pathElement.getToX();
         double movx = curx;
@@ -1070,7 +1108,6 @@ public interface Path2afp<
         Path2afp<?, ?, ?, ?, ?, ?> localPath;
         double endx;
         double endy;
-
         while (numCrossings != MathConstants.SHAPE_INTERSECTS
                 && iterator.hasNext()) {
             pathElement = iterator.next();
@@ -1086,7 +1123,7 @@ public interface Path2afp<
             case LINE_TO:
                 endx = pathElement.getToX();
                 endy = pathElement.getToY();
-                numCrossings = Segment2afp.computeCrossingsFromRoundRect(numCrossings,
+                numCrossings = Segment2afp.calculatesCrossingsRoundRectangleShadowSegment(numCrossings,
                         x1, y1, x2, y2, arcWidth, arcHeight,
                         curx, cury,
                         endx, endy);
@@ -1105,7 +1142,7 @@ public interface Path2afp<
                 localPath.quadTo(
                         pathElement.getCtrlX1(), pathElement.getCtrlY1(),
                         endx, endy);
-                numCrossings = computeCrossingsFromRoundRect(
+                numCrossings = calculatesCrossingsPathIteratorRoundRectangleShadow(
                         numCrossings,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         x1, y1, x2, y2, arcWidth, arcHeight,
@@ -1126,7 +1163,7 @@ public interface Path2afp<
                         pathElement.getCtrlX1(), pathElement.getCtrlY1(),
                         pathElement.getCtrlX2(), pathElement.getCtrlY2(),
                         endx, endy);
-                numCrossings = computeCrossingsFromRoundRect(
+                numCrossings = calculatesCrossingsPathIteratorRoundRectangleShadow(
                         numCrossings,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         x1, y1, x2, y2, arcWidth, arcHeight,
@@ -1148,7 +1185,7 @@ public interface Path2afp<
                         pathElement.getRadiusX(), pathElement.getRadiusY(),
                         pathElement.getRotationX(), pathElement.getLargeArcFlag(),
                         pathElement.getSweepFlag());
-                numCrossings = computeCrossingsFromRoundRect(
+                numCrossings = calculatesCrossingsPathIteratorRoundRectangleShadow(
                         numCrossings,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         x1, y1, x2, y2, arcWidth, arcHeight,
@@ -1161,7 +1198,7 @@ public interface Path2afp<
                 break;
             case CLOSE:
                 if (curx != movx || cury != movy) {
-                    numCrossings = Segment2afp.computeCrossingsFromRoundRect(numCrossings,
+                    numCrossings = Segment2afp.calculatesCrossingsRoundRectangleShadowSegment(numCrossings,
                             x1, y1, x2, y2, arcWidth, arcHeight,
                             curx, cury,
                             movx, movy);
@@ -1176,14 +1213,13 @@ public interface Path2afp<
             default:
             }
         }
-
         assert numCrossings != MathConstants.SHAPE_INTERSECTS;
         final boolean isOpen = (curx != movx) || (cury != movy);
         if (isOpen && type != null) {
             switch (type) {
             case AUTO_CLOSE:
                 // Not closed
-                numCrossings = Segment2afp.computeCrossingsFromRoundRect(numCrossings,
+                numCrossings = Segment2afp.calculatesCrossingsRoundRectangleShadowSegment(numCrossings,
                         x1, y1, x2, y2, arcWidth, arcHeight,
                         curx, cury,
                         movx, movy);
@@ -1202,9 +1238,20 @@ public interface Path2afp<
     }
 
     /**
-     * Calculates the number of times the given path
-     * crosses the given circle extending to the right.
-     *
+     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorCircleShadow(int,
+     *      PathIterator2afp, double, double, double, CrossingComputationType)}
+     */
+    @SuppressWarnings("all")
+    @Deprecated
+    static int computeCrossingsFromCircle(
+            int crossings,
+            PathIterator2afp<? extends PathElement2afp> iterator,
+            double cx, double cy, double radius,
+            CrossingComputationType type) {
+        return calculatesCrossingsPathIteratorCircleShadow(crossings, iterator, cx, cy, radius, type);
+    }
+
+    /** Calculates the number of times the given path crosses the given circle extending to the right.
      * @param crossings is the initial value for crossing.
      * @param iterator is the description of the path.
      * @param cx is the center of the circle.
@@ -1216,11 +1263,8 @@ public interface Path2afp<
      */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
         "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
-    static int computeCrossingsFromCircle(
-            int crossings,
-            PathIterator2afp<? extends PathElement2afp> iterator,
-            double cx, double cy, double radius,
-            CrossingComputationType type) {
+    static int calculatesCrossingsPathIteratorCircleShadow(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
+            double cx, double cy, double radius, CrossingComputationType type) {
         assert iterator != null : AssertMessages.notNullParameter(1);
         assert radius >= 0. : AssertMessages.positiveOrZeroParameter(4);
         // Copied from the AWT API
@@ -1228,12 +1272,10 @@ public interface Path2afp<
             return 0;
         }
         PathElement2afp element;
-
         element = iterator.next();
         if (element.getType() != PathElementType.MOVE_TO) {
             throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
         }
-
         final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
         Path2afp<?, ?, ?, ?, ?, ?> localPath;
         double movx = element.getToX();
@@ -1255,7 +1297,7 @@ public interface Path2afp<
             case LINE_TO:
                 endx = element.getToX();
                 endy = element.getToY();
-                numCrosses = Segment2afp.computeCrossingsFromCircle(
+                numCrosses = Segment2afp.calculatesCrossingsCircleShadowSegment(
                         numCrosses,
                         cx, cy, radius,
                         curx, cury,
@@ -1275,7 +1317,7 @@ public interface Path2afp<
                 localPath.quadTo(
                         element.getCtrlX1(), element.getCtrlY1(),
                         endx, endy);
-                numCrosses = computeCrossingsFromCircle(
+                numCrosses = calculatesCrossingsPathIteratorCircleShadow(
                         numCrosses,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         cx, cy, radius,
@@ -1296,7 +1338,7 @@ public interface Path2afp<
                         element.getCtrlX1(), element.getCtrlY1(),
                         element.getCtrlX2(), element.getCtrlY2(),
                         endx, endy);
-                numCrosses = computeCrossingsFromCircle(
+                numCrosses = calculatesCrossingsPathIteratorCircleShadow(
                         numCrosses,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         cx, cy, radius,
@@ -1318,7 +1360,7 @@ public interface Path2afp<
                         element.getRadiusX(), element.getRadiusY(),
                         element.getRotationX(), element.getLargeArcFlag(),
                         element.getSweepFlag());
-                numCrosses = computeCrossingsFromCircle(
+                numCrosses = calculatesCrossingsPathIteratorCircleShadow(
                         numCrosses,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         cx, cy, radius,
@@ -1331,7 +1373,7 @@ public interface Path2afp<
                 break;
             case CLOSE:
                 if (cury != movy || curx != movx) {
-                    numCrosses = Segment2afp.computeCrossingsFromCircle(
+                    numCrosses = Segment2afp.calculatesCrossingsCircleShadowSegment(
                             numCrosses,
                             cx, cy, radius,
                             curx, cury,
@@ -1346,16 +1388,13 @@ public interface Path2afp<
             default:
             }
         }
-
         assert numCrosses != MathConstants.SHAPE_INTERSECTS;
-
         final boolean isOpen = (curx != movx) || (cury != movy);
-
         if (isOpen && type != null) {
             switch (type) {
             case AUTO_CLOSE:
                 // Auto close
-                numCrosses = Segment2afp.computeCrossingsFromCircle(
+                numCrosses = Segment2afp.calculatesCrossingsCircleShadowSegment(
                         numCrosses,
                         cx, cy, radius,
                         curx, cury,
@@ -1372,14 +1411,21 @@ public interface Path2afp<
                 break;
             }
         }
-
         return numCrosses;
     }
 
     /**
-     * Calculates the number of times the given path
-     * crosses the given segment extending to the right.
-     *
+     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorSegmentShadow(int,
+     *      PathIterator2afp, double, double, double, double, CrossingComputationType)}
+     */
+    @SuppressWarnings("all")
+    @Deprecated
+    static int computeCrossingsFromSegment(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
+            double x1, double y1, double x2, double y2, CrossingComputationType type) {
+        return calculatesCrossingsPathIteratorSegmentShadow(crossings, iterator, x1, y1, x2, y2, type);
+    }
+
+    /** Calculates the number of times the given path crosses the given segment extending to the right.
      * @param crossings is the initial value for crossing.
      * @param iterator is the description of the path.
      * @param x1 is the first point of the segment.
@@ -1391,7 +1437,7 @@ public interface Path2afp<
      * @return the crossing
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-    static int computeCrossingsFromSegment(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
+    static int calculatesCrossingsPathIteratorSegmentShadow(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
             double x1, double y1, double x2, double y2, CrossingComputationType type) {
         assert iterator != null : AssertMessages.notNullParameter(1);
         // Copied from the AWT API
@@ -1399,12 +1445,10 @@ public interface Path2afp<
             return crossings;
         }
         PathElement2afp element;
-
         element = iterator.next();
         if (element.getType() != PathElementType.MOVE_TO) {
             throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
         }
-
         final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
         Path2afp<?, ?, ?, ?, ?, ?> localPath;
         double movx = element.getToX();
@@ -1426,7 +1470,7 @@ public interface Path2afp<
             case LINE_TO:
                 endx = element.getToX();
                 endy = element.getToY();
-                numCrosses = Segment2afp.computeCrossingsFromSegment(
+                numCrosses = Segment2afp.calculatesCrossingsSegmentShadowSegment(
                         numCrosses,
                         x1, y1, x2, y2,
                         curx, cury,
@@ -1446,7 +1490,7 @@ public interface Path2afp<
                 localPath.quadTo(
                         element.getCtrlX1(), element.getCtrlY1(),
                         endx, endy);
-                numCrosses = computeCrossingsFromSegment(
+                numCrosses = calculatesCrossingsPathIteratorSegmentShadow(
                         numCrosses,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         x1, y1, x2, y2,
@@ -1467,7 +1511,7 @@ public interface Path2afp<
                         element.getCtrlX1(), element.getCtrlY1(),
                         element.getCtrlX2(), element.getCtrlY2(),
                         endx, endy);
-                numCrosses = computeCrossingsFromSegment(
+                numCrosses = calculatesCrossingsPathIteratorSegmentShadow(
                         numCrosses,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         x1, y1, x2, y2,
@@ -1489,7 +1533,7 @@ public interface Path2afp<
                         element.getRadiusX(), element.getRadiusY(),
                         element.getRotationX(), element.getLargeArcFlag(),
                         element.getSweepFlag());
-                numCrosses = computeCrossingsFromSegment(
+                numCrosses = calculatesCrossingsPathIteratorSegmentShadow(
                         numCrosses,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         x1, y1, x2, y2,
@@ -1502,7 +1546,7 @@ public interface Path2afp<
                 break;
             case CLOSE:
                 if (cury != movy || curx != movx) {
-                    numCrosses = Segment2afp.computeCrossingsFromSegment(
+                    numCrosses = Segment2afp.calculatesCrossingsSegmentShadowSegment(
                             numCrosses,
                             x1, y1, x2, y2,
                             curx, cury,
@@ -1517,15 +1561,12 @@ public interface Path2afp<
             default:
             }
         }
-
         assert numCrosses != MathConstants.SHAPE_INTERSECTS;
-
         final boolean isOpen = (curx != movx) || (cury != movy);
-
         if (isOpen && type != null) {
             switch (type) {
             case AUTO_CLOSE:
-                numCrosses = Segment2afp.computeCrossingsFromSegment(
+                numCrosses = Segment2afp.calculatesCrossingsSegmentShadowSegment(
                         numCrosses,
                         x1, y1, x2, y2,
                         curx, cury,
@@ -1545,15 +1586,24 @@ public interface Path2afp<
     }
 
     /**
-     * Accumulate the number of times the path crosses the shadow
-     * extending to the right of the rectangle.  See the comment
-     * for the SHAPE_INTERSECTS constant for more complete details.
-     * The return value is the sum of all crossings for both the
-     * top and bottom of the shadow for every segment in the path,
-     * or the special value SHAPE_INTERSECTS if the path ever enters
-     * the interior of the rectangle.
-     * The path must start with a SEG_MOVETO, otherwise an exception is
-     * thrown.
+     * @deprecated since 13..0, see {@link #calculatesCrossingsPathIteratorRectangleShadow(int,
+     *     PathIterator2afp, double, double, double, double, CrossingComputationType)}
+     */
+    @SuppressWarnings("all")
+    @Deprecated
+    static int computeCrossingsFromRect(
+            int crossings,
+            PathIterator2afp<? extends PathElement2afp> iterator,
+            double rxmin, double rymin,
+            double rxmax, double rymax,
+            CrossingComputationType type) {
+        return calculatesCrossingsPathIteratorRectangleShadow(crossings, iterator, rxmin, rymin, rxmax, rymax, type);
+    }
+
+    /** Accumulate the number of times the path crosses the shadow extending to the right of the rectangle.  See the comment
+     * for the SHAPE_INTERSECTS constant for more complete details. The return value is the sum of all crossings for both the
+     * top and bottom of the shadow for every segment in the path, or the special value SHAPE_INTERSECTS if the path ever enters
+     * the interior of the rectangle. The path must start with a SEG_MOVETO, otherwise an exception is thrown.
      * The caller must check r[xy]{min, max} for NaN values.
      * @param crossings is the initial value for crossing.
      * @param iterator is the iterator on the path elements.
@@ -1566,12 +1616,8 @@ public interface Path2afp<
      * @return the crossings.
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
-    static int computeCrossingsFromRect(
-            int crossings,
-            PathIterator2afp<? extends PathElement2afp> iterator,
-            double rxmin, double rymin,
-            double rxmax, double rymax,
-            CrossingComputationType type) {
+    static int calculatesCrossingsPathIteratorRectangleShadow(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
+            double rxmin, double rymin, double rxmax, double rymax, CrossingComputationType type) {
         assert iterator != null : AssertMessages.notNullParameter(1);
         assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(2, rxmin, 4, rxmax);
         assert rymin <= rymax : AssertMessages.lowerEqualParameters(3, rymin, 5, rymax);
@@ -1579,13 +1625,10 @@ public interface Path2afp<
         if (!iterator.hasNext()) {
             return 0;
         }
-
         PathElement2afp pathElement = iterator.next();
-
         if (pathElement.getType() != PathElementType.MOVE_TO) {
             throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
         }
-
         final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
         Path2afp<?, ?, ?, ?, ?, ?> localPath;
         double curx = pathElement.getToX();
@@ -1595,7 +1638,6 @@ public interface Path2afp<
         int numCrossings = crossings;
         double endx;
         double endy;
-
         while (numCrossings != MathConstants.SHAPE_INTERSECTS
                 && iterator.hasNext()) {
             pathElement = iterator.next();
@@ -1611,7 +1653,7 @@ public interface Path2afp<
             case LINE_TO:
                 endx = pathElement.getToX();
                 endy = pathElement.getToY();
-                numCrossings = Segment2afp.computeCrossingsFromRect(
+                numCrossings = Segment2afp.calculatesCrossingsRectangleShadowSegment(
                         numCrossings,
                         rxmin, rymin,
                         rxmax, rymax,
@@ -1632,7 +1674,7 @@ public interface Path2afp<
                 localPath.quadTo(
                         pathElement.getCtrlX1(), pathElement.getCtrlY1(),
                         endx, endy);
-                numCrossings = computeCrossingsFromRect(
+                numCrossings = calculatesCrossingsPathIteratorRectangleShadow(
                         numCrossings,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         rxmin, rymin,
@@ -1654,7 +1696,7 @@ public interface Path2afp<
                         pathElement.getCtrlX1(), pathElement.getCtrlY1(),
                         pathElement.getCtrlX2(), pathElement.getCtrlY2(),
                         endx, endy);
-                numCrossings = computeCrossingsFromRect(
+                numCrossings = calculatesCrossingsPathIteratorRectangleShadow(
                         numCrossings,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         rxmin, rymin,
@@ -1677,7 +1719,7 @@ public interface Path2afp<
                         pathElement.getRadiusX(), pathElement.getRadiusY(),
                         pathElement.getRotationX(), pathElement.getLargeArcFlag(),
                         pathElement.getSweepFlag());
-                numCrossings = computeCrossingsFromRect(
+                numCrossings = calculatesCrossingsPathIteratorRectangleShadow(
                         numCrossings,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         rxmin, rymin,
@@ -1691,7 +1733,7 @@ public interface Path2afp<
                 break;
             case CLOSE:
                 if (curx != movx || cury != movy) {
-                    numCrossings = Segment2afp.computeCrossingsFromRect(
+                    numCrossings = Segment2afp.calculatesCrossingsRectangleShadowSegment(
                             numCrossings,
                             rxmin, rymin,
                             rxmax, rymax,
@@ -1708,16 +1750,13 @@ public interface Path2afp<
             default:
             }
         }
-
         assert numCrossings != MathConstants.SHAPE_INTERSECTS;
-
         final boolean isOpen = (curx != movx) || (cury != movy);
-
         if (isOpen && type != null) {
             switch (type) {
             case AUTO_CLOSE:
                 // Not closed
-                numCrossings = Segment2afp.computeCrossingsFromRect(
+                numCrossings = Segment2afp.calculatesCrossingsRectangleShadowSegment(
                         numCrossings,
                         rxmin, rymin,
                         rxmax, rymax,
@@ -1734,20 +1773,29 @@ public interface Path2afp<
                 break;
             }
         }
-
         return numCrossings;
     }
 
     /**
-     * Accumulate the number of times the path crosses the shadow
-     * extending to the right of the triangle.  See the comment
-     * for the SHAPE_INTERSECTS constant for more complete details.
-     * The return value is the sum of all crossings for both the
-     * top and bottom of the shadow for every segment in the path,
-     * or the special value SHAPE_INTERSECTS if the path ever enters
-     * the interior of the triangle.
-     * The path must start with a SEG_MOVETO, otherwise an exception is
-     * thrown.
+     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorTriangleShadow(int,
+     *     PathIterator2afp, double, double, double, double, double, double, CrossingComputationType)}
+     */
+    @Deprecated
+    @SuppressWarnings("all")
+    static int computeCrossingsFromTriangle(
+            int crossings,
+            PathIterator2afp<? extends PathElement2afp> iterator,
+            double x1, double y1,
+            double x2, double y2,
+            double x3, double y3,
+            CrossingComputationType type) {
+        return calculatesCrossingsPathIteratorTriangleShadow(crossings, iterator, x1, y1, x2, y2, x3, y3, type);
+    }
+
+    /** Accumulate the number of times the path crosses the shadow extending to the right of the triangle.  See the comment
+     * for the SHAPE_INTERSECTS constant for more complete details. The return value is the sum of all crossings for both the
+     * top and bottom of the shadow for every segment in the path, or the special value SHAPE_INTERSECTS if the path ever enters
+     * the interior of the triangle. The path must start with a SEG_MOVETO, otherwise an exception is thrown.
      * The caller must check for NaN values.
      *
      * @param crossings is the initial value for crossing.
@@ -1762,15 +1810,9 @@ public interface Path2afp<
      *     is equivalent to {@link CrossingComputationType#STANDARD}.
      * @return the crossings.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-            "checkstyle:npathcomplexity"})
-    static int computeCrossingsFromTriangle(
-            int crossings,
-            PathIterator2afp<? extends PathElement2afp> iterator,
-            double x1, double y1,
-            double x2, double y2,
-            double x3, double y3,
-            CrossingComputationType type) {
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+    static int calculatesCrossingsPathIteratorTriangleShadow(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
+            double x1, double y1, double x2, double y2, double x3, double y3, CrossingComputationType type) {
         assert iterator != null : AssertMessages.notNullParameter(1);
         if (!iterator.hasNext()) {
             return 0;
@@ -1791,7 +1833,6 @@ public interface Path2afp<
         int numCrossings = crossings;
         double endx;
         double endy;
-
         while (numCrossings != MathConstants.SHAPE_INTERSECTS
                 && iterator.hasNext()) {
             pathElement = iterator.next();
@@ -1807,7 +1848,7 @@ public interface Path2afp<
             case LINE_TO:
                 endx = pathElement.getToX();
                 endy = pathElement.getToY();
-                numCrossings = Segment2afp.computeCrossingsFromTriangle(numCrossings,
+                numCrossings = Segment2afp.calculatesCrossingsTriangleShadowSegment(numCrossings,
                         x1, y1, x2, y2, x3, y3,
                         curx, cury,
                         endx, endy);
@@ -1826,7 +1867,7 @@ public interface Path2afp<
                 localPath.quadTo(
                         pathElement.getCtrlX1(), pathElement.getCtrlY1(),
                         endx, endy);
-                numCrossings = computeCrossingsFromTriangle(
+                numCrossings = calculatesCrossingsPathIteratorTriangleShadow(
                         numCrossings,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         x1, y1, x2, y2, x3, y3,
@@ -1847,7 +1888,7 @@ public interface Path2afp<
                         pathElement.getCtrlX1(), pathElement.getCtrlY1(),
                         pathElement.getCtrlX2(), pathElement.getCtrlY2(),
                         endx, endy);
-                numCrossings = computeCrossingsFromTriangle(
+                numCrossings = calculatesCrossingsPathIteratorTriangleShadow(
                         numCrossings,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         x1, y1, x2, y2, x3, y3,
@@ -1869,7 +1910,7 @@ public interface Path2afp<
                         pathElement.getRadiusX(), pathElement.getRadiusY(),
                         pathElement.getRotationX(), pathElement.getLargeArcFlag(),
                         pathElement.getSweepFlag());
-                numCrossings = computeCrossingsFromTriangle(
+                numCrossings = calculatesCrossingsPathIteratorTriangleShadow(
                         numCrossings,
                         localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         x1, y1, x2, y2, x3, y3,
@@ -1882,7 +1923,7 @@ public interface Path2afp<
                 break;
             case CLOSE:
                 if (curx != movx || cury != movy) {
-                    numCrossings = Segment2afp.computeCrossingsFromTriangle(numCrossings,
+                    numCrossings = Segment2afp.calculatesCrossingsTriangleShadowSegment(numCrossings,
                             x1, y1, x2, y2, x3, y3,
                             curx, cury,
                             movx, movy);
@@ -1897,16 +1938,13 @@ public interface Path2afp<
             default:
             }
         }
-
         assert numCrossings != MathConstants.SHAPE_INTERSECTS;
-
         final boolean isOpen = (curx != movx) || (cury != movy);
-
         if (isOpen && type != null) {
             switch (type) {
             case AUTO_CLOSE:
                 // Not closed
-                numCrossings = Segment2afp.computeCrossingsFromTriangle(numCrossings,
+                numCrossings = Segment2afp.calculatesCrossingsTriangleShadowSegment(numCrossings,
                         x1, y1, x2, y2, x3, y3,
                         curx, cury,
                         movx, movy);
@@ -1921,24 +1959,30 @@ public interface Path2afp<
                 break;
             }
         }
-
         return numCrossings;
     }
 
+    /**
+     * @deprecated since 13.0, see {@link #calculatesDrawableElementBoundingBox(PathIterator2afp, Rectangle2afp)}
+     */
+    @SuppressWarnings("all")
+    @Deprecated
+    static boolean computeDrawableElementBoundingBox(PathIterator2afp<?> iterator,
+            Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
+        return calculatesDrawableElementBoundingBox(iterator, box);
+    }
+
     /** Compute the box that corresponds to the drawable elements of the path.
-     *
-     * <p>An element is drawable if it is a line, a curve, or a closing path element.
-     * The box fits the drawn lines and the drawn curves. The control points of the
-     * curves may be outside the output box. For obtaining the bounding box
-     * of the path's points, use {@link #computeControlPointBoundingBox(PathIterator2afp, Rectangle2afp)}.
+     * <p>An element is drawable if it is a line, a curve, or a closing path element. The box fits the drawn lines and the
+     * drawn curves. The control points of the curves may be outside the output box. For obtaining the bounding box
+     * of the path's points, use {@link #calculatesControlPointBoundingBox(PathIterator2afp, Rectangle2afp)}.
      * @param iterator the iterator on the path elements.
      * @param box the box to set.
      * @return <code>true</code> if a drawable element was found.
-     * @see #computeControlPointBoundingBox(PathIterator2afp, Rectangle2afp)
+     * @see #calculatesControlPointBoundingBox(PathIterator2afp, Rectangle2afp)
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-    static boolean computeDrawableElementBoundingBox(PathIterator2afp<?> iterator,
-            Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
+    static boolean calculatesDrawableElementBoundingBox(PathIterator2afp<?> iterator, Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
         assert iterator != null : AssertMessages.notNullParameter(0);
         assert box != null : AssertMessages.notNullParameter(1);
         final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
@@ -1988,7 +2032,7 @@ public interface Path2afp<
                         element.getCtrlX1(), element.getCtrlY1(),
                         element.getCtrlX2(), element.getCtrlY2(),
                         element.getToX(), element.getToY());
-                if (computeDrawableElementBoundingBox(
+                if (calculatesDrawableElementBoundingBox(
                         subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         subBox)) {
                     if (subBox.getMinX() < xmin) {
@@ -2015,7 +2059,7 @@ public interface Path2afp<
                         element.getRadiusX(), element.getRadiusY(),
                         element.getRotationX(), element.getLargeArcFlag(),
                         element.getSweepFlag());
-                if (computeDrawableElementBoundingBox(
+                if (calculatesDrawableElementBoundingBox(
                         subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         subBox)) {
                     if (subBox.getMinX() < xmin) {
@@ -2040,7 +2084,7 @@ public interface Path2afp<
                 subPath.quadTo(
                         element.getCtrlX1(), element.getCtrlY1(),
                         element.getToX(), element.getToY());
-                if (computeDrawableElementBoundingBox(
+                if (calculatesDrawableElementBoundingBox(
                         subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                         subBox)) {
                     if (subBox.getMinX() < xmin) {
@@ -2071,22 +2115,28 @@ public interface Path2afp<
         return foundOneLine;
     }
 
+    /**
+     * @deprecated since 13.0, see {@link #calculatesControlPointBoundingBox(PathIterator2afp, Rectangle2afp)}
+     */
+    @SuppressWarnings("all")
+    @Deprecated
+    static boolean computeControlPointBoundingBox(PathIterator2afp<?> iterator,
+            Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
+        return calculatesControlPointBoundingBox(iterator, box);
+    }
+
     /** Compute the box that corresponds to the control points of the path.
      *
-     * <p>An element is drawable if it is a line, a curve, or a closing path element.
-     * The box fits the drawn lines and the drawn curves. The control points of the
-     * curves may be outside the output box. For obtaining the bounding box
-     * of the drawn lines and cruves, use
-     * {@link #computeDrawableElementBoundingBox(PathIterator2afp, Rectangle2afp)}.
-     *
+     * <p>An element is drawable if it is a line, a curve, or a closing path element. The box fits the drawn lines and the
+     * drawn curves. The control points of the curves may be outside the output box. For obtaining the bounding box
+     * of the drawn lines and cruves, use {@link #calculatesDrawableElementBoundingBox(PathIterator2afp, Rectangle2afp)}.
      * @param iterator the iterator on the path elements.
      * @param box the box to set.
      * @return <code>true</code> if a control point was found.
-     * @see #computeDrawableElementBoundingBox(PathIterator2afp, Rectangle2afp)
+     * @see #calculatesDrawableElementBoundingBox(PathIterator2afp, Rectangle2afp)
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-    static boolean computeControlPointBoundingBox(PathIterator2afp<?> iterator,
-            Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
+    static boolean calculatesControlPointBoundingBox(PathIterator2afp<?> iterator, Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
         assert iterator != null : AssertMessages.notNullParameter(0);
         assert box != null : AssertMessages.notNullParameter(1);
         boolean foundOneControlPoint = false;
@@ -2255,19 +2305,25 @@ public interface Path2afp<
         return foundOneControlPoint;
     }
 
+    /**
+     * @deprecated since 13.0, see {@link #calculatesPathLength(PathIterator2afp)}
+     */
+    @SuppressWarnings("all")
+    @Deprecated
+    static double computeLength(PathIterator2afp<?> iterator) {
+        return calculatesPathLength(iterator);
+    }
+
     /** Compute the total squared length of the path.
-     *
      * @param iterator the iterator on the path elements.
      * @return the squared length of the path.
      */
-    static double computeLength(PathIterator2afp<?> iterator) {
+    static double calculatesPathLength(PathIterator2afp<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
         PathElement2afp pathElement = iterator.next();
-
         if (pathElement.getType() != PathElementType.MOVE_TO) {
             throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
         }
-
         // only for internal use
         final GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
         Path2afp<?, ?, ?, ?, ?, ?> subPath;
@@ -2278,10 +2334,8 @@ public interface Path2afp<
         double length = 0;
         double endx;
         double endy;
-
         while (iterator.hasNext()) {
             pathElement = iterator.next();
-
             switch (pathElement.getType()) {
             case MOVE_TO:
                 movx = pathElement.getToX();
@@ -2306,7 +2360,7 @@ public interface Path2afp<
                 subPath.quadTo(
                         pathElement.getCtrlX1(), pathElement.getCtrlY1(),
                         endx, endy);
-                length += computeLength(subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+                length += calculatesPathLength(subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
                 curx = endx;
                 cury = endy;
                 break;
@@ -2319,7 +2373,7 @@ public interface Path2afp<
                         pathElement.getCtrlX1(), pathElement.getCtrlY1(),
                         pathElement.getCtrlX2(), pathElement.getCtrlY2(),
                         endx, endy);
-                length += computeLength(subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+                length += calculatesPathLength(subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
                 curx = endx;
                 cury = endy;
                 break;
@@ -2333,7 +2387,7 @@ public interface Path2afp<
                         pathElement.getRadiusX(), pathElement.getRadiusY(),
                         pathElement.getRotationX(), pathElement.getLargeArcFlag(),
                         pathElement.getSweepFlag());
-                length += computeLength(subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+                length += calculatesPathLength(subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
                 curx = endx;
                 cury = endy;
                 break;
@@ -2348,9 +2402,7 @@ public interface Path2afp<
                 break;
             default:
             }
-
         }
-
         return length;
     }
 
@@ -2367,7 +2419,6 @@ public interface Path2afp<
     }
 
     /** Add the elements replied by the iterator into this path.
-     *
      * @param iterator the iterator that provides the elements to add in the path.
      */
     default void add(Iterator<? extends PathElement2afp> iterator) {
@@ -2403,7 +2454,6 @@ public interface Path2afp<
     }
 
     /** Set the path.
-     *
      * @param path the path to copy.
      */
     default void set(Path2afp<?, ?, ?, ?, ?, ?> path) {
@@ -2412,10 +2462,7 @@ public interface Path2afp<
         add(path.getPathIterator());
     }
 
-    /**
-     * Adds a point to the path by moving to the specified
-     * coordinates specified in double precision.
-     *
+    /** Adds a point to the path by moving to the specified coordinates specified in double precision.
      * @param x the specified X coordinate
      * @param y the specified Y coordinate
      */
@@ -2427,11 +2474,8 @@ public interface Path2afp<
         moveTo(position.getX(), position.getY());
     }
 
-    /**
-     * Adds a point to the path by drawing a straight line from the
-     * current coordinates to the new specified coordinates
+    /** Adds a point to the path by drawing a straight line from the current coordinates to the new specified coordinates
      * specified in double precision.
-     *
      * @param x the specified X coordinate
      * @param y the specified Y coordinate
      */
@@ -2443,14 +2487,9 @@ public interface Path2afp<
         lineTo(to.getX(), to.getY());
     }
 
-    /**
-     * Adds a curved segment, defined by two new points, to the path by
-     * drawing a Quadratic curve that intersects both the current
-     * coordinates and the specified coordinates {@code (x2, y2)},
-     * using the specified point {@code (x1, y1)} as a quadratic
-     * parametric control point.
-     * All coordinates are specified in double precision.
-     *
+    /** Adds a curved segment, defined by two new points, to the path by drawing a Quadratic curve that intersects both the
+     * current coordinates and the specified coordinates {@code (x2, y2)}, using the specified point {@code (x1, y1)} as a
+     * quadratic parametric control point. All coordinates are specified in double precision.
      * @param x1 the X coordinate of the quadratic control point
      * @param y1 the Y coordinate of the quadratic control point
      * @param x2 the X coordinate of the final end point
@@ -2465,14 +2504,9 @@ public interface Path2afp<
         quadTo(ctrl.getX(), ctrl.getY(), to.getX(), to.getY());
     }
 
-    /**
-     * Adds a curved segment, defined by three new points, to the path by
-     * drawing a B&eacute;zier curve that intersects both the current
-     * coordinates and the specified coordinates {@code (x3, y3)},
-     * using the specified points {@code (x1, y1)} and {@code (x2, y2)} as
-     * B&eacute;zier control points.
-     * All coordinates are specified in double precision.
-     *
+    /** Adds a curved segment, defined by three new points, to the path by drawing a B&eacute;zier curve that intersects both
+     * the current coordinates and the specified coordinates {@code (x3, y3)}, using the specified points {@code (x1, y1)}
+     * and {@code (x2, y2)} as B&eacute;zier control points. All coordinates are specified in double precision.
      * @param x1 the X coordinate of the first B&eacute;zier control point
      * @param y1 the Y coordinate of the first B&eacute;zier control point
      * @param x2 the X coordinate of the second B&eacute;zier control point
@@ -2492,41 +2526,28 @@ public interface Path2afp<
         curveTo(ctrl1.getX(), ctrl1.getY(), ctrl2.getX(), ctrl2.getY(), to.getX(), to.getY());
     }
 
-    /**
-     * Adds a section of an shallow ellipse to the current path.
-     * The ellipse from which a quadrant is taken is the ellipse that would be
-     * inscribed in a parallelogram defined by 3 points,
-     * The current point which is considered to be the midpoint of the edge
-     * leading into the corner of the ellipse where the ellipse grazes it,
-     * {@code (ctrlx, ctrly)} which is considered to be the location of the
-     * corner of the parallelogram in which the ellipse is inscribed,
-     * and {@code (tox, toy)} which is considered to be the midpoint of the
-     * edge leading away from the corner of the oval where the oval grazes it.
+    /** Adds a section of an shallow ellipse to the current path. The ellipse from which a quadrant is taken is the ellipse
+     * that would be inscribed in a parallelogram defined by 3 points. The current point which is considered to be the
+     * midpoint of the edge leading into the corner of the ellipse where the ellipse grazes it, {@code (ctrlx, ctrly)}
+     * which is considered to be the location of the corner of the parallelogram in which the ellipse is inscribed, and
+     * {@code (tox, toy)} which is considered to be the midpoint of the edge leading away from the corner of the oval where
+     * the oval grazes it.
      *
      * <p><img src="../doc-files/arcto0.png"/>
      *
-     * <p>Only the portion of the ellipse from {@code tfrom} to {@code tto}
-     * will be included where {@code 0f} represents the point where the
-     * ellipse grazes the leading edge, {@code 1f} represents the point where
-     * the oval grazes the trailing edge, and {@code 0.5f} represents the
-     * point on the oval closest to the control point.
-     * The two values must satisfy the relation
-     * {@code (0 <= tfrom <= tto <= 1)}.
+     * <p>Only the portion of the ellipse from {@code tfrom} to {@code tto} will be included where {@code 0f} represents
+     * the point where the ellipse grazes the leading edge, {@code 1f} represents the point where the oval grazes the trailing
+     * edge, and {@code 0.5f} represents the point on the oval closest to the control point. The two values must satisfy the
+     * relation {@code (0 <= tfrom <= tto <= 1)}.
      *
-     * <p>If {@code tfrom} is not {@code 0f} then the caller would most likely
-     * want to use one of the arc {@code type} values that inserts a segment
-     * leading to the initial point.
-     * An initial {@link #moveTo(double, double)} or {@link #lineTo(double, double)} can be added to direct
-     * the path to the starting point of the ellipse section if
+     * <p>If {@code tfrom} is not {@code 0f} then the caller would most likely want to use one of the arc {@code type} values
+     * that inserts a segment leading to the initial point. An initial {@link #moveTo(double, double)} or
+     * {@link #lineTo(double, double)} can be added to direct the path to the starting point of the ellipse section if
      * {@link org.arakhne.afc.math.geometry.d2.Path2D.ArcType#MOVE_THEN_ARC} or
-     * {@link org.arakhne.afc.math.geometry.d2.Path2D.ArcType#LINE_THEN_ARC} are
-     * specified by the type argument.
-     * The {@code lineTo} path segment will only be added if the current point
-     * is not already at the indicated location to avoid spurious empty line
-     * segments.
-     * The type can be specified as
-     * {@link org.arakhne.afc.math.geometry.d2.Path2D.ArcType#ARC_ONLY} if the current point
-     * on the path is known to be at the starting point of the ellipse section.
+     * {@link org.arakhne.afc.math.geometry.d2.Path2D.ArcType#LINE_THEN_ARC} are specified by the type argument. The
+     * {@code lineTo} path segment will only be added if the current point is not already at the indicated location to avoid
+     * spurious empty line segments. The type can be specified as {@link org.arakhne.afc.math.geometry.d2.Path2D.ArcType#ARC_ONLY}
+     * if the current point on the path is known to be at the starting point of the ellipse section.
      *
      * @param ctrlx the x coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
      * @param ctrly the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
@@ -2538,8 +2559,7 @@ public interface Path2afp<
      *               be appended to lead the current path to the starting point.
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber"})
-    default void arcTo(double ctrlx, double ctrly, double tox, double toy, double tfrom, double tto,
-            ArcType type) {
+    default void arcTo(double ctrlx, double ctrly, double tox, double toy, double tfrom, double tto, ArcType type) {
         // Copied from JavaFX Path2D
         assert tfrom >= 0. : AssertMessages.positiveOrZeroParameter(4);
         assert tto >= tfrom : AssertMessages.lowerEqualParameters(4, tfrom, 5, tto);
@@ -2829,7 +2849,7 @@ public interface Path2afp<
             return false;
         }
         final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = computeCrossingsFromRect(
+        final int crossings = calculatesCrossingsPathIteratorRectangleShadow(
                 0, getPathIterator(),
                 rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY(),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
@@ -2849,7 +2869,7 @@ public interface Path2afp<
     default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
         assert ellipse != null : AssertMessages.notNullParameter();
         final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = computeCrossingsFromEllipse(
+        final int crossings = calculatesCrossingsPathIteratorEllipseShadow(
                 0,
                 getPathIterator(),
                 ellipse.getMinX(), ellipse.getMinY(), ellipse.getWidth(), ellipse.getHeight(),
@@ -2863,7 +2883,7 @@ public interface Path2afp<
     default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
         assert circle != null : AssertMessages.notNullParameter();
         final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = computeCrossingsFromCircle(
+        final int crossings = calculatesCrossingsPathIteratorCircleShadow(
                 0,
                 getPathIterator(),
                 circle.getX(), circle.getY(), circle.getRadius(),
@@ -2877,7 +2897,7 @@ public interface Path2afp<
     default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
         final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = computeCrossingsFromSegment(
+        final int crossings = calculatesCrossingsPathIteratorSegmentShadow(
                 0,
                 getPathIterator(),
                 segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2(),
@@ -2891,7 +2911,7 @@ public interface Path2afp<
     default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
         assert triangle != null : AssertMessages.notNullParameter();
         final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = computeCrossingsFromTriangle(
+        final int crossings = calculatesCrossingsPathIteratorTriangleShadow(
                 0,
                 getPathIterator(),
                 triangle.getX1(), triangle.getY1(), triangle.getX2(), triangle.getY2(), triangle.getX3(), triangle.getY3(),
@@ -2927,7 +2947,7 @@ public interface Path2afp<
     default boolean intersects(Path2afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
         final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = computeCrossingsFromPath(
+        final int crossings = calculatesCrossingsPathIteratorPathShadow(
                 0,
                 path.getPathIterator(),
                 new BasicPathShadow2afp(this),
@@ -2941,7 +2961,7 @@ public interface Path2afp<
     default boolean intersects(PathIterator2afp<?> iterator) {
         assert iterator != null : AssertMessages.notNullParameter();
         final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = computeCrossingsFromPath(
+        final int crossings = calculatesCrossingsPathIteratorPathShadow(
                 0,
                 iterator,
                 new BasicPathShadow2afp(this),
@@ -2989,7 +3009,7 @@ public interface Path2afp<
 
     @Override
     default double getLength() {
-        return computeLength(getPathIterator());
+        return calculatesPathLength(getPathIterator());
     }
 
     @Override
@@ -3094,7 +3114,7 @@ public interface Path2afp<
     @Override
     default void toBoundingBox(B box) {
         assert box != null : AssertMessages.notNullParameter();
-        Path2afp.computeDrawableElementBoundingBox(
+        Path2afp.calculatesDrawableElementBoundingBox(
                 getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                 box);
     }
@@ -3577,7 +3597,7 @@ public interface Path2afp<
          *          values in the specified array at the specified index.
          */
         private static double getQuadSquaredFlatness(double[] coords, int offset) {
-            return Segment2afp.computeDistanceSquaredLinePoint(
+            return Segment2afp.calculatesDistanceSquaredLinePoint(
                     coords[offset + 0], coords[offset + 1],
                     coords[offset + 4], coords[offset + 5],
                     coords[offset + 2], coords[offset + 3]);
@@ -3661,14 +3681,14 @@ public interface Path2afp<
          */
         private static double getCurveSquaredFlatness(double[] coords, int offset) {
             return Math.max(
-                    Segment2afp.computeDistanceSquaredSegmentPoint(
+                    Segment2afp.calculatesDistanceSquaredSegmentPoint(
                             coords[offset + 6],
                             coords[offset + 7],
                             coords[offset + 2],
                             coords[offset + 3],
                             coords[offset + 0],
                             coords[offset + 1]),
-                    Segment2afp.computeDistanceSquaredSegmentPoint(
+                    Segment2afp.calculatesDistanceSquaredSegmentPoint(
                             coords[offset + 6],
                             coords[offset + 7],
                             coords[offset + 4],
@@ -3693,16 +3713,11 @@ public interface Path2afp<
          * equals (<code>leftoff</code> + 6), in order
          * to avoid allocating extra storage for this common point.
          * @param src the array holding the coordinates for the source curve
-         * @param srcoff the offset into the array of the beginning of the
-         *     the 6 source coordinates
-         * @param left the array for storing the coordinates for the first
-         *     half of the subdivided curve
-         * @param leftoff the offset into the array of the beginning of the
-         *     the 6 left coordinates
-         * @param right the array for storing the coordinates for the second
-         *     half of the subdivided curve
-         * @param rightoff the offset into the array of the beginning of the
-         *     the 6 right coordinates
+         * @param srcoff the offset into the array of the beginning of the 6 source coordinates
+         * @param left the array for storing the coordinates for the first half of the subdivided curve
+         * @param leftoff the offset into the array of the beginning of the 6 left coordinates
+         * @param right the array for storing the coordinates for the second half of the subdivided curve
+         * @param rightoff the offset into the array of the beginning of the 6 right coordinates
          */
         private static void subdivideCurve(
                 double[] src, int srcoff,
@@ -3816,22 +3831,17 @@ public interface Path2afp<
                             this.hold, this.holdIndex);
                     this.holdIndex -= 4;
 
-                    // Now that we have subdivided, we have constructed
-                    // two curves of one depth lower than the original
-                    // curve.  One of those curves is in the place of
-                    // the former curve and one of them is in the next
-                    // set of held coordinate slots.  We now set both
-                    // curves level values to the next higher level.
+                    // Now that we have subdivided, we have constructed two curves of one depth lower than the original
+                    // curve.  One of those curves is in the place of the former curve and one of them is in the next
+                    // set of held coordinate slots.  We now set both curves level values to the next higher level.
                     level++;
                     this.levels[this.levelIndex] = level;
                     this.levelIndex++;
                     this.levels[this.levelIndex] = level;
                 }
 
-                // This curve segment is flat enough, or it is too deep
-                // in recursion levels to try to flatten any more.  The
-                // two coordinates at holdIndex+4 and holdIndex+5 now
-                // contain the endpoint of the curve which can be the
+                // This curve segment is flat enough, or it is too deep in recursion levels to try to flatten any more.  The
+                // two coordinates at holdIndex+4 and holdIndex+5 now contain the endpoint of the curve which can be the
                 // endpoint of an approximating line segment.
                 this.holdIndex += 4;
                 this.levelIndex--;
@@ -3866,22 +3876,17 @@ public interface Path2afp<
                             this.hold, this.holdIndex);
                     this.holdIndex -= 6;
 
-                    // Now that we have subdivided, we have constructed
-                    // two curves of one depth lower than the original
-                    // curve.  One of those curves is in the place of
-                    // the former curve and one of them is in the next
-                    // set of held coordinate slots.  We now set both
-                    // curves level values to the next higher level.
+                    // Now that we have subdivided, we have constructed two curves of one depth lower than the original
+                    // curve.  One of those curves is in the place of the former curve and one of them is in the next
+                    // set of held coordinate slots.  We now set both curves level values to the next higher level.
                     level++;
                     this.levels[this.levelIndex] = level;
                     this.levelIndex++;
                     this.levels[this.levelIndex] = level;
                 }
 
-                // This curve segment is flat enough, or it is too deep
-                // in recursion levels to try to flatten any more.  The
-                // two coordinates at holdIndex+6 and holdIndex+7 now
-                // contain the endpoint of the curve which can be the
+                // This curve segment is flat enough, or it is too deep in recursion levels to try to flatten any more.  The
+                // two coordinates at holdIndex+6 and holdIndex+7 now contain the endpoint of the curve which can be the
                 // endpoint of an approximating line segment.
                 this.holdIndex += 6;
                 this.levelIndex--;

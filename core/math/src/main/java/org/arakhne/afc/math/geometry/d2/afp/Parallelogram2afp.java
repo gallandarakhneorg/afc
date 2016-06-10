@@ -67,8 +67,23 @@ public interface Parallelogram2afp<
      * @param raxis is the vector where the R axis of the OBR is put. If <code>null</code>, S must be not <code>null</code>.
      * @param saxis is the vector where the S axis of the OBR is put. If <code>null</code>, R must be not <code>null</code>.
      * @see "MGPCG pages 219-221"
+     * @deprecated since 13.0, see {@link #calculatesOrthogonalAxes(Iterable, Vector2D, Vector2D)}
      */
+    @Deprecated
     static void computeOrthogonalAxes(Iterable<? extends Point2D<?, ?>> points,
+            Vector2D<?, ?> raxis, Vector2D<?, ?> saxis) {
+        calculatesOrthogonalAxes(points, raxis, saxis);
+    }
+
+    /**
+     * Compute the axes of an oriented bounding rectangle that is enclosing the set of points.
+     *
+     * @param points is the list of the points enclosed by the OBR.
+     * @param raxis is the vector where the R axis of the OBR is put. If <code>null</code>, S must be not <code>null</code>.
+     * @param saxis is the vector where the S axis of the OBR is put. If <code>null</code>, R must be not <code>null</code>.
+     * @see "MGPCG pages 219-221"
+     */
+    static void calculatesOrthogonalAxes(Iterable<? extends Point2D<?, ?>> points,
             Vector2D<?, ?> raxis, Vector2D<?, ?> saxis) {
         assert points != null : AssertMessages.notNullParameter(0);
         assert raxis != null || saxis != null : AssertMessages.oneNotNullParameter(1, 2);
@@ -92,7 +107,7 @@ public interface Parallelogram2afp<
      *
      * <p>This function assumes nothing on the axes' orientations. For an efficient implementation for
      * orthogonal axes, see
-     * {@link OrientedRectangle2afp#projectVectorOnOrientedRectangleRAxis(double, double, double, double)}.
+     * {@link OrientedRectangle2afp#findsVectorProjectionRAxisVector(double, double, double, double)}.
      *
      * @param rx the x coordinate of the R axis.
      * @param ry the y coordinate of the R axis.
@@ -101,10 +116,33 @@ public interface Parallelogram2afp<
      * @param x the x coordinate of the vector.
      * @param y the y coordinate of the vector.
      * @return the coordinate of the projection of the vector on R
-     * @see OrientedRectangle2afp#projectVectorOnOrientedRectangleRAxis(double, double, double, double)
+     * @see OrientedRectangle2afp#findsVectorProjectionRAxisVector(double, double, double, double)
+     * @deprecated since 13.0, see {@link #findsVectorProjectionRAxisPoint(double, double, double,
+     *     double, double, double)}
      */
+    @Deprecated
     @Pure
     static double projectVectorOnParallelogramRAxis(double rx, double ry, double sx, double sy, double x,  double y) {
+        return findsVectorProjectionRAxisPoint(rx, ry, sx, sy, x, y);
+    }
+
+    /** Project the given vector on the R (first) axis, according to the direction of the S (second) axis.
+     *
+     * <p>This function assumes nothing on the axes' orientations. For an efficient implementation for
+     * orthogonal axes, see
+     * {@link OrientedRectangle2afp#findsVectorProjectionRAxisVector(double, double, double, double)}.
+     *
+     * @param rx the x coordinate of the R axis.
+     * @param ry the y coordinate of the R axis.
+     * @param sx the x coordinate of the S axis.
+     * @param sy the y coordinate of the S axis.
+     * @param x the x coordinate of the vector.
+     * @param y the y coordinate of the vector.
+     * @return the coordinate of the projection of the vector on R
+     * @see OrientedRectangle2afp#findsVectorProjectionRAxisVector(double, double, double, double)
+     */
+    @Pure
+    static double findsVectorProjectionRAxisPoint(double rx, double ry, double sx, double sy, double x,  double y) {
         assert Vector2D.isUnitVector(rx, ry) : AssertMessages.normalizedParameters(0, 1);
         assert Vector2D.isUnitVector(sx, sy) : AssertMessages.normalizedParameters(2, 3);
         final double det = Vector2D.perpProduct(rx, ry, sx, sy);
@@ -118,7 +156,7 @@ public interface Parallelogram2afp<
      *
      * <p>This function assumes nothing on the axes' orientations. For an efficient implementation for
      * orthogonal axes, see
-     * {@link OrientedRectangle2afp#projectVectorOnOrientedRectangleSAxis(double, double, double, double)}.
+     * {@link OrientedRectangle2afp#findsVectorProjectionSAxisVector(double, double, double, double)}.
      *
      * @param rx the x coordinate of the R axis.
      * @param ry the y coordinate of the R axis.
@@ -127,10 +165,33 @@ public interface Parallelogram2afp<
      * @param x the x coordinate of the vector.
      * @param y the y coordinate of the vector.
      * @return the coordinate of the projection of the vector on S.
-     * @see OrientedRectangle2afp#projectVectorOnOrientedRectangleSAxis(double, double, double, double)
+     * @see OrientedRectangle2afp#findsVectorProjectionSAxisVector(double, double, double, double)
+     * @deprecated since 13.0, see {@link #findsVectorProjectionSAxisVector(double, double, double,
+     *     double, double, double)}
      */
+    @Deprecated
     @Pure
     static double projectVectorOnParallelogramSAxis(double rx, double ry, double sx, double sy, double x,  double y) {
+        return findsVectorProjectionSAxisVector(rx, ry, sx, sy, x, y);
+    }
+
+    /** Project the given vector on the S (second) axis, according to the direction of the R (first) axis.
+     *
+     * <p>This function assumes nothing on the axes' orientations. For an efficient implementation for
+     * orthogonal axes, see
+     * {@link OrientedRectangle2afp#findsVectorProjectionSAxisVector(double, double, double, double)}.
+     *
+     * @param rx the x coordinate of the R axis.
+     * @param ry the y coordinate of the R axis.
+     * @param sx the x coordinate of the S axis.
+     * @param sy the y coordinate of the S axis.
+     * @param x the x coordinate of the vector.
+     * @param y the y coordinate of the vector.
+     * @return the coordinate of the projection of the vector on S.
+     * @see OrientedRectangle2afp#findsVectorProjectionSAxisVector(double, double, double, double)
+     */
+    @Pure
+    static double findsVectorProjectionSAxisVector(double rx, double ry, double sx, double sy, double x,  double y) {
         assert Vector2D.isUnitVector(rx, ry) : AssertMessages.normalizedParameters(0, 1);
         assert Vector2D.isUnitVector(sx, sy) : AssertMessages.normalizedParameters(2, 3);
         final double det = Vector2D.perpProduct(sx, sy, rx, ry);
@@ -144,7 +205,7 @@ public interface Parallelogram2afp<
      * Compute the center and extents of a parallelogram from a set of points and the parallelogram axes.
      *
      * <p>This function assumes no constraint on the axes' orientations, in opposite to
-     * {@link OrientedRectangle2afp#computeCenterExtents(Iterable, Vector2D, Point2D, Tuple2D)}, which
+     * {@link OrientedRectangle2afp#calculatesCenterPointAxisExtents(Iterable, Vector2D, Point2D, Tuple2D)}, which
      * assumes orthogonal axes.
      *
      * @param points is the list of the points enclosed by the parallogram
@@ -153,10 +214,35 @@ public interface Parallelogram2afp<
      * @param center is the point which is set with the parallogram's center coordinates.
      * @param extents are the extents of the parallogram for the R and S axis.
      * @see "MGPCG pages 222-223 (oriented bounding box)"
-     * @see OrientedRectangle2afp#computeCenterExtents(Iterable, Vector2D, Point2D, Tuple2D)
+     * @see OrientedRectangle2afp#calculatesCenterPointAxisExtents(Iterable, Vector2D, Point2D, Tuple2D)
+     * @deprecated since 13.0, see {@link #calculatesCenterPointAxisExtents(Iterable, Vector2D,
+     *     Vector2D, Point2D, Tuple2D)}
+     */
+    @Deprecated
+    static void computeCenterExtents(
+            Iterable<? extends Point2D<?, ?>> points,
+                    Vector2D<?, ?> raxis, Vector2D<?, ?> saxis,
+                    Point2D<?, ?> center, Tuple2D<?> extents) {
+        calculatesCenterPointAxisExtents(points, raxis, saxis, center, extents);
+    }
+
+    /**
+     * Compute the center point and axis extents of a parallelogram from a set of points and the parallelogram axes.
+     *
+     * <p>This function assumes no constraint on the axes' orientations, in opposite to
+     * {@link OrientedRectangle2afp#calculatesCenterPointAxisExtents(Iterable, Vector2D, Point2D, Tuple2D)}, which
+     * assumes orthogonal axes.
+     *
+     * @param points is the list of the points enclosed by the parallogram
+     * @param raxis is the R axis of the parallogram
+     * @param saxis is the S axis of the parallogram
+     * @param center is the point which is set with the parallogram's center coordinates.
+     * @param extents are the extents of the parallogram for the R and S axis.
+     * @see "MGPCG pages 222-223 (oriented bounding box)"
+     * @see OrientedRectangle2afp#calculatesCenterPointAxisExtents(Iterable, Vector2D, Point2D, Tuple2D)
      */
     @SuppressWarnings("checkstyle:magicnumber")
-    static void computeCenterExtents(
+    static void calculatesCenterPointAxisExtents(
             Iterable<? extends Point2D<?, ?>> points,
                     Vector2D<?, ?> raxis, Vector2D<?, ?> saxis,
                     Point2D<?, ?> center, Tuple2D<?> extents) {
@@ -181,8 +267,8 @@ public interface Parallelogram2afp<
         double projR;
         double projS;
         for (final Point2D<?, ?> tuple : points) {
-            projR = projectVectorOnParallelogramRAxis(ux, uy, vx, vy, tuple.getX(), tuple.getY());
-            projS = projectVectorOnParallelogramSAxis(ux, uy, vx, vy, tuple.getX(), tuple.getY());
+            projR = findsVectorProjectionRAxisPoint(ux, uy, vx, vy, tuple.getX(), tuple.getY());
+            projS = findsVectorProjectionSAxisVector(ux, uy, vx, vy, tuple.getX(), tuple.getY());
             if (projR < minR) {
                 minR = projR;
             }
@@ -238,10 +324,54 @@ public interface Parallelogram2afp<
      * @param axis2Extent
      *            is the extent of the axis 2 of the parallelogram.
      * @param closest the closest point.
+     * @deprecated since 13.0, see {@link #findsClosestPointPointParallelogram(double,
+     *     double, double, double, double, double, double, double, double, double, Point2D)}
+     */
+    @Deprecated
+    @SuppressWarnings("checkstyle:parameternumber")
+    static void computeClosestPoint(
+            double px, double py,
+            double centerX, double centerY,
+            double axis1X, double axis1Y,
+            double axis1Extent,
+            double axis2X, double axis2Y,
+            double axis2Extent,
+            Point2D<?, ?> closest) {
+        findsClosestPointPointParallelogram(px, py, centerX, centerY, axis1X, axis1Y,
+                axis1Extent, axis2X, axis2Y, axis2Extent, closest);
+    }
+
+    /**
+     * Given a point p, this function computes the point q1 on (or in) this parallelogram,
+     * closest to p; and the point q2 on the parallelogram, farthest to p. If there are several
+     * points, the function will return one of those. Remember this function may
+     * return an approximate result when points remain on parallelogram plane of symmetry.
+     *
+     * @param px
+     *            is the X coordinate of the point to test.
+     * @param py
+     *            is the Y coordinate of the point to test.
+     * @param centerX
+     *            is the X coordinate of the parallelogram center.
+     * @param centerY
+     *            is the Y coordinate of the parallelogram center.
+     * @param axis1X
+     *            is the X coordinate of the axis 1 vector.
+     * @param axis1Y
+     *            is the Y coordinate of the axis 1 vector.
+     * @param axis1Extent
+     *            is the extent of the axis 1 of the parallelogram.
+     * @param axis2X
+     *            is the X coordinate of the axis 2 vector.
+     * @param axis2Y
+     *            is the Y coordinate of the axis 2 vector.
+     * @param axis2Extent
+     *            is the extent of the axis 2 of the parallelogram.
+     * @param closest the closest point.
      */
     @Unefficient
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
-    static void computeClosestPoint(
+    static void findsClosestPointPointParallelogram(
             double px, double py,
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -319,13 +449,13 @@ public interface Parallelogram2afp<
             closest.set(apexx, apexy);
         } else if (xOnLeftSide <= 0. && xOnRightSide >= 0) {
             // Closest to the right side (u+v) to (-u+v)
-            Segment2afp.computeClosestPointToPoint(
+            Segment2afp.findsClosestPointSegmentPoint(
                     apexx, apexy, vx - ux, vy - uy,
                     dx, dy,
                     closest);
         } else if (xOnLeftSide >= 0. && xOnRightSide <= 0) {
             // Closest to the left (u+v) to (u-v)
-            Segment2afp.computeClosestPointToPoint(
+            Segment2afp.findsClosestPointSegmentPoint(
                     apexx, apexy, ux - vx, uy - vy,
                     dx, dy,
                     closest);
@@ -334,13 +464,13 @@ public interface Parallelogram2afp<
             // or inside the parallelogram
             if (Vector2D.perpProduct(-a1x, -a1y, apexpx, apexpy) < 0) {
                 // Closest to the right side (u+v) to (-u+v)
-                Segment2afp.computeClosestPointToPoint(
+                Segment2afp.findsClosestPointSegmentPoint(
                         apexx, apexy, vx - ux, vy - uy,
                         dx, dy,
                         closest);
             } else if (Vector2D.perpProduct(-a2x, -a2y, apexpx, apexpy) > 0) {
                 // Closest to the left (u+v) to (u-v)
-                Segment2afp.computeClosestPointToPoint(
+                Segment2afp.findsClosestPointSegmentPoint(
                         apexx, apexy, ux - vx, uy - vy,
                         dx, dy,
                         closest);
@@ -383,10 +513,54 @@ public interface Parallelogram2afp<
      * @param axis2Extent
      *            is the extent of the axis 2 of the parallelogram.
      * @param farthest the farthest point.
+     * @deprecated since 13.0, se {@link #findsFarthestPointPointParallelogram(double,
+     *     double, double, double, double, double, double, double, double, double, Point2D)}
+     */
+    @Deprecated
+    @SuppressWarnings("checkstyle:parameternumber")
+    static void computeFarthestPoint(
+            double px, double py,
+            double centerX, double centerY,
+            double axis1X, double axis1Y,
+            double axis1Extent,
+            double axis2X, double axis2Y,
+            double axis2Extent,
+            Point2D<?, ?> farthest) {
+        findsFarthestPointPointParallelogram(px, py, centerX, centerY, axis1X, axis1Y,
+                axis1Extent, axis2X, axis2Y, axis2Extent, farthest);
+    }
+
+    /**
+     * Given a point p, this function computes the point q2 on the parallelogram, farthest to p.
+     * If there are several
+     * points, the function will return one of those. Remember this function may
+     * return an approximate result when points remain on parallelogram plane of symmetry.
+     *
+     * @param px
+     *            is the X coordinate of the point to test.
+     * @param py
+     *            is the Y coordinate of the point to test.
+     * @param centerX
+     *            is the X coordinate of the parallelogram center.
+     * @param centerY
+     *            is the Y coordinate of the parallelogram center.
+     * @param axis1X
+     *            is the X coordinate of the axis 1 vector.
+     * @param axis1Y
+     *            is the Y coordinate of the axis 1 vector.
+     * @param axis1Extent
+     *            is the extent of the axis 1 of the parallelogram.
+     * @param axis2X
+     *            is the X coordinate of the axis 2 vector.
+     * @param axis2Y
+     *            is the Y coordinate of the axis 2 vector.
+     * @param axis2Extent
+     *            is the extent of the axis 2 of the parallelogram.
+     * @param farthest the farthest point.
      */
     @Unefficient
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
-    static void computeFarthestPoint(
+    static void findsFarthestPointPointParallelogram(
             double px, double py,
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -491,12 +665,12 @@ public interface Parallelogram2afp<
         final double x = px - centerX;
         final double y = py - centerY;
 
-        double coordinate = projectVectorOnParallelogramRAxis(axis1X, axis1Y, axis2X, axis2Y, x, y);
+        double coordinate = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, x, y);
         if (coordinate < -axis1Extent || coordinate > axis1Extent) {
             return false;
         }
 
-        coordinate = projectVectorOnParallelogramSAxis(axis1X, axis1Y, axis2X, axis2Y, x, y);
+        coordinate = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, x, y);
         return coordinate >= -axis2Extent && coordinate <= axis2Extent;
     }
 
@@ -532,8 +706,8 @@ public interface Parallelogram2afp<
     @Pure
     @Unefficient
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:returncount",
-        "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
-        "checkstyle:magicnumber"})
+            "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
+            "checkstyle:magicnumber"})
     static boolean containsParallelogramRectangle(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -554,41 +728,41 @@ public interface Parallelogram2afp<
 
         double x = basex;
         double y = basey;
-        double coordinate = projectVectorOnParallelogramRAxis(axis1X, axis1Y, axis2X, axis2Y, x, y);
+        double coordinate = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, x, y);
         if (coordinate < -axis1Extent || coordinate > axis1Extent) {
             return false;
         }
-        coordinate = projectVectorOnParallelogramSAxis(axis1X, axis1Y, axis2X, axis2Y, x, y);
+        coordinate = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, x, y);
         if (coordinate < -axis2Extent || coordinate > axis2Extent) {
             return false;
         }
 
         x = basex + rwidth;
-        coordinate = projectVectorOnParallelogramRAxis(axis1X, axis1Y, axis2X, axis2Y, x, y);
+        coordinate = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, x, y);
         if (coordinate < -axis1Extent || coordinate > axis1Extent) {
             return false;
         }
-        coordinate = projectVectorOnParallelogramSAxis(axis1X, axis1Y, axis2X, axis2Y, x, y);
+        coordinate = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, x, y);
         if (coordinate < -axis2Extent || coordinate > axis2Extent) {
             return false;
         }
 
         y = basey + rheight;
-        coordinate = projectVectorOnParallelogramRAxis(axis1X, axis1Y, axis2X, axis2Y, x, y);
+        coordinate = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, x, y);
         if (coordinate < -axis1Extent || coordinate > axis1Extent) {
             return false;
         }
-        coordinate = projectVectorOnParallelogramSAxis(axis1X, axis1Y, axis2X, axis2Y, x, y);
+        coordinate = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, x, y);
         if (coordinate < -axis2Extent || coordinate > axis2Extent) {
             return false;
         }
 
         x = basex;
-        coordinate = projectVectorOnParallelogramRAxis(axis1X, axis1Y, axis2X, axis2Y, x, y);
+        coordinate = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, x, y);
         if (coordinate < -axis1Extent || coordinate > axis1Extent) {
             return false;
         }
-        coordinate = projectVectorOnParallelogramSAxis(axis1X, axis1Y, axis2X, axis2Y, x, y);
+        coordinate = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, x, y);
         return coordinate >= -axis2Extent && coordinate <= axis2Extent;
     }
 
@@ -636,10 +810,10 @@ public interface Parallelogram2afp<
         final double p2x = s2x - centerX;
         final double p2y = s2y - centerY;
 
-        final double ax = projectVectorOnParallelogramRAxis(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
-        final double ay = projectVectorOnParallelogramSAxis(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
-        final double bx = projectVectorOnParallelogramRAxis(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
-        final double by = projectVectorOnParallelogramSAxis(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
+        final double ax = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
+        final double ay = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
+        final double bx = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
+        final double by = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
 
         return Rectangle2afp.intersectsRectangleSegment(
                 -axis1Extent, -axis2Extent, axis1Extent, axis2Extent,
@@ -694,12 +868,12 @@ public interface Parallelogram2afp<
         final double p3x = tx3 - centerX;
         final double p3y = ty3 - centerY;
 
-        final double ax = projectVectorOnParallelogramRAxis(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
-        final double ay = projectVectorOnParallelogramSAxis(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
-        final double bx = projectVectorOnParallelogramRAxis(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
-        final double by = projectVectorOnParallelogramSAxis(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
-        final double cx = projectVectorOnParallelogramRAxis(axis1X, axis1Y, axis2X, axis2Y, p3x, p3y);
-        final double cy = projectVectorOnParallelogramSAxis(axis1X, axis1Y, axis2X, axis2Y, p3x, p3y);
+        final double ax = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
+        final double ay = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p1x, p1y);
+        final double bx = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
+        final double by = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p2x, p2y);
+        final double cx = findsVectorProjectionRAxisPoint(axis1X, axis1Y, axis2X, axis2Y, p3x, p3y);
+        final double cy = findsVectorProjectionSAxisVector(axis1X, axis1Y, axis2X, axis2Y, p3x, p3y);
 
         return Triangle2afp.intersectsTriangleRectangle(
                 ax, ay,  bx,  by, cx, cy,
@@ -744,7 +918,7 @@ public interface Parallelogram2afp<
         assert Vector2D.isUnitVector(axis2X, axis2Y) : AssertMessages.normalizedParameters(5, 6);
         assert circleRadius >= 0 : AssertMessages.positiveOrZeroParameter(10);
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
-        computeClosestPoint(
+        findsClosestPointPointParallelogram(
                 circleX, circleY,
                 centerX, centerY,
                 axis1X, axis1Y, axis1Extent,
@@ -985,15 +1159,15 @@ public interface Parallelogram2afp<
         // Project the second parallelogram into the local axes of the first parallelogram
         final double x = centerX2 - centerX1;
         final double y = centerY2 - centerY1;
-        final double projCenterX = projectVectorOnParallelogramRAxis(axis1X1, axis1Y1, axis2X1, axis2Y1, x, y);
-        final double projCenterY = projectVectorOnParallelogramSAxis(axis1X1, axis1Y1, axis2X1, axis2Y1, x, y);
-        double projAxis1X = projectVectorOnParallelogramRAxis(axis1X1, axis1Y1, axis2X1, axis2Y1, axis1X2, axis1Y2);
-        double projAxis1Y = projectVectorOnParallelogramSAxis(axis1X1, axis1Y1, axis2X1, axis2Y1, axis1X2, axis1Y2);
+        final double projCenterX = findsVectorProjectionRAxisPoint(axis1X1, axis1Y1, axis2X1, axis2Y1, x, y);
+        final double projCenterY = findsVectorProjectionSAxisVector(axis1X1, axis1Y1, axis2X1, axis2Y1, x, y);
+        double projAxis1X = findsVectorProjectionRAxisPoint(axis1X1, axis1Y1, axis2X1, axis2Y1, axis1X2, axis1Y2);
+        double projAxis1Y = findsVectorProjectionSAxisVector(axis1X1, axis1Y1, axis2X1, axis2Y1, axis1X2, axis1Y2);
         double length = Math.hypot(projAxis1X, projAxis1Y);
         projAxis1X /= length;
         projAxis1Y /= length;
-        double projAxis2X = projectVectorOnParallelogramRAxis(axis1X1, axis1Y1, axis2X1, axis2Y1, axis2X2, axis2Y2);
-        double projAxis2Y = projectVectorOnParallelogramSAxis(axis1X1, axis1Y1, axis2X1, axis2Y1, axis2X2, axis2Y2);
+        double projAxis2X = findsVectorProjectionRAxisPoint(axis1X1, axis1Y1, axis2X1, axis2Y1, axis2X2, axis2Y2);
+        double projAxis2Y = findsVectorProjectionSAxisVector(axis1X1, axis1Y1, axis2X1, axis2Y1, axis2X2, axis2Y2);
         length = Math.hypot(projAxis2X, projAxis2Y);
         projAxis2X /= length;
         projAxis2Y /= length;
@@ -1165,7 +1339,7 @@ public interface Parallelogram2afp<
                 new ProjectionToParallelogramLocalCoordinateSystemPathIterator<>(
                         centerX, centerY, axis1X, axis1Y, axis2X, axis2Y,
                         pathIterator);
-        final int crossings = Path2afp.computeCrossingsFromRect(
+        final int crossings = Path2afp.calculatesCrossingsPathIteratorRectangleShadow(
                 0,
                 localIterator,
                 -extent1, -extent2,
@@ -1453,10 +1627,10 @@ public interface Parallelogram2afp<
         assert pointCloud != null : AssertMessages.notNullParameter();
         final Vector2D<?, ?> r = new InnerComputationVector2afp();
         final Vector2D<?, ?> s = new InnerComputationVector2afp();
-        computeOrthogonalAxes(pointCloud, r, s);
+        calculatesOrthogonalAxes(pointCloud, r, s);
         final Point2D<?, ?> center = new InnerComputationPoint2afp();
         final Vector2D<?, ?> extents = new InnerComputationVector2afp();
-        Parallelogram2afp.computeCenterExtents(pointCloud, r, s, center, extents);
+        Parallelogram2afp.calculatesCenterPointAxisExtents(pointCloud, r, s, center, extents);
         set(center.getX(), center.getY(),
                 r.getX(), r.getY(), extents.getX(),
                 s.getX(), s.getY(), extents.getY());
@@ -1477,7 +1651,7 @@ public interface Parallelogram2afp<
         assert pt != null : AssertMessages.notNullParameter();
         // Only for internal usage.
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
-        computeClosestPoint(
+        findsClosestPointPointParallelogram(
                 pt.getX(), pt.getY(),
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1492,7 +1666,7 @@ public interface Parallelogram2afp<
         assert pt != null : AssertMessages.notNullParameter();
         // Only for internal usage.
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
-        computeClosestPoint(
+        findsClosestPointPointParallelogram(
                 pt.getX(), pt.getY(),
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1507,7 +1681,7 @@ public interface Parallelogram2afp<
         assert pt != null : AssertMessages.notNullParameter();
         // Only for internal usage.
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
-        computeClosestPoint(
+        findsClosestPointPointParallelogram(
                 pt.getX(), pt.getY(),
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1716,7 +1890,7 @@ public interface Parallelogram2afp<
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        computeClosestPoint(
+        findsClosestPointPointParallelogram(
                 pt.getX(), pt.getY(),
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -1736,7 +1910,7 @@ public interface Parallelogram2afp<
     default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
         assert ellipse != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), ellipse.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), ellipse.getPathIterator(), point);
         return point;
     }
 
@@ -1745,7 +1919,7 @@ public interface Parallelogram2afp<
     default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), rectangle.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), rectangle.getPathIterator(), point);
         return point;
     }
 
@@ -1754,7 +1928,7 @@ public interface Parallelogram2afp<
     default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), segment.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), segment.getPathIterator(), point);
         return point;
     }
 
@@ -1763,7 +1937,7 @@ public interface Parallelogram2afp<
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
         assert triangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), triangle.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), triangle.getPathIterator(), point);
         return point;
     }
 
@@ -1772,7 +1946,7 @@ public interface Parallelogram2afp<
     default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
         assert orientedRectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), orientedRectangle.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), orientedRectangle.getPathIterator(), point);
         return point;
     }
 
@@ -1781,7 +1955,7 @@ public interface Parallelogram2afp<
     default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
         assert parallelogram != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), parallelogram.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), parallelogram.getPathIterator(), point);
         return point;
     }
 
@@ -1790,7 +1964,7 @@ public interface Parallelogram2afp<
     default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
         assert roundRectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), roundRectangle.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), roundRectangle.getPathIterator(), point);
         return point;
     }
 
@@ -1799,7 +1973,7 @@ public interface Parallelogram2afp<
     default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        Path2afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
+        Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), path.getPathIterator(), point);
         return point;
     }
 
@@ -1808,7 +1982,7 @@ public interface Parallelogram2afp<
     default P getFarthestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
-        computeFarthestPoint(
+        findsFarthestPointPointParallelogram(
                 pt.getX(), pt.getY(),
                 getCenterX(), getCenterY(),
                 getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
@@ -2158,73 +2332,73 @@ public interface Parallelogram2afp<
             switch (elem.getType()) {
             case CURVE_TO:
                 return getGeomFactory().newCurvePathElement(
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getCtrlX2() - this.centerX, elem.getCtrlY2() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getCtrlX2() - this.centerX, elem.getCtrlY2() - this.centerY),
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getToX() - this.centerX, elem.getToY() - this.centerY));
             case ARC_TO:
                 return getGeomFactory().newArcPathElement(
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getToX() - this.centerX, elem.getToY() - this.centerY),
                         elem.getRadiusX(), elem.getRadiusX(), elem.getRotationX(),
                         elem.getLargeArcFlag(), elem.getSweepFlag());
             case LINE_TO:
                 return getGeomFactory().newLinePathElement(
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getToX() - this.centerX, elem.getToY() - this.centerY));
             case MOVE_TO:
                 return getGeomFactory().newMovePathElement(
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getToX() - this.centerX, elem.getToY() - this.centerY));
             case QUAD_TO:
                 return getGeomFactory().newCurvePathElement(
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getToX() - this.centerX, elem.getToY() - this.centerY));
             case CLOSE:
                 return getGeomFactory().newClosePathElement(
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                 elem.getToX() - this.centerX, elem.getToY() - this.centerY));
             default:
                 break;

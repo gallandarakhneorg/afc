@@ -106,13 +106,13 @@ public interface Shape2ai<
         final int crossings;
         if (shape instanceof Circle2ai) {
             final Circle2ai<?, ?, ?, ?, ?, ?> circle = (Circle2ai<?, ?, ?, ?, ?, ?>) shape;
-            crossings = Path2ai.computeCrossingsFromCircle(
+            crossings = Path2ai.calculatesCrossingsPathIteratorCircleShadow(
                     0, iterator,
                     circle.getX(), circle.getY(), circle.getRadius(),
                     CrossingComputationType.STANDARD);
         } else if (shape instanceof Segment2ai) {
             final Segment2ai<?, ?, ?, ?, ?, ?> segment = (Segment2ai<?, ?, ?, ?, ?, ?>) shape;
-            crossings = Path2ai.computeCrossingsFromSegment(
+            crossings = Path2ai.calculatesCrossingsPathIteratorSegmentShadow(
                     0, iterator,
                     segment.getX1(), segment.getY1(),
                     segment.getX2(), segment.getY2(),
@@ -141,7 +141,7 @@ public interface Shape2ai<
                 maxY = rect.getMaxY();
             }
             final PathIterator2ai<?> shapePathIterator = iterator.getGeomFactory().convert(shape.getPathIterator());
-            crossings = Path2ai.computeCrossingsFromPath(
+            crossings = Path2ai.calculatesCrossingsPathIteratorPathShadow(
                     0, iterator,
                     new BasicPathShadow2ai(shapePathIterator, minX, minY, maxX, maxY),
                     CrossingComputationType.STANDARD);

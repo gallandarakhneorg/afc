@@ -584,115 +584,115 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 	}
 
 	@Test
-	public void staticComputeClosestPointTo() {
+	public void staticFindsClosestPointCirclePoint() {
 		Point2D p;
 		
 		p = createPoint(0, 0);
-		Circle2ai.computeClosestPointTo(5, 8, 5, 5, 8, p);
+		Circle2ai.findsClosestPointCirclePoint(5, 8, 5, 5, 8, p);
 		assertNotNull(p);
 		assertEquals(5, p.ix());
 		assertEquals(8, p.iy());
 		
 		p = createPoint(0, 0);
-		Circle2ai.computeClosestPointTo(5, 8, 5, 10, 10, p);
+		Circle2ai.findsClosestPointCirclePoint(5, 8, 5, 10, 10, p);
 		assertNotNull(p);
 		assertEquals(10, p.ix());
 		assertEquals(10, p.iy());
 		
 		p = createPoint(0, 0);
-		Circle2ai.computeClosestPointTo(5, 8, 5, 4, 8, p);
+		Circle2ai.findsClosestPointCirclePoint(5, 8, 5, 4, 8, p);
 		assertNotNull(p);
 		assertEquals(4, p.ix());
 		assertEquals(8, p.iy());
 		
 		p = createPoint(0, 0);
-		Circle2ai.computeClosestPointTo(5, 8, 5, 0, 0, p);
+		Circle2ai.findsClosestPointCirclePoint(5, 8, 5, 0, 0, p);
 		assertNotNull(p);
 		assertEquals(3, p.ix());
 		assertEquals(3, p.iy());
 
 		p = createPoint(0, 0);
-		Circle2ai.computeClosestPointTo(5, 8, 5, 5, 14, p);
+		Circle2ai.findsClosestPointCirclePoint(5, 8, 5, 5, 14, p);
 		assertNotNull(p);
 		assertEquals(5, p.ix());
 		assertEquals(13, p.iy());
 	}
 
 	@Test
-	public void staticComputeFarthestPointTo() {
+	public void staticFindsFarthestPointCirclePoint() {
 		Point2D p;
 		
 		p = createPoint(0, 0);
-		Circle2ai.computeFarthestPointTo(5, 8, 5, 5, 8, p);
+		Circle2ai.findsFarthestPointCirclePoint(5, 8, 5, 5, 8, p);
 		assertNotNull(p);
 		assertEquals(3, p.ix());
 		assertEquals(3, p.iy());
 		
 		p = createPoint(0, 0);
-		Circle2ai.computeFarthestPointTo(5, 8, 5, 10, 10, p);
+		Circle2ai.findsFarthestPointCirclePoint(5, 8, 5, 10, 10, p);
 		assertNotNull(p);
 		assertEquals(0, p.ix());
 		assertEquals(6, p.iy());
 		
 		p = createPoint(0, 0);
-		Circle2ai.computeFarthestPointTo(5, 8, 5, 4, 8, p);
+		Circle2ai.findsFarthestPointCirclePoint(5, 8, 5, 4, 8, p);
 		assertNotNull(p);
 		assertEquals(10, p.ix());
 		assertEquals(6, p.iy());
 		
 		p = createPoint(0, 0);
-		Circle2ai.computeFarthestPointTo(5, 8, 5, 0, 0, p);
+		Circle2ai.findsFarthestPointCirclePoint(5, 8, 5, 0, 0, p);
 		assertNotNull(p);
 		assertEquals(7, p.ix());
 		assertEquals(13, p.iy());
 
 		p = createPoint(0, 0);
-		Circle2ai.computeFarthestPointTo(5, 8, 5, 5, 14, p);
+		Circle2ai.findsFarthestPointCirclePoint(5, 8, 5, 5, 14, p);
 		assertNotNull(p);
 		assertEquals(3, p.ix());
 		assertEquals(3, p.iy());
 	}
 	
 	@Test
-	public void staticContainsIntIntIntIntInt() {
-		assertFalse(Circle2ai.contains(5, 8, 5, 0, 0));
-		assertFalse(Circle2ai.contains(5, 8, 5, 11, 10));
-		assertFalse(Circle2ai.contains(5, 8, 5, 11, 50));
-		assertFalse(Circle2ai.contains(5, 8, 5, 9, 12));
-		assertTrue(Circle2ai.contains(5, 8, 5, 9, 11));
-		assertTrue(Circle2ai.contains(5, 8, 5, 8, 12));
-		assertTrue(Circle2ai.contains(5, 8, 5, 3, 7));
-		assertFalse(Circle2ai.contains(5, 8, 5, 10, 11));
-		assertTrue(Circle2ai.contains(5, 8, 5, 9, 10));
-		assertFalse(Circle2ai.contains(-1, -1, 1, 0, 0));
+	public void staticContainsCirclePointIntIntIntIntInt() {
+		assertFalse(Circle2ai.containsCirclePoint(5, 8, 5, 0, 0));
+		assertFalse(Circle2ai.containsCirclePoint(5, 8, 5, 11, 10));
+		assertFalse(Circle2ai.containsCirclePoint(5, 8, 5, 11, 50));
+		assertFalse(Circle2ai.containsCirclePoint(5, 8, 5, 9, 12));
+		assertTrue(Circle2ai.containsCirclePoint(5, 8, 5, 9, 11));
+		assertTrue(Circle2ai.containsCirclePoint(5, 8, 5, 8, 12));
+		assertTrue(Circle2ai.containsCirclePoint(5, 8, 5, 3, 7));
+		assertFalse(Circle2ai.containsCirclePoint(5, 8, 5, 10, 11));
+		assertTrue(Circle2ai.containsCirclePoint(5, 8, 5, 9, 10));
+		assertFalse(Circle2ai.containsCirclePoint(-1, -1, 1, 0, 0));
 	}
 	
 	@Test
-	public void staticContainsIntIntIntIntIntInt() {
-		assertTrue(Circle2ai.contains(5, 8, 5, 0, 9, 11));
-		assertFalse(Circle2ai.contains(5, 8, 5, 1, 9, 11));
-		assertFalse(Circle2ai.contains(5, 8, 5, 2, 9, 11));
-		assertFalse(Circle2ai.contains(5, 8, 5, 3, 9, 11));
+	public void staticContainsCircleQuadrantPointIntIntIntIntIntInt() {
+		assertTrue(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 0, 9, 11));
+		assertFalse(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 1, 9, 11));
+		assertFalse(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 2, 9, 11));
+		assertFalse(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 3, 9, 11));
 		
-		assertTrue(Circle2ai.contains(5, 8, 5, 0, 8, 12));
-		assertFalse(Circle2ai.contains(5, 8, 5, 1, 8, 12));
-		assertFalse(Circle2ai.contains(5, 8, 5, 2, 8, 12));
-		assertFalse(Circle2ai.contains(5, 8, 5, 3, 8, 12));
+		assertTrue(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 0, 8, 12));
+		assertFalse(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 1, 8, 12));
+		assertFalse(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 2, 8, 12));
+		assertFalse(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 3, 8, 12));
 		
-		assertFalse(Circle2ai.contains(5, 8, 5, 0, 3, 7));
-		assertFalse(Circle2ai.contains(5, 8, 5, 1, 3, 7));
-		assertTrue(Circle2ai.contains(5, 8, 5, 2, 3, 7));
-		assertFalse(Circle2ai.contains(5, 8, 5, 3, 3, 7));
+		assertFalse(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 0, 3, 7));
+		assertFalse(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 1, 3, 7));
+		assertTrue(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 2, 3, 7));
+		assertFalse(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 3, 3, 7));
 
-		assertTrue(Circle2ai.contains(5, 8, 5, 0, 9, 10));
-		assertFalse(Circle2ai.contains(5, 8, 5, 1, 9, 10));
-		assertFalse(Circle2ai.contains(5, 8, 5, 2, 9, 10));
-		assertFalse(Circle2ai.contains(5, 8, 5, 3, 9, 10));
+		assertTrue(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 0, 9, 10));
+		assertFalse(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 1, 9, 10));
+		assertFalse(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 2, 9, 10));
+		assertFalse(Circle2ai.containsCircleQuadrantPoint(5, 8, 5, 3, 9, 10));
 	}
 	
 	@Test
 	public void staticGetPointIterator() {
-		Iterator iterator = Circle2ai.getPointIterator(5, 8, 5, 0, 8, (GeomFactory2ai) this.shape.getGeomFactory());
+		Iterator iterator = Circle2ai.newPointIterator(5, 8, 5, 0, 8, (GeomFactory2ai) this.shape.getGeomFactory());
 		Point2D p;
 		
 		int[] coords = new int[] {

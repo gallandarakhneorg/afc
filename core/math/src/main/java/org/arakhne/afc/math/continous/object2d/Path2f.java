@@ -90,7 +90,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 				break;
 			case LINE_TO:
 			{
-				float factor = (float) Segment2afp.computeProjectedPointOnLine(
+				float factor = (float) Segment2afp.findsProjectedPointPointLine(
 						x, y,
 						pe.fromX, pe.fromY, pe.toX, pe.toY);
 				factor = MathUtil.clamp(factor, 0f, 1f);
@@ -112,7 +112,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 				if ((crossings & mask) != 0) return new Point2f(x, y);
 
 				if (!pe.isEmpty()) {
-					float factor = (float) Segment2afp.computeProjectedPointOnLine(
+					float factor = (float) Segment2afp.findsProjectedPointPointLine(
 							x, y,
 							pe.fromX, pe.fromY, pe.toX, pe.toY);
 					factor = MathUtil.clamp(factor, 0f, 1f);
@@ -2604,7 +2604,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		 *          values in the specified array at the specified index.
 		 */
 		private static float getQuadSquaredFlatness(float coords[], int offset) {
-			return (float) Segment2afp.computeDistanceSquaredLinePoint(
+			return (float) Segment2afp.calculatesDistanceSquaredLinePoint(
 					coords[offset + 2], coords[offset + 3],
 					coords[offset + 0], coords[offset + 1],
 					coords[offset + 4], coords[offset + 5]);
@@ -2688,14 +2688,14 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		 */
 		private static float getCurveSquaredFlatness(float coords[], int offset) {
 			return (float) Math.max(
-					Segment2afp.computeDistanceSquaredSegmentPoint(
+					Segment2afp.calculatesDistanceSquaredSegmentPoint(
 							coords[offset + 0],
 							coords[offset + 1],
 							coords[offset + 6],
 							coords[offset + 7],
 							coords[offset + 2],
 							coords[offset + 3]),
-							Segment2afp.computeDistanceSquaredSegmentPoint(
+							Segment2afp.calculatesDistanceSquaredSegmentPoint(
 									coords[offset + 0],
 									coords[offset + 1],
 									coords[offset + 6],

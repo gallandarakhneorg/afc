@@ -78,25 +78,25 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 	}
 
 	@Test
-	public void staticProjectVectorOnOrientedRectangleRAxis() {
-		assertEpsilonEquals(-e1, OrientedRectangle2afp.projectVectorOnOrientedRectangleRAxis(ux, uy, pEx - cx, pEy - cy));
-		assertEpsilonEquals(e1, OrientedRectangle2afp.projectVectorOnOrientedRectangleRAxis(ux, uy, pFx - cx, pFy - cy));
-		assertEpsilonEquals(e1, OrientedRectangle2afp.projectVectorOnOrientedRectangleRAxis(ux, uy, pGx - cx, pGy - cy));
-		assertEpsilonEquals(-e1, OrientedRectangle2afp.projectVectorOnOrientedRectangleRAxis(ux, uy, pHx - cx, pHy - cy));
-		assertEpsilonEquals(-1.34164, OrientedRectangle2afp.projectVectorOnOrientedRectangleRAxis(ux, uy, -cx, -cy));
+	public void staticFindsVectorProjectionRAxisVector() {
+		assertEpsilonEquals(-e1, OrientedRectangle2afp.findsVectorProjectionRAxisVector(ux, uy, pEx - cx, pEy - cy));
+		assertEpsilonEquals(e1, OrientedRectangle2afp.findsVectorProjectionRAxisVector(ux, uy, pFx - cx, pFy - cy));
+		assertEpsilonEquals(e1, OrientedRectangle2afp.findsVectorProjectionRAxisVector(ux, uy, pGx - cx, pGy - cy));
+		assertEpsilonEquals(-e1, OrientedRectangle2afp.findsVectorProjectionRAxisVector(ux, uy, pHx - cx, pHy - cy));
+		assertEpsilonEquals(-1.34164, OrientedRectangle2afp.findsVectorProjectionRAxisVector(ux, uy, -cx, -cy));
 	}
 
 	@Test
-	public void staticProjectVectorOnOrientedRectangleSAxis() {
-		assertEpsilonEquals(-e2, OrientedRectangle2afp.projectVectorOnOrientedRectangleSAxis(ux, uy, pEx - cx, pEy - cy));
-		assertEpsilonEquals(-e2, OrientedRectangle2afp.projectVectorOnOrientedRectangleSAxis(ux, uy, pFx - cx, pFy - cy));
-		assertEpsilonEquals(e2, OrientedRectangle2afp.projectVectorOnOrientedRectangleSAxis(ux, uy, pGx - cx, pGy - cy));
-		assertEpsilonEquals(e2, OrientedRectangle2afp.projectVectorOnOrientedRectangleSAxis(ux, uy, pHx - cx, pHy - cy));
-		assertEpsilonEquals(-10.73313, OrientedRectangle2afp.projectVectorOnOrientedRectangleSAxis(ux, uy, -cx, -cy));
+	public void staticFindsVectorProjectionSAxisVector() {
+		assertEpsilonEquals(-e2, OrientedRectangle2afp.findsVectorProjectionSAxisVector(ux, uy, pEx - cx, pEy - cy));
+		assertEpsilonEquals(-e2, OrientedRectangle2afp.findsVectorProjectionSAxisVector(ux, uy, pFx - cx, pFy - cy));
+		assertEpsilonEquals(e2, OrientedRectangle2afp.findsVectorProjectionSAxisVector(ux, uy, pGx - cx, pGy - cy));
+		assertEpsilonEquals(e2, OrientedRectangle2afp.findsVectorProjectionSAxisVector(ux, uy, pHx - cx, pHy - cy));
+		assertEpsilonEquals(-10.73313, OrientedRectangle2afp.findsVectorProjectionSAxisVector(ux, uy, -cx, -cy));
 	}
 
 	@Test
-	public void staticComputeCenterExtents() {
+	public void staticCalculatesCenterPointAxisExtents() {
 		List points = Arrays.asList(
 				createPoint(pEx, pEy), createPoint(pGx, pGy),
 				createPoint(pFx, pFy), createPoint(pEx, pEy));
@@ -106,7 +106,7 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 		R = createVector(ux, uy);
 		center = createPoint(Double.NaN, Double.NaN);
 		extents = createVector(Double.NaN, Double.NaN);
-		OrientedRectangle2afp.computeCenterExtents(points, R, center, extents);
+		OrientedRectangle2afp.calculatesCenterPointAxisExtents(points, R, center, extents);
 		assertEpsilonEquals(cx, center.getX());
 		assertEpsilonEquals(cy, center.getY());
 		assertEpsilonEquals(e1, extents.getX());
@@ -166,12 +166,12 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 	}
 
 	@Test
-	public void staticComputeClosestFarthestPoints() {
+	public void staticFindsClosestFarthestPointsPointOrientedRectangle() {
 		Point2D closest, farthest;
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		OrientedRectangle2afp.computeClosestFarthestPoints(
+		OrientedRectangle2afp.findsClosestFarthestPointsPointOrientedRectangle(
 				-20, 9,
 				cx, cy, ux, uy, e1, e2,
 				closest, farthest);
@@ -182,7 +182,7 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		OrientedRectangle2afp.computeClosestFarthestPoints(
+		OrientedRectangle2afp.findsClosestFarthestPointsPointOrientedRectangle(
 				0, 0,
 				cx, cy, ux, uy, e1, e2,
 				closest, farthest);
@@ -193,7 +193,7 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		OrientedRectangle2afp.computeClosestFarthestPoints(
+		OrientedRectangle2afp.findsClosestFarthestPointsPointOrientedRectangle(
 				5, -10,
 				cx, cy, ux, uy, e1, e2,
 				closest, farthest);
@@ -204,7 +204,7 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		OrientedRectangle2afp.computeClosestFarthestPoints(
+		OrientedRectangle2afp.findsClosestFarthestPointsPointOrientedRectangle(
 				14, -20,
 				cx, cy, ux, uy, e1, e2,
 				closest, farthest);
@@ -215,7 +215,7 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		OrientedRectangle2afp.computeClosestFarthestPoints(
+		OrientedRectangle2afp.findsClosestFarthestPointsPointOrientedRectangle(
 				-6, 15,
 				cx, cy, ux, uy, e1, e2,
 				closest, farthest);
@@ -226,7 +226,7 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		OrientedRectangle2afp.computeClosestFarthestPoints(
+		OrientedRectangle2afp.findsClosestFarthestPointsPointOrientedRectangle(
 				0, 35,
 				cx, cy, ux, uy, e1, e2,
 				closest, farthest);
@@ -237,7 +237,7 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		OrientedRectangle2afp.computeClosestFarthestPoints(
+		OrientedRectangle2afp.findsClosestFarthestPointsPointOrientedRectangle(
 				10, 0,
 				cx, cy, ux, uy, e1, e2,
 				closest, farthest);
@@ -248,7 +248,7 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		OrientedRectangle2afp.computeClosestFarthestPoints(
+		OrientedRectangle2afp.findsClosestFarthestPointsPointOrientedRectangle(
 				16, -4,
 				cx, cy, ux, uy, e1, e2,
 				closest, farthest);
@@ -259,7 +259,7 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
-		OrientedRectangle2afp.computeClosestFarthestPoints(
+		OrientedRectangle2afp.findsClosestFarthestPointsPointOrientedRectangle(
 				-5, 25,
 				cx, cy, ux, uy, e1, e2,
 				closest, farthest);

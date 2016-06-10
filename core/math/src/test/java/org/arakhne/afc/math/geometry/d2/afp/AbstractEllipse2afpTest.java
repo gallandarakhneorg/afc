@@ -751,220 +751,220 @@ public abstract class AbstractEllipse2afpTest<T extends Ellipse2afp<?, T, ?, ?, 
 	}
 
 	@Test
-	public void staticComputeClosestPointToShallowEllipse_horizontalAxisGreater() {
+	public void staticFindsClosestPointShallowEllipsePoint_horizontalAxisGreater() {
 		// Values computed with GeoGebra tool
 		Point2D result;
 		
 		// Lower / Lower
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(0, 0, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(0, 0, 5, 8, 10, 5, result);
 		assertFpPointEquals(6, 9, result);
 
 		// Lower / Upper
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(0, 24, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(0, 24, 5, 8, 10, 5, result);
 		assertFpPointEquals(6.33945, 12.20297, result);
 
 		// Upper / Lower
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(24, 0, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(24, 0, 5, 8, 10, 5, result);
 		assertFpPointEquals(14.48365, 9.39355, result);
 
 		// Upper / Upper
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(24, 24, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(24, 24, 5, 8, 10, 5, result);
 		assertFpPointEquals(14.24203, 11.82337, result);
 
 		// On x axis (positive)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(18, 10.5, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(18, 10.5, 5, 8, 10, 5, result);
 		assertFpPointEquals(15, 10.5, result);
 
 		// On x axis (negative)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(0, 10.5, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(0, 10.5, 5, 8, 10, 5, result);
 		assertFpPointEquals(5, 10.5, result);
 
 		// On y axis (positive)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(10, 24, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(10, 24, 5, 8, 10, 5, result);
 		assertFpPointEquals(10, 13, result);
 
 		// On y axis (negative)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(10, 0, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(10, 0, 5, 8, 10, 5, result);
 		assertFpPointEquals(10, 8, result);
 
 		// Inside
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(6, 11, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(6, 11, 5, 8, 10, 5, result);
 		assertFpPointEquals(5.42383, 11.50731, result);
 	}
 	
 	@Test
-	public void staticComputeClosestPointToShallowEllipse_verticalAxisGreater() {
+	public void staticFindsClosestPointShallowEllipsePoint_verticalAxisGreater() {
 		// Values computed with GeoGebra tool
 		Point2D result;
 		
 		// Lower / Lower
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(0, 0, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(0, 0, 5, 8, 5, 10, result);
 		assertFpPointEquals(6.58303, 8.34848, result);
 
 		// Lower / Upper
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(0, 24, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(0, 24, 5, 8, 5, 10, result);
 		assertFpPointEquals(6.39777, 17.4878, result);
 
 		// Upper / Lower
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(24, 0, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(24, 0, 5, 8, 5, 10, result);
 		assertFpPointEquals(9.08189, 9.12824, result);
 
 		// Upper / Upper
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(24, 24, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(24, 24, 5, 8, 5, 10, result);
 		assertFpPointEquals(9.2587, 16.55357, result);
 
 		// On x axis (positive)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(18, 13, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(18, 13, 5, 8, 5, 10, result);
 		assertFpPointEquals(10, 13, result);
 
 		// On x axis (negative)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(0, 13, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(0, 13, 5, 8, 5, 10, result);
 		assertFpPointEquals(5, 13, result);
 
 		// On y axis (positive)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(7.5, 24, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(7.5, 24, 5, 8, 5, 10, result);
 		assertFpPointEquals(7.5, 18, result);
 
 		// On y axis (negative)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(7.5, 0, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(7.5, 0, 5, 8, 5, 10, result);
 		assertFpPointEquals(7.5, 8, result);
 
 		// Inside
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToShallowEllipse(6, 11, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointShallowEllipsePoint(6, 11, 5, 8, 5, 10, result);
 		assertFpPointEquals(5.25055, 10.81828, result);
 	}
 
 	@Test
-	public void staticComputeClosestPointToSolidEllipse_horizontalAxisGreater() {
+	public void staticFindsClosestPointSolidEllipsePoint_horizontalAxisGreater() {
 		// Values computed with GeoGebra tool
 		Point2D result;
 		
 		// Lower / Lower
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(0, 0, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(0, 0, 5, 8, 10, 5, result);
 		assertFpPointEquals(6, 9, result);
 
 		// Lower / Upper
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(0, 24, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(0, 24, 5, 8, 10, 5, result);
 		assertFpPointEquals(6.33945, 12.20297, result);
 
 		// Upper / Lower
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(24, 0, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(24, 0, 5, 8, 10, 5, result);
 		assertFpPointEquals(14.48365, 9.39355, result);
 
 		// Upper / Upper
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(24, 24, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(24, 24, 5, 8, 10, 5, result);
 		assertFpPointEquals(14.24203, 11.82337, result);
 
 		// On x axis (positive)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(18, 10.5, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(18, 10.5, 5, 8, 10, 5, result);
 		assertFpPointEquals(15, 10.5, result);
 
 		// On x axis (negative)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(0, 10.5, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(0, 10.5, 5, 8, 10, 5, result);
 		assertFpPointEquals(5, 10.5, result);
 
 		// On y axis (positive)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(10, 24, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(10, 24, 5, 8, 10, 5, result);
 		assertFpPointEquals(10, 13, result);
 
 		// On y axis (negative)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(10, 0, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(10, 0, 5, 8, 10, 5, result);
 		assertFpPointEquals(10, 8, result);
 
 		// Inside
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(6, 11, 5, 8, 10, 5, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(6, 11, 5, 8, 10, 5, result);
 		assertFpPointEquals(6, 11, result);
 
 		//
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(9.897519745562938, 7.003543789189412, 2, 1, 10, 8, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(9.897519745562938, 7.003543789189412, 2, 1, 10, 8, result);
 		assertFpPointEquals(9.897519745562938, 7.003543789189412, result);
 	}
 	
 	@Test
-	public void staticComputeClosestPointToSolidEllipse_verticalAxisGreater() {
+	public void staticFindsClosestPointSolidEllipsePoint_verticalAxisGreater() {
 		// Values computed with GeoGebra tool
 		Point2D result;
 		
 		// Lower / Lower
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(0, 0, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(0, 0, 5, 8, 5, 10, result);
 		assertFpPointEquals(6.58303, 8.34848, result);
 
 		// Lower / Upper
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(0, 24, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(0, 24, 5, 8, 5, 10, result);
 		assertFpPointEquals(6.39777, 17.4878, result);
 
 		// Upper / Lower
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(24, 0, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(24, 0, 5, 8, 5, 10, result);
 		assertFpPointEquals(9.08189, 9.12824, result);
 
 		// Upper / Upper
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(24, 24, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(24, 24, 5, 8, 5, 10, result);
 		assertFpPointEquals(9.2587, 16.55357, result);
 
 		// On x axis (positive)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(18, 13, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(18, 13, 5, 8, 5, 10, result);
 		assertFpPointEquals(10, 13, result);
 
 		// On x axis (negative)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(0, 13, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(0, 13, 5, 8, 5, 10, result);
 		assertFpPointEquals(5, 13, result);
 
 		// On y axis (positive)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(7.5, 24, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(7.5, 24, 5, 8, 5, 10, result);
 		assertFpPointEquals(7.5, 18, result);
 
 		// On y axis (negative)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(7.5, 0, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(7.5, 0, 5, 8, 5, 10, result);
 		assertFpPointEquals(7.5, 8, result);
 
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(7.5, 7, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(7.5, 7, 5, 8, 5, 10, result);
 		assertFpPointEquals(7.5, 8, result);
 
 		// Inside
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(6, 11, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(6, 11, 5, 8, 5, 10, result);
 		assertFpPointEquals(6, 11, result);
 
 		// Outside / touching the bounding box of the ellipse
 		result = createPoint(0, 0);
-		Ellipse2afp.computeClosestPointToSolidEllipse(3, 8, 5, 8, 5, 10, result);
+		Ellipse2afp.findsClosestPointSolidEllipsePoint(3, 8, 5, 8, 5, 10, result);
 		assertFpPointEquals(5.75656, 9.41648, result);
 	}
 	
@@ -975,47 +975,47 @@ public abstract class AbstractEllipse2afpTest<T extends Ellipse2afp<?, T, ?, ?, 
 		
 		// Lower / Lower
 		result = createPoint(0, 0);
-		Ellipse2afp.computeFarthestPointToShallowEllipse(0, 0, 5, 8, 5, 10, result);
+		Ellipse2afp.findsFarthestPointShallowEllipsePoint(0, 0, 5, 8, 5, 10, result);
 		assertFpPointEquals(8.05329, 17.92645, result);
 
 		// Lower / Upper
 		result = createPoint(0, 0);
-		Ellipse2afp.computeFarthestPointToShallowEllipse(0, 24, 5, 8, 5, 10, result);
+		Ellipse2afp.findsFarthestPointShallowEllipsePoint(0, 24, 5, 8, 5, 10, result);
 		assertFpPointEquals(8.12711, 8.08913, result);
 
 		// Upper / Lower
 		result = createPoint(0, 0);
-		Ellipse2afp.computeFarthestPointToShallowEllipse(24, 0, 5, 8, 5, 10, result);
+		Ellipse2afp.findsFarthestPointShallowEllipsePoint(24, 0, 5, 8, 5, 10, result);
 		assertFpPointEquals(6.31519, 17.75919, result);
 
 		// Upper / Upper
 		result = createPoint(0, 0);
-		Ellipse2afp.computeFarthestPointToShallowEllipse(24, 24, 5, 8, 5, 10, result);
+		Ellipse2afp.findsFarthestPointShallowEllipsePoint(24, 24, 5, 8, 5, 10, result);
 		assertFpPointEquals(6.16141, 8.28223, result);
 
 		// On x axis (positive)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeFarthestPointToShallowEllipse(18, 13, 5, 8, 5, 10, result);
+		Ellipse2afp.findsFarthestPointShallowEllipsePoint(18, 13, 5, 8, 5, 10, result);
 		assertFpPointEquals(5, 13, result);
 
 		// On x axis (negative)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeFarthestPointToShallowEllipse(0, 13, 5, 8, 5, 10, result);
+		Ellipse2afp.findsFarthestPointShallowEllipsePoint(0, 13, 5, 8, 5, 10, result);
 		assertFpPointEquals(10, 13, result);
 
 		// On y axis (positive)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeFarthestPointToShallowEllipse(7.5, 24, 5, 8, 5, 10, result);
+		Ellipse2afp.findsFarthestPointShallowEllipsePoint(7.5, 24, 5, 8, 5, 10, result);
 		assertFpPointEquals(7.5, 8, result);
 
 		// On y axis (negative)
 		result = createPoint(0, 0);
-		Ellipse2afp.computeFarthestPointToShallowEllipse(7.5, 0, 5, 8, 5, 10, result);
+		Ellipse2afp.findsFarthestPointShallowEllipsePoint(7.5, 0, 5, 8, 5, 10, result);
 		assertFpPointEquals(7.5, 18, result);
 
 		// Inside
 		result = createPoint(0, 0);
-		Ellipse2afp.computeFarthestPointToShallowEllipse(6, 11, 5, 8, 5, 10, result);
+		Ellipse2afp.findsFarthestPointShallowEllipsePoint(6, 11, 5, 8, 5, 10, result);
 		assertFpPointEquals(7.82555, 17.97659, result);
 	}
 	
