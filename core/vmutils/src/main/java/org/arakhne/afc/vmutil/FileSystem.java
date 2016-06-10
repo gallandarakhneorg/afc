@@ -360,7 +360,7 @@ public final class FileSystem {
 	 * @return the character used to separate the basename and the file extension.
 	 */
 	@Pure
-	@Inline("EXTENSION_SEPARATOR_CHAR")
+	@Inline(value = "EXTENSION_SEPARATOR_CHAR", constantExpression = true)
 	public static char getFileExtensionCharacter() {
 		return EXTENSION_SEPARATOR_CHAR;
 	}

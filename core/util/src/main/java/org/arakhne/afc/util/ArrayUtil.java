@@ -631,7 +631,8 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 */
 	@Pure
-	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class},
+            statementExpression = true)
 	public static <T> void shuffle(T[] array) {
 		shuffle(array, new Random());
 	}
@@ -659,7 +660,8 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 */
 	@Pure
-	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class},
+			statementExpression = true)
 	public static void shuffle(boolean[] array) {
 		shuffle(array, new Random());
 	}
@@ -686,7 +688,8 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 */
 	@Pure
-	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class},
+            statementExpression = true)
 	public static void shuffle(byte[] array) {
 		shuffle(array, new Random());
 	}
@@ -713,7 +716,8 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 */
 	@Pure
-	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class},
+            statementExpression = true)
 	public static void shuffle(char[] array) {
 		shuffle(array, new Random());
 	}
@@ -740,7 +744,8 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 */
 	@Pure
-	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class},
+            statementExpression = true)
 	public static void shuffle(int[] array) {
 		shuffle(array, new Random());
 	}
@@ -767,7 +772,8 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 */
 	@Pure
-	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class},
+            statementExpression = true)
 	public static void shuffle(long[] array) {
 		shuffle(array, new Random());
 	}
@@ -794,7 +800,8 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 */
 	@Pure
-	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class},
+            statementExpression = true)
 	public static void shuffle(float[] array) {
 		shuffle(array, new Random());
 	}
@@ -821,7 +828,8 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 */
 	@Pure
-	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class},
+            statementExpression = true)
 	public static void shuffle(double[] array) {
 		shuffle(array, new Random());
 	}

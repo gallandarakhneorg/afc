@@ -162,7 +162,7 @@ public class VMCommandLine {
 	 * @since 6.2
 	 */
 	@Inline(value = "VMCommandLine.launchVMWithClassPath(($1).getCanonicalName(), ($2), ($3))",
-			imported = {VMCommandLine.class})
+			imported = {VMCommandLine.class}, statementExpression = true)
 	public static Process launchVMWithClassPath(Class<?> classToLaunch, String classpath,
 			String... additionalParams) throws IOException {
 		return launchVMWithClassPath(classToLaunch.getCanonicalName(), classpath, additionalParams);
@@ -217,7 +217,7 @@ public class VMCommandLine {
 	 * @since 6.2
 	 */
 	@Inline(value = "VMCommandLine.launchVMWithClassPath(($1).getCanonicalName(), ($2), ($3))",
-			imported = {VMCommandLine.class})
+			imported = {VMCommandLine.class}, statementExpression = true)
 	public static Process launchVMWithClassPath(Class<?> classToLaunch, File[] classpath,
 			String... additionalParams) throws IOException {
 		return launchVMWithClassPath(classToLaunch.getCanonicalName(), classpath, additionalParams);
@@ -277,7 +277,8 @@ public class VMCommandLine {
 	 * @return the process that is running the new virtual machine, neither <code>null</code>
 	 * @throws IOException when a IO error occurs.
 	 */
-	@Inline(value = "VMCommandLine.launchVM(($1).getCanonicalName(), ($2))", imported = {VMCommandLine.class})
+	@Inline(value = "VMCommandLine.launchVM(($1).getCanonicalName(), ($2))", imported = {VMCommandLine.class},
+			statementExpression = true)
 	public static Process launchVM(Class<?> classToLaunch, String... additionalParams) throws IOException {
 		return launchVM(classToLaunch.getCanonicalName(), additionalParams);
 	}
@@ -291,7 +292,7 @@ public class VMCommandLine {
 	 * @since 6.2
 	 */
 	@Inline(value = "VMCommandLine.launchVMWithClassPath(($1), System.getProperty(\"java.class.path\"), ($2))",
-			imported = {VMCommandLine.class})
+			imported = {VMCommandLine.class}, statementExpression = true)
 	public static Process launchVM(String classToLaunch, String... additionalParams) throws IOException {
 		return launchVMWithClassPath(
 				classToLaunch,
@@ -306,7 +307,7 @@ public class VMCommandLine {
 	 * @param parameters is the parameters to pass to the <code>main</code>.
 	 */
 	@Inline(value = "VMCommandLine.saveVMParameters((($1) != null) ? ($1).getCanonicalName() : null, ($2))",
-			imported = {VMCommandLine.class})
+			imported = {VMCommandLine.class}, statementExpression = true)
 	public static void saveVMParameters(Class<?> classToLaunch, String... parameters) {
  		saveVMParameters(
  				(classToLaunch != null)
@@ -338,7 +339,7 @@ public class VMCommandLine {
 	 * @param parameters is the parameters to pass to the <code>main</code>.
 	 */
 	@Inline(value = "VMCommandLine.saveVMParametersIfNotSet(($1).getCanonicalName(), ($2))",
-			imported = {VMCommandLine.class})
+			imported = {VMCommandLine.class}, statementExpression = true)
 	public static void saveVMParametersIfNotSet(Class<?> classToLaunch, String... parameters) {
 		saveVMParametersIfNotSet(classToLaunch.getCanonicalName(), parameters);
 	}

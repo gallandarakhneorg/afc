@@ -357,7 +357,8 @@ public final class LibraryLoader {
 	 *             <code>null</code>
 	 * @see        java.lang.System#load(java.lang.String)
 	 */
-	@Inline(value = "LibraryLoader.loadPlatformDependentLibrary(null, $1)", imported = {LibraryLoader.class})
+	@Inline(value = "LibraryLoader.loadPlatformDependentLibrary(null, $1)", imported = {LibraryLoader.class},
+			statementExpression = true)
 	public static void loadPlatformDependentLibrary(String libname) throws IOException {
 		loadPlatformDependentLibrary(null, libname);
 	}

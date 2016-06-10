@@ -129,7 +129,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	}
 
 	@Pure
-	@Inline("null")
+	@Inline(value = "null", constantExpression = true)
 	@Override
 	public Comparator<? super Integer> comparator() {
 		return null;
@@ -173,7 +173,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return this.values[this.values.length - 1];
 	}
 
-	@Inline("null")
+	@Pure
 	@Override
 	public SortedSet<Integer> subSet(Integer fromElement, Integer toElement) {
 		final SortedSet<Integer> theset = new TreeSet<>();
@@ -213,7 +213,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return theset;
 	}
 
-	@Inline("null")
+	@Pure
 	@Override
 	public SortedSet<Integer> tailSet(Integer fromElement) {
 		final SortedSet<Integer> theset = new TreeSet<>();
