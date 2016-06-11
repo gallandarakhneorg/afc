@@ -73,7 +73,7 @@ public final class FileSystem {
 
 		final StringBuilder pattern = new StringBuilder();
 		pattern.append("^"); //$NON-NLS-1$
-		pattern.append("(([a-zA-Z]:"); //$NON-NLS-1$
+		pattern.append("(([a-zA-Z][:|]"); //$NON-NLS-1$
 		pattern.append(validChars);
 		pattern.append("*)|("); //$NON-NLS-1$
 		pattern.append(validChars);
@@ -1774,6 +1774,10 @@ public final class FileSystem {
 		String path = extractLocalPath(filename);
 		if (isWindowsNativeFilename(path)) {
 			return normalizeWindowsNativeFilename(path);
+		}
+		// Test for malformed filenames.
+		if (Pattern.matches("^" + Pattern.quote(URL_PATH_SEPARATOR) + "[a-zA-Z][:|].*$", path)) { //$NON-NLS-1$ //$NON-NLS-2$
+			path = path.substring(1);
 		}
 		return new File(path.replaceAll(
 				Pattern.quote(UNIX_SEPARATOR_STRING),

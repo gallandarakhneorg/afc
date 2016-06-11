@@ -249,6 +249,7 @@ public class FileSystemTest {
 		public void isWindowNativeFilename() {
 			assertFalse(FileSystem.isWindowsNativeFilename("D:/vivus_test/export dae/yup/terrain_physx.dae")); 
 			assertTrue(FileSystem.isWindowsNativeFilename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
+			assertTrue(FileSystem.isWindowsNativeFilename("D|\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
 			assertFalse(FileSystem.isWindowsNativeFilename("/vivus_test/export dae/yup/terrain_physx.dae")); 
 			assertFalse(FileSystem.isWindowsNativeFilename("/")); 
 			assertTrue(FileSystem.isWindowsNativeFilename("\\\\")); 
@@ -351,34 +352,6 @@ public class FileSystemTest {
 		}
 		
 		@Test
-		public void isJarURLURL() throws Exception {
-			assertFalse(FileSystem.isJarURL(createAbsoluteStandardFileUrl()));
-			assertFalse(FileSystem.isJarURL(createAbsoluteFolderUrl()));
-			assertFalse(FileSystem.isJarURL(createHttpUrl()));
-			assertTrue(FileSystem.isJarURL(createFileInJarUrl()));
-			assertTrue(FileSystem.isJarURL(createFileInJarInJarUrl()));
-			assertFalse(FileSystem.isJarURL(createFileUrlWithSpacesHardCoded()));  
-			assertFalse(FileSystem.isJarURL(createFileUrlWithSpacesWithFile()));
-	
-			assertInlineParameterUsage(FileSystem.class, "isJarURL", URL.class);
-		}
-		
-		@Test
-		public void getJarURLURL() throws Exception {
-			assertNull(FileSystem.getJarURL(createAbsoluteStandardFileUrl()));
-			assertNull(FileSystem.getJarURL(createAbsoluteFolderUrl()));
-			assertNull(FileSystem.getJarURL(createHttpUrl()));
-			assertEquals(new URL("file:" + createJarFilenameForUrl()), FileSystem.getJarURL(createFileInJarUrl()));
-			assertEquals(new URL("jar:file:"
-					+ createJarFilenameForUrl() + "!"
-					+ createJarInJarFilenameForUrl()),
-					FileSystem.getJarURL(createFileInJarInJarUrl()));
-	
-			assertEquals(new URL("file:" + createJarFilenameForUrlWithSpaces()), FileSystem.getJarURL(createFileInJarUrlWithSpaces()));  
-			assertNull(FileSystem.getJarFile(createFileUrlWithSpacesHardCoded()));
-		}
-		
-		@Test
 		public void convertStringToFile() {
 			assertNormedFile("D:/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("D:/vivus_test/export dae/yup/terrain_physx.dae")); 
 			assertNormedFile("D:/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
@@ -407,8 +380,10 @@ public class FileSystemTest {
 			assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("\\\\host\\a\\b\\c.txt")); 
 	
 			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:C:/a/b/c.txt")); 
+			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:/C:/a/b/c.txt")); 
 			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file://C:/a/b/c.txt")); 
 			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:C:a/b/c.txt")); 
+			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:/C:a/b/c.txt")); 
 			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a/b/c.txt")); 
 			assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:/a/b/c.txt")); 
 			assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:///a/b/c.txt")); 
@@ -424,7 +399,35 @@ public class FileSystemTest {
 			assertNormedFile("C:c.txt", FileSystem.convertStringToFile("file://C:c.txt")); 
 			assertNormedFile("c.txt", FileSystem.convertStringToFile("file://c.txt")); 
 		}
+
+		@Test
+		public void isJarURLURL() throws Exception {
+			assertFalse(FileSystem.isJarURL(createAbsoluteStandardFileUrl()));
+			assertFalse(FileSystem.isJarURL(createAbsoluteFolderUrl()));
+			assertFalse(FileSystem.isJarURL(createHttpUrl()));
+			assertTrue(FileSystem.isJarURL(createFileInJarUrl()));
+			assertTrue(FileSystem.isJarURL(createFileInJarInJarUrl()));
+			assertFalse(FileSystem.isJarURL(createFileUrlWithSpacesHardCoded()));  
+			assertFalse(FileSystem.isJarURL(createFileUrlWithSpacesWithFile()));
 	
+			assertInlineParameterUsage(FileSystem.class, "isJarURL", URL.class);
+		}
+		
+		@Test
+		public void getJarURLURL() throws Exception {
+			assertNull(FileSystem.getJarURL(createAbsoluteStandardFileUrl()));
+			assertNull(FileSystem.getJarURL(createAbsoluteFolderUrl()));
+			assertNull(FileSystem.getJarURL(createHttpUrl()));
+			assertEquals(new URL("file:" + createJarFilenameForUrl()), FileSystem.getJarURL(createFileInJarUrl()));
+			assertEquals(new URL("jar:file:"
+					+ createJarFilenameForUrl() + "!"
+					+ createJarInJarFilenameForUrl()),
+					FileSystem.getJarURL(createFileInJarInJarUrl()));
+	
+			assertEquals(new URL("file:" + createJarFilenameForUrlWithSpaces()), FileSystem.getJarURL(createFileInJarUrlWithSpaces()));  
+			assertNull(FileSystem.getJarFile(createFileUrlWithSpacesHardCoded()));
+		}
+
 //		@Test
 //		public void getJarFileURL() throws Exception {
 //			assertNull(FileSystem.getJarFile(createAbsoluteStandardFileUrl()));
