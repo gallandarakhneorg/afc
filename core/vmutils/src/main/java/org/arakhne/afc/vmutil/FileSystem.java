@@ -143,6 +143,8 @@ public final class FileSystem {
 
 	private static final int BUFFER_SIZE = 4096;
 
+	private static final char[] FILE_PREFIX = {'f', 'i', 'l', 'e', ':', '/', '/'};
+
 	private FileSystem() {
 		//
 	}
@@ -217,6 +219,10 @@ public final class FileSystem {
 			filePath = filePath.replaceAll(
 					Pattern.quote(File.separator),
 					Matcher.quoteReplacement(URL_PATH_SEPARATOR));
+		}
+		// Add root slash for Windows paths that are starting with a disk id.
+		if (Pattern.matches("^[a-zA-Z][:|].*$", filePath)) { //$NON-NLS-1$
+			filePath = URL_PATH_SEPARATOR + filePath;
 		}
 		return filePath;
 	}
@@ -409,13 +415,17 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final String parent = fromFileStandardToURLStandard(filename.getParent());
+		String parent = fromFileStandardToURLStandard(filename.getParent());
 		try {
 			if (parent == null || "".equals(parent)) { //$NON-NLS-1$
 				if (filename.isAbsolute()) {
 					return null;
 				}
 				return new URL(URISchemeType.FILE.name(), "", CURRENT_DIRECTORY); //$NON-NLS-1$
+			}
+			// Treat Windows specific.
+			if (Pattern.matches("^" + URL_PATH_SEPARATOR + "?[a-zA-Z][:|]$", parent)) { //$NON-NLS-1$ //$NON-NLS-2$
+				parent += URL_PATH_SEPARATOR;
 			}
 			return new URL(URISchemeType.FILE.name(), "", parent); //$NON-NLS-1$
 		} catch (MalformedURLException exception) {
@@ -505,7 +515,15 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		assert !isWindowsNativeFilename(filename);
+		if (isWindowsNativeFilename(filename)) {
+			return largeBasename(normalizeWindowsNativeFilename(filename));
+		}
+
+		try {
+			return largeBasename(new URL(filename));
+		} catch (Exception exception) {
+			// No log
+		}
 		int end = filename.length();
 		int idx;
 		do {
@@ -582,7 +600,15 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		assert !isWindowsNativeFilename(filename);
+		if (isWindowsNativeFilename(filename)) {
+			return basename(normalizeWindowsNativeFilename(filename));
+		}
+
+		try {
+			return basename(new URL(filename));
+		} catch (Exception exception) {
+			// No log
+		}
 		int end = filename.length();
 		int idx;
 		do {
@@ -683,6 +709,12 @@ public final class FileSystem {
 		}
 		if (isWindowsNativeFilename(filename)) {
 			return shortBasename(normalizeWindowsNativeFilename(filename));
+		}
+
+		try {
+			return shortBasename(new URL(filename));
+		} catch (Exception exception) {
+			// No log
 		}
 		final String normalizedFilename = fromFileStandardToURLStandard(filename);
 		int idx;
@@ -912,6 +944,12 @@ public final class FileSystem {
 
 	/** Replies the parts of a path.
 	 *
+	 * <p>If the input is {@code "http://www.arakhne.org/path/to/file.x.z.z"}, the replied paths
+	 * are: {@code ""}, {@code "path"}, {@code "to"}, and {@code "file.x.z.z"}.
+	 *
+	 * <p>If the input is {@code "jar:file:/path1/archive.jar!/path2/file"}, the replied paths
+	 * are: {@code ""}, {@code "path2"}, and {@code "file"}.
+	 *
 	 * @param filename is the name to parse.
 	 * @return the parts of a path.
 	 */
@@ -924,9 +962,16 @@ public final class FileSystem {
 			return split(getJarFile(filename));
 		}
 		final String path = filename.getPath();
-		final String[] tab = path.split(Pattern.quote(URL_PATH_SEPARATOR));
-		for (int i = 0; i < tab.length; ++i) {
-			tab[i] = decodeHTMLEntities(tab[i]);
+		String[] tab = path.split(Pattern.quote(URL_PATH_SEPARATOR));
+		if (tab.length >= 2 && "".equals(tab[0]) && Pattern.matches("^[a-zA-Z][:|]$", tab[1])) { //$NON-NLS-1$ //$NON-NLS-2$
+			tab = Arrays.copyOfRange(tab, 1, tab.length);
+			for (int i = 1; i < tab.length; ++i) {
+				tab[i] = decodeHTMLEntities(tab[i]);
+			}
+		} else {
+			for (int i = 0; i < tab.length; ++i) {
+				tab[i] = decodeHTMLEntities(tab[i]);
+			}
 		}
 		return tab;
 	}
@@ -991,7 +1036,8 @@ public final class FileSystem {
 		if (urlBase == null) {
 			return null;
 		}
-		final StringBuilder buf = new StringBuilder(urlBase.getPath());
+		final StringBuilder buf = new StringBuilder(decodeHTMLEntities(urlBase.getPath().replaceFirst(
+				Pattern.quote(URL_PATH_SEPARATOR) + "+$", "")));  //$NON-NLS-1$//$NON-NLS-2$
 		boolean empty;
 		for (final String elt : elements) {
 			empty = elt == null || elt.length() == 0;
@@ -1018,7 +1064,7 @@ public final class FileSystem {
 					urlBase.getUserInfo(),
 					urlBase.getHost(),
 					urlBase.getPort(),
-					decodeHTMLEntities(buf.toString()),
+					buf.toString(),
 					decodeHTMLEntities(urlBase.getQuery()),
 					urlBase.getRef()).toURL();
 		} catch (Throwable exception) {
@@ -1198,7 +1244,8 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final String path = filename.getPath();
+		final String path = filename.getPath().replaceFirst(Pattern.quote(URL_PATH_SEPARATOR)
+				+ "+$", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		int idx = path.lastIndexOf(URL_PATH_SEPARATOR);
 		final StringBuilder buf = new StringBuilder((idx < 0) ? "" : //$NON-NLS-1$
 				decodeHTMLEntities(path.substring(0, idx + 1)));
@@ -1288,41 +1335,39 @@ public final class FileSystem {
 		if (extension == null) {
 			return filename;
 		}
-		final String path = filename.getPath();
-		int idx = path.lastIndexOf(URL_PATH_SEPARATOR);
-		int end = path.length();
-		if (idx == end - 1) {
-			end--;
-			idx = path.lastIndexOf(URL_PATH_SEPARATOR, end - 1);
+		String path = filename.getPath().replaceFirst(Pattern.quote(URL_PATH_SEPARATOR)
+				+ "+$", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		if (!path.isEmpty()) {
+			int idx = path.lastIndexOf(URL_PATH_SEPARATOR);
+			final StringBuilder buf = new StringBuilder((idx < 0) ? "" : //$NON-NLS-1$
+					decodeHTMLEntities(path.substring(0, idx + 1)));
+			final String largeBasename = decodeHTMLEntities(path.substring(idx + 1));
+			idx = largeBasename.lastIndexOf(getFileExtensionCharacter());
+			if (idx < 0) {
+				buf.append(largeBasename);
+			} else {
+				buf.append(largeBasename.substring(0, idx));
+			}
+			if (!"".equals(extension) && !extension.startsWith(EXTENSION_SEPARATOR)) { //$NON-NLS-1$
+				buf.append(EXTENSION_SEPARATOR);
+			}
+			buf.append(extension);
+			path = buf.toString();
 		}
-		final StringBuilder buf = new StringBuilder((idx < 0) ? "" : //$NON-NLS-1$
-				decodeHTMLEntities(path.substring(0, idx + 1)));
-		final String largeBasename = decodeHTMLEntities(path.substring(idx + 1, end));
-		idx = largeBasename.lastIndexOf(getFileExtensionCharacter());
-		if (idx < 0) {
-			buf.append(largeBasename);
-		} else {
-			buf.append(largeBasename.substring(0, idx));
-		}
-		String extent = extension;
-		if (!"".equals(extent) && !extent.startsWith(EXTENSION_SEPARATOR)) { //$NON-NLS-1$
-			extent = EXTENSION_SEPARATOR + extent;
-		}
-		buf.append(extent);
 		try {
 			if (isJarURL(filename)) {
 				return new URL(
 						filename.getProtocol(),
 						filename.getHost(),
 						filename.getPort(),
-						buf.toString());
+						path);
 			}
 			return new URI(
 					filename.getProtocol(),
 					filename.getUserInfo(),
 					filename.getHost(),
 					filename.getPort(),
-					buf.toString(),
+					path,
 					encodeHTMLEntities(filename.getQuery()),
 					filename.getRef()).toURL();
 		} catch (AssertionError e) {
@@ -1334,7 +1379,7 @@ public final class FileSystem {
 			return new URL(
 					filename.getProtocol(),
 					filename.getHost(),
-					buf.toString());
+					path);
 		} catch (AssertionError e) {
 			throw e;
 		} catch (Throwable exception) {
@@ -1376,12 +1421,47 @@ public final class FileSystem {
 	public static URL addExtension(URL filename, String extension) {
 		if (filename != null && !hasExtension(filename, extension)) {
 			final String basename = largeBasename(filename);
-			final URL dirname = dirname(filename);
-			String extent = extension;
-			if (!"".equals(extent) && !extent.startsWith(EXTENSION_SEPARATOR)) { //$NON-NLS-1$
-				extent = EXTENSION_SEPARATOR + extent;
+			if (!basename.isEmpty()) {
+				final StringBuilder buf = new StringBuilder(decodeHTMLEntities(
+						filename.getPath()).replaceFirst(Pattern.quote(URL_PATH_SEPARATOR)
+						+ "+$", "")); //$NON-NLS-1$ //$NON-NLS-2$
+				if (!"".equals(extension) && !extension.startsWith(EXTENSION_SEPARATOR)) { //$NON-NLS-1$
+					buf.append(EXTENSION_SEPARATOR);
+				}
+				buf.append(extension);
+				final String path = buf.toString();
+				try {
+					if (isJarURL(filename)) {
+						return new URL(
+								filename.getProtocol(),
+								filename.getHost(),
+								filename.getPort(),
+								path);
+					}
+					return new URI(
+							filename.getProtocol(),
+							filename.getUserInfo(),
+							filename.getHost(),
+							filename.getPort(),
+							path,
+							encodeHTMLEntities(filename.getQuery()),
+							filename.getRef()).toURL();
+				} catch (AssertionError e) {
+					throw e;
+				} catch (Throwable exception) {
+					//
+				}
+				try {
+					return new URL(
+							filename.getProtocol(),
+							filename.getHost(),
+							path);
+				} catch (AssertionError e) {
+					throw e;
+				} catch (Throwable exception) {
+					return null;
+				}
 			}
-			return join(dirname, basename + extent);
 		}
 		return filename;
 	}
@@ -1787,15 +1867,11 @@ public final class FileSystem {
 		if (filename == null || "".equals(filename)) { //$NON-NLS-1$
 			return null;
 		}
-		String path = extractLocalPath(filename);
-		if (isWindowsNativeFilename(path)) {
-			return normalizeWindowsNativeFilename(path);
+		if (isWindowsNativeFilename(filename)) {
+			return normalizeWindowsNativeFilename(filename);
 		}
 		// Test for malformed filenames.
-		if (Pattern.matches("^" + Pattern.quote(URL_PATH_SEPARATOR) + "[a-zA-Z][:|].*$", path)) { //$NON-NLS-1$ //$NON-NLS-2$
-			path = path.substring(1);
-		}
-		return new File(path.replaceAll(
+		return new File(extractLocalPath(filename).replaceAll(
 				Pattern.quote(UNIX_SEPARATOR_STRING),
 				Matcher.quoteReplacement(File.separator)));
 	}
@@ -1861,10 +1937,16 @@ public final class FileSystem {
 			if (path != null) {
 				if (auth == null || "".equals(auth)) { //$NON-NLS-1$
 					// absolute filename in URI
-					return new File(decodeHTMLEntities(path));
+					path = decodeHTMLEntities(path);
+				} else {
+					// relative filename in URI, extract it directly
+					path = decodeHTMLEntities(auth + path);
 				}
-				// relative filename in URI, extract it directly
-				return new File(decodeHTMLEntities(auth + path));
+				if (Pattern.matches("^" + Pattern.quote(URL_PATH_SEPARATOR) //$NON-NLS-1$
+						+ "[a-zA-Z][:|].*$", path)) { //$NON-NLS-1$
+					path = path.substring(URL_PATH_SEPARATOR.length());
+				}
+				return new File(path);
 			}
 		}
 		throw new IllegalArgumentException(Locale.getString("E2", theUrl)); //$NON-NLS-1$
@@ -2380,7 +2462,7 @@ public final class FileSystem {
 				return join(current, filename);
 			}
 			try {
-				return new URL(URISchemeType.FILE.toString() + fromFileStandardToURLStandard(filename));
+				return new URL(URISchemeType.FILE.toString() + fromFileStandardToURLStandard(filename.getAbsolutePath()));
 			} catch (MalformedURLException exception) {
 				// ignore error
 			}
@@ -2466,13 +2548,33 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		String fn = filename.toUpperCase();
-		if (fn.startsWith("FILE://")) { //$NON-NLS-1$
-			fn = filename.substring(7);
-		} else if (fn.startsWith("FILE:")) { //$NON-NLS-1$
-			fn = filename.substring(5);
+		final int max = Math.min(FILE_PREFIX.length, filename.length());
+		final int inner = max - 2;
+		if (inner <= 0) {
+			return filename;
+		}
+		boolean foundInner = false;
+		boolean foundFull = false;
+		for (int i = 0; i < max; ++i) {
+			final char c = Character.toLowerCase(filename.charAt(i));
+			if (FILE_PREFIX[i] != c) {
+				foundFull = false;
+				foundInner = i >= inner;
+				break;
+			}
+			foundFull = true;
+		}
+		String fn;
+		if (foundFull) {
+			fn = filename.substring(FILE_PREFIX.length);
+		} else if (foundInner) {
+			fn = filename.substring(inner);
 		} else {
 			fn = filename;
+		}
+		if (Pattern.matches("^(" + Pattern.quote(URL_PATH_SEPARATOR) + "|" //$NON-NLS-1$ //$NON-NLS-2$
+				+ Pattern.quote(WINDOWS_SEPARATOR_STRING) + ")[a-zA-Z][:|].*$", fn)) { //$NON-NLS-1$
+			fn = fn.substring(1);
 		}
 		return fn;
 	}
@@ -2588,7 +2690,7 @@ public final class FileSystem {
 			return null;
 		}
 		final String endPattern = URL_PATH_SEPARATOR + "$"; //$NON-NLS-1$
-		final String s = url.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
+		final String shorterUrl = url.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
 		String sp;
 		final Iterator<URL> classpath = ClasspathUtil.getClasspath();
 		URL path;
@@ -2596,9 +2698,10 @@ public final class FileSystem {
 		while (classpath.hasNext()) {
 			path = classpath.next();
 			sp = path.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
-			if (s.startsWith(sp)) {
+			if (shorterUrl.startsWith(sp)) {
 				final StringBuilder buffer = new StringBuilder("resource:"); //$NON-NLS-1$
-				buffer.append(s.substring(sp.length()).replaceAll("^" + URL_PATH_SEPARATOR, "")); //$NON-NLS-1$ //$NON-NLS-2$
+				buffer.append(shorterUrl.substring(sp.length()).replaceAll(
+						"^" + URL_PATH_SEPARATOR, "")); //$NON-NLS-1$ //$NON-NLS-2$
 				try {
 					return new URL(buffer.toString());
 				} catch (MalformedURLException e) {
@@ -2607,7 +2710,11 @@ public final class FileSystem {
 			}
 		}
 
-		return url;
+		try {
+			return new URL(shorterUrl);
+		} catch (MalformedURLException e) {
+			return url;
+		}
 	}
 
 	/**

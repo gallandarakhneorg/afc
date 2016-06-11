@@ -67,17 +67,17 @@ public final class ClasspathUtil {
 		final ClassLoader loader = ClassLoaderFinder.findClassLoader();
 		try {
 			final DynamicURLClassLoader dLoader = (DynamicURLClassLoader) loader;
-			iterator = new IteratorIterator(
-					new FilteringIterator(Arrays.asList(dLoader.getURLs()).iterator()),
-					iterator);
+			iterator = new FilteringIterator(Arrays.asList(dLoader.getURLs()).iterator());
 		} catch (ClassCastException exception1) {
-			try {
-				final URLClassLoader dLoader = (URLClassLoader) loader;
-				iterator = new IteratorIterator(
-						new FilteringIterator(Arrays.asList(dLoader.getURLs()).iterator()),
-						iterator);
-			} catch (ClassCastException exception2) {
-				//
+			if (ClasspathUtil.class.getClassLoader() != loader) {
+				try {
+					final URLClassLoader dLoader = (URLClassLoader) loader;
+					iterator = new IteratorIterator(
+							new FilteringIterator(Arrays.asList(dLoader.getURLs()).iterator()),
+							iterator);
+				} catch (ClassCastException exception2) {
+					//
+				}
 			}
 		}
 

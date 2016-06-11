@@ -20,11 +20,11 @@
 
 package org.arakhne.afc.vmutil;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,75 +32,114 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.junit.Ignore;
+import org.junit.ComparisonFailure;
 import org.junit.Test;
+import org.junit.internal.ArrayComparisonFailure;
 
-/**
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid org.arakhne.afc
- * @mavenartifactid arakhneVmutils
- */
 @SuppressWarnings("all")
 public class ClasspathUtilTest {
 
-	/**
-	 */
-	@Test
-	@Ignore
-	public void getStartClasspath() {
-		Iterator<URL> urls = ClasspathUtil.getStartClasspath();
-		assertNotNull(urls);
-		
-		String[] paths = System.getProperty("java.class.path").split( 
-				Pattern.quote(File.pathSeparator));
-		
-		for(int i=0; i<paths.length; i++) {
-			URL u = FileSystem.convertStringToURL(paths[i], true);
-			assertTrue(urls.hasNext());
-			assertEquals(u, urls.next());
-		}
+	private void assertSystemClasspath(Iterator<URL> urls) throws MalformedURLException {
+		assertClasspathEquals(urls, notExpandedClasspath());
 	}
 	
-	/**
-	 */
-	@Test
-	public void getCurrentClasspath_standardClassLoader() {
-		Iterator<URL> urls = ClasspathUtil.getClasspath();
-		assertNotNull(urls);
-		
-		String[] paths = System.getProperty("java.class.path").split( 
-				Pattern.quote(File.pathSeparator));
-		List<String> list = new ArrayList<>(Arrays.asList(paths));
+	private static String toString(String url) {
+		if (Pattern.matches("^.*[/\\\\]$", url)) {
+			return url.substring(0, url.length() - 1);
+		}
+		return url;
+	}
 
-		while (urls.hasNext()) {
-			URL u2 = urls.next();
-			assertUrl(list, u2);
+	private static String toString(URL url) {
+		return toString(FileSystem.convertURLToFile(url).getAbsolutePath());
+	}
+	
+	private void assertClasspathEquals(Iterator<URL> actuals, String... expecteds) {
+		assertNotNull(actuals);
+		List<URL> list = new ArrayList<>();
+		while (actuals.hasNext()) {
+			list.add(actuals.next());
+		}
+		String[] tab = new String[list.size()];
+		for (int i = 0; i < tab.length; ++i) {
+			tab[i] = toString(list.get(i));
+		}
+		try {
+			assertArrayEquals(expecteds, tab);
+		} catch (Throwable exception) {
+			throw new ComparisonFailure(exception.getMessage(),
+					Arrays.toString(expecteds).replaceAll(" +", "\n"), Arrays.toString(tab).replaceAll(" +", "\n"));
+		}
+	}
+
+	@Test
+	public void getStartClasspath_noChange() throws Exception {
+		assertSystemClasspath(ClasspathUtil.getStartClasspath());
+	}
+	
+	@Test
+	public void getCurrentClasspath_noChange() throws Exception {
+		assertSystemClasspath(ClasspathUtil.getClasspath());
+	}
+	
+	private static final URL URL1;
+	private static final URL URL2;
+
+	static {
+		try {
+			URL1 = new File((File) null, "classpath1").toURI().toURL();
+			URL2 = new File((File) null, "classpath2").toURI().toURL();
+		} catch (Exception exception) {
+			throw new RuntimeException(exception);
 		}
 	}
 	
-	private static void assertUrl(List<String> expected, URL actual) {
-		assertNotNull("An url cannot be null", actual); 
-		Iterator<String> iterator = expected.iterator();
-		String u;
-		if (iterator.hasNext()) {
-			while (iterator.hasNext()) {
-				u = iterator.next();
-				URL url = FileSystem.convertStringToURL(u, true);
-				if (isEquals(url, actual)) {
-					iterator.remove();
-					return;
-				}
-			}
+	private static String[] notExpandedClasspath() throws MalformedURLException {
+		String[] system = System.getProperty("java.class.path").split( 
+				Pattern.quote(File.pathSeparator));
+		for (int i = 0; i < system.length; ++i) {
+			system[i] = toString(system[i]);
+		}
+		return system;
+	}
+
+	private static String[] expandedClasspath() throws MalformedURLException {
+		String[] system = notExpandedClasspath();
+		String[] exp = Arrays.copyOf(system, system.length + 2);
+		exp[exp.length - 2] = toString(URL1);
+		exp[exp.length - 1] = toString(URL2);
+		return exp;
+	}
+	
+	private void installDynamicClassLoader() {
+		DynamicURLClassLoader cl = DynamicURLClassLoader.newInstance(getClass().getClassLoader(), URL1, URL2);
+		ClassLoaderFinder.setPreferredClassLoader(cl);
+	}
+
+	private void uninstallDynamicClassLoader() {
+		ClassLoaderFinder.popPreferredClassLoader();
+	}
+	
+	@Test
+	public void getStartClasspath_change() throws Exception {
+		installDynamicClassLoader();
+		try {
+			assertSystemClasspath(ClasspathUtil.getStartClasspath());
+		} finally {
+			uninstallDynamicClassLoader();
 		}
 	}
-		
-	private static boolean isEquals(URL expected, URL actual) {
-		String u1 = expected==null ? null : expected.toExternalForm().replaceFirst("/$", "");  
-		String u2 = actual==null ? null : actual.toExternalForm().replaceFirst("/$", "");  
-		if (u1==u2) return true;
-		if (u1==null || u2==null) return false;
-		return u1.equals(u2);
+	
+	@Test
+	public void getCurrentClasspath_change() throws Exception {
+		installDynamicClassLoader();
+		try {
+			assertClasspathEquals(
+					ClasspathUtil.getClasspath(),
+					expandedClasspath());
+		} finally {
+			uninstallDynamicClassLoader();
+		}
 	}
 
 }
