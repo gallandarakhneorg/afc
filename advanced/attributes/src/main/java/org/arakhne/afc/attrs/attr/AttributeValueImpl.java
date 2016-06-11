@@ -2092,7 +2092,7 @@ public class AttributeValueImpl implements AttributeValue {
 	private static Point3D[] parsePolyline3D(String text, boolean isStrict) {
 		final String[] comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && (comp.length % 3) != 0) {
-			return null;
+			return new Point3D[0];
 		}
 		final int fullPoints = comp.length / 3;
 		final boolean addPt = fullPoints * 3 != comp.length;
@@ -2258,7 +2258,7 @@ public class AttributeValueImpl implements AttributeValue {
 	private static Point2D<?, ?>[] parsePolyline(String text, boolean isStrict) {
 		final String[] comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && (comp.length % 2) != 0) {
-			return null;
+			return new Point2D<?, ?>[0];
 		}
 		final int fullPoints = comp.length / 2;
 		final boolean addPt = fullPoints * 2 != comp.length;

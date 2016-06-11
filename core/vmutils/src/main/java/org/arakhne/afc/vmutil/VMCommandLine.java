@@ -475,7 +475,7 @@ public class VMCommandLine {
 			final List<Object> value = commandLineOptions.get(name);
 			return value == null ? Collections.emptyList() : value;
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	/** Replies if an option was specified on the command line.
@@ -831,7 +831,7 @@ public class VMCommandLine {
 	public List<Object> getOptionValues(String optionLabel) {
 		final List<Object> options = getCommandLineOption(optionLabel);
 		if (options == null) {
-			return null;
+			return Collections.emptyList();
 		}
 		return Collections.unmodifiableList(options);
 	}

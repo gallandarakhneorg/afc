@@ -149,7 +149,7 @@ class URLConnection extends java.net.URLConnection {
 
 	private static List<String> singletonList(String value) {
 		if (value == null) {
-			return null;
+			return Collections.emptyList();
 		}
 		return Collections.singletonList(value);
 	}

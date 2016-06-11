@@ -25,6 +25,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -320,7 +321,7 @@ public final class MACNumber {
 		} catch (SocketException exception) {
 			//
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override
