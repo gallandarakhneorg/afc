@@ -20,8 +20,9 @@
 
 package org.arakhne.afc.vmutil;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.EmptyStackException;
-import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -38,7 +39,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public final class ThreadServiceFinder {
 
-	private static final Stack<ThreadServiceProvider> SERVICES = new Stack<>();
+	private static final Deque<ThreadServiceProvider> SERVICES = new ArrayDeque<>();
 
 	static {
 		// Add the default provider
