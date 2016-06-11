@@ -1765,16 +1765,17 @@ public class Matrix3d implements Serializable, Cloneable {
     @Pure
     @Override
     public boolean equals(Object object) {
-        try {
+        if (object == this) {
+            return true;
+        }
+        if (getClass().isInstance(object)) {
             final Matrix3d m2 = (Matrix3d) object;
             return this.m00 == m2.m00 && this.m01 == m2.m01
                     && this.m02 == m2.m02 && this.m10 == m2.m10
                     && this.m11 == m2.m11 && this.m12 == m2.m12
                     && this.m20 == m2.m20 && this.m21 == m2.m21 && this.m22 == m2.m22;
-        } catch (ClassCastException | NullPointerException e1) {
-            return false;
         }
-
+        return false;
     }
 
     private static double epsilon(double value, double epsilon) {
