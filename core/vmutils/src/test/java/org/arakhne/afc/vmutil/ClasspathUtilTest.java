@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -46,6 +47,7 @@ public class ClasspathUtilTest {
 	/**
 	 */
 	@Test
+	@Ignore
 	public void getStartClasspath() {
 		Iterator<URL> urls = ClasspathUtil.getStartClasspath();
 		assertNotNull(urls);

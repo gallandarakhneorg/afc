@@ -73,7 +73,7 @@ public final class FileSystem {
 
 		final StringBuilder pattern = new StringBuilder();
 		pattern.append("^"); //$NON-NLS-1$
-		pattern.append("(([a-zA-Z]:"); //$NON-NLS-1$
+		pattern.append("(([a-zA-Z][:|]"); //$NON-NLS-1$
 		pattern.append(validChars);
 		pattern.append("*)|("); //$NON-NLS-1$
 		pattern.append(validChars);
@@ -122,6 +122,10 @@ public final class FileSystem {
 	/** Character that is used for separating components of a path on Windows operating systems.
 	 */
 	public static final char WINDOWS_SEPARATOR_CHAR = '\\';
+
+	/** Character that is used for separating components of a path on Windows operating systems.
+	 */
+	public static final String WINDOWS_SEPARATOR_STRING = "\\"; //$NON-NLS-1$
 
 	/** Character that is used for separating components of a path on Unix operating systems.
 	 */
@@ -277,6 +281,9 @@ public final class FileSystem {
 
 	/** Replies the jar-schemed URL composed of the two given components.
 	 *
+	 * <p>If the inputs are {@code /path1/archive.jar} and @{code /path2/file},
+	 * the output of this function is {@code jar:file:/path1/archive.jar!/path2/file}.
+	 *
 	 * @param jarFile is the URL to the jar file.
 	 * @param insideFile is the name of the file inside the jar.
 	 * @return the jar-schemed URL.
@@ -292,6 +299,9 @@ public final class FileSystem {
 
 	/** Replies the jar-schemed URL composed of the two given components.
 	 *
+	 * <p>If the inputs are {@code /path1/archive.jar} and @{code /path2/file},
+	 * the output of this function is {@code jar:file:/path1/archive.jar!/path2/file}.
+	 *
 	 * @param jarFile is the URL to the jar file.
 	 * @param insideFile is the name of the file inside the jar.
 	 * @return the jar-schemed URL.
@@ -304,6 +314,9 @@ public final class FileSystem {
 	}
 
 	/** Replies the jar-schemed URL composed of the two given components.
+	 *
+	 * <p>If the inputs are {@code file:/path1/archive.jar} and @{code /path2/file},
+	 * the output of this function is {@code jar:file:/path1/archive.jar!/path2/file}.
 	 *
 	 * @param jarFile is the URL to the jar file.
 	 * @param insideFile is the name of the file inside the jar.
@@ -319,6 +332,9 @@ public final class FileSystem {
 	}
 
 	/** Replies the jar-schemed URL composed of the two given components.
+	 *
+	 * <p>If the inputs are {@code file:/path1/archive.jar} and @{code /path2/file},
+	 * the output of this function is {@code jar:file:/path1/archive.jar!/path2/file}.
 	 *
 	 * @param jarFile is the URL to the jar file.
 	 * @param insideFile is the name of the file inside the jar.
@@ -1391,7 +1407,7 @@ public final class FileSystem {
 				fl = candidates.getFirst();
 				if (fl.isDirectory()) {
 					children = fl.listFiles();
-					if (children != null && children.length > 1) {
+					if (children != null && children.length > 0) {
 						// Non empty directory
 						for (final File c : children) {
 							candidates.push(c);
@@ -1774,6 +1790,10 @@ public final class FileSystem {
 		String path = extractLocalPath(filename);
 		if (isWindowsNativeFilename(path)) {
 			return normalizeWindowsNativeFilename(path);
+		}
+		// Test for malformed filenames.
+		if (Pattern.matches("^" + Pattern.quote(URL_PATH_SEPARATOR) + "[a-zA-Z][:|].*$", path)) { //$NON-NLS-1$ //$NON-NLS-2$
+			path = path.substring(1);
 		}
 		return new File(path.replaceAll(
 				Pattern.quote(UNIX_SEPARATOR_STRING),

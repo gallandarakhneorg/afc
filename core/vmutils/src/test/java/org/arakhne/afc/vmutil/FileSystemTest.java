@@ -51,15 +51,34 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import org.arakhne.afc.vmutil.FileSystemTest.UnixFilenameStandardFileSystemTest;
 
-//@RunWith(Suite.class)
-//@SuiteClasses({UnixFilenameStandardFileSystemTest.class})
 @SuppressWarnings("all")
 public class FileSystemTest {
 
+	private boolean oldLibraryLoaderState;
+	
 	public static void assertEquals(Object a, Object b) {
 		if (!Objects.equals(a, b)) {
 			throw new ComparisonFailure("not equal", Objects.toString(a), Objects.toString(b));
 		}
+	}
+
+	/** Replace file separator by "/"
+	 *
+	 * @param filename
+	 * @return
+	 */
+	public static String fromFileToUrl(String filename, boolean removeStartSlash) {
+		String result = filename.replaceAll("[/\\\\]", Matcher.quoteReplacement("/"));
+		if (removeStartSlash) {
+			if (result.startsWith("/")) {
+				result = result.substring(1);
+			}
+		} else {
+			if (!result.startsWith("/")) {
+				result = "/" + result;
+			}
+		}
+		return result;
 	}
 
 	/** Replace "/" by the file separator.
@@ -68,7 +87,11 @@ public class FileSystemTest {
 	 * @return
 	 */
 	public static File normFile(String filename) {
-		return new File(norm(filename));
+		return new File(fromUrlToFile(filename));
+	}
+	
+	public static void assertNormedFile(String expected, File actual) {
+		assertEquals(normFile(expected), actual);
 	}
 	
 	/** Replace "/" by the file separator.
@@ -76,14 +99,268 @@ public class FileSystemTest {
 	 * @param filename
 	 * @return
 	 */
-	public static String norm(String filename) {
+	public static String fromUrlToFile(String filename) {
 		return filename.replaceAll(Pattern.quote("/"), Matcher.quoteReplacement(File.separator));
 	}
+	
+	/** Remove root slash
+	 */
+	public static String removeRootSlash(String filename) {
+		if (filename != null && filename.startsWith("/")) {
+			return filename.substring(1);
+		}
+		return filename;
+	}
 
-	public static void assertNormedFile(String expected, File actual) {
-		assertEquals(normFile(expected), actual);
+	@Before
+	public void setUp() throws Exception {
+		// Disable native library loading during unit tests
+		this.oldLibraryLoaderState = LibraryLoader.isEnable();
+		LibraryLoader.setEnable(false);
 	}
 	
+	@After
+	public void tearDown() throws Exception {
+		// Restore library loading state
+		LibraryLoader.setEnable(this.oldLibraryLoaderState);
+	}
+	
+	private String readInputStream(InputStream is) throws IOException {
+		StringBuilder b = new StringBuilder();
+		byte[] buffer = new byte[2048];
+		int len;
+		while ((len=is.read(buffer))>0) {
+			b.append(new String(buffer, 0, len));
+		}
+		is.close();
+		return b.toString();
+	}
+	
+	private void createZip(File testArchive) throws IOException {
+		File testDir = null;
+		try {
+			testDir = FileSystem.createTempDirectory("unittest", null); 
+			FileSystem.copy(FileSystemTest.class.getResource("test.txt"), testDir); 
+			FileSystem.copy(FileSystemTest.class.getResource("test2.txt"), testDir); 
+			File subdir = new File(testDir, "subdir"); 
+			subdir.mkdirs();
+			FileSystem.copy(FileSystemTest.class.getResource("test.txt"), subdir); 
+			FileSystem.zipFile(testDir, testArchive);
+		} finally {
+			FileSystem.delete(testDir);
+		}
+	}
+	
+	@Test
+	public void zipFileFile() throws IOException {
+		File testArchive = null;
+		
+		try {
+			testArchive = File.createTempFile("unittest", ".zip");  
+			
+			createZip(testArchive);
+			
+			try (ZipFile zipFile = new ZipFile(testArchive)) {
+	
+				ZipEntry zipEntry = zipFile.getEntry("test.txt"); 
+				assertNotNull(zipEntry);
+				assertEquals("TEST1: FOR UNIT TEST ONLY", readInputStream(zipFile.getInputStream(zipEntry))); 
+		
+				zipEntry = zipFile.getEntry("test2.txt"); 
+				assertNotNull(zipEntry);
+				assertEquals("TEST2: FOR UNIT TEST ONLY", readInputStream(zipFile.getInputStream(zipEntry))); 
+				
+				zipEntry = zipFile.getEntry("subdir/test.txt"); 
+				assertNotNull(zipEntry);
+				assertEquals("TEST1: FOR UNIT TEST ONLY", readInputStream(zipFile.getInputStream(zipEntry))); 
+			}
+		} finally {
+			FileSystem.delete(testArchive);
+		}
+	}
+
+	@Test
+	public void testUnzipFileFile() throws IOException {
+		File testArchive = null;
+		try {
+			testArchive = File.createTempFile("unittest", ".zip");  
+
+			createZip(testArchive);
+	
+			File testDir = FileSystem.createTempDirectory("unittest", null); 
+			FileSystem.deleteOnExit(testDir);
+			File subDir = new File(testDir, "subdir"); 
+			
+			FileSystem.unzipFile(testArchive, testDir);
+			
+			assertTrue(testDir.isDirectory());
+			assertTrue(subDir.isDirectory());
+			
+			String txt;
+			
+			File file = new File(testDir, "test.txt"); 
+			try (FileInputStream fis = new FileInputStream(file)) {
+				txt = readInputStream(fis);
+			}
+			assertEquals("TEST1: FOR UNIT TEST ONLY", txt); 
+			
+			file = new File(testDir, "test2.txt"); 
+			try (FileInputStream fis = new FileInputStream(file)) {
+				txt = readInputStream(fis);
+			}
+			assertEquals("TEST2: FOR UNIT TEST ONLY", txt); 
+	
+			file = new File(subDir, "test.txt"); 
+			try (FileInputStream fis = new FileInputStream(file)) {
+				txt = readInputStream(fis);
+			}
+			assertEquals("TEST1: FOR UNIT TEST ONLY", txt);
+		} finally {
+			FileSystem.delete(testArchive);
+		}
+	}
+
+	@Test
+	public void getFileExtensionCharacter() {
+		assertInlineParameterUsage(FileSystem.class, "getFileExtensionCharacter");
+	}
+
+	@Test
+	public void isWindowNativeFilename() {
+		assertFalse(FileSystem.isWindowsNativeFilename("D:/vivus_test/export dae/yup/terrain_physx.dae")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("D|\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("/vivus_test/export dae/yup/terrain_physx.dae")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("/")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("\\\\")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("\\\\\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
+
+		assertTrue(FileSystem.isWindowsNativeFilename("file:C:\\a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("file://C:\\a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("file:C:a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("file://C:a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("file:\\a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("file://\\a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("file:a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("file://a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("file:\\\\host\\a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("file://\\\\host\\a\\b\\c.txt")); 
+
+		assertTrue(FileSystem.isWindowsNativeFilename("C:\\a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("C:a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("file://C:a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("\\a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("a\\b\\c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("\\\\host\\a\\b\\c.txt")); 
+
+		assertFalse(FileSystem.isWindowsNativeFilename("file:C:/a/b/c.txt")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("file://C:/a/b/c.txt")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("file:C:a/b/c.txt")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("file://C:a/b/c.txt")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("file:/a/b/c.txt")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("file:///a/b/c.txt")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("file:a/b/c.txt")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("file://a/b/c.txt")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("file://host/a/b/c.txt")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("file:////host/a/b/c.txt")); 
+
+		assertTrue(FileSystem.isWindowsNativeFilename("C:c.txt")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("file:C:c.txt")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("file:c.txt")); 
+		assertTrue(FileSystem.isWindowsNativeFilename("file://C:c.txt")); 
+		assertFalse(FileSystem.isWindowsNativeFilename("file://c.txt")); 
+	}
+
+	@Test
+	public void normalizeWindowNativeFilename() {
+		assertNormedFile("C:/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:C:\\a\\b\\c.txt")); 
+		assertNormedFile("C:/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://C:\\a\\b\\c.txt")); 
+		assertNormedFile("C:a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:C:a\\b\\c.txt")); 
+		assertNormedFile("C:a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://C:a\\b\\c.txt")); 
+		assertNormedFile("/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:\\a\\b\\c.txt")); 
+		assertNormedFile("/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://\\a\\b\\c.txt")); 
+		assertNormedFile("a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:a\\b\\c.txt")); 
+		assertNormedFile("a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://a\\b\\c.txt")); 
+		assertNormedFile("//host/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file:\\\\host\\a\\b\\c.txt")); 
+		assertNormedFile("//host/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://\\\\host\\a\\b\\c.txt")); 
+
+		assertNormedFile("C:/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("C:\\a\\b\\c.txt")); 
+		assertNormedFile("C:a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("C:a\\b\\c.txt")); 
+		assertNormedFile("C:a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("file://C:a\\b\\c.txt")); 
+		assertNormedFile("/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("\\a\\b\\c.txt")); 
+		assertNormedFile("a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("a\\b\\c.txt")); 
+		assertNormedFile("//host/a/b/c.txt", FileSystem.normalizeWindowsNativeFilename("\\\\host\\a\\b\\c.txt")); 
+
+		assertNull(FileSystem.normalizeWindowsNativeFilename("file:C:/a/b/c.txt")); 
+		assertNull(FileSystem.normalizeWindowsNativeFilename("file://C:/a/b/c.txt")); 
+		assertNull(FileSystem.normalizeWindowsNativeFilename("file:C:a/b/c.txt")); 
+		assertNull(FileSystem.normalizeWindowsNativeFilename("file://C:a/b/c.txt")); 
+		assertNull(FileSystem.normalizeWindowsNativeFilename("file:/a/b/c.txt")); 
+		assertNull(FileSystem.normalizeWindowsNativeFilename("file:///a/b/c.txt")); 
+		assertNull(FileSystem.normalizeWindowsNativeFilename("file:a/b/c.txt")); 
+		assertNull(FileSystem.normalizeWindowsNativeFilename("file://a/b/c.txt")); 
+		assertNull(FileSystem.normalizeWindowsNativeFilename("file://host/a/b/c.txt")); 
+		assertNull(FileSystem.normalizeWindowsNativeFilename("file:////host/a/b/c.txt")); 
+
+		assertNormedFile("C:c.txt", FileSystem.normalizeWindowsNativeFilename("C:c.txt")); 
+		assertNull(FileSystem.normalizeWindowsNativeFilename("c.txt")); 
+		assertNormedFile("C:c.txt", FileSystem.normalizeWindowsNativeFilename("file:C:c.txt")); 
+		assertNull(FileSystem.normalizeWindowsNativeFilename("file:c.txt")); 
+		assertNormedFile("C:c.txt", FileSystem.normalizeWindowsNativeFilename("file://C:c.txt")); 
+		assertNull(FileSystem.normalizeWindowsNativeFilename("file://c.txt")); 
+	}
+	
+	@Test
+	public void convertStringToFile() {
+		assertNormedFile("D:/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("D:/vivus_test/export dae/yup/terrain_physx.dae")); 
+		assertNormedFile("D:/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
+		assertNormedFile("/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("/vivus_test/export dae/yup/terrain_physx.dae")); 
+		assertNormedFile("/", FileSystem.convertStringToFile("/")); 
+		assertNormedFile("//", FileSystem.convertStringToFile("\\\\")); 
+		assertNormedFile("//vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
+		assertNormedFile("////vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("\\\\\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
+
+		assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:C:\\a\\b\\c.txt")); 
+		assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file://C:\\a\\b\\c.txt")); 
+		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:C:a\\b\\c.txt")); 
+		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a\\b\\c.txt")); 
+		assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:\\a\\b\\c.txt")); 
+		assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file://\\a\\b\\c.txt")); 
+		assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file:a\\b\\c.txt")); 
+		assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file://a\\b\\c.txt")); 
+		assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("file:\\\\host\\a\\b\\c.txt")); 
+		assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("file://\\\\host\\a\\b\\c.txt")); 
+
+		assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("C:\\a\\b\\c.txt")); 
+		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("C:a\\b\\c.txt")); 
+		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a\\b\\c.txt")); 
+		assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("\\a\\b\\c.txt")); 
+		assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("a\\b\\c.txt")); 
+		assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("\\\\host\\a\\b\\c.txt")); 
+
+		assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:C:/a/b/c.txt")); 
+		assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:/C:/a/b/c.txt")); 
+		assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file://C:/a/b/c.txt")); 
+		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:C:a/b/c.txt")); 
+		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:/C:a/b/c.txt")); 
+		assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a/b/c.txt")); 
+		assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:/a/b/c.txt")); 
+		assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:///a/b/c.txt")); 
+		assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file:a/b/c.txt")); 
+		assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file://a/b/c.txt")); 
+		assertNormedFile("host/a/b/c.txt", FileSystem.convertStringToFile("file://host/a/b/c.txt")); 
+		assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("file:////host/a/b/c.txt")); 
+
+		assertNormedFile("C:c.txt", FileSystem.convertStringToFile("C:c.txt")); 
+		assertNormedFile("c.txt", FileSystem.convertStringToFile("c.txt")); 
+		assertNormedFile("C:c.txt", FileSystem.convertStringToFile("file:C:c.txt")); 
+		assertNormedFile("c.txt", FileSystem.convertStringToFile("file:c.txt")); 
+		assertNormedFile("C:c.txt", FileSystem.convertStringToFile("file://C:c.txt")); 
+		assertNormedFile("c.txt", FileSystem.convertStringToFile("file://c.txt")); 
+	}
+
 	private static abstract class AbstractFileSystemTest {
 		
 //		private final File f1; 
@@ -126,18 +403,50 @@ public class FileSystemTest {
 //		protected abstract File createF4();
 //		protected abstract String createStingWithSpace();
 		
-		protected abstract File createAbsoluteStandardFile();
-
-		protected abstract File createAbsoluteFolderFile();
-
-		protected URL createAbsoluteStandardFileUrl() throws MalformedURLException {
-			File file = createAbsoluteStandardFile();
-			return new URL("file:" + file.getName());
+		protected abstract OperatingSystem getOS();
+		
+		/** Create a file.
+		 */
+		public File newFile(String filename, boolean addRootSlash) {
+			String fn;
+			
+			if (OperatingSystem.getCurrentOS() == getOS()) {
+				fn = filename;
+			} else if (getOS() == OperatingSystem.WIN) {
+				fn = filename.replaceAll(Pattern.quote(FileSystem.WINDOWS_SEPARATOR_STRING),
+						Matcher.quoteReplacement(File.separator));
+			} else {
+				fn = filename.replaceAll(Pattern.quote(FileSystem.UNIX_SEPARATOR_STRING),
+						Matcher.quoteReplacement(File.separator));
+			}
+			if (addRootSlash && !fn.startsWith(File.separator)) {
+				fn = File.separator + fn;
+			}
+			return new File(fn);
 		}
 
+		/** @return "/home/test.x.z.z" or "C:\home\test.x.z.z" or "/Users/test.x.z.z"
+		 */
+		protected abstract String getAbsoluteStandardFilename();
+
+		/** @return "/home" or "C:\home" or "/Users"
+		 */
+		protected abstract String getAbsoluteFoldername();
+
+		/** @return "/the path/to/file with space.toto" or "C:\the path\to\file with space.toto" or "/the path/to/file with space.toto"
+		 */
+		protected abstract String getStandardFilenameWithSpaces();
+
+		/** @return "file:/home/test.x.z.z" or "file:C:\home\test.x.z.z" or "file:/Users/test.x.z.z"
+		 */
+		protected URL createAbsoluteStandardFileUrl() throws MalformedURLException {
+			return new URL("file:" + getAbsoluteStandardFilename());
+		}
+
+		/** @return "file:/home" or "file:C:\home" or "file:/Users"
+		 */
 		protected URL createAbsoluteFolderUrl() throws MalformedURLException {
-			File file = createAbsoluteFolderFile();
-			return new URL("file:" + file.getName());
+			return new URL("file:" + getAbsoluteFoldername());
 		}
 
 		/** @return "http://toto:titi@www.arakhne.org/path/to/file.x.z.z?toto#frag"
@@ -195,10 +504,8 @@ public class FileSystemTest {
 			return new URL("jar:file:" + createJarFilenameForUrlWithSpaces() + "!" + createInJarFilename());
 		}
 
-		protected abstract File createStandardFileWithSpaces();
-
 		protected URL createFileUrlWithSpacesWithFile() throws MalformedURLException {
-			File file = createStandardFileWithSpaces();
+			File file = newFile(getStandardFilenameWithSpaces(), false);
 			return file.toURI().toURL();
 		}
 
@@ -232,124 +539,6 @@ public class FileSystemTest {
 //			URL_WITH_SPACE = new File(STRING_WITH_SPACE).toURI().toURL();
 		}
 	
-		@Before
-		public void setUp() throws Exception {
-			// Disable native library loading during unit tests
-			this.oldLibraryLoaderState = LibraryLoader.isEnable();
-			LibraryLoader.setEnable(false);
-		}
-		
-		@After
-		public void tearDown() throws Exception {
-			// Restore library loading state
-			LibraryLoader.setEnable(this.oldLibraryLoaderState);
-		}
-		
-		@Test
-		public void isWindowNativeFilename() {
-			assertFalse(FileSystem.isWindowsNativeFilename("D:/vivus_test/export dae/yup/terrain_physx.dae")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("/vivus_test/export dae/yup/terrain_physx.dae")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("/")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("\\\\")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("\\\\\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
-	
-			assertTrue(FileSystem.isWindowsNativeFilename("file:C:\\a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("file://C:\\a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("file:C:a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("file://C:a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("file:\\a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("file://\\a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("file:a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("file://a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("file:\\\\host\\a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("file://\\\\host\\a\\b\\c.txt")); 
-	
-			assertTrue(FileSystem.isWindowsNativeFilename("C:\\a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("C:a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("file://C:a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("\\a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("a\\b\\c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("\\\\host\\a\\b\\c.txt")); 
-	
-			assertFalse(FileSystem.isWindowsNativeFilename("file:C:/a/b/c.txt")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("file://C:/a/b/c.txt")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("file:C:a/b/c.txt")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("file://C:a/b/c.txt")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("file:/a/b/c.txt")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("file:///a/b/c.txt")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("file:a/b/c.txt")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("file://a/b/c.txt")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("file://host/a/b/c.txt")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("file:////host/a/b/c.txt")); 
-	
-			assertTrue(FileSystem.isWindowsNativeFilename("C:c.txt")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("file:C:c.txt")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("file:c.txt")); 
-			assertTrue(FileSystem.isWindowsNativeFilename("file://C:c.txt")); 
-			assertFalse(FileSystem.isWindowsNativeFilename("file://c.txt")); 
-		}
-	
-		@Test
-		public void normalizeWindowNativeFilename() {
-			assertEquals(new File("C:/a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file:C:\\a\\b\\c.txt")); 
-			assertEquals(new File("C:/a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file://C:\\a\\b\\c.txt")); 
-			assertEquals(new File("C:a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file:C:a\\b\\c.txt")); 
-			assertEquals(new File("C:a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file://C:a\\b\\c.txt")); 
-			assertEquals(new File("/a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file:\\a\\b\\c.txt")); 
-			assertEquals(new File("/a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file://\\a\\b\\c.txt")); 
-			assertEquals(new File("a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file:a\\b\\c.txt")); 
-			assertEquals(new File("a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file://a\\b\\c.txt")); 
-			assertEquals(new File("//host/a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file:\\\\host\\a\\b\\c.txt")); 
-			assertEquals(new File("//host/a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file://\\\\host\\a\\b\\c.txt")); 
-	
-			assertEquals(new File("C:/a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("C:\\a\\b\\c.txt")); 
-			assertEquals(new File("C:a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("C:a\\b\\c.txt")); 
-			assertEquals(new File("C:a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file://C:a\\b\\c.txt")); 
-			assertEquals(new File("/a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("\\a\\b\\c.txt")); 
-			assertEquals(new File("a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("a\\b\\c.txt")); 
-			assertEquals(new File("//host/a/b/c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("\\\\host\\a\\b\\c.txt")); 
-	
-			assertNull(FileSystem.normalizeWindowsNativeFilename("file:C:/a/b/c.txt")); 
-			assertNull(FileSystem.normalizeWindowsNativeFilename("file://C:/a/b/c.txt")); 
-			assertNull(FileSystem.normalizeWindowsNativeFilename("file:C:a/b/c.txt")); 
-			assertNull(FileSystem.normalizeWindowsNativeFilename("file://C:a/b/c.txt")); 
-			assertNull(FileSystem.normalizeWindowsNativeFilename("file:/a/b/c.txt")); 
-			assertNull(FileSystem.normalizeWindowsNativeFilename("file:///a/b/c.txt")); 
-			assertNull(FileSystem.normalizeWindowsNativeFilename("file:a/b/c.txt")); 
-			assertNull(FileSystem.normalizeWindowsNativeFilename("file://a/b/c.txt")); 
-			assertNull(FileSystem.normalizeWindowsNativeFilename("file://host/a/b/c.txt")); 
-			assertNull(FileSystem.normalizeWindowsNativeFilename("file:////host/a/b/c.txt")); 
-	
-			assertEquals(new File("C:c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("C:c.txt")); 
-			assertNull(FileSystem.normalizeWindowsNativeFilename("c.txt")); 
-			assertEquals(new File("C:c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file:C:c.txt")); 
-			assertNull(FileSystem.normalizeWindowsNativeFilename("file:c.txt")); 
-			assertEquals(new File("C:c.txt"), 
-					FileSystem.normalizeWindowsNativeFilename("file://C:c.txt")); 
-			assertNull(FileSystem.normalizeWindowsNativeFilename("file://c.txt")); 
-		}
-		
 		@Test
 		public void isJarURLURL() throws Exception {
 			assertFalse(FileSystem.isJarURL(createAbsoluteStandardFileUrl()));
@@ -377,81 +566,38 @@ public class FileSystemTest {
 			assertEquals(new URL("file:" + createJarFilenameForUrlWithSpaces()), FileSystem.getJarURL(createFileInJarUrlWithSpaces()));  
 			assertNull(FileSystem.getJarFile(createFileUrlWithSpacesHardCoded()));
 		}
-		
+
 		@Test
-		public void convertStringToFile() {
-			assertNormedFile("D:/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("D:/vivus_test/export dae/yup/terrain_physx.dae")); 
-			assertNormedFile("D:/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
-			assertNormedFile("/vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("/vivus_test/export dae/yup/terrain_physx.dae")); 
-			assertNormedFile("/", FileSystem.convertStringToFile("/")); 
-			assertNormedFile("//", FileSystem.convertStringToFile("\\\\")); 
-			assertNormedFile("//vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
-			assertNormedFile("////vivus_test/export dae/yup/terrain_physx.dae", FileSystem.convertStringToFile("\\\\\\\\vivus_test\\export dae\\yup\\terrain_physx.dae")); 
+		public void getJarFileURL() throws Exception {
+			assertNull(FileSystem.getJarFile(createAbsoluteStandardFileUrl()));
+			assertNull(FileSystem.getJarFile(createAbsoluteFolderUrl()));
+			assertNull(FileSystem.getJarFile(createHttpUrl()));
+			assertNormedFile(createInJarFilename(), FileSystem.getJarFile(createFileInJarUrl()));
+			assertNormedFile(createInJarFilename(), FileSystem.getJarFile(createFileInJarInJarUrl()));
 	
-			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:C:\\a\\b\\c.txt")); 
-			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file://C:\\a\\b\\c.txt")); 
-			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:C:a\\b\\c.txt")); 
-			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a\\b\\c.txt")); 
-			assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:\\a\\b\\c.txt")); 
-			assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file://\\a\\b\\c.txt")); 
-			assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file:a\\b\\c.txt")); 
-			assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file://a\\b\\c.txt")); 
-			assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("file:\\\\host\\a\\b\\c.txt")); 
-			assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("file://\\\\host\\a\\b\\c.txt")); 
-	
-			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("C:\\a\\b\\c.txt")); 
-			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("C:a\\b\\c.txt")); 
-			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a\\b\\c.txt")); 
-			assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("\\a\\b\\c.txt")); 
-			assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("a\\b\\c.txt")); 
-			assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("\\\\host\\a\\b\\c.txt")); 
-	
-			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file:C:/a/b/c.txt")); 
-			assertNormedFile("C:/a/b/c.txt", FileSystem.convertStringToFile("file://C:/a/b/c.txt")); 
-			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file:C:a/b/c.txt")); 
-			assertNormedFile("C:a/b/c.txt", FileSystem.convertStringToFile("file://C:a/b/c.txt")); 
-			assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:/a/b/c.txt")); 
-			assertNormedFile("/a/b/c.txt", FileSystem.convertStringToFile("file:///a/b/c.txt")); 
-			assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file:a/b/c.txt")); 
-			assertNormedFile("a/b/c.txt", FileSystem.convertStringToFile("file://a/b/c.txt")); 
-			assertNormedFile("host/a/b/c.txt", FileSystem.convertStringToFile("file://host/a/b/c.txt")); 
-			assertNormedFile("//host/a/b/c.txt", FileSystem.convertStringToFile("file:////host/a/b/c.txt")); 
-	
-			assertNormedFile("C:c.txt", FileSystem.convertStringToFile("C:c.txt")); 
-			assertNormedFile("c.txt", FileSystem.convertStringToFile("c.txt")); 
-			assertNormedFile("C:c.txt", FileSystem.convertStringToFile("file:C:c.txt")); 
-			assertNormedFile("c.txt", FileSystem.convertStringToFile("file:c.txt")); 
-			assertNormedFile("C:c.txt", FileSystem.convertStringToFile("file://C:c.txt")); 
-			assertNormedFile("c.txt", FileSystem.convertStringToFile("file://c.txt")); 
+			assertNormedFile(createInJarFilename(), FileSystem.getJarFile(createFileInJarUrlWithSpaces()));  
+			assertNull(FileSystem.getJarFile(createFileUrlWithSpacesHardCoded()));
+			assertNull(FileSystem.getJarFile(createFileUrlWithSpacesWithFile()));
 		}
 	
-//		@Test
-//		public void getJarFileURL() throws Exception {
-//			assertNull(FileSystem.getJarFile(createAbsoluteStandardFileUrl()));
-//			assertNull(FileSystem.getJarFile(createAbsoluteFolderUrl()));
-//			assertNull(FileSystem.getJarFile(createHttpUrl()));
-//			assertEquals(new File(create), FileSystem.getJarFile(createFileInJarUrl()));
-//			assertEquals(f4, FileSystem.getJarFile(createFileInJarInJarUrl()));
-//	
-//			assertEquals(new File("/titi"),  
-//					FileSystem.getJarFile(new URL("jar:file:"+STRING_WITH_SPACE+"!/titi")));  
-//			assertNull(FileSystem.getJarFile(URL_WITH_SPACE));
-//	
-//			assertEquals(new File(JARJAR_TEST_URL2), FileSystem.getJarFile(
-//					new URL(JARJAR_TEST_URL3)));
-//		}
-	
+		@Test
+		public void toJarURLFileString() throws MalformedURLException {
+			assertEquals(new URL("jar:file:"
+					+ fromFileToUrl(getAbsoluteStandardFilename(), false)
+					+ "!/"
+					+ removeRootSlash(getAbsoluteStandardFilename())),
+					FileSystem.toJarURL(newFile(getAbsoluteStandardFilename(), true), getAbsoluteStandardFilename()));
+		}
+
 //		@Test
 //		public void toJarURLFileFile() throws MalformedURLException {
-//			assertEquals(u7, FileSystem.toJarURL(f3, f4));
+//			assertEquals(new URL("jar:file:"
+//					+ fromFileToUrl(getAbsoluteStandardFilename(), false)
+//					+ "!/"
+//					+ fromFileToUrl(getAbsoluteStandardFilename(), true)),
+//					FileSystem.toJarURL(new File(getAbsoluteStandardFilename()), new File(getAbsoluteStandardFilename())));
 //		}
-//	
-//		@Test
-//		public void toJarURLFileString() throws MalformedURLException {
-//			assertEquals(u7, FileSystem.toJarURL(f3, f4.getPath()));
-//			assertInlineParameterUsage(FileSystem.class, "toJarURL", File.class, String.class);
-//		}
-//	
+	
 //		@Test
 //		public void toJarURLURLFile() throws MalformedURLException {
 //			assertEquals(u7, FileSystem.toJarURL(u11, f4));
@@ -1714,93 +1860,7 @@ public class FileSystemTest {
 //					new URL("file:../a/c/d/e"), 
 //					FileSystem.makeCanonicalURL(new URL("file:../a/b/../c/./d/e"))); 
 //		}
-//		
-//		private String readInputStream(InputStream is) throws IOException {
-//			StringBuilder b = new StringBuilder();
-//			byte[] buffer = new byte[2048];
-//			int len;
-//			while ((len=is.read(buffer))>0) {
-//				b.append(new String(buffer, 0, len));
-//			}
-//			is.close();
-//			return b.toString();
-//		}
-//		
-//		private void createZip(File testArchive) throws IOException {
-//			File testDir = FileSystem.createTempDirectory("unittest", null); 
-//			FileSystem.deleteOnExit(testDir);
-//			FileSystem.copy(FileSystemTest.class.getResource("test.txt"), testDir); 
-//			FileSystem.copy(FileSystemTest.class.getResource("test2.txt"), testDir); 
-//			File subdir = new File(testDir, "subdir"); 
-//			subdir.mkdirs();
-//			FileSystem.copy(FileSystemTest.class.getResource("test.txt"), subdir); 
-//			FileSystem.zipFile(testDir, testArchive);
-//		}
-//		
-//		@Test
-//		public void zipFileFile() throws IOException {
-//			File testArchive = File.createTempFile("unittest", ".zip");  
-//			testArchive.deleteOnExit();
-//			
-//			createZip(testArchive);
-//			
-//			try (ZipFile zipFile = new ZipFile(testArchive)) {
-//	
-//				ZipEntry zipEntry = zipFile.getEntry("test.txt"); 
-//				assertNotNull(zipEntry);
-//				assertEquals("TEST1: FOR UNIT TEST ONLY", readInputStream(zipFile.getInputStream(zipEntry))); 
-//		
-//				zipEntry = zipFile.getEntry("test2.txt"); 
-//				assertNotNull(zipEntry);
-//				assertEquals("TEST2: FOR UNIT TEST ONLY", readInputStream(zipFile.getInputStream(zipEntry))); 
-//				
-//				zipEntry = zipFile.getEntry("subdir/test.txt"); 
-//				assertNotNull(zipEntry);
-//				assertEquals("TEST1: FOR UNIT TEST ONLY", readInputStream(zipFile.getInputStream(zipEntry))); 
-//			}
-//		}
-//	
-//		@Test
-//		public void testUnzipFileFile() throws IOException {
-//			File testArchive = File.createTempFile("unittest", ".zip");  
-//			testArchive.deleteOnExit();
-//			createZip(testArchive);
-//	
-//			File testDir = FileSystem.createTempDirectory("unittest", null); 
-//			FileSystem.deleteOnExit(testDir);
-//			File subDir = new File(testDir, "subdir"); 
-//			
-//			FileSystem.unzipFile(testArchive, testDir);
-//			
-//			assertTrue(testDir.isDirectory());
-//			assertTrue(subDir.isDirectory());
-//			
-//			String txt;
-//			
-//			File file = new File(testDir, "test.txt"); 
-//			try (FileInputStream fis = new FileInputStream(file)) {
-//				txt = readInputStream(fis);
-//			}
-//			assertEquals("TEST1: FOR UNIT TEST ONLY", txt); 
-//			
-//			file = new File(testDir, "test2.txt"); 
-//			try (FileInputStream fis = new FileInputStream(file)) {
-//				txt = readInputStream(fis);
-//			}
-//			assertEquals("TEST2: FOR UNIT TEST ONLY", txt); 
-//	
-//			file = new File(subDir, "test.txt"); 
-//			try (FileInputStream fis = new FileInputStream(file)) {
-//				txt = readInputStream(fis);
-//			}
-//			assertEquals("TEST1: FOR UNIT TEST ONLY", txt); 
-//		}
-//	
-//		@Test
-//		public void getFileExtensionCharacter() {
-//			assertInlineParameterUsage(FileSystem.class, "getFileExtensionCharacter");
-//		}
-		
+				
 	}
 
 	public static class UnixFilenameStandardFileSystemTest extends AbstractFileSystemTest {
@@ -1810,18 +1870,23 @@ public class FileSystemTest {
 		}
 
 		@Override
-		protected File createAbsoluteStandardFile() {
-			return new File("/home/test.x.z.z");
+		protected String getAbsoluteStandardFilename() {
+			return "/home/test.x.z.z";
 		}
 
 		@Override
-		protected File createAbsoluteFolderFile() {
-			return new File("/home");
+		protected String getAbsoluteFoldername() {
+			return "/home";
 		}
 
 		@Override
-		protected File createStandardFileWithSpaces() {
-			return new File("/the path/to/file with space.toto");
+		protected String getStandardFilenameWithSpaces() {
+			return "/the path/to/file with space.toto";
+		}
+
+		@Override
+		protected OperatingSystem getOS() {
+			return OperatingSystem.LINUX;
 		}
 
 	}
@@ -1833,18 +1898,23 @@ public class FileSystemTest {
 		}
 
 		@Override
-		protected File createAbsoluteStandardFile() {
-			return new File("C:\\home\\test.x.z.z");
+		protected String getAbsoluteStandardFilename() {
+			return "C:\\home\\test.x.z.z";
 		}
 
 		@Override
-		protected File createAbsoluteFolderFile() {
-			return new File("C:\\home");
+		protected String getAbsoluteFoldername() {
+			return "C:\\home";
 		}
 
 		@Override
-		protected File createStandardFileWithSpaces() {
-			return new File("C:\\the path\\to\\file with space.toto");
+		protected String getStandardFilenameWithSpaces() {
+			return "C:\\the path\\to\\file with space.toto";
+		}
+
+		@Override
+		protected OperatingSystem getOS() {
+			return OperatingSystem.WIN;
 		}
 
 	}
@@ -1856,18 +1926,23 @@ public class FileSystemTest {
 		}
 
 		@Override
-		protected File createAbsoluteStandardFile() {
-			return new File("/Users/test.x.z.z");
+		protected String getAbsoluteStandardFilename() {
+			return "/Users/test.x.z.z";
 		}
 
 		@Override
-		protected File createAbsoluteFolderFile() {
-			return new File("/Users");
+		protected String getAbsoluteFoldername() {
+			return "/Users";
 		}
 
 		@Override
-		protected File createStandardFileWithSpaces() {
-			return new File("/the path/to/file with space.toto");
+		protected String getStandardFilenameWithSpaces() {
+			return "/the path/to/file with space.toto";
+		}
+
+		@Override
+		protected OperatingSystem getOS() {
+			return OperatingSystem.MACOSX;
 		}
 
 	}
