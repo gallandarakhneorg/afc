@@ -165,13 +165,14 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
-			try {
+			if (obj == this) {
+				return true;
+			}
+			if (getClass().isInstance(obj)) {
 				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY();
-			} catch (Throwable exception) {
-				//
 			}
 			return false;
 		}
@@ -271,15 +272,16 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
-			try {
+			if (obj == this) {
+				return true;
+			}
+			if (getClass().isInstance(obj)) {
 				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
 						&& getFromX() == elt.getFromX()
 						&& getFromY() == elt.getFromY();
-			} catch (Throwable exception) {
-				//
 			}
 			return false;
 		}
@@ -391,7 +393,10 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
-			try {
+			if (obj == this) {
+				return true;
+			}
+			if (getClass().isInstance(obj)) {
 				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -400,8 +405,6 @@ public abstract class PathElement2i implements PathElement2ai {
 						&& getCtrlY1() == elt.getCtrlY1()
 						&& getFromX() == elt.getFromX()
 						&& getFromY() == elt.getFromY();
-			} catch (Throwable exception) {
-				//
 			}
 			return false;
 		}
@@ -540,7 +543,10 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
-			try {
+			if (obj == this) {
+				return true;
+			}
+			if (getClass().isInstance(obj)) {
 				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -551,8 +557,6 @@ public abstract class PathElement2i implements PathElement2ai {
 						&& getCtrlY2() == elt.getCtrlY2()
 						&& getFromX() == elt.getFromX()
 						&& getFromY() == elt.getFromY();
-			} catch (Throwable exception) {
-				//
 			}
 			return false;
 		}
@@ -695,15 +699,16 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
-			try {
+			if (obj == this) {
+				return true;
+			}
+			if (getClass().isInstance(obj)) {
 				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
 						&& getFromX() == elt.getFromX()
 						&& getFromY() == elt.getFromY();
-			} catch (Throwable exception) {
-				//
 			}
 			return false;
 		}
@@ -831,25 +836,19 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
-			try {
-                if (obj == null) {
-                    return false;
-                }
-
-                if (this.getClass() != obj.getClass()) {
-                    return false;
-                }
+            if (obj == this) {
+                return true;
+            }
+			if (getClass().isInstance(obj)) {
 				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
-						&& getToX() == elt.getToX()
-						&& getToY() == elt.getToY()
-						&& getRadiusX() == elt.getRadiusX()
-						&& getRadiusY() == elt.getRadiusY()
-						&& getRotationX() == elt.getRotationX()
-						&& getLargeArcFlag() == elt.getLargeArcFlag()
-						&& getSweepFlag() == elt.getSweepFlag();
-			} catch (Throwable exception) {
-				//
+							&& getToX() == elt.getToX()
+							&& getToY() == elt.getToY()
+							&& getRadiusX() == elt.getRadiusX()
+							&& getRadiusY() == elt.getRadiusY()
+							&& getRotationX() == elt.getRotationX()
+							&& getLargeArcFlag() == elt.getLargeArcFlag()
+							&& getSweepFlag() == elt.getSweepFlag();
 			}
 			return false;
 		}
