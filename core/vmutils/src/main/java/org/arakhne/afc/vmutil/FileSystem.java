@@ -119,6 +119,14 @@ public final class FileSystem {
 	 */
 	public static final String JAR_URL_FILE_ROOT = "!/"; //$NON-NLS-1$
 
+	/** Character that is used for separating components of a path on Windows operating systems.
+	 */
+	public static final char WINDOWS_SEPARATOR_CHAR = '\\';
+
+	/** Character that is used for separating components of a path on Unix operating systems.
+	 */
+	public static final String UNIX_SEPARATOR_STRING = URL_PATH_SEPARATOR;
+
 	/** Regular expression pattern which corresponds to Windows native filename.
 	 */
 	private static final String WINDOW_NATIVE_FILENAME_PATTERN;
@@ -176,11 +184,11 @@ public final class FileSystem {
 	 * @return the string representation of the file.
 	 * @since 6.2
 	 */
-	private static String getFilePath(File file) {
+	private static String fromFileStandardToURLStandard(File file) {
 		if (file == null) {
 			return null;
 		}
-		return getFilePath(file.getPath());
+		return fromFileStandardToURLStandard(file.getPath());
 	}
 
 	/** Decode the given file to obtain a string representation
@@ -192,7 +200,7 @@ public final class FileSystem {
 	 * @return the string representation of the file.
 	 * @since 6.2
 	 */
-	private static String getFilePath(String file) {
+	private static String fromFileStandardToURLStandard(String file) {
 		if (file == null) {
 			return null;
 		}
@@ -222,6 +230,9 @@ public final class FileSystem {
 
 	/** Replies the jar part of the jar-scheme URL.
 	 *
+	 * <p>If the input URL is {@code jar:file:/path1/archive.jar!/path2/file},
+	 * the output of this function is {@code file:/path1/archive.jar}.
+	 *
 	 * @param url the URL to test.
 	 * @return the URL of the jar file in the given URL, or <code>null</code>
 	 *     if the given URL does not use jar scheme.
@@ -244,6 +255,9 @@ public final class FileSystem {
 	}
 
 	/** Replies the file part of the jar-scheme URL.
+	 *
+	 * <p>If the input URL is {@code jar:file:/path1/archive.jar!/path2/file},
+	 * the output of this function is {@code /path2/file}.
 	 *
 	 * @param url the URL to test.
 	 * @return the file in the given URL, or <code>null</code>
@@ -273,7 +287,7 @@ public final class FileSystem {
 		if (jarFile == null || insideFile == null) {
 			return null;
 		}
-		return toJarURL(jarFile, getFilePath(insideFile));
+		return toJarURL(jarFile, fromFileStandardToURLStandard(insideFile));
 	}
 
 	/** Replies the jar-schemed URL composed of the two given components.
@@ -301,7 +315,7 @@ public final class FileSystem {
 		if (jarFile == null || insideFile == null) {
 			return null;
 		}
-		return toJarURL(jarFile, getFilePath(insideFile));
+		return toJarURL(jarFile, fromFileStandardToURLStandard(insideFile));
 	}
 
 	/** Replies the jar-schemed URL composed of the two given components.
@@ -320,7 +334,7 @@ public final class FileSystem {
 		buf.append("jar:"); //$NON-NLS-1$
 		buf.append(jarFile.toExternalForm());
 		buf.append(JAR_URL_FILE_ROOT);
-		final String path = getFilePath(insideFile);
+		final String path = fromFileStandardToURLStandard(insideFile);
 		if (path.startsWith(URL_PATH_SEPARATOR)) {
 			buf.append(path.substring(URL_PATH_SEPARATOR.length()));
 		} else {
@@ -379,7 +393,7 @@ public final class FileSystem {
 		if (filename == null) {
 			return null;
 		}
-		final String parent = getFilePath(filename.getParent());
+		final String parent = fromFileStandardToURLStandard(filename.getParent());
 		try {
 			if (parent == null || "".equals(parent)) { //$NON-NLS-1$
 				if (filename.isAbsolute()) {
@@ -413,7 +427,7 @@ public final class FileSystem {
 		String path;
 		if (isJarURL(filename)) {
 			prefix = getJarURL(filename);
-			path = getFilePath(getJarFile(filename));
+			path = fromFileStandardToURLStandard(getJarFile(filename));
 		} else {
 			path = filename.getPath();
 		}
@@ -654,7 +668,7 @@ public final class FileSystem {
 		if (isWindowsNativeFilename(filename)) {
 			return shortBasename(normalizeWindowsNativeFilename(filename));
 		}
-		final String normalizedFilename = getFilePath(filename);
+		final String normalizedFilename = fromFileStandardToURLStandard(filename);
 		int idx;
 		int end = normalizedFilename.length();
 		do {
@@ -1020,7 +1034,7 @@ public final class FileSystem {
 			if (!elt.isAbsolute() && (buf.length() == 0 || buf.charAt(buf.length() - 1) != URL_PATH_SEPARATOR_CHAR)) {
 				buf.append(URL_PATH_SEPARATOR_CHAR);
 			}
-			buf.append(getFilePath(elt));
+			buf.append(fromFileStandardToURLStandard(elt));
 		}
 		try {
 			if (isJarURL(urlBase)) {
@@ -1743,6 +1757,29 @@ public final class FileSystem {
 		return f.getAbsolutePath();
 	}
 
+	/** Convert a string which represents a local file into a File.
+	 *
+	 * <p>This function supports the naming standards coming for the different
+	 * operating systems.
+	 *
+	 * @param filename the filename.
+	 * @return the file, or <code>null</code> if the given filename is <code>null</code> or empty.
+	 * @since 13.0
+	 */
+	@Pure
+	public static File convertStringToFile(String filename) {
+		if (filename == null || "".equals(filename)) { //$NON-NLS-1$
+			return null;
+		}
+		String path = extractLocalPath(filename);
+		if (isWindowsNativeFilename(path)) {
+			return normalizeWindowsNativeFilename(path);
+		}
+		return new File(path.replaceAll(
+				Pattern.quote(UNIX_SEPARATOR_STRING),
+				Matcher.quoteReplacement(File.separator)));
+	}
+
 	/** Convert an URL which represents a local file or a resource into a File.
 	 *
 	 * @param url is the URL to convert.
@@ -1925,7 +1962,7 @@ public final class FileSystem {
 				final File file = new File(URISchemeType.FILE.removeScheme(urlDescription));
 				try {
 					url = new URL(URISchemeType.FILE.name(), "", //$NON-NLS-1$
-							getFilePath(file));
+							fromFileStandardToURLStandard(file));
 				} catch (MalformedURLException e) {
 					//
 				}
@@ -1969,7 +2006,7 @@ public final class FileSystem {
 						try {
 							final File file = new File(urlPart);
 							url = new URL(URISchemeType.FILE.name(), "", //$NON-NLS-1$
-									getFilePath(file));
+									fromFileStandardToURLStandard(file));
 						} catch (MalformedURLException e) {
 							// ignore error
 						}
@@ -2323,7 +2360,7 @@ public final class FileSystem {
 				return join(current, filename);
 			}
 			try {
-				return new URL(URISchemeType.FILE.toString() + getFilePath(filename));
+				return new URL(URISchemeType.FILE.toString() + fromFileStandardToURLStandard(filename));
 			} catch (MalformedURLException exception) {
 				// ignore error
 			}
@@ -2484,7 +2521,7 @@ public final class FileSystem {
 			final Pattern pattern = Pattern.compile(WINDOW_NATIVE_FILENAME_PATTERN);
 			final Matcher matcher = pattern.matcher(fn);
 			if (matcher.find()) {
-				return new File(fn.replace('\\', File.separatorChar));
+				return new File(fn.replace(WINDOWS_SEPARATOR_CHAR, File.separatorChar));
 			}
 		}
 		return null;
@@ -2530,17 +2567,18 @@ public final class FileSystem {
 		if (url == null) {
 			return null;
 		}
-		final String s = url.toExternalForm().replaceAll("/$", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		final String endPattern = URL_PATH_SEPARATOR + "$"; //$NON-NLS-1$
+		final String s = url.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
 		String sp;
 		final Iterator<URL> classpath = ClasspathUtil.getClasspath();
 		URL path;
 
 		while (classpath.hasNext()) {
 			path = classpath.next();
-			sp = path.toExternalForm().replaceAll("/$", ""); //$NON-NLS-1$ //$NON-NLS-2$
+			sp = path.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
 			if (s.startsWith(sp)) {
 				final StringBuilder buffer = new StringBuilder("resource:"); //$NON-NLS-1$
-				buffer.append(s.substring(sp.length()).replaceAll("^/", "")); //$NON-NLS-1$ //$NON-NLS-2$
+				buffer.append(s.substring(sp.length()).replaceAll("^" + URL_PATH_SEPARATOR, "")); //$NON-NLS-1$ //$NON-NLS-2$
 				try {
 					return new URL(buffer.toString());
 				} catch (MalformedURLException e) {
@@ -2763,10 +2801,6 @@ public final class FileSystem {
 		return url;
 	}
 
-	private static String fileToURL(File file) {
-		return file.getPath().replace(File.separatorChar, '/');
-	}
-
 	/**
 	 * Create a zip file from the given input file.
 	 *
@@ -2825,7 +2859,7 @@ public final class FileSystem {
 
 				if (file.isDirectory()) {
 					if (relativeFile != null) {
-						zipFilename = fileToURL(relativeFile) + "/"; //$NON-NLS-1$
+						zipFilename = fromFileStandardToURLStandard(relativeFile) + URL_PATH_SEPARATOR;
 						final ZipEntry zipEntry = new ZipEntry(zipFilename);
 						zos.putNextEntry(zipEntry);
 						zos.closeEntry();
@@ -2833,7 +2867,7 @@ public final class FileSystem {
 					candidates.addAll(Arrays.asList(file.listFiles()));
 				} else if (relativeFile != null) {
 					try (FileInputStream fis = new FileInputStream(file)) {
-						zipFilename = fileToURL(relativeFile);
+						zipFilename = fromFileStandardToURLStandard(relativeFile);
 						final ZipEntry zipEntry = new ZipEntry(zipFilename);
 						zos.putNextEntry(zipEntry);
 						while ((len = fis.read(buffer)) > 0) {

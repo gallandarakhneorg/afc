@@ -91,8 +91,6 @@ public class ClasspathUtilTest {
 				}
 			}
 		}
-		
-		System.out.println("Additional class path: "+actual); 
 	}
 		
 	private static boolean isEquals(URL expected, URL actual) {
