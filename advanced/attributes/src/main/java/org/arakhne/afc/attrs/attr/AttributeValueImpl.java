@@ -604,7 +604,7 @@ public class AttributeValueImpl implements AttributeValue {
 		str.append("["); //$NON-NLS-1$
 		str.append((this.value == null)
 				? "???" //$NON-NLS-1$
-				: this.value.toString());
+						: this.value.toString());
 		str.append(":"); //$NON-NLS-1$
 		str.append(this.type.toString());
 		str.append("]"); //$NON-NLS-1$
@@ -1761,6 +1761,16 @@ public class AttributeValueImpl implements AttributeValue {
 		return null;
 	}
 
+	private UUID extractUUIDFromString(URI uri) {
+		try {
+			return UUID.fromString(uri.getHost());
+		} catch (AssertionError e) {
+			throw e;
+		} catch (Throwable exception) {
+			return null;
+		}
+	}
+
 	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
@@ -1775,13 +1785,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case URI:
 				final URI uri = (URI) this.value;
 				if ("uuid".equalsIgnoreCase(uri.getScheme())) { //$NON-NLS-1$
-					try {
-						return UUID.fromString(uri.getHost());
-					} catch (AssertionError e) {
-						throw e;
-					} catch (Throwable exception) {
-						//
-					}
+					return extractUUIDFromString(uri);
 				}
 				break;
 			case OBJECT:
@@ -1790,13 +1794,7 @@ public class AttributeValueImpl implements AttributeValue {
 				}
 				if (this.value instanceof URI
 						&& "uuid".equalsIgnoreCase(((URI) this.value).getScheme())) { //$NON-NLS-1$
-					try {
-						return UUID.fromString(((URI) this.value).getHost());
-					} catch (AssertionError e) {
-						throw e;
-					} catch (Throwable exception) {
-						//
-					}
+					return extractUUIDFromString((URI) this.value);
 				}
 				break;
 			case STRING:
@@ -2409,6 +2407,18 @@ public class AttributeValueImpl implements AttributeValue {
 		this.type = AttributeType.POLYLINE;
 	}
 
+	private InetAddress extractInetAddress() {
+		try {
+			final InetAddress adr = InetAddress.getByName(this.value.toString());
+			if (adr != null) {
+				return adr;
+			}
+		} catch (Throwable exception) {
+			//
+		}
+		return  null;
+	}
+
 	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
@@ -2420,15 +2430,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case INET_ADDRESS:
 				return (InetAddress) this.value;
 			case STRING:
-				try {
-					final InetAddress adr = InetAddress.getByName(this.value.toString());
-					if (adr != null) {
-						return adr;
-					}
-				} catch (Throwable exception) {
-					//
-				}
-				break;
+				return extractInetAddress();
 			case OBJECT:
 				if (this.value instanceof InetAddress) {
 					return (InetAddress) this.value;
@@ -2437,19 +2439,9 @@ public class AttributeValueImpl implements AttributeValue {
 					return ((InetSocketAddress) this.value).getAddress();
 				}
 				if (this.value != null) {
-					final InetAddress adr;
-					try {
-						adr = InetAddress.getByName(this.value.toString());
-						if (adr != null) {
-							return adr;
-						}
-					} catch (Throwable exception) {
-						//
-					}
-				} else {
-					return null;
+					return extractInetAddress();
 				}
-				break;
+				return null;
 			case URI:
 				final URI uri = (URI) this.value;
 				return InetAddress.getByName(uri.getHost());
@@ -2572,7 +2564,7 @@ public class AttributeValueImpl implements AttributeValue {
 	@Override
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public <T extends Enum<T>> T getEnumeration(Class<T> type) throws InvalidAttributeTypeException,
-			AttributeNotInitializedException {
+	AttributeNotInitializedException {
 		if (this.value == null) {
 			return null;
 		}
