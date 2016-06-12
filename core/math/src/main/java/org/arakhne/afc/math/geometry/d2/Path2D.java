@@ -255,7 +255,7 @@ public interface Path2D<
 	 * clockwise around the ellipse that meets these criteria.</li>
 	 * </ul>
 	 *
-	 * <p><img alt="" src="../doc-files/arcto1.png">
+	 * <p><img alt="" src="./doc-files/arcto1.png">
 	 *
 	 * <p>The method will do nothing if the destination point is the same as
 	 * the current point.
