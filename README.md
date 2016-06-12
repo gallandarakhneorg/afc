@@ -102,7 +102,7 @@ For example, if you want to use the "vmutils" module:
 	<dependency>
 	  <groupId>org.arakhne.core</groupId>
 	  <artifactId>vmutils</artifactId>
-	  <version>12.0</version>
+	  <version>13.0</version>
 	</dependency>
 	...
 ```
@@ -120,7 +120,7 @@ For using this version, you must add the Maven Repository Server of AFC in your 
 	  <dependency>
 	    <groupId>org.arakhne.core</groupId>
 	    <artifactId>vmutils</artifactId>
-	    <version>13.0-SNAPSHOT</version>
+	    <version>14.0-SNAPSHOT</version>
 	  </dependency>
 	<dependencies>
 	...

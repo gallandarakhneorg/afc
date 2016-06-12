@@ -5,14 +5,14 @@
 	<groupId>org.arakhne.afc</groupId>
 	<artifactId>afc</artifactId>
 	<packaging>pom</packaging>
-	<version>13.0-SNAPSHOT</version>
+	<version>13.0</version>
 	<name>Arakhnê Foundation Classes</name>
 	<inceptionYear>2006</inceptionYear>
 	<url>http://www.arakhne.org/afc/</url>
 	<description>Collection of Java utilities.</description>
 
 	<properties>
-		<afc.version>13.0-SNAPSHOT</afc.version>
+		<afc.version>13.0</afc.version>
 		<afc.plugins.version>12.0</afc.plugins.version>
 		<min.java.version>1.8</min.java.version>
 		<year>2016</year>
@@ -361,10 +361,6 @@
 			<id>org.arakhne-ftp</id>
 			<url>ftp://ftp.tuxfamily.org/arakhne/arakhne-repository/maven</url>
 		</repository>
-		<!-- <repository> <id>repository.arakhne.org</id> <name>Arakhn&amp;ecirc; 
-			Repository</name> <url>file:///srv/arakhne.org/repository/maven/</url> </repository> 
-			<site> <id>afc.site.arakhne.org</id> <name>AFC Project Websites Repository</name> 
-			<url>file:///srv/arakhne.org/web/maven-sites/</url> </site> -->
 	</distributionManagement>
 
 	<scm>
@@ -397,7 +393,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.6</version>
+					<version>3.0.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -417,7 +413,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.7</version>
+					<version>3.0.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -437,7 +433,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.3</version>
+					<version>2.10.4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.felix</groupId>
@@ -653,6 +649,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
+					<quiet>true</quiet>
 					<docencoding>${sourceEncoding}</docencoding>
 					<show>package</show>
 					<detectLinks>true</detectLinks>
@@ -672,6 +669,30 @@
 							<name>mavenartifactid</name>
 							<placement>pt</placement>
 							<head>Maven Artifact Id:</head>
+						</tag>
+						<tag>
+							<name>goal</name>
+							<placement>X</placement>
+						</tag>
+						<tag>
+							<name>component</name>
+							<placement>X</placement>
+						</tag>
+						<tag>
+							<name>phase</name>
+							<placement>X</placement>
+						</tag>
+						<tag>
+							<name>threadSafe</name>
+							<placement>X</placement>
+						</tag>
+						<tag>
+							<name>requireProject</name>
+							<placement>X</placement>
+						</tag>
+						<tag>
+							<name>requiresProject</name>
+							<placement>X</placement>
 						</tag>
 					</tags>
 				</configuration>

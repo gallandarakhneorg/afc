@@ -141,6 +141,7 @@
 				value="\$NON-NLS-[0-9]+\$(\s*//\s*\$NON-NLS-[0-9]+\$)*" />
 		</module>
 
+
 		<!-- ************************** *** NAMING CONVENTIONS *** ************************** -->
 
 		<!-- Check that the outer type is defined in a file with the same name. -->
