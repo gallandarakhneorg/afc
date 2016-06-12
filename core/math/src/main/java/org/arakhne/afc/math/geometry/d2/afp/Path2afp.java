@@ -62,6 +62,11 @@ public interface Path2afp<
         V extends Vector2D<? super V, ? super P>, B extends Rectangle2afp<?, ?, IE, P, V, B>>
         extends Shape2afp<ST, IT, IE, P, V, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, V, B> {
 
+    /**
+     * String literal.
+     */
+    String IS_CURVED = "isCurved";
+
     /** Multiple of cubic & quad curve size.
      */
     int GROW_SIZE = 24;
@@ -237,7 +242,7 @@ public interface Path2afp<
     static void findsClosestPointPathIteratorPoint(PathIterator2afp<? extends PathElement2afp> pi, double x,
             double y, Point2D<?, ?> result) {
         assert pi != null : AssertMessages.notNullParameter(0);
-        assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+        assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, IS_CURVED); //$NON-NLS-1$
         assert result != null : AssertMessages.notNullParameter(3);
         double bestDist = Double.POSITIVE_INFINITY;
         PathElement2afp pe;
@@ -319,7 +324,7 @@ public interface Path2afp<
             PathIterator2afp<? extends PathElement2afp> shape, Point2D<?, ?> result) {
         assert pi != null : AssertMessages.notNullParameter(0);
         assert shape != null : AssertMessages.notNullParameter(1);
-        assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+        assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, IS_CURVED); //$NON-NLS-1$
         assert result != null : AssertMessages.notNullParameter(2);
         if (!pi.hasNext() || !shape.hasNext()) {
             return false;
@@ -587,7 +592,7 @@ public interface Path2afp<
     static void findsFarthestPointPathIteratorPoint(PathIterator2afp<? extends PathElement2afp> pi, double x,
             double y, Point2D<?, ?> result) {
         assert pi != null : AssertMessages.notNullParameter(0);
-        assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, "isCurved"); //$NON-NLS-1$
+        assert !pi.isCurved() : AssertMessages.invalidTrueValue(0, IS_CURVED); //$NON-NLS-1$
         assert result != null : AssertMessages.notNullParameter(3);
         double bestDist = Double.NEGATIVE_INFINITY;
         PathElement2afp pe;

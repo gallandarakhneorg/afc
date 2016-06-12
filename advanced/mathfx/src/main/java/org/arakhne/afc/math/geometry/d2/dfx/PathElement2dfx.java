@@ -45,6 +45,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
 public abstract class PathElement2dfx implements PathElement2afp {
 	private static final long serialVersionUID = 1724746568685625149L;
 
+	private static final String OPEN_CLOSE_PARENTHESES = ")\n\tto: (";
+
 	/** Type of the element.
 	 */
 	protected final PathElementType type;
@@ -544,7 +546,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		public String toString() {
 			return "LINE\n\tfrom: (" //$NON-NLS-1$
 					+ getFromX() + ", " //$NON-NLS-1$
-					+ getFromY() + ")\n\tto: (" //$NON-NLS-1$
+					+ getFromY() + OPEN_CLOSE_PARENTHESES //$NON-NLS-1$
 					+ getToX() + ", " //$NON-NLS-1$
 					+ getToY() + ")\n"; //$NON-NLS-1$
 		}
@@ -723,7 +725,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 					+ getFromX() + ", " //$NON-NLS-1$
 					+ getFromY() + ")\n\tctrl: (" //$NON-NLS-1$
 					+ getCtrlX1() + ", " //$NON-NLS-1$
-					+ getCtrlY1() + ")\n\tto: (" //$NON-NLS-1$
+					+ getCtrlY1() + OPEN_CLOSE_PARENTHESES //$NON-NLS-1$
 					+ getToX() + ", " //$NON-NLS-1$
 					+ getToY() + ")"; //$NON-NLS-1$
 		}
@@ -952,7 +954,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 					+ getCtrlX1() + ", " //$NON-NLS-1$
 					+ getCtrlY1() + ")\n\tctrl 2: (" //$NON-NLS-1$
 					+ getCtrlX2() + ", " //$NON-NLS-1$
-					+ getCtrlY2() + ")\n\tto: (" //$NON-NLS-1$
+					+ getCtrlY2() + OPEN_CLOSE_PARENTHESES //$NON-NLS-1$
 					+ this.getToX() + ", " //$NON-NLS-1$
 					+ this.getToY() + ")"; //$NON-NLS-1$
 		}
@@ -1340,7 +1342,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		public String toString() {
 			return "ARC:\n\tfrom: (" //$NON-NLS-1$
 					+ getFromX() + ", " //$NON-NLS-1$
-					+ getFromY() + ")\n\tto: (" //$NON-NLS-1$
+					+ getFromY() + OPEN_CLOSE_PARENTHESES //$NON-NLS-1$
 					+ getToX() + ", " //$NON-NLS-1$
 					+ getToY() + ")\n\tx radius: " //$NON-NLS-1$
 					+ getRadiusX() + "\n\ty radius: " //$NON-NLS-1$
