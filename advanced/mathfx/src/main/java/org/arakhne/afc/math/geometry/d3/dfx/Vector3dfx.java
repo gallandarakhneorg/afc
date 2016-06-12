@@ -134,15 +134,6 @@ public class Vector3dfx extends Tuple3dfx<Vector3dfx> implements Vector3D<Vector
 	}
 
 	@Override
-	public Vector3dfx toUnitVector() {
-		final double length = getLength();
-		if (length == 0.) {
-			return getGeomFactory().newVector();
-		}
-		return getGeomFactory().newVector(getX() / length, getY() / length, getZ() / length);
-	}
-
-	@Override
 	public double getLength() {
 		return lengthProperty().get();
 	}

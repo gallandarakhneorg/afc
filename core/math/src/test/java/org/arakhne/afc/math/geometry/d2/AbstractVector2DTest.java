@@ -411,6 +411,28 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertEpsilonEquals(23, orthoVector.getY());
 	}
 	
+	@Test
+	public final void toCollinearVectorDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D origin = createVector(23, 45);
+		Vector2D colVector = origin.toColinearVector(18.5);
+		assertNotNull(colVector);
+		assertNotSame(origin, colVector);
+		assertEpsilonEquals(8.4196, colVector.getX());
+		assertEpsilonEquals(16.4730, colVector.getY());
+	}
+
+	@Test
+	public final void toCollinearVectorDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D origin = createVector(23, 45);
+		Vector2D colVector = origin.toColinearVector(18.5);
+		assertNotNull(colVector);
+		assertNotSame(origin, colVector);
+		assertEpsilonEquals(8, colVector.getX());
+		assertEpsilonEquals(16, colVector.getY());
+	}
+
 	public final void assertEpsilonEquals(double expected, PowerResult<?> actual) {
 		if (actual == null) {
 			fail("Result is null");

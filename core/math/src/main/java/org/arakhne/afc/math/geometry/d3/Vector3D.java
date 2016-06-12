@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 
 /** 3D Vector.
@@ -812,7 +813,31 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @return the unit vector of this vector.
 	 */
 	@Pure
-	RV toUnitVector();
+	default RV toUnitVector() {
+		final double length = getLength();
+		if (length == 0.) {
+			return getGeomFactory().newVector();
+		}
+		return getGeomFactory().newVector(getX() / length, getY() / length, getZ() / length);
+	}
+
+	/** Replies a vector of the given length that is colinear to this vector.
+	 *
+	 * @param length the length of the new vector.
+	 * @return the colinear vector.
+	 */
+	@Pure
+	default RV toColinearVector(double length) {
+		assert length >= 0. : AssertMessages.positiveOrZeroParameter();
+		final double len = getLength();
+		if (len != 0.) {
+			final double x = (length * getX()) / len;
+			final double y = (length * getY()) / len;
+			final double z = (length * getZ()) / len;
+			return getGeomFactory().newVector(x, y, z);
+		}
+		return getGeomFactory().newVector();
+	}
 
 	/** Replies an unmodifiable copy of this vector.
 	 *

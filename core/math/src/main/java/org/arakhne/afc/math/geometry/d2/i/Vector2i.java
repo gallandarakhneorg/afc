@@ -222,20 +222,6 @@ public class Vector2i extends Tuple2i<Vector2i> implements Vector2D<Vector2i, Po
 	}
 
 	@Override
-	public Vector2i toUnitVector() {
-		final double length = getLength();
-		if (length == 0.) {
-			return getGeomFactory().newVector(0, 0);
-		}
-		return getGeomFactory().newVector((int) Math.round(ix() / length), (int) Math.round(iy() / length));
-	}
-
-	@Override
-	public Vector2i toOrthogonalVector() {
-		return getGeomFactory().newVector(-iy(), ix());
-	}
-
-	@Override
 	public GeomFactory2i getGeomFactory() {
 		return GeomFactory2i.SINGLETON;
 	}

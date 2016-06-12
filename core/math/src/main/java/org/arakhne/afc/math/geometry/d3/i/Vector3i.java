@@ -223,16 +223,6 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 	}
 
 	@Override
-	public Vector3i toUnitVector() {
-		final double length = getLength();
-		if (length == 0.) {
-			return getGeomFactory().newVector(0, 0, 0);
-		}
-        return getGeomFactory().newVector((int) Math.round(ix() / length), (int) Math.round(iy() / length),
-                (int) Math.round(iz() / length));
-	}
-
-	@Override
 	public GeomFactory3i getGeomFactory() {
 		return GeomFactory3i.SINGLETON;
 	}

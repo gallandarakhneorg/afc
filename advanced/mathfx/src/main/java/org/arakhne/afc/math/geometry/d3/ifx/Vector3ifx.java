@@ -133,18 +133,6 @@ public class Vector3ifx extends Tuple3ifx<Vector3ifx> implements Vector3D<Vector
 	}
 
 	@Override
-	public Vector3ifx toUnitVector() {
-		final double length = getLength();
-		if (length == 0.) {
-			return getGeomFactory().newVector();
-		}
-		final int x = (int) Math.round(ix() / length);
-		final int y = (int) Math.round(iy() / length);
-		final int z = (int) Math.round(iz() / length);
-		return getGeomFactory().newVector(x, y, z);
-	}
-
-	@Override
 	public double getLength() {
 		return lengthProperty().get();
 	}

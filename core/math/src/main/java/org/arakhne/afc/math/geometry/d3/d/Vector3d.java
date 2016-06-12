@@ -227,15 +227,6 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 		}
 	}
 
-	@Override
-	public Vector3d toUnitVector() {
-		final double length = getLength();
-		if (length == 0.) {
-			return getGeomFactory().newVector();
-		}
-		return getGeomFactory().newVector(getX() / length, getY() / length, getZ() / length);
-	}
-
 	@Pure
 	@Override
 	public UnmodifiableVector3D<Vector3d, Point3d> toUnmodifiable() {

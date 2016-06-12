@@ -226,20 +226,6 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 		}
 	}
 
-	@Override
-	public Vector2d toUnitVector() {
-		final double length = getLength();
-		if (length == 0.) {
-			return getGeomFactory().newVector();
-		}
-		return getGeomFactory().newVector(getX() / length, getY() / length);
-	}
-
-	@Override
-	public Vector2d toOrthogonalVector() {
-		return getGeomFactory().newVector(-getY(), getX());
-	}
-
 	@Pure
 	@Override
 	public UnmodifiableVector2D<Vector2d, Point2d> toUnmodifiable() {

@@ -141,22 +141,6 @@ public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector
 	}
 
 	@Override
-	public Vector2ifx toUnitVector() {
-		final double length = getLength();
-		if (length == 0.) {
-			return getGeomFactory().newVector();
-		}
-		final int x = (int) Math.round(ix() / length);
-		final int y = (int) Math.round(iy() / length);
-		return getGeomFactory().newVector(x, y);
-	}
-
-	@Override
-	public Vector2ifx toOrthogonalVector() {
-		return getGeomFactory().newVector(-iy(), ix());
-	}
-
-	@Override
 	public double getLength() {
 		return lengthProperty().get();
 	}
