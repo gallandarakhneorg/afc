@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.ai;
 
-import org.arakhne.afc.math.geometry.d2.GeomFactory;
+import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 
@@ -32,7 +32,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-final class InnerComputationGeomFactory implements GeomFactory<InnerComputationVector2ai, InnerComputationPoint2ai> {
+final class InnerComputationGeomFactory implements GeomFactory2D<InnerComputationVector2ai, InnerComputationPoint2ai> {
 
 	/** Singleton of the factory.
 	 */

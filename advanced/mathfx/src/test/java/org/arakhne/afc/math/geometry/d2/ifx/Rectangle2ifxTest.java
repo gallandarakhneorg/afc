@@ -25,16 +25,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.ai.AbstractRectangle2aiTest;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
-import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
-import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
-import org.junit.Test;
-
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d2.ai.AbstractRectangle2aiTest;
 
 @SuppressWarnings("all")
 public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {

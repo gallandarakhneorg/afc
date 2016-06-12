@@ -20,18 +20,20 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyListProperty;
+import org.junit.Test;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.ai.AbstractPath2aiTest;
-import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
-import org.junit.Test;
-
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyListProperty;
 
 @SuppressWarnings("all")
 public class Path2ifxTest extends AbstractPath2aiTest<Path2ifx, Rectangle2ifx> {

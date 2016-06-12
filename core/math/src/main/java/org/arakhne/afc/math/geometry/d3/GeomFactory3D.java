@@ -18,47 +18,47 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d2;
+package org.arakhne.afc.math.geometry.d3;
 
 /** Factory of geometrical primitives.
  *
  * @param <V> the types of the vectors.
  * @param <P> is the type of the points.
+ * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 13.0
  */
-public interface GeomFactory<V extends Vector2D<? super V, ? super P>, P extends Point2D<? super P, ? super V>> {
+public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P extends Point3D<? super P, ? super V>> {
 
 	/** Convert the given point if it is not of the right type.
 	 *
-	 * @param pt the point to convert.
+	 * @param point the point to convert.
 	 * @return <code>p</code> if it is of type <code>P</code>, or a copy of <code>p</code>.
 	 */
-	P convertToPoint(Point2D<?, ?> pt);
+	P convertToPoint(Point3D<?, ?> point);
 
 	/** Convert the given vector.
 	 *
 	 * @param vector the vector to convert.
 	 * @return the point.
 	 */
-	P convertToPoint(Vector2D<?, ?> vector);
+	P convertToPoint(Vector3D<?, ?> vector);
 
 	/** Convert the given point.
 	 *
-	 * @param pt the point to convert.
+	 * @param point the point to convert.
 	 * @return the vector.
 	 */
-	V convertToVector(Point2D<?, ?> pt);
+	V convertToVector(Point3D<?, ?> point);
 
 	/** Convert the given vector.
 	 *
 	 * @param vector the vector to convert.
 	 * @return the vector.
 	 */
-	V convertToVector(Vector2D<?, ?> vector);
+	V convertToVector(Vector3D<?, ?> vector);
 
 	/** Create a point.
 	 *
@@ -70,17 +70,19 @@ public interface GeomFactory<V extends Vector2D<? super V, ? super P>, P extends
 	 *
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
+	 * @param z z coordinate of the point.
 	 * @return the point.
 	 */
-	P newPoint(double x, double y);
+	P newPoint(double x, double y, double z);
 
 	/** Create a point.
 	 *
 	 * @param x x coordinate of the point.
-	 * @param y y coordinate of the point.
+     * @param y y coordinate of the point.
+     * @param z z coordinate of the point.
 	 * @return the point.
 	 */
-	P newPoint(int x, int y);
+	P newPoint(int x, int y, int z);
 
 	/** Create a vector.
 	 *
@@ -90,18 +92,36 @@ public interface GeomFactory<V extends Vector2D<? super V, ? super P>, P extends
 
 	/** Create a vector.
 	 *
-	 * @param x x coordinate of the vector.
-	 * @param y y coordinate of the vector.
+     * @param x x coordinate of the vector.
+     * @param y y coordinate of the vector.
+     * @param z z coordinate of the vector.
 	 * @return the vector.
 	 */
-	V newVector(double x, double y);
+	V newVector(double x, double y, double z);
 
 	/** Create a vector.
 	 *
 	 * @param x x coordinate of the vector.
-	 * @param y y coordinate of the vector.
+     * @param y y coordinate of the vector.
+     * @param z z coordinate of the vector.
 	 * @return the vector.
 	 */
-	V newVector(int x, int y);
+	V newVector(int x, int y, int z);
 
+	/** Creates a Quaternion.
+	 *
+	 * @param axis the axis of the quaternion.
+	 * @param angle the angle of the quaternion.
+	 * @return the quaternion.
+	 */
+	Quaternion newQuaternion(Vector3D<?, ?> axis, double angle);
+
+	/**Creates a Quaternion.
+	 *
+	 * @param attitude the attitude of the quaternion
+	 * @param bank the bank of the quaternion
+	 * @param heading the heading of the quaternion
+	 * @return the quaternion
+	 */
+	Quaternion newQuaternion(double attitude, double bank, double heading);
 }

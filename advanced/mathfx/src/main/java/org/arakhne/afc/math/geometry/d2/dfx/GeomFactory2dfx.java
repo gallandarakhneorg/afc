@@ -39,6 +39,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
 
 	/** The singleton of the factory.
@@ -219,6 +220,26 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 				new SimpleBooleanProperty(largeArcFlag),
 				new SimpleBooleanProperty(sweepFlag));
 	}
+
+	@Override
+	public OrientedPoint2dfx newOrientedPoint(double x, double y) {
+	    return new OrientedPoint2dfx(x, y);
+	}
+
+	@Override
+    public OrientedPoint2dfx newOrientedPoint(double x, double y, double length) {
+        return new OrientedPoint2dfx(x, y, length);
+    }
+
+	@Override
+    public OrientedPoint2dfx newOrientedPoint(double x, double y, double dirX, double dirY) {
+        return new OrientedPoint2dfx(x, y, dirX, dirY);
+    }
+
+    @Override
+    public OrientedPoint2dfx newOrientedPoint(double x, double y, double length, double dirX, double dirY) {
+        return new OrientedPoint2dfx(x, y, length, dirX, dirY);
+    }
 
 	@Override
 	public MultiShape2dfx<?> newMultiShape() {

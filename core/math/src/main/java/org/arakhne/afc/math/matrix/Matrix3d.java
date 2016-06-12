@@ -3181,7 +3181,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * @param tuples the input tuples.
      * @return <code>true</code> if the cov matrix is computed.
      */
-    public boolean cov(Vector3D result, Vector3D... tuples) {
+    public boolean cov(Vector3D<?, ?> result, Vector3D<?, ?>... tuples) {
         assert result != null : AssertMessages.notNullParameter(0);
         assert tuples != null : AssertMessages.notNullParameter(1);
         return cov(result, Arrays.asList(tuples));
@@ -3194,7 +3194,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * @param tuples the input tuples.
      * @return <code>true</code> if the cov matrix is computed.
      */
-    public boolean  cov(Vector3D result, Point3D... tuples) {
+    public boolean  cov(Vector3D<?, ?> result, Point3D<?, ?>... tuples) {
         assert result != null : AssertMessages.notNullParameter(0);
         assert tuples != null : AssertMessages.notNullParameter(1);
         return cov(result, Arrays.asList(tuples));
@@ -3207,7 +3207,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * @param tuples the input tuples.
      * @return <code>true</code> if the cov matrix is computed.
      */
-    public boolean cov(Vector3D result, Iterable<? extends Tuple3D<?>> tuples) {
+    public boolean cov(Vector3D<?, ?> result, Iterable<? extends Tuple3D<?>> tuples) {
         assert result != null : AssertMessages.notNullParameter(0);
         assert tuples != null : AssertMessages.notNullParameter(1);
         setZero();

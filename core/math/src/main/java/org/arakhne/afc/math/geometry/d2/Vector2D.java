@@ -817,7 +817,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
      * @return the factory.
      */
     @Pure
-    GeomFactory<RV, RP> getGeomFactory();
+    GeomFactory2D<RV, RP> getGeomFactory();
 
     /** Add a vector to this vector: {@code this += v}.
      *

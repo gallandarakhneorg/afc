@@ -20,12 +20,10 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.AbstractGeomFactory2aiTest;
 import org.arakhne.afc.math.geometry.d2.ai.GeomFactory2ai;
-import org.junit.Rule;
 
 @SuppressWarnings("all")
 public class GeomFactory2ifxTest extends AbstractGeomFactory2aiTest {

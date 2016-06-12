@@ -335,7 +335,7 @@
 			</roles>
 		</developer>
 		<developer>
-			<id>tpiotrowski</id>
+			<id>tpiotrow</id>
 			<name>Thomas PIOTROWSKI</name>
 			<email>thomas.piotrowski@utbm.fr</email>
 			<roles>
@@ -393,7 +393,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>2.6</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>

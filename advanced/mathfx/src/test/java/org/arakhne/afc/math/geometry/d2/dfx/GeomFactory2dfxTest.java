@@ -24,9 +24,6 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.AbstractGeomFactory2afpTest;
 import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
-import org.arakhne.afc.math.geometry.d2.dfx.GeomFactory2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Point2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Vector2dfx;
 
 @SuppressWarnings("all")
 public class GeomFactory2dfxTest extends AbstractGeomFactory2afpTest {

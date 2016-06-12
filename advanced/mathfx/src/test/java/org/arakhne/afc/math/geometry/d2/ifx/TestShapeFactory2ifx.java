@@ -28,8 +28,6 @@ import org.arakhne.afc.math.geometry.d2.ai.MultiShape2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.i.Point2i;
-import org.arakhne.afc.math.geometry.d2.i.Vector2i;
 
 @SuppressWarnings("all")
 public class TestShapeFactory2ifx implements TestShapeFactory<Point2ifx, Vector2ifx, Rectangle2ifx> {

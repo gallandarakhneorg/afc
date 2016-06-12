@@ -56,7 +56,7 @@ public interface Shape2D<
      * @return the factory.
      */
     @Pure
-    GeomFactory<V, P> getGeomFactory();
+    GeomFactory2D<V, P> getGeomFactory();
 
     /** Replies if this shape is empty.
      * The semantic associated to the state "empty"

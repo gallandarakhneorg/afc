@@ -48,7 +48,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * <p>Caution: The multishape does not detect the bound change of the stored shapes.
  *
  * @param <T> the type of the shapes inside the multishape.
- * @author $Author: tpiotrowski$
+ * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

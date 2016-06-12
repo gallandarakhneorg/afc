@@ -21,19 +21,20 @@
 package org.arakhne.afc.math.geometry.d2.dfx;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.*;
-
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.afp.AbstractPath2afpTest;
-import org.arakhne.afc.math.geometry.d2.dfx.Path2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Rectangle2dfx;
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyListProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.PathElementType;
+import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.afp.AbstractPath2afpTest;
 
 @SuppressWarnings("all")
 public class Path2dfxTest extends AbstractPath2afpTest<Path2dfx, Rectangle2dfx> {

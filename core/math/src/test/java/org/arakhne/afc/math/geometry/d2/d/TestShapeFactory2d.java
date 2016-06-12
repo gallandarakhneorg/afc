@@ -21,31 +21,18 @@
 package org.arakhne.afc.math.geometry.d2.d;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
 import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
+import org.arakhne.afc.math.geometry.d2.afp.OrientedPoint2afp;
 import org.arakhne.afc.math.geometry.d2.afp.OrientedRectangle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
 import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
-import org.arakhne.afc.math.geometry.d2.d.Circle2d;
-import org.arakhne.afc.math.geometry.d2.d.Ellipse2d;
-import org.arakhne.afc.math.geometry.d2.d.MultiShape2d;
-import org.arakhne.afc.math.geometry.d2.d.OrientedRectangle2d;
-import org.arakhne.afc.math.geometry.d2.d.Parallelogram2d;
-import org.arakhne.afc.math.geometry.d2.d.Path2d;
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
-import org.arakhne.afc.math.geometry.d2.d.RoundRectangle2d;
-import org.arakhne.afc.math.geometry.d2.d.Segment2d;
-import org.arakhne.afc.math.geometry.d2.d.Triangle2d;
-import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 
 @SuppressWarnings("all")
 public class TestShapeFactory2d implements TestShapeFactory<Point2d, Vector2d, Rectangle2d> {
@@ -127,5 +114,10 @@ public class TestShapeFactory2d implements TestShapeFactory<Point2d, Vector2d, R
 	public MultiShape2afp<?, ?, ?, ?, Point2d, Vector2d, Rectangle2d> createMultiShape() {
 		return new MultiShape2d();
 	}
+
+    @Override
+    public OrientedPoint2afp createOrientedPoint(double x, double y, double length, double dirX, double dirY) {
+        return new OrientedPoint2d(x, y, length, dirX, dirY);
+    }
 
 }

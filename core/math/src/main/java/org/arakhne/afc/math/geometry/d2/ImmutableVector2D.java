@@ -72,7 +72,7 @@ public final class ImmutableVector2D implements UnmodifiableVector2D<ImmutableVe
 	}
 
 	@Override
-	public GeomFactory<ImmutableVector2D, ImmutablePoint2D> getGeomFactory() {
+	public ImmutableGeomFactory getGeomFactory() {
 		return ImmutableGeomFactory.SINGLETON;
 	}
 

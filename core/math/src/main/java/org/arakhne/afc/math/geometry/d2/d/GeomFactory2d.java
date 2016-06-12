@@ -29,6 +29,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
 /** Factory of geometrical elements.
  *
  * @author $Author: sgalland$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -167,6 +168,26 @@ public class GeomFactory2d implements GeomFactory2afp<PathElement2d, Point2d, Ve
 	@Override
 	public Segment2d newSegment(double x1, double y1, double x2, double y2) {
 		return new Segment2d(x1, y1, x2, y2);
+	}
+
+	@Override
+	public OrientedPoint2d newOrientedPoint(double x, double y) {
+	    return new OrientedPoint2d(x, y);
+	}
+
+	@Override
+	public OrientedPoint2d newOrientedPoint(double x, double y, double length) {
+	    return new OrientedPoint2d(x, y, length);
+	}
+
+	@Override
+	public OrientedPoint2d newOrientedPoint(double x, double y, double dirX, double dirY) {
+	    return new OrientedPoint2d(x, y, dirX, dirY);
+	}
+
+	@Override
+	public OrientedPoint2d newOrientedPoint(double x, double y, double length, double dirX, double dirY) {
+	    return new OrientedPoint2d(x, y, length, dirX, dirY);
 	}
 
 	@Override

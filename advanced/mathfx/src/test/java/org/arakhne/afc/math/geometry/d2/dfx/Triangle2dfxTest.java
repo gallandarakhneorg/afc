@@ -22,14 +22,11 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractTriangle2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.dfx.Rectangle2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Triangle2dfx;
-import org.junit.Test;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d2.afp.AbstractTriangle2afpTest;
 
 @SuppressWarnings("all")
 public class Triangle2dfxTest extends AbstractTriangle2afpTest<Triangle2dfx, Rectangle2dfx> {

@@ -23,10 +23,10 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
-import org.arakhne.afc.math.geometry.d2.AbstractTuple2DTest;
+import javafx.beans.property.DoubleProperty;
 import org.junit.Test;
 
-import javafx.beans.property.DoubleProperty;
+import org.arakhne.afc.math.geometry.d2.AbstractTuple2DTest;
 
 @SuppressWarnings("all")
 public class Tuple2dfxTest extends AbstractTuple2DTest<Tuple2dfx, Tuple2dfx> {

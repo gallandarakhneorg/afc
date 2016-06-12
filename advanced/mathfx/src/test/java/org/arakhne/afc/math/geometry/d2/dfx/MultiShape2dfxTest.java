@@ -24,14 +24,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractMultiShape2afpTest;
-import org.arakhne.afc.math.geometry.d2.dfx.MultiShape2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Rectangle2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Shape2dfx;
-import org.junit.Test;
-
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d2.afp.AbstractMultiShape2afpTest;
 
 @SuppressWarnings("all")
 public class MultiShape2dfxTest extends AbstractMultiShape2afpTest<MultiShape2dfx<Shape2dfx<?>>, Shape2dfx<?>, Rectangle2dfx> {

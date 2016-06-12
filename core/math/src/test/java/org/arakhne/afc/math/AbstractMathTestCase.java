@@ -20,12 +20,8 @@
 
 package org.arakhne.afc.math;
 
-import static org.junit.Assert.fail;
-
-import java.math.BigDecimal;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Random;
+import org.junit.AssumptionViolatedException;
+import org.junit.ComparisonFailure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
@@ -36,13 +32,12 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d3.d.Point3d;
+import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.arakhne.afc.math.matrix.Matrix2d;
 import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.Matrix4d;
 import org.arakhne.afc.testtools.AbstractTestCase;
-
-import org.junit.AssumptionViolatedException;
-import org.junit.ComparisonFailure;
 
 /**
  * @author $Author: sgalland$
@@ -318,26 +313,22 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 *
 	 * @return the random point.
 	 */
-	public Point3D randomPoint3f() {
-		// TODO
-		throw new UnsupportedOperationException();
-//		return new Point3D(
-//				getRandom().nextDouble() * 1000 - 500,
-//				getRandom().nextDouble() * 1000 - 500,
-//				getRandom().nextDouble() * 1000 - 500);
+	public Point3d randomPoint3f() {
+		return new Point3d(
+		        getRandom().nextDouble() * 1000 - 500,
+		        getRandom().nextDouble() * 1000 - 500,
+		        getRandom().nextDouble() * 1000 - 500);
 	}
 	
 	/** Create a random vector.
 	 *
 	 * @return the random vector.
 	 */
-	public Vector3D randomVector3f() {
-		// TODO
-		throw new UnsupportedOperationException();
-//		return new Vector3f(
-//				getRandom().nextDouble() * 1000 - 500,
-//				getRandom().nextDouble() * 1000 - 500,
-//				getRandom().nextDouble() * 1000 - 500);
+	public Vector3d randomVector3f() {
+	    return new Vector3d(
+                getRandom().nextDouble() * 1000 - 500,
+                getRandom().nextDouble() * 1000 - 500,
+                getRandom().nextDouble() * 1000 - 500);
 	}
 
 	/** Create a random matrix.
@@ -468,7 +459,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y
 	 * @param z
 	 */
-	public void assertFpVectorEquals(double x, double y, double z, Vector3D v) {
+	public void assertFpVectorEquals(double x, double y, double z, Vector3D<?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double dz = z - v.getZ();
@@ -488,7 +479,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y
 	 * @param z
 	 */
-	public void assertIntVectorEquals(int x, int y, int z, Vector3D v) {
+	public void assertIntVectorEquals(int x, int y, int z, Vector3D<?, ?> v) {
 		if (x != v.ix() || y != v.iy() || z != v.iz()) {
 			final String str1 = "(" + x + ", " + y + ")";   
 			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";   
@@ -504,7 +495,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param z
 	 * @param v
 	 */
-	public void assertFpVectorNotEquals(double x, double y, double z, Vector3D v) {
+	public void assertFpVectorNotEquals(double x, double y, double z, Vector3D<?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double dz = z - v.getZ();
@@ -524,7 +515,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y
 	 * @param z
 	 */
-	public void assertIntVectorNotEquals(int x, int y, int z, Vector3D v) {
+	public void assertIntVectorNotEquals(int x, int y, int z, Vector3D<?, ?> v) {
 		if (x == v.ix() && y == v.iy() && z == v.iz()) {
 			final String str1 = "(" + x + ", " + y + ")";   
 			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";   
@@ -539,7 +530,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param x
 	 * @param y
 	 */
-	public void assertFpPointEquals(double x, double y, Point2D v) {
+	public void assertFpPointEquals(double x, double y, Point2D<?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
@@ -550,7 +541,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 					str1, str2);   
 		}
 	}
-
+	
 	/** Test if the actual point is equal to the expected values.
 	 * 
 	 * @param v
@@ -565,7 +556,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 					str1, str2);   
 		}
 	}
-
+	
 	/** Test if the actual point is not equal to the expected values.
 	 * 
 	 * @param v
@@ -583,7 +574,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 					str1, str2);   
 		}
 	}
-
+	
 	/** Test if the actual point is not equal to the expected values.
 	 * 
 	 * @param v
@@ -596,6 +587,72 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";   
 			throw new ComparisonFailure(formatFailMessage(null, "same point", str1, str2), 
 					str1, str2);   
+		}
+	}
+	/** Test if the actual point is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void assertFpPointEquals(double x, double y, double z, Point3D<?, ?> v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double dz = z - v.getZ();
+		double distSq = dx * dx + dy * dy + dz * dz;
+		if (!isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Not same point", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual point is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void assertIntPointEquals(int x, int y, int z, Point3D<?, ?> v) {
+		if (x != v.ix() || y != v.iy() || z != v.iz()) {
+			throw new ComparisonFailure("Not same point", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.ix() + "; " + v.iy() + "; " + v.iz() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual point is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void assertFpPointNotEquals(double x, double y, double z, Point3D<?, ?> v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double dz = z - v.getZ();
+		double distSq = dx * dx + dy * dy + dz * dz;
+		if (isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Same point", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + "; " + v.getZ() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual point is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	public void assertIntPointNotEquals(int x, int y, int z, Point3D<?, ?> v) {
+		if (x == v.ix() && y == v.iy() && z == v.iz()) {
+			throw new ComparisonFailure("Same point", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.ix() + "; " + v.iy() + "; " + v.iz() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
@@ -728,14 +785,39 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 					expected.toString(), actual.toString());
 		}
 	}
-
+	
 	/** Assume that the given tuple is mutable.
 	 * 
 	 * @param tuple
 	 */
 	public void assumeMutable(Tuple2D<?> tuple) {
+	    try {
+	        tuple.add(0, 0);
+	    } catch (UnsupportedOperationException exception) {
+	        throw new AssumptionViolatedException("Object is immutable");
+	    }
+	}
+	
+	/** Assume that the given tuple is mutable.
+	 * 
+	 * @param tuple
+	 */
+	public void assumeImmutable(Tuple2D<?> tuple) {
+	    try {
+	        tuple.add(0, 0);
+	    } catch (UnsupportedOperationException exception) {
+	        return;
+	    }
+	    throw new AssumptionViolatedException("Object is mutable");
+	}
+
+	/** Assume that the given tuple is mutable.
+	 * 
+	 * @param tuple
+	 */
+	public void assumeMutable(Tuple3D<?> tuple) {
 		try {
-			tuple.add(0, 0);
+			tuple.add(0, 0, 0);
 		} catch (UnsupportedOperationException exception) {
 			throw new AssumptionViolatedException("Object is immutable");
 		}
@@ -745,9 +827,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * 
 	 * @param tuple
 	 */
-	public void assumeImmutable(Tuple2D<?> tuple) {
+	public void assumeImmutable(Tuple3D<?> tuple) {
 		try {
-			tuple.add(0, 0);
+			tuple.add(0, 0, 0);
 		} catch (UnsupportedOperationException exception) {
 			return;
 		}

@@ -39,6 +39,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
 
 	/** The singleton of the factory.
@@ -209,6 +210,26 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	@Override
 	public Segment2ifx newSegment(int x1, int y1, int x2, int y2) {
 		return new Segment2ifx(x1, y1, x2, y2);
+	}
+
+	@Override
+	public OrientedPoint2ifx newOrientedPoint(int x, int y) {
+	    return new OrientedPoint2ifx(x, y);
+	}
+
+	@Override
+    public OrientedPoint2ifx newOrientedPoint(int x, int y, int length) {
+	    return new OrientedPoint2ifx(x, y, length);
+	}
+
+	@Override
+    public OrientedPoint2ifx newOrientedPoint(int x, int y, int dirX, int dirY) {
+	    return new OrientedPoint2ifx(x, y, dirX, dirY);
+	}
+
+    @Override
+    public OrientedPoint2ifx newOrientedPoint(int x, int y, int length, int dirX, int dirY) {
+	    return new OrientedPoint2ifx(x, y, length, dirX, dirY);
 	}
 
 	@Override

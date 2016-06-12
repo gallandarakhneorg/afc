@@ -27,7 +27,7 @@ import javafx.beans.property.ReadOnlyDoubleWrapper;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.GeomFactory;
+import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
@@ -208,7 +208,7 @@ public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector
 			private static final long serialVersionUID = -3525974627723161583L;
 
 			@Override
-			public GeomFactory<Vector2ifx, Point2ifx> getGeomFactory() {
+			public GeomFactory2D<Vector2ifx, Point2ifx> getGeomFactory() {
 				return Vector2ifx.this.getGeomFactory();
 			}
 

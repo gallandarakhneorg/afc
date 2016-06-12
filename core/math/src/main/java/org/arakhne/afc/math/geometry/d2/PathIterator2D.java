@@ -99,6 +99,6 @@ public interface PathIterator2D<T extends PathElement2D> extends Iterator<T> {
 	 *
 	 * @return the factory.
 	 */
-	GeomFactory<?, ?> getGeomFactory();
+	GeomFactory2D<?, ?> getGeomFactory();
 
 }

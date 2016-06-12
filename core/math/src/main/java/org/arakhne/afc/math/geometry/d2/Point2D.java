@@ -374,7 +374,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      * @return the factory.
      */
     @Pure
-    GeomFactory<RV, RP> getGeomFactory();
+    GeomFactory2D<RV, RP> getGeomFactory();
 
     /** Sum of this point and a vector: {@code this + v}.
      *

@@ -22,14 +22,11 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractSegment2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.dfx.Rectangle2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Segment2dfx;
-import org.junit.Test;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d2.afp.AbstractSegment2afpTest;
 
 @SuppressWarnings("all")
 public class Segment2dfxTest extends AbstractSegment2afpTest<Segment2dfx, Rectangle2dfx> {

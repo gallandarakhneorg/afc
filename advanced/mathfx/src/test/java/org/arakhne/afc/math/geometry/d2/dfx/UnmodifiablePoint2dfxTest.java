@@ -26,7 +26,6 @@ import static org.junit.Assert.assertTrue;
 import org.arakhne.afc.math.geometry.d2.AbstractUnmodifiablePoint2DTest;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 
 @SuppressWarnings("all")
 public class UnmodifiablePoint2dfxTest extends AbstractUnmodifiablePoint2DTest<Point2dfx, Vector2dfx> {

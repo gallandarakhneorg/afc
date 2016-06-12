@@ -115,7 +115,7 @@ public final class Vector2DStub implements UnmodifiableVector2D<Vector2DStub, Po
 	}
 
 	@Override
-	public GeomFactory<Vector2DStub, Point2DStub> getGeomFactory() {
+	public GeomFactory2D<Vector2DStub, Point2DStub> getGeomFactory() {
 		return new GeomFactoryStub();
 	}
 	

@@ -22,7 +22,7 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 
 import javafx.beans.property.DoubleProperty;
 
-import org.arakhne.afc.math.geometry.d2.GeomFactory;
+import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
@@ -120,7 +120,7 @@ public class Point2dfx extends Tuple2dfx<Point2dfx> implements Point2D<Point2dfx
 			private static final long serialVersionUID = 5419032367247268556L;
 
 			@Override
-			public GeomFactory<Vector2dfx, Point2dfx> getGeomFactory() {
+			public GeomFactory2D<Vector2dfx, Point2dfx> getGeomFactory() {
 				return Point2dfx.this.getGeomFactory();
 			}
 

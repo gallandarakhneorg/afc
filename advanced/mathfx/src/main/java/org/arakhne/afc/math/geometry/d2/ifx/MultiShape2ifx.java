@@ -46,7 +46,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * <p>The coordinates of the shapes inside the multishape are global. They are not relative to the multishape.
  *
  * @param <T> the type of the shapes inside the multishape.
- * @author $Author: tpiotrowski$
+ * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

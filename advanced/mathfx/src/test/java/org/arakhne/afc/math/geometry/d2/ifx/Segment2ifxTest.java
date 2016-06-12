@@ -25,11 +25,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
-import org.arakhne.afc.math.geometry.d2.ai.AbstractSegment2aiTest;
-import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
+import javafx.beans.property.IntegerProperty;
 import org.junit.Test;
 
-import javafx.beans.property.IntegerProperty;
+import org.arakhne.afc.math.geometry.d2.ai.AbstractSegment2aiTest;
 
 @SuppressWarnings("all")
 public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectangle2ifx> {

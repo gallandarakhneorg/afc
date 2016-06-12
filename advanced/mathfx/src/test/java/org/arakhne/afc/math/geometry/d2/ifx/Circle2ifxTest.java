@@ -25,17 +25,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.ai.AbstractCircle2aiTest;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
-import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
-import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.i.Rectangle2i;
-import org.arakhne.afc.math.geometry.d2.i.TestShapeFactory2i;
+import javafx.beans.property.IntegerProperty;
 import org.junit.Test;
 
-import javafx.beans.property.IntegerProperty;
+import org.arakhne.afc.math.geometry.d2.ai.AbstractCircle2aiTest;
 
 @SuppressWarnings("all")
 public class Circle2ifxTest extends AbstractCircle2aiTest<Circle2ifx, Rectangle2ifx> {

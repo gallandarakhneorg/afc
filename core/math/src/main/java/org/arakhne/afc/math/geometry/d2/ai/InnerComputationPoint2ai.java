@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.ai;
 
-import org.arakhne.afc.math.geometry.d2.GeomFactory;
+import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
 
@@ -105,7 +105,7 @@ public class InnerComputationPoint2ai implements Point2D<InnerComputationPoint2a
     }
 
     @Override
-    public GeomFactory<InnerComputationVector2ai, InnerComputationPoint2ai> getGeomFactory() {
+    public GeomFactory2D<InnerComputationVector2ai, InnerComputationPoint2ai> getGeomFactory() {
         return InnerComputationGeomFactory.SINGLETON;
     }
 

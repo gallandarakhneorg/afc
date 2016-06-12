@@ -22,16 +22,11 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractOrientedRectangle2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.dfx.OrientedRectangle2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.ReadOnlyUnitVectorProperty;
-import org.arakhne.afc.math.geometry.d2.dfx.Rectangle2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.UnitVectorProperty;
-import org.junit.Test;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d2.afp.AbstractOrientedRectangle2afpTest;
 
 @SuppressWarnings("all")
 public class OrientedRectangle2dfxTest extends AbstractOrientedRectangle2afpTest<OrientedRectangle2dfx, Rectangle2dfx> {

@@ -21,7 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.ai;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.GeomFactory;
+import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.PathIterator2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
@@ -41,7 +41,7 @@ import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
  */
 public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D<? super P, ? super V>,
         V extends Vector2D<? super V, ? super P>, B extends Rectangle2ai<?, ?, E, P, V, B>>
-        extends GeomFactory<V, P> {
+        extends GeomFactory2D<V, P> {
 
     /** Create an empty path with the given winding rule.
      *
@@ -154,6 +154,44 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D<? su
     E newArcPathElement(int startX, int startY, int targetX, int targetY,
             int radiusX, int radiusY, double xAxisRotation,
             boolean largeArcFlag, boolean sweepFlag);
+
+    /** Create an oriented point.
+     *
+     * @param x the x coordinate of the point.
+     * @param y the y coordinate of the point.
+     * @return the new oriented point
+     */
+    OrientedPoint2ai<?, ?, E, P, V, B> newOrientedPoint(int x, int y);
+
+    /** Create an oriented point.
+     *
+     * @param x the x coordinate of the point.
+     * @param y the y coordinate of the point.
+     * @param length the length of the point on the polyline.
+     * @return the new oriented point
+     */
+    OrientedPoint2ai<?, ?, E, P, V, B> newOrientedPoint(int x, int y, int length);
+
+    /** Create an oriented point.
+     *
+     * @param x the x coordinate of the point.
+     * @param y the y coordinate of the point.
+     * @param dirX the x coordinate of the direction vector.
+     * @param dirY the y coordinate of the direction vector.
+     * @return the new oriented point
+     */
+    OrientedPoint2ai<?, ?, E, P, V, B> newOrientedPoint(int x, int y, int dirX, int dirY);
+
+    /** Create an oriented point.
+     *
+     * @param x the x coordinate of the point.
+     * @param y the y coordinate of the point.
+     * @param length the length of the point on the polyline.
+     * @param dirX the x coordinate of the direction vector.
+     * @param dirY the y coordinate of the direction vector.
+     * @return the new oriented point
+     */
+    OrientedPoint2ai<?, ?, E, P, V, B> newOrientedPoint(int x, int y, int length, int dirX, int dirY);
 
     /** Replies the {@link PathIterator2ai} that is corresponding to the given element.
      *

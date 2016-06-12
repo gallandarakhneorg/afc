@@ -21,9 +21,6 @@
 package org.arakhne.afc.math.geometry.d2.dfx;
 
 import org.arakhne.afc.math.geometry.d2.afp.AbstractPathWindingRule2afpTest;
-import org.arakhne.afc.math.geometry.d2.dfx.Point2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Rectangle2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Vector2dfx;
 
 @SuppressWarnings("all")
 public class PathWindingRule2dfxTest extends AbstractPathWindingRule2afpTest<Point2dfx, Vector2dfx, Rectangle2dfx> {
