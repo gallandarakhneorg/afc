@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.PathIterator2D;
+import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.references.WeakArrayList;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
@@ -92,23 +92,10 @@ public abstract class AbstractShape2d<T extends AbstractShape2d<?>> implements S
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
 	public final boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		try {
-			try {
-				return equalsToShape((T) obj);
-			} catch (ClassCastException exception) {
-				return equalsToPathIterator((PathIterator2D<?>) obj);
-			}
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
+		return Shape2D.equals(this, obj);
 	}
 
 	@Pure

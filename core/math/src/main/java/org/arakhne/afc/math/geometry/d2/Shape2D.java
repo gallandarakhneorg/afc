@@ -76,6 +76,38 @@ public interface Shape2D<
     @Pure
     IT clone();
 
+    /** Do a safe equality test between the two shapes.
+     *
+     * <p>This function should be used for implementing the {@link Object#equals(Object)} functions
+     * of the shapes.
+     *
+     * @param <IT> type of the shapes to compare.
+     * @param obj1 the first object to compare.
+     * @param obj2 the second object to compare.
+     * @return <code>true</code> if the two shapes are equal.
+     * @since 13.0
+     */
+    @Pure
+    @SuppressWarnings("unchecked")
+    static <IT extends Shape2D<?, ?, ?, ?, ?, ?>> boolean equals(Shape2D<?, IT, ?, ?, ?, ?> obj1, Object obj2) {
+        if (obj1 == obj2) {
+            return true;
+        }
+        if (obj1 != null && obj2 != null && obj1.getClass() == obj2.getClass()) {
+            try {
+                try {
+                    return obj1.equalsToShape((IT) obj2);
+                } catch (ClassCastException exception) {
+                    return obj1.equalsToPathIterator((PathIterator2D<?>) obj2);
+                }
+            } catch (Exception exception) {
+                // Avoid exceptions to stop this function.
+            }
+        }
+        return false;
+    }
+
+
     /** Replies this shape as the same path iterator as the given one.
      *
      * <p>The equality test does not flatten the paths. It means that

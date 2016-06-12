@@ -23,7 +23,7 @@ package org.arakhne.afc.math.geometry.d2.ifx;
 import javafx.beans.property.ObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.PathIterator2D;
+import org.arakhne.afc.math.geometry.d2.Shape2D;
 
 /** Abstract shape with 2 integer FX properties.
  *
@@ -52,23 +52,10 @@ public abstract class AbstractShape2ifx<T extends AbstractShape2ifx<?>> implemen
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
 	public final boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		try {
-			try {
-				return equalsToShape((T) obj);
-			} catch (ClassCastException exception) {
-				return equalsToPathIterator((PathIterator2D<?>) obj);
-			}
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
+	    return Shape2D.equals(this, obj);
 	}
 
 	@Pure
