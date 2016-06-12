@@ -28,7 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * <code><pre>
+ * <pre><code>
  * root
  * + child1
  * | + child11 
@@ -46,7 +46,7 @@ import org.junit.Test;
  *   \ child22
  *     + null 
  *     \ child222
- * </pre></code>
+ * </code></pre>
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$

@@ -549,7 +549,7 @@ public final class ReflectionUtil {
 	 * the super classes. This function does not explore super-interfaces
 	 * of implemented interfaces.
 	 *
-	 * <p><pre><code>
+	 * <pre><code>
 	 * interface IA {}
 	 * interface IB extends IA {}
 	 * interface IC {}
@@ -606,7 +606,7 @@ public final class ReflectionUtil {
 	 * the super classes. This function does not explore super-interfaces
 	 * of implemented interfaces.
 	 *
-	 * <p><pre><code>
+	 * <pre><code>
 	 * interface IA {}
 	 * interface IB extends IA {}
 	 * interface IC {}

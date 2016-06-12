@@ -34,7 +34,7 @@ import android.view.View;
 /** A preference that permits to pick a color in the preference UI.
  * <p>
  * The original source code was copied from
- * {@link "http://code.google.com/p/android-color-picker/"}.
+ * <a href="http://code.google.com/p/android-color-picker/">android-color-picker</a>.
  * Comments were added, and source code patched for
  * AFC compliance.
  * 

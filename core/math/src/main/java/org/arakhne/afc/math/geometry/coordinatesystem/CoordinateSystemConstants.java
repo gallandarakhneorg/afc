@@ -34,7 +34,7 @@ package org.arakhne.afc.math.geometry.coordinatesystem;
 public final class CoordinateSystemConstants {
 
 	/** Replies the preferred coordinate system for
-	 * <a href='http://en.wikipedia.org/wiki/Geographic_information_system">Geographical
+	 * <a href="http://en.wikipedia.org/wiki/Geographic_information_system">Geographical
 	 * Information System</a> (GIS).
 	 *
 	 * <p>GIS uses {@link CoordinateSystem2D#XY_RIGHT_HAND} coordinate system.
@@ -42,7 +42,7 @@ public final class CoordinateSystemConstants {
 	public static final CoordinateSystem2D GIS_2D = CoordinateSystem2D.XY_RIGHT_HAND;
 
 	/** Replies the preferred coordinate system for
-	 * <a href='http://en.wikipedia.org/wiki/Geographic_information_system">Geographical
+	 * <a href="http://en.wikipedia.org/wiki/Geographic_information_system">Geographical
 	 * Information System</a> (GIS).
 	 *
 	 * <p>GIS uses {@link CoordinateSystem3D#XYZ_RIGHT_HAND} coordinate system.

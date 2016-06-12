@@ -766,12 +766,12 @@ public interface Circle2afp<
      * <p>For n segments on the circle, the optimal distance to the control points, in the sense that the
      * middle of the curve lies on the circle itself, is (4/3)*tan(pi/(2n)).
      *
-     * <p><img src="./doc-files/circlebezier.png" width="100%" />
+     * <p><img alt="" src="./doc-files/circlebezier.png" width="100%" >
      *
      * <p>In the case of a discretization with 4 bezier curves, the distance is is
      * (4/3)*tan(pi/8) = 4*(sqrt(2)-1)/3 = 0.552284749831.
      *
-     * <p><img src="./doc-files/circlepathiterator.png" width="100%" />
+     * <p><img alt="" src="./doc-files/circlepathiterator.png" width="100%" >
      *
      * @param <T> the type of the path elements.
      * @author $Author: sgalland$

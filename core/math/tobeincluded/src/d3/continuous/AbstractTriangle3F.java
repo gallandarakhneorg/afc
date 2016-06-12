@@ -1352,13 +1352,13 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * Parameter <var>forceCoplanar</var> has a deep influence on the function
 	 * result. It indicates if coplanarity test must be done or not.
 	 * Following table explains this influence:
-	 * <table>
+	 * <table border="1" width="100%" summary="">
 	 * <thead>
 	 * <tr>
-	 * <th>Point is coplanar?</th>
-	 * <th>Point projection on plane is inside triangle?</th>
-	 * <th><var>forceCoplanar</var></th>
-	 * <th><code>intersectsPointTrangle()</code> Result</th>
+	 * <tr>Point is coplanar?</tr>
+	 * <tr>Point projection on plane is inside triangle?</tr>
+	 * <tr><var>forceCoplanar</var></tr>
+	 * <tr><code>intersectsPointTrangle()</code> Result</tr>
 	 * </tr>
 	 * </thead>
 	 * <tr>

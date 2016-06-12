@@ -38,7 +38,7 @@ public interface AngularVelocityKinematic extends AngularInstantVelocityKinemati
 	/**
 	 * Returns the maximal angular speed of this object in r/s.
 	 * @return the maximal angular speed of this object in r/s,
-	 *     always >=0.
+	 *     always &gt;= 0.
 	 */
 	double getMaxAngularSpeed();
 
@@ -47,7 +47,7 @@ public interface AngularVelocityKinematic extends AngularInstantVelocityKinemati
 	 *
 	 * @param unit the unit in which the speed will be given
 	 * @return the maximal angular speed of this object in the given unit,
-	 *     always >=0.
+	 *     always &gt;= 0.
 	 */
 	double getMaxAngularSpeed(AngularUnit unit);
 

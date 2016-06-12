@@ -183,7 +183,7 @@ public interface Path2D<
 	 * and {@code (tox, toy)} which is considered to be the midpoint of the
 	 * edge leading away from the corner of the oval where the oval grazes it.
 	 *
-	 * <p><img src="./doc-files/arcto0.png"/>
+	 * <p><img alt="" src="./doc-files/arcto0.png">
 	 *
 	 * <p>Only the portion of the ellipse from {@code tfrom} to {@code tto}
 	 * will be included where {@code 0f} represents the point where the
@@ -255,7 +255,7 @@ public interface Path2D<
 	 * clockwise around the ellipse that meets these criteria.</li>
 	 * </ul>
 	 *
-	 * <p><img src="../doc-files/arcto1.png" />
+	 * <p><img alt="" src="../doc-files/arcto1.png">
 	 *
 	 * <p>The method will do nothing if the destination point is the same as
 	 * the current point.

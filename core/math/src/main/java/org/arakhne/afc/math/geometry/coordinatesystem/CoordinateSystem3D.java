@@ -44,7 +44,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  *
  * <p>Rotations in a 3D coordinate system follow the right/left hand rules
  * (assuming that <code>OX</code>, <code>OY</code> and <code>OZ</code> are the three axis of the coordinate system):
- * <table border="1">
+ * <table border="1" width="100%" summary="Rotations">
  * <tr>
  * <td>Right-handed rule:</td>
  * <td><ul>
@@ -53,7 +53,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <li>when rotating around <code>OY</code>, positive rotation angle is going from <code>OZ</code> to <code>OX</code></li>
  * <li>when rotating around <code>OZ</code>, positive rotation angle is going from <code>OX</code> to <code>OY</code></li>
  * </ul><br>
- * <a href=""><img border="0" width="200" src="doc-files/rotation_right.png" alt="[Right-handed Rotation Rule]"></a>
+ * <img border="0" width="200" src="doc-files/rotation_right.png" alt="[Right-handed Rotation Rule]">
  * </td>
  * </tr><tr>
  * <td>Left-handed rule:</td>
@@ -63,7 +63,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <li>when rotating around <code>OY</code>, positive rotation angle is going from <code>OZ</code> to <code>OX</code></li>
  * <li>when rotating around <code>OZ</code>, positive rotation angle is going from <code>OX</code> to <code>OY</code></li>
  * </ul><br>
- * <a href=""><img border="0" width="200" src="doc-files/rotation_left.png" alt="[Left-handed Rotation Rule]"></a>
+ * <img border="0" width="200" src="doc-files/rotation_left.png" alt="[Left-handed Rotation Rule]">
  * </td>
  * </tr></table>
  *
@@ -76,142 +76,164 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SuppressWarnings("checkstyle:magicnumber")
 public enum CoordinateSystem3D {
 
-	/** Left handed XZY coordinate system.
-	 *
-	 * <p><a hef="doc-files/xzy_left.png"><img src="doc-files/xzy_left.png" border="0" width="200"
-	 * alt="[Left Handed XZY Coordinate System]"></a>
-	 */
-	XZY_LEFT_HAND(0, 1, 1, 0),
+    /** Left handed XZY coordinate system.
+     *
+     * <p><a href="doc-files/xzy_left.png"><img src="doc-files/xzy_left.png" border="0" width="200"
+     * alt="[Left Handed XZY Coordinate System]"></a>
+     */
+    XZY_LEFT_HAND(0, 1, 1, 0),
 
-	/** Left handed XYZ coordinate system.
-	 *
-	 * <p><a hef="doc-files/xyz_left.png"><img src="doc-files/xyz_left.png" border="0" width="200"
-	 * alt="[Left Handed XYZ Coordinate System]"></a>
-	 */
-	XYZ_LEFT_HAND(-1, 0, 0, 1),
+    /** Left handed XYZ coordinate system.
+     *
+     * <p><a href="doc-files/xyz_left.png"><img src="doc-files/xyz_left.png" border="0" width="200"
+     * alt="[Left Handed XYZ Coordinate System]"></a>
+     */
+    XYZ_LEFT_HAND(-1, 0, 0, 1),
 
-	/** Right handed XZY coordinate system.
-	 *
-	 * <p><a hef="doc-files/xzy_right.png"><img src="doc-files/xzy_right.png" border="0" width="200"
-	 * alt="[Right Handed XZY Coordinate System]"></a>
-	 */
-	XZY_RIGHT_HAND(0, -1, 1, 0),
+    /** Right handed XZY coordinate system.
+     *
+     * <p><a href="doc-files/xzy_right.png"><img src="doc-files/xzy_right.png" border="0" width="200"
+     * alt="[Right Handed XZY Coordinate System]"></a>
+     */
+    XZY_RIGHT_HAND(0, -1, 1, 0),
 
-	/** Right handed XYZ coordinate system.
-	 *
-	 * <p><a hef="doc-files/xyz_right.png"><img src="doc-files/xyz_right.png" border="0" width="200"
-	 * alt="[Right Handed XYZ Coordinate System]"></a>
-	 */
-	XYZ_RIGHT_HAND(1, 0, 0, 1);
+    /** Right handed XYZ coordinate system.
+     *
+     * <p><a href="doc-files/xyz_right.png"><img src="doc-files/xyz_right.png" border="0" width="200"
+     * alt="[Right Handed XYZ Coordinate System]"></a>
+     */
+    XYZ_RIGHT_HAND(1, 0, 0, 1);
 
-	private static final byte PIVOT_SYSTEM = 0;
+    private static final byte PIVOT_SYSTEM = 0;
 
-	private static CoordinateSystem3D userDefault;
+    private static CoordinateSystem3D userDefault;
 
-	private final byte system;
+    private final byte system;
 
-	CoordinateSystem3D(int lefty, int leftz, int topy, int topz) {
-		this.system = toSystemIndex(lefty, leftz, topy, topz);
-	}
+    CoordinateSystem3D(int lefty, int leftz, int topy, int topz) {
+        this.system = toSystemIndex(lefty, leftz, topy, topz);
+    }
 
-	@Pure
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
-	private static byte toSystemIndex(int lefty, int leftz, int topy, int topz) {
-		if (lefty < 0) {
-			if (leftz == 0 && topy == 0 && topz != 0) {
-				if (topz < 0) {
-					return 1;
-				}
-				return 2;
-			}
-		} else if (lefty > 0) {
-			if (leftz == 0 && topy == 0 && topz != 0) {
-				if (topz < 0) {
-					return 3;
-				}
-				return 0;
-			}
-		} else {
-			if (lefty == 0 && leftz != 0) {
-				if (leftz < 0) {
-					if (topz == 0 && topy != 0) {
-						if (topy < 0) {
-							return 4;
-						}
-						return 5;
-					}
-				} else {
-					if (topz == 0 && topy != 0) {
-						if (topy < 0) {
-							return 6;
-						}
-						return 7;
-					}
-				}
-			}
-		}
-		throw new CoordinateSystemNotFoundException();
-	}
+    @Pure
+    @SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
+    private static byte toSystemIndex(int lefty, int leftz, int topy, int topz) {
+        if (lefty < 0) {
+            if (leftz == 0 && topy == 0 && topz != 0) {
+                if (topz < 0) {
+                    return 1;
+                }
+                return 2;
+            }
+        } else if (lefty > 0) {
+            if (leftz == 0 && topy == 0 && topz != 0) {
+                if (topz < 0) {
+                    return 3;
+                }
+                return 0;
+            }
+        } else {
+            if (lefty == 0 && leftz != 0) {
+                if (leftz < 0) {
+                    if (topz == 0 && topy != 0) {
+                        if (topy < 0) {
+                            return 4;
+                        }
+                        return 5;
+                    }
+                } else {
+                    if (topz == 0 && topy != 0) {
+                        if (topy < 0) {
+                            return 6;
+                        }
+                        return 7;
+                    }
+                }
+            }
+        }
+        throw new CoordinateSystemNotFoundException();
+    }
 
-	@Pure
-	private static double[] fromSystemIndex(int index) {
-		// Compute the lower right sub-matrix
-		final double c1;
-		final double c2;
-		final double c3;
-		final double c4;
-		switch (index) {
-		case 1:
-			c1 = -1;
-			c2 = 0;
-			c3 = 0;
-			c4 = -1;
-			break;
-		case 2:
-			c1 = -1;
-			c2 = 0;
-			c3 = 0;
-			c4 = 1;
-			break;
-		case 3:
-			c1 = 1;
-			c2 = 0;
-			c3 = 0;
-			c4 = -1;
-			break;
-		case 4:
-			c1 = 0;
-			c2 = -1;
-			c3 = -1;
-			c4 = 0;
-			break;
-		case 5:
-			c1 = 0;
-			c2 = -1;
-			c3 = 1;
-			c4 = 0;
-			break;
-		case 6:
-			c1 = 0;
-			c2 = 1;
-			c3 = -1;
-			c4 = 0;
-			break;
-		case 7:
-			c1 = 0;
-			c2 = 1;
-			c3 = 1;
-			c4 = 0;
-			break;
-		default:
-			c1 = 1;
-			c2 = 0;
-			c3 = 0;
-			c4 = 1;
-			break;
-		}
+    @Pure
+    private static double[] fromSystemIndex(int index) {
+        // Compute the lower right sub-matrix
+        final double c1;
+        final double c2;
+        final double c3;
+        final double c4;
+        switch (index) {
+        case 1:
+            c1 = -1;
+            c2 = 0;
+            c3 = 0;
+            c4 = -1;
+            break;
+        case 2:
+            c1 = -1;
+            c2 = 0;
+            c3 = 0;
+            c4 = 1;
+            break;
+        case 3:
+            c1 = 1;
+            c2 = 0;
+            c3 = 0;
+            c4 = -1;
+            break;
+        case 4:
+            c1 = 0;
+            c2 = -1;
+            c3 = -1;
+            c4 = 0;
+            break;
+        case 5:
+            c1 = 0;
+            c2 = -1;
+            c3 = 1;
+            c4 = 0;
+            break;
+        case 6:
+            c1 = 0;
+            c2 = 1;
+            c3 = -1;
+            c4 = 0;
+            break;
+        case 7:
+            c1 = 0;
+            c2 = 1;
+            c3 = 1;
+            c4 = 0;
+            break;
+        default:
+            c1 = 1;
+            c2 = 0;
+            c3 = 0;
+            c4 = 1;
+            break;
+        }
 
-		return new double[] {c1, c2, c3, c4};
-	}
+        return new double[] {c1, c2, c3, c4};
+    }
+
+    /** Replies the default coordinate system.
+     *
+     * <p>If it is not changed, the default coordinate system is the one used for 3D simulation:
+     * {@link CoordinateSystemConstants#SIMULATION_3D}.
+     *
+     * @return the default coordinate system.
+     * @see #setDefaultCoordinateSystem(CoordinateSystem3D)
+     */
+    @Pure
+    public static CoordinateSystem2D getDefaultCoordinateSystem() {
+        throw new UnsupportedOperationException();
+    }
+
+    /** Set the default coordinate system.
+     *
+     * @param system is the new default coordinate system.
+     * @see #getDefaultCoordinateSystem()
+     */
+    public static void setDefaultCoordinateSystem(CoordinateSystem3D system) {
+        throw new UnsupportedOperationException();
+    }
 
 }

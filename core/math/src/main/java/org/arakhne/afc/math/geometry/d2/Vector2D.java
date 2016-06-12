@@ -189,7 +189,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
     /** Compute the the perpendicular product of
      * the two vectors (aka. the determinant of two vectors).
      *
-     * <p><pre><code>det(X1,X2) = |X1|.|X2|.sin(a)</code></pre>
+     * <pre><code>det(X1,X2) = |X1|.|X2|.sin(a)</code></pre>
      * where <code>X1</code> and <code>X2</code> are two vectors
      * and <code>a</code> is the angle between <code>X1</code>
      * and <code>X2</code>.
@@ -197,7 +197,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
      * <p>Let consider that dotProduct projects the point (px,py) on the
      * Ox axis, and perpProduct projects the point (py,py) on the Oy
      * axis. Then:
-     * <code><pre>perpProduct(ax, ay, px, py) = dotProduct(px, py, -ay, ax)</pre></code>
+     * <pre><code>perpProduct(ax, ay, px, py) = dotProduct(px, py, -ay, ax)</code></pre>
      * You could note that the semantics of the parameters differ:<ul>
      * <li><code>perpProduct(axisX, axisY, pointX, pointY)</code></li>
      * <li><code>dotProduct(pointX, pointY, axisX, axisY)</code></li>
@@ -220,7 +220,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
      * <p>Let consider that dotProduct projects the point (px,py) on the
      * Ox axis, and perpProduct projects the point (py,py) on the Oy
      * axis. Then:
-     * <code><pre>perpProduct(ax, ay, px, py) = dotProduct(px, py, -ay, ax)</pre></code>
+     * <pre><code>perpProduct(ax, ay, px, py) = dotProduct(px, py, -ay, ax)</code></pre>
      * You could note that the semantics of the parameters differ:<ul>
      * <li><code>perpProduct(axisX, axisY, pointX, pointY)</code></li>
      * <li><code>dotProduct(pointX, pointY, axisX, axisY)</code></li>
@@ -534,7 +534,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
     /** Compute the the perpendicular product of
      * the two vectors (aka. the determinant of two vectors).
      *
-     * <p><pre><code>det(X1, X2) = |X1|.|X2|.sin(a)</code></pre>
+     * <pre><code>det(X1, X2) = |X1|.|X2|.sin(a)</code></pre>
      * where <code>X1</code> and <code>X2</code> are two vectors
      * and <code>a</code> is the angle between <code>X1</code>
      * and <code>X2</code>.

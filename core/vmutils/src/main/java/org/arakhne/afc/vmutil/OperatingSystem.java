@@ -334,7 +334,7 @@ public enum OperatingSystem {
 	 * @param enableSuperUser indicates if the super-user commands are enabled or not.
 	 * @param enableGUI indicates if any additional GUI could be opened, or not.
 	 * @return the serial number associated to the current operating system.
-	 * @sine 6.1
+	 * @since 6.1
 	 */
 	@Pure
 	public static String getOSSerialNumber(boolean enableSuperUser, boolean enableGUI) {

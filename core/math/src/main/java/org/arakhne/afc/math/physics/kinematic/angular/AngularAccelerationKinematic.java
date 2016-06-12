@@ -38,7 +38,7 @@ public interface AngularAccelerationKinematic extends AngularInstantAcceleration
 	/** Returns the maximal angular acceleration of this object in m/s^2.
 	 *
 	 * @return the maximal angular acceleration of this object in m/s^2,
-	 *     always >=0.
+	 *     always &gt;= 0.
 	 */
 	double getMaxAngularAcceleration();
 
@@ -46,14 +46,14 @@ public interface AngularAccelerationKinematic extends AngularInstantAcceleration
 	 *
 	 * @param unit the unit in which the acceleration will be given
 	 * @return the maximal angular acceleration of this object in the given unit,
-	 *     always >=0.
+	 *     always &gt;= 0.
 	 */
 	double getMaxAngularAcceleration(AngularUnit unit);
 
 	/** Returns the maximal angular deceleration of this object in m/s^2.
 	 *
 	 * @return the maximal angular deceleration of this object in m/s^2,
-	 *     always >=0.
+	 *     always &gt;= 0.
 	 */
 	double getMaxAngularDeceleration();
 
@@ -61,7 +61,7 @@ public interface AngularAccelerationKinematic extends AngularInstantAcceleration
 	 *
 	 * @param unit the unit in which the deceleration will be given
 	 * @return the maximal angular deceleration of this object in the given unit,
-	 *     always >=0.
+	 *     always &gt;= 0.
 	 */
 	double getMaxAngularDeceleration(AngularUnit unit);
 

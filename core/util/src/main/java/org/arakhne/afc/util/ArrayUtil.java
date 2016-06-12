@@ -185,7 +185,7 @@ public final class ArrayUtil {
 	 * @param clazz is the type of the elements.
 	 * @param elements are the elements to merge.
 	 * @return the array.
-	 * @deprecated see {@link #mergeWithoutNull(Class, T...)}
+	 * @deprecated see {@link #mergeWithoutNull(Class, Object...)}
 	 */
 	@Pure
 	@Inline(value = "ArrayUtil.mergeWithoutNull($1, $2)", imported = {ArrayUtil.class})
@@ -204,7 +204,7 @@ public final class ArrayUtil {
 	 * @param clazz is the type of the elements.
 	 * @param elements are the elements to merge.
 	 * @return the array.
-	 * @deprecated see {@link #mergeWithoutNull(Class, T[], T...)}
+	 * @deprecated see {@link #mergeWithoutNull(Class, Object[], Object...)}
 	 */
 	@Pure
 	@Inline(value = "ArrayUtil.mergeWithoutNull($1, $2, $3)", imported = {ArrayUtil.class})

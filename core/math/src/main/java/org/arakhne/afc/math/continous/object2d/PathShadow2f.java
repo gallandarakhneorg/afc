@@ -34,7 +34,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link BasicPathShadow2afp}
+ * @deprecated since 13.0, not public replacement, see {@code BasicPathShadow2afp}.
  */
 @Deprecated
 @SuppressWarnings("all")

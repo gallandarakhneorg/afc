@@ -62,7 +62,7 @@ public interface Path2afp<
         V extends Vector2D<? super V, ? super P>, B extends Rectangle2afp<?, ?, IE, P, V, B>>
         extends Shape2afp<ST, IT, IE, P, V, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, V, B> {
 
-    /** Multiple of cubic & quad curve size.
+    /** Multiple of cubic &amp; quad curve size.
      */
     int GROW_SIZE = 24;
 
@@ -2533,7 +2533,7 @@ public interface Path2afp<
      * {@code (tox, toy)} which is considered to be the midpoint of the edge leading away from the corner of the oval where
      * the oval grazes it.
      *
-     * <p><img src="../doc-files/arcto0.png"/>
+     * <p><img alt="" src="../doc-files/arcto0.png">
      *
      * <p>Only the portion of the ellipse from {@code tfrom} to {@code tto} will be included where {@code 0f} represents
      * the point where the ellipse grazes the leading edge, {@code 1f} represents the point where the oval grazes the trailing
@@ -2680,7 +2680,7 @@ public interface Path2afp<
      * clockwise around the ellipse that meets these criteria.</li>
      * </ul>
      *
-     * <p><img src="../doc-files/arcto1.png" />
+     * <p><img alt="" src="../doc-files/arcto1.png" >
      *
      * <p>The method will do nothing if the destination point is the same as
      * the current point.

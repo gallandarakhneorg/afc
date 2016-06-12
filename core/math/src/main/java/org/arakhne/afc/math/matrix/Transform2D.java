@@ -710,7 +710,7 @@ public class Transform2D extends Matrix3d {
 		t.set(x, y);
 	}
 
-	/** Multiply this matrix by the tuple <x, y> and return the result.
+	/** Multiply this matrix by the tuple (x, y) and return the result.
 	 * <p>
 	 * This function is equivalent to:
 	 * <pre>

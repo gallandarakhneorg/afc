@@ -59,7 +59,7 @@ public enum PlaneClassification {
 
 	/** Invert the intersection classification.
 	 * <p>
-	 * <table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Plane Classification">
 	 * <tr><td><var>t</var></td><td>result</td></tr>
 	 * 
 	 * <tr><td><code>IN_FRONT_OF</code></td><td><code>BEHIND</code></td></tr>
@@ -91,7 +91,7 @@ public enum PlaneClassification {
 	 * respectively. This operator replies a positive intersection if at least
 	 * one of the sub object intersections is positive.
 	 * <p>
-	 * <table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Plane Classification">
 	 * <tr><td><var>f1</var></td><td><var>f2</var></td><td>result</td></tr>
 	 * 
 	 * <tr><td><code>BEHIND</code></td><td><code>BEHIND</code></td><td><code>BEHIND</code></td></tr>
@@ -125,7 +125,7 @@ public enum PlaneClassification {
 	 * respectively. This operator replies a positive intersection if at least
 	 * one of the sub object intersections is positive.
 	 * <p>
-	 * <table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Plane Classification">
 	 * <tr><td><var>this</var></td><td><var>f2</var></td><td>result</td></tr>
 	 * 
 	 * <tr><td><code>BEHIND</code></td><td><code>BEHIND</code></td><td><code>BEHIND</code></td></tr>
@@ -154,7 +154,7 @@ public enum PlaneClassification {
 	 * It could be used to compute the intersection type of a global 2D object
 	 * when we know the classification against each of the two sides of the global 2D object.
 	 * <p>
-	 * <table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Plane Classification">
 	 * <tr><td><var>f1</var></td><td><var>f2</var></td><td>result</td></tr>
 	 * 
 	 * <tr><td><code>BEHIND</code></td><td><code>BEHIND</code></td><td><code>BEHIND</code></td></tr>
@@ -185,7 +185,7 @@ public enum PlaneClassification {
 	 * It could be used to compute the intersection type of a global 2D object
 	 * when we know the classification against each of the two sides of the global 2D object.
 	 * <p>
-	 * <table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Plane Classification">
 	 * <tr><td><var>this</var></td><td><var>f2</var></td><td>result</td></tr>
 	 * 
 	 * <tr><td><code>BEHIND</code></td><td><code>BEHIND</code></td><td><code>BEHIND</code></td></tr>

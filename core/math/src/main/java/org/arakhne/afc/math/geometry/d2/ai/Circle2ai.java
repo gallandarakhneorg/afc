@@ -132,12 +132,9 @@ public interface Circle2ai<
 
     /** Replies if the given point is inside the quadrant of the given circle.
      *
-     * @param cx is the x-coordinate of the circle center
-     * @param cy is the y-coordinate of the circle center
-     * @param cr is the radius of the circle center
-     * @param quadrant is the quadrant: <table>
+     * <table border="1" width="100%" summary="definition of the quadrant values">
      * <thead>
-     * <th><td>quadrant</td><td>x</td><td>y</td></th>
+     * <tr><td>quadrant</td><td>x</td><td>y</td></tr>
      * </thead>
      * <tbody>
      * <tr><td>0</td><td>&ge;cx</td><td>&ge;cy</td></tr>
@@ -146,6 +143,11 @@ public interface Circle2ai<
      * <tr><td>3</td><td>&lt;cx</td><td>&lt;cy</td></tr>
      * </tbody>
      * </table>
+     *
+     * @param cx is the x-coordinate of the circle center
+     * @param cy is the y-coordinate of the circle center
+     * @param cr is the radius of the circle center
+     * @param quadrant is the quadrant, see table in the method description.
      * @param x is the x-coordinate of the point
      * @param y is the y-coordinate of the point
      * @return <code>true</code> if the point is inside the circle.
@@ -223,12 +225,9 @@ public interface Circle2ai<
 
     /** Replies if the given point is inside the quadrant of the given circle.
      *
-     * @param cx is the x-coordinate of the circle center
-     * @param cy is the y-coordinate of the circle center
-     * @param cr is the radius of the circle center
-     * @param quadrant is the quadrant: <table>
+     * <table border="1" width="100%" summary="definition of the quadrant values">
      * <thead>
-     * <th><td>quadrant</td><td>x</td><td>y</td></th>
+     * <tr><td>quadrant</td><td>x</td><td>y</td></tr>
      * </thead>
      * <tbody>
      * <tr><td>0</td><td>&ge;cx</td><td>&ge;cy</td></tr>
@@ -237,6 +236,11 @@ public interface Circle2ai<
      * <tr><td>3</td><td>&lt;cx</td><td>&lt;cy</td></tr>
      * </tbody>
      * </table>
+     *
+     * @param cx is the x-coordinate of the circle center
+     * @param cy is the y-coordinate of the circle center
+     * @param cr is the radius of the circle center
+     * @param quadrant is the quadrant, see table in the method description.
      * @param x is the x-coordinate of the point
      * @param y is the y-coordinate of the point
      * @return <code>true</code> if the point is inside the circle.

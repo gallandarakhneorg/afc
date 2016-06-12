@@ -23,7 +23,7 @@ package org.arakhne.afc.math.tree.iterator;
 import org.junit.Before;
 
 /**
- * <code><pre>
+ * <pre><code>
  * root
  * + child1                  a
  * | + child11               b
@@ -41,7 +41,7 @@ import org.junit.Before;
  *   \ child22               p
  *     + null 
  *     \ child222            st
- * </pre></code>
+ * </code></pre>
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$

@@ -55,7 +55,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * The "shadow" is the projection of the circle on the right.
 	 * The red lines represent the up and bottom borders.
 	 * <center>
-	 * <a href="doc-files/crossing_circle.png"><img src="doc-files/crossing_circle.png" width="300"/></a>
+	 * <a href="doc-files/crossing_circle.png"><img alt="" src="doc-files/crossing_circle.png" width="300"></a>
 	 * </center>
 	 * 
 	 * @param crossings is the initial value for the number of crossings.
@@ -124,7 +124,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * The "shadow" is the projection of the segment on the right.
 	 * The red lines represent the up and bottom borders.
 	 * <center>
-	 * <a href="doc-files/crossing_segment.png"><img src="doc-files/crossing_segment.png" width="300"/></a>
+	 * <a href="doc-files/crossing_segment.png"><img alt="" src="doc-files/crossing_segment.png" width="300"></a>
 	 * </center>
 	 * 
 	 * @param crossings is the initial value for the number of crossings.
@@ -225,7 +225,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * The "shadow" is the projection of the rectangle on the right.
 	 * The red lines represent the up and bottom borders.
 	 * <center>
-	 * <a href="doc-files/crossing_rect.png"><img src="doc-files/crossing_rect.png" width="300"/></a>
+	 * <a href="doc-files/crossing_rect.png"><img alt="" src="doc-files/crossing_rect.png" width="300"></a>
 	 * </center>
 	 * 
 	 * @param crossings is the initial value for the number of crossings.
@@ -400,7 +400,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * The "shadow line" is the projection of (px;py) on the right.
 	 * The red lines represent the up and bottom borders.
 	 * <center>
-	 * <a href="doc-files/crossing_point.png"><img src="doc-files/crossing_point.png" width="300"/></a>
+	 * <a href="doc-files/crossing_point.png"><img alt="" src="doc-files/crossing_point.png" width="300"></a>
 	 * </center>
 	 * 
 	 * @param crossing is the initial value of the crossing.
@@ -433,7 +433,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * The "shadow line" is the projection of (px;py) on the right.
 	 * The red lines represent the up and bottom borders.
 	 * <center>
-	 * <a href="doc-files/crossing_point.png"><img src="doc-files/crossing_point.png" width="300"/></a>
+	 * <a href="doc-files/crossing_point.png"><img alt="" src="doc-files/crossing_point.png" width="300"></a>
 	 * </center>
 	 * 
 	 * @param crossing is the initial value of the crossing.

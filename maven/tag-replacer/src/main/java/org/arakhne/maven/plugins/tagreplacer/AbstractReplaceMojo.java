@@ -60,73 +60,73 @@ import org.arakhne.maven.ExtendedArtifact;
 
 /**
  * Replace all the tags variables by the corresponding values. Supported variables are:
- * <table>
+ * <table border="1" width="100%" summary="List of the replaced variables">
  * <thead>
  * <tr>
- * <th>Name (case-sensitive)</th>
- * <th>Description</th>
+ * <td>Name (case-sensitive)</td>
+ * <td>Description</td>
  * </tr>
  * </thead> <tbody>
  * <tr>
- * <td>&dollar;ArtifactId&dollar;</td>
+ * <td>&#36;ArtifactId&#36;</td>
  * <td>The artifact id of the Maven module</td>
  * </tr>
  * <tr>
- * <td>&dollar;Author: id&dollar;</td>
+ * <td>&#36;Author: id&#36;</td>
  * <td>The name and link to the author with the given id. The id is the identifier of the author or
  * contributor defined the <code>pom.xml</code> file; or it is the email address of the author.</td>
  * </tr>
  * <tr>
- * <td>&dollar;Date&dollar;</td>
+ * <td>&#36;Date&#36;</td>
  * <td>The date of the last compilation of the Maven module</td>
  * </tr>
  * <tr>
- * <td>&dollar;Filename&dollar;</td>
+ * <td>&#36;Filename&#36;</td>
  * <td>The name of file</td>
  * </tr>
  * <tr>
- * <td>&dollar;FullVersion&dollar;</td>
+ * <td>&#36;FullVersion&#36;</td>
  * <td>The name, version, revision and date of the Maven module. It is equivalent to<br>
- * <code>&dollar;Version&dollar;&nbsp;(rev:&dollar;Revision&dollar;)&nbsp;-&nbsp;&dollar;Date&dollar;</code></td>
+ * <code>&#36;Version&#36;&nbsp;(rev:&#36;Revision&#36;)&nbsp;-&nbsp;&#36;Date&#36;</code></td>
  * </tr>
  * <tr>
- * <td>&dollar;GroupId&dollar;</td>
+ * <td>&#36;GroupId&#36;</td>
  * <td>The group id of the Maven module</td>
  * </tr>
  * <tr>
- * <td>&dollar;Id&dollar;</td>
+ * <td>&#36;Id&#36;</td>
  * <td>The id of file</td>
  * </tr>
  * <tr>
- * <td>&dollar;InceptionYear&dollar;</td>
+ * <td>&#36;InceptionYear&#36;</td>
  * <td>The inception year of the maven module, or the current year if the inception year was not defined</td>
  * </tr>
  * <tr>
- * <td>&dollar;Name&dollar;</td>
+ * <td>&#36;Name&#36;</td>
  * <td>The name of the Maven module</td>
  * </tr>
  * <tr>
- * <td>&dollar;Organization&dollar;</td>
+ * <td>&#36;Organization&#36;</td>
  * <td>The name of organization that publishs the Maven module</td>
  * </tr>
  * <tr>
- * <td>&dollar;Prop: name&dollar;</td>
+ * <td>&#36;Prop: name&#36;</td>
  * <td>The value of the property with the specified name and that is defined in the pom.xml of the maven module</td>
  * </tr>
  * <tr>
- * <td>&dollar;Revision&dollar;</td>
+ * <td>&#36;Revision&#36;</td>
  * <td>The SCM/SVN revision number of the Maven module</td>
  * </tr>
  * <tr>
- * <td>&dollar;Version&dollar;</td>
+ * <td>&#36;Version&#36;</td>
  * <td>The version of the Maven module</td>
  * </tr>
  * <tr>
- * <td>&dollar;Website&dollar;</td>
+ * <td>&#36;Website&#36;</td>
  * <td>The link to the website of the Maven module</td>
  * </tr>
  * <tr>
- * <td>&dollar;Year&dollar;</td>
+ * <td>&#36;Year&#36;</td>
  * <td>The current year</td>
  * </tr>
  * </tbody>

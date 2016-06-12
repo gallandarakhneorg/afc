@@ -52,7 +52,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * 
  * Rotations in a 3D coordinate system follow the right/left hand rules  
  * (assuming that <code>OX</code>, <code>OY</code> and <code>OZ</code> are the three axis of the coordinate system):
- * <table border="1">
+ * <table border="1" width="100%" summary="Rotations">
  * <tr>
  * <td>Right-handed rule:</td>
  * <td><ul>

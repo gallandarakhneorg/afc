@@ -36,7 +36,7 @@ public enum PathWindingRule {
      * path if a ray drawn in any direction from that point to
      * infinity is crossed by path segments an odd number of times.
      *
-     * <p><img src="./doc-files/fillrule-evenodd.png" />
+     * <p><img alt="" src="./doc-files/fillrule-evenodd.png">
 	 */
 	EVEN_ODD,
 
@@ -48,7 +48,7 @@ public enum PathWindingRule {
      * of times in the counter-clockwise direction than the
      * clockwise direction.
      *
-     * <p><img src="./doc-files/fillrule-nonzero.png" />
+     * <p><img alt="" src="./doc-files/fillrule-nonzero.png">
 	 */
 	NON_ZERO;
 

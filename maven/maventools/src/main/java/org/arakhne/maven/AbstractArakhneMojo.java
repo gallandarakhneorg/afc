@@ -453,11 +453,11 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the artifact handler manager.
 	 *
-	 * <p>It is an attribute defined as: <code><pre>
+	 * <p>It is an attribute defined as: <pre><code>
 	 * <span>/</span>* <span>@</span>component
 	 * <span>*</span>/
 	 * private ArtifactHandlerManager manager;
-	 * </pre></code>
+	 * </code></pre>
 	 *
 	 * @return the artifact resolver.
 	 */
@@ -466,11 +466,11 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the output directory of the project. Basically it is <code>getRootDirectory()+"/target"</code>.
 	 *
-	 * <p>It is an attribute defined as: <code><pre>
-	 * <span>/</span>* <span>@</span>parameter expression="&dollar;{project.build.directory}"
+	 * <p>It is an attribute defined as: <pre><code>
+	 * <span>/</span>* <span>@</span>parameter expression="&#36;{project.build.directory}"
 	 * <span>*</span>/
 	 * private File outputDirectory;
-	 * </pre></code>
+	 * </code></pre>
 	 *
 	 * @return the output directory.
 	 */
@@ -480,11 +480,11 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * Replies the root directory of the project. Basically it is the value stored inside the
 	 * Maven property named <code>project.basedir</code>.
 	 *
-	 * <p>It is an attribute defined as: <code><pre>
+	 * <p>It is an attribute defined as: <pre><code>
 	 * <span>/</span>* <span>@</span>parameter expression="${project.basedir}"
 	 * <span>*</span>/
 	 * private File baseDirectory;
-	 * </pre></code>
+	 * </code></pre>
 	 *
 	 * @return the root directory.
 	 */
@@ -501,13 +501,13 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the current maven session. Basically it is an internal component of Maven.
 	 *
-	 * <p>It is an attribute defined as: <code><pre>
+	 * <p>It is an attribute defined as: <pre><code>
 	 * <span>/</span>* <span>@</span>component role="org.apache.maven.project.MavenProjectBuilder"
 	 * * <span>@</span>required
 	 * * <span>@</span>readonly
 	 * <span>*</span>/
 	 * private MavenProjectBuilder projectBuilder;
-	 * </pre></code>
+	 * </code></pre>
 	 *
 	 * @return the maven session
 	 */
@@ -516,12 +516,12 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the current project builder. Basically it is an internal component of Maven.
 	 *
-	 * <p>It is an attribute defined as: <code><pre>
-	 * <span>/</span>* <span>@</span>parameter expression="&dollar;{session}"
+	 * <p>It is an attribute defined as: <pre><code>
+	 * <span>/</span>* <span>@</span>parameter expression="&#36;{session}"
 	 * * <span>@</span>required
 	 * <span>*</span>/
 	 * private MavenSession mvnSession;
-	 * </pre></code>
+	 * </code></pre>
 	 *
 	 * @return the maven session
 	 */
@@ -573,11 +573,11 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the project's remote repositories to use for the resolution of plugins and their dependencies..
 	 *
-	 * <p>It is an attribute defined as: <code><pre>
-	 * <span>/</span>* <span>@</span>parameter default-value="&dollar;{project.remoteProjectRepositories}"
+	 * <p>It is an attribute defined as: <pre><code>
+	 * <span>/</span>* <span>@</span>parameter default-value="&#36;{project.remoteProjectRepositories}"
 	 * <span>*</span>/
 	 * private List&lt;RemoteRepository&gt; remoteRepos;
-	 * </pre></code>
+	 * </code></pre>
 	 *
 	 * @return the repository system
 	 */
@@ -586,11 +586,11 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the repository system used by this maven instance. Basically it is an internal component of Maven.
 	 *
-	 * <p>It is an attribute defined as: <code><pre>
+	 * <p>It is an attribute defined as: <pre><code>
 	 * <span>/</span>* <span>@</span>component
 	 * <span>*</span>/
 	 * private RepositorySystem repoSystem;
-	 * </pre></code>
+	 * </code></pre>
 	 *
 	 * @return the repository system
 	 */
@@ -599,12 +599,12 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the current repository/network configuration of Maven..
 	 *
-	 * <p>It is an attribute defined as: <code><pre>
-	 * <span>/</span>* <span>@</span>parameter default-value="&dollar;{repositorySystemSession}"
+	 * <p>It is an attribute defined as: <pre><code>
+	 * <span>/</span>* <span>@</span>parameter default-value="&#36;{repositorySystemSession}"
 	 * <span>@</span>readonly
 	 * <span>*</span>/
 	 * private RepositorySystemSession repoSession;
-	 * </pre></code>
+	 * </code></pre>
 	 *
 	 * @return the repository system
 	 */

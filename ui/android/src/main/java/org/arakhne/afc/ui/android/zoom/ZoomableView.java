@@ -49,10 +49,11 @@ import android.widget.Toast;
  * the view. It is abstract because it does not draw anything. 
  * <p>
  * The implementation of the ZoomableView handles the pointer and key events as following:
- * <table>
- * <head>
- * <tr><th>Event</th><th>Status</th><th>Callback</th><th>Note</th></tr>
- * </head>
+ * <table border="1" width="100%" summary="">
+ * <thead>
+ * <tr><td>Event</td><td>Status</td><td>Callback</td><td>Note</td></tr>
+ * </thead>
+ * <tbody>
  * <tr><td>POINTER_PRESSED</td><td>supported</td><td>{@link #onPointerPressed(PointerEvent)}</td><td>Allways called</td></tr>
  * <tr><td>POINTER_DRAGGED</td><td>supported</td><td>{@link #onPointerDragged(PointerEvent)}</td><td>Called only when the scale and move gestures are not in progress</td></tr>
  * <tr><td>POINTER_RELEASED</td><td>supported</td><td>{@link #onPointerReleased(PointerEvent)}</td><td>Called only when the scale and move gestures are not in progress</td></tr>
@@ -62,8 +63,7 @@ import android.widget.Toast;
  * <tr><td>KEY_PRESSED</td><td>not supported</td><td></td><td>See {@link #onKeyDown(int, android.view.KeyEvent)}</td></tr>
  * <tr><td>KEY_RELEASED</td><td>not supported</td><td></td><td>See {@link #onKeyUp(int, android.view.KeyEvent)}</td></tr>
  * <tr><td>KEY_TYPED</td><td>not supported</td><td></td><td>See {@link #onKeyUp(int, android.view.KeyEvent)}</td></tr>
- * <body>
- * </body>
+ * </tbody>
  * </table>
  * <p>
  * The function {@link #onDrawView(Canvas, float, CenteringTransform)}} may

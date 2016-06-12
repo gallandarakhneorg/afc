@@ -678,13 +678,13 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * Parameter <var>forceCollinear</var> has a deep influence on the function
 	 * result. It indicates if collinear test must be done or not.
 	 * Following table explains this influence:
-	 * <table>
+	 * <table border="1" width="100%" summary="">
 	 * <thead>
 	 * <tr>
-	 * <th>Point is collinear?</th>
-	 * <th>Point projection on line is inside segment?</th>
-	 * <th><var>forceCollinear</var></th>
-	 * <th><code>intersectsPointSegment()</code> Result</th>
+	 * <tr>Point is collinear?</tr>
+	 * <tr>Point projection on line is inside segment?</tr>
+	 * <tr><var>forceCollinear</var></tr>
+	 * <tr><code>intersectsPointSegment()</code> Result</tr>
 	 * </tr>
 	 * </thead>
 	 * <tr>

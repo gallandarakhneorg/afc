@@ -30,67 +30,67 @@ package org.arakhne.maven.plugins.tagreplacer;
  */
 public final class Macros {
 
-	/** &dollar;ArtifactId&dollar;.
+	/** &#36;ArtifactId&#36;.
 	 */
 	public static final String MACRO_ARTIFACTID = "ArtifactId"; //$NON-NLS-1$
 
-	/** &dollar;Author: id&dollar;.
+	/** &#36;Author: id&#36;.
 	 */
 	public static final String MACRO_AUTHOR = "Author"; //$NON-NLS-1$
 
-	/** &dollar;Date&dollar;.
+	/** &#36;Date&#36;.
 	 */
 	public static final String MACRO_DATE = "Date"; //$NON-NLS-1$
 
-	/** &dollar;Filename&dollar;.
+	/** &#36;Filename&#36;.
 	 */
 	public static final String MACRO_FILENAME = "Filename"; //$NON-NLS-1$
 
-	/** &dollar;FullVersion&dollar;.
+	/** &#36;FullVersion&#36;.
 	 */
 	public static final String MACRO_FULLVERSION = "FullVersion"; //$NON-NLS-1$
 
-	/** &dollar;GroupId&dollar;.
+	/** &#36;GroupId&#36;.
 	 */
 	public static final String MACRO_GROUPID = "GroupId"; //$NON-NLS-1$
 
-	/** &dollar;Id&dollar;.
+	/** &#36;Id&#36;.
 	 */
 	public static final String MACRO_ID = "Id"; //$NON-NLS-1$
 
-	/** &dollar;Name&dollar;.
+	/** &#36;Name&#36;.
 	 */
 	public static final String MACRO_NAME = "Name"; //$NON-NLS-1$
 
-	/** &dollar;Organization&dollar;.
+	/** &#36;Organization&#36;.
 	 */
 	public static final String MACRO_ORGANIZATION = "Organization"; //$NON-NLS-1$
 
-	/** &dollar;Revision&dollar;.
+	/** &#36;Revision&#36;.
 	 */
 	public static final String MACRO_REVISION = "Revision"; //$NON-NLS-1$
 
-	/** &dollar;Version&dollar;.
+	/** &#36;Version&#36;.
 	 */
 	public static final String MACRO_VERSION = "Version"; //$NON-NLS-1$
 
-	/** &dollar;Website&dollar;.
+	/** &#36;Website&#36;.
 	 */
 	public static final String MACRO_WEBSITE = "Website"; //$NON-NLS-1$
 
-	/** &dollar;Year&dollar;.
+	/** &#36;Year&#36;.
 	 *
 	 * @since 2.3
 	 */
 	public static final String MACRO_YEAR = "Year"; //$NON-NLS-1$
 
-	/** &dollar;InceptionYear&dollar;.
+	/** &#36;InceptionYear&#36;.
 	 *
 	 * @since 2.3
 	 */
 	public static final String MACRO_INCEPTIONYEAR = "InceptionYear"; //$NON-NLS-1$
 
-	/** &dollar;Prop: name&dollar;.
+	/** &#36;Prop: name&#36;.
 	 *
 	 * @since 2.3
 	 */

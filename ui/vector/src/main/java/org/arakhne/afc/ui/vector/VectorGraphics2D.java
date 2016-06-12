@@ -290,7 +290,7 @@ public interface VectorGraphics2D {
 	 * Renders the text specified by the specified <code>String</code>, 
 	 * using the current text attribute state in the <code>VectorGraphics2D</code> context.
 	 * The specified position depends on the text anchor replied by
-	 * {@lni #getStringAnchor()}.
+	 * {@link #getStringAnchor()}.
 	 *  
 	 * @param str the <code>String</code> to be rendered
 	 * @param x the x coordinate of the location where the
@@ -306,7 +306,7 @@ public interface VectorGraphics2D {
 	 * Renders the text specified by the specified <code>String</code>, 
 	 * using the current text attribute state in the <code>VectorGraphics2D</code> context.
 	 * The specified position depends on the text anchor replied by
-	 * {@lni #getStringAnchor()}.
+	 * {@link #getStringAnchor()}.
 	 *  
 	 * @param str the <code>String</code> to be rendered
 	 * @param x the x coordinate of the location where the
@@ -422,7 +422,7 @@ public interface VectorGraphics2D {
 	 * method is intended only for restoring the original 
 	 * <code>VectorGraphics2D</code> transform after rendering, as shown in this
 	 * example:
-	 * <pre><blockquote>
+	 * <pre><code>
 	 * // Get the current transform
 	 * Transform2D saveAT = g2.getTransform();
 	 * // Perform transformation
@@ -431,7 +431,7 @@ public interface VectorGraphics2D {
 	 * g2d.draw(...);
 	 * // Restore original transform
 	 * g2d.setTransform(saveAT);
-	 * </blockquote></pre>
+	 * </code></pre>
 	 *
 	 * @param Tx the <code>Transform2D</code> that was retrieved
 	 *           from the <code>getTransform</code> method

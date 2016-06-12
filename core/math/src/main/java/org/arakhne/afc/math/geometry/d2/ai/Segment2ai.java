@@ -460,7 +460,7 @@ public interface Segment2ai<
      * The "shadow" is the projection of the circle on the right.
      * The red lines represent the up and bottom borders.
      *
-     * <p><a href="doc-files/crossing_circle.png"><img src="doc-files/crossing_circle.png" width="300"/></a>
+     * <p><a href="doc-files/crossing_circle.png"><img alt="" src="doc-files/crossing_circle.png" width="300"></a>
      *
      * @param crossings is the initial value for the number of crossings.
      * @param cx is the center of the circle to extend.
@@ -496,7 +496,7 @@ public interface Segment2ai<
      * The "shadow" is the projection of the circle on the right.
      * The red lines represent the up and bottom borders.
      *
-     * <p><a href="doc-files/crossing_circle.png"><img src="doc-files/crossing_circle.png" width="300"/></a>
+     * <p><a href="doc-files/crossing_circle.png"><img alt="" src="doc-files/crossing_circle.png" width="300"></a>
      *
      * @param crossings is the initial value for the number of crossings.
      * @param cx is the center of the circle to extend.
@@ -578,7 +578,7 @@ public interface Segment2ai<
      * The "shadow" is the projection of the segment on the right.
      * The red lines represent the up and bottom borders.
      *
-     * <p><a href="doc-files/crossing_segment.png"><img src="doc-files/crossing_segment.png" width="300"/></a>
+     * <p><a href="doc-files/crossing_segment.png"><img alt="" src="doc-files/crossing_segment.png" width="300"></a>
      *
      * @param crossings is the initial value for the number of crossings.
      * @param sx1 is the first point of the segment to extend.
@@ -617,7 +617,7 @@ public interface Segment2ai<
      * The "shadow" is the projection of the segment on the right.
      * The red lines represent the up and bottom borders.
      *
-     * <p><a href="doc-files/crossing_segment.png"><img src="doc-files/crossing_segment.png" width="300"/></a>
+     * <p><a href="doc-files/crossing_segment.png"><img alt="" src="doc-files/crossing_segment.png" width="300"></a>
      *
      * @param crossings is the initial value for the number of crossings.
      * @param sx1 is the first point of the segment to extend.
@@ -731,7 +731,7 @@ public interface Segment2ai<
      * The "shadow" is the projection of the rectangle on the right.
      * The red lines represent the up and bottom borders.
      *
-     * <p><a href="doc-files/crossing_rect.png"><img src="doc-files/crossing_rect.png" width="300"/></a>
+     * <p><a href="doc-files/crossing_rect.png"><img alt="" src="doc-files/crossing_rect.png" width="300"></a>
      *
      * @param crossings is the initial value for the number of crossings.
      * @param rxmin is the first corner of the rectangle.
@@ -772,7 +772,7 @@ public interface Segment2ai<
      * The "shadow" is the projection of the rectangle on the right.
      * The red lines represent the up and bottom borders.
      *
-     * <p><a href="doc-files/crossing_rect.png"><img src="doc-files/crossing_rect.png" width="300"/></a>
+     * <p><a href="doc-files/crossing_rect.png"><img alt="" src="doc-files/crossing_rect.png" width="300"></a>
      *
      * @param crossings is the initial value for the number of crossings.
      * @param rxmin is the first corner of the rectangle.
@@ -963,7 +963,7 @@ public interface Segment2ai<
      * The "shadow line" is the projection of (px;py) on the right.
      * The red lines represent the up and bottom borders.
      *
-     * <p><a href="doc-files/crossing_point.png"><img src="doc-files/crossing_point.png" width="300"/></a>
+     * <p><a href="doc-files/crossing_point.png"><img alt="" src="doc-files/crossing_point.png" width="300"></a>
      *
      * @param crossing is the initial value of the crossing.
      * @param px is the reference point to test.
@@ -998,7 +998,7 @@ public interface Segment2ai<
      * The "shadow line" is the projection of (px;py) on the right.
      * The red lines represent the up and bottom borders.
      *
-     * <p><a href="doc-files/crossing_point.png"><img src="doc-files/crossing_point.png" width="300"/></a>
+     * <p><a href="doc-files/crossing_point.png"><img alt="" src="doc-files/crossing_point.png" width="300"></a>
      *
      * @param crossing is the initial value of the crossing.
      * @param px is the reference point to test.
@@ -1041,7 +1041,7 @@ public interface Segment2ai<
      * The "shadow line" is the projection of (px;py) on the right.
      * The red lines represent the up and bottom borders.
      *
-     * <p><a href="doc-files/crossing_point.png"><img src="doc-files/crossing_point.png" width="300"/></a>
+     * <p><a href="doc-files/crossing_point.png"><img alt="" src="doc-files/crossing_point.png" width="300"></a>
      *
      * @param crossing is the initial value of the crossing.
      * @param px is the reference point to test.
@@ -1074,7 +1074,7 @@ public interface Segment2ai<
      * The "shadow line" is the projection of (px;py) on the right.
      * The red lines represent the up and bottom borders.
      *
-     * <p><a href="doc-files/crossing_point.png"><img src="doc-files/crossing_point.png" width="300"/></a>
+     * <p><a href="doc-files/crossing_point.png"><img alt="" src="doc-files/crossing_point.png" width="300"></a>
      *
      * @param crossing is the initial value of the crossing.
      * @param px is the reference point to test.
@@ -1117,7 +1117,7 @@ public interface Segment2ai<
      * The "shadow line" is the projection of (px;py) on the right.
      * The red lines represent the up and bottom borders.
      *
-     * <p><a href="doc-files/crossing_point.png"><img src="doc-files/crossing_point.png" width="300"/></a>
+     * <p><a href="doc-files/crossing_point.png"><img alt="" src="doc-files/crossing_point.png" width="300"></a>
      *
      * @param crossing is the initial value of the crossing.
      * @param px is the reference point to test.

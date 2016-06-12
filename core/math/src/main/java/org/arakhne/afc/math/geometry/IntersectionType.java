@@ -71,7 +71,7 @@ public enum IntersectionType {
 
 	/** Invert the intersection classification.
 	 *
-	 * <p><table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code t}</td><td>result</td></tr>
 	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td></tr>
 	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
@@ -102,7 +102,7 @@ public enum IntersectionType {
 
 	/** Invert the intersection classification.
 	 *
-	 * <p><table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code t}</td><td>result</td></tr>
 	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td></tr>
 	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
@@ -124,7 +124,7 @@ public enum IntersectionType {
 	 * respectively. This operator replies a positive intersection if at least
 	 * one of the sub object intersections is positive.
 	 *
-	 * <p><table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code f1}</td><td>{@code f2}</td><td>result</td></tr>
 	 *
 	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
@@ -180,7 +180,7 @@ public enum IntersectionType {
 	 * respectively. This operator replies a positive intersection if at least
 	 * one of the sub object intersections is positive.
 	 *
-	 * <p><table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code this}</td><td>{@code f2}</td><td>result</td></tr>
 	 *
 	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
@@ -227,7 +227,7 @@ public enum IntersectionType {
 	 * It could be used to compute the intersection type of a global 2D object
 	 * when we know the classification against each of the two sides of the global 2D object.
 	 *
-	 * <p><table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code left}</td><td>{@code right}</td><td>result</td></tr>
 	 *
 	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
@@ -282,7 +282,7 @@ public enum IntersectionType {
 	 * It could be used to compute the intersection type of a global 2D object
 	 * when we know the classification against each of the two sides of the global 2D object.
 	 *
-	 * <p><table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code this}</td><td>{@code type}</td><td>result</td></tr>
 	 *
 	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>

@@ -133,7 +133,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 
 	/** Compute the determinant of two vectors.
 	 *
-	 * <p><pre><code>det(this, V) = |this|.|V|.sin(a)</code></pre>
+	 * <pre><code>det(this, V) = |this|.|V|.sin(a)</code></pre>
 	 * where <code>this</code> and <code>V</code> are two vectors
 	 * and <code>a</code> is the angle between <code>this</code>
 	 * and <code>V</code>.
@@ -151,8 +151,9 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * One of {@link #crossLeftHand(Vector3D)} or {@link #crossRightHand(Vector3D)}
 	 * will be invoked by this function.
 	 *
-	 * <img src="doc-files/left_handed_cross_product.png" alt="[Left-Handed Cross Product]">
-	 * <img src="doc-files/right_handed_cross_product.png" alt="[Right-Handed Cross Product]">
+	 * <p><img src="doc-files/left_handed_cross_product.png" alt="[Left-Handed Cross Product]">
+	 *
+	 * <p><img src="doc-files/right_handed_cross_product.png" alt="[Right-Handed Cross Product]">
 	 *
 	 * @param v1 the other vector
 	 * @return the cross product.
@@ -171,8 +172,9 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * {@link #crossRightHand(Vector3D, Vector3D)}
 	 * will be invoked by this function.
 	 *
-	 * <img src="doc-files/left_handed_cross_product.png" alt="[Left-Handed Cross Product]">
-	 * <img src="doc-files/right_handed_cross_product.png" alt="[Right-Handed Cross Product]">
+	 * <p><img src="doc-files/left_handed_cross_product.png" alt="[Left-Handed Cross Product]">
+	 *
+	 * <p><img src="doc-files/right_handed_cross_product.png" alt="[Right-Handed Cross Product]">
 	 *
 	 * @param v1 the left operand.
 	 * @param v2 the right operand.
@@ -185,7 +187,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * Computes the cross product of the this vector and vector v1
 	 * as if the vectors are inside a left-hand coordinate system.
 	 *
-	 * <img src="doc-files/left_handed_cross_product.png">
+	 * <p><img alt="" src="doc-files/left_handed_cross_product.png">
 	 *
 	 * @param v1 the other vector
 	 * @return the dot product.
@@ -198,7 +200,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * as if the vectors are inside a left-hand coordinate system;
 	 * and put the result in this vector.
 	 *
-	 * <img src="doc-files/left_handed_cross_product.png">
+	 * <p><img alt="" src="doc-files/left_handed_cross_product.png">
 	 *
 	 * @param v1 the left operand.
 	 * @param v2 the right operand.
@@ -209,7 +211,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * Computes the cross product of the this vector and vector v1
 	 * as if the vectors are inside a left-hand coordinate system.
 	 *
-	 * <img src="doc-files/right_handed_cross_product.png">
+	 * <p><img alt="" src="doc-files/right_handed_cross_product.png">
 	 *
 	 * @param v1 the other vector
 	 * @return the dot product.
@@ -222,7 +224,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * as if the vectors are inside a left-hand coordinate system;
 	 * and put the result in this vector.
 	 *
-	 * <img src="doc-files/right_handed_cross_product.png">
+	 * <p><img alt="" src="doc-files/right_handed_cross_product.png">
 	 *
 	 * @param v1 the left operand.
 	 * @param v2 the right operand.

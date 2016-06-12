@@ -38,7 +38,7 @@ public interface LinearAccelerationKinematic extends LinearVelocityKinematic, Li
 	/** Returns the maximal linear acceleration of this object in m/s^2.
 	 *
 	 * @return the maximal linear acceleration of this object in m/s^2,
-	 *     always >=0.
+	 *     always &gt;= 0.
 	 */
 	double getMaxLinearAcceleration();
 
@@ -46,14 +46,14 @@ public interface LinearAccelerationKinematic extends LinearVelocityKinematic, Li
 	 *
 	 * @param unit the unit in which the acceleration will be given
 	 * @return the maximal linear acceleration of this object in the given unit,
-	 *     always >=0.
+	 *     always &gt;= 0.
 	 */
 	double getMaxLinearAcceleration(SpeedUnit unit);
 
 	/** Returns the maximal linear deceleration of this object in m/s^2.
 	 *
 	 * @return the maximal linear deceleration of this object in m/s^2,
-	 *     always >=0.
+	 *     always &gt;= 0.
 	 */
 	double getMaxLinearDeceleration();
 
@@ -61,7 +61,7 @@ public interface LinearAccelerationKinematic extends LinearVelocityKinematic, Li
 	 *
 	 * @param unit the unit in which the deceleration will be given
 	 * @return the maximal linear deceleration of this object in the given unit,
-	 *     always >=0.
+	 *     always &gt;= 0.
 	 */
 	double getMaxLinearDeceleration(SpeedUnit unit);
 

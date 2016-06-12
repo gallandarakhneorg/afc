@@ -52,7 +52,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 	private static final long serialVersionUID = -873231223923726975L;
 
-	/** Multiple of cubic & quad curve size.
+	/** Multiple of cubic &amp; quad curve size.
 	 */
 	static final int GROW_SIZE = 24;
 	

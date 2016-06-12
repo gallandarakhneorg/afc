@@ -3301,7 +3301,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * a[k][m], k != m, is Q = q[i][j], where q[i][j] = 0 if i != j, i, j != k
      * i, j != m and q[i][j] = 1 if i = j, i, j != k, i, j != m, q[k][k] =
      * q[m][m] = cos(phi), q[k][m] = -sin(phi), and q[m][k] = sin(phi), where
-     * the angle phi is determined by requiring a[k][m] -> 0.  This condition
+     * the angle phi is determined by requiring a[k][m] -&gt; 0.  This condition
      * on the angle phi is equivalent to<br>
      * cot(2 phi) = 0.5 * (a[k][k] - a[m][m]) / a[k][m]<br>
      * Since tan(2 phi) = 2 tan(phi) / (1.0 - tan(phi)^2),<br>

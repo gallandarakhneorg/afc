@@ -39,7 +39,7 @@ import org.arakhne.afc.math.tree.IterableNode;
  * describes when to treat the parent node inside
  * the set of child treatments.
  * Significant values of this position are:
- * <table>
+ * <table border="1" width="100%" summary="Values of the parents' position">
  * <tr><td><code>0</code></td><td>the parent is
  * treated before the child at index <code>0</code>.
  * This is equivalent to a prefixed depth-first iterator.

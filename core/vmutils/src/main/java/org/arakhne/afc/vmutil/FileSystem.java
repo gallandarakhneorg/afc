@@ -2123,10 +2123,10 @@ public final class FileSystem {
 	/**
 	 * Make the given filename absolute from the given root if it is not already absolute.
 	 *
-	 * <p><table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Cases">
 	 * <thead>
 	 * <tr>
-	 * <th>{@code filename}</th><th>{@code current}</th><th>Result</th>
+	 * <td>{@code filename}</td><td>{@code current}</td><td>Result</td>
 	 * </tr>
 	 * </thead>
 	 * <tr>
@@ -2183,10 +2183,10 @@ public final class FileSystem {
 	/**
 	 * Make the given filename absolute from the given root if it is not already absolute.
 	 *
-	 * <p><table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Cases">
 	 * <thead>
 	 * <tr>
-	 * <th>{@code filename}</th><th>{@code current}</th><th>Result</th>
+	 * <td>{@code filename}</td><td>{@code current}</td><td>Result</td>
 	 * </tr>
 	 * </thead>
 	 * <tr>
@@ -2268,10 +2268,10 @@ public final class FileSystem {
 	/**
 	 * Make the given filename absolute from the given root if it is not already absolute.
 	 *
-	 * <p><table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Cases">
 	 * <thead>
 	 * <tr>
-	 * <th>{@code filename}</th><th>{@code current}</th><th>Result</th>
+	 * <td>{@code filename}</td><td>{@code current}</td><td>Result</td>
 	 * </tr>
 	 * </thead>
 	 * <tr>
@@ -2397,10 +2397,10 @@ public final class FileSystem {
 	/**
 	 * Make the given filename absolute from the given root if it is not already absolute.
 	 *
-	 * <p><table border="1" width="100%">
+	 * <table border="1" width="100%" summary="Cases">
 	 * <thead>
 	 * <tr>
-	 * <th>{@code filename}</th><th>{@code current}</th><th>Result</th>
+	 * <td>{@code filename}</td><td>{@code current}</td><td>Result</td>
 	 * </tr>
 	 * </thead>
 	 * <tr>
