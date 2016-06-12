@@ -25,11 +25,11 @@ A.4) Create the aggregated documentation, and copy the generated archive file in
 
 A.5) Prepare the bundles for Maven Central, and copy the generated archive files into a safe folder:
 
-     $> ./build-tools/src/main/resources/bash/prepare-bundles-for-central
+     $> ./build-tools/src/main/resources/bash/prepare-bundles-for-central.sh -P generate-android-libraries
 
     or
 
-     $> mvn-create-bundle --create -Dmaven.test.skip=true -DperformRelease=true
+     $> mvn-create-bundle --create -Dmaven.test.skip=true -DperformRelease=true -P generate-android-libraries
 
 A.6) Commit, Tag and push to Github:
 
