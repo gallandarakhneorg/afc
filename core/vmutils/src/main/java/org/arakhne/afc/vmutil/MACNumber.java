@@ -195,24 +195,25 @@ public final class MACNumber {
 	@Pure
 	public static Collection<MACNumber> getAllAdapters() {
 		final List<MACNumber> av = new ArrayList<>();
+		final Enumeration<NetworkInterface> interfaces;
 		try {
-			final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-			if (interfaces != null) {
-				NetworkInterface inter;
-				while (interfaces.hasMoreElements()) {
-					inter = interfaces.nextElement();
-					try {
-						final byte[] addr = inter.getHardwareAddress();
-						if (addr != null) {
-							av.add(new MACNumber(addr));
-						}
-					} catch (SocketException exception) {
-						//
+			interfaces = NetworkInterface.getNetworkInterfaces();
+		} catch (SocketException exception) {
+			return av;
+		}
+		if (interfaces != null) {
+			NetworkInterface inter;
+			while (interfaces.hasMoreElements()) {
+				inter = interfaces.nextElement();
+				try {
+					final byte[] addr = inter.getHardwareAddress();
+					if (addr != null) {
+						av.add(new MACNumber(addr));
 					}
+				} catch (SocketException exception) {
+					// Continue to the next loop.
 				}
 			}
-		} catch (SocketException exception) {
-			//
 		}
 		return av;
 	}
@@ -232,31 +233,32 @@ public final class MACNumber {
 	@Pure
 	public static Map<InetAddress, MACNumber> getAllMappings() {
 		final Map<InetAddress, MACNumber> av = new HashMap<>();
+		final Enumeration<NetworkInterface> interfaces;
 		try {
-			final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-			if (interfaces != null) {
-				NetworkInterface inter;
-				MACNumber mac;
-				InetAddress inet;
-				while (interfaces.hasMoreElements()) {
-					inter = interfaces.nextElement();
-					try {
-						final byte[] addr = inter.getHardwareAddress();
-						if (addr != null) {
-							mac = new MACNumber(addr);
-							final Enumeration<InetAddress> inets = inter.getInetAddresses();
-							while (inets.hasMoreElements()) {
-								inet = inets.nextElement();
-								av.put(inet, mac);
-							}
+			interfaces = NetworkInterface.getNetworkInterfaces();
+		} catch (SocketException exception) {
+			return av;
+		}
+		if (interfaces != null) {
+			NetworkInterface inter;
+			MACNumber mac;
+			InetAddress inet;
+			while (interfaces.hasMoreElements()) {
+				inter = interfaces.nextElement();
+				try {
+					final byte[] addr = inter.getHardwareAddress();
+					if (addr != null) {
+						mac = new MACNumber(addr);
+						final Enumeration<InetAddress> inets = inter.getInetAddresses();
+						while (inets.hasMoreElements()) {
+							inet = inets.nextElement();
+							av.put(inet, mac);
 						}
-					} catch (SocketException exception) {
-						//
 					}
+				} catch (SocketException exception) {
+					// Continue to the next loop.
 				}
 			}
-		} catch (SocketException exception) {
-			//
 		}
 		return av;
 	}
@@ -267,24 +269,25 @@ public final class MACNumber {
 	 */
 	@Pure
 	public static MACNumber getPrimaryAdapter() {
+		final Enumeration<NetworkInterface> interfaces;
 		try {
-			final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-			if (interfaces != null) {
-				NetworkInterface inter;
-				while (interfaces.hasMoreElements()) {
-					inter = interfaces.nextElement();
-					try {
-						final byte[] addr = inter.getHardwareAddress();
-						if (addr != null) {
-							return new MACNumber(addr);
-						}
-					} catch (SocketException exception) {
-						//
+			interfaces = NetworkInterface.getNetworkInterfaces();
+		} catch (SocketException exception) {
+			return null;
+		}
+		if (interfaces != null) {
+			NetworkInterface inter;
+			while (interfaces.hasMoreElements()) {
+				inter = interfaces.nextElement();
+				try {
+					final byte[] addr = inter.getHardwareAddress();
+					if (addr != null) {
+						return new MACNumber(addr);
 					}
+				} catch (SocketException exception) {
+					// Continue to the next loop.
 				}
 			}
-		} catch (SocketException exception) {
-			//
 		}
 		return null;
 	}
@@ -296,30 +299,30 @@ public final class MACNumber {
 	 */
 	@Pure
 	public static Collection<InetAddress> getPrimaryAdapterAddresses() {
+		final Enumeration<NetworkInterface> interfaces;
 		try {
-			final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-			if (interfaces != null) {
-				NetworkInterface inter;
-				while (interfaces.hasMoreElements()) {
-					inter = interfaces.nextElement();
-					try {
-						final byte[] addr = inter.getHardwareAddress();
-						if (addr != null) {
-							final Collection<InetAddress> inetList = new ArrayList<>();
-							final Enumeration<InetAddress> inets = inter.getInetAddresses();
-							while (inets.hasMoreElements()) {
-								inetList.add(inets.nextElement());
-							}
-
-							return inetList;
+			interfaces = NetworkInterface.getNetworkInterfaces();
+		} catch (SocketException exception) {
+			return Collections.emptyList();
+		}
+		if (interfaces != null) {
+			NetworkInterface inter;
+			while (interfaces.hasMoreElements()) {
+				inter = interfaces.nextElement();
+				try {
+					final byte[] addr = inter.getHardwareAddress();
+					if (addr != null) {
+						final Collection<InetAddress> inetList = new ArrayList<>();
+						final Enumeration<InetAddress> inets = inter.getInetAddresses();
+						while (inets.hasMoreElements()) {
+							inetList.add(inets.nextElement());
 						}
-					} catch (SocketException exception) {
-						//
+						return inetList;
 					}
+				} catch (SocketException exception) {
+					// Continue to the next loop.
 				}
 			}
-		} catch (SocketException exception) {
-			//
 		}
 		return Collections.emptyList();
 	}
