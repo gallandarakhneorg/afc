@@ -35,7 +35,8 @@ A.6) Commit, Tag and push to Github:
 
      $> git commit
      $> git tag "vX.Y.Z"
-     $> git push --all --tags
+     $> git push --tags
+     $> git push --all
 
 B) PHASE 2: DISSEMINATION OF THE RELEASE VERSION
 

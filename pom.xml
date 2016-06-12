@@ -5,15 +5,15 @@
 	<groupId>org.arakhne.afc</groupId>
 	<artifactId>afc</artifactId>
 	<packaging>pom</packaging>
-	<version>13.0</version>
+	<version>14.0-SNAPSHOT</version>
 	<name>Arakhnê Foundation Classes</name>
 	<inceptionYear>2006</inceptionYear>
 	<url>http://www.arakhne.org/afc/</url>
 	<description>Collection of Java utilities.</description>
 
 	<properties>
-		<afc.version>13.0</afc.version>
-		<afc.plugins.version>12.0</afc.plugins.version>
+		<afc.version>14.0-SNAPSHOT</afc.version>
+		<afc.plugins.version>13.0</afc.plugins.version>
 		<min.java.version>1.8</min.java.version>
 		<year>2016</year>
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
