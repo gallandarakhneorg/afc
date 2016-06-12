@@ -34,6 +34,8 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -146,6 +148,8 @@ public enum AttributeType {
 	OBJECT;
 
 	private static final String NAME_RESOURCE_FILE;
+
+	private static final Logger LOGGER = Logger.getLogger(AttributeType.class.getName());
 
 	static {
 		final String pName = AttributeType.class.getPackage().getName();
@@ -450,6 +454,7 @@ public enum AttributeType {
 			try {
 				return InetAddress.getLocalHost();
 			} catch (UnknownHostException exception) {
+				LOGGER.log(Level.WARNING, exception.getMessage());
 				return null;
 			}
 		case ENUMERATION:
@@ -694,7 +699,7 @@ public enum AttributeType {
 				try {
 					return ((java.net.URI) obj).toURL();
 				} catch (MalformedURLException e) {
-					//
+					LOGGER.log(Level.WARNING, e.getMessage());
 				}
 			}
 			if (obj instanceof InetAddress) {
@@ -702,7 +707,7 @@ public enum AttributeType {
 					return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
 							((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
 				} catch (MalformedURLException e) {
-					//
+					LOGGER.log(Level.WARNING, e.getMessage());
 				}
 			}
 			if (obj instanceof InetSocketAddress) {
@@ -710,7 +715,7 @@ public enum AttributeType {
 					return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
 							((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
 				} catch (MalformedURLException e) {
-					//
+					LOGGER.log(Level.WARNING, e.getMessage());
 				}
 			}
 			return java.net.URL.class.cast(obj);
@@ -723,7 +728,7 @@ public enum AttributeType {
 				try {
 					return ((java.net.URL) obj).toURI();
 				} catch (URISyntaxException e) {
-					//
+					LOGGER.log(Level.WARNING, e.getMessage());
 				}
 			}
 			if (obj instanceof InetAddress) {
@@ -731,7 +736,7 @@ public enum AttributeType {
 					return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
 							((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
 				} catch (URISyntaxException e) {
-					//
+					LOGGER.log(Level.WARNING, e.getMessage());
 				}
 			}
 			if (obj instanceof InetSocketAddress) {
@@ -739,7 +744,7 @@ public enum AttributeType {
 					return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
 							((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
 				} catch (URISyntaxException e) {
-					//
+					LOGGER.log(Level.WARNING, e.getMessage());
 				}
 			}
 			return java.net.URI.class.cast(obj);
@@ -801,16 +806,16 @@ public enum AttributeType {
 				final java.net.URL url = (java.net.URL) obj;
 				try {
 					return InetAddress.getByName(url.getHost());
-				} catch (UnknownHostException exception) {
-					//
+				} catch (UnknownHostException e) {
+					LOGGER.log(Level.WARNING, e.getMessage());
 				}
 			}
 			if (obj instanceof java.net.URI) {
 				final java.net.URI uri = (java.net.URI) obj;
 				try {
 					return InetAddress.getByName(uri.getHost());
-				} catch (UnknownHostException exception) {
-					//
+				} catch (UnknownHostException e) {
+					LOGGER.log(Level.WARNING, e.getMessage());
 				}
 			}
 			if (obj instanceof CharSequence) {
@@ -820,13 +825,13 @@ public enum AttributeType {
 					if (index >= 0) {
 						try {
 							return InetAddress.getByName(ipStr.substring(index + 1));
-						} catch (UnknownHostException exception) {
-							//
+						} catch (UnknownHostException e) {
+							LOGGER.log(Level.WARNING, e.getMessage());
 						}
 					}
 					return InetAddress.getByName(ipStr);
-				} catch (UnknownHostException exception) {
-					//
+				} catch (UnknownHostException e) {
+					LOGGER.log(Level.WARNING, e.getMessage());
 				}
 			}
 			return InetAddress.class.cast(obj);
@@ -848,8 +853,8 @@ public enum AttributeType {
 								return v;
 							}
 						}
-					} catch (Throwable exception) {
-						//
+					} catch (Throwable e) {
+						LOGGER.log(Level.WARNING, e.getMessage());
 					}
 				}
 			}
@@ -863,7 +868,7 @@ public enum AttributeType {
 				try {
 					return Class.forName(((CharSequence) obj).toString());
 				} catch (ClassNotFoundException e) {
-					//
+					LOGGER.log(Level.WARNING, e.getMessage());
 				}
 			}
 			return Class.class.cast(obj);
