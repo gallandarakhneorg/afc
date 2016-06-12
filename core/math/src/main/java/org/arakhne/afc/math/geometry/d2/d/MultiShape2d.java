@@ -222,6 +222,16 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 			onContentGeometryChange();
 		}
 
+		@Override
+		public boolean equals(Object obj) {
+			return this.delegate.equals(obj);
+		}
+
+        @Override
+		public int hashCode() {
+			return this.delegate.hashCode();
+		}
+
 	}
 
 }

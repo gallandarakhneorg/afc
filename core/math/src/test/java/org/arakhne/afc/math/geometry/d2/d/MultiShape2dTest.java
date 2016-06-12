@@ -20,21 +20,14 @@
 
 package org.arakhne.afc.math.geometry.d2.d;
 
-import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.afp.AbstractMultiShape2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
-import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.d.MultiShape2d;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
-import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 
 @SuppressWarnings("all")
 public class MultiShape2dTest extends AbstractMultiShape2afpTest<MultiShape2d<Shape2d<?>>, Shape2d<?>, Rectangle2d> {
 
-	@Override
-	protected TestShapeFactory2d createFactory() {
-		return TestShapeFactory2d.SINGLETON;
-	}
+    @Override
+    protected TestShapeFactory2d createFactory() {
+        return TestShapeFactory2d.SINGLETON;
+    }
 
 }

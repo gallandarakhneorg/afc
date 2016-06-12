@@ -25,9 +25,9 @@ import org.arakhne.afc.math.geometry.d2.ai.AbstractMultiShape2aiTest;
 @SuppressWarnings("all")
 public class MultiShape2iTest extends AbstractMultiShape2aiTest<MultiShape2i<Shape2i<?>>, Shape2i<?>, Rectangle2i> {
 
-	@Override
-	protected TestShapeFactory2i createFactory() {
-		return TestShapeFactory2i.SINGLETON;
-	}
+    @Override
+    protected TestShapeFactory2i createFactory() {
+        return TestShapeFactory2i.SINGLETON;
+    }
 
 }
