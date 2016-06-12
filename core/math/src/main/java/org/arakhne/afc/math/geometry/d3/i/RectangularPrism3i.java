@@ -241,7 +241,7 @@ public class RectangularPrism3i extends AbstractShape3i<RectangularPrism3i>
 		bits = 31 * bits + this.maxx;
 		bits = 31 * bits + this.maxy;
 		bits = 31 * bits + this.maxz;
-		return bits ^ (bits >> 32);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

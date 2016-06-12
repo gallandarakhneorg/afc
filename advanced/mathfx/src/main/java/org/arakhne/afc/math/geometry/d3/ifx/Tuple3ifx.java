@@ -152,7 +152,7 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 		bits = 31 * bits + ix();
 		bits = 31 * bits + iy();
 		bits = 31 * bits + iz();
-		return bits ^ (bits >> 32);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

@@ -172,7 +172,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
+		int bits = 1;
 		bits = 31 * bits + Double.hashCode(getCenterX());
 		bits = 31 * bits + Double.hashCode(getCenterY());
 		bits = 31 * bits + Double.hashCode(getFirstAxisX());
@@ -181,8 +181,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 		bits = 31 * bits + Double.hashCode(getSecondAxisX());
 		bits = 31 * bits + Double.hashCode(getSecondAxisY());
 		bits = 31 * bits + Double.hashCode(getSecondAxisExtent());
-		final int b = (int) bits;
-		return b ^ (b >> 31);
+        return bits ^ (bits >> 31);
 	}
 
 	@Pure

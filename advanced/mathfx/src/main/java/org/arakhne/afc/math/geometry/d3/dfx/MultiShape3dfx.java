@@ -143,10 +143,7 @@ public class MultiShape3dfx<T extends Shape3dfx<?>> extends AbstractShape3dfx<Mu
 
 	@Override
 	public int hashCode() {
-		long bits = 1;
-		bits = 31 * bits + this.elements.hashCode();
-		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return this.elements.hashCode();
 	}
 
 	@Pure

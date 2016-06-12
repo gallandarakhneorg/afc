@@ -211,13 +211,13 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1L;
-		bits = 31L * bits + this.numCoords;
-		bits = 31L * bits + this.numTypes;
-		bits = 31L * bits + Arrays.hashCode(this.coords);
-		bits = 31L * bits + Arrays.hashCode(this.types);
-		bits = 31L * bits + this.windingRule.ordinal();
-		return (int) (bits ^ (bits >> 32));
+		int bits = 1;
+		bits = 31 * bits + this.numCoords;
+		bits = 31 * bits + this.numTypes;
+		bits = 31 * bits + Arrays.hashCode(this.coords);
+		bits = 31 * bits + Arrays.hashCode(this.types);
+		bits = 31 * bits + this.windingRule.ordinal();
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

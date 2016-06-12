@@ -89,15 +89,14 @@ public class Segment3d extends AbstractShape3d<Segment3d>
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(this.ax);
-		bits = 31 * bits + Double.doubleToLongBits(this.ay);
-		bits = 31 * bits + Double.doubleToLongBits(this.az);
-		bits = 31 * bits + Double.doubleToLongBits(this.bx);
-		bits = 31 * bits + Double.doubleToLongBits(this.by);
-		bits = 31 * bits + Double.doubleToLongBits(this.bz);
-		final int b = (int) bits;
-		return b ^ (b >> 32);
+		int bits = 1;
+		bits = 31 * bits + Double.hashCode(this.ax);
+		bits = 31 * bits + Double.hashCode(this.ay);
+		bits = 31 * bits + Double.hashCode(this.az);
+		bits = 31 * bits + Double.hashCode(this.bx);
+		bits = 31 * bits + Double.hashCode(this.by);
+		bits = 31 * bits + Double.hashCode(this.bz);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

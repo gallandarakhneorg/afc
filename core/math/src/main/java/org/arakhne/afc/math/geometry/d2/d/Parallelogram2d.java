@@ -155,7 +155,7 @@ public class Parallelogram2d extends AbstractShape2d<Parallelogram2d>
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
+		int bits = 1;
 		bits = 31 * bits + Double.hashCode(this.cx);
 		bits = 31 * bits + Double.hashCode(this.cy);
 		bits = 31 * bits + Double.hashCode(this.rx);
@@ -164,8 +164,7 @@ public class Parallelogram2d extends AbstractShape2d<Parallelogram2d>
 		bits = 31 * bits + Double.hashCode(this.sx);
 		bits = 31 * bits + Double.hashCode(this.sy);
 		bits = 31 * bits + Double.hashCode(this.extentS);
-		final int b = (int) bits;
-		return b ^ (b >> 31);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

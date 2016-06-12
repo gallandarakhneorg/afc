@@ -368,7 +368,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 		bits = 31 * bits + getMinY();
 		bits = 31 * bits + getMaxX();
 		bits = 31 * bits + getMaxY();
-		return bits ^ (bits >> 32);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

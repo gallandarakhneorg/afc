@@ -129,14 +129,13 @@ public class OrientedPoint2i
     @Pure
     @Override
     public int hashCode() {
-        long bits = 1;
+        int bits = 1;
         bits = 31 * bits + Integer.hashCode(this.px);
         bits = 31 * bits + Integer.hashCode(this.py);
         bits = 31 * bits + Integer.hashCode(this.dx);
         bits = 31 * bits + Integer.hashCode(this.dy);
         bits = 31 * bits + Integer.hashCode(this.len);
-        final int b = (int) bits;
-        return b ^ (b >> 31);
+        return bits ^ (bits >> 31);
     }
 
     @Pure

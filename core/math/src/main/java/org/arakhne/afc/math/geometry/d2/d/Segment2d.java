@@ -82,13 +82,12 @@ public class Segment2d extends AbstractShape2d<Segment2d>
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
+		int bits = 1;
 		bits = 31 * bits + Double.hashCode(this.ax);
 		bits = 31 * bits + Double.hashCode(this.ay);
 		bits = 31 * bits + Double.hashCode(this.bx);
 		bits = 31 * bits + Double.hashCode(this.by);
-		final int b = (int) bits;
-		return b ^ (b >> 31);
+        return bits ^ (bits >> 31);
 	}
 
 	@Pure

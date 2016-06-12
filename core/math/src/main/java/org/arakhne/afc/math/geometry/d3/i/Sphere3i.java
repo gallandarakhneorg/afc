@@ -88,7 +88,7 @@ public class Sphere3i extends AbstractShape3i<Sphere3i>
 		bits = 31 * bits + this.centerY;
 		bits = 31 * bits + this.centerZ;
 		bits = 31 * bits + this.radius;
-		return bits ^ (bits >> 32);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

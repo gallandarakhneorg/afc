@@ -111,13 +111,12 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
+		int bits = 1;
 		bits = 31 * bits + Double.hashCode(getX1());
 		bits = 31 * bits + Double.hashCode(getY1());
 		bits = 31 * bits + Double.hashCode(getX2());
 		bits = 31 * bits + Double.hashCode(getY2());
-		final int b = (int) bits;
-		return b ^ (b >> 31);
+        return bits ^ (bits >> 31);
 	}
 
 	@Pure

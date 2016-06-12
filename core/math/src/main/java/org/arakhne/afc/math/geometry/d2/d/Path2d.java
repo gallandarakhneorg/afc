@@ -212,13 +212,13 @@ public class Path2d
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1L;
-		bits = 31L * bits + Integer.hashCode(this.numCoords);
-		bits = 31L * bits + Integer.hashCode(this.numTypes);
-		bits = 31L * bits + Arrays.hashCode(this.coords);
-		bits = 31L * bits + Arrays.hashCode(this.types);
-		bits = 31L * bits + this.windingRule.hashCode();
-		return (int) (bits ^ (bits >> 31));
+		int bits = 1;
+		bits = 31 * bits + Integer.hashCode(this.numCoords);
+		bits = 31 * bits + Integer.hashCode(this.numTypes);
+		bits = 31 * bits + Arrays.hashCode(this.coords);
+		bits = 31 * bits + Arrays.hashCode(this.types);
+		bits = 31 * bits + this.windingRule.hashCode();
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

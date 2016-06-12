@@ -84,13 +84,12 @@ public class Sphere3d
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(this.centerX);
-		bits = 31 * bits + Double.doubleToLongBits(this.centerY);
-		bits = 31 * bits + Double.doubleToLongBits(this.centerZ);
-		bits = 31 * bits + Double.doubleToLongBits(this.radius);
-		final int b = (int) bits;
-		return b ^ (b >> 32);
+		int bits = 1;
+		bits = 31 * bits + Double.hashCode(this.centerX);
+		bits = 31 * bits + Double.hashCode(this.centerY);
+		bits = 31 * bits + Double.hashCode(this.centerZ);
+		bits = 31 * bits + Double.hashCode(this.radius);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

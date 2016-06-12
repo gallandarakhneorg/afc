@@ -179,13 +179,12 @@ public class Rectangle2d extends AbstractShape2d<Rectangle2d>
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
+		int bits = 1;
 		bits = 31 * bits + Double.hashCode(this.minx);
 		bits = 31 * bits + Double.hashCode(this.miny);
 		bits = 31 * bits + Double.hashCode(this.maxx);
 		bits = 31 * bits + Double.hashCode(this.maxy);
-		final int b = (int) bits;
-		return b ^ (b >> 31);
+        return bits ^ (bits >> 31);
 	}
 
 	@Pure

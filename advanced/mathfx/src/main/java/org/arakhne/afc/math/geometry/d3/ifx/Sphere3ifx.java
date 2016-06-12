@@ -115,7 +115,7 @@ public class Sphere3ifx
 		bits = 31 * bits + getY();
 		bits = 31 * bits + getZ();
 		bits = 31 * bits + getRadius();
-		return bits ^ (bits >> 32);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

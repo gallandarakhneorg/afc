@@ -202,11 +202,11 @@ public class Path3ifx
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1L;
-		bits = 31L * bits + ((this.coords == null) ? 0 : this.coords.hashCode());
-		bits = 31L * bits + ((this.types == null) ? 0 : this.types.hashCode());
-		bits = 31L * bits + ((this.windingRule == null) ? 0 : this.windingRule.hashCode());
-		return (int) (bits ^ (bits >> 32));
+		int bits = 1;
+		bits = 31 * bits + ((this.coords == null) ? 0 : this.coords.hashCode());
+		bits = 31 * bits + ((this.types == null) ? 0 : this.types.hashCode());
+		bits = 31 * bits + ((this.windingRule == null) ? 0 : this.windingRule.hashCode());
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

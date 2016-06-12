@@ -130,7 +130,7 @@ public class Segment3ifx extends AbstractShape3ifx<Segment3ifx>
 		bits = 31 * bits + getX2();
 		bits = 31 * bits + getY2();
 		bits = 31 * bits + getZ2();
-		return bits ^ (bits >> 32);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

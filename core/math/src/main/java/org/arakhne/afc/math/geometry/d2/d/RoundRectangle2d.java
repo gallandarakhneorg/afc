@@ -90,11 +90,10 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = super.hashCode();
+		int bits = super.hashCode();
 		bits = 31 * bits + Double.hashCode(this.arcWidth);
 		bits = 31 * bits + Double.hashCode(this.arcHeight);
-		final int b = (int) bits;
-		return b ^ (b >> 31);
+        return bits ^ (bits >> 31);
 	}
 
 	@Pure

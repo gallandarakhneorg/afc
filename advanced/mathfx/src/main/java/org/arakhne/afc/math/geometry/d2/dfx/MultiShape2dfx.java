@@ -146,10 +146,7 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 
 	@Override
 	public int hashCode() {
-		long bits = 1;
-		bits = 31 * bits + this.elements.hashCode();
-		final int b = (int) bits;
-		return b ^ (b >> 31);
+		return this.elements.hashCode();
 	}
 
 	@Pure

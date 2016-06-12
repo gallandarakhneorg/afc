@@ -247,7 +247,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 		bits = 31 * bits + Arrays.hashCode(this.coords);
 		bits = 31 * bits + Arrays.hashCode(this.types);
 		bits = 31 * bits + this.windingRule.ordinal();
-		return bits ^ bits >> 32;
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

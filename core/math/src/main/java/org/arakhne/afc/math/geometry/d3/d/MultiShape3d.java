@@ -98,10 +98,7 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 	@Override
 	@Pure
 	public int hashCode() {
-		long bits = 1;
-		bits = 31 * bits + this.elements.hashCode();
-		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return this.elements.hashCode();
 	}
 
 	@Override

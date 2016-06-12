@@ -113,13 +113,12 @@ public class Sphere3dfx
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(getX());
-		bits = 31 * bits + Double.doubleToLongBits(getY());
-		bits = 31 * bits + Double.doubleToLongBits(getZ());
-		bits = 31 * bits + Double.doubleToLongBits(getRadius());
-		final int b = (int) bits;
-		return b ^ (b >> 32);
+		int bits = 1;
+		bits = 31 * bits + Double.hashCode(getX());
+		bits = 31 * bits + Double.hashCode(getY());
+		bits = 31 * bits + Double.hashCode(getZ());
+		bits = 31 * bits + Double.hashCode(getRadius());
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

@@ -389,12 +389,11 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(this.x);
-		bits = 31 * bits + Double.doubleToLongBits(this.y);
-		bits = 31 * bits + Double.doubleToLongBits(this.z);
-		final int b = (int) bits;
-		return b ^ (b >> 32);
+		int bits = 1;
+		bits = 31 * bits + Double.hashCode(this.x);
+		bits = 31 * bits + Double.hashCode(this.y);
+		bits = 31 * bits + Double.hashCode(this.z);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

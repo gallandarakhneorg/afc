@@ -147,11 +147,10 @@ public class Tuple2dfx<RT extends Tuple2dfx<? super RT>> implements Tuple2D<RT> 
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
+		int bits = 1;
 		bits = 31 * bits + Double.hashCode(getX());
 		bits = 31 * bits + Double.hashCode(getY());
-		final int b = (int) bits;
-		return b ^ (b >> 31);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

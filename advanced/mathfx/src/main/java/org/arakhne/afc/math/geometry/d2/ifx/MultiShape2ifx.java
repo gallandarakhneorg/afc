@@ -142,10 +142,7 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 
 	@Override
 	public int hashCode() {
-		long bits = 1;
-		bits = 31 * bits + this.elements.hashCode();
-		final int b = (int) bits;
-		return b ^ (b >> 31);
+		return this.elements.hashCode();
 	}
 
 	@Pure

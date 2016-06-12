@@ -94,7 +94,7 @@ public class Segment3i extends AbstractShape3i<Segment3i>
 		bits = 31 * bits + this.bx;
 		bits = 31 * bits + this.by;
 		bits = 31 * bits + this.bz;
-		return bits ^ (bits >> 32);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

@@ -144,15 +144,14 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(getMinX());
-		bits = 31 * bits + Double.doubleToLongBits(getMinY());
-		bits = 31 * bits + Double.doubleToLongBits(getMinZ());
-		bits = 31 * bits + Double.doubleToLongBits(getMaxX());
-		bits = 31 * bits + Double.doubleToLongBits(getMaxY());
-		bits = 31 * bits + Double.doubleToLongBits(getMaxZ());
-		final int b = (int) bits;
-		return b ^ (b >> 32);
+		int bits = 1;
+		bits = 31 * bits + Double.hashCode(getMinX());
+		bits = 31 * bits + Double.hashCode(getMinY());
+		bits = 31 * bits + Double.hashCode(getMinZ());
+		bits = 31 * bits + Double.hashCode(getMaxX());
+		bits = 31 * bits + Double.hashCode(getMaxY());
+		bits = 31 * bits + Double.hashCode(getMaxZ());
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

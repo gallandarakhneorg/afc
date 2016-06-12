@@ -96,15 +96,14 @@ public class Triangle2d
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
+		int bits = 1;
 		bits = 31 * bits + Double.hashCode(this.x1);
 		bits = 31 * bits + Double.hashCode(this.y1);
 		bits = 31 * bits + Double.hashCode(this.x2);
 		bits = 31 * bits + Double.hashCode(this.y2);
 		bits = 31 * bits + Double.hashCode(this.x3);
 		bits = 31 * bits + Double.hashCode(this.y3);
-		final int b = (int) bits;
-		return b ^ (b >> 31);
+        return bits ^ (bits >> 31);
 	}
 
 	@Pure

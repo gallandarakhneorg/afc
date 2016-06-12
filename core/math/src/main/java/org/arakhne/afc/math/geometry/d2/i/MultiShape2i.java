@@ -97,10 +97,7 @@ public class MultiShape2i<T extends Shape2i<?>> extends AbstractShape2i<MultiSha
 
 	@Override
 	public int hashCode() {
-		long bits = 1;
-		bits = 31 * bits + this.elements.hashCode();
-		final int b = (int) bits;
-		return b ^ (b >> 31);
+		return this.elements.hashCode();
 	}
 
 	@Override

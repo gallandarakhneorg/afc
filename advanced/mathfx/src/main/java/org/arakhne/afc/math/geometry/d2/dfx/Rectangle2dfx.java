@@ -126,13 +126,12 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
+		int bits = 1;
 		bits = 31 * bits + Double.hashCode(getMinX());
 		bits = 31 * bits + Double.hashCode(getMinY());
 		bits = 31 * bits + Double.hashCode(getMaxX());
 		bits = 31 * bits + Double.hashCode(getMaxY());
-		final int b = (int) bits;
-		return b ^ (b >> 31);
+        return bits ^ (bits >> 31);
 	}
 
 	@Pure

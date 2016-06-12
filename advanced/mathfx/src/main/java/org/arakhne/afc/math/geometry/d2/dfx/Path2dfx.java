@@ -210,11 +210,11 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1L;
-		bits = 31L * bits + Objects.hashCode(this.coords);
-		bits = 31L * bits + Objects.hashCode(this.types);
-		bits = 31L * bits + Objects.hashCode(this.windingRule);
-		return (int) (bits ^ (bits >> 31));
+		int bits = 1;
+		bits = 31 * bits + Objects.hashCode(this.coords);
+		bits = 31 * bits + Objects.hashCode(this.types);
+		bits = 31 * bits + Objects.hashCode(this.windingRule);
+        return bits ^ (bits >> 31);
 	}
 
 	@Pure

@@ -404,7 +404,7 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
 		bits = 31 * bits + this.x;
 		bits = 31 * bits + this.y;
 		bits = 31 * bits + this.z;
-		return bits ^ (bits >> 32);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

@@ -164,14 +164,13 @@ public class OrientedPoint2ifx
     @Pure
     @Override
     public int hashCode() {
-        long bits = 1;
+        int bits = 1;
         bits = 31 * bits + Integer.hashCode(ix());
         bits = 31 * bits + Integer.hashCode(iy());
         bits = 31 * bits + Integer.hashCode(idx());
         bits = 31 * bits + Integer.hashCode(idy());
         bits = 31 * bits + Integer.hashCode(ilen());
-        final int b = (int) bits;
-        return b ^ (b >> 31);
+        return bits ^ (bits >> 31);
     }
 
     @Override
