@@ -93,15 +93,19 @@ public interface Shape2D<
         if (obj1 == obj2) {
             return true;
         }
-        if (obj1 != null && obj2 != null && obj1.getClass() == obj2.getClass()) {
-            try {
+        if (obj1 != null && obj2 != null) {
+            if (obj1.getClass() == obj2.getClass()) {
                 try {
                     return obj1.equalsToShape((IT) obj2);
                 } catch (ClassCastException exception) {
-                    return obj1.equalsToPathIterator((PathIterator2D<?>) obj2);
+                    // Avoid to have this exception going outside this function.
                 }
-            } catch (Exception exception) {
-                // Avoid exceptions to stop this function.
+            } else {
+                try {
+                    return obj1.equalsToPathIterator((PathIterator2D<?>) obj2);
+                } catch (ClassCastException exception) {
+                    // Avoid "instanceof" usage for avoiding casting two times.
+                }
             }
         }
         return false;
