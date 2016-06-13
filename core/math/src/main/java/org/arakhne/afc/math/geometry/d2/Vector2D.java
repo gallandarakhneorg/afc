@@ -807,7 +807,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param newLength - the new length.
 	 */
 	default void setLength(double newLength) {
-		assert newLength >= 0 : AssertMessages.positiveOrZeroParameter();
 		final double l = getLength();
 		if (l != 0.) {
 			final double f = newLength / l;

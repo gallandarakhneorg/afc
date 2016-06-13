@@ -209,7 +209,6 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 
 	@Override
 	public void setLength(double newLength) {
-		assert newLength >= 0 : "New length must be positive or zero";  //$NON-NLS-1$
 		final double l = getLength();
 		if (l != 0) {
 			final double f = newLength / l;

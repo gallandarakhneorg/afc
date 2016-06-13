@@ -214,7 +214,6 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 
 	@Override
 	public void setLength(double newLength) {
-		assert newLength >= 0. : AssertMessages.positiveOrZeroParameter();
 		final double l = getLength();
 		if (l != 0) {
 			final double f = newLength / l;

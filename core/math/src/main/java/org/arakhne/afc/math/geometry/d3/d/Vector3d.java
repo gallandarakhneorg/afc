@@ -215,7 +215,6 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 
 	@Override
 	public void setLength(double newLength) {
-		assert newLength >= 0. : "New length must be positive or zero"; //$NON-NLS-1$
 		final double l = getLength();
 		if (l != 0) {
 			final double f = newLength / l;

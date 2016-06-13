@@ -29,6 +29,7 @@ import java.util.List;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.graph.GraphSegment;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** This class provides a simple implementation of a graph's segment
  * for a {@link SGraph}.
@@ -229,10 +230,11 @@ public class SGraphSegment implements GraphSegment<SGraphSegment, SGraphPoint> {
 
 	/** Set the length of the segment.
 	 *
-	 * @param length1 is the length of the segment.
+	 * @param length is the length of the segment.
 	 */
-	public void setLength(double length1) {
-		this.length = length1;
+	public void setLength(double length) {
+		assert length >= 0. : AssertMessages.positiveOrZeroParameter();
+		this.length = length;
 	}
 
 	/** Add a user data in the data associated to this point.

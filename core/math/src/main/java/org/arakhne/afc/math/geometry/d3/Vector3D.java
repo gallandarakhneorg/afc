@@ -798,7 +798,6 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param newLength - the new length.
 	 */
 	default void setLength(double newLength) {
-		assert newLength >= 0 : "Length must be positive or zero"; //$NON-NLS-1$
 		final double l = getLength();
 		if (l != 0.) {
 			final double f = newLength / l;

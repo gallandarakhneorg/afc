@@ -15,6 +15,7 @@
 	<modules>
 		<module>mathfx</module>
 		<module>attributes</module>
+		<module>agentmotion</module>
 	</modules>
 
 	<build>

@@ -274,6 +274,26 @@ public final class AssertMessages {
 		return msg("A1", parameterIndex); //$NON-NLS-1$
 	}
 
+	/** Positive parameter.
+	 *
+	 * @return the error message.
+	 */
+	@Pure
+	@Inline(value = "AssertMessages.positiveStrictlyParameter(0)", imported = {AssertMessages.class})
+	public static String positiveStrictlyParameter() {
+		return positiveStrictlyParameter(0);
+	}
+
+	/** Positive parameter.
+	 *
+	 * @param parameterIndex the index of the formal parameter.
+	 * @return the error message.
+	 */
+	@Pure
+	public static String positiveStrictlyParameter(int parameterIndex) {
+		return msg("A16", parameterIndex); //$NON-NLS-1$
+	}
+
 	/** Size of the first array parameter is too small.
 	 *
 	 * @param currentSize current size of the array.
