@@ -170,10 +170,10 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Override
 	public boolean containsControlPoint(Point3D<?, ?> point) {
 		assert point != null : "Point must be not null"; //$NON-NLS-1$
-        for (int i = 0; i < this.numCoords;) {
-			final double x = this.coords[i++];
-			final double y = this.coords[i++];
-			final double z = this.coords[i++];
+        for (int i = 0; i < this.numCoords; i += 3) {
+			final double x = this.coords[i];
+			final double y = this.coords[i + 1];
+			final double z = this.coords[i + 2];
             if (x == point.getX() && y == point.getY() && z == point.getZ()) {
 				return true;
 			}
@@ -259,12 +259,12 @@ public class Path3d extends AbstractShape3d<Path3d>
 	public void transform(Transform3D transform) {
         assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
 		final Point3D<?, ?> p = new InnerComputationPoint3afp();
-        for (int i = 0; i < this.numCoords;) {
+        for (int i = 0; i < this.numCoords; i += 3) {
             p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 			transform.transform(p);
-			this.coords[i++] = p.getX();
-			this.coords[i++] = p.getY();
-			this.coords[i++] = p.getZ();
+			this.coords[i] = p.getX();
+			this.coords[i + 1] = p.getY();
+			this.coords[i + 2] = p.getZ();
 		}
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
@@ -474,12 +474,12 @@ public class Path3d extends AbstractShape3d<Path3d>
 			}
 		} else {
 			final Point3D<?, ?> p = new InnerComputationPoint3afp();
-            for (int i = 0; i < clone.length;) {
+            for (int i = 0; i < clone.length; i += 3) {
                 p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 				transform.transform(p);
-				clone[i++] = p.ix();
-				clone[i++] = p.iy();
-				clone[i++] = p.iz();
+				clone[i] = p.ix();
+				clone[i + 1] = p.iy();
+				clone[i + 2] = p.iz();
 			}
 		}
 		return clone;
@@ -495,12 +495,12 @@ public class Path3d extends AbstractShape3d<Path3d>
 			}
 		} else {
 			final Point3D<?, ?> p = new InnerComputationPoint3afp();
-            for (int i = 0; i < clone.length;) {
+            for (int i = 0; i < clone.length; i += 3) {
                 p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 				transform.transform(p);
-				clone[i++] = (float) p.getX();
-				clone[i++] = (float) p.getY();
-				clone[i++] = (float) p.getZ();
+				clone[i] = (float) p.getX();
+				clone[i + 1] = (float) p.getY();
+				clone[i + 2] = (float) p.getZ();
 			}
 		}
 		return clone;
@@ -514,12 +514,12 @@ public class Path3d extends AbstractShape3d<Path3d>
 		}
 		final Point3D<?, ?> p = new InnerComputationPoint3afp();
 		final double[] clone = new double[this.numCoords];
-        for (int i = 0; i < clone.length;) {
+        for (int i = 0; i < clone.length; i += 3) {
             p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 			transform.transform(p);
-			clone[i++] = p.getX();
-			clone[i++] = p.getY();
-			clone[i++] = p.getZ();
+			clone[i] = p.getX();
+			clone[i + 1] = p.getY();
+			clone[i + 2] = p.getZ();
 		}
 		return clone;
 	}
@@ -529,18 +529,18 @@ public class Path3d extends AbstractShape3d<Path3d>
 	public Point3d[] toPointArray(Transform3D transform) {
         final Point3d[] clone = new Point3d[this.numCoords / 2];
 		if (transform == null || transform.isIdentity()) {
-            for (int i = 0, j = 0; j < this.numCoords; ++i) {
+            for (int i = 0, j = 0; j < this.numCoords; ++i, j += 3) {
 				clone[i] = getGeomFactory().newPoint(
-						this.coords[j++],
-						this.coords[j++],
-						this.coords[j++]);
+						this.coords[j],
+						this.coords[j + 1],
+						this.coords[j + 2]);
 			}
 		} else {
-            for (int i = 0, j = 0; j < clone.length; ++i) {
+            for (int i = 0, j = 0; j < clone.length; ++i, j += 3) {
 				clone[i] = getGeomFactory().newPoint(
-						this.coords[j++],
-						this.coords[j++],
-						this.coords[j++]);
+						this.coords[j],
+						this.coords[j + 1],
+						this.coords[j + 2]);
 				transform.transform(clone[i]);
 			}
 		}
