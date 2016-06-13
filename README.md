@@ -60,6 +60,7 @@ Name | Group Id | Artifact Id | Explanation
 [Math Tools](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/package-summary.html) | org.arakhne.afc.core | math | Mathematic and Geometry tools and primitives
 [JavaFX Math Tools](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/geometry/d2/dfx/package-summary.html) | org.arakhne.afc.advanced | mathfx | JavaFX implementation of the mathematic and geometry tools
 [Generic Attribute API](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/attrs/collection/package-summary.html) | org.arakhne.afc.advanced | attributes | Library for creating generic attributes, aka. Variant attributes.
+[Agent Motion Algos](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/agentmotion/package-summary.html) | org.arakhne.afc.advanced | agentmotion | Collection of algorithms for calculating the motion of mobile agents.
 
 
 ## 1.2. Deprecated and Dead Modules
