@@ -495,7 +495,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		return formatted.toString();
 	}
 
-	/** Asserts that the actuel object is equal to one of the expected objects. If not
+	/** Asserts that the actual object is equal to one of the expected objects. If not
 	 * an AssertionFailedError is thrown with the given message.
 	 *
 	 * @param message is the error message to put inside the assertion.
@@ -516,7 +516,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		fail(formatFailMessage(message, expectedObjects, actual));
 	}
 
-	/** Asserts that the actuel object is equal to one of the expected objects. If not
+	/** Asserts that the actual object is equal to one of the expected objects. If not
 	 * an AssertionFailedError is thrown.
 	 *
 	 * @param expectedObjects are the set of expected values during the unit test.
@@ -526,7 +526,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	    assertContains(null, expectedObjects, actual);
 	}
 
-	/** Asserts that the actuel object is equal to one of the expected objects. If not
+	/** Asserts that the actual object is equal to one of the expected objects. If not
 	 * an AssertionFailedError is thrown.
 	 * This assertion function tests the types of its parameters to call the best
 	 * {@code assertEquals} function.
@@ -540,7 +540,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		assertEqualsGeneric(null, expected, actual);
 	}
 
-	/** Asserts that the actuel object is equal to one of the expected objects. If not
+	/** Asserts that the actual object is equal to one of the expected objects. If not
 	 * an AssertionFailedError is thrown.
 	 * This assertion function tests the types of its parameters to call the best
 	 * {@code assertEquals} function.
@@ -563,7 +563,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		}
 	}
 
-	/** Asserts that the actuel similar is equal to one of the expected objects. If not
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
 	 * an AssertionFailedError is thrown.
 	 *
 	 * @param <T> is the type of the values
@@ -574,7 +574,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	    assertSimilars(null, expectedObjects, actual);
 	}
 
-	/** Asserts that the actuel similar is equal to one of the expected objects. If not
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
 	 * an AssertionFailedError is thrown.
 	 *
 	 * @param <T> is the type of the values
@@ -592,7 +592,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		fail(formatFailMessage(message, expectedObjects, actual));
 	}
 
-	/** Asserts that the actuel similar is equal to one of the expected objects. If not
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
 	 * an AssertionFailedError is thrown.
 	 *
 	 * @param <T> is the type of the values
@@ -603,7 +603,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	    assertSimilars(null, expectedObjects, actual);
 	}
 
-	/** Asserts that the actuel similar is equal to one of the expected objects. If not
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
 	 * an AssertionFailedError is thrown.
 	 *
 	 * @param <T> is the type of the values
@@ -700,7 +700,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		}
 	}
 
-	/** Asserts that the actuel similar is equal to one of the expected objects. If not
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
 	 * an AssertionFailedError is thrown.
 	 *
 	 * @param <K> is the type of the map keys.
@@ -712,7 +712,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	    assertDeepSimilars(null, expectedObjects, actual);
 	}
 
-	/** Asserts that the actuel similar is equal to one of the expected objects. If not
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
 	 * an AssertionFailedError is thrown.
 	 *
 	 * @param <K> is the type of the map keys.
@@ -737,7 +737,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		fail(formatFailMessage(message, expectedObjects, actual));
 	}
 
-	/** Asserts that the actuel similar is equal to one of the expected objects. If not
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
 	 * an AssertionFailedError is thrown.
 	 *
 	 * @param <K> is the type of the map keys.
@@ -749,7 +749,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	    assertNotDeepSimilars(null, expectedObjects, actual);
 	}
 
-	/** Asserts that the actuel similar is equal to one of the expected objects. If not
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
 	 * an AssertionFailedError is thrown.
 	 *
 	 * @param <K> is the type of the map keys.

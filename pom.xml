@@ -74,6 +74,11 @@
 				<version>${afc.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.arakhne.afc.core</groupId>
+				<artifactId>text</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.arakhne.afc.ui</groupId>
 				<artifactId>base</artifactId>
 				<version>${afc.version}</version>
