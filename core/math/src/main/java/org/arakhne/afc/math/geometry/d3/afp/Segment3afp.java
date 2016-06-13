@@ -22,7 +22,7 @@ package org.arakhne.afc.math.geometry.d3.afp;
 
 import java.util.NoSuchElementException;
 
-import javafx.util.Pair;
+import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
