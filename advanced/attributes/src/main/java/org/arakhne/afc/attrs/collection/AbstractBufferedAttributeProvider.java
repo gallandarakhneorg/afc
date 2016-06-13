@@ -76,7 +76,7 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 	/** Replies the value associated to the specified name.
 	 */
 	private AttributeValue extractValueFor(String name) throws AttributeException {
-		final AttributeValue value;
+		AttributeValue value = null;
 		if (this.cache.containsKey(name)) {
 			value = this.cache.get(name);
 		} else {

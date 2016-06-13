@@ -111,7 +111,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	 * @throws AttributeException on error.
 	 */
 	private AttributeValue extractValueFor(String name) throws AttributeException {
-		final AttributeValue value;
+		AttributeValue value = null;
 		if (this.cache.containsKey(name)) {
 			value = this.cache.get(name);
 		} else {

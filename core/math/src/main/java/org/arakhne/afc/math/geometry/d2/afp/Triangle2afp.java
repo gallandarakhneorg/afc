@@ -344,6 +344,7 @@ public interface Triangle2afp<
             }
             dist = Math.pow(tx3 - px, 2) + Math.pow(ty3 - py, 2);
             if (dist > max) {
+                max = dist;
                 x = tx3;
                 y = ty3;
             }
