@@ -1,4 +1,3 @@
-
 /*
  * $Id$
  * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
@@ -3303,6 +3302,7 @@ public interface Segment2afp<
 
     @Pure
     @Override
+    @SuppressWarnings("checkstyle:magicnumber")
     default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
         assert triangle != null : AssertMessages.notNullParameter();
         final double[] segments = new double[] {
