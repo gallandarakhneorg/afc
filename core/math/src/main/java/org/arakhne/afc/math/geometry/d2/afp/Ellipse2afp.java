@@ -1557,7 +1557,7 @@ public interface Ellipse2afp<
 
         @Unefficient
         private static double getFarthestNormalPointRoot(double r0, double e0, double e1, double zx, double zy, double gval) {
-            double localG = gval;
+            double localG;
             double s0 = -Math.hypot(zx, r0 * zy) - 1.;
             double s1 = zx - 1;
             double result = Double.NaN;

@@ -89,7 +89,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	/** Replies the value associated to the specified name.
 	 */
 	private Attribute extract(String name) {
-		AttributeValue value = null;
+		final AttributeValue value;
 		if (this.cache.containsKey(name)) {
 			value = this.cache.get(name);
 		} else {
