@@ -20,6 +20,11 @@
 
 package org.arakhne.afc.inputoutput.filefilter;
 
+import java.io.File;
+import java.net.URL;
+
+import org.arakhne.afc.inputoutput.filetype.FileType;
+import org.arakhne.afc.inputoutput.mime.MimeName;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /** File filter for PNG pictures.
@@ -59,6 +64,36 @@ public class PNGFileFilter extends AbstractFileFilter {
 				acceptDirectories,
 				Locale.getString(PNGFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
 				EXTENSION_PNG);
+	}
+
+	/** Replies if the specified file contains PNG picture.
+	 *
+	 * @param file is the file to test.
+	 * @return <code>true</code> if the given file contains PNG picture,
+	 *     otherwise <code>false</code>
+	 */
+	public static boolean isPNGFile(File file) {
+		return FileType.isContentType(file, MimeName.MIME_PNG.getMimeConstant());
+	}
+
+	/** Replies if the specified file contains PNG picture.
+	 *
+	 * @param file is the file to test.
+	 * @return <code>true</code> if the given file contains PNG picture,
+	 *     otherwise <code>false</code>
+	 */
+	public static boolean isPNGFile(URL file) {
+		return FileType.isContentType(file, MimeName.MIME_PNG.getMimeConstant());
+	}
+
+	/** Replies if the specified file contains PNG picture.
+	 *
+	 * @param file is the file to test.
+	 * @return <code>true</code> if the given file contains PNG picture,
+	 *     otherwise <code>false</code>
+	 */
+	public static boolean isPNGFile(String file) {
+		return FileType.isContentType(file, MimeName.MIME_PNG.getMimeConstant());
 	}
 
 }

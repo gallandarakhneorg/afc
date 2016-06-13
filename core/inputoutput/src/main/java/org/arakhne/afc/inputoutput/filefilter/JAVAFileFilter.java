@@ -29,7 +29,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class JavaFileFilter extends AbstractFileFilter {
+public class JAVAFileFilter extends AbstractFileFilter {
 
 	/** Default extension for the Java source files.
 	 */
@@ -44,7 +44,7 @@ public class JavaFileFilter extends AbstractFileFilter {
 
 	/** Construct.
 	 */
-	public JavaFileFilter() {
+	public JAVAFileFilter() {
 		this(true);
 	}
 
@@ -54,10 +54,10 @@ public class JavaFileFilter extends AbstractFileFilter {
 	 *     <code>false</code> if the directories should not
 	 *     match.
 	 */
-	public JavaFileFilter(boolean acceptDirectories) {
+	public JAVAFileFilter(boolean acceptDirectories) {
 		super(
 				acceptDirectories,
-				Locale.getString(JavaFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
+				Locale.getString(JAVAFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
 				EXTENSION_JAVA);
 	}
 

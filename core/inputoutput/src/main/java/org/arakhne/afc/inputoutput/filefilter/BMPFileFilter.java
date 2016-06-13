@@ -20,6 +20,11 @@
 
 package org.arakhne.afc.inputoutput.filefilter;
 
+import java.io.File;
+import java.net.URL;
+
+import org.arakhne.afc.inputoutput.filetype.FileType;
+import org.arakhne.afc.inputoutput.mime.MimeName;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /** File filter for the Microsoft/IBM bitmap files.
@@ -28,6 +33,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 14.0
  */
 public class BMPFileFilter extends AbstractFileFilter {
 
@@ -35,7 +41,7 @@ public class BMPFileFilter extends AbstractFileFilter {
 	 */
 	public static final String EXTENSION_BMP = "bmp"; //$NON-NLS-1$
 
-	/** Default extension for the Microsoft/IBM bitmap files.
+	/** Default extension for the BMP pictures.
 	 *
 	 * @deprecated since 13.0, see {@link #EXTENSION_BMP}
 	 */
@@ -59,6 +65,36 @@ public class BMPFileFilter extends AbstractFileFilter {
 				acceptDirectories,
 				Locale.getString(BMPFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
 				EXTENSION_BMP);
+	}
+
+	/** Replies if the specified file contains BMP picture.
+	 *
+	 * @param file is the file to test.
+	 * @return <code>true</code> if the given file contains BMP picture,
+	 *     otherwise <code>false</code>
+	 */
+	public static boolean isBMPFile(File file) {
+		return FileType.isContentType(file, MimeName.MIME_BMP.getMimeConstant());
+	}
+
+	/** Replies if the specified file contains BMP picture.
+	 *
+	 * @param file is the file to test.
+	 * @return <code>true</code> if the given file contains BMP picture,
+	 *     otherwise <code>false</code>
+	 */
+	public static boolean isBMPFile(URL file) {
+		return FileType.isContentType(file, MimeName.MIME_BMP.getMimeConstant());
+	}
+
+	/** Replies if the specified file contains BMP picture.
+	 *
+	 * @param file is the file to test.
+	 * @return <code>true</code> if the given file contains BMP picture,
+	 *     otherwise <code>false</code>
+	 */
+	public static boolean isBMPFile(String file) {
+		return FileType.isContentType(file, MimeName.MIME_BMP.getMimeConstant());
 	}
 
 }

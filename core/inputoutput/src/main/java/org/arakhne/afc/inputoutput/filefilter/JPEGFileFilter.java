@@ -20,6 +20,11 @@
 
 package org.arakhne.afc.inputoutput.filefilter;
 
+import java.io.File;
+import java.net.URL;
+
+import org.arakhne.afc.inputoutput.filetype.FileType;
+import org.arakhne.afc.inputoutput.mime.MimeName;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /** File filter for JPEG pictures.
@@ -60,6 +65,36 @@ public class JPEGFileFilter extends AbstractFileFilter {
 				acceptDirectories,
 				Locale.getString(JPEGFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
 				EXTENSION_JPG, EXTENSION_JPEG, EXTENSION_JPE);
+	}
+
+	/** Replies if the specified file contains JPEG picture.
+	 *
+	 * @param file is the file to test.
+	 * @return <code>true</code> if the given file contains JPEG picture,
+	 *     otherwise <code>false</code>
+	 */
+	public static boolean isJPEGFile(File file) {
+		return FileType.isContentType(file, MimeName.MIME_JPG.getMimeConstant());
+	}
+
+	/** Replies if the specified file contains JPEG picture.
+	 *
+	 * @param file is the file to test.
+	 * @return <code>true</code> if the given file contains JPEG picture,
+	 *     otherwise <code>false</code>
+	 */
+	public static boolean isJPEGFile(URL file) {
+		return FileType.isContentType(file, MimeName.MIME_JPG.getMimeConstant());
+	}
+
+	/** Replies if the specified file contains JPEG picture.
+	 *
+	 * @param file is the file to test.
+	 * @return <code>true</code> if the given file contains JPEG picture,
+	 *     otherwise <code>false</code>
+	 */
+	public static boolean isJPEGFile(String file) {
+		return FileType.isContentType(file, MimeName.MIME_JPG.getMimeConstant());
 	}
 
 }

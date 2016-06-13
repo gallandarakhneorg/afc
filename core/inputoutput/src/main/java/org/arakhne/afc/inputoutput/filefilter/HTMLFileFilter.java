@@ -27,29 +27,23 @@ import org.arakhne.afc.inputoutput.filetype.FileType;
 import org.arakhne.afc.inputoutput.mime.MimeName;
 import org.arakhne.afc.vmutil.locale.Locale;
 
-/** File filter for the GIF pictures.
+/** File filter for Hypertext file document.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 14.0
  */
-public class GIFFileFilter extends AbstractFileFilter {
+public class HTMLFileFilter extends AbstractFileFilter {
 
-	/** Default extension for the GIF pictures.
+	/** Default extension for the hypertext files.
 	 */
-	public static final String EXTENSION_GIF = "gif"; //$NON-NLS-1$
-
-	/** Default extension for the GIF pictures.
-	 *
-	 * @deprecated since 13.0, see {@link #EXTENSION_GIF}
-	 */
-	@Deprecated
-	public static final String EXTENSION = EXTENSION_GIF;
+	public static final String EXTENSION_HTML = "html"; //$NON-NLS-1$
 
 	/** Construct.
 	 */
-	public GIFFileFilter() {
+	public HTMLFileFilter() {
 		this(true);
 	}
 
@@ -59,41 +53,41 @@ public class GIFFileFilter extends AbstractFileFilter {
 	 *     <code>false</code> if the directories should not
 	 *     match.
 	 */
-	public GIFFileFilter(boolean acceptDirectories) {
+	public HTMLFileFilter(boolean acceptDirectories) {
 		super(
 				acceptDirectories,
-				Locale.getString(GIFFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
-				EXTENSION_GIF);
+				Locale.getString(HTMLFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
+				EXTENSION_HTML);
 	}
 
-	/** Replies if the specified file contains GIF picture.
+	/** Replies if the specified file contains HTML.
 	 *
 	 * @param file is the file to test.
-	 * @return <code>true</code> if the given file contains GIF picture,
+	 * @return <code>true</code> if the given file contains HTML,
 	 *     otherwise <code>false</code>
 	 */
-	public static boolean isGIFFile(File file) {
-		return FileType.isContentType(file, MimeName.MIME_GIF.getMimeConstant());
+	public static boolean isHTMLFile(File file) {
+		return FileType.isContentType(file, MimeName.MIME_HTML.getMimeConstant());
 	}
 
-	/** Replies if the specified file contains GIF picture.
+	/** Replies if the specified file contains HTML.
 	 *
 	 * @param file is the file to test.
-	 * @return <code>true</code> if the given file contains GIF picture,
+	 * @return <code>true</code> if the given file contains HTML,
 	 *     otherwise <code>false</code>
 	 */
-	public static boolean isGIFFile(URL file) {
-		return FileType.isContentType(file, MimeName.MIME_GIF.getMimeConstant());
+	public static boolean isHTMLFile(URL file) {
+		return FileType.isContentType(file, MimeName.MIME_HTML.getMimeConstant());
 	}
 
-	/** Replies if the specified file contains GIF picture.
+	/** Replies if the specified file contains HTML.
 	 *
 	 * @param file is the file to test.
-	 * @return <code>true</code> if the given file contains GIF picture,
+	 * @return <code>true</code> if the given file contains HTML,
 	 *     otherwise <code>false</code>
 	 */
-	public static boolean isGIFFile(String file) {
-		return FileType.isContentType(file, MimeName.MIME_GIF.getMimeConstant());
+	public static boolean isHTMLFile(String file) {
+		return FileType.isContentType(file, MimeName.MIME_HTML.getMimeConstant());
 	}
 
 }

@@ -20,6 +20,11 @@
 
 package org.arakhne.afc.inputoutput.filefilter;
 
+import java.io.File;
+import java.net.URL;
+
+import org.arakhne.afc.inputoutput.filetype.FileType;
+import org.arakhne.afc.inputoutput.mime.MimeName;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /** File filter for XML files.
@@ -59,6 +64,36 @@ public class XMLFileFilter extends AbstractFileFilter {
 				acceptDirectories,
 				Locale.getString(XMLFileFilter.class, "FILE_FILTER_NAME"), //$NON-NLS-1$
 				EXTENSION_XML);
+	}
+
+	/** Replies if the specified file contains XML.
+	 *
+	 * @param file is the file to test.
+	 * @return <code>true</code> if the given file contains XML,
+	 *     otherwise <code>false</code>
+	 */
+	public static boolean isXMLFile(File file) {
+		return FileType.isContentType(file, MimeName.MIME_XML.getMimeConstant());
+	}
+
+	/** Replies if the specified file contains XML.
+	 *
+	 * @param file is the file to test.
+	 * @return <code>true</code> if the given file contains XML,
+	 *     otherwise <code>false</code>
+	 */
+	public static boolean isXMLFile(URL file) {
+		return FileType.isContentType(file, MimeName.MIME_XML.getMimeConstant());
+	}
+
+	/** Replies if the specified file contains XML.
+	 *
+	 * @param file is the file to test.
+	 * @return <code>true</code> if the given file contains XML,
+	 *     otherwise <code>false</code>
+	 */
+	public static boolean isXMLFile(String file) {
+		return FileType.isContentType(file, MimeName.MIME_XML.getMimeConstant());
 	}
 
 }
