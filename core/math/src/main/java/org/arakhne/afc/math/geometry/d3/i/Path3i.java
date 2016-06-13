@@ -562,18 +562,18 @@ public class Path3i extends AbstractShape3i<Path3i>
 	public Point3i[] toPointArray(Transform3D transform) {
         final Point3i[] clone = new Point3i[this.numCoords / 2];
 		if (transform == null || transform.isIdentity()) {
-            for (int i = 0, j = 0; j < this.numCoords; ++i) {
+            for (int i = 0, j = 0; j < this.numCoords; ++i, j += 3) {
 				clone[i] = getGeomFactory().newPoint(
-						this.coords[j++],
-						this.coords[j++],
-						this.coords[j++]);
+						this.coords[j],
+						this.coords[j + 1],
+						this.coords[j + 2]);
 			}
 		} else {
-            for (int i = 0, j = 0; j < clone.length; ++i) {
+            for (int i = 0, j = 0; j < clone.length; ++i, j += 3) {
 				clone[i] = getGeomFactory().newPoint(
-						this.coords[j++],
-						this.coords[j++],
-						this.coords[j++]);
+						this.coords[j],
+						this.coords[j + 1],
+						this.coords[j + 2]);
 				transform.transform(clone[i]);
 			}
 		}
