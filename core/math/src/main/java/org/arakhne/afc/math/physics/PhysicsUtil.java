@@ -237,14 +237,14 @@ public final class PhysicsUtil {
 	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw2D5(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonLaw2D5(
-			Vector3D velocity,
+			Vector3D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D acceleration,
+			Vector3D<?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector3D result) {
+			Vector3D<?, ?> result) {
 		engine.motionNewtonLaw2D5(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt, result);
 	}
 
@@ -275,14 +275,14 @@ public final class PhysicsUtil {
 	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw3D(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonLaw3D(
-			Vector3D velocity,
+			Vector3D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D acceleration,
+			Vector3D<?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector3D result) {
+			Vector3D<?, ?> result) {
 		engine.motionNewtonLaw3D(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt, result);
 	}
 
@@ -387,11 +387,11 @@ public final class PhysicsUtil {
 	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law2D5(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonEuler1Law2D5(
-			Vector3D velocity,
+			Vector3D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector3D result) {
+			Vector3D<?, ?> result) {
 		engine.motionNewtonEuler1Law2D5(velocity, minSpeed, maxSpeed, dt, result);
 	}
 
@@ -410,11 +410,11 @@ public final class PhysicsUtil {
 	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law3D(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonEuler1Law3D(
-			Vector3D velocity,
+			Vector3D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector3D result) {
+			Vector3D<?, ?> result) {
 		engine.motionNewtonEuler1Law3D(velocity, minSpeed, maxSpeed, dt, result);
 	}
 

@@ -194,14 +194,14 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	@Pure
 	@Override
 	public void motionNewtonLaw2D5(
-			Vector3D velocity,
+			Vector3D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D acceleration,
+			Vector3D<?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector3D result) {
+			Vector3D<?, ?> result) {
 		motionNewtonLaw3D(
 				velocity,
 				minSpeed, maxSpeed,
@@ -214,14 +214,14 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	@Pure
 	@Override
 	public void motionNewtonLaw3D(
-			Vector3D velocity,
+			Vector3D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D acceleration,
+			Vector3D<?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector3D result) {
+			Vector3D<?, ?> result) {
 		assert velocity != null;
 		assert acceleration != null;
 		assert minSpeed >= 0.;
@@ -328,11 +328,11 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	@Pure
 	@Override
 	public void motionNewtonEuler1Law2D5(
-			Vector3D velocity,
+			Vector3D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector3D result) {
+			Vector3D<?, ?> result) {
 		motionNewtonEuler1Law3D(
 				velocity,
 				minSpeed, maxSpeed,
@@ -343,11 +343,11 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	@Pure
 	@Override
 	public void motionNewtonEuler1Law3D(
-			Vector3D velocity,
+			Vector3D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector3D result) {
+			Vector3D<?, ?> result) {
 		assert minSpeed >= 0.;
 		final double l = velocity.getLength();
 		if (l != 0.) {

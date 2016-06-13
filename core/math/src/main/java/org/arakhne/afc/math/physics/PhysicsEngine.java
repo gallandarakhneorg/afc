@@ -191,14 +191,14 @@ public interface PhysicsEngine {
 	 */
 	@Pure
 	void motionNewtonLaw2D5(
-			Vector3D velocity,
+			Vector3D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D acceleration,
+			Vector3D<?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector3D result);
+			Vector3D<?, ?> result);
 
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
@@ -226,14 +226,14 @@ public interface PhysicsEngine {
 	 */
 	@Pure
 	void motionNewtonLaw3D(
-			Vector3D velocity,
+			Vector3D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D acceleration,
+			Vector3D<?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector3D result);
+			Vector3D<?, ?> result);
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
@@ -328,11 +328,11 @@ public interface PhysicsEngine {
 	 */
 	@Pure
 	void motionNewtonEuler1Law2D5(
-			Vector3D velocity,
+			Vector3D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector3D result);
+			Vector3D<?, ?> result);
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
@@ -349,11 +349,11 @@ public interface PhysicsEngine {
 	 */
 	@Pure
 	void motionNewtonEuler1Law3D(
-			Vector3D velocity,
+			Vector3D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector3D result);
+			Vector3D<?, ?> result);
 
 	/** Replies the new speed according to a previous speed and
 	 * a mouvement during a given time.

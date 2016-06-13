@@ -1556,7 +1556,7 @@ public interface Ellipse2afp<
         }
 
         @Unefficient
-        private static double getFarthestNormalPointRoot(double r0, double e0, double e1, double zx, double zy, double gval) {
+        private static double getFarthestNormalPointRoot(double r0, double e0, double e1, double zx, double zy) {
             double localG;
             double s0 = -Math.hypot(zx, r0 * zy) - 1.;
             double s1 = zx - 1;
@@ -1624,7 +1624,7 @@ public interface Ellipse2afp<
                     if (g != 0) {
                         double r0 = verticalRadius / horizontalRadius;
                         r0 = r0 * r0;
-                        final double sbar = getFarthestNormalPointRoot(r0, horizontalRadius, verticalRadius, zx, zy, g);
+                        final double sbar = getFarthestNormalPointRoot(r0, horizontalRadius, verticalRadius, zx, zy);
                         farX = px / (sbar + 1.);
                         farY = r0 * py / (sbar + r0);
                         if (computeDistance) {

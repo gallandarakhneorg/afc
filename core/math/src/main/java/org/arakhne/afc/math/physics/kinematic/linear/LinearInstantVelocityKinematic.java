@@ -66,7 +66,7 @@ public interface LinearInstantVelocityKinematic {
 	 *
 	 * @return the velocity of the object.
 	 */
-	Vector3D getLinearVelocity3D();
+	Vector3D<?, ?> getLinearVelocity3D();
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length

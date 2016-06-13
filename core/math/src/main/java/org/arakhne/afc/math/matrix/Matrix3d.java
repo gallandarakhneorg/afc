@@ -356,7 +356,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * @param row the matrix row
      * @param vector the vector into which the matrix row values will be copied
      */
-    public void getRow(int row, Vector3D vector) {
+    public void getRow(int row, Vector3D<?, ?> vector) {
         assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
         assert vector != null : AssertMessages.notNullParameter(1);
         if (row == 0) {
@@ -406,7 +406,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * @param column the matrix column
      * @param vector the vector into which the matrix row values will be copied
      */
-    public void getColumn(int column, Vector3D vector) {
+    public void getColumn(int column, Vector3D<?, ?> vector) {
         assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
         assert vector != null : AssertMessages.notNullParameter(1);
         if (column == 0) {
@@ -492,7 +492,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * @param row the row number to be modified (zero indexed)
      * @param vector the replacement row
      */
-    public void setRow(int row, Vector3D vector) {
+    public void setRow(int row, Vector3D<?, ?> vector) {
         assert row >= 0 && row < 3 : AssertMessages.outsideRangeInclusiveParameter(0, row, 0, 2);
         assert vector != null : AssertMessages.notNullParameter(1);
         switch (row) {
@@ -599,7 +599,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * @param column the column number to be modified (zero indexed)
      * @param vector the replacement column
      */
-    public void setColumn(int column, Vector3D vector) {
+    public void setColumn(int column, Vector3D<?, ?> vector) {
         assert column >= 0 && column < 3 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 2);
         assert vector != null : AssertMessages.notNullParameter(1);
         switch (column) {
@@ -1361,7 +1361,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * @param result the vector resulting of <code>this * v</code>.
      */
     @Pure
-    public void mul(Vector3D vector, Vector3D result) {
+    public void mul(Vector3D<?, ?> vector, Vector3D<?, ?> result) {
         assert vector != null : AssertMessages.notNullParameter(0);
         assert result != null : AssertMessages.notNullParameter(1);
         result.set(
@@ -1376,7 +1376,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * @param result the vector resulting of <code>transpose(this) * v</code>.
      */
     @Pure
-    public void mulTransposeLeft(Vector3D vector, Vector3D result) {
+    public void mulTransposeLeft(Vector3D<?, ?> vector, Vector3D<?, ?> result) {
         assert vector != null : AssertMessages.notNullParameter(0);
         assert result != null : AssertMessages.notNullParameter(1);
         result.set(
