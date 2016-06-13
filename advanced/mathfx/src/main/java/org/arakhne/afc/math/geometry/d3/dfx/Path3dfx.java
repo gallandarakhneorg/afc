@@ -156,10 +156,10 @@ public class Path3dfx
 	public boolean containsControlPoint(Point3D<?, ?> pt) {
 		assert pt != null : "Point must be not null"; //$NON-NLS-1$
 		if (this.coords != null && !this.coords.isEmpty()) {
-            for (int i = 0; i < this.coords.size();) {
-				final double x = this.coords.get(i++);
-				final double y = this.coords.get(i++);
-				final double z = this.coords.get(i++);
+            for (int i = 0; i < this.coords.size(); i += 3) {
+				final double x = this.coords.get(i);
+				final double y = this.coords.get(i + 1);
+				final double z = this.coords.get(i + 2);
                 if (x == pt.getX() && y == pt.getY() && z == pt.getZ()) {
 					return true;
 				}
@@ -493,12 +493,12 @@ public class Path3dfx
 		    } else {
 		        final Point3D<?, ?> p = new InnerComputationPoint3afp();
 		        final Iterator<Double> iterator = this.coords.iterator();
-                for (int i = 0; i < n;) {
+                for (int i = 0; i < n; i += 3) {
 		            p.set(iterator.next(), iterator.next(), iterator.next());
 					transform.transform(p);
-					clone[i++] = p.ix();
-					clone[i++] = p.iy();
-					clone[i++] = p.iz();
+					clone[i] = p.ix();
+					clone[i + 1] = p.iy();
+					clone[i + 2] = p.iz();
 				}
 			}
 		}
@@ -518,12 +518,12 @@ public class Path3dfx
 			} else {
 				final Point3D<?, ?> p = new InnerComputationPoint3afp();
 				final Iterator<Double> iterator = this.coords.iterator();
-                for (int i = 0; i < n;) {
+                for (int i = 0; i < n; i += 3) {
 					p.set(iterator.next(), iterator.next(), iterator.next());
 					transform.transform(p);
-					clone[i++] = (float) p.getX();
-					clone[i++] = (float) p.getY();
-					clone[i++] = (float) p.getZ();
+					clone[i] = (float) p.getX();
+					clone[i + 1] = (float) p.getY();
+					clone[i + 2] = (float) p.getZ();
 				}
 			}
 		}
@@ -543,12 +543,12 @@ public class Path3dfx
 			} else {
 				final Point3D<?, ?> p = new InnerComputationPoint3afp();
 				final Iterator<Double> iterator = this.coords.iterator();
-                for (int i = 0; i < n;) {
+                for (int i = 0; i < n; i += 3) {
 					p.set(iterator.next(), iterator.next(), iterator.next());
 					transform.transform(p);
-					clone[i++] = p.getX();
-					clone[i++] = p.getY();
-					clone[i++] = p.getZ();
+					clone[i] = p.getX();
+					clone[i + 1] = p.getY();
+					clone[i + 2] = p.getZ();
 				}
 			}
 		}
