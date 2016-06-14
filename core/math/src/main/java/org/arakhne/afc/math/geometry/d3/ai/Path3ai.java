@@ -1598,8 +1598,7 @@ public interface Path3ai<
 
 		while (pi.hasNext()) {
 			pe = pi.next();
-
-			final boolean foundCandidate;
+            boolean foundCandidate = false;
 			final int candidateX;
 			final int candidateY;
 			final int candidateZ;
