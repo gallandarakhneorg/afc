@@ -1458,13 +1458,13 @@ public class AttributeValueImpl implements AttributeValue {
 				return new Point3d(col.getRed(), col.getGreen(), col.getBlue());
 			case REAL:
 				final Double flt = (Double) this.value;
-				return new Point3d(flt.floatValue(), 0, 0);
+				return new Point3d(flt.doubleValue(), 0, 0);
 			case INTEGER:
 				final Long lg = (Long) this.value;
-				return new Point3d(lg.floatValue(), 0, 0);
+				return new Point3d(lg.doubleValue(), 0, 0);
 			case TIMESTAMP:
 				final Timestamp ts = (Timestamp) this.value;
-				return new Point3d(ts.floatValue(), 0, 0);
+				return new Point3d(ts.doubleValue(), 0, 0);
 			case DATE:
 				final Date dt = (Date) this.value;
 				return new Point3d(dt.getTime(), 0, 0);
@@ -1552,16 +1552,16 @@ public class AttributeValueImpl implements AttributeValue {
 				return new Point2d(col.getRed(), col.getGreen());
 			case REAL:
 				final Double flt = (Double) this.value;
-				return new Point2d(flt.floatValue(), 0f);
+				return new Point2d(flt.doubleValue(), 0);
 			case INTEGER:
 				final Long lg = (Long) this.value;
-				return new Point2d(lg.floatValue(), 0f);
+				return new Point2d(lg.doubleValue(), 0);
 			case TIMESTAMP:
 				final Timestamp ts = (Timestamp) this.value;
-				return new Point2d(ts.floatValue(), 0f);
+				return new Point2d(ts.doubleValue(), 0);
 			case DATE:
 				final Date dt = (Date) this.value;
-				return new Point2d(dt.getTime(), 0f);
+				return new Point2d(dt.getTime(), 0);
 			case POINT:
 				return new Point2d(((Point2D<?, ?>) this.value).getX(),
 						((Point2D<?, ?>) this.value).getY());
@@ -1656,10 +1656,10 @@ public class AttributeValueImpl implements AttributeValue {
 				return VectorToolkit.color(col.getRed(), col.getGreen(), col.getBlue(), col.getAlpha());
 			case POINT:
 				final Point2D<?, ?> pt2 = (Point2D<?, ?>) this.value;
-				return VectorToolkit.color((float) pt2.getX(), (float) pt2.getY(), 0f, 1f);
+				return VectorToolkit.color((float) pt2.getX(), (float) pt2.getY(), 0, 1);
 			case POINT3D:
 				final Point3D<?, ?> pt3 = (Point3D<?, ?>) this.value;
-				return VectorToolkit.color((float) pt3.getX(), (float) pt3.getY(), (float) pt3.getZ(), 1f);
+				return VectorToolkit.color((float) pt3.getX(), (float) pt3.getY(), (float) pt3.getZ(), 1);
 			case STRING:
 				final Color color = parseColor((String) this.value, false);
 				if (color != null) {
@@ -1717,7 +1717,7 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Override
 	public void setColor(float red, float green, float blue) {
-		this.value = VectorToolkit.color(red, green, blue, 1f);
+		this.value = VectorToolkit.color(red, green, blue, 1);
 		this.type = AttributeType.COLOR;
 		this.assigned = true;
 	}
@@ -2090,7 +2090,7 @@ public class AttributeValueImpl implements AttributeValue {
 	private static Point3D<?, ?>[] parsePolyline3D(String text, boolean isStrict) {
 		final String[] comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && (comp.length % 3) != 0) {
-			return new Point3D[0];
+			return null;
 		}
 		final int fullPoints = comp.length / 3;
 		final boolean addPt = fullPoints * 3 != comp.length;
@@ -2255,7 +2255,7 @@ public class AttributeValueImpl implements AttributeValue {
 	private static Point2D<?, ?>[] parsePolyline(String text, boolean isStrict) {
 		final String[] comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && (comp.length % 2) != 0) {
-			return new Point2D<?, ?>[0];
+			return null;
 		}
 		final int fullPoints = comp.length / 2;
 		final boolean addPt = fullPoints * 2 != comp.length;

@@ -774,7 +774,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vLong);
 		assertCastException(type,vFloat);
 		assertCastException(type,vDouble);
-		assertCastException(type,vStr);
+		assertNull(type.cast(vStr));
 		assertEquals(ipAddress,type.cast(vIpStr));
 		assertEquals(worldAddress, type.cast(vStrB));
 		assertCastException(type,cal);

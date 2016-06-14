@@ -18,6 +18,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>math</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>references</artifactId>
 		</dependency>
 		<dependency>
@@ -35,6 +39,12 @@
 			<artifactId>testtools</artifactId>
 			<scope>test</scope>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>math</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
