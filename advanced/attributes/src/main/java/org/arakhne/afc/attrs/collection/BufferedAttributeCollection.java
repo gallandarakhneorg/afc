@@ -107,7 +107,12 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	protected abstract boolean removeAllValues() throws AttributeException;
 
 	/** Replies the value associated to the specified name.
+	 *
+	 * <p>This function differs to {@link #extractValueForSafe(String)} because it throws
+	 * an exception if the value cannot be loaded.
+	 *
 	 * @throws AttributeException on error.
+	 * @see #extractValueForSafe(String)
 	 */
 	private AttributeValue extractValueFor(String name) throws AttributeException {
 		final AttributeValue value;
@@ -118,6 +123,23 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 			this.cache.put(name, value);
 		}
 		return value;
+	}
+
+	/** Replies the value associated to the specified name.
+	 *
+	 * <p>This function differs to {@link #extractValueFor(String)} because it is not throwing
+	 * an exception if the value cannot be loaded. In this case is is replying <code>null</code>.
+	 *
+	 * @throws AttributeException on error.
+	 * @see #extractValueFor(String)
+	 */
+	private AttributeValue extractValueForSafe(String name) {
+		try {
+			return extractValueFor(name);
+		} catch (AttributeException e) {
+			// Silently ignore the error.
+		}
+		return null;
 	}
 
 	@Pure
@@ -168,10 +190,9 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	@Pure
 	@Override
 	public AttributeValue getAttribute(String name) {
-		try {
-			return new AttributeValueImpl(extractValueFor(name));
-		} catch (AttributeException exception) {
-			//
+		final AttributeValue value = extractValueForSafe(name);
+		if (value != null) {
+			return new AttributeValueImpl(value);
 		}
 		return null;
 	}
@@ -179,22 +200,19 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	@Pure
 	@Override
 	public AttributeValue getAttribute(String name, AttributeValue default_value) {
-		AttributeValue value;
-		try {
-			value = new AttributeValueImpl(extractValueFor(name));
-		} catch (AttributeException exception) {
-			value = default_value;
+		final AttributeValue value = extractValueForSafe(name);
+		if (value != null) {
+			return new AttributeValueImpl(value);
 		}
-		return value;
+		return default_value;
 	}
 
 	@Pure
 	@Override
 	public Attribute getAttributeObject(String name) {
-		try {
-			return new AttributeImpl(name, extractValueFor(name));
-		} catch (AttributeException exception) {
-			//
+		final AttributeValue value = extractValueForSafe(name);
+		if (value != null) {
+			return new AttributeImpl(name, value);
 		}
 		return null;
 	}
@@ -224,15 +242,13 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	 * @throws AttributeException on error.
 	 */
 	protected Attribute setAttributeFromRawValue(String name, AttributeType type, Object value) throws AttributeException {
-		AttributeValue oldValue;
-		try {
-			oldValue = new AttributeValueImpl(extractValueFor(name));
-		} catch (AttributeException exception) {
-			oldValue = null;
-		}
-
-		if (oldValue != null && oldValue.equals(value)) {
-			return null;
+		AttributeValue oldValue = extractValueForSafe(name);
+		if (oldValue != null) {
+			if (oldValue.equals(value)) {
+				return null;
+			}
+			// Clone the value for avoid border effects.
+			oldValue = new AttributeValueImpl(oldValue);
 		}
 
 		final Attribute attr = new AttributeImpl(name, type);
@@ -253,12 +269,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 
 	@Override
 	public Attribute setAttributeType(String name, AttributeType type) throws AttributeException {
-		AttributeValue oldValue;
-		try {
-			oldValue = new AttributeValueImpl(extractValueFor(name));
-		} catch (AttributeException exception) {
-			oldValue = null;
-		}
+		final AttributeValue oldValue = extractValueForSafe(name);
 		final AttributeType oldType = (oldValue == null) ? null : oldValue.getType();
 
 		if (oldValue == null || oldType == null || type == null || type == oldType) {
@@ -474,27 +485,13 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	@Override
 	public boolean renameAttribute(String oldname, String newname, boolean overwrite) {
 		try {
-			AttributeValue valueForOldName = null;
-
-			try {
-				valueForOldName = extractValueFor(oldname);
-			} catch (AttributeException exception) {
-				//
-			}
-
+			final AttributeValue valueForOldName = extractValueForSafe(oldname);
 			// The source attribute does not exist.
 			if (valueForOldName == null) {
 				return false;
 			}
 
-			AttributeValue oldValueForNewName = null;
-
-			try {
-				oldValueForNewName = extractValueFor(newname);
-			} catch (AttributeException exception) {
-				//
-			}
-
+			final AttributeValue oldValueForNewName = extractValueForSafe(newname);
 			// Target attribute is existing and overwrite was disabled.
 			if ((!overwrite) && (oldValueForNewName != null)) {
 				return false;
