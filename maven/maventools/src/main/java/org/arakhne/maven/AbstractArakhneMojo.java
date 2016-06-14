@@ -793,10 +793,10 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	public final synchronized ExtendedArtifact readPomFile(File pomFile) {
-		final String groupId;
+		String groupId;
 		final String artifactId;
 		final String name;
-		final String version;
+		String version;
 		final String url;
 		final Organization organization;
 		final Scm scm;
