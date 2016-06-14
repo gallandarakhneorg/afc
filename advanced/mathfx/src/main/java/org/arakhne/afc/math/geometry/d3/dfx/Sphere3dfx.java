@@ -256,9 +256,8 @@ public class Sphere3dfx
 	public ObjectProperty<RectangularPrism3dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-			    return toBoundingBox();
-			},
+			this.boundingBox.bind(Bindings.createObjectBinding(() ->
+			    toBoundingBox(),
 			        xProperty(), yProperty(), zProperty(), radiusProperty()));
 		}
 		return this.boundingBox;
