@@ -222,9 +222,7 @@ public class Circle2dfx
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
-			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-				return toBoundingBox();
-			},
+			this.boundingBox.bind(Bindings.createObjectBinding(() ->  toBoundingBox(),
 					xProperty(), yProperty(), radiusProperty()));
 		}
 		return this.boundingBox;
