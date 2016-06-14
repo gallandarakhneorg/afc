@@ -74,6 +74,7 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavenartifactid $ArtifactId$
  * @since 4.0
  */
+@SuppressWarnings("deprecation")
 public class MultiAttributeCollection extends MultiAttributeProvider implements AttributeCollection {
 
 	private static final long serialVersionUID = 6542692326662357040L;

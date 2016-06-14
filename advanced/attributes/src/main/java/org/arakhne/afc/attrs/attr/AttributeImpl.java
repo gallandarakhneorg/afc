@@ -44,6 +44,7 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("deprecation")
 public class AttributeImpl extends AttributeValueImpl implements Attribute {
 
 	private static final long serialVersionUID = -3805997544158892016L;
@@ -238,7 +239,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * @param name is the name of the attribute
 	 * @param value is the vaule of this new attribute.
 	 */
-	public AttributeImpl(String name, Point3D value) {
+	public AttributeImpl(String name, Point3D<?, ?> value) {
 		super(value);
 		this.name = name;
 	}
@@ -287,7 +288,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
-	public AttributeImpl(String name, Point3D[] value) {
+	public AttributeImpl(String name, Point3D<?, ?>[] value) {
 		super(value);
 		this.name = name;
 	}

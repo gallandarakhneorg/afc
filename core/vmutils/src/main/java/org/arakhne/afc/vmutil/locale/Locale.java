@@ -54,8 +54,6 @@ import org.arakhne.afc.vmutil.ClassLoaderFinder;
  * formatter. Note that <code>''</code> may represent a single quote
  * in strings (see {@link LocaleMessageFormat} for details).
  *
- * <p>FIXME: Does java.text.Normalizer may replace decodeString functions?
- *
  * @author $Author: sgalland$
  * @author $Author: lamotte$
  * @version $FullVersion$
@@ -377,7 +375,7 @@ public final class Locale {
 	 * <li>the current charset returned by {@link Charset#defaultCharset()},</li>
 	 * <li>OEM United States: IBM437,</li>
 	 * <li>West European: ISO-8859-1,</li>
-	 * <li>one of the charst returned by {@link Charset#availableCharsets()}.</li>
+	 * <li>one of the chars returned by {@link Charset#availableCharsets()}.</li>
 	 * </ul>
 	 *
 	 * <p>The IBM437 charset was added to support several specific files (Dbase files)

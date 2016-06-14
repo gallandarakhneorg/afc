@@ -678,19 +678,18 @@ public abstract class AbstractEllipse2afpTest<T extends Ellipse2afp<?, T, ?, ?, 
 		assertTrue(this.shape.intersects(p.getPathIterator()));
 	}
 
-	//FIXME: Reactivate unit test
 	@Override
 	public void intersectsOrientedRectangle2afp() {
-//		OrientedRectangle2afp rectangle = createOrientedRectangle(
-//				6, 9,
-//				0.894427190999916, -0.447213595499958, 13.999990000000002,
-//				12.999989999999997);
-//		assertFalse(createEllipse(0, -5, 2, 1).intersects(rectangle));
-//		assertFalse(createEllipse(0, -4.5, 2, 1).intersects(rectangle));
-//		assertTrue(createEllipse(0, -4, 2, 1).intersects(rectangle));
-//		assertTrue(createEllipse(4, 4, 2, 1).intersects(rectangle));
-//		assertFalse(createEllipse(20, -2, 2, 1).intersects(rectangle));
-//		assertTrue(createEllipse(-15, -10, 50, 50).intersects(rectangle));
+		OrientedRectangle2afp rectangle = createOrientedRectangle(
+				6, 9,
+				0.894427190999916, -0.447213595499958, 13.999990000000002,
+				12.999989999999997);
+		assertFalse(createEllipse(0, -5, 2, 1).intersects(rectangle));
+		assertFalse(createEllipse(0, -4.5, 2, 1).intersects(rectangle));
+		assertTrue(createEllipse(0, -4, 2, 1).intersects(rectangle));
+		assertTrue(createEllipse(4, 4, 2, 1).intersects(rectangle));
+		assertFalse(createEllipse(20, -2, 2, 1).intersects(rectangle));
+		assertTrue(createEllipse(-15, -10, 50, 50).intersects(rectangle));
 	}
 
 	@Test

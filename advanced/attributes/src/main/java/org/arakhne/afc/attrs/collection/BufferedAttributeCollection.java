@@ -47,13 +47,12 @@ import org.arakhne.afc.ui.vector.Image;
  * This class implements an abstract attribute provider that use
  * a memory cache.
  *
- * <p>XXX: Make this provider to save asynchronously on the remote storage area.
- *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("deprecation")
 public abstract class BufferedAttributeCollection extends AbstractAttributeCollection {
 
 	private static final long serialVersionUID = 1865614675044905721L;

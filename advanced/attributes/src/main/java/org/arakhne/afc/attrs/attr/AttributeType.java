@@ -42,6 +42,7 @@ import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Colors;
 import org.arakhne.afc.ui.vector.Image;
@@ -426,8 +427,7 @@ public enum AttributeType {
 		case TIMESTAMP:
 			return new Timestamp(System.currentTimeMillis());
 		case POINT3D:
-			//TODO: Fix code: new Point3fp();
-			return null;
+			return new Point3d();
 		case POINT:
 			return new Point2d();
 		case COLOR:
@@ -657,8 +657,7 @@ public enum AttributeType {
 				throw new NullPointerException();
 			}
 			if (obj instanceof Tuple3D && !(obj instanceof Point3D)) {
-				// TODO: Fix code: new Point3f((Tuple3D)obj);
-				return null;
+				return new Point3d((Tuple3D) obj);
 			}
 			return Point3D.class.cast(obj);
 		case POINT:
@@ -755,8 +754,7 @@ public enum AttributeType {
 					final int length = Array.getLength(obj);
 					final Point3D[] tab = new Point3D[length];
 					for (int i = 0; i < length; ++i) {
-						//FIXME: Fi code: new Point3fp((Tuple3D)Array.get(obj, i));
-						tab[i] = null;
+						tab[i] = new Point3d((Tuple3D) Array.get(obj, i));
 					}
 					return tab;
 				}

@@ -324,7 +324,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 *
 	 * @return the random vector.
 	 */
-	public Vector3d randomVector3f() {
+	public Vector3d randomVector3d() {
 	    return new Vector3d(
                 getRandom().nextDouble() * 1000 - 500,
                 getRandom().nextDouble() * 1000 - 500,

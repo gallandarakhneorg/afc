@@ -25,6 +25,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d3.d.Vector3d;
+
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -255,32 +258,28 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 	
 	@Test
-	@Ignore("Invalid 3D primitives are included")
 	public void mulVector3D() {
-		//TODO: Fix the code
-//		Vector3f vector = new Vector3f(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
-//		Matrix3f matrix = new Matrix3f(1,2,4,5,1,3,9,-2,1);
-//		
-//		Vector3f product = new Vector3f(vector.getX()+2*vector.getY()+4*vector.getZ(),5*vector.getX()+vector.getY()+3*vector.getZ(),9*vector.getX()-2*vector.getY()+vector.getZ());
-//		
-//		Vector3f result = new Vector3f();
-//		matrix.mul(vector, result);
-//		assertEpsilonEquals(product, result);
+		Vector3d vector = new Vector3d(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
+		Matrix3d matrix = new Matrix3d(1,2,4,5,1,3,9,-2,1);
+		
+		Vector3d product = new Vector3d(vector.getX()+2*vector.getY()+4*vector.getZ(),5*vector.getX()+vector.getY()+3*vector.getZ(),9*vector.getX()-2*vector.getY()+vector.getZ());
+		
+		Vector3d result = new Vector3d();
+		matrix.mul(vector, result);
+		assertEpsilonEquals(product, result);
 	}
 	
 	@Test
-	@Ignore("Invalid 3D primitives are included")
 	public void mulTransposeLeftVector3D() {
-		//TODO: Fix the code
-//		Vector3f vector = new Vector3f(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
-//		Matrix3f matrix = new Matrix3f(1,2,4,5,1,3,9,-2,1);
-//		
-//		Vector3f product = new Vector3f(vector.getX()+5*vector.getY()+9*vector.getZ(),2*vector.getX()+vector.getY()-2*vector.getZ(),4*vector.getX()+3*vector.getY()+vector.getZ());
-//		
-//		matrix.transpose();
-//		Vector3f result = new Vector3f();
-//		matrix.mul(vector, result);
-//		assertEpsilonEquals(product, result);
+		Vector3d vector = new Vector3d(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
+		Matrix3d matrix = new Matrix3d(1,2,4,5,1,3,9,-2,1);
+		
+		Vector3d product = new Vector3d(vector.getX()+5*vector.getY()+9*vector.getZ(),2*vector.getX()+vector.getY()-2*vector.getZ(),4*vector.getX()+3*vector.getY()+vector.getZ());
+		
+		matrix.transpose();
+		Vector3d result = new Vector3d();
+		matrix.mul(vector, result);
+		assertEpsilonEquals(product, result);
 	}
 	
 	@Test
@@ -752,36 +751,34 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	@Ignore("Invalid 3D primitives are included")
 	public void cov() {
-		//TODO: Fix the code
 		//Verification of the function, by verifying all  the properties of the covariant matrix
-//		Matrix3f covMatrix = new Matrix3f();
-//		
-//		Vector3D v1 = randomVector3f();
-//		Vector3D v2 = this.randomVector3f();
-//		Vector3D v3 = this.randomVector3f();
-//		Vector3D v4 = this.randomVector3f();
-//		
-//		Vector3f meanTest = new Vector3f((v1.getX()+v2.getX()+v3.getX()+v4.getX())/4.,(v1.getY()+v2.getY()+v3.getY()+v4.getY())/4.,(v1.getZ()+v2.getZ()+v3.getZ()+v4.getZ())/4.);
-//		Vector3f mean = new Vector3f();
-//		covMatrix.cov(mean, v1,v2,v3,v4);
-//		
-//		//equality of the means
-//		assertEpsilonEquals(mean, meanTest);
-//		
-//		//verification of symmetry property
-//		assertTrue(covMatrix.isSymmetric());
-//		
-//		//verification of positive-definite property
-//		Vector3D vector = this.randomVector3f();
-//		Vector3D temp = vector.clone();
-//		covMatrix.mul(vector, temp);
-//		double s = vector.dot(temp);
-//		assertTrue(s>0);
-//		
-//		//verification of derivability property
-//		assertNotEpsilonEquals(0, covMatrix.determinant());
+		Matrix3d covMatrix = new Matrix3d();
+		
+		Vector3D v1 = randomVector3d();
+		Vector3D v2 = this.randomVector3d();
+		Vector3D v3 = this.randomVector3d();
+		Vector3D v4 = this.randomVector3d();
+		
+		Vector3d meanTest = new Vector3d((v1.getX()+v2.getX()+v3.getX()+v4.getX())/4.,(v1.getY()+v2.getY()+v3.getY()+v4.getY())/4.,(v1.getZ()+v2.getZ()+v3.getZ()+v4.getZ())/4.);
+		Vector3d mean = new Vector3d();
+		covMatrix.cov(mean, v1,v2,v3,v4);
+		
+		//equality of the means
+		assertEpsilonEquals(mean, meanTest);
+		
+		//verification of symmetry property
+		assertTrue(covMatrix.isSymmetric());
+		
+		//verification of positive-definite property
+		Vector3D vector = this.randomVector3d();
+		Vector3D temp = (Vector3D) vector.clone();
+		covMatrix.mul(vector, temp);
+		double s = vector.dot(temp);
+		assertTrue(s>0);
+		
+		//verification of derivability property
+		assertNotEpsilonEquals(0, covMatrix.determinant());
 	}
 	
 	@Test
@@ -803,74 +800,68 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 	
 	@Test
-	@Ignore("Invalid 3D primitives are included")
 	public void eigenVectorsOfSymmetricMatrix_zero() {
-		//TODO: Fix the code
-//		Matrix3f m = new Matrix3f();
-//		Matrix3f eigenVectors = new Matrix3f();
-//		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
-//
-//		assertEpsilonEquals(0, eigenValues[0]);
-//		assertEpsilonEquals(0, eigenValues[1]);
-//		assertEpsilonEquals(0, eigenValues[2]);
-//
-//		Vector3D vector1 = new Vector3f();
-//		Vector3D vector2 = new Vector3f();
-//		Vector3D vector3 = new Vector3f();
-//		eigenVectors.getColumn(0, vector1);
-//		eigenVectors.getColumn(1, vector2);
-//		eigenVectors.getColumn(2, vector3);
-//		assertFpVectorEquals(1, 0, 0, vector1);
-//		assertFpVectorEquals(0, 1, 0, vector2);
-//		assertFpVectorEquals(0, 0, 1, vector3);
+		Matrix3d m = new Matrix3d();
+		Matrix3d eigenVectors = new Matrix3d();
+		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
+
+		assertEpsilonEquals(0, eigenValues[0]);
+		assertEpsilonEquals(0, eigenValues[1]);
+		assertEpsilonEquals(0, eigenValues[2]);
+
+		Vector3D vector1 = new Vector3d();
+		Vector3D vector2 = new Vector3d();
+		Vector3D vector3 = new Vector3d();
+		eigenVectors.getColumn(0, vector1);
+		eigenVectors.getColumn(1, vector2);
+		eigenVectors.getColumn(2, vector3);
+		assertFpVectorEquals(1, 0, 0, vector1);
+		assertFpVectorEquals(0, 1, 0, vector2);
+		assertFpVectorEquals(0, 0, 1, vector3);
 	}
 	
 	@Test
-	@Ignore("Invalid 3D primitives are included")
 	public void eigenVectorsOfSymmetricMatrix_identity() {
-//		//TODO: Fix the code
-//		Matrix3f m = new Matrix3f();
-//		m.setIdentity();
-//		Matrix3f eigenVectors = new Matrix3f();
-//		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
-//
-//		assertEpsilonEquals(1, eigenValues[0]);
-//		assertEpsilonEquals(1, eigenValues[1]);
-//		assertEpsilonEquals(1, eigenValues[2]);
-//
-//		Vector3D vector1 = new Vector3f();
-//		Vector3D vector2 = new Vector3f();
-//		Vector3D vector3 = new Vector3f();
-//		eigenVectors.getColumn(0, vector1);
-//		eigenVectors.getColumn(1, vector2);
-//		eigenVectors.getColumn(2, vector3);
-//		assertFpVectorEquals(1, 0, 0, vector1);
-//		assertFpVectorEquals(0, 1, 0, vector2);
-//		assertFpVectorEquals(0, 0, 1, vector3);
+		Matrix3d m = new Matrix3d();
+		m.setIdentity();
+		Matrix3d eigenVectors = new Matrix3d();
+		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
+
+		assertEpsilonEquals(1, eigenValues[0]);
+		assertEpsilonEquals(1, eigenValues[1]);
+		assertEpsilonEquals(1, eigenValues[2]);
+
+		Vector3D vector1 = new Vector3d();
+		Vector3D vector2 = new Vector3d();
+		Vector3D vector3 = new Vector3d();
+		eigenVectors.getColumn(0, vector1);
+		eigenVectors.getColumn(1, vector2);
+		eigenVectors.getColumn(2, vector3);
+		assertFpVectorEquals(1, 0, 0, vector1);
+		assertFpVectorEquals(0, 1, 0, vector2);
+		assertFpVectorEquals(0, 0, 1, vector3);
 	}
 
 	@Test
-	@Ignore("Invalid 3D primitives are included")
 	public void eigenVectorsOfSymmetricMatrix_sym() {
-		//TODO: Fix the code
-//		Matrix3f m = new Matrix3f(1, 5, 0, 5, 2, 3, 0, 3, 1);
-//		Matrix3f eigenVectors = new Matrix3f();
-//		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
-//		
-//		assertEpsilonEquals(-4.3523, eigenValues[0]);
-//		assertEpsilonEquals(7.3523, eigenValues[1]);
-//		assertEpsilonEquals(1, eigenValues[2]);
-//		
-//		Vector3D vector1 = new Vector3f();
-//		Vector3D vector2 = new Vector3f();
-//		Vector3D vector3 = new Vector3f();
-//		eigenVectors.getColumn(0, vector1);
-//		eigenVectors.getColumn(1, vector2);
-//		eigenVectors.getColumn(2, vector3);
-//		
-//		assertFpVectorEquals(6.3171e-01, -6.7623e-01, 3.7903e-01, vector1);
-//		assertFpVectorEquals(5.7986e-01, 7.3669e-01, 3.4792e-01, vector2);
-//		assertFpVectorEquals(-5.1450e-01, 6.9389e-17, 8.5749e-01, vector3);
+		Matrix3d m = new Matrix3d(1, 5, 0, 5, 2, 3, 0, 3, 1);
+		Matrix3d eigenVectors = new Matrix3d();
+		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
+		
+		assertEpsilonEquals(-4.3523, eigenValues[0]);
+		assertEpsilonEquals(7.3523, eigenValues[1]);
+		assertEpsilonEquals(1, eigenValues[2]);
+		
+		Vector3D vector1 = new Vector3d();
+		Vector3D vector2 = new Vector3d();
+		Vector3D vector3 = new Vector3d();
+		eigenVectors.getColumn(0, vector1);
+		eigenVectors.getColumn(1, vector2);
+		eigenVectors.getColumn(2, vector3);
+		
+		assertFpVectorEquals(6.3171e-01, -6.7623e-01, 3.7903e-01, vector1);
+		assertFpVectorEquals(5.7986e-01, 7.3669e-01, 3.4792e-01, vector2);
+		assertFpVectorEquals(-5.1450e-01, 6.9389e-17, 8.5749e-01, vector3);
 	}
 	
 	@Test
@@ -886,7 +877,7 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	public void operator_addMatrix3f() {
+	public void operator_addMatrix3d() {
 		Matrix3d m1 = new Matrix3d(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
 		Matrix3d m2 = new Matrix3d(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
 		Matrix3d m3 = new Matrix3d();
@@ -910,7 +901,7 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	public void operator_removeMatrix3f() {
+	public void operator_removeMatrix3d() {
 		Matrix3d m1 = new Matrix3d(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
 		Matrix3d m2 = new Matrix3d(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
 		Matrix3d m3 = new Matrix3d();
@@ -934,7 +925,7 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	public void operator_plusMatrix3f() {
+	public void operator_plusMatrix3d() {
 		Matrix3d m1 = new Matrix3d(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
 		Matrix3d m2 = new Matrix3d(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
 		Matrix3d m3 = new Matrix3d();
@@ -958,7 +949,7 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	public void operator_minusMatrix3f() {
+	public void operator_minusMatrix3d() {
 		Matrix3d m1 = new Matrix3d(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
 		Matrix3d m2 = m1.clone();
 		double s = getRandom().nextDouble() * 100;
@@ -993,7 +984,7 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	public void operator_multiplyMatrix3f() {
+	public void operator_multiplyMatrix3d() {
 		double a = getRandom().nextDouble() * 100;
 		double b = getRandom().nextDouble() * 100;
 		double c = getRandom().nextDouble() * 100;

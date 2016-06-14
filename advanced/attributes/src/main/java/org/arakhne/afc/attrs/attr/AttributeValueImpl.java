@@ -59,6 +59,7 @@ import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.VectorToolkit;
@@ -328,7 +329,7 @@ public class AttributeValueImpl implements AttributeValue {
 	/**
 	 * @param value is the value.
 	 */
-	public AttributeValueImpl(Point3D value) {
+	public AttributeValueImpl(Point3D<?, ?> value) {
 		this.type = AttributeType.POINT3D;
 		this.value = value;
 		this.assigned = this.value != null;
@@ -341,8 +342,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public AttributeValueImpl(float x, float y, float z) {
 		this.type = AttributeType.POINT3D;
-		//TODO: Fix code: new Point3fp(x, y, z);
-		this.value = null;
+		this.value = new Point3d(x, y, z);
 		this.assigned = true;
 	}
 
@@ -353,8 +353,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public AttributeValueImpl(double x, double y, double z) {
 		this.type = AttributeType.POINT3D;
-		// TODO: Fix code: new Point3fp(x, y, z);
-		this.value = null;
+		this.value = new Point3d(x, y, z);
 		this.assigned = true;
 	}
 
@@ -379,7 +378,7 @@ public class AttributeValueImpl implements AttributeValue {
 	/**
 	 * @param value is the value.
 	 */
-	public AttributeValueImpl(Point3D[] value) {
+	public AttributeValueImpl(Point3D<?, ?>[] value) {
 		this.type = AttributeType.POLYLINE3D;
 		this.value = value;
 		this.assigned = this.value != null;
@@ -1066,7 +1065,7 @@ public class AttributeValueImpl implements AttributeValue {
 				buffer1.append(pt2.getY());
 				return buffer1.toString();
 			case POINT3D:
-				final Point3D pt3 = (Point3D) this.value;
+				final Point3D<?, ?> pt3 = (Point3D<?, ?>) this.value;
 				final StringBuilder buffer2 = new StringBuilder();
 				buffer2.append(pt3.getX());
 				buffer2.append(";"); //$NON-NLS-1$
@@ -1093,7 +1092,7 @@ public class AttributeValueImpl implements AttributeValue {
 				return buffer3.toString();
 			case POLYLINE3D:
 				final StringBuilder buffer4 = new StringBuilder();
-				final Point3D[] lstpt3 = (Point3D[]) this.value;
+				final Point3D<?, ?>[] lstpt3 = (Point3D<?, ?>[]) this.value;
 				for (int i = 0; i < lstpt3.length; ++i) {
 					if (lstpt3[i] != null) {
 						if (buffer4.length() > 0) {
@@ -1429,83 +1428,85 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
-	private static Point3D parsePoint3D(String text, boolean isStrict) {
+	private static Point3D<?, ?> parsePoint3D(String text, boolean isStrict) {
 		final String[] comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && comp.length != 3) {
 			return null;
 		}
-		//FIXME: fix code. new Point3fp();
-		final Point3D pt3 = null;
-		//		if (comp.length>0) pt3.setX(Float.parseFloat(comp[0]));
-		//		if (comp.length>1) pt3.setY(Float.parseFloat(comp[1]));
-		//		if (comp.length>2) pt3.setZ(Float.parseFloat(comp[2]));
+		final Point3D<?, ?> pt3 = new Point3d();
+		if (comp.length > 0) {
+			pt3.setX(Double.parseDouble(comp[0]));
+		}
+		if (comp.length > 1) {
+			pt3.setY(Double.parseDouble(comp[1]));
+		}
+		if (comp.length > 2) {
+			pt3.setZ(Double.parseDouble(comp[2]));
+		}
 		return pt3;
 	}
 
 	@Pure
 	@Override
-	public Point3D getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException {
-		//FIXME: fix code
-		//		try {
-		//			assertAssignedAndNotNull();
-		//			switch(this.type) {
-		//			case COLOR:
-		//				Color col = (Color)this.value;
-		//				return new Point3f(col.getRed(), col.getGreen(), col.getBlue());
-		//			case REAL:
-		//				Double flt = (Double)this.value;
-		//				return new Point3f(flt.floatValue(), 0, 0);
-		//			case INTEGER:
-		//				Long lg = (Long)this.value;
-		//				return new Point3f(lg.floatValue(), 0, 0);
-		//			case TIMESTAMP:
-		//				Timestamp ts = (Timestamp)this.value;
-		//				return new Point3f(ts.floatValue(), 0, 0);
-		//			case DATE:
-		//				Date dt = (Date)this.value;
-		//				return new Point3f(dt.getTime(), 0, 0);
-		//			case POINT:
-		//				Point2D pt2 = (Point2D)this.value;
-		//				return new Point3f(pt2.getX(), pt2.getY(), 0);
-		//			case POINT3D:
-		//				return ((Point3D)this.value).clone();
-		//			case STRING:
-		//				return parsePoint3D((String)this.value, false);
-		//			case OBJECT:
-		//				if (this.value instanceof Tuple3D) {
-		//					Tuple3D<?> t3 = (Tuple3D<?>)this.value;
-		//					return new Point3f(t3.getX(), t3.getY(), t3.getZ());
-		//				}
-		//				if (this.value instanceof Tuple2D) {
-		//					Tuple2D<?> t2 = (Tuple2D<?>)this.value;
-		//					return new Point3f(t2.getX(), t2.getY(), 0);
-		//				}
-		//				break;
-		//			case BOOLEAN:
-		//			case IMAGE:
-		//			case POLYLINE:
-		//			case POLYLINE3D:
-		//			case URI:
-		//			case URL:
-		//			case UUID:
-		//			case INET_ADDRESS:
-		//			case ENUMERATION:
-		//			case TYPE:
-		//			default:
-		//			}
-		//		}
-		//		catch(ClassCastException exception) {
-		//			//
-		//		}
-		//		catch(NumberFormatException exception) {
-		//			//
-		//		}
-		//		throw new InvalidAttributeTypeException();
-		return null;
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
+	public Point3D<?, ?> getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException {
+		try {
+			assertAssignedAndNotNull();
+			switch (this.type) {
+			case COLOR:
+				final Color col = (Color) this.value;
+				return new Point3d(col.getRed(), col.getGreen(), col.getBlue());
+			case REAL:
+				final Double flt = (Double) this.value;
+				return new Point3d(flt.floatValue(), 0, 0);
+			case INTEGER:
+				final Long lg = (Long) this.value;
+				return new Point3d(lg.floatValue(), 0, 0);
+			case TIMESTAMP:
+				final Timestamp ts = (Timestamp) this.value;
+				return new Point3d(ts.floatValue(), 0, 0);
+			case DATE:
+				final Date dt = (Date) this.value;
+				return new Point3d(dt.getTime(), 0, 0);
+			case POINT:
+				final Point2D<?, ?> pt2 = (Point2D<?, ?>) this.value;
+				return new Point3d(pt2.getX(), pt2.getY(), 0);
+			case POINT3D:
+				return ((Point3D<?, ?>) this.value).clone();
+			case STRING:
+				return parsePoint3D((String) this.value, false);
+			case OBJECT:
+				if (this.value instanceof Tuple3D) {
+					final Tuple3D<?> t3 = (Tuple3D<?>) this.value;
+					return new Point3d(t3.getX(), t3.getY(), t3.getZ());
+				}
+				if (this.value instanceof Tuple2D) {
+					final Tuple2D<?> t2 = (Tuple2D<?>) this.value;
+					return new Point3d(t2.getX(), t2.getY(), 0);
+				}
+				break;
+			case BOOLEAN:
+			case IMAGE:
+			case POLYLINE:
+			case POLYLINE3D:
+			case URI:
+			case URL:
+			case UUID:
+			case INET_ADDRESS:
+			case ENUMERATION:
+			case TYPE:
+			default:
+			}
+		} catch (ClassCastException exception) {
+			//
+		} catch (NumberFormatException exception) {
+			//
+		}
+		throw new InvalidAttributeTypeException();
 	}
 
 	@Override
-	public void setPoint3D(Point3D value) {
+	public void setPoint3D(Point3D<?, ?> value) {
 		this.value = value;
 		this.type = AttributeType.POINT3D;
 		this.assigned = this.value != null;
@@ -1513,8 +1514,7 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Override
 	public void setPoint3D(float x, float y, float z) {
-		//FIXME: Fix code: new Point3f(x, y, z);
-		this.value = null;
+		this.value = new Point3d(x, y, z);
 		this.type = AttributeType.POINT3D;
 		this.assigned = true;
 	}
@@ -1524,15 +1524,15 @@ public class AttributeValueImpl implements AttributeValue {
 		if (isStrict && comp.length != 2) {
 			return null;
 		}
-		final float x;
-		final float y;
+		final double x;
+		final double y;
 		if (comp.length > 0) {
-			x = Float.parseFloat(comp[0]);
+			x = Double.parseDouble(comp[0]);
 		} else {
 			x = 0;
 		}
 		if (comp.length > 1) {
-			y = Float.parseFloat(comp[1]);
+			y = Double.parseDouble(comp[1]);
 		} else {
 			y = 0;
 		}
@@ -1566,7 +1566,7 @@ public class AttributeValueImpl implements AttributeValue {
 				return new Point2d(((Point2D<?, ?>) this.value).getX(),
 						((Point2D<?, ?>) this.value).getY());
 			case POINT3D:
-				final Point3D pt3 = (Point3D) this.value;
+				final Point3D<?, ?> pt3 = (Point3D<?, ?>) this.value;
 				return new Point2d(pt3.getX(), pt3.getY());
 			case STRING:
 				return parsePoint((String) this.value, false);
@@ -1658,7 +1658,7 @@ public class AttributeValueImpl implements AttributeValue {
 				final Point2D<?, ?> pt2 = (Point2D<?, ?>) this.value;
 				return VectorToolkit.color((float) pt2.getX(), (float) pt2.getY(), 0f, 1f);
 			case POINT3D:
-				final Point3D pt3 = (Point3D) this.value;
+				final Point3D<?, ?> pt3 = (Point3D<?, ?>) this.value;
 				return VectorToolkit.color((float) pt3.getX(), (float) pt3.getY(), (float) pt3.getZ(), 1f);
 			case STRING:
 				final Color color = parseColor((String) this.value, false);
@@ -1761,7 +1761,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return null;
 	}
 
-	private UUID extractUUIDFromString(URI uri) {
+	private static UUID extractUUIDFromString(URI uri) {
 		try {
 			return UUID.fromString(uri.getHost());
 		} catch (AssertionError e) {
@@ -2087,27 +2087,25 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
-	private static Point3D[] parsePolyline3D(String text, boolean isStrict) {
+	private static Point3D<?, ?>[] parsePolyline3D(String text, boolean isStrict) {
 		final String[] comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && (comp.length % 3) != 0) {
 			return new Point3D[0];
 		}
 		final int fullPoints = comp.length / 3;
 		final boolean addPt = fullPoints * 3 != comp.length;
-		final Point3D[] tab = new Point3D[addPt ? fullPoints + 1 : fullPoints];
+		final Point3D<?, ?>[] tab = new Point3D[addPt ? fullPoints + 1 : fullPoints];
 		for (int i = 2, j = 0; (i < comp.length) && (j < tab.length); i += 3, ++j) {
-			// FIXME: fix code: new Point3f(
-			//					Float.parseFloat(comp[i-2]),
-			//					Float.parseFloat(comp[i-1]),
-			//					Float.parseFloat(comp[i]));
-			tab[j] = null;
+			tab[j] = new Point3d(
+					Double.parseDouble(comp[i - 2]),
+					Double.parseDouble(comp[i - 1]),
+					Double.parseDouble(comp[i]));
 		}
 		if (addPt) {
-			final float x = Float.parseFloat(comp[fullPoints * 3]);
+			final double x = Double.parseDouble(comp[fullPoints * 3]);
 			final int idx = fullPoints * 3 + 1;
-			final float y = idx < comp.length ? Float.parseFloat(comp[idx]) : 0;
-			// FIXME: Fix code new Point3f(x, y, 0);
-			tab[tab.length - 1]  = null;
+			final double y = idx < comp.length ? Double.parseDouble(comp[idx]) : 0;
+			tab[tab.length - 1]  = new Point3d(x, y, 0);
 		}
 		return tab;
 	}
@@ -2116,26 +2114,27 @@ public class AttributeValueImpl implements AttributeValue {
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:npathcomplexity"})
-	public Point3D[] getPolyline3D() throws InvalidAttributeTypeException, AttributeNotInitializedException {
+	public Point3D<?, ?>[] getPolyline3D() throws InvalidAttributeTypeException, AttributeNotInitializedException {
 		try {
 			assertAssignedAndNotNull();
 			switch (this.type) {
 			case POINT:
 				final Point2D<?, ?> pt2 = (Point2D<?, ?>) this.value;
-				//TODO: Fix code: new Point3fp(pt2.getX(), pt2.getY(), 0f)
-				return new Point3D[] {};
+				return new Point3D[] {
+					new Point3d(pt2.getX(), pt2.getY(), 0),
+				};
 			case POINT3D:
 				return new Point3D[] {
-                        ((Point3D<?, ?>) this.value).clone(),
+						((Point3D<?, ?>) this.value).clone(),
 				};
 			case POLYLINE:
 				final Point2D<?, ?>[] current = (Point2D<?, ?>[]) this.value;
-				final Point3D[] tab = new Point3D[current.length];
+				final Point3D<?, ?>[] tab = new Point3D[current.length];
 				for (int i = 0; i < current.length; ++i) {
-					//					TODO: Fix code tab[i] = new Point3f(
-					//								current[i].getX(),
-					//								current[i].getY(),
-					//								0f);
+					tab[i] = new Point3d(
+							current[i].getX(),
+							current[i].getY(),
+							0);
 				}
 				return tab;
 			case POLYLINE3D:
@@ -2145,12 +2144,14 @@ public class AttributeValueImpl implements AttributeValue {
 			case OBJECT:
 				if (this.value instanceof Tuple2D<?>) {
 					final Tuple2D<?> t2 = (Tuple2D<?>) this.value;
-					// FIXME: Fixcode: new Point3f(t2.getX(), t2.getY(), 0)
-					return new Point3D[] {};
+					return new Point3D[] {
+						new Point3d(t2.getX(), t2.getY(), 0),
+					};
 				} else if (this.value instanceof Tuple3D<?>) {
 					final Tuple3D<?> t2 = (Tuple3D<?>) this.value;
-					// FIXME: Fixcode: new Point3f(t2.getX(), t2.getY(), t2.getZ())
-					return new Point3D[] {};
+					return new Point3D[] {
+						new Point3d(t2.getX(), t2.getY(), t2.getZ()),
+					};
 				} else if (this.value.getClass().isArray()) {
 					final Class<?> elementType = this.value.getClass().getComponentType();
 					if (Point3D.class.equals(elementType)) {
@@ -2158,20 +2159,18 @@ public class AttributeValueImpl implements AttributeValue {
 					}
 					final int size = Array.getLength(this.value);
 					if (Tuple3D.class.isAssignableFrom(elementType)) {
-						final Point3D[] pa3 = new Point3D[size];
+						final Point3D<?, ?>[] pa3 = new Point3D[size];
 						for (int i = 0; i < pa3.length; ++i) {
 							final Tuple3D<?> t = (Tuple3D<?>) Array.get(this.value, i);
-							// FIXME: Fixcode: new Point3f(t);
-							pa3[i] = null;
+							pa3[i] = new Point3d(t);
 						}
 						return pa3;
 					}
 					if (Tuple2D.class.isAssignableFrom(elementType)) {
-						final Point3D[] pa3 = new Point3D[size];
+						final Point3D<?, ?>[] pa3 = new Point3D[size];
 						for (int i = 0; i < pa3.length; ++i) {
 							final Tuple2D<?> t = (Tuple2D<?>) Array.get(this.value, i);
-							// FIXME: Fixcode: new Point3f(t.getX(), t.getY(), 0);
-							pa3[i] = null;
+							pa3[i] = new Point3d(t.getX(), t.getY(), 0);
 						}
 						return pa3;
 					}
@@ -2201,18 +2200,18 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	@Override
-	public void setPolyline3D(Point3D... value) {
+	public void setPolyline3D(Point3D<?, ?>... value) {
 		this.value = value;
 		this.type = AttributeType.POLYLINE3D;
 		this.assigned = this.value != null;
 	}
 
 	@Override
-	public void setPolyline3D(Collection<? extends Point3D> value) {
+	public void setPolyline3D(Collection<? extends Point3D<?, ?>> value) {
 		if (value == null) {
 			this.value = null;
 		} else {
-			final Point3D[] tab = new Point3D[value.size()];
+			final Point3D<?, ?>[] tab = new Point3D[value.size()];
 			value.toArray(tab);
 			this.value = tab;
 		}
@@ -2221,8 +2220,8 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	@Override
-	public void addToPolyline3D(Point3D... pts) {
-		final Point3D[] tab;
+	public void addToPolyline3D(Point3D<?, ?>... pts) {
+		final Point3D<?, ?>[] tab;
 		if (this.value instanceof Point3D[]) {
 			final int size = ((Point3D[]) this.value).length;
 			tab = new Point3D[size + pts.length];
@@ -2237,8 +2236,8 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	@Override
-	public void addToPolyline3D(Collection<? extends Point3D> pts) {
-		final Point3D[] tab;
+	public void addToPolyline3D(Collection<? extends Point3D<?, ?>> pts) {
+		final Point3D<?, ?>[] tab;
 		if (this.value instanceof Point3D[]) {
 			final int size = ((Point3D[]) this.value).length;
 			tab = new Point3D[size + pts.size()];
@@ -2262,14 +2261,14 @@ public class AttributeValueImpl implements AttributeValue {
 		final boolean addPt = fullPoints * 2 != comp.length;
 		final Point2D<?, ?>[] tab = new Point2D[addPt ? fullPoints + 1 : fullPoints];
 		for (int i = 1, j = 0; (i < comp.length) && (j < fullPoints); i += 2, ++j) {
-			// FIXME: Fixcode: tab[j] = new Point2f(
-			//					Float.parseFloat(comp[i-1]),
-			//					Float.parseFloat(comp[i]));
+			tab[j] = new Point2d(
+					Double.parseDouble(comp[i - 1]),
+					Double.parseDouble(comp[i]));
 		}
 		if (addPt) {
-			// FIXME: Fixcode: tab[tab.length-1]  = new Point2f(
-			//					Float.parseFloat(comp[comp.length-1]),
-			//					0);
+			tab[tab.length - 1]  = new Point2d(
+					Double.parseDouble(comp[comp.length - 1]),
+					0);
 		}
 		return tab;
 	}
@@ -2287,14 +2286,14 @@ public class AttributeValueImpl implements AttributeValue {
 					new Point2d(((Point2D<?, ?>) this.value).getX(), ((Point2D<?, ?>) this.value).getY()),
 				};
 			case POINT3D:
-				final Point3D pt3 = (Point3D) this.value;
+				final Point3D<?, ?> pt3 = (Point3D<?, ?>) this.value;
 				return new Point2D[] {
 					new Point2d(pt3.getX(), pt3.getY()),
 				};
 			case POLYLINE:
 				return (Point2D[]) this.value;
 			case POLYLINE3D:
-				final Point3D[] current = (Point3D[]) this.value;
+				final Point3D<?, ?>[] current = (Point3D[]) this.value;
 				final Point2D<?, ?>[] tab = new Point2D<?, ?>[current.length];
 				for (int i = 0; i < current.length; ++i) {
 					tab[i] = new Point2d(

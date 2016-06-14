@@ -48,6 +48,7 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("deprecation")
 public abstract class AbstractAttributeProvider implements AttributeProvider, Iterable<Attribute> {
 
 	private static final long serialVersionUID = 1219373996718945571L;

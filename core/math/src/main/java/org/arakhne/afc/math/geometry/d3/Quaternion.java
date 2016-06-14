@@ -25,6 +25,7 @@ import java.io.Serializable;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.Matrix4d;
 
@@ -464,8 +465,7 @@ public interface Quaternion extends Cloneable, Serializable {
 		 */
 		@Pure
 		public Vector3D<?, ?> getAxis() {
-			return null;
-			//TODO:	return new Vector3f(this.x, this.y, this.z);
+			return new Vector3d(this.x, this.y, this.z);
 		}
 
 		/** Replies the rotation angle.

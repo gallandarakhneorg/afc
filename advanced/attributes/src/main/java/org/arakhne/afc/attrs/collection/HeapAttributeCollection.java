@@ -57,6 +57,7 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("deprecation")
 public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 	private static final long serialVersionUID = 4362736589775617590L;

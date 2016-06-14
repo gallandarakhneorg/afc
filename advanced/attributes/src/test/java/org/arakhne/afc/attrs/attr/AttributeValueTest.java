@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.attrs.attr;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -42,6 +42,7 @@ import org.junit.Test;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Colors;
@@ -337,7 +338,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertEquals(txt,attr.getString());
 		assertEquals(Colors.RED, attr.getJavaObject());
 		assertEquals(new Point2d(255,0),attr.getPoint());
-		assertEquals(null /* FIXME: fix code: new Point3fp(255,0,0)*/,attr.getPoint3D());
+		assertEquals(new Point3d(255,0,0),attr.getPoint3D());
 		assertAttributeException(attr,"getPolyline"); 
 		assertAttributeException(attr,"getPolyline3D"); 
 	}
@@ -365,8 +366,8 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertEquals(currentDate.getTime(),attr.getTimestamp());
 		assertEquals(txt,attr.getString());
 		assertEquals(currentDate, attr.getJavaObject());
-		//TODO: fixcode: assertEquals(new Point2fp(currentDate.getTime(), 0), attr.getPoint());
-		//TODO: fixcode: assertEquals(null /* FIXME: fix code : new Point3f(currentDate.getTime(), 0, 0)*/, attr.getPoint3D());
+		assertEquals(new Point2d(currentDate.getTime(), 0), attr.getPoint());
+		assertEquals(new Point3d(currentDate.getTime(), 0, 0), attr.getPoint3D());
 		assertAttributeException(attr,"getPolyline"); 
 		assertAttributeException(attr,"getPolyline3D"); 
 	}
@@ -394,7 +395,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertEquals(txt,attr.getString());
 		assertAttributeException(attr,"getJavaObject"); 
 		assertEquals(new Point2d(nb,0),attr.getPoint());
-		//TODO: fix code: assertEquals(new Point3f(nb,0,0),attr.getPoint3D());
+		assertEquals(new Point3d(nb,0,0),attr.getPoint3D());
 		assertAttributeException(attr,"getPolyline"); 
 		assertAttributeException(attr,"getPolyline3D"); 
 	}
@@ -422,7 +423,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertEquals(txt,attr.getString());
 		assertAttributeException(attr,"getJavaObject"); 
 		assertEquals(new Point2d(nb,0),attr.getPoint());
-		//TODO: fix code: assertEquals(new Point3f(nb,0,0),attr.getPoint3D());
+		assertEquals(new Point3d(nb,0,0),attr.getPoint3D());
 		assertAttributeException(attr,"getPolyline"); 
 		assertAttributeException(attr,"getPolyline3D"); 
 	}
@@ -449,7 +450,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertEquals(ic.toString(), attr.getString());
 		assertEquals(ic,attr.getJavaObject());
 		assertAttributeException(attr,"getPoint"); 
-		//TODO: fixcode: assertAttributeException(attr,"getPoint3D"); 
+		assertAttributeException(attr,"getPoint3D"); 
 		assertAttributeException(attr,"getPolyline"); 
 		assertAttributeException(attr,"getPolyline3D"); 
 	}
@@ -477,7 +478,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertEquals(txt,attr.getString());
 		assertAttributeException(attr,"getJavaObject"); 
 		assertEquals(new Point2d(nb,0),attr.getPoint());
-		//TODO: fix code: assertEquals(new Point3f(nb,0,0),attr.getPoint3D());
+		assertEquals(new Point3d(nb,0,0),attr.getPoint3D());
 		assertAttributeException(attr,"getPolyline"); 
 		assertAttributeException(attr,"getPolyline3D"); 
 	}
@@ -504,8 +505,8 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertEquals(nb,attr.getTimestamp());
 		assertEquals(txt,attr.getString());
 		assertAttributeException(attr,"getJavaObject"); 
-		//TODO: fixcode: assertEquals(new Point2fp(nb,0),attr.getPoint());
-		//TODO: fix code: assertEquals(new Point3f(nb,0,0),attr.getPoint3D());
+		assertEquals(new Point2d(nb,0),attr.getPoint());
+		assertEquals(new Point3d(nb,0,0),attr.getPoint3D());
 		assertAttributeException(attr,"getPolyline"); 
 		assertAttributeException(attr,"getPolyline3D"); 
 	}
@@ -513,7 +514,7 @@ public class AttributeValueTest extends AbstractTestCase {
 	@Test
 	public void attributeValueImplPoint2d() throws Exception {
 		Point2D pt = new Point2d((float)Math.random(),(float)Math.random());
-		Point3D pt3d = null; // FIXME: fix code: new Point3f(pt.getX(),pt.getY(),0);
+		Point3D pt3d = new Point3d(pt.getX(),pt.getY(),0);
 		String str = pt.getX()+";"+pt.getY(); 
 		AttributeValue attr = new AttributeValueImpl(pt);
 		
@@ -525,7 +526,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		
 		assertEquals(pt,attr.getValue());
 		assertAttributeException(attr,"getBoolean"); 
-		//TODO: fix code: assertEquals(VectorToolkit.color(pt.getX(),pt.getY(),0f),attr.getColor());
+		assertEquals(VectorToolkit.color((float) pt.getX(), (float) pt.getY(), 0f), attr.getColor());
 		assertAttributeException(attr,"getDate"); 
 		assertAttributeException(attr,"getImage"); 
 		assertAttributeException(attr,"getInteger"); 
@@ -544,7 +545,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		float x = (float)Math.random();
 		float y = (float)Math.random();
 		Point2D pt = new Point2d(x,y);
-		Point3D pt3d = null; // FIXME: fix code: new Point3f(x,y,0);
+		Point3D pt3d = new Point3d(x,y,0);
 		String str = x+";"+y; 
 		AttributeValue attr = new AttributeValueImpl(x,y);
 		
@@ -556,7 +557,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		
 		assertEquals(pt,attr.getValue());
 		assertAttributeException(attr,"getBoolean"); 
-		//TODO: fix code: assertEquals(VectorToolkit.color(pt.getX(),pt.getY(),0f),attr.getColor());
+		assertEquals(VectorToolkit.color((float) pt.getX(),(float) pt.getY(),0f),attr.getColor());
 		assertAttributeException(attr,"getDate"); 
 		assertAttributeException(attr,"getImage"); 
 		assertAttributeException(attr,"getInteger"); 
@@ -575,7 +576,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		float x = (float)Math.random();
 		float y = (float)Math.random();
 		float z = (float)Math.random();
-		Point3D pt = null; // FIXME: fix code: new Point3f(x,y,z);
+		Point3D pt = new Point3d(x,y,z);
 		Point2D pt2d = new Point2d(x,y);
 		String str = x+";"+y+";"+z;  
 		AttributeValue attr = new AttributeValueImpl(pt);
@@ -588,7 +589,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		
 		assertEquals(pt,attr.getValue());
 		assertAttributeException(attr,"getBoolean"); 
-		//TODO: fix code: assertEquals(VectorToolkit.color(pt.getX(),pt.getY(),pt.getZ()),attr.getColor());
+		assertEquals(VectorToolkit.color((float) pt.getX(),(float) pt.getY(),(float) pt.getZ()),attr.getColor());
 		assertAttributeException(attr,"getDate"); 
 		assertAttributeException(attr,"getImage"); 
 		assertAttributeException(attr,"getInteger"); 
@@ -607,7 +608,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		double x = Math.random();
 		double y = Math.random();
 		double z = Math.random();
-		Point3D pt = null; // FIXME: fix code: new Point3f(x,y,z);
+		Point3D pt = new Point3d(x,y,z);
 		Point2D pt2d = new Point2d(x,y);
 		String str = ((float)x)+";"+((float)y)+";"+((float)z);  
 		AttributeValue attr = new AttributeValueImpl(x,y,z);
@@ -620,7 +621,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		
 		assertEquals(pt,attr.getValue());
 		assertAttributeException(attr,"getBoolean"); 
-		//TODO: fix code: assertEquals(VectorToolkit.color(pt.getX(),pt.getY(),pt.getZ()),attr.getColor());
+		assertEquals(VectorToolkit.color((float) pt.getX(),(float) pt.getY(),(float) pt.getZ()),attr.getColor());
 		assertAttributeException(attr,"getDate"); 
 		assertAttributeException(attr,"getImage"); 
 		assertAttributeException(attr,"getInteger"); 
@@ -638,7 +639,7 @@ public class AttributeValueTest extends AbstractTestCase {
 	public void attributeValueImplString_random() throws Exception {
 		double x = Math.random();
 		Point2D pt2d = new Point2d(x,0);
-		Point3D pt3d = null; // FIXME: fix code: new Point3f(x,0,0);
+		Point3D pt3d = new Point3d(x,0,0);
 		String str = Double.toHexString(x);
 		AttributeValue attr = new AttributeValueImpl(str);
 		
@@ -687,9 +688,9 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertEquals(str,attr.getString());
 		assertAttributeException(attr,"getJavaObject"); 
 		assertAttributeException(attr,"getPoint"); 
-		//TODO: fixcode: assertAttributeException(attr,"getPoint3D"); 
-		//TODO: fixcode: assertAttributeException(attr,"getPolyline"); 
-		//TODO: fixcode: assertAttributeException(attr,"getPolyline3D"); 
+		assertAttributeException(attr,"getPoint3D"); 
+		assertAttributeException(attr,"getPolyline"); 
+		assertAttributeException(attr,"getPolyline3D"); 
 	}
 
 	@Test
@@ -697,7 +698,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		Color c = Colors.RED;
 		Point2D pt2d = new Point2d(c.getRed(),c.getGreen());
 		Point2D pt2d2 = new Point2d(c.getBlue(),0);
-		Point3D pt3d = null; // FIXME: fix code: new Point3f(c.getRed(),c.getGreen(),c.getBlue());
+		Point3D pt3d = new Point3d(c.getRed(),c.getGreen(),c.getBlue());
 		String str = c.getRed()+";"+c.getGreen()+";"+c.getBlue();  
 		AttributeValue attr = new AttributeValueImpl(str);
 		
@@ -784,7 +785,7 @@ public class AttributeValueTest extends AbstractTestCase {
 	public void attributeValueImplString_Integer() throws Exception {
 		int nb = new Random().nextInt(20000)+256;
 		Point2D pt2d = new Point2d(nb,0);
-		Point3D pt3d = null; // FIXME: fix code: new Point3f(nb,0,0);
+		Point3D pt3d = new Point3d(nb,0,0);
 		String str = Integer.toString(nb);
 		AttributeValue attr = new AttributeValueImpl(str);
 		
@@ -814,7 +815,7 @@ public class AttributeValueTest extends AbstractTestCase {
 	public void attributeValueImplString_Long() throws Exception {
 		long nb = new Random().nextInt(20000)+256;
 		Point2D pt2d = new Point2d(nb,0);
-		Point3D pt3d = null; // FIXME: fix code: new Point3f(nb,0,0);
+		Point3D pt3d = new Point3d(nb,0,0);
 		String str = Long.toString(nb);
 		AttributeValue attr = new AttributeValueImpl(str);
 		
@@ -844,7 +845,7 @@ public class AttributeValueTest extends AbstractTestCase {
 	public void attributeValueImplString_Double() throws Exception {
 		double nb = Math.random()+256;
 		Point2D pt2d = new Point2d(nb,0);
-		Point3D pt3d = null; // FIXME: fix code: new Point3f(nb,0,0);
+		Point3D pt3d = new Point3d(nb,0,0);
 		String str = Double.toString(nb);
 		AttributeValue attr = new AttributeValueImpl(str);
 		
@@ -875,7 +876,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		double x = Math.random()+256;
 		double y = Math.random()+256;
 		Point2D pt2d = new Point2d(x,y);
-		Point3D pt3d = null; // FIXME: fix code: new Point3f(x,y,0);
+		Point3D pt3d = new Point3d(x,y,0);
 		String str = x+";"+y; 
 		AttributeValue attr = new AttributeValueImpl(str);
 		
@@ -908,7 +909,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		double z = Math.random()+256;
 		Point2D pt2d = new Point2d(x,y);
 		Point2D pt2d2 = new Point2d(z,0);
-		Point3D pt3d = null; // FIXME: fix code: new Point3f(x,y,z);
+		Point3D pt3d = new Point3d(x,y,z);
 		String str = x+";"+y+";"+z;  
 		AttributeValue attr = new AttributeValueImpl(str);
 		
@@ -945,7 +946,7 @@ public class AttributeValueTest extends AbstractTestCase {
 		Point2D pt2 = new Point2d(x2,y2);
 		
 		Point2D[] list = new Point2D[]{ pt1, pt2 };
-		Point3D[] list2 = new Point3D[]{ /* FIXME: fix code: new Point3f(x1,y1,0), new Point3f(x2,y2,0)*/ };
+		Point3D[] list2 = new Point3D[]{ new Point3d(x1,y1,0), new Point3d(x2,y2,0) };
 
 		String str = ((float)x1)+";"+((float)y1)+";"+((float)x2)+";"+((float)y2);   
 
@@ -982,8 +983,8 @@ public class AttributeValueTest extends AbstractTestCase {
 		double y2 = Math.random();
 		double z2 = Math.random();
 
-		Point3D pt1 = null; // FIXME: fix code: new Point3f(x1,y1,z1);
-		Point3D pt2 = null; // FIXME: fix code: new Point3f(x2,y2,z2);
+		Point3D pt1 = new Point3d(x1,y1,z1);
+		Point3D pt2 = new Point3d(x2,y2,z2);
 		
 		Point3D[] list = new Point3D[]{ pt1, pt2 };
 		Point2D[] list2 = new Point2D[]{ new Point2d(x1,y1), new Point2d(x2,y2) };
@@ -2210,8 +2211,8 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		//TODO: fixcode: assertEquals(msg,new Point3D[] {(Point3D)AttributeType.POINT3D.getDefaultValue()}, (Point3D[])attr2.getValue());
-		//TODO: fixcode: assertEquals(msg,new Point3D[] {(Point3D)AttributeType.POINT3D.getDefaultValue()}, attr2.getPolyline3D());
+		assertArrayEquals(msg,new Point3D[] {(Point3D)AttributeType.POINT3D.getDefaultValue()}, (Point3D[])attr2.getValue());
+		assertArrayEquals(msg,new Point3D[] {(Point3D)AttributeType.POINT3D.getDefaultValue()}, attr2.getPolyline3D());
 
 		source = AttributeType.POINT;
 		target = AttributeType.REAL;
@@ -2336,8 +2337,8 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,null /*FIXME: fix code: new Point3f()*/, attr2.getValue());
-		assertEquals(msg,(Object[]) null /*FIXME: fix code: new Point3f()*/, attr2.getJavaObject());
+		assertEquals(msg,new Point3d(), attr2.getValue());
+		assertEquals(msg,new Point3d(), attr2.getJavaObject());
 
 		source = AttributeType.POINT3D;
 		target = AttributeType.POINT;
@@ -2375,8 +2376,8 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		//TODO: fixcode: assertEquals(msg,new Point2D[] {(Point2D)AttributeType.POINT.getDefaultValue()}, (Point2D[])attr2.getValue());
-		//TODO: fixcode: assertEquals(msg,new Point2D[] {(Point2D)AttributeType.POINT.getDefaultValue()}, attr2.getPolyline());
+		assertArrayEquals(msg,new Point2D[] {(Point2D)AttributeType.POINT.getDefaultValue()}, (Point2D[])attr2.getValue());
+		assertArrayEquals(msg,new Point2D[] {(Point2D)AttributeType.POINT.getDefaultValue()}, attr2.getPolyline());
 
 		source = AttributeType.POINT3D;
 		target = AttributeType.POLYLINE3D;
@@ -2388,8 +2389,8 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		//TODO: fixcode: assertEquals(msg,new Point3D[] {(Point3D)AttributeType.POINT3D.getDefaultValue()}, (Point3D[])attr2.getValue());
-		//TODO: fixcode: assertEquals(msg,new Point3D[] {(Point3D)AttributeType.POINT3D.getDefaultValue()}, attr2.getPolyline3D());
+		assertArrayEquals(msg,new Point3D[] {(Point3D)AttributeType.POINT3D.getDefaultValue()}, (Point3D[])attr2.getValue());
+		assertArrayEquals(msg,new Point3D[] {(Point3D)AttributeType.POINT3D.getDefaultValue()}, attr2.getPolyline3D());
 
 		source = AttributeType.POINT3D;
 		target = AttributeType.REAL;
@@ -2415,9 +2416,9 @@ public class AttributeValueTest extends AbstractTestCase {
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
 		pt3d = (Point3D)source.getDefaultValue();
-		//TODO: fixcode: str = pt2d.getX()+";"+pt2d.getY()+";"+pt3d.getZ();  
-		//TODO: fixcode: assertEquals(msg,str, attr2.getValue());
-		//TODO: fixcode: assertEquals(msg,str, attr2.getString());
+		str = pt2d.getX()+";"+pt2d.getY()+";"+pt3d.getZ();  
+		assertEquals(msg,str, attr2.getValue());
+		assertEquals(msg,str, attr2.getString());
 
 		source = AttributeType.POINT3D;
 		target = AttributeType.TIMESTAMP;
@@ -2691,8 +2692,8 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertTrue(msg,Arrays.equals(null /* FIXME: fix code new Point3f[0]*/, (Point3D[])attr2.getValue()));
-		assertTrue(msg,Arrays.equals(null /* FIXME: fix code new Point3f[0]*/, (Point3D[])attr2.getJavaObject()));
+		assertTrue(msg,Arrays.equals(new Point3d[0], (Point3D[])attr2.getValue()));
+		assertTrue(msg,Arrays.equals(new Point3d[0], (Point3D[])attr2.getJavaObject()));
 
 		source = AttributeType.POLYLINE3D;
 		target = AttributeType.POINT;
@@ -3237,8 +3238,8 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,null /* FIXME: fix code new Point3f(time,0,0)*/, attr2.getValue());
-		assertEquals(msg,null /* FIXME: fix code new Point3f(time,0,0)*/, attr2.getPoint3D());
+		assertEquals(msg,new Point3d(time,0,0), attr2.getValue());
+		assertEquals(msg,new Point3d(time,0,0), attr2.getPoint3D());
 
 		source = AttributeType.TIMESTAMP;
 		target = AttributeType.POLYLINE;
@@ -3414,10 +3415,10 @@ public class AttributeValueTest extends AbstractTestCase {
 		assertSame(AttributeType.COLOR, v.getType());
 
 		v = AttributeValueImpl.parse("1;2;300"); 
-		//TODO: fixcode: assertSame(AttributeType.POINT3D, v.getType());
+		assertSame(AttributeType.POINT3D, v.getType());
 
 		v = AttributeValueImpl.parse("1;2"); 
-		//TODO: fixcode: assertSame(AttributeType.POINT, v.getType());
+		assertSame(AttributeType.POINT, v.getType());
 
 		v = AttributeValueImpl.parse("blablabla"); 
 		assertSame(AttributeType.STRING, v.getType());

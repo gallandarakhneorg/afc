@@ -47,6 +47,7 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("deprecation")
 public interface AttributeCollection extends AttributeProvider {
 
 	/** Make a deep copy of this object and replies the copy.

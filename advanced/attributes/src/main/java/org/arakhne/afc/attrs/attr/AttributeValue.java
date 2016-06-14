@@ -309,14 +309,14 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
 	@Pure
-	Point3D getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Point3D<?, ?> getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
 	 *
 	 * @param pt the point.
 	 */
-	void setPoint3D(Point3D pt);
+	void setPoint3D(Point3D<?, ?> pt);
 
 	/**
 	 * Set the value of this metadata.
@@ -497,35 +497,35 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
 	@Pure
-	Point3D[] getPolyline3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Point3D<?, ?>[] getPolyline3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
 	 *
 	 * @param pts the points.
 	 */
-	void setPolyline3D(Point3D... pts);
+	void setPolyline3D(Point3D<?, ?>... pts);
 
 	/**
 	 * Set the value of this metadata.
 	 *
 	 * @param pts the points.
 	 */
-	void setPolyline3D(Collection<? extends Point3D> pts);
+	void setPolyline3D(Collection<? extends Point3D<?, ?>> pts);
 
 	/**
 	 * Add a point to the end of the polyline.
 	 *
 	 * @param pts the points
 	 */
-	void addToPolyline3D(Point3D... pts);
+	void addToPolyline3D(Point3D<?, ?>... pts);
 
 	/**
 	 * Add a point to the end of the polyline.
 	 *
 	 * @param pts the points.
 	 */
-	void addToPolyline3D(Collection<? extends Point3D> pts);
+	void addToPolyline3D(Collection<? extends Point3D<?, ?>> pts);
 
 	/**
 	 * Replies the value of this metadata.

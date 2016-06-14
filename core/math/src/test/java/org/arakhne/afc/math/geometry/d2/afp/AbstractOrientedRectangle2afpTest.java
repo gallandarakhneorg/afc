@@ -357,20 +357,19 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 	}
 
 	@Test
-	//FIXME: Reactivate unit test
 	public void staticIntersectsOrientedRectangleEllipse() {
-//		assertFalse(OrientedRectangle2afp.intersectsOrientedRectangleEllipse(cx, cy, ux, uy, e1, e2,
-//				0, -5, 2, 1));
-//		assertFalse(OrientedRectangle2afp.intersectsOrientedRectangleEllipse(cx, cy, ux, uy, e1, e2,
-//				0, -4.5, 2, 1));
-//		assertTrue(OrientedRectangle2afp.intersectsOrientedRectangleEllipse(cx, cy, ux, uy, e1, e2,
-//				0, -4, 2, 1));
-//		assertTrue(OrientedRectangle2afp.intersectsOrientedRectangleEllipse(cx, cy, ux, uy, e1, e2,
-//				4, 4, 2, 1));
-//		assertFalse(OrientedRectangle2afp.intersectsOrientedRectangleEllipse(cx, cy, ux, uy, e1, e2,
-//				20, -2, 2, 1));
-//		assertTrue(OrientedRectangle2afp.intersectsOrientedRectangleEllipse(cx, cy, ux, uy, e1, e2,
-//				-15, -10, 50, 50));
+		assertFalse(OrientedRectangle2afp.intersectsOrientedRectangleEllipse(cx, cy, ux, uy, e1, e2,
+				0, -5, 2, 1));
+		assertFalse(OrientedRectangle2afp.intersectsOrientedRectangleEllipse(cx, cy, ux, uy, e1, e2,
+				0, -4.5, 2, 1));
+		assertTrue(OrientedRectangle2afp.intersectsOrientedRectangleEllipse(cx, cy, ux, uy, e1, e2,
+				0, -4, 2, 1));
+		assertTrue(OrientedRectangle2afp.intersectsOrientedRectangleEllipse(cx, cy, ux, uy, e1, e2,
+				4, 4, 2, 1));
+		assertFalse(OrientedRectangle2afp.intersectsOrientedRectangleEllipse(cx, cy, ux, uy, e1, e2,
+				20, -2, 2, 1));
+		assertTrue(OrientedRectangle2afp.intersectsOrientedRectangleEllipse(cx, cy, ux, uy, e1, e2,
+				-15, -10, 50, 50));
 	}
 
 	@Test
@@ -1284,15 +1283,14 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 		assertTrue(this.shape.intersects(createRectangle(-15, -10, 50, 50)));
 	}
 
-	//FIXME: Reactivate unit test
 	@Override
 	public void intersectsEllipse2afp() {
-//		assertFalse(this.shape.intersects(createEllipse(0, -5, 2, 1)));
-//		assertFalse(this.shape.intersects(createEllipse(0, -4.5, 2, 1)));
-//		assertTrue(this.shape.intersects(createEllipse(0, -4, 2, 1)));
-//		assertTrue(this.shape.intersects(createEllipse(4, 4, 2, 1)));
-//		assertFalse(this.shape.intersects(createEllipse(20, -2, 2, 1)));
-//		assertTrue(this.shape.intersects(createEllipse(-15, -10, 50, 50)));
+		assertFalse(this.shape.intersects(createEllipse(0, -5, 2, 1)));
+		assertFalse(this.shape.intersects(createEllipse(0, -4.5, 2, 1)));
+		assertTrue(this.shape.intersects(createEllipse(0, -4, 2, 1)));
+		assertTrue(this.shape.intersects(createEllipse(4, 4, 2, 1)));
+		assertFalse(this.shape.intersects(createEllipse(20, -2, 2, 1)));
+		assertTrue(this.shape.intersects(createEllipse(-15, -10, 50, 50)));
 	}
 
 	@Override

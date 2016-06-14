@@ -45,6 +45,7 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.i.Point2i;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Colors;
@@ -118,7 +119,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(AttributeType.UUID, AttributeType.fromValue(UUID.randomUUID()));
 		assertEquals(AttributeType.POINT, AttributeType.fromValue(new Point2d(0,0)));
 		assertEquals(AttributeType.POINT, AttributeType.fromValue(new Point2i(0,0)));
-		//TODO fix code:assertEquals(AttributeType.POINT3D, AttributeType.fromValue(new Point3fp(0,0,0)));
+		assertEquals(AttributeType.POINT3D, AttributeType.fromValue(new Point3d(0,0,0)));
 		assertEquals(AttributeType.POLYLINE, AttributeType.fromValue(new Point2D[0]));
 		assertEquals(AttributeType.POLYLINE3D, AttributeType.fromValue(new Point3D[0]));
 		assertEquals(AttributeType.IMAGE, AttributeType.fromValue(VectorToolkit.image(1,1,false)));
@@ -239,7 +240,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertNull(AttributeType.IMAGE.getDefaultValue());
 		assertNull(AttributeType.OBJECT.getDefaultValue());
 		assertEquals(new Point2d(), AttributeType.POINT.getDefaultValue());
-		//TODO: fixcode: assertEquals(new Point3f(), AttributeType.POINT3D.getDefaultValue());
+		assertEquals(new Point3d(), AttributeType.POINT3D.getDefaultValue());
 		assertTrue(Arrays.equals(new Point2D[0], (Point2D[])AttributeType.POLYLINE.getDefaultValue()));
 		assertTrue(Arrays.equals(new Point3D[0], (Point3D[])AttributeType.POLYLINE3D.getDefaultValue()));
 		assertNull(AttributeType.URL.getDefaultValue());
@@ -268,7 +269,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		Image img = VectorToolkit.image(1,1,false);
 		Color col = Colors.RED;
 		UUID uuid = UUID.nameUUIDFromBytes("abcd".getBytes()); 
-		//TODO: fixcode: Point3D pt3d = new Point3fp(0,0,0);
+		Point3D pt3d = new Point3d(0,0,0);
 		Point2D[] tabpt2d1 = new Point2D[0];
 		Point3D[] tabpt3d = new Point3D[0];
 		int[] tabint = new int[0];
@@ -300,7 +301,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -330,7 +331,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertSame(col,type.cast(col));
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -360,7 +361,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertSame(uuid,type.cast(uuid));
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -390,7 +391,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -420,7 +421,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertNotNull(type.cast(img));
@@ -450,7 +451,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -480,7 +481,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertSame(col,type.cast(col));
 		assertSame(uuid,type.cast(uuid));
 		assertSame(pt2d1,type.cast(pt2d1));
-		//TODO: fixcode: assertSame(pt3d,type.cast(pt3d));
+		assertSame(pt3d,type.cast(pt3d));
 		assertSame(tabpt2d1,type.cast(tabpt2d1));
 		assertSame(tabpt3d,type.cast(tabpt3d));
 		assertSame(img,type.cast(img));
@@ -510,7 +511,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertSame(pt2d1,type.cast(pt2d1));
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -540,7 +541,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertSame(pt3d,type.cast(pt3d));
+		assertSame(pt3d,type.cast(pt3d));
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -570,7 +571,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertSame(tabpt2d1,type.cast(tabpt2d1));
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -600,7 +601,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertSame(tabpt3d,type.cast(tabpt3d));
 		assertCastException(type,img);
@@ -630,7 +631,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -660,7 +661,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(col.toString(),type.cast(col));
 		assertEquals(uuid.toString(),type.cast(uuid));
 		assertEquals(pt2d1.toString(),type.cast(pt2d1));
-		//TODO: fixcode: assertEquals(pt3d.toString(),type.cast(pt3d));
+		assertEquals(pt3d.toString(),type.cast(pt3d));
 		assertEquals(tabpt2d1.toString(),type.cast(tabpt2d1));
 		assertEquals(tabpt3d.toString(),type.cast(tabpt3d));
 		assertEquals(img.toString(),type.cast(img));
@@ -690,7 +691,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -720,7 +721,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -750,7 +751,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -781,7 +782,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
@@ -812,7 +813,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
-		//TODO: fixcode: assertCastException(type,pt3d);
+		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
 		assertCastException(type,img);
