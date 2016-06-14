@@ -429,7 +429,7 @@ public final class Locale {
 	 */
 	private static CharBuffer decodeString(byte[] bytes, Charset charset, int referenceLength) {
 		try {
-			Charset autodetectedCharset = charset;
+			final Charset autodetectedCharset;
 			final CharsetDecoder decoder = charset.newDecoder();
 			final CharBuffer buffer = decoder.decode(ByteBuffer.wrap(bytes));
 			if ((decoder.isAutoDetecting())
@@ -494,11 +494,10 @@ public final class Locale {
 		final byte[] buffer = new byte[BUFFER_SIZE];
 		int read;
 		while ((read = stream.read(buffer)) > 0) {
-			byte[] tmp = new byte[completeBuffer.length + read];
+			final byte[] tmp = new byte[completeBuffer.length + read];
 			System.arraycopy(completeBuffer, 0, tmp, 0, completeBuffer.length);
 			System.arraycopy(buffer, 0, tmp, completeBuffer.length, read);
 			completeBuffer = tmp;
-			tmp = null;
 		}
 		return decodeString(completeBuffer);
 	}
@@ -532,11 +531,10 @@ public final class Locale {
 		int read;
 
 		while ((read = stream.read(buffer)) > 0) {
-			byte[] tmp = new byte[completeBuffer.length + read];
+			final byte[] tmp = new byte[completeBuffer.length + read];
 			System.arraycopy(completeBuffer, 0, tmp, 0, completeBuffer.length);
 			System.arraycopy(buffer, 0, tmp, completeBuffer.length, read);
 			completeBuffer = tmp;
-			tmp = null;
 		}
 
 		// Get the two default charsets
@@ -561,13 +559,11 @@ public final class Locale {
 		if (!ok) {
 			for (final Entry<String, Charset> charset : Charset.availableCharsets().entrySet()) {
 				if (decodeString(new ByteArrayInputStream(completeBuffer), lineArray, charset.getValue())) {
-					completeBuffer = null;
 					return true;
 				}
 			}
 		}
 
-		completeBuffer = null;
 		return ok;
 	}
 
