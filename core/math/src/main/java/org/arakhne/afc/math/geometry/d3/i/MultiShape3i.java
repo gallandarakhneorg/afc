@@ -64,7 +64,7 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 	 * @param shapes the shapes to add into the multishape.
 	 */
 	public MultiShape3i(@SuppressWarnings("unchecked") T... shapes) {
-		assert shapes != null : "Shape array must be not null"; //$NON-NLS-1$
+		assert shapes != null : "Shape array must be not null";
 		addAll(Arrays.asList(shapes));
 	}
 
@@ -73,7 +73,7 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 	 * @param shapes the shapes to add into the multishape.
 	 */
 	public MultiShape3i(Iterable<? extends T> shapes) {
-		assert shapes != null : "Shape list must be not null"; //$NON-NLS-1$
+		assert shapes != null : "Shape list must be not null";
 		for (final T element : shapes) {
 			add(element);
 		}
@@ -131,7 +131,7 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 	@Pure
 	@Override
 	public void toBoundingBox(RectangularPrism3i box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null";
 		if (this.bounds == null) {
 			this.bounds = getGeomFactory().newBox();
 			MultiShape3ai.super.toBoundingBox(this.bounds);

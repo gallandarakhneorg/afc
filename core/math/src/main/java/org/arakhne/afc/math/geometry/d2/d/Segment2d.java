@@ -92,22 +92,6 @@ public class Segment2d extends AbstractShape2d<Segment2d>
 
 	@Pure
 	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("("); //$NON-NLS-1$
-		b.append(getX1());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getY1());
-		b.append(")-("); //$NON-NLS-1$
-		b.append(getX2());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getY2());
-		b.append(")"); //$NON-NLS-1$
-		return b.toString();
-	}
-
-	@Pure
-	@Override
 	public Segment2d createTransformedShape(Transform2D transform) {
 		if (transform == null || transform.isIdentity()) {
 			return clone();

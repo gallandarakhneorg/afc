@@ -27,7 +27,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
@@ -191,30 +191,6 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 		bits = 31 * bits + Double.hashCode(getSecondAxisY());
 		bits = 31 * bits + Double.hashCode(getSecondAxisExtent());
         return bits ^ (bits >> 31);
-	}
-
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getCenterX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getCenterY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getFirstAxisX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getFirstAxisY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getFirstAxisExtent());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getSecondAxisX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getSecondAxisY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getSecondAxisExtent());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
 	}
 
 	/** Replies the property for the x coordinate of the center.

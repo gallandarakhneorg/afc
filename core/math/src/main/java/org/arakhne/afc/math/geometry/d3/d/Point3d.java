@@ -113,7 +113,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	@Pure
 	@Override
 	public double getDistanceSquared(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null";
 		final double dx = this.x - pt.getX();
 		final double dy = this.y - pt.getY();
 		final double dz = this.z - pt.getZ();
@@ -123,7 +123,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	@Pure
 	@Override
 	public double getDistance(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null";
 		final double dx = this.x - pt.getX();
 		final double dy = this.y - pt.getY();
 		final double dz = this.z - pt.getZ();
@@ -133,14 +133,14 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	@Pure
 	@Override
 	public double getDistanceL1(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null";
         return Math.abs(this.x - pt.getX()) + Math.abs(this.y - pt.getY()) + Math.abs(this.z - pt.getZ());
 	}
 
 	@Pure
 	@Override
 	public double getDistanceLinf(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null";
         return MathUtil.max(Math.abs(this.x - pt.getX()), Math.abs(this.y - pt.getY()), Math.abs(this.z - pt.getZ()));
 	}
 
@@ -158,8 +158,8 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Override
 	public void add(Point3D<?, ?> point, Vector3D<?, ?> vector) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
+		assert vector != null : "Vector must be not null";
 		this.x = point.getX() + vector.getX();
 		this.y = point.getY() + vector.getY();
 		this.z = point.getZ() + vector.getZ();
@@ -167,8 +167,8 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Override
 	public void add(Vector3D<?, ?> vector, Point3D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
+		assert vector != null : "Vector must be not null";
 		this.x = vector.getX() + point.getX();
 		this.y = vector.getY() + point.getY();
 		this.z = vector.getZ() + point.getZ();
@@ -176,7 +176,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Override
 	public void add(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null";
 		this.x = this.x + vector.getX();
 		this.y = this.y + vector.getY();
 		this.z = this.z + vector.getZ();
@@ -184,8 +184,8 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Override
 	public void scaleAdd(int scale, Vector3D<?, ?> vector, Point3D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
+		assert vector != null : "Vector must be not null";
 		this.x = scale * vector.getX() + point.getX();
 		this.y = scale * vector.getY() + point.getY();
 		this.z = scale * vector.getZ() + point.getZ();
@@ -193,8 +193,8 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Override
 	public void scaleAdd(double scale, Vector3D<?, ?> vector, Point3D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
+		assert vector != null : "Vector must be not null";
 		this.x = scale * vector.getX() + point.getX();
 		this.y = scale * vector.getY() + point.getY();
 		this.z = scale * vector.getZ() + point.getZ();
@@ -202,8 +202,8 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Override
 	public void scaleAdd(int scale, Point3D<?, ?> point, Vector3D<?, ?> vector) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
+		assert vector != null : "Vector must be not null";
 		this.x = scale * point.getX() + vector.getX();
 		this.y = scale * point.getY() + vector.getY();
 		this.z = scale * point.getZ() + vector.getZ();
@@ -211,8 +211,8 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Override
 	public void scaleAdd(double scale, Point3D<?, ?> point, Vector3D<?, ?> vector) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
+		assert vector != null : "Vector must be not null";
 		this.x = scale * point.getX() + vector.getX();
 		this.y = scale * point.getY() + vector.getY();
 		this.z = scale * point.getZ() + vector.getZ();
@@ -220,7 +220,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Override
 	public void scaleAdd(int scale, Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null";
 		this.x = scale * this.x + vector.getX();
 		this.y = scale * this.y + vector.getY();
 		this.z = scale * this.z + vector.getZ();
@@ -228,7 +228,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Override
 	public void scaleAdd(double scale, Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null";
 		this.x = scale * this.x + vector.getX();
 		this.y = scale * this.y + vector.getY();
 		this.z = scale * this.z + vector.getZ();
@@ -236,8 +236,8 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Override
 	public void sub(Point3D<?, ?> point, Vector3D<?, ?> vector) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
+		assert vector != null : "Vector must be not null";
 		this.x = point.getX() - vector.getX();
 		this.y = point.getY() - vector.getY();
 		this.z = point.getZ() - vector.getZ();
@@ -245,7 +245,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Override
 	public void sub(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null";
 		this.x = this.x - vector.getX();
 		this.y = this.y - vector.getY();
 		this.z = this.z - vector.getZ();

@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
+import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 
@@ -61,7 +62,7 @@ public class InnerComputationVector2afp implements Vector2D<InnerComputationVect
 
 	@Override
 	public String toString() {
-		return "(" + this.x + ", " + this.y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return Tuple2D.toString(this.x, this.y);
 	}
 
 	@Override

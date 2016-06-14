@@ -24,6 +24,7 @@ import javafx.beans.property.ObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** Abstract shape with 2 integer FX properties.
  *
@@ -65,6 +66,12 @@ public abstract class AbstractShape2ifx<T extends AbstractShape2ifx<?>> implemen
 	@Override
 	public final GeomFactory2ifx getGeomFactory() {
 		return GeomFactory2ifx.SINGLETON;
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+		return ReflectionUtil.toString(this);
 	}
 
 }

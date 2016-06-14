@@ -62,8 +62,8 @@ public class RectangularPrism3i extends AbstractShape3i<RectangularPrism3i>
 	 * @param max is the max corner of the rectangular prism.
 	 */
 	public RectangularPrism3i(Point3D<?, ?> min, Point3D<?, ?> max) {
-		assert min != null : "Minimum corner must be not null"; //$NON-NLS-1$
-		assert max != null : "Maximum corner must be not null"; //$NON-NLS-1$
+		assert min != null : "Minimum corner must be not null";
+		assert max != null : "Maximum corner must be not null";
 		setFromCorners(min.ix(), min.iy(), min.iz(), max.ix(), max.iy(), max.iz());
 	}
 
@@ -76,9 +76,9 @@ public class RectangularPrism3i extends AbstractShape3i<RectangularPrism3i>
      * @param depth depth of the rectangular prism.
      */
 	public RectangularPrism3i(int x, int y, int z, int width, int height, int depth) {
-		assert width >= 0. : "Width must be positive or zero"; //$NON-NLS-1$
-		assert height >= 0. : "Height must be positive or zero"; //$NON-NLS-1$
-		assert depth >= 0. : "Depth must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0. : "Width must be positive or zero";
+		assert height >= 0. : "Height must be positive or zero";
+		assert depth >= 0. : "Depth must be positive or zero";
 		set(x, y, z, width, height, depth);
 	}
 
@@ -242,26 +242,6 @@ public class RectangularPrism3i extends AbstractShape3i<RectangularPrism3i>
 		bits = 31 * bits + this.maxy;
 		bits = 31 * bits + this.maxz;
 		return bits ^ (bits >> 31);
-	}
-
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getMinX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMinY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMinZ());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMaxX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMaxY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMaxZ());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
 	}
 
 }

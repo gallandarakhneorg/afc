@@ -446,7 +446,7 @@ public interface Segment3afp<
 	static boolean computeLineLineIntersection(double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4,
 			Point3D<?, ?> result) {
-		assert result != null : "Result must be not null"; //$NON-NLS-1$
+		assert result != null : "Result must be not null";
 		final double x21 = x2 - x1;
 		final double x43 = x4 - x3;
 		final double y21 = y2 - y1;
@@ -620,7 +620,7 @@ public interface Segment3afp<
 	@Pure
     static boolean isPointClosedToSegment(double x1, double y1, double z1, double x2, double y2, double z2, double x, double y,
             double z, double hitDistance) {
-		assert hitDistance >= 0. : "Hit distance must be positive or zero"; //$NON-NLS-1$
+		assert hitDistance >= 0. : "Hit distance must be positive or zero";
 		return computeDistanceSegmentPoint(x1, y1, z1, x2, y2, z2, x, y, z) < hitDistance;
 	}
 
@@ -642,7 +642,7 @@ public interface Segment3afp<
 	@Pure
     static boolean isPointClosedToLine(double x1, double y1, double z1, double x2, double y2, double z2, double x, double y,
             double z, double hitDistance) {
-		assert hitDistance >= 0. : "Hit distance must be positive or zero"; //$NON-NLS-1$
+		assert hitDistance >= 0. : "Hit distance must be positive or zero";
 		return computeDistanceLinePoint(x1, y1, z1, x2, y2, z2, x, y, z) < hitDistance;
 	}
 
@@ -887,8 +887,8 @@ public interface Segment3afp<
 	@Pure
     static void interpolate(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double factor,
             Point3D<?, ?> result) {
-		assert result != null : "Result must be not null"; //$NON-NLS-1$
-		assert factor >= 0. && factor <= 1. : "Factor must be in [0;1]"; //$NON-NLS-1$
+		assert result != null : "Result must be not null";
+		assert factor >= 0. && factor <= 1. : "Factor must be in [0;1]";
 		final double vx = p2x - p1x;
 		final double vy = p2y - p1y;
 		final double vz = p2z - p1z;
@@ -914,7 +914,7 @@ public interface Segment3afp<
 	@Pure
     static void computeFarthestPointTo(double ax, double ay, double az, double bx, double by, double bz, double px, double py,
             double pz, Point3D<?, ?> result) {
-		assert result != null : "Result must be not null"; //$NON-NLS-1$
+		assert result != null : "Result must be not null";
 		final double xpa = px - ax;
 		final double ypa = py - ay;
 		final double zpa = pz - az;
@@ -945,7 +945,7 @@ public interface Segment3afp<
 	static void computeClosestPointToPoint(
 			double ax, double ay, double az, double bx, double by, double bz, double px, double py, double pz,
 			Point3D<?, ?> result) {
-		assert result != null : "Result must be not null"; //$NON-NLS-1$
+		assert result != null : "Result must be not null";
 		final double ratio = Segment3afp.computeProjectedPointOnLine(px, py, pz, ax, ay, az, bx, by, bz);
 		if (ratio <= 0.) {
 			result.set(ax, ay, az);
@@ -1381,7 +1381,7 @@ public interface Segment3afp<
 			double radius,
 			double x0, double y0, double z0,
 			double x1, double y1, double z1) {
-	    assert radius >= 0. : "Circle radius must be positive or zero"; //$NON-NLS-1$
+	    assert radius >= 0. : "Circle radius must be positive or zero";
 	    //		int numCrosses = crossings;
 	    //
 	    //		double xmin = cx - Math.abs(radius);
@@ -1444,9 +1444,9 @@ public interface Segment3afp<
 			double rxmax, double rymax, double rzmax,
 			double x0, double y0, double z0,
 			double x1, double y1, double z1) {
-	    assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-	    assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
-	    assert rzmin <= rzmax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+	    assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax";
+	    assert rymin <= rymax : "rymin must be lower or equal to rymax";
+	    assert rzmin <= rzmax : "rymin must be lower or equal to rymax";
 	    //		int numCrosses = crossings;
 	    //
 	    //		if (y0 >= rymax && y1 >= rymax) return numCrosses;
@@ -1869,14 +1869,14 @@ public interface Segment3afp<
     * @param secondPoint the second point.
     */
 	default void set(Point3D<?, ?> firstPoint, Point3D<?, ?> secondPoint) {
-		assert firstPoint != null : "First point must be not null"; //$NON-NLS-1$
-		assert secondPoint != null : "Second point must be not null"; //$NON-NLS-1$
+		assert firstPoint != null : "First point must be not null";
+		assert secondPoint != null : "Second point must be not null";
         set(firstPoint.getX(), firstPoint.getY(), firstPoint.getZ(), secondPoint.getX(), secondPoint.getY(), secondPoint.getZ());
 	}
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Shape must be not null";
 		set(shape.getX1(), shape.getY1(), shape.getZ1(), shape.getX2(), shape.getY2(), shape.getZ2());
 	}
 
@@ -1991,7 +1991,7 @@ public interface Segment3afp<
 	 * @param point the first point.
 	 */
 	default void setP1(Point3D<?, ?> point) {
-	    assert point != null : "Point must be not null"; //$NON-NLS-1$
+	    assert point != null : "Point must be not null";
 	    set(point.getX(), point.getY(), point.getZ(), getX2(), getY2(), getZ2());
 	}
 
@@ -2010,7 +2010,7 @@ public interface Segment3afp<
 	 * @param point the second point.
 	 */
 	default void setP2(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
 		set(getX1(), getY1(), getZ1(), point.getX(), point.getY(), point.getZ());
 	}
 
@@ -2035,7 +2035,7 @@ public interface Segment3afp<
 	@Pure
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null";
 		box.setFromCorners(
 				this.getX1(),
 				this.getY1(),
@@ -2048,7 +2048,7 @@ public interface Segment3afp<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
 		return computeDistanceSquaredSegmentPoint(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
@@ -2058,7 +2058,7 @@ public interface Segment3afp<
 	@Pure
 	@Override
 	default double getDistanceL1(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
         double ratio = computeProjectedPointOnLine(point.getX(), point.getY(), point.getZ(), getX1(), getY1(), getZ1(), getX2(),
                 getY2(), getZ2());
 		ratio = MathUtil.clamp(ratio, 0, 1);
@@ -2073,7 +2073,7 @@ public interface Segment3afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
         double ratio = computeProjectedPointOnLine(point.getX(), point.getY(), point.getZ(), getX1(), getY1(), getZ1(), getX2(),
                 getY2(), getZ2());
 		ratio = MathUtil.clamp(ratio, 0, 1);
@@ -2103,7 +2103,7 @@ public interface Segment3afp<
 
 	@Override
 	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangularPrism != null : "Rectangle must be not null";
 		return (getX1() == getX2() || getY1() == getY2() || getZ1() == getZ2())
 				&& contains(rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ())
 				&& contains(rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ());
@@ -2121,7 +2121,7 @@ public interface Segment3afp<
 	 * @see #createTransformedShape
 	 */
 	default void transform(Transform3D transform) {
-		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+		assert transform != null : "Transformation must be not null";
 		final Point3D<?, ?> p = new InnerComputationPoint3afp(getX1(),  getY1(), getZ1());
 		transform.transform(p);
 		final double x1 = p.getX();
@@ -2153,9 +2153,9 @@ public interface Segment3afp<
 	@Pure
 	// TODO
 	default boolean clipToRectangle(double rxmin, double rymin, double rzmin, double rxmax, double rymax, double rzmax) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
-		assert rzmin <= rzmax : "rzmin must be lower or equal to rzmax"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax";
+		assert rymin <= rymax : "rymin must be lower or equal to rymax";
+		assert rzmin <= rzmax : "rzmin must be lower or equal to rzmax";
 		double x0 = getX1();
 		double y0 = getY1();
 		double z0 = getZ1();
@@ -2235,7 +2235,7 @@ public interface Segment3afp<
 	@Pure
 	@Override
 	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Circle must be not null"; //$NON-NLS-1$
+		assert sphere != null : "Circle must be not null";
 		return Sphere3afp.intersectsSphereSegment(
 				sphere.getX(), sphere.getY(), sphere.getZ(),
 				sphere.getRadius(),
@@ -2246,7 +2246,7 @@ public interface Segment3afp<
 	@Pure
 	@Override
 	default boolean intersects(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert prism != null : "Rectangle must be not null";
 		return RectangularPrism3afp.intersectsRectangleSegment(
 				prism.getMinX(), prism.getMinY(),
 				prism.getMaxX(), prism.getMaxY(),
@@ -2257,7 +2257,7 @@ public interface Segment3afp<
 	@Pure
 	@Override
 	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null";
 		return intersectsSegmentSegmentWithEnds(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
@@ -2268,7 +2268,7 @@ public interface Segment3afp<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null";
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path3afp.computeCrossingsFromSegment(
 				0,
@@ -2282,7 +2282,7 @@ public interface Segment3afp<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "MultiShape must be not null";
 		return multishape.intersects(this);
 	}
 
@@ -2346,7 +2346,7 @@ public interface Segment3afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null";
 		final P point = getGeomFactory().newPoint();
 		Segment3afp.computeClosestPointToPoint(
 				getX1(), getY1(), getZ1(),
@@ -2396,7 +2396,7 @@ public interface Segment3afp<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null";
 		final P point = getGeomFactory().newPoint();
 		Segment3afp.computeFarthestPointTo(
 				getX1(), getY1(), getZ1(),
@@ -2444,7 +2444,7 @@ public interface Segment3afp<
 		 * @param transform the transformation, or <code>null</code>.
 		 */
 		public SegmentPathIterator(Segment3afp<?, ?, T, ?, ?, ?> segment, Transform3D transform) {
-			assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+			assert segment != null : "Segment must be not null";
 			this.segment = segment;
 			this.p1 = new InnerComputationPoint3afp();
 			this.p2 = new InnerComputationPoint3afp();

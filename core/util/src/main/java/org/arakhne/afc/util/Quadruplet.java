@@ -25,6 +25,8 @@ import java.util.Objects;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.ReflectionUtil;
+
 /** This class implements quadruplet of values.
  *
  * @param <A> is the type of the first value.
@@ -150,8 +152,7 @@ public class Quadruplet<A, B, C, D> implements Serializable {
 	@Pure
 	@Override
 	public String toString() {
-		return "<" + this.avalue + ";" + this.bvalue + ";" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				+ this.cvalue + ";" + this.dvalue + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+		return ReflectionUtil.toString(this);
 	}
 
 	@Pure

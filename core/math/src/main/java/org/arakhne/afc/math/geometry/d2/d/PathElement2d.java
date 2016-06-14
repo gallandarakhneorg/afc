@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** An element of the path with 2 double precision floating-point numbers.
@@ -61,6 +62,12 @@ public abstract class PathElement2d implements PathElement2afp {
 		this.type = type;
 		this.toX = tox;
 		this.toY = toy;
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+		return ReflectionUtil.toString(this);
 	}
 
 	@Pure
@@ -220,14 +227,6 @@ public abstract class PathElement2d implements PathElement2afp {
 			return new double[] {this.toX, this.toY};
 		}
 
-		@Pure
-		@Override
-		public String toString() {
-			return "MOVE\n\tto: (" //$NON-NLS-1$
-					+ getToX() + ", " //$NON-NLS-1$
-					+ getToY() + ")\n"; //$NON-NLS-1$
-		}
-
 		@Override
 		public double getFromX() {
 			return 0.;
@@ -335,16 +334,6 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public double[] toArray() {
 			return new double[] {this.toX, this.toY};
-		}
-
-		@Pure
-		@Override
-		public String toString() {
-			return "LINE\n\tfrom: (" //$NON-NLS-1$
-					+ getFromX() + ", " //$NON-NLS-1$
-					+ getFromY() + ")\n\tto: (" //$NON-NLS-1$
-					+ getToX() + ", " //$NON-NLS-1$
-					+ getToY() + ")\n"; //$NON-NLS-1$
 		}
 
 		@Override
@@ -473,18 +462,6 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public double[] toArray() {
 			return new double[] {this.ctrlX, this.ctrlY, this.toX, this.toY};
-		}
-
-		@Pure
-		@Override
-		public String toString() {
-			return "QUAD:\n\tfrom: (" //$NON-NLS-1$
-					+ getFromX() + ", " //$NON-NLS-1$
-					+ getFromY() + ")\n\tctrl: (" //$NON-NLS-1$
-					+ getCtrlX1() + ", " //$NON-NLS-1$
-					+ getCtrlY1() + ")\n\tto: (" //$NON-NLS-1$
-					+ getToX() + ", " //$NON-NLS-1$
-					+ getToY() + ")"; //$NON-NLS-1$
 		}
 
 		@Override
@@ -644,20 +621,6 @@ public abstract class PathElement2d implements PathElement2afp {
 			return new double[] {this.ctrlX1, this.ctrlY1, this.ctrlX2, this.ctrlY2, this.toX, this.toY};
 		}
 
-		@Pure
-		@Override
-		public String toString() {
-			return "CURVE:\n\tfrom: (" //$NON-NLS-1$
-					+ getFromX() + ", " //$NON-NLS-1$
-					+ getFromY() + ")\n\tctrl 1: (" //$NON-NLS-1$
-					+ getCtrlX1() + ", " //$NON-NLS-1$
-					+ getCtrlY1() + ")\n\tctrl 2: (" //$NON-NLS-1$
-					+ getCtrlX2() + ", " //$NON-NLS-1$
-					+ getCtrlY2() + ")\n\tto: (" //$NON-NLS-1$
-					+ this.getToX() + ", " //$NON-NLS-1$
-					+ this.getToY() + ")"; //$NON-NLS-1$
-		}
-
 		@Override
 		public double getFromX() {
 			return this.fromX;
@@ -785,16 +748,6 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public double[] toArray() {
 			return new double[] {this.toX, this.toY};
-		}
-
-		@Pure
-		@Override
-		public String toString() {
-			return "CLOSE:\n\tfrom: (" //$NON-NLS-1$
-					+ getFromX() + ", " //$NON-NLS-1$
-					+ getFromY() + ")\n\tto: " //$NON-NLS-1$
-					+ getToX() + ", " //$NON-NLS-1$
-					+ getToY() + ")"; //$NON-NLS-1$
 		}
 
 		@Override
@@ -939,21 +892,6 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public double[] toArray() {
 			return new double[] {this.toX, this.toY};
-		}
-
-		@Pure
-		@Override
-		public String toString() {
-			return "ARC:\n\tfrom: (" //$NON-NLS-1$
-					+ getFromX() + ", " //$NON-NLS-1$
-					+ getFromY() + ")\n\tto: (" //$NON-NLS-1$
-					+ getToX() + ", " //$NON-NLS-1$
-					+ getToY() + ")\n\tx radius: " //$NON-NLS-1$
-					+ getRadiusX() + "\n\ty radius: " //$NON-NLS-1$
-					+ getRadiusY() + "\n\trotation: " //$NON-NLS-1$
-					+ getRotationX() + "\n\tlarge arc: " //$NON-NLS-1$
-					+ getLargeArcFlag() + "\n\tsweep: " //$NON-NLS-1$
-					+ getSweepFlag();
 		}
 
 		@Override

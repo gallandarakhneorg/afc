@@ -27,7 +27,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
@@ -304,22 +304,6 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 		bits = 31 * bits + Double.hashCode(getMaxY());
 		final int b = (int) bits;
 		return b ^ (b >> 31);
-	}
-
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("("); //$NON-NLS-1$
-		b.append(getMinX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getMinY());
-		b.append(")-("); //$NON-NLS-1$
-		b.append(getMaxX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getMaxY());
-		b.append(")"); //$NON-NLS-1$
-		return b.toString();
 	}
 
 	@Override

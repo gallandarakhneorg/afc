@@ -51,7 +51,7 @@ public interface Prism3ai<
 
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must not be null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must not be null";
 		box.setFromCorners(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ());
 	}
 
@@ -70,9 +70,9 @@ public interface Prism3ai<
     * @param depth depth of the prism.
     */
 	default void set(int x, int y, int z, int width, int height, int depth) {
-		assert width >= 0 : "Width must be positive or zero"; //$NON-NLS-1$
-		assert height >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
-		assert depth >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0 : "Width must be positive or zero";
+		assert height >= 0 : "Height must be positive or zero";
+		assert depth >= 0 : "Height must be positive or zero";
 		setFromCorners(x, y, z, x + width, y + height, z + depth);
 	}
 
@@ -82,8 +82,8 @@ public interface Prism3ai<
 	 * @param max is the max corner of the prism.
 	 */
 	default void set(Point3D<?, ?> min, Point3D<?, ?> max) {
-		assert min != null : "Minimum point must be not be null"; //$NON-NLS-1$
-		assert max != null : "Maximum point must be not be null"; //$NON-NLS-1$
+		assert min != null : "Minimum point must be not be null";
+		assert max != null : "Maximum point must be not be null";
 		setFromCorners(min.ix(), min.iy(), min.iz(), max.ix(), max.iy(), max.iz());
 	}
 
@@ -92,7 +92,7 @@ public interface Prism3ai<
 	 * @param width the width of the prism.
 	 */
 	default void setWidth(int width) {
-		assert width >= 0 : "Width must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0 : "Width must be positive or zero";
 		setMaxX(getMinX() + width);
 	}
 
@@ -101,7 +101,7 @@ public interface Prism3ai<
 	 * @param height the height of the prism.
 	 */
 	default void setHeight(int height) {
-		assert height >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0 : "Height must be positive or zero";
 		setMaxY(getMinY() + height);
 	}
 
@@ -110,7 +110,7 @@ public interface Prism3ai<
 	 * @param depth the depth of the prism
 	 */
 	default void setDepth(int depth) {
-		assert depth >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
+		assert depth >= 0 : "Height must be positive or zero";
 		setMaxZ(getMinZ() + depth);
 	}
 
@@ -131,8 +131,8 @@ public interface Prism3ai<
 	 * @param p2 the second corner.
 	 */
 	default void setFromCorners(Point3D<?, ?> p1, Point3D<?, ?> p2) {
-		assert p1 != null : "First corner must be not be null"; //$NON-NLS-1$
-		assert p2 != null : "Second corner must be not be null"; //$NON-NLS-1$
+		assert p1 != null : "First corner must be not be null";
+		assert p2 != null : "Second corner must be not be null";
 		setFromCorners(p1.ix(), p1.iy(), p1.iz(), p2.ix(), p2.iy(), p2.iz());
 	}
 
@@ -167,8 +167,8 @@ public interface Prism3ai<
      * @param corner the specified corner point
      */
 	default void setFromCenter(Point3D<?, ?> center, Point3D<?, ?> corner) {
-		assert center != null : "Center must be not be null"; //$NON-NLS-1$
-		assert corner != null : "Corner must be not be null"; //$NON-NLS-1$
+		assert center != null : "Center must be not be null";
+		assert corner != null : "Corner must be not be null";
 		setFromCenter(center.ix(), center.iy(), center.iz(), corner.ix(), corner.iy(), corner.iz());
 	}
 

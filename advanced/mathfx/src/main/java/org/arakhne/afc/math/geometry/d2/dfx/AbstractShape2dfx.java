@@ -24,6 +24,7 @@ import javafx.beans.property.ObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** Abstract shape with 2 double precision floating-point FX properties.
  *
@@ -67,6 +68,12 @@ public abstract class AbstractShape2dfx<T extends AbstractShape2dfx<?>> implemen
 	@Override
 	public final GeomFactory2dfx getGeomFactory() {
 		return GeomFactory2dfx.SINGLETON;
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+		return ReflectionUtil.toString(this);
 	}
 
 }

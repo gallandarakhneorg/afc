@@ -24,6 +24,7 @@ import javafx.beans.property.ObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.PathIterator3D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** Abstract shape with 3 integer FX properties.
  *
@@ -79,6 +80,12 @@ public abstract class AbstractShape3ifx<T extends AbstractShape3ifx<?>> implemen
 	@Override
 	public final GeomFactory3ifx getGeomFactory() {
 		return GeomFactory3ifx.SINGLETON;
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+		return ReflectionUtil.toString(this);
 	}
 
 }

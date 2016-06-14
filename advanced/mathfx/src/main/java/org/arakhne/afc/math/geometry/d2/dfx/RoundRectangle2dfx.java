@@ -24,7 +24,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
 import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
@@ -110,25 +110,6 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 		bits = 31 * bits + Double.hashCode(getArcWidth());
 		bits = 31 * bits + Double.hashCode(getArcHeight());
         return bits ^ (bits >> 31);
-	}
-
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("bounds: ("); //$NON-NLS-1$
-		b.append(getMinX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getMinY());
-		b.append(")-("); //$NON-NLS-1$
-		b.append(getMaxX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getMaxY());
-		b.append(")\narcWidth: "); //$NON-NLS-1$
-		b.append(getArcWidth());
-		b.append("\narcHeight: "); //$NON-NLS-1$
-		b.append(getArcHeight());
-		return b.toString();
 	}
 
 	@Pure

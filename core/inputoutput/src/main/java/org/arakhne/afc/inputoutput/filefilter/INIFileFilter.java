@@ -113,6 +113,16 @@ public class INIFileFilter extends AbstractFileFilter {
 	 */
 	private static class BinaryINIMagicNumber extends MagicNumber {
 
+		private static final String REGEX = "^[\\x20-\\xFF\t\n\r\n]*$"; //$NON-NLS-1$
+
+		private static final String HEADER = "^[\n\r\t\f]*\\[[^\\]]+\\][\n\r\t\f]*$"; //$NON-NLS-1$
+
+		private static final String VAR = "^[\n\r\t\f]*[a-zA-Z0-9_.\\\\/:\\|]+[\n\r\t\f]*=.*$"; //$NON-NLS-1$
+
+		private static final String EMPTY = "^[\n\r\t\f]*$"; //$NON-NLS-1$
+
+		private static final String COMMENT = "^;"; //$NON-NLS-1$
+
 		/** Constructor.
 		 */
 		BinaryINIMagicNumber() {
@@ -132,13 +142,6 @@ public class INIFileFilter extends AbstractFileFilter {
 			int offset = 0;
 			boolean istext = false;
 
-			final String regex = "^[\\x20-\\xFF\t\n\r\n]*$"; //$NON-NLS-1$
-
-			final String header = "^[\n\r\t\f]*\\[[^\\]]+\\][\n\r\t\f]*$"; //$NON-NLS-1$
-			final String var = "^[\n\r\t\f]*[a-zA-Z0-9_.\\\\/:\\|]+[\n\r\t\f]*=.*$"; //$NON-NLS-1$
-			final String empty = "^[\n\r\t\f]*$"; //$NON-NLS-1$
-			final String comment = "^;"; //$NON-NLS-1$
-
 			for (int i = 0; i < 5; ++i) {
 
 				found = false;
@@ -151,9 +154,9 @@ public class INIFileFilter extends AbstractFileFilter {
 					offset += line.length;
 
 					// Check if text.
-					if (Pattern.matches(regex, string)) {
-						if (istext || Pattern.matches(empty, string) || Pattern.matches(comment, string)
-								|| Pattern.matches(header, string) || Pattern.matches(var, string)) {
+					if (Pattern.matches(REGEX, string)) {
+						if (istext || Pattern.matches(EMPTY, string) || Pattern.matches(COMMENT, string)
+								|| Pattern.matches(HEADER, string) || Pattern.matches(VAR, string)) {
 							found = true;
 						}
 						istext = string.endsWith("\\"); //$NON-NLS-1$

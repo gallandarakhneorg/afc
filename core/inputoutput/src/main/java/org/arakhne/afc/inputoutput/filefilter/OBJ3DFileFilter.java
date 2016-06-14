@@ -112,6 +112,15 @@ public class OBJ3DFileFilter extends AbstractFileFilter {
 	 */
 	private static class OBJMagicNumber extends MagicNumber {
 
+		private static final String NUMBER = "^[ \n\r\t\f]*((vt)|(vn)|p|l|v|f)([ \n\r\t\f]+" //$NON-NLS-1$
+				+ "[0-9.+-e]+(\\/[0-9.+-e]+){0,2})+[ \n\r\t\f]*$"; //$NON-NLS-1$
+
+		private static final String IDENTIFIER = "^[ \n\r\t\f]*(o|g)[ \n\r\t\f]+"; //$NON-NLS-1$
+
+		private static final String ONOFF = "^[ \n\r\t\f]*(s)[ \n\r\t\f]+((on)|(off))[ \n\r\t\f]*$"; //$NON-NLS-1$
+
+		private static final String COMMENT = "^#"; //$NON-NLS-1$
+
 		/** Constructor.
 		 */
 		OBJMagicNumber() {
@@ -132,11 +141,10 @@ public class OBJ3DFileFilter extends AbstractFileFilter {
 
 			boolean foundOneOBJPrimitive = false;
 
-			final Pattern number = Pattern.compile(
-					"^[ \n\r\t\f]*((vt)|(vn)|p|l|v|f)([ \n\r\t\f]+[0-9.+-e]+(\\/[0-9.+-e]+){0,2})+[ \n\r\t\f]*$"); //$NON-NLS-1$
-			final Pattern identifier = Pattern.compile("^[ \n\r\t\f]*(o|g)[ \n\r\t\f]+"); //$NON-NLS-1$
-			final Pattern onoff = Pattern.compile("^[ \n\r\t\f]*(s)[ \n\r\t\f]+((on)|(off))[ \n\r\t\f]*$"); //$NON-NLS-1$
-			final Pattern comment = Pattern.compile("^#"); //$NON-NLS-1$
+			final Pattern number = Pattern.compile(NUMBER);
+			final Pattern identifier = Pattern.compile(IDENTIFIER);
+			final Pattern onoff = Pattern.compile(ONOFF);
+			final Pattern comment = Pattern.compile(COMMENT);
 
 			int i = 0;
 			while (i < 20) {

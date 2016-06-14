@@ -37,6 +37,8 @@ import org.arakhne.afc.vmutil.locale.Locale;
  */
 public abstract class AbstractFileFilter implements FileFilter {
 
+	private static final String DOT = "."; //$NON-NLS-1$
+
 	private final boolean acceptDirectories;
 
 	private final String description;
@@ -58,7 +60,7 @@ public abstract class AbstractFileFilter implements FileFilter {
 		final StringBuilder b = new StringBuilder();
 		for (int i = 0; i < this.extensions.length; ++i) {
 			final String ext;
-			if (this.extensions[i].startsWith(".")) { //$NON-NLS-1$
+			if (this.extensions[i].startsWith(DOT)) {
 				ext = this.extensions[i].substring(1);
 			} else {
 				ext = this.extensions[i];

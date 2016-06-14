@@ -29,6 +29,8 @@ import java.util.EventListener;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.ReflectionUtil;
+
 /**
  * A collection of listeners.
  *
@@ -251,14 +253,7 @@ public class ListenerCollection<L extends EventListener> {
 	@Override
 	@Pure
 	public String toString() {
-		final Object[] lList = this.listeners;
-		String string = "EventListenerList: ";  //$NON-NLS-1$
-		string += lList.length / 2 + " listeners: ";  //$NON-NLS-1$
-		for (int i = 0; i <= lList.length - 2; i += 2) {
-			string += " type " + ((Class<?>) lList[i]).getName();  //$NON-NLS-1$
-			string += " listener " + lList[i + 1];  //$NON-NLS-1$
-		}
-		return string;
+		return ReflectionUtil.toString(this);
 	}
 
 }

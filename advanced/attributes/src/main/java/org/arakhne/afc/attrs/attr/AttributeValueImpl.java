@@ -63,6 +63,7 @@ import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.VectorToolkit;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /**
  * This class contains an attribute value.
@@ -76,6 +77,8 @@ import org.arakhne.afc.ui.vector.VectorToolkit;
 public class AttributeValueImpl implements AttributeValue {
 
 	private static final long serialVersionUID = 4014368008512085546L;
+
+	private static final String UUID_STR = "uuid"; //$NON-NLS-1$
 
 	/**
 	 * Type of the metadata.
@@ -599,15 +602,7 @@ public class AttributeValueImpl implements AttributeValue {
 	@Pure
 	@Override
 	public String toString() {
-		final StringBuilder str = new StringBuilder();
-		str.append("["); //$NON-NLS-1$
-		str.append((this.value == null)
-				? "???" //$NON-NLS-1$
-						: this.value.toString());
-		str.append(":"); //$NON-NLS-1$
-		str.append(this.type.toString());
-		str.append("]"); //$NON-NLS-1$
-		return str.toString();
+		return ReflectionUtil.toString(this);
 	}
 
 	@Pure
@@ -1747,7 +1742,7 @@ public class AttributeValueImpl implements AttributeValue {
 	private static UUID parseUUID(String text) {
 		try {
 			final URI uri = new URI(text);
-			if ("uuid".equalsIgnoreCase(uri.getScheme())) { //$NON-NLS-1$
+			if (UUID_STR.equalsIgnoreCase(uri.getScheme())) {
 				return UUID.fromString(uri.getHost());
 			}
 		} catch (Throwable exception) {
@@ -1784,7 +1779,7 @@ public class AttributeValueImpl implements AttributeValue {
 				return new UUID(id.getMostSignificantBits(), id.getLeastSignificantBits());
 			case URI:
 				final URI uri = (URI) this.value;
-				if ("uuid".equalsIgnoreCase(uri.getScheme())) { //$NON-NLS-1$
+				if (UUID_STR.equalsIgnoreCase(uri.getScheme())) {
 					return extractUUIDFromString(uri);
 				}
 				break;
@@ -1793,7 +1788,7 @@ public class AttributeValueImpl implements AttributeValue {
 					return (UUID) this.value;
 				}
 				if (this.value instanceof URI
-						&& "uuid".equalsIgnoreCase(((URI) this.value).getScheme())) { //$NON-NLS-1$
+						&& UUID_STR.equalsIgnoreCase(((URI) this.value).getScheme())) {
 					return extractUUIDFromString((URI) this.value);
 				}
 				break;
@@ -1924,7 +1919,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case STRING:
 				return new URI((String) this.value);
 			case UUID:
-				return new URI("uuid:" + ((UUID) this.value).toString()); //$NON-NLS-1$
+				return new URI(UUID_STR + ":" + ((UUID) this.value).toString()); //$NON-NLS-1$
 			case OBJECT:
 				if (this.value instanceof URI) {
 					return (URI) this.value;
@@ -1933,7 +1928,7 @@ public class AttributeValueImpl implements AttributeValue {
 					return ((URL) this.value).toURI();
 				}
 				if (this.value instanceof UUID) {
-					return new URI("uuid:" + ((UUID) this.value).toString()); //$NON-NLS-1$
+					return new URI(UUID_STR + ":" + ((UUID) this.value).toString()); //$NON-NLS-1$
 				}
 				break;
 			case INET_ADDRESS:

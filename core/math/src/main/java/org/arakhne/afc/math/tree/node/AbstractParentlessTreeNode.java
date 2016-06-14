@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -233,11 +234,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 		buffer.append('[');
 		if (this.data != null) {
 			for (final D data : this.data) {
-				if (data == null) {
-					buffer.append("null"); //$NON-NLS-1$
-				} else {
-					buffer.append(data.toString());
-				}
+				buffer.append(Objects.toString(data));
 			}
 		}
 		buffer.append(']');

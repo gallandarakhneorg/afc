@@ -23,6 +23,7 @@ package org.arakhne.afc.inputoutput.filefilter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.arakhne.afc.inputoutput.filetype.FileType;
@@ -113,6 +114,12 @@ public class CSVFileFilter extends AbstractFileFilter {
 	 */
 	private static class BinaryCSVMagicNumber extends MagicNumber {
 
+		private static final String REGEX = "^[\\x20-\\xFF\t\n\r\n]*$"; //$NON-NLS-1$
+
+		private static final String[] SEPARATORS = {",", ";", "\t"}; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+
+		private static final String[] QSEPARATORS = {",", ";", "\t", " "};  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
 		/** Constructor.
 		 */
 		BinaryCSVMagicNumber() {
@@ -128,9 +135,7 @@ public class CSVFileFilter extends AbstractFileFilter {
 			boolean found;
 			int offset = 0;
 
-			final String regex = "^[\\x20-\\xFF\t\n\r\n]*$"; //$NON-NLS-1$
-			final String[] separators = {",", ";", "\t"}; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-			final String[] qseparators = {",", ";", "\t", " "};  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			final Pattern pattern = Pattern.compile(REGEX);
 
 			for (int i = 0; i < 3; ++i) {
 				found = false;
@@ -143,15 +148,16 @@ public class CSVFileFilter extends AbstractFileFilter {
 					offset += line.length;
 
 					// Check if text.
-					if (Pattern.matches(regex, string)) {
-						for (int j = 0; !found && j < qseparators.length; ++j) {
-							if (matchSeparator(qseparators[j], true, string)) {
+					final Matcher matcher = pattern.matcher(string);
+					if (matcher.matches()) {
+						for (int j = 0; !found && j < QSEPARATORS.length; ++j) {
+							if (matchSeparator(QSEPARATORS[j], true, string)) {
 								found = true;
 							}
 						}
 						if (!found) {
-							for (int j = 0; !found && j < separators.length; ++j) {
-								if (matchSeparator(separators[j], false, string)) {
+							for (int j = 0; !found && j < SEPARATORS.length; ++j) {
+								if (matchSeparator(SEPARATORS[j], false, string)) {
 									found = true;
 								}
 							}

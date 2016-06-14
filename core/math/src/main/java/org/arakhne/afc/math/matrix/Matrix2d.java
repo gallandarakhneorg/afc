@@ -33,6 +33,7 @@ import org.arakhne.afc.math.extensions.xtext.MatrixExtensions;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -147,10 +148,7 @@ public class Matrix2d implements Serializable, Cloneable {
     @Pure
     @Override
     public String toString() {
-        return this.m00 + ", " //$NON-NLS-1$
-                + this.m01 + "\n" //$NON-NLS-1$
-                + this.m10 + ", " //$NON-NLS-1$
-                + this.m11 + "\n"; //$NON-NLS-1$
+        return ReflectionUtil.toString(this);
     }
 
     /**

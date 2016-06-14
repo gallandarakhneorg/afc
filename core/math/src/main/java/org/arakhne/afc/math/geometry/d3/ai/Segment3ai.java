@@ -75,7 +75,7 @@ public interface Segment3ai<
 	@SuppressWarnings("checkstyle:parameternumber")
     static void computeClosestPointToPoint(int ax, int ay, int az, int bx, int by, int bz, int px, int py, int pz,
             Point3D<?, ?> result) {
-		assert result != null : "Result must be not be null"; //$NON-NLS-1$
+		assert result != null : "Result must be not be null";
 
 		// Special case
 		//    0 1 2 3 4 5 6 7 8 9 10
@@ -358,7 +358,7 @@ public interface Segment3ai<
 	@SuppressWarnings("checkstyle:parameternumber")
     static void computeFarthestPointTo(int ax, int ay, int az, int bx, int by, int bz, int px, int py, int pz,
             Point3D<?, ?> result) {
-		assert result != null : "Result must be not be null"; //$NON-NLS-1$
+		assert result != null : "Result must be not be null";
         final int v1x = px - ax;
         final int v1y = py - ay;
         final int v1z = pz - az;
@@ -454,7 +454,7 @@ public interface Segment3ai<
 			int radius,
 			int x0, int y0, int z0,
 			int x1, int y1, int z1) {
-		assert radius >= 0 : "Redius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0 : "Redius must be positive or zero";
 
 		int numCrosses = crossings;
 
@@ -1177,14 +1177,14 @@ public interface Segment3ai<
 	 * @param secondPoint the second point.
 	 */
 	default void set(Point3D<?, ?> firstPoint, Point3D<?, ?> secondPoint) {
-		assert firstPoint != null : "First point must be not be null"; //$NON-NLS-1$
-		assert secondPoint != null : "Second point must be not be null"; //$NON-NLS-1$
+		assert firstPoint != null : "First point must be not be null";
+		assert secondPoint != null : "Second point must be not be null";
 		set(firstPoint.ix(), firstPoint.iy(), firstPoint.iz(), secondPoint.ix(), secondPoint.iy(), secondPoint.iz());
 	}
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Shape must be not be null"; //$NON-NLS-1$
+		assert shape != null : "Shape must be not be null";
 		set(shape.getX1(), shape.getY1(), shape.getZ1(), shape.getX2(), shape.getY2(), shape.getZ2());
 	}
 
@@ -1296,7 +1296,7 @@ public interface Segment3ai<
 	 */
 	@Pure
 	default void setP1(Point3D<?, ?> point) {
-		assert point != null : "Point must be not be null"; //$NON-NLS-1$
+		assert point != null : "Point must be not be null";
 		set(point.ix(), point.iy(), point.iz(), getX2(), getY2(), getZ2());
 	}
 
@@ -1317,7 +1317,7 @@ public interface Segment3ai<
 	 */
 	@Pure
 	default void setP2(Point3D<?, ?> point) {
-		assert point != null : "Point must be not be null"; //$NON-NLS-1$
+		assert point != null : "Point must be not be null";
 		set(getX1(), getY1(), getZ1(), point.ix(), point.iy(), point.iz());
 	}
 
@@ -1335,14 +1335,14 @@ public interface Segment3ai<
 	@Override
 	@Pure
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not be null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not be null";
 		box.setFromCorners(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2());
 	}
 
 	@Pure
 	@Override
 	default double getDistanceSquared(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not be null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not be null";
 		final P closestPoint = getClosestPointTo(pt);
 		return closestPoint.getDistanceSquared(pt);
 	}
@@ -1350,7 +1350,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default double getDistanceL1(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not be null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not be null";
 		final P closestPoint = getClosestPointTo(pt);
 		return closestPoint.getDistanceL1(pt);
 	}
@@ -1358,7 +1358,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not be null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not be null";
 		final P closestPoint = getClosestPointTo(pt);
 		return closestPoint.getDistanceLinf(pt);
 	}
@@ -1408,7 +1408,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not be null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not be null";
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointToPoint(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
@@ -1447,7 +1447,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not be null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not be null";
 		final P point = getGeomFactory().newPoint();
 		computeFarthestPointTo(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
@@ -1501,7 +1501,7 @@ public interface Segment3ai<
 	 * @see #createTransformedShape(Transform3D)
 	 */
 	default void transform(Transform3D transform) {
-		assert transform != null : "Transformation must be not be null"; //$NON-NLS-1$
+		assert transform != null : "Transformation must be not be null";
 		final P p = getGeomFactory().newPoint(getX1(), getY1(), getZ1());
 		transform.transform(p);
 		setP1(p);
@@ -1525,9 +1525,9 @@ public interface Segment3ai<
 	 */
 	// TODO : integrate z coordinate
 	default boolean clipToRectangle(int rxmin, int rymin, int rzmin, int rxmax, int rymax, int rzmax) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
-		assert rzmin <= rzmax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax";
+		assert rymin <= rymax : "rymin must be lower or equal to rymax";
+		assert rzmin <= rzmax : "rymin must be lower or equal to rymax";
 
 		int x0 = getX1();
 		int y0 = getY1();
@@ -1607,7 +1607,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default boolean intersects(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : "Rectangular prism must be not be null"; //$NON-NLS-1$
+		assert rectangularPrism != null : "Rectangular prism must be not be null";
 		return RectangularPrism3ai.intersectsRectangleSegment(
 				rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ(),
 				rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ(),
@@ -1618,7 +1618,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Sphere must be not be null"; //$NON-NLS-1$
+		assert sphere != null : "Sphere must be not be null";
 		return Sphere3ai.intersectsSphereSegment(
 				sphere.getX(), sphere.getY(), sphere.getZ(),
 				sphere.getRadius(),
@@ -1629,7 +1629,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not be null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not be null";
 		return intersectsSegmentSegment(
 				getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
 				segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2());
@@ -1638,7 +1638,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator3ai<?> iterator) {
-		assert iterator != null : "Iterator must be not be null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not be null";
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path3ai.computeCrossingsFromSegment(
 				0,
@@ -1652,7 +1652,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "MultiShape must be not null";
 		return multishape.intersects(this);
 	}
 
@@ -1721,7 +1721,7 @@ public interface Segment3ai<
 		 * @param z1 is the z-coordinate of the last point of the Bresenham line.
 		 */
 		public BresenhamLineIterator(GeomFactory3D<V, P> factory, int x0, int y0, int z0, int x1, int y1, int z1) {
-			assert factory != null : "Factory must be not be null"; //$NON-NLS-1$
+			assert factory != null : "Factory must be not be null";
 			this.factory = factory;
 			int localx0 = x0;
 			int localy0 = y0;
@@ -1847,7 +1847,7 @@ public interface Segment3ai<
 		 * @param segment the element.
 		 */
 		public AbstractSegmentPathIterator(Segment3ai<?, ?, IE, ?, ?, ?> segment) {
-			assert segment != null : "Factory must be not be null"; //$NON-NLS-1$
+			assert segment != null : "Factory must be not be null";
 			this.segment = segment;
 		}
 
@@ -1926,7 +1926,7 @@ public interface Segment3ai<
 		 */
 		public TransformedSegmentPathIterator(Segment3ai<?, ?, IE, ?, ?, ?> segment, Transform3D transform) {
 			super(segment);
-			assert transform != null : "Transformation must be not be null"; //$NON-NLS-1$
+			assert transform != null : "Transformation must be not be null";
 			this.transform = transform;
 			if (segment.getX1() == segment.getX2() && segment.getY1() == segment.getY2()) {
 				this.index = 2;

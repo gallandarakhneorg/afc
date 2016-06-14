@@ -410,7 +410,7 @@ public class AttributeTest extends AbstractTestCase {
 		assertAttributeException(attr,"getPolyline"); 
 		assertAttributeException(attr,"getPolyline3D"); 
 	}
-
+	
 	@Test
 	public void attributeImplDouble() throws Exception {
 		double nb = Math.random();

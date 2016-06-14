@@ -35,6 +35,7 @@ import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.math.graph.GraphSegment;
 import org.arakhne.afc.util.ListUtil;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 
@@ -396,7 +397,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		try {
 			return path.add(segment);
 		} catch (Throwable e) {
-			throw new IllegalStateException("no path factory found", e); //$NON-NLS-1$
+			throw new IllegalStateException("no path factory found", e);
 		}
 	}
 
@@ -736,21 +737,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		@Pure
 		@Override
 		public String toString() {
-			final StringBuilder b = new StringBuilder();
-			b.append("{"); //$NON-NLS-1$
-			b.append(this.entryPoint.getClass().getName());
-			b.append("|"); //$NON-NLS-1$
-			b.append(System.identityHashCode(this.entryPoint));
-			b.append("|"); //$NON-NLS-1$
-			b.append(this.costToReach);
-			b.append("|"); //$NON-NLS-1$
-			b.append(this.estimatedCost);
-			b.append("|"); //$NON-NLS-1$
-			b.append(this.costToReach + this.estimatedCost);
-			b.append("|"); //$NON-NLS-1$
-			b.append(this.entryPoint.toString());
-			b.append("}"); //$NON-NLS-1$
-			return b.toString();
+			return ReflectionUtil.toString(this);
 		}
 
 		@Pure

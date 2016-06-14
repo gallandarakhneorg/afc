@@ -594,9 +594,9 @@ public final class MathUtil {
 	@SuppressWarnings("checkstyle:parameternumber")
     public static int getCohenSutherlandCode3D(int px, int py, int pz, int rxmin, int rymin, int rzmin, int rxmax, int rymax,
             int rzmax) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
-		assert rzmin <= rzmax : "rzmin must be lower or equal to rzmax"; //$NON-NLS-1$
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(3, rxmin, 6, rxmax);
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(4, rymin, 7, rymax);
+		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(5, rzmin, 8, rzmax);
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
 		if (px < rxmin) {
@@ -647,8 +647,9 @@ public final class MathUtil {
 	@SuppressWarnings("checkstyle:parameternumber")
     public static int getCohenSutherlandCode3D(double px, double py, double pz, double rxmin, double rymin, double rzmin,
             double rxmax, double rymax, double rzmax) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(3, rxmin, 6, rxmax);
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(4, rymin, 7, rymax);
+		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(5, rzmin, 8, rzmax);
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
 		if (px < rxmin) {

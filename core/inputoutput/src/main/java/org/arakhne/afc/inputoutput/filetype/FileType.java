@@ -57,6 +57,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  */
 public final class FileType {
 
+	private static final String IMAGE = "image"; //$NON-NLS-1$
+
 	private FileType() {
 		//
 	}
@@ -153,7 +155,7 @@ public final class FileType {
 	public static boolean isImage(String mime) {
 		try {
 			final MimeType type = new MimeType(mime);
-			return "image".equalsIgnoreCase(type.getPrimaryType()); //$NON-NLS-1$
+			return IMAGE.equalsIgnoreCase(type.getPrimaryType());
 		} catch (MimeTypeParseException e) {
 			//
 		}

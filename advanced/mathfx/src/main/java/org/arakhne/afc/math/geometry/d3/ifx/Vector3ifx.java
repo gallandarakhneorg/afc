@@ -26,6 +26,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
@@ -143,7 +144,7 @@ public class Vector3ifx extends Tuple3ifx<Vector3ifx> implements Vector3D<Vector
 	 */
 	public DoubleProperty lengthProperty() {
 		if (this.lengthProperty == null) {
-			this.lengthProperty = new ReadOnlyDoubleWrapper(this, "length"); //$NON-NLS-1$
+			this.lengthProperty = new ReadOnlyDoubleWrapper(this, MathFXAttributeNames.LENGTH);
 			this.lengthProperty.bind(Bindings.createDoubleBinding(() ->
 			    Math.sqrt(lengthSquaredProperty().doubleValue()), lengthSquaredProperty()));
 		}
@@ -161,7 +162,7 @@ public class Vector3ifx extends Tuple3ifx<Vector3ifx> implements Vector3D<Vector
 	 */
 	public DoubleProperty lengthSquaredProperty() {
 		if (this.lengthSquareProperty == null) {
-			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, "lengthSquared"); //$NON-NLS-1$
+			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, MathFXAttributeNames.LENGTH_SQUARED);
 			this.lengthSquareProperty.bind(Bindings.createDoubleBinding(() ->
 					Vector3ifx.this.x.doubleValue() * Vector3ifx.this.x.doubleValue()
 							+ Vector3ifx.this.y.doubleValue() * Vector3ifx.this.y.doubleValue()

@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -38,6 +39,30 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  */
 @SuppressWarnings("checkstyle:methodcount")
 public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Serializable {
+
+	/** Pattern for creation a string representation of a {@link Tuple2D}.
+	 */
+	String TUPLE_STRING_PATTERN = "({0}, {1})"; //$NON-NLS-1$
+
+	/** Replies the string representation of the tuple.
+	 *
+	 * @param x x coordinate.
+	 * @param y y coordinate.
+	 * @return the string representation.
+	 */
+	static String toString(double x, double y) {
+		return MessageFormat.format(TUPLE_STRING_PATTERN, x, y);
+	}
+
+	/** Replies the string representation of the tuple.
+	 *
+	 * @param x x coordinate.
+	 * @param y y coordinate.
+	 * @return the string representation.
+	 */
+	static String toString(int x, int y) {
+		return MessageFormat.format(TUPLE_STRING_PATTERN, x, y);
+	}
 
 	/** Clone this point.
 	 *

@@ -77,7 +77,7 @@ public class Sphere3d
 	 * @param sphere the sphere to copy.
 	 */
 	public Sphere3d(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Circle must be not null"; //$NON-NLS-1$
+		assert sphere != null : "Circle must be not null";
 		set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
 	}
 
@@ -90,22 +90,6 @@ public class Sphere3d
 		bits = 31 * bits + Double.hashCode(this.centerZ);
 		bits = 31 * bits + Double.hashCode(this.radius);
 		return bits ^ (bits >> 31);
-	}
-
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getZ());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getRadius());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
 	}
 
 	@Pure
@@ -166,7 +150,7 @@ public class Sphere3d
 
 	@Override
 	public void set(double x, double y, double z, double radius) {
-		assert radius >= 0. : "Radius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0. : "Radius must be positive or zero";
 		if (this.centerX != x || this.centerY != y || this.centerZ != z || this.radius != radius) {
 			this.centerX = x;
 			this.centerY = y;

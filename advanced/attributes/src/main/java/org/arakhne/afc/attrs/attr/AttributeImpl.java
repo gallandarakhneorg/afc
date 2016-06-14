@@ -35,6 +35,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Image;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /**
  * This class contains an attribute value.
@@ -433,23 +434,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	@Pure
 	@Override
 	public String toString() {
-		final StringBuilder str = new StringBuilder();
-		str.append('[');
-		str.append((this.name == null)
-				? "???" //$NON-NLS-1$
-				: this.name);
-		str.append('=');
-		try {
-			str.append((getValue() == null)
-					? "???" //$NON-NLS-1$
-					: getValue().toString());
-		} catch (AttributeException e) {
-			str.append("???"); //$NON-NLS-1$
-		}
-		str.append(':');
-		str.append(getType().toString());
-		str.append(']');
-		return str.toString();
+		return ReflectionUtil.toString(this);
 	}
 
 	/** Assert that the attribute value was assigned and not <code>null</code>.

@@ -24,6 +24,7 @@ import javafx.beans.property.ObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.PathIterator3D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** Abstract shape with 3 double precision floating-point FX properties.
  *
@@ -81,6 +82,12 @@ public abstract class AbstractShape3dfx<T extends AbstractShape3dfx<?>> implemen
 	@Override
 	public final GeomFactory3dfx getGeomFactory() {
 		return GeomFactory3dfx.SINGLETON;
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+		return ReflectionUtil.toString(this);
 	}
 
 }

@@ -191,20 +191,4 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 		return bits ^ (bits >> 31);
 	}
 
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("("); //$NON-NLS-1$
-		b.append(getMinX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getMinY());
-		b.append(")-("); //$NON-NLS-1$
-		b.append(getMaxX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getMaxY());
-		b.append(")"); //$NON-NLS-1$
-		return b.toString();
-	}
-
 }

@@ -29,6 +29,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 /**
@@ -95,9 +96,9 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 
 	private void init() {
 		final Vector3dfx v = getGeomFactory().newVector();
-		this.x = new ReadOnlyDoubleWrapper(v, "x"); //$NON-NLS-1$
-		this.y = new ReadOnlyDoubleWrapper(v, "y"); //$NON-NLS-1$
-		this.z = new ReadOnlyDoubleWrapper(v, "z"); //$NON-NLS-1$
+		this.x = new ReadOnlyDoubleWrapper(v, MathFXAttributeNames.X);
+		this.y = new ReadOnlyDoubleWrapper(v, MathFXAttributeNames.Y);
+		this.z = new ReadOnlyDoubleWrapper(v, MathFXAttributeNames.Z);
 		v.set(this.x, this.y, this.z);
 		super.set(v);
 	}
@@ -109,11 +110,11 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 		}
 		if (this.fake == null) {
 			this.fake = getGeomFactory().newVector();
-			final DoubleProperty x = new SimpleDoubleProperty(this.fake, "x"); //$NON-NLS-1$
+			final DoubleProperty x = new SimpleDoubleProperty(this.fake, MathFXAttributeNames.X);
 			x.bind(internalXProperty());
-			final DoubleProperty y = new SimpleDoubleProperty(this.fake, "y"); //$NON-NLS-1$
+			final DoubleProperty y = new SimpleDoubleProperty(this.fake, MathFXAttributeNames.Y);
 			y.bind(internalYProperty());
-			final DoubleProperty z = new SimpleDoubleProperty(this.fake, "z"); //$NON-NLS-1$
+			final DoubleProperty z = new SimpleDoubleProperty(this.fake, MathFXAttributeNames.Z);
 			z.bind(internalYProperty());
 			this.fake.set(x, y, z);
 		}
@@ -122,7 +123,7 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 
 	@Override
 	public void set(Vector3dfx newValue) {
-		assert newValue != null : "Initial value must be not null"; //$NON-NLS-1$
+		assert newValue != null : "Initial value must be not null";
 		set(newValue.getX(), newValue.getY(), newValue.getZ());
 	}
 
@@ -133,7 +134,7 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 	 * @param z z coordinate of the vector.
 	 */
 	public void set(double x, double y, double z) {
-		assert Vector3D.isUnitVector(x, y, z) : "Vector coordinates must correspond to a unit vector"; //$NON-NLS-1$
+		assert Vector3D.isUnitVector(x, y, z) : "Vector coordinates must correspond to a unit vector";
 		if ((x != getX() || y != getY() || z != getZ()) && !isBound()) {
 			final Vector3dfx v = super.get();
 			v.set(x, y, z);

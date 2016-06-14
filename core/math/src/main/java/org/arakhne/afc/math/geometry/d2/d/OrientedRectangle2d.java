@@ -155,30 +155,6 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 
 	@Pure
 	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getCenterX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getCenterY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getFirstAxisX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getFirstAxisY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getFirstAxisExtent());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getSecondAxisX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getSecondAxisY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getSecondAxisExtent());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
-	}
-
-	@Pure
-	@Override
 	public Point2d getCenter() {
 		return getGeomFactory().newPoint(this.cx, this.cy);
 	}

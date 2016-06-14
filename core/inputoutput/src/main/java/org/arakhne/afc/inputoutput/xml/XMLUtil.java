@@ -114,6 +114,25 @@ public final class XMLUtil {
 	 */
 	public static final Map<String, Integer> COLOR_MATCHES;
 
+	private static final String COLOR_DEFINITION_PATTERN = "^\\s*([^:\\s*]+)\\s*:\\s*([0-9]+)" //$NON-NLS-1$
+			+ "\\s*,\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*$"; //$NON-NLS-1$
+
+	private static final String EOL_PATTERN = "[\n\r]+"; //$NON-NLS-1$
+
+	private static final String CONSTANT_TRUE = "true"; //$NON-NLS-1$
+
+	private static final String CONSTANT_YES = "yes"; //$NON-NLS-1$
+
+	private static final String CONSTANT_ON = "on"; //$NON-NLS-1$
+
+	private static final String CONSTANT_Y = "y"; //$NON-NLS-1$
+
+	private static final String CONSTANT_T = "t"; //$NON-NLS-1$
+
+	private static final String COLUMN_SEPARATOR = "[ \t]*;[ \t]*"; //$NON-NLS-1$
+
+	private static final String INDENT_NUMBER = "indent-number"; //$NON-NLS-1$
+
 	static {
 		COLOR_MATCHES = initializeColors();
 	}
@@ -127,9 +146,8 @@ public final class XMLUtil {
 		final Map<String, Integer> map = new HashMap<>();
 		final String colors = Locale.getString(XMLUtil.class, "COLOR_MATCHES"); //$NON-NLS-1$
 		if (colors != null) {
-			final Pattern pattern = Pattern.compile(
-					"^\\s*([^:\\s*]+)\\s*:\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*$"); //$NON-NLS-1$
-			for (final String definition : colors.split("[\n\r]+")) { //$NON-NLS-1$
+			final Pattern pattern = Pattern.compile(COLOR_DEFINITION_PATTERN);
+			for (final String definition : colors.split(EOL_PATTERN)) {
 				final Matcher matcher = pattern.matcher(definition);
 				if (matcher.matches()) {
 					map.put(matcher.group(1),
@@ -212,11 +230,11 @@ public final class XMLUtil {
 		if (v == null || v.isEmpty()) {
 			return defaultValue;
 		}
-		return "true".equalsIgnoreCase(v) //$NON-NLS-1$
-				|| "yes".equalsIgnoreCase(v) //$NON-NLS-1$
-				|| "on".equalsIgnoreCase(v) //$NON-NLS-1$
-				|| "y".equalsIgnoreCase(v) //$NON-NLS-1$
-				|| "t".equalsIgnoreCase(v); //$NON-NLS-1$
+		return CONSTANT_TRUE.equalsIgnoreCase(v)
+				|| CONSTANT_YES.equalsIgnoreCase(v)
+				|| CONSTANT_ON.equalsIgnoreCase(v)
+				|| CONSTANT_Y.equalsIgnoreCase(v)
+				|| CONSTANT_T.equalsIgnoreCase(v);
 	}
 
 	/** Replies the boolean value that corresponds to the specified attribute's path.
@@ -959,7 +977,7 @@ public final class XMLUtil {
 		final List<UUID> ids = new ArrayList<>();
 		final String v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null && !v.isEmpty()) {
-			for (final String id : v.split("[ \t]*;[ \t]*")) { //$NON-NLS-1$
+			for (final String id : v.split(COLUMN_SEPARATOR)) {
 				try {
 					ids.add(UUID.fromString(id));
 				} catch (Exception e) {
@@ -2005,9 +2023,9 @@ public final class XMLUtil {
 		assert stream != null : AssertMessages.notNullParameter(1);
 		try {
 			final TransformerFactory transFactory = TransformerFactory.newInstance();
-			transFactory.setAttribute("indent-number", Integer.valueOf(2)); //$NON-NLS-1$
+			transFactory.setAttribute(INDENT_NUMBER, Integer.valueOf(2));
 			final Transformer trans = transFactory.newTransformer();
-			trans.setParameter(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
+			trans.setParameter(OutputKeys.INDENT, CONSTANT_YES);
 
 			final DOMSource source = new DOMSource(node);
    			try (PrintStream flot = new PrintStream(stream)) {
@@ -2024,9 +2042,9 @@ public final class XMLUtil {
 		assert writer != null : AssertMessages.notNullParameter(1);
 		try {
 			final TransformerFactory transFactory = TransformerFactory.newInstance();
-			transFactory.setAttribute("indent-number", Integer.valueOf(2)); //$NON-NLS-1$
+			transFactory.setAttribute(INDENT_NUMBER, Integer.valueOf(2));
 			final Transformer trans = transFactory.newTransformer();
-			trans.setParameter(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
+			trans.setParameter(OutputKeys.INDENT, CONSTANT_YES);
 
 			final DOMSource source = new DOMSource(node);
    			try (PrintWriter flot = new PrintWriter(writer)) {

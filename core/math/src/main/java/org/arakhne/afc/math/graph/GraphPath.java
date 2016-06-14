@@ -29,6 +29,8 @@ import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.ReflectionUtil;
+
 /**
  * This class describes a path inside a graph.
  *
@@ -1057,21 +1059,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	@Pure
 	@Override
 	public String toString() {
-		final StringBuilder buffer = new StringBuilder();
-		buffer.append("["); //$NON-NLS-1$
-		if (!isEmpty()) {
-			boolean join = false;
-			for (final ST segment : this.segmentList) {
-				if (join) {
-					buffer.append(", "); //$NON-NLS-1$
-				} else {
-					join = true;
-				}
-				buffer.append(segment.toString());
-			}
-		}
-		buffer.append("]"); //$NON-NLS-1$
-		return buffer.toString();
+		return ReflectionUtil.toString(this);
 	}
 
 	/** Revert the order of the graph segment in this path.

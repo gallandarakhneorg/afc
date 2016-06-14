@@ -61,7 +61,7 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
      * @param tuple is the tuple to copy.
      */
 	public Tuple3i(Tuple3i<?> tuple) {
-		assert tuple != null : "Input tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Input tuple must not be null";
 		this.x = tuple.x;
 		this.y = tuple.y;
 		this.z = tuple.z;
@@ -71,7 +71,7 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
      * @param tuple is the tuple to copy.
      */
 	public Tuple3i(Tuple3D<?> tuple) {
-		assert tuple != null : "Input tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Input tuple must not be null";
 		this.x = tuple.ix();
 		this.y = tuple.iy();
 		this.z = tuple.iz();
@@ -81,8 +81,8 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple3i(int[] tuple) {
-		assert tuple != null : "Input tuple must not be null"; //$NON-NLS-1$
-		assert tuple.length >= 3 : "Size of the input array is too small"; //$NON-NLS-1$
+		assert tuple != null : "Input tuple must not be null";
+		assert tuple.length >= 3 : "Size of the input array is too small";
 		this.x = tuple[0];
 		this.y = tuple[1];
 		this.z = tuple[2];
@@ -92,8 +92,8 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple3i(double[] tuple) {
-		assert tuple != null : "Input tuple must not be null"; //$NON-NLS-1$
-		assert tuple.length >= 3 : "Size of the input array is too small"; //$NON-NLS-1$
+		assert tuple != null : "Input tuple must not be null";
+		assert tuple.length >= 3 : "Size of the input array is too small";
 		this.x = (int) Math.round(tuple[0]);
 		this.y = (int) Math.round(tuple[1]);
 		this.z = (int) Math.round(tuple[2]);
@@ -141,7 +141,7 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void absolute(Tuple3D<?> tuple) {
-		assert tuple != null : "Output tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Output tuple must not be null";
 		tuple.set(Math.abs(this.x), Math.abs(this.y), Math.abs(this.z));
 	}
 
@@ -191,7 +191,7 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void negate(Tuple3D<?> tuple) {
-		assert tuple != null : "Input tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Input tuple must not be null";
 		this.x = -tuple.ix();
 		this.y = -tuple.iy();
 		this.z = -tuple.iz();
@@ -206,7 +206,7 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void scale(int scale, Tuple3D<?> tuple) {
-		assert tuple != null : "Input tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Input tuple must not be null";
 		this.x = (int) Math.round(scale * tuple.getX());
 		this.y = (int) Math.round(scale * tuple.getY());
 		this.z = (int) Math.round(scale * tuple.getZ());
@@ -214,7 +214,7 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void scale(double scale, Tuple3D<?> tuple) {
-		assert tuple != null : "Input tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Input tuple must not be null";
 		this.x = (int) Math.round(scale * tuple.getX());
 		this.y = (int) Math.round(scale * tuple.getY());
 		this.z = (int) Math.round(scale * tuple.getZ());
@@ -236,7 +236,7 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void set(Tuple3D<?> tuple) {
-		assert tuple != null : "Input tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Input tuple must not be null";
 		this.x = tuple.ix();
 		this.y = tuple.iy();
 		this.z = tuple.iz();
@@ -258,8 +258,8 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void set(int[] tuple) {
-		assert tuple != null : "Input tuple must not be null"; //$NON-NLS-1$
-		assert tuple.length >= 3 : "Size of the input tuple is too small"; //$NON-NLS-1$
+		assert tuple != null : "Input tuple must not be null";
+		assert tuple.length >= 3 : "Size of the input tuple is too small";
 		this.x = tuple[0];
 		this.y = tuple[1];
 		this.z = tuple[2];
@@ -267,8 +267,8 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void set(double[] tuple) {
-		assert tuple != null : "Input tuple must not be null"; //$NON-NLS-1$
-		assert tuple.length >= 3 : "Size of the input tuple is too small"; //$NON-NLS-1$
+		assert tuple != null : "Input tuple must not be null";
+		assert tuple.length >= 3 : "Size of the input tuple is too small";
 		this.x = (int) Math.round(tuple[0]);
 		this.y = (int) Math.round(tuple[1]);
 		this.z = (int) Math.round(tuple[2]);
@@ -410,10 +410,7 @@ public class Tuple3i<RT extends Tuple3i<? super RT>> implements Tuple3D<RT> {
 	@Pure
 	@Override
 	public String toString() {
-        return "(" //$NON-NLS-1$
-                + this.x + ";" //$NON-NLS-1$
-                + this.y + ";" //$NON-NLS-1$
-                + this.z + ")"; //$NON-NLS-1$
+        return Tuple3D.toString(this.x, this.y, this.z);
 	}
 
 }

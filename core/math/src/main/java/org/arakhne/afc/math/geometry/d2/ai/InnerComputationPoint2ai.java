@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d2.ai;
 
 import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
 
 /** A point that is used for internal computations.
@@ -116,7 +117,7 @@ public class InnerComputationPoint2ai implements Point2D<InnerComputationPoint2a
 
     @Override
     public String toString() {
-        return "(" + ix() + ", " + iy() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return Tuple2D.toString(this.x, this.y);
     }
 
 }

@@ -45,6 +45,14 @@ import org.arakhne.afc.inputoutput.xml.XMLUtil;
  */
 public abstract class XMLMagicNumber extends MagicNumber {
 
+	/** Name of the attribute "xmlns".
+	 */
+	static final String XMLNS = "xmlns"; //$NON-NLS-1$
+
+	/** Name of the attribute "version".
+	 */
+	static final String VERSION = "version"; //$NON-NLS-1$
+
 	private final String rootNode;
 
 	/**
@@ -89,8 +97,8 @@ public abstract class XMLMagicNumber extends MagicNumber {
 			String xslVersion = null;
 
 			if (this.rootNode != null) {
-				xslSchema = XMLUtil.getAttributeValue(xmlDocument, this.rootNode, "xmlns"); //$NON-NLS-1$
-				xslVersion = XMLUtil.getAttributeValue(xmlDocument, this.rootNode, "version"); //$NON-NLS-1$
+				xslSchema = XMLUtil.getAttributeValue(xmlDocument, this.rootNode, XMLNS);
+				xslVersion = XMLUtil.getAttributeValue(xmlDocument, this.rootNode, VERSION);
 			}
 
 			return isContentType(

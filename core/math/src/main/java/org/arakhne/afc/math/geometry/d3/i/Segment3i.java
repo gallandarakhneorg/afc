@@ -99,28 +99,8 @@ public class Segment3i extends AbstractShape3i<Segment3i>
 
 	@Pure
 	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getX1());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getY1());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getZ1());
-		b.append("|"); //$NON-NLS-1$
-		b.append(getX2());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getY2());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getZ2());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
-	}
-
-	@Pure
-	@Override
 	public Shape3i<?> createTransformedShape(Transform3D transform) {
-		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+		assert transform != null : "Transformation must be not null";
 		final Point3i point = getGeomFactory().newPoint(getX1(), getY1(), getZ1());
 		transform.transform(point);
 		final int x1 = point.ix();

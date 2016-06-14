@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.references.WeakArrayList;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Abstract shape with 2 integer numbers.
@@ -105,6 +106,12 @@ public abstract class AbstractShape2i<T extends AbstractShape2i<?>> implements S
 	@Override
 	public final GeomFactory2i getGeomFactory() {
 		return GeomFactory2i.SINGLETON;
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+		return ReflectionUtil.toString(this);
 	}
 
 }

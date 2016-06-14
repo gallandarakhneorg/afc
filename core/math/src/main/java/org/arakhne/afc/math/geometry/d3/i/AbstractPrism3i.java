@@ -63,7 +63,7 @@ public abstract class AbstractPrism3i<IT extends AbstractPrism3i<?>>
 	 * @param shape the shape to copy.
 	 */
 	public AbstractPrism3i(Prism3ai<?, ?, ?, ?, ?, ?> shape) {
-	    assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+	    assert shape != null : "Shape must be not null";
 	    this.minx = shape.getMinX();
 	    this.miny = shape.getMinY();
         this.minz = shape.getMinZ();
@@ -225,26 +225,6 @@ public abstract class AbstractPrism3i<IT extends AbstractPrism3i<?>>
 		bits = 31 * bits + this.maxy;
 		bits = 31 * bits + this.maxz;
 		return bits ^ (bits >> 32);
-	}
-
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getMinX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMinY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMinZ());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMaxX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMaxY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMaxZ());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
 	}
 
 }

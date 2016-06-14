@@ -91,10 +91,7 @@ final class ImmutablePoint3D implements UnmodifiablePoint3D<ImmutablePoint3D, Im
 	@Pure
 	@Override
 	public String toString() {
-        return "(" //$NON-NLS-1$
-                + this.x + ";" //$NON-NLS-1$
-                + this.y + ";" //$NON-NLS-1$
-                + this.z + ")"; //$NON-NLS-1$
+        return Tuple3D.toString(this.x, this.y, this.z);
 	}
 
 	@Pure

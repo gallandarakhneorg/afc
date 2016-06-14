@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
 
 /** A point that is used for internal computations.
@@ -65,7 +66,7 @@ public class InnerComputationPoint3afp implements Point3D<InnerComputationPoint3
 
 	@Override
 	public String toString() {
-		return "[" + this.x + "; " + this.y + "; " + this.z + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		return Tuple3D.toString(this.x, this.y, this.z);
 	}
 
 	@Override

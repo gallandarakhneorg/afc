@@ -90,19 +90,6 @@ public class Circle2d
 
 	@Pure
 	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("center: ("); //$NON-NLS-1$
-		b.append(getX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getY());
-		b.append(")\nradius: "); //$NON-NLS-1$
-		b.append(getRadius());
-		return b.toString();
-	}
-
-	@Pure
-	@Override
 	public double getX() {
 		return this.centerX;
 	}

@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d3.ai.PathElement3ai;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** An element of the path with 3 integer FX properties.
  *
@@ -64,14 +65,20 @@ public abstract class PathElement3ifx implements PathElement3ai {
 	 * @param toz the z coordinate of the target point.
 	 */
 	PathElement3ifx(PathElementType type, IntegerProperty tox, IntegerProperty toy, IntegerProperty toz) {
-		assert type != null : "Path winding rule must be not null"; //$NON-NLS-1$
-		assert tox != null : "Property toX must be not null"; //$NON-NLS-1$
-		assert toy != null : "Property toY must be not null"; //$NON-NLS-1$
-		assert toz != null : "Property toZ must be not null"; //$NON-NLS-1$
+		assert type != null : "Path winding rule must be not null";
+		assert tox != null : "Property toX must be not null";
+		assert toy != null : "Property toY must be not null";
+		assert toz != null : "Property toZ must be not null";
 		this.type = type;
 		this.toX = tox;
 		this.toY = toy;
 		this.toZ = toz;
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+        return ReflectionUtil.toString(this);
 	}
 
 	@Pure
@@ -280,8 +287,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 3 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 3 : "Size of the array is too small";
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 			array[2] = this.toZ.get();
@@ -290,8 +297,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 3 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 3 : "Size of the array is too small";
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 			array[2] = this.toZ.get();
@@ -300,8 +307,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 3 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 3 : "Size of the array is too small";
 			array[0] = this.toX;
 			array[1] = this.toY;
 			array[2] = this.toZ;
@@ -311,15 +318,6 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Override
 		public IntegerProperty[] toArray() {
 			return new IntegerProperty[] {this.toX, this.toY, this.toZ};
-		}
-
-		@Pure
-		@Override
-		public String toString() {
-            return "MOVE(" + //$NON-NLS-1$
-                    this.toX + "x" + //$NON-NLS-1$
-                    this.toY + "x" + //$NON-NLS-1$
-                    this.toZ + ")"; //$NON-NLS-1$
 		}
 
 		@Pure
@@ -462,8 +460,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		LinePathElement2ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty fromz, IntegerProperty tox,
 		        IntegerProperty toy, IntegerProperty toz) {
 		    super(PathElementType.LINE_TO, tox, toy, toz);
-		    assert fromx != null : "Property fromX must be not null"; //$NON-NLS-1$
-		    assert fromy != null : "Property fromY must be not null"; //$NON-NLS-1$
+		    assert fromx != null : "Property fromX must be not null";
+		    assert fromy != null : "Property fromY must be not null";
 		    this.fromX = fromx;
 		    this.fromY = fromy;
 		    this.fromZ = fromz;
@@ -518,8 +516,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 3 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 3 : "Size of the array is too small";
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 			array[2] = this.toZ.get();
@@ -528,8 +526,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 3 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 3 : "Size of the array is too small";
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 			array[2] = this.toZ.get();
@@ -544,20 +542,11 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 3 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 3 : "Size of the array is too small";
 			array[0] = this.toX;
 			array[1] = this.toY;
 			array[2] = this.toZ;
-		}
-
-		@Pure
-		@Override
-		public String toString() {
-            return "LINE(" + //$NON-NLS-1$
-                    this.toX + "x" + //$NON-NLS-1$
-                    this.toY + "x" + //$NON-NLS-1$
-                    this.toZ + ")"; //$NON-NLS-1$
 		}
 
 		@Pure
@@ -710,12 +699,12 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		QuadPathElement3ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty fromz, IntegerProperty ctrlx,
 		        IntegerProperty ctrly, IntegerProperty ctrlz, IntegerProperty tox, IntegerProperty toy, IntegerProperty toz) {
 		    super(PathElementType.QUAD_TO, tox, toy, toz);
-		    assert fromx != null : "Property fromX must be not null"; //$NON-NLS-1$
-		    assert fromy != null : "Property fromY must be not null"; //$NON-NLS-1$
-			assert fromz != null : "Property fromZ must be not null"; //$NON-NLS-1$
-			assert ctrlx != null : "Property ctrlX must be not null"; //$NON-NLS-1$
-			assert ctrly != null : "Property ctrlY must be not null"; //$NON-NLS-1$
-			assert ctrlz != null : "Property ctrlZ must be not null"; //$NON-NLS-1$
+		    assert fromx != null : "Property fromX must be not null";
+		    assert fromy != null : "Property fromY must be not null";
+			assert fromz != null : "Property fromZ must be not null";
+			assert ctrlx != null : "Property ctrlX must be not null";
+			assert ctrly != null : "Property ctrlY must be not null";
+			assert ctrlz != null : "Property ctrlZ must be not null";
 			this.fromX = fromx;
 			this.fromY = fromy;
 			this.fromZ = fromz;
@@ -783,8 +772,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 6 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 6 : "Size of the array is too small";
 			array[0] = this.ctrlX.get();
 			array[1] = this.ctrlY.get();
 			array[2] = this.ctrlZ.get();
@@ -796,8 +785,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 6 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 6 : "Size of the array is too small";
 			array[0] = this.ctrlX.get();
 			array[1] = this.ctrlY.get();
 			array[2] = this.ctrlZ.get();
@@ -815,26 +804,14 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 6 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 6 : "Size of the array is too small";
 			array[0] = this.ctrlX;
 			array[1] = this.ctrlY;
 			array[2] = this.ctrlZ;
 			array[3] = this.toX;
 			array[4] = this.toY;
 			array[5] = this.toZ;
-		}
-
-		@Pure
-		@Override
-		public String toString() {
-            return "QUAD(" + //$NON-NLS-1$
-                    this.ctrlX + "x" + //$NON-NLS-1$
-                    this.ctrlY + "x" + //$NON-NLS-1$
-                    this.ctrlZ + "|" + //$NON-NLS-1$
-                    this.toX + "x" + //$NON-NLS-1$
-                    this.toY + "x" + //$NON-NLS-1$
-                    this.toZ + ")"; //$NON-NLS-1$
 		}
 
 		@Pure
@@ -998,15 +975,15 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		        IntegerProperty ctrly1, IntegerProperty ctrlz1, IntegerProperty ctrlx2, IntegerProperty ctrly2,
                 IntegerProperty ctrlz2, IntegerProperty tox, IntegerProperty toy, IntegerProperty toz) {
 			super(PathElementType.CURVE_TO, tox, toy, toz);
-			assert fromx != null : "Property fromX must be not null"; //$NON-NLS-1$
-			assert fromy != null : "Property fromY must be not null"; //$NON-NLS-1$
-			assert fromz != null : "Property fromZ must be not null"; //$NON-NLS-1$
-			assert ctrlx1 != null : "Property ctrlX1 must be not null"; //$NON-NLS-1$
-			assert ctrly1 != null : "Property ctrlY1 must be not null"; //$NON-NLS-1$
-			assert ctrlz1 != null : "Property ctrlZ1 must be not null"; //$NON-NLS-1$
-			assert ctrlx2 != null : "Property ctrlX2 must be not null"; //$NON-NLS-1$
-			assert ctrly2 != null : "Property ctrlY2 must be not null"; //$NON-NLS-1$
-			assert ctrlz2 != null : "Property ctrlZ2 must be not null"; //$NON-NLS-1$
+			assert fromx != null : "Property fromX must be not null";
+			assert fromy != null : "Property fromY must be not null";
+			assert fromz != null : "Property fromZ must be not null";
+			assert ctrlx1 != null : "Property ctrlX1 must be not null";
+			assert ctrly1 != null : "Property ctrlY1 must be not null";
+			assert ctrlz1 != null : "Property ctrlZ1 must be not null";
+			assert ctrlx2 != null : "Property ctrlX2 must be not null";
+			assert ctrly2 != null : "Property ctrlY2 must be not null";
+			assert ctrlz2 != null : "Property ctrlZ2 must be not null";
 			this.fromX = fromx;
 			this.fromY = fromy;
 			this.fromZ = fromz;
@@ -1087,8 +1064,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 9 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 9 : "Size of the array is too small";
 			array[0] = this.ctrlX1.get();
 			array[1] = this.ctrlY1.get();
 			array[2] = this.ctrlZ1.get();
@@ -1103,8 +1080,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 9 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 9 : "Size of the array is too small";
 			array[0] = this.ctrlX1.get();
 			array[1] = this.ctrlY1.get();
 			array[2] = this.ctrlZ1.get();
@@ -1127,8 +1104,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 9 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 9 : "Size of the array is too small";
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlZ1;
@@ -1138,21 +1115,6 @@ public abstract class PathElement3ifx implements PathElement3ai {
 			array[6] = this.toX;
 			array[7] = this.toY;
 			array[8] = this.toZ;
-		}
-
-		@Pure
-		@Override
-		public String toString() {
-            return "CURVE(" + //$NON-NLS-1$
-                    this.ctrlX1 + "x" + //$NON-NLS-1$
-                    this.ctrlY1 + "x" + //$NON-NLS-1$
-                    this.ctrlZ1 + "|" + //$NON-NLS-1$
-                    this.ctrlX2 + "x" + //$NON-NLS-1$
-                    this.ctrlY2 + "x" + //$NON-NLS-1$
-                    this.ctrlZ2 + "|" + //$NON-NLS-1$
-                    this.toX + "x" + //$NON-NLS-1$
-                    this.toY + "x" + //$NON-NLS-1$
-                    this.toZ + ")"; //$NON-NLS-1$
 		}
 
 		@Pure
@@ -1295,9 +1257,9 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		ClosePathElement3ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty fromz, IntegerProperty tox,
 		        IntegerProperty toy, IntegerProperty toz) {
 		    super(PathElementType.CLOSE, tox, toy, toz);
-		    assert fromx != null : "Property fromX must be not null"; //$NON-NLS-1$
-			assert fromy != null : "Property fromY must be not null"; //$NON-NLS-1$
-			assert fromz != null : "Property fromY must be not null"; //$NON-NLS-1$
+		    assert fromx != null : "Property fromX must be not null";
+			assert fromy != null : "Property fromY must be not null";
+			assert fromz != null : "Property fromY must be not null";
 			this.fromX = fromx;
 			this.fromY = fromy;
 			this.fromZ = fromz;
@@ -1352,8 +1314,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 3 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 3 : "Size of the array is too small";
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 			array[2] = this.toZ.get();
@@ -1362,8 +1324,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 3 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 3 : "Size of the array is too small";
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 			array[2] = this.toZ.get();
@@ -1378,17 +1340,11 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 3 : "Size of the array is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null";
+			assert array.length >= 3 : "Size of the array is too small";
 			array[0] = this.toX;
 			array[1] = this.toY;
 			array[2] = this.toZ;
-		}
-
-		@Pure
-		@Override
-		public String toString() {
-			return "CLOSE"; //$NON-NLS-1$
 		}
 
 		@Pure

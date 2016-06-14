@@ -46,6 +46,8 @@ import org.arakhne.afc.vmutil.FileSystem;
  */
 public class JarMagicNumber extends MagicNumber {
 
+	private static final String METAINF_PATH = "META-INF/MANIFEST.MF"; //$NON-NLS-1$
+
 	/**
 	 * @param mimeType is the MIME type associated to this magic number.
 	 */
@@ -67,7 +69,7 @@ public class JarMagicNumber extends MagicNumber {
 	protected final boolean isContentType(MagicNumberStream stream) {
 		try {
 			URL url = stream.getURL();
-			url = FileSystem.toJarURL(url, "META-INF/MANIFEST.MF"); //$NON-NLS-1$
+			url = FileSystem.toJarURL(url, METAINF_PATH);
 			try (InputStream manifest = url.openStream()) {
 				return isManifestMatch(manifest);
 			}

@@ -89,19 +89,6 @@ public class Circle2i extends AbstractShape2i<Circle2i>
 
 	@Pure
 	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("center: ("); //$NON-NLS-1$
-		b.append(getX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getY());
-		b.append(")\nradius: "); //$NON-NLS-1$
-		b.append(getRadius());
-		return b.toString();
-	}
-
-	@Pure
-	@Override
 	public int getX() {
 		return this.centerX;
 	}

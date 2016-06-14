@@ -24,7 +24,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 
 /** 2D tuple with 2 double precision floating-point FX properties.
@@ -156,11 +156,7 @@ public class Tuple2dfx<RT extends Tuple2dfx<? super RT>> implements Tuple2D<RT> 
 	@Pure
 	@Override
 	public String toString() {
-		return "(" //$NON-NLS-1$
-				+ getX()
-				+ ", " //$NON-NLS-1$
-				+ getY()
-				+ ")"; //$NON-NLS-1$
+		return Tuple2D.toString(getX(), getY());
 	}
 
 	/** Replies the x property.

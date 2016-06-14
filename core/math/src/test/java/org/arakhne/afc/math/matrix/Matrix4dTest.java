@@ -35,14 +35,6 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
 
 	@Test
-	public void toStringTest() {
-		Matrix4d matrix = new Matrix4d(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
-		String s = "0.0, 1.0, 2.0, 3.0\n4.0, 5.0, 6.0, 7.0\n8.0, 9.0, 10.0, 11.0\n12.0, 13.0, 14.0, 15.0\n";
-				
-		assertEquals(s, matrix.toString());
-	}
-	
-	@Test
 	public void setIdentity() {
 		Matrix4d matrix = this.randomMatrix4f();
 		matrix.setIdentity();

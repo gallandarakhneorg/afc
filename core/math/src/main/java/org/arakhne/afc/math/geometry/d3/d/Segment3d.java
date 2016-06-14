@@ -101,26 +101,6 @@ public class Segment3d extends AbstractShape3d<Segment3d>
 
 	@Pure
 	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getX1());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getY1());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getZ1());
-		b.append("|"); //$NON-NLS-1$
-		b.append(getX2());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getY2());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getZ2());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
-	}
-
-	@Pure
-	@Override
 	public Segment3d createTransformedShape(Transform3D transform) {
 		if (transform == null || transform.isIdentity()) {
 			return clone();

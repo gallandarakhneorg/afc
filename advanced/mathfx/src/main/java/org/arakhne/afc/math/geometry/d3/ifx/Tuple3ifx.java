@@ -24,6 +24,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 
 /** 3D tuple with 3 integer FX properties.
@@ -158,10 +159,7 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 	@Pure
 	@Override
 	public String toString() {
-        return "(" //$NON-NLS-1$
-                + ix() + "," //$NON-NLS-1$
-                + iy() + "," //$NON-NLS-1$
-                + iz() + ")"; //$NON-NLS-1$
+        return Tuple3D.toString(getX(), getY(), getZ());
 	}
 
 	/** Replies the x property.
@@ -171,7 +169,7 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 	@Pure
 	public IntegerProperty xProperty() {
 		if (this.x == null) {
-			this.x = new SimpleIntegerProperty(this, "x"); //$NON-NLS-1$
+			this.x = new SimpleIntegerProperty(this, MathFXAttributeNames.X);
 		}
 		return this.x;
 	}
@@ -183,7 +181,7 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 	@Pure
 	public IntegerProperty yProperty() {
 		if (this.y == null) {
-			this.y = new SimpleIntegerProperty(this, "y"); //$NON-NLS-1$
+			this.y = new SimpleIntegerProperty(this, MathFXAttributeNames.Y);
 		}
 		return this.y;
 	}
@@ -195,7 +193,7 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 	@Pure
 	public IntegerProperty zProperty() {
 		if (this.z == null) {
-			this.z = new SimpleIntegerProperty(this, "z"); //$NON-NLS-1$
+			this.z = new SimpleIntegerProperty(this, MathFXAttributeNames.Z);
 		}
 		return this.z;
 	}

@@ -57,7 +57,7 @@ public class Sphere3i extends AbstractShape3i<Sphere3i>
      * @param radius the radius of the sphere.
      */
 	public Sphere3i(Point3D<?, ?> center, int radius) {
-		assert center != null : "Center point must be not null"; //$NON-NLS-1$
+		assert center != null : "Center point must be not null";
 		set(center.ix(), center.iy(), center.iz(), radius);
 	}
 
@@ -76,7 +76,7 @@ public class Sphere3i extends AbstractShape3i<Sphere3i>
 	 * @param sphere the sphere to copy.
 	 */
 	public Sphere3i(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Circle must be not null"; //$NON-NLS-1$
+		assert sphere != null : "Circle must be not null";
 		set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
 	}
 
@@ -89,22 +89,6 @@ public class Sphere3i extends AbstractShape3i<Sphere3i>
 		bits = 31 * bits + this.centerZ;
 		bits = 31 * bits + this.radius;
 		return bits ^ (bits >> 31);
-	}
-
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getZ());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getRadius());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
 	}
 
 	@Pure
@@ -157,7 +141,7 @@ public class Sphere3i extends AbstractShape3i<Sphere3i>
 
 	@Override
 	public void setRadius(int radius) {
-		assert radius >= 0 : "Radius must be positive or equal"; //$NON-NLS-1$
+		assert radius >= 0 : "Radius must be positive or equal";
 		if (this.radius != radius) {
 			this.radius = radius;
 			fireGeometryChange();
@@ -166,7 +150,7 @@ public class Sphere3i extends AbstractShape3i<Sphere3i>
 
 	@Override
 	public void set(int x, int y, int z, int radius) {
-		assert radius >= 0 : "Radius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0 : "Radius must be positive or zero";
 		if (this.centerX != x || this.centerY != y || this.centerZ != z || this.radius != radius) {
 			this.centerX = x;
 			this.centerY = y;

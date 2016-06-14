@@ -138,28 +138,6 @@ public class OrientedPoint2d
         return bits ^ (bits >> 31);
     }
 
-    @Pure
-    @Override
-    public String toString() {
-        final StringBuilder b = new StringBuilder();
-        b.append("("); //$NON-NLS-1$
-        b.append(getX());
-        b.append(", "); //$NON-NLS-1$
-        b.append(getY());
-        b.append(")|("); //$NON-NLS-1$
-        b.append(getLength());
-        b.append(")|("); //$NON-NLS-1$
-        b.append(getDirectionX());
-        b.append(", "); //$NON-NLS-1$
-        b.append(getDirectionY());
-        b.append(")|("); //$NON-NLS-1$
-        b.append(getNormalX());
-        b.append(", "); //$NON-NLS-1$
-        b.append(getNormalY());
-        b.append(")"); //$NON-NLS-1$
-        return b.toString();
-    }
-
     @Override
     public OrientedPoint2d createTransformedShape(Transform2D transform) {
         if (transform == null || transform.isIdentity()) {

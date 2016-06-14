@@ -92,22 +92,6 @@ public class Segment2i extends AbstractShape2i<Segment2i>
 
 	@Pure
 	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("("); //$NON-NLS-1$
-		b.append(getX1());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getY1());
-		b.append(")-("); //$NON-NLS-1$
-		b.append(getX2());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getY2());
-		b.append(")"); //$NON-NLS-1$
-		return b.toString();
-	}
-
-	@Pure
-	@Override
 	public Shape2i<?> createTransformedShape(Transform2D transform) {
 		assert transform != null : AssertMessages.notNullParameter();
 		final Point2i point = getGeomFactory().newPoint(getX1(), getY1());

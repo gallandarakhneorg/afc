@@ -96,8 +96,8 @@ public abstract class ZipArchiveXMLMagicNumber extends ZipArchiveMagicNumber {
 			String xslVersion = null;
 
 			if (this.rootNode != null) {
-				xslSchema = XMLUtil.getAttributeValue(xmlDocument, this.rootNode, "xmlns"); //$NON-NLS-1$
-				xslVersion = XMLUtil.getAttributeValue(xmlDocument, this.rootNode, "version"); //$NON-NLS-1$
+				xslSchema = XMLUtil.getAttributeValue(xmlDocument, this.rootNode, XMLMagicNumber.XMLNS);
+				xslVersion = XMLUtil.getAttributeValue(xmlDocument, this.rootNode, XMLMagicNumber.VERSION);
 			}
 
 			return isContentType(

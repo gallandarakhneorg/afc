@@ -65,6 +65,12 @@ import org.arakhne.afc.vmutil.locale.Locale;
  */
 class URLConnection extends java.net.URLConnection {
 
+	private static final String CONTENT_TYPE = "content-type"; //$NON-NLS-1$
+
+	private static final String CONTENT_LENGTH = "content-length"; //$NON-NLS-1$
+
+	private static final String LAST_MODIFIED = "last-modified"; //$NON-NLS-1$
+
 	private File file;
 
 	private String contentType;
@@ -106,13 +112,13 @@ class URLConnection extends java.net.URLConnection {
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
-    	if ("content-type".equals(name)) { //$NON-NLS-1$
+    	if (CONTENT_TYPE.equals(name)) {
     		return this.contentType;
     	}
-    	if ("content-length".equals(name)) { //$NON-NLS-1$
+    	if (CONTENT_LENGTH.equals(name)) {
     		return Long.toString(this.file.length());
     	}
-    	if ("last-modified".equals(name)) { //$NON-NLS-1$
+    	if (LAST_MODIFIED.equals(name)) {
     		return Long.toString(this.file.lastModified());
     	}
     	return null;
@@ -123,11 +129,11 @@ class URLConnection extends java.net.URLConnection {
 		assert index >= 0 : AssertMessages.positiveOrZeroParameter();
     	switch (index) {
     	case 0:
-    		return "content-type"; //$NON-NLS-1$
+    		return CONTENT_TYPE;
     	case 1:
-    		return "content-length"; //$NON-NLS-1$
+    		return CONTENT_LENGTH;
     	case 2:
-    		return "last-modified"; //$NON-NLS-1$
+    		return LAST_MODIFIED;
     	default:
     	}
     	return null;
@@ -141,9 +147,9 @@ class URLConnection extends java.net.URLConnection {
 			throw new IllegalStateException(e);
 		}
 		final Map<String, List<String>> flds = new HashMap<>();
-    	flds.put("content-type", singletonList(this.contentType)); //$NON-NLS-1$
-    	flds.put("content-length", singletonList(Long.toString(this.file.length()))); //$NON-NLS-1$
-    	flds.put("last-modified", singletonList(Long.toString(this.file.lastModified()))); //$NON-NLS-1$
+    	flds.put(CONTENT_TYPE, singletonList(this.contentType));
+    	flds.put(CONTENT_LENGTH, singletonList(Long.toString(this.file.length())));
+    	flds.put(LAST_MODIFIED, singletonList(Long.toString(this.file.lastModified())));
         return flds;
     }
 

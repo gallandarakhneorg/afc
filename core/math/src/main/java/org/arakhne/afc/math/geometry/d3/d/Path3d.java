@@ -128,7 +128,7 @@ public class Path3d extends AbstractShape3d<Path3d>
      * @param windingRule the path winding rule.
      */
 	public Path3d(PathWindingRule windingRule) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert windingRule != null : "Path winding rule must be not null";
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -139,8 +139,8 @@ public class Path3d extends AbstractShape3d<Path3d>
      * @param iterator the iterator that provides the elements to copy.
      */
 	public Path3d(PathWindingRule windingRule, Iterator<PathElement3d> iterator) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert windingRule != null : "Path winding rule must be not null";
+		assert iterator != null : "Iterator must be not null";
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -156,7 +156,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	private void ensureSlots(boolean needMove, int nbSlots) {
         if (needMove && this.numTypes == 0) {
-			throw new IllegalStateException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalStateException("missing initial moveto in path definition");
 		}
         if (this.types.length == this.numTypes) {
             this.types = Arrays.copyOf(this.types, this.types.length + GROW_SIZE);
@@ -169,7 +169,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
         for (int i = 0; i < this.numCoords; i += 3) {
 			final double x = this.coords[i];
 			final double y = this.coords[i + 1];
@@ -220,22 +220,6 @@ public class Path3d extends AbstractShape3d<Path3d>
 		return bits ^ (bits >> 31);
 	}
 
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-        if (this.numCoords > 0) {
-			b.append(this.coords[0]);
-            for (int i = 1; i < this.numCoords; ++i) {
-				b.append(", "); //$NON-NLS-1$
-				b.append(this.coords[i]);
-			}
-		}
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
-	}
-
 	@Override
 	public void translate(double dx, double dy, double dz) {
         for (int i = 0; i < this.numCoords;) {
@@ -257,7 +241,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	public void transform(Transform3D transform) {
-        assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+        assert transform != null : "Transformation must be not null";
 		final Point3D<?, ?> p = new InnerComputationPoint3afp();
         for (int i = 0; i < this.numCoords; i += 3) {
             p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
@@ -304,7 +288,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	public void toBoundingBox(RectangularPrism3d box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null";
         RectangularPrism3d bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
@@ -452,7 +436,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Override
 	@Pure
 	public void toBoundingBoxWithCtrlPoints(RectangularPrism3d box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null";
         RectangularPrism3d bb = this.logicalBounds == null ? null : this.logicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
@@ -550,7 +534,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Override
 	@Pure
 	public Point3d getPointAt(int index) {
-		assert index >= 0 && index < size() : "Index must be in [0;" + size() + ")";  //$NON-NLS-1$ //$NON-NLS-2$
+		assert index >= 0 && index < size() : "Index must be in [0;" + size() + ")";
 		return getGeomFactory().newPoint(
                 this.coords[index * 2], this.coords[index * 2 + 1], this.coords[index * 2 + 2]);
 	}
@@ -734,7 +718,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : "Path winding rule must be not null";
 		this.windingRule = rule;
 	}
 
@@ -812,7 +796,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	public void set(Path3d path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null";
 		clear();
 		add(path.getPathIterator());
 	}

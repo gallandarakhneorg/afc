@@ -25,6 +25,8 @@ import java.util.Objects;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.ReflectionUtil;
+
 /** This class implements triplet of values.
  *
  * @param <A> is the type of the first value.
@@ -126,8 +128,7 @@ public class Triplet<A, B, C> implements Serializable {
 	@Pure
 	@Override
 	public String toString() {
-		return "<" + this.avalue + ";" + this.bvalue //$NON-NLS-1$ //$NON-NLS-2$
-				+ ";" + this.cvalue + ">"; //$NON-NLS-1$ //$NON-NLS-2$
+		return ReflectionUtil.toString(this);
 	}
 
 	@Pure

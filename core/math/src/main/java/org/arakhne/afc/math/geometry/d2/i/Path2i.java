@@ -242,22 +242,6 @@ public class Path2i extends AbstractShape2i<Path2i>
 		return bits ^ (bits >> 31);
 	}
 
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		if (this.numCoords > 0) {
-			b.append(this.coords[0]);
-			for (int i = 1; i < this.numCoords; ++i) {
-				b.append(", "); //$NON-NLS-1$
-				b.append(this.coords[i]);
-			}
-		}
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
-	}
-
 	@Override
 	public void translate(int dx, int dy) {
 		for (int i = 0; i < this.numCoords; i += 2) {

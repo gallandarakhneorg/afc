@@ -28,6 +28,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai;
 
@@ -80,8 +81,8 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
      * @param max is the max corner of the rectangle.
      */
 	public RectangularPrism3ifx(Point3D<?, ?> min, Point3D<?, ?> max) {
-		assert min != null : "Minimum point must be not null"; //$NON-NLS-1$
-		assert max != null : "Maximum point must be not null"; //$NON-NLS-1$
+		assert min != null : "Minimum point must be not null";
+		assert max != null : "Maximum point must be not null";
 		setFromCorners(min.ix(), min.iy(), min.iz(), max.ix(), max.iy(), max.iz());
 	}
 
@@ -94,9 +95,9 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
      * @param depth depth of the rectangle.
      */
 	public RectangularPrism3ifx(int x, int y, int z, int width, int height, int depth) {
-		assert width >= 0 : "Width must be positive or equal"; //$NON-NLS-1$
-		assert height >= 0 : "Height must be positive or equal"; //$NON-NLS-1$
-		assert depth >= 0 : "Depth must be positive or equal"; //$NON-NLS-1$
+		assert width >= 0 : "Width must be positive or equal";
+		assert height >= 0 : "Height must be positive or equal";
+		assert depth >= 0 : "Depth must be positive or equal";
 		setFromCorners(x, y, z, x + width, y + height, z + depth);
 	}
 
@@ -180,7 +181,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	@Pure
 	public IntegerProperty minXProperty() {
 		if (this.minX == null) {
-			this.minX = new SimpleIntegerProperty(this, "minX") { //$NON-NLS-1$
+			this.minX = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_X) {
 				@Override
 				protected void invalidated() {
 					final int currentMin = get();
@@ -213,7 +214,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	@Pure
 	public IntegerProperty maxXProperty() {
 		if (this.maxX == null) {
-			this.maxX = new SimpleIntegerProperty(this, "maxX") { //$NON-NLS-1$
+			this.maxX = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_X) {
 				@Override
 				protected void invalidated() {
 					final int currentMax = get();
@@ -246,7 +247,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	@Pure
 	public IntegerProperty minYProperty() {
 		if (this.minY == null) {
-			this.minY = new SimpleIntegerProperty(this, "minY") { //$NON-NLS-1$
+			this.minY = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_Y) {
 				@Override
 				protected void invalidated() {
 					final int currentMin = get();
@@ -279,7 +280,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	@Pure
 	public IntegerProperty maxYProperty() {
 		if (this.maxY == null) {
-			this.maxY = new SimpleIntegerProperty(this, "maxY") { //$NON-NLS-1$
+			this.maxY = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
 				@Override
 				protected void invalidated() {
 					final int currentMax = get();
@@ -312,7 +313,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	@Pure
 	public IntegerProperty minZProperty() {
 		if (this.minZ == null) {
-			this.minZ = new SimpleIntegerProperty(this, "minZ") { //$NON-NLS-1$
+			this.minZ = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_Z) {
 				@Override
 				protected void invalidated() {
 					final int currentMin = get();
@@ -345,7 +346,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	@Pure
 	public IntegerProperty maxZProperty() {
 		if (this.maxZ == null) {
-			this.maxZ = new SimpleIntegerProperty(this, "maxZ") { //$NON-NLS-1$
+			this.maxZ = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_Z) {
 				@Override
 				protected void invalidated() {
 					final int currentMax = get();
@@ -371,22 +372,6 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 		return bits ^ (bits >> 31);
 	}
 
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getMinX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMinY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMaxX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMaxY());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
-	}
-
 	@Override
 	public int getWidth() {
 		return widthProperty().get();
@@ -399,7 +384,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	@Pure
 	public IntegerProperty widthProperty() {
 		if (this.width == null) {
-			this.width = new ReadOnlyIntegerWrapper(this, "width"); //$NON-NLS-1$
+			this.width = new ReadOnlyIntegerWrapper(this, MathFXAttributeNames.WIDTH);
 			this.width.bind(Bindings.subtract(maxXProperty(), minXProperty()));
 		}
 		return this.width;
@@ -417,7 +402,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	@Pure
 	public IntegerProperty heightProperty() {
 		if (this.height == null) {
-			this.height = new ReadOnlyIntegerWrapper(this, "height"); //$NON-NLS-1$
+			this.height = new ReadOnlyIntegerWrapper(this, MathFXAttributeNames.HEIGHT);
 			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
 		}
 		return this.height;
@@ -435,7 +420,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	@Pure
 	public IntegerProperty depthProperty() {
 		if (this.depth == null) {
-			this.depth = new ReadOnlyIntegerWrapper(this, "depth"); //$NON-NLS-1$
+			this.depth = new ReadOnlyIntegerWrapper(this, MathFXAttributeNames.DEPTH);
 			this.depth.bind(Bindings.subtract(maxZProperty(), minZProperty()));
 		}
 		return this.depth;
@@ -444,7 +429,7 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	@Override
 	public ObjectProperty<RectangularPrism3ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() ->
 			    toBoundingBox(),
 			        minXProperty(), minYProperty(), widthProperty(), heightProperty()));

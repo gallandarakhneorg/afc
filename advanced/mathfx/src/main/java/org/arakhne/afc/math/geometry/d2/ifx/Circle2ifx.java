@@ -27,7 +27,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -109,19 +109,6 @@ public class Circle2ifx
 		bits = 31 * bits + Integer.hashCode(getY());
 		bits = 31 * bits + Integer.hashCode(getRadius());
 		return bits ^ (bits >> 31);
-	}
-
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("center: ("); //$NON-NLS-1$
-		b.append(getX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getY());
-		b.append(")\nradius: "); //$NON-NLS-1$
-		b.append(getRadius());
-		return b.toString();
 	}
 
 	@Pure

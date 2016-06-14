@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d2;
+package org.arakhne.afc.math.geometry;
 
 /** Utility classes that provides the strings of characters for the typical JavaFX attribute names.
  *
@@ -205,6 +205,10 @@ public final class MathFXAttributeNames {
 	/** {@code z}.
 	 */
 	public static final String Z3 = "z3"; //$NON-NLS-1$
+
+	/** {@code CCW}.
+	 */
+	public static final String CCW = "ccw"; //$NON-NLS-1$
 
 	private MathFXAttributeNames() {
 		//

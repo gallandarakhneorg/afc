@@ -40,9 +40,9 @@ import javafx.collections.FXCollections;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.InnerComputationPoint2afp;
@@ -215,23 +215,6 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 		bits = 31 * bits + Objects.hashCode(this.types);
 		bits = 31 * bits + Objects.hashCode(this.windingRule);
         return bits ^ (bits >> 31);
-	}
-
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		if (this.coords != null && !this.coords.isEmpty()) {
-			final Iterator<Double> iterator = this.coords.iterator();
-			b.append(iterator.next());
-			while (iterator.hasNext()) {
-				b.append(", "); //$NON-NLS-1$
-				b.append(iterator.next());
-			}
-		}
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
 	}
 
 	@Override

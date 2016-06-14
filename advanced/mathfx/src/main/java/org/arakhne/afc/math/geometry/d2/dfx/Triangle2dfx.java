@@ -29,7 +29,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
@@ -142,26 +142,6 @@ public class Triangle2dfx
 		bits = 31 * bits + Double.hashCode(getX3());
 		bits = 31 * bits + Double.hashCode(getY3());
         return bits ^ (bits >> 31);
-	}
-
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("("); //$NON-NLS-1$
-		b.append(getX1());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getY1());
-		b.append(")-("); //$NON-NLS-1$
-		b.append(getX2());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getY2());
-		b.append(")-("); //$NON-NLS-1$
-		b.append(getX3());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getY3());
-		b.append(")"); //$NON-NLS-1$
-		return b.toString();
 	}
 
 	@Pure
@@ -337,7 +317,7 @@ public class Triangle2dfx
 	@Pure
 	public ReadOnlyBooleanProperty ccwProperty() {
 		if (this.ccw == null) {
-			this.ccw = new ReadOnlyBooleanWrapper(this, "ccw"); //$NON-NLS-1$
+			this.ccw = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.CCW);
 			this.ccw.bind(Bindings.createBooleanBinding(() ->
 				Triangle2afp.isCCW(
 						getX1(), getY1(), getX2(), getY2(),
@@ -352,7 +332,7 @@ public class Triangle2dfx
 	@Override
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() ->
 				toBoundingBox(),
 					x1Property(), y1Property(),

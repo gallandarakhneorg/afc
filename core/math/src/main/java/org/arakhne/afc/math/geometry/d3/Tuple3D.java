@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -37,6 +38,32 @@ import org.arakhne.afc.math.MathUtil;
  */
 public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	extends Cloneable, Serializable {
+
+	/** Pattern for creation a string representation of a {@link Tuple3D}.
+	 */
+	String TUPLE_STRING_PATTERN = "({0}, {1}, {2})";
+
+	/** Replies the string representation of the tuple.
+	 *
+	 * @param x x coordinate.
+	 * @param y y coordinate.
+	 * @param z z coordinate.
+	 * @return the string representation.
+	 */
+	static String toString(double x, double y, double z) {
+		return MessageFormat.format(TUPLE_STRING_PATTERN, x, y, z);
+	}
+
+	/** Replies the string representation of the tuple.
+	 *
+	 * @param x x coordinate.
+	 * @param y y coordinate.
+	 * @param z z coordinate.
+	 * @return the string representation.
+	 */
+	static String toString(int x, int y, int z) {
+		return MessageFormat.format(TUPLE_STRING_PATTERN, x, y, z);
+	}
 
 	/** Clone this point.
 	 *
@@ -61,7 +88,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 */
 
 	default void absolute(Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; 		//$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
 		tuple.set(Math.abs(getX()), Math.abs(getY()), Math.abs(getZ()));
 	}
 
@@ -139,7 +166,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param max  the highest value in this tuple after clamping
 	 */
 	default void clamp(int min, int max) {
-		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max";
 		final double x = MathUtil.clamp(getX(), min, max);
 		final double y = MathUtil.clamp(getY(), min, max);
 		final double z = MathUtil.clamp(getZ(), min, max);
@@ -154,8 +181,8 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clamp(int min, int max, Tuple3D<?> tuple)  {
-	    assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
-	    assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+	    assert min <= max : "min must be lower or equal to max";
+	    assert tuple != null : "Tuple must not be null";
 	    final double x = MathUtil.clamp(tuple.getX(), min, max);
 	    final double y = MathUtil.clamp(tuple.getY(), min, max);
 	    final double z = MathUtil.clamp(tuple.getZ(), min, max);
@@ -168,7 +195,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param max  the highest value in this tuple after clamping
 	 */
 	default void clamp(double min, double max) {
-		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max";
 		final double x = MathUtil.clamp(getX(), min, max);
 		final double y = MathUtil.clamp(getY(), min, max);
 		final double z = MathUtil.clamp(getZ(), min, max);
@@ -183,8 +210,8 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
      *  @param tuple   the source tuple, which will not be modified
      */
     default void clamp(double min, double max, Tuple3D<?> tuple) {
-        assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
-        assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+        assert min <= max : "min must be lower or equal to max";
+        assert tuple != null : "Tuple must not be null";
         final double x = MathUtil.clamp(tuple.getX(), min, max);
         final double y = MathUtil.clamp(tuple.getY(), min, max);
         final double z = MathUtil.clamp(tuple.getZ(), min, max);
@@ -238,7 +265,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
      *  @param tuple the source tuple, which will not be modified
      */
     default void clampMin(int min, Tuple3D<?> tuple) {
-        assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+        assert tuple != null : "Tuple must not be null";
         double x = tuple.getX();
         double y = tuple.getY();
         double z = tuple.getY();
@@ -261,7 +288,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
      *  @param tuple   the source tuple, which will not be modified
      */
     default void clampMin(double min, Tuple3D<?> tuple) {
-        assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+        assert tuple != null : "Tuple must not be null";
         double x = tuple.getX();
         double y = tuple.getY();
         double z = tuple.getY();
@@ -324,7 +351,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clampMax(int max, Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
 		double x = tuple.getX();
 		double y = tuple.getY();
 		double z = tuple.getY();
@@ -347,7 +374,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clampMax(double max, Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
 		double x = tuple.getX();
 		double y = tuple.getY();
 		double z = tuple.getY();
@@ -368,7 +395,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 * @param tuple is the target tuple
 	 */
 	default void get(Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
 		tuple.set(getX(), getY(), getZ());
 	}
 
@@ -377,8 +404,8 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param tuple the array that will contain the values of the vector
 	 */
 	default void get(int[] tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
-		assert tuple.length >= 3 : "Size of the array too low"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
+		assert tuple.length >= 3 : "Size of the array too low";
 		tuple[0] = ix();
 		tuple[1] = iy();
 		tuple[2] = iz();
@@ -389,8 +416,8 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param tuple the array that will contain the values of the vector
 	 */
 	default void get(double[] tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
-		assert tuple.length >= 3 : "Size of the array too low"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
+		assert tuple.length >= 3 : "Size of the array too low";
 		tuple[0] = getX();
 		tuple[1] = getY();
 		tuple[2] = getZ();
@@ -401,7 +428,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 * @param tuple the source tuple
 	 */
 	default void negate(Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
 		set(-tuple.getX(), -tuple.getY(), -tuple.getZ());
 	}
 
@@ -419,7 +446,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 * @param tuple the source tuple
 	 */
 	default void scale(int scale, Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
 		set(scale * tuple.getX(), scale * tuple.getY(), scale * tuple.getZ());
 	}
 
@@ -430,7 +457,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 * @param tuple the source tuple
 	 */
 	default void scale(double scale, Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
 		set(scale * tuple.getX(), scale * tuple.getY(), scale * tuple.getZ());
 	}
 
@@ -457,7 +484,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 * @param tuple the tuple to be copied
 	 */
 	default void set(Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
 		set(tuple.getX(), tuple.getY(), tuple.getZ());
 	}
 
@@ -493,8 +520,8 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 * @param tuple the array of length 2 containing xyz in order
 	 */
 	default void set(int[] tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
-		assert tuple.length >= 3 : "Array size is too low"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
+		assert tuple.length >= 3 : "Array size is too low";
 		setX(tuple[0]);
 		setY(tuple[1]);
 		setZ(tuple[2]);
@@ -506,8 +533,8 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 * @param tuple the array of length 2 containing xy in order
 	 */
 	default void set(double[] tuple) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
-		assert tuple.length >= 3 : "Array size is too low"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
+		assert tuple.length >= 3 : "Array size is too low";
 		setX(tuple[0]);
 		setY(tuple[1]);
 		setZ(tuple[2]);
@@ -679,9 +706,9 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param alpha  the alpha interpolation parameter
 	 */
 	default void interpolate(Tuple3D<?> tuple1, Tuple3D<?> tuple2, double alpha) {
-		assert tuple1 != null : "First tuple must not be null"; //$NON-NLS-1$
-		assert tuple2 != null : "Second tuple must not be null"; //$NON-NLS-1$
-		assert alpha >= 0. && alpha <= 1. : "Alpha must be in [0; 1]"; //$NON-NLS-1$
+		assert tuple1 != null : "First tuple must not be null";
+		assert tuple2 != null : "Second tuple must not be null";
+		assert alpha >= 0. && alpha <= 1. : "Alpha must be in [0; 1]";
 		set((1. - alpha) * tuple1.getX() + alpha * tuple2.getX(),
 			(1. - alpha) * tuple1.getY() + alpha * tuple2.getY(),
 			(1. - alpha) * tuple1.getZ() + alpha * tuple2.getZ());
@@ -694,7 +721,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 *  @param alpha  the alpha interpolation parameter
 	 */
 	default void interpolate(Tuple3D<?> tuple, double alpha) {
-		assert tuple != null : "First tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "First tuple must not be null";
 		set((1. - alpha) * getX() + alpha * tuple.getX(),
 			(1. - alpha) * getY() + alpha * tuple.getY(),
 			(1. - alpha) * getZ() + alpha * tuple.getZ());
@@ -737,7 +764,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	 */
 	@Pure
 	default boolean epsilonEquals(Tuple3D<?> tuple, double epsilon) {
-		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null";
 		final double dx = getX() - tuple.getX();
 		final double dy = getY() - tuple.getY();
 		final double dz = getZ() - tuple.getZ();

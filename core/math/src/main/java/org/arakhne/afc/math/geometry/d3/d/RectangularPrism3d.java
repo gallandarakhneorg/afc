@@ -242,20 +242,4 @@ public class RectangularPrism3d extends AbstractShape3d<RectangularPrism3d>
 		return b ^ (b >> 32);
 	}
 
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getMinX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMinY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMaxX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getMaxY());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
-	}
-
 }

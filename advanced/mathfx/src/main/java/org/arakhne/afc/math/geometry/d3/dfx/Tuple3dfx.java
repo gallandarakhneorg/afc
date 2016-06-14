@@ -24,6 +24,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 
 /** 3D tuple with 3 double precision floating-point FX properties.
@@ -171,13 +172,7 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 	@Pure
 	@Override
 	public String toString() {
-		return "(" //$NON-NLS-1$
-				+ getX()
-				+ ";" //$NON-NLS-1$
-				+ getY()
-				+ ";" //$NON-NLS-1$
-				+ getZ()
-				+ ")"; //$NON-NLS-1$
+		return Tuple3D.toString(getX(), getY(), getZ());
 	}
 
 	/** Replies the x property.
@@ -187,7 +182,7 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 	@Pure
 	public DoubleProperty xProperty() {
 		if (this.x == null) {
-			this.x = new SimpleDoubleProperty(this, "x"); //$NON-NLS-1$;
+			this.x = new SimpleDoubleProperty(this, MathFXAttributeNames.X);
 		}
 		return this.x;
 	}
@@ -199,7 +194,7 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 	@Pure
 	public DoubleProperty yProperty() {
 		if (this.y == null) {
-			this.y = new SimpleDoubleProperty(this, "y"); //$NON-NLS-1$
+			this.y = new SimpleDoubleProperty(this, MathFXAttributeNames.Y);
 		}
 		return this.y;
 	}
@@ -211,7 +206,7 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 	@Pure
 	public DoubleProperty zProperty() {
 		if (this.z == null) {
-			this.z = new SimpleDoubleProperty(this, "z"); //$NON-NLS-1$
+			this.z = new SimpleDoubleProperty(this, MathFXAttributeNames.Z);
 		}
 		return this.z;
 	}

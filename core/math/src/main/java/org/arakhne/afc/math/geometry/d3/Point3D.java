@@ -176,7 +176,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default double getDistanceSquared(Point3D<?, ?> point) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
 		return  getDistanceSquaredPointPoint(getX(), getY(), getZ(), point.getX(), point.getY(), point.getZ());
 	}
 
@@ -187,7 +187,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default double getDistance(Point3D<?, ?> point) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
 		return getDistancePointPoint(getX(), getY(), getZ(), point.getX(), point.getY(), point.getZ());
 	}
 
@@ -199,7 +199,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default double getDistanceL1(Point3D<?, ?> point) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
 		return getDistanceL1PointPoint(getX(), getY(), getZ(), point.getX(), point.getY(), point.getZ());
 	}
 
@@ -212,7 +212,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default double getDistanceLinf(Point3D<?, ?> point) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
 		return getDistanceLinfPointPoint(getX(), getY(), getZ(), point.getX(), point.getY(), point.getZ());
 	}
 
@@ -224,7 +224,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default int getIdistanceL1(Point3D<?, ?> point) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
 		return Math.abs(ix() - point.ix()) + Math.abs(iy() - point.iy()) + Math.abs(iz() - point.iz());
 	}
 
@@ -237,7 +237,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default int getIdistanceLinf(Point3D<?, ?> point) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
 		return MathUtil.max(Math.abs(ix() - point.ix()), Math.abs(iy() - point.iy()), Math.abs(iz() - point.iz()));
 	}
 
@@ -247,8 +247,8 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 * @param vector the second tuple
 	 */
 	default void add(Point3D<?, ?> point, Vector3D<?, ?> vector) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
-		assert vector != null : "Vector must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
+		assert vector != null : "Vector must not be null";
 		set(point.getX() + vector.getX(),
 			point.getY() + vector.getY(),
 			point.getZ() + vector.getZ());
@@ -260,8 +260,8 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 * @param point the second tuple
 	 */
 	default void add(Vector3D<?, ?> point, Point3D<?, ?> vector) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
-		assert vector != null : "Vector must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
+		assert vector != null : "Vector must not be null";
 		set(point.getX() + vector.getX(),
 			point.getY() + vector.getY(),
 			point.getZ() + vector.getZ());
@@ -272,7 +272,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 * @param vector the other tuple
 	 */
 	default void add(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must not be null";
 		set(getX() + vector.getX(),
 			getY() + vector.getY(),
 			getZ() + vector.getZ());
@@ -286,8 +286,8 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 * @param point the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector3D<?, ?> vector, Point3D<?, ?> point) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
-		assert vector != null : "Vector must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
+		assert vector != null : "Vector must not be null";
 		set(scale * vector.getX() + point.getX(),
 			scale * vector.getY() + point.getY(),
 			scale * vector.getZ() + point.getZ());
@@ -301,8 +301,8 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 * @param point the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector3D<?, ?> vector, Point3D<?, ?> point) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
-		assert vector != null : "Vector must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
+		assert vector != null : "Vector must not be null";
 		set(scale * vector.getX() + point.getX(),
 			scale * vector.getY() + point.getY(),
 			scale * vector.getZ() + point.getZ());
@@ -316,8 +316,8 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(int scale, Point3D<?, ?> point, Vector3D<?, ?> vector) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
-		assert vector != null : "Vector must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
+		assert vector != null : "Vector must not be null";
 		set(scale * point.getX() + vector.getX(),
 			scale * point.getY() + vector.getY(),
 			scale * point.getZ() + vector.getZ());
@@ -331,8 +331,8 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(double scale, Point3D<?, ?> point, Vector3D<?, ?> vector) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
-		assert vector != null : "Vector must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
+		assert vector != null : "Vector must not be null";
 		set(scale * point.getX() + vector.getX(),
 			scale * point.getY() + vector.getY(),
 			scale * point.getZ() + vector.getZ());
@@ -345,7 +345,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must not be null";
 		set(scale * getX() + vector.getX(),
 			scale * getY() + vector.getY(),
 			scale * getZ() + vector.getZ());
@@ -358,7 +358,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must not be null";
 		set(scale * getX() + vector.getX(),
 			scale * getY() + vector.getY(),
 			scale * getZ() + vector.getZ());
@@ -371,8 +371,8 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 * @param vector the second tuple
 	 */
 	default void sub(Point3D<?, ?> point, Vector3D<?, ?> vector) {
-		assert point != null : "Point must not be null"; //$NON-NLS-1$
-		assert vector != null : "Vector must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null";
+		assert vector != null : "Vector must not be null";
 		set(point.getX() - vector.getX(),
 			point.getY() - vector.getY(),
 			point.getZ() - vector.getZ());
@@ -384,7 +384,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 * @param vector the other tuple
 	 */
 	default void sub(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must not be null"; //$NON-NLS-1$
+		assert vector != null : "Vector must not be null";
 		set(getX() - vector.getX(),
 			getY() - vector.getY(),
 			getZ() - vector.getZ());
@@ -416,7 +416,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default RP operator_plus(Vector3D<?, ?> v) {
-		assert v != null : "Vector must be not null"; //$NON-NLS-1$
+		assert v != null : "Vector must be not null";
 		return getGeomFactory().newPoint(getX() + v.getX(), getY() + v.getY(), getZ() + v.getZ());
 	}
 
@@ -433,7 +433,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 		add(v);
 	}
 
-	/** Subtract the v vector to this point: {@code this - v}
+	/**  the v vector to this point: {@code this - v}
 	 *
 	 * <p>This function is an implementation of the "-" operator for
 	 * the languages that defined or based on the
@@ -445,11 +445,11 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default RP operator_minus(Vector3D<?, ?> v) {
-		assert v != null : "Vector must be not null"; //$NON-NLS-1$
+		assert v != null : "Vector must be not null";
 		return getGeomFactory().newPoint(getX() - v.getX(), getY() - v.getY(), getZ() - v.getZ());
 	}
 
-	/** Subtract the p point to this point: {@code this - p}
+	/**  the p point to this point: {@code this - p}
 	 *
 	 * <p>This function is an implementation of the "-" operator for
 	 * the languages that defined or based on the
@@ -461,11 +461,11 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default RV operator_minus(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null";
 		return getGeomFactory().newVector(getX() - pt.getX(), getY() - pt.getY(), getZ() - pt.getZ());
 	}
 
-	/** Subtract the v vector to this: {@code this -= v}
+	/**  the v vector to this: {@code this -= v}
 	 *
 	 * <p>This function is an implementation of the "-" operator for
 	 * the languages that defined or based on the

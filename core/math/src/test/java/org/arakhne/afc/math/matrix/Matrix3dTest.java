@@ -39,14 +39,6 @@ public class Matrix3dTest extends AbstractMathTestCase {
 	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
 	
 	@Test
-	public void toStringTest() {
-		Matrix3d matrix = new Matrix3d(0,1,2,3,4,5,6,7,8);
-		String s = "0.0, 1.0, 2.0\n3.0, 4.0, 5.0\n6.0, 7.0, 8.0\n"; 
-				
-		assertTrue(s.equals(matrix.toString()));
-	}
-	
-	@Test
 	public void setIdentity() {
 		Matrix3d matrix = new Matrix3d(getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble(),getRandom().nextDouble());
 		matrix.setIdentity();

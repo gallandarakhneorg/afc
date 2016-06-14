@@ -98,25 +98,6 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 
 	@Pure
 	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("bounds: ("); //$NON-NLS-1$
-		b.append(getMinX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getMinY());
-		b.append(")-("); //$NON-NLS-1$
-		b.append(getMaxX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getMaxY());
-		b.append(")\narcWidth: "); //$NON-NLS-1$
-		b.append(getArcWidth());
-		b.append("\narcHeight: "); //$NON-NLS-1$
-		b.append(getArcHeight());
-		return b.toString();
-	}
-
-	@Pure
-	@Override
 	public double getArcWidth() {
 		return this.arcWidth;
 	}

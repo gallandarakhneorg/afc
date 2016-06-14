@@ -38,14 +38,6 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
 
 	@Test
-	public void toStringTest() {
-		Matrix2d matrix = new Matrix2d(0,1,2,3);
-		String s = "0.0, 1.0\n2.0, 3.0\n"; 
-				
-		assertEquals(s, matrix.toString());
-	}
-	
-	@Test
 	public void setIdentity() {
 		Matrix2d matrix = this.randomMatrix2f();
 		matrix.setIdentity();

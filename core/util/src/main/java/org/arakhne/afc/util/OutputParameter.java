@@ -24,6 +24,8 @@ import java.util.Objects;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.ReflectionUtil;
+
 /** Utilities class that permits to obtain output parameters for Java functions.
  *
  * <p>The generic type describes the type of the parameter.
@@ -83,10 +85,7 @@ public class OutputParameter<T> {
 	@Pure
 	@Override
 	public String toString() {
-		final StringBuilder str = new StringBuilder();
-		str.append("output:"); //$NON-NLS-1$
-		str.append((this.object == null) ? this.object : this.object.toString());
-		return str.toString();
+		return ReflectionUtil.toString(this);
 	}
 
 	/** Replies the parameter value.

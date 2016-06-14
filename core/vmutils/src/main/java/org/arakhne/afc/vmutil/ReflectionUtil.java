@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.jar.JarEntry;
@@ -827,6 +828,56 @@ public final class ReflectionUtil {
 	@Inline(value = "ReflectionUtil.matchesParameters(($1).getParameterTypes(), ($2))", imported = {ReflectionUtil.class})
 	public static boolean matchesParameters(Method method, Object... parameters) {
 		return matchesParameters(method.getParameterTypes(), parameters);
+	}
+
+	/** Replies the string representation of the given object.
+	 *
+	 * <p>The string representation is based on  the values replied by the getters (functions
+	 * that are starting by "get" or "is" or "has").
+	 *
+	 * @param object the object to analyze.
+	 * @return the string representation.
+	 */
+	public static String toString(Object object) {
+		if (object == null) {
+			return ""; //$NON-NLS-1$
+		}
+		final StringBuilder buffer = new StringBuilder();
+		buffer.append("{"); //$NON-NLS-1$
+		boolean isfirst = true;
+		for (final Method method : object.getClass().getMethods()) {
+			try {
+				if (!method.isSynthetic() && !Modifier.isStatic(method.getModifiers()) && method.getParameterCount() == 0
+					&& (method.getReturnType().isPrimitive() || String.class.equals(method.getReturnType()))) {
+					final String name = method.getName();
+					if (name.startsWith("get")) { //$NON-NLS-1$
+						if (isfirst) {
+							isfirst = false;
+						} else {
+							buffer.append(',');
+						}
+						buffer.append("\n\t\""); //$NON-NLS-1$
+						buffer.append(name.substring(3).toLowerCase());
+						buffer.append("\": "); //$NON-NLS-1$
+						buffer.append(Objects.toString(method.invoke(object)));
+					} else if (name.startsWith("is")) { //$NON-NLS-1$
+						if (isfirst) {
+							isfirst = false;
+						} else {
+							buffer.append(',');
+						}
+						buffer.append("\n\t\""); //$NON-NLS-1$
+						buffer.append(name.substring(2).toLowerCase());
+						buffer.append("\": "); //$NON-NLS-1$
+						buffer.append(Objects.toString(method.invoke(object)));
+					}
+				}
+			} catch (Exception e) {
+				//
+			}
+		}
+		buffer.append("\n}\n"); //$NON-NLS-1$
+		return buffer.toString();
 	}
 
 }

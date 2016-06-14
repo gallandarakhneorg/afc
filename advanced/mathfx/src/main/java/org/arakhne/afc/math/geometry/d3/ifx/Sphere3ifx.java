@@ -27,6 +27,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.ai.Sphere3ai;
 
@@ -120,22 +121,6 @@ public class Sphere3ifx
 
 	@Pure
 	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getX());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getY());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getZ());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getRadius());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
-	}
-
-	@Pure
-	@Override
 	public int getX() {
 		return this.centerX == null ? 0 : this.centerX.get();
 	}
@@ -147,7 +132,7 @@ public class Sphere3ifx
 	@Pure
 	public IntegerProperty xProperty() {
 		if (this.centerX == null) {
-			this.centerX = new SimpleIntegerProperty(this, "x"); //$NON-NLS-1$
+			this.centerX = new SimpleIntegerProperty(this, MathFXAttributeNames.X);
 		}
 		return this.centerX;
 	}
@@ -165,7 +150,7 @@ public class Sphere3ifx
 	@Pure
 	public IntegerProperty yProperty() {
 		if (this.centerY == null) {
-			this.centerY = new SimpleIntegerProperty(this, "y"); //$NON-NLS-1$
+			this.centerY = new SimpleIntegerProperty(this, MathFXAttributeNames.Y);
 		}
 		return this.centerY;
 	}
@@ -183,7 +168,7 @@ public class Sphere3ifx
 	@Pure
 	public IntegerProperty zProperty() {
 		if (this.centerZ == null) {
-			this.centerZ = new SimpleIntegerProperty(this, "z"); //$NON-NLS-1$
+			this.centerZ = new SimpleIntegerProperty(this, MathFXAttributeNames.Z);
 		}
 		return this.centerZ;
 	}
@@ -222,7 +207,7 @@ public class Sphere3ifx
 	@Pure
 	public IntegerProperty radiusProperty() {
 		if (this.radius == null) {
-			this.radius = new SimpleIntegerProperty(this, "radius") { //$NON-NLS-1$
+			this.radius = new SimpleIntegerProperty(this, MathFXAttributeNames.RADIUS) {
 				@Override
 				protected void invalidated() {
 					if (get() < 0) {
@@ -246,7 +231,7 @@ public class Sphere3ifx
 	@Override
 	public ObjectProperty<RectangularPrism3ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() ->
 			   toBoundingBox(),
 			        xProperty(), yProperty(), zProperty(), radiusProperty()));

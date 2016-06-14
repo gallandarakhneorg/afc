@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.references.WeakArrayList;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Abstract shape with 2 double precision floating-point numbers.
@@ -105,6 +106,12 @@ public abstract class AbstractShape2d<T extends AbstractShape2d<?>> implements S
 	@Override
 	public final GeomFactory2d getGeomFactory() {
 		return GeomFactory2d.SINGLETON;
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+		return ReflectionUtil.toString(this);
 	}
 
 }

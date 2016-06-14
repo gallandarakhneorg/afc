@@ -112,14 +112,14 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 	@Pure
 	@Override
 	public double dot(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null";
 		return this.x * vector.getX() + this.y * vector.getY() + this.z * vector.getZ();
 	}
 
 	@Pure
 	@Override
 	public double perp(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null";
         return this.x * vector.getY() + this.y * vector.getZ() + this.z * vector.getX() - this.z * vector.getY()
                 - this.x * vector.getZ() - this.y * vector.getX();
 	}
@@ -138,8 +138,8 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 
 	@Override
 	public void add(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
-		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : "First vector must be not null";
+		assert vector2 != null : "Second vector must be not null";
 		this.x = vector1.getX() + vector2.getX();
 		this.y = vector1.getY() + vector2.getY();
 		this.z = vector1.getZ() + vector2.getZ();
@@ -147,7 +147,7 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 
 	@Override
 	public void add(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null";
 		this.x = this.x + vector.getX();
 		this.y = this.y + vector.getY();
 		this.z = this.z + vector.getZ();
@@ -155,8 +155,8 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 
 	@Override
 	public void scaleAdd(int scale, Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
-		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : "First vector must be not null";
+		assert vector2 != null : "Second vector must be not null";
 		this.x = scale * vector1.getX() + vector2.getX();
 		this.y = scale * vector1.getY() + vector2.getY();
 		this.z = scale * vector1.getZ() + vector2.getZ();
@@ -164,8 +164,8 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 
 	@Override
 	public void scaleAdd(double scale, Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
-		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : "First vector must be not null";
+		assert vector2 != null : "Second vector must be not null";
 		this.x = scale * vector1.getX() + vector2.getX();
 		this.y = scale * vector1.getY() + vector2.getY();
 		this.z = scale * vector1.getZ() + vector2.getZ();
@@ -173,7 +173,7 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 
 	@Override
 	public void scaleAdd(int scale, Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null";
 		this.x = scale * this.x + vector.getX();
 		this.y = scale * this.y + vector.getY();
 		this.z = scale * this.z + vector.getZ();
@@ -181,7 +181,7 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 
 	@Override
 	public void scaleAdd(double scale, Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null";
 		this.x = scale * this.x + vector.getX();
 		this.y = scale * this.y + vector.getY();
 		this.z = scale * this.z + vector.getZ();
@@ -189,8 +189,8 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 
 	@Override
 	public void sub(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
-		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : "First vector must be not null";
+		assert vector2 != null : "Second vector must be not null";
 		this.x = vector1.getX() - vector2.getX();
 		this.y = vector1.getY() - vector2.getY();
 		this.z = vector1.getZ() - vector2.getZ();
@@ -198,8 +198,8 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 
 	@Override
 	public void sub(Point3D<?, ?> point1, Point3D<?, ?> point2) {
-		assert point1 != null : "First point must be not null"; //$NON-NLS-1$
-		assert point2 != null : "Second point must be not null"; //$NON-NLS-1$
+		assert point1 != null : "First point must be not null";
+		assert point2 != null : "Second point must be not null";
 		this.x = point1.getX() - point2.getX();
 		this.y = point1.getY() - point2.getY();
 		this.z = point1.getZ() - point2.getZ();
@@ -207,7 +207,7 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 
 	@Override
 	public void sub(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null";
 		this.x -= vector.getX();
 		this.y -= vector.getY();
 		this.z -= vector.getZ();

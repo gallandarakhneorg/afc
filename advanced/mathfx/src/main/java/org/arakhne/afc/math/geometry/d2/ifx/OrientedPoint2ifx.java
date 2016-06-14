@@ -27,7 +27,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.OrientedPoint2ai;
@@ -197,27 +197,6 @@ public class OrientedPoint2ifx
             clone.lengthProperty().set(ilen());
         }
         return clone;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder b = new StringBuilder();
-        b.append("("); //$NON-NLS-1$
-        b.append(getX());
-        b.append(", "); //$NON-NLS-1$
-        b.append(getY());
-        b.append(")|("); //$NON-NLS-1$
-        b.append(getLength());
-        b.append(")|("); //$NON-NLS-1$
-        b.append(getDirectionX());
-        b.append(", "); //$NON-NLS-1$
-        b.append(getDirectionY());
-        b.append(")|("); //$NON-NLS-1$
-        b.append(getNormalX());
-        b.append(", "); //$NON-NLS-1$
-        b.append(getNormalY());
-        b.append(")"); //$NON-NLS-1$
-        return b.toString();
     }
 
     @Override

@@ -28,6 +28,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** Shadow of a path that is used for computing the crossing values
  * between a shape and the shadow.
@@ -60,8 +61,8 @@ public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
 	 * @param bounds the bounds of the shadow.
 	 */
 	public PathShadow3afp(PathIterator3afp<?> pathIterator, B bounds) {
-	    assert pathIterator != null : "PathIterator must be not null"; //$NON-NLS-1$
-		assert bounds != null : "Bounds must be not null"; //$NON-NLS-1$
+	    assert pathIterator != null : "PathIterator must be not null";
+		assert bounds != null : "Bounds must be not null";
 		this.path = pathIterator;
 		this.bounds = bounds;
 	}
@@ -160,7 +161,7 @@ public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
 
 		element = pi.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition");
 		}
 
 		Path3afp<?, ?, E, ?, ?, ?> localPath;
@@ -482,26 +483,7 @@ public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
         @Pure
         @Override
         public String toString() {
-            final StringBuilder b = new StringBuilder();
-            b.append("y min line:\n\tymin: "); //$NON-NLS-1$
-            b.append(this.ymin);
-            b.append("\n\tx: "); //$NON-NLS-1$
-            if (this.hasX4ymin) {
-                b.append(this.x4ymin);
-            } else {
-                b.append("none"); //$NON-NLS-1$
-            }
-            b.append("\ny max line:\n\tymax: "); //$NON-NLS-1$
-            b.append(this.ymax);
-            b.append("\n\tx: "); //$NON-NLS-1$
-            if (this.hasX4ymax) {
-                b.append(this.x4ymax);
-            } else {
-                b.append("none"); //$NON-NLS-1$
-            }
-            b.append("\ncrossings: "); //$NON-NLS-1$
-            b.append(this.crossings);
-            return b.toString();
+            return ReflectionUtil.toString(this);
         }
 
         public void setCrossingCoordinateForYMax(double x, double y) {

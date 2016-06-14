@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.PathIterator3D;
 import org.arakhne.afc.references.WeakArrayList;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** Abstract shape with 2 integer numbers.
  *
@@ -47,7 +48,7 @@ public abstract class AbstractShape3i<T extends AbstractShape3i<?>> implements S
 	 * @param listener the listener.
 	 */
 	protected synchronized void addShapeGeometryChangeListener(ShapeGeometryChangeListener listener) {
-		assert listener != null : "Listener must be not null"; //$NON-NLS-1$
+		assert listener != null : "Listener must be not null";
 		if (this.geometryListeners == null) {
 			this.geometryListeners = new WeakArrayList<>();
 		}
@@ -59,7 +60,7 @@ public abstract class AbstractShape3i<T extends AbstractShape3i<?>> implements S
 	 * @param listener the listener.
 	 */
 	protected synchronized void removeShapeGeometryChangeListener(ShapeGeometryChangeListener listener) {
-		assert listener != null : "Listener must be not null"; //$NON-NLS-1$
+		assert listener != null : "Listener must be not null";
 		if (this.geometryListeners != null) {
 			this.geometryListeners.remove(listener);
 			if (this.geometryListeners.isEmpty()) {
@@ -117,6 +118,12 @@ public abstract class AbstractShape3i<T extends AbstractShape3i<?>> implements S
 	@Override
 	public final GeomFactory3i getGeomFactory() {
 		return GeomFactory3i.SINGLETON;
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+		return ReflectionUtil.toString(this);
 	}
 
 }

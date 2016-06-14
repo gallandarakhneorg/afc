@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.extensions.xtext.MatrixExtensions;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -284,22 +285,8 @@ public class Matrix4d implements Serializable, Cloneable {
     @Pure
     @Override
     public String toString() {
-        return this.m00 + ", " //$NON-NLS-1$
-                + this.m01 + ", " //$NON-NLS-1$
-                + this.m02 + ", " //$NON-NLS-1$
-                + this.m03 + "\n" //$NON-NLS-1$
-                + this.m10 + ", " //$NON-NLS-1$
-                + this.m11 + ", " //$NON-NLS-1$
-                + this.m12 + ", " //$NON-NLS-1$
-                + this.m13 + "\n" //$NON-NLS-1$
-                + this.m20 + ", " //$NON-NLS-1$
-                + this.m21 + ", " //$NON-NLS-1$
-                + this.m22 + ", " //$NON-NLS-1$
-                + this.m23 + "\n" //$NON-NLS-1$
-                + this.m30 + ", " //$NON-NLS-1$
-                + this.m31 + ", " //$NON-NLS-1$
-                + this.m32 + ", " //$NON-NLS-1$
-                + this.m33 + "\n"; //$NON-NLS-1$
+        return ReflectionUtil.toString(this);
+
     }
 
     /**

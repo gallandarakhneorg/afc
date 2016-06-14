@@ -28,7 +28,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.MathFXAttributeNames;
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -278,22 +278,6 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 		bits = 31 * bits + Integer.hashCode(getMaxX());
 		bits = 31 * bits + Integer.hashCode(getMaxY());
 		return bits ^ (bits >> 31);
-	}
-
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("("); //$NON-NLS-1$
-		b.append(getMinX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getMinY());
-		b.append(")-("); //$NON-NLS-1$
-		b.append(getMaxX());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getMaxY());
-		b.append(")"); //$NON-NLS-1$
-		return b.toString();
 	}
 
 	@Override

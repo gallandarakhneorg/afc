@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -527,7 +528,7 @@ public class AgentMotion implements Serializable, Cloneable {
 	@Pure
 	@Override
 	public String toString() {
-		return "linear:" + this.linear + "\nangular: " + this.angular; //$NON-NLS-1$ //$NON-NLS-2$
+		return ReflectionUtil.toString(this);
 	}
 
 }

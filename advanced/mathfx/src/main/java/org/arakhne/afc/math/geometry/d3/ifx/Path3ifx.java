@@ -37,6 +37,7 @@ import javafx.collections.FXCollections;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
@@ -119,7 +120,7 @@ public class Path3ifx
      * @param windingRule the path winding rule.
      */
 	public Path3ifx(PathWindingRule windingRule) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert windingRule != null : "Path winding rule must be not null";
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
 		}
@@ -130,8 +131,8 @@ public class Path3ifx
      * @param iterator the iterator that provides the elements to copy.
      */
 	public Path3ifx(PathWindingRule windingRule, Iterator<PathElement3ifx> iterator) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert windingRule != null : "Path winding rule must be not null";
+		assert iterator != null : "Iterator must be not null";
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
 		}
@@ -148,7 +149,7 @@ public class Path3ifx
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		assert pt != null : "Point must be not null";
 		if (this.coords != null && !this.coords.isEmpty()) {
             for (int i = 0; i < this.coords.size(); i++) {
                 final double x = this.coords.get(i);
@@ -209,23 +210,6 @@ public class Path3ifx
 		return bits ^ (bits >> 31);
 	}
 
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		if (this.coords != null && !this.coords.isEmpty()) {
-			final Iterator<Integer> iterator = this.coords.iterator();
-			b.append(iterator.next());
-			while (iterator.hasNext()) {
-				b.append(", "); //$NON-NLS-1$
-				b.append(iterator.next());
-			}
-		}
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
-	}
-
 	@Override
 	public void translate(int dx, int dy, int dz) {
 		if (this.coords != null && !this.coords.isEmpty()) {
@@ -240,7 +224,7 @@ public class Path3ifx
 
 	@Override
 	public void transform(Transform3D transform) {
-		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+		assert transform != null : "Transformation must be not null";
 		final Point3D<?, ?> p = new InnerComputationPoint3ai();
 		if (this.coords != null && !this.coords.isEmpty()) {
 			final ListIterator<Integer> li = this.coords.listIterator();
@@ -261,7 +245,7 @@ public class Path3ifx
 	 */
 	public BooleanProperty isEmptyProperty() {
 		if (this.isEmpty == null) {
-			this.isEmpty = new SimpleBooleanProperty(this, "isEmpty"); //$NON-NLS-1$
+			this.isEmpty = new SimpleBooleanProperty(this, MathFXAttributeNames.IS_EMPTY);
 			this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
 			    final PathIterator3ai<PathElement3ifx> pi = getPathIterator();
 			    PathElement3ifx pe;
@@ -286,7 +270,7 @@ public class Path3ifx
 	@Override
 	public ObjectProperty<RectangularPrism3ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new ReadOnlyObjectWrapper<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 			    final RectangularPrism3ifx bb = getGeomFactory().newBox();
 			    Path3ai.computeDrawableElementBoundingBox(
@@ -308,7 +292,7 @@ public class Path3ifx
 	 */
 	public ObjectProperty<RectangularPrism3ifx> controlPointBoundingBoxProperty() {
 		if (this.logicalBounds == null) {
-			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, "controlPointBoundingBox"); //$NON-NLS-1$
+			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.CONTROL_POINT_BOUNDING_BOX);
 			this.logicalBounds.bind(Bindings.createObjectBinding(() -> {
 			    final RectangularPrism3ifx bb = getGeomFactory().newBox();
 			    Path3ai.computeControlPointBoundingBox(
@@ -328,7 +312,7 @@ public class Path3ifx
 
 	@Override
 	public void toBoundingBox(RectangularPrism3ifx box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null";
 		box.set(boundingBoxProperty().get());
 	}
 
@@ -338,7 +322,7 @@ public class Path3ifx
 	 */
 	public ObjectProperty<PathWindingRule> windingRuleProperty() {
 		if (this.windingRule == null) {
-			this.windingRule = new SimpleObjectProperty<>(this, "windingRule", DEFAULT_WINDING_RULE); //$NON-NLS-1$
+			this.windingRule = new SimpleObjectProperty<>(this, MathFXAttributeNames.WINDING_RULE, DEFAULT_WINDING_RULE);
 		}
 		return this.windingRule;
 	}
@@ -350,7 +334,7 @@ public class Path3ifx
 
 	@Override
 	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : "Path winding rule must be not null";
 		if (this.windingRule != null || rule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(rule);
 		}
@@ -362,7 +346,7 @@ public class Path3ifx
 	 */
 	public BooleanProperty isPolylineProperty() {
 		if (this.isPolyline == null) {
-			this.isPolyline = new ReadOnlyBooleanWrapper(this, "isPolyline", false); //$NON-NLS-1$
+			this.isPolyline = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_POLYLINE, false);
 			this.isPolyline.bind(Bindings.createBooleanBinding(() -> {
 			    boolean first = true;
 			    boolean hasOneLine = false;
@@ -396,7 +380,7 @@ public class Path3ifx
 	 */
 	public  BooleanProperty isCurvedProperty() {
 		if (this.isCurved == null) {
-			this.isCurved = new ReadOnlyBooleanWrapper(this, "isCurved", false); //$NON-NLS-1$
+			this.isCurved = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_CURVED, false);
 			this.isCurved.bind(Bindings.createBooleanBinding(() -> {
 			    for (final PathElementType type : innerTypesProperty()) {
 			        if (type == PathElementType.CURVE_TO || type == PathElementType.QUAD_TO) {
@@ -421,7 +405,7 @@ public class Path3ifx
 	 */
 	public BooleanProperty isMultiPartsProperty() {
 		if (this.isMultipart == null) {
-			this.isMultipart = new ReadOnlyBooleanWrapper(this, "isMultiParts", false); //$NON-NLS-1$
+			this.isMultipart = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_MULTIPARTS, false);
 			this.isMultipart.bind(Bindings.createBooleanBinding(() -> {
 			    boolean foundOne = false;
 			    for (final PathElementType type : innerTypesProperty()) {
@@ -450,7 +434,7 @@ public class Path3ifx
 	 */
 	public BooleanProperty isPolygonProperty() {
 		if (this.isPolygon == null) {
-			this.isPolygon = new ReadOnlyBooleanWrapper(this, "isPolygon", false); //$NON-NLS-1$
+			this.isPolygon = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_POLYGON, false);
 			this.isPolygon.bind(Bindings.createBooleanBinding(() -> {
 			    boolean first = true;
 			    boolean lastIsClose = false;
@@ -496,7 +480,7 @@ public class Path3ifx
 
 	@Override
 	public void toBoundingBoxWithCtrlPoints(RectangularPrism3ifx box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null";
 		box.set(controlPointBoundingBoxProperty().get());
 	}
 
@@ -714,7 +698,7 @@ public class Path3ifx
 
 	private void ensureMoveTo() {
 		if (this.types == null || this.types.isEmpty()) {
-			throw new IllegalStateException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalStateException("missing initial moveto in path definition");
 		}
 	}
 
@@ -764,7 +748,7 @@ public class Path3ifx
 	 */
 	protected ReadOnlyListWrapper<Integer> innerCoordinatesProperty() {
 		if (this.coords == null) {
-			this.coords = new ReadOnlyListWrapper<>(this, "coordinates", //$NON-NLS-1$
+			this.coords = new ReadOnlyListWrapper<>(this, MathFXAttributeNames.COORDINATES,
 					FXCollections.observableList(new ArrayList<>()));
 		}
 		return this.coords;
@@ -850,7 +834,7 @@ public class Path3ifx
 
 	@Override
 	public void set(Path3ifx path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null";
 		clear();
 		add(path.getPathIterator());
 	}
@@ -861,7 +845,7 @@ public class Path3ifx
 	 */
 	protected ReadOnlyListWrapper<PathElementType> innerTypesProperty() {
 		if (this.types == null) {
-			this.types = new ReadOnlyListWrapper<>(this, "types", //$NON-NLS-1$
+			this.types = new ReadOnlyListWrapper<>(this, MathFXAttributeNames.TYPES,
 					FXCollections.observableList(new ArrayList<>()));
 		}
 		return this.types;

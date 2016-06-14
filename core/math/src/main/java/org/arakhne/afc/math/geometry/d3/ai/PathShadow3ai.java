@@ -27,6 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** Shadow of a path that is used for computing the crossing values
  * between a shape and the shadow.
@@ -49,10 +50,10 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
      * @param path the path that is constituting the shadow.
      */
 	public PathShadow3ai(Path3ai<?, ?, ?, ?, ?, B> path) {
-		assert path != null : "Path must not be null"; //$NON-NLS-1$
+		assert path != null : "Path must not be null";
 		this.path = path;
 		this.bounds = this.path.toBoundingBox();
-		assert this.bounds != null : "Bounding box of the path must not be null"; //$NON-NLS-1$
+		assert this.bounds != null : "Bounding box of the path must not be null";
 	}
 
 	/** Compute the crossings between this shadow and
@@ -143,7 +144,7 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 
 		element = pi.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalArgumentException("missing initial moveto in path definition");
 		}
 
 		Path3ai<?, ?, E, ?, ?, ?> localPath;
@@ -428,39 +429,7 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 		@Pure
 		@Override
 		public String toString() {
-			final StringBuilder b = new StringBuilder();
-			b.append("SHADOW {\n\tlow: ( "); //$NON-NLS-1$
-			b.append(this.getXmin4ymin());
-			b.append(" | "); //$NON-NLS-1$
-			b.append(this.getYmin());
-			b.append(" )\n\thigh: ( "); //$NON-NLS-1$
-			b.append(this.getXmin4ymax());
-			b.append(" | "); //$NON-NLS-1$
-			b.append(this.getYmax());
-			b.append(")\n}\nCROSSINGS {\n\tcrossings="); //$NON-NLS-1$
-			b.append(this.getCrossings());
-			b.append("\n\tlow: "); //$NON-NLS-1$
-			if (this.isHasX4ymin()) {
-				b.append("( "); //$NON-NLS-1$
-				b.append(this.getX4ymin());
-				b.append(" | "); //$NON-NLS-1$
-				b.append(this.getYmin());
-				b.append(" )\n"); //$NON-NLS-1$
-			} else {
-				b.append("none\n"); //$NON-NLS-1$
-			}
-			b.append("\thigh: "); //$NON-NLS-1$
-			if (this.isHasX4ymax()) {
-				b.append("( "); //$NON-NLS-1$
-				b.append(this.getX4ymax());
-				b.append(" | "); //$NON-NLS-1$
-				b.append(this.getYmax());
-				b.append(" )\n"); //$NON-NLS-1$
-			} else {
-				b.append("none\n"); //$NON-NLS-1$
-			}
-			b.append("}\n"); //$NON-NLS-1$
-			return b.toString();
+			return ReflectionUtil.toString(this);
 		}
 
 		public void setCrossingForYMax(int x, int y) {

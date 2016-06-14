@@ -65,7 +65,7 @@ public interface MultiShape3ai<
 	@Pure
 	@Override
 	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Circle must be not null"; //$NON-NLS-1$
+		assert sphere != null : "Circle must be not null";
 		if (sphere.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(sphere)) {
@@ -79,7 +79,7 @@ public interface MultiShape3ai<
 	@Pure
 	@Override
 	default boolean intersects(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangularPrism != null : "Rectangle must be not null";
 		if (rectangularPrism.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(rectangularPrism)) {
@@ -93,7 +93,7 @@ public interface MultiShape3ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		assert segment != null : "Segment must be not null";
 		if (segment.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(segment)) {
@@ -121,7 +121,7 @@ public interface MultiShape3ai<
 	@Override
 	@Unefficient
 	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		assert multishape != null : "MultiShape must be not null";
 		if (multishape.toBoundingBox().intersects(toBoundingBox())) {
 			for (final CT shape1 : getBackendDataList()) {
 				for (final Shape3ai<?, ?, ?, ?, ?, ?> shape2 : multishape.getBackendDataList()) {
@@ -150,7 +150,7 @@ public interface MultiShape3ai<
 	@Pure
 	@Override
 	default boolean contains(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert rectangularPrism != null : "Rectangle must be not null";
 		if (rectangularPrism.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.contains(rectangularPrism)) {
@@ -184,7 +184,7 @@ public interface MultiShape3ai<
 	@Pure
 	@Override
 	default CT getFirstShapeIntersecting(ST shape) {
-		assert shape != null : "Input shape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Input shape must be not null";
 		if (shape.intersects(toBoundingBox())) {
 			for (final CT innerShape : getBackendDataList()) {
 				if (innerShape.intersects(shape)) {
@@ -199,7 +199,7 @@ public interface MultiShape3ai<
 	@Override
 	@Pure
 	default List<CT> getShapesIntersecting(ST shape) {
-		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Shape must be not null";
 		final List<CT> list = new ArrayList<>();
 		if (shape.intersects(toBoundingBox())) {
 			for (final CT subshape : getBackendDataList()) {
@@ -214,7 +214,7 @@ public interface MultiShape3ai<
 	@Pure
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null";
 		final Iterator<CT> iterator = getBackendDataList().iterator();
 		if (iterator.hasNext()) {
 			iterator.next().toBoundingBox(box);
@@ -301,8 +301,8 @@ public interface MultiShape3ai<
 		 */
 		public AbstractMultiShapePathIterator(List<? extends Shape3ai<?, ?, IE, ?, ?, ?>> list,
 				GeomFactory3ai<IE, ?, ?, ?> factory) {
-			assert list != null : "List of shapes must be not null"; //$NON-NLS-1$
-			assert factory != null : "Shape factory must be not null"; //$NON-NLS-1$
+			assert list != null : "List of shapes must be not null";
+			assert factory != null : "Shape factory must be not null";
 			this.list = list;
 			this.factory = factory;
 			this.shapesIterator = list.iterator();
@@ -345,7 +345,7 @@ public interface MultiShape3ai<
 
 		@Override
 		public IE next() {
-			assert this.next != null : "No such element"; //$NON-NLS-1$
+			assert this.next != null : "No such element";
 			final IE elementToReturn = this.next;
 			searchNext();
 			return elementToReturn;
@@ -450,7 +450,7 @@ public interface MultiShape3ai<
 		public TransformedMultiShapePathIterator(List<? extends Shape3ai<?, ?, IE, ?, ?, ?>> list,
 				GeomFactory3ai<IE, ?, ?, ?> factory, Transform3D transform) {
 			super(list, factory);
-			assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+			assert transform != null : "Transformation must be not null";
 			this.transform = transform;
 			delayedInit(list);
 		}
@@ -490,7 +490,7 @@ public interface MultiShape3ai<
 		 *
 		 */
 		public MultiShapePointIterator(List<? extends Shape3ai<?, ?, ?, P, V, ?>> list) {
-			assert list != null : "List of elements must be not null"; //$NON-NLS-1$
+			assert list != null : "List of elements must be not null";
 			this.elements = list.iterator();
 			if (this.elements.hasNext()) {
 				this.currentIterator = this.elements.next().getPointIterator();
@@ -520,7 +520,7 @@ public interface MultiShape3ai<
 
 		@Override
 		public P next() {
-			assert this.next != null : "No such element"; //$NON-NLS-1$
+			assert this.next != null : "No such element";
 			final P point = this.next;
 			searchNext();
 			return point;

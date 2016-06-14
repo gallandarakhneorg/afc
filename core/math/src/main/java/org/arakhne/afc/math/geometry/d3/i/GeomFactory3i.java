@@ -43,7 +43,7 @@ public class GeomFactory3i implements GeomFactory3ai<PathElement3i, Point3i, Vec
 
 	@Override
 	public Point3i convertToPoint(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
 		try {
 			return (Point3i) point;
 		} catch (Throwable exception) {
@@ -53,19 +53,19 @@ public class GeomFactory3i implements GeomFactory3ai<PathElement3i, Point3i, Vec
 
     @Override
     public Point3i convertToPoint(Vector3D<?, ?> vector) {
-        assert vector != null : "Point must be not null"; //$NON-NLS-1$
+        assert vector != null : "Point must be not null";
         return new Point3i(vector.ix(), vector.iy(), vector.iz());
     }
 
 	@Override
 	public Vector3i convertToVector(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
 		return new Vector3i(point.ix(), point.iy(), point.iz());
 	}
 
 	@Override
 	public Vector3i convertToVector(Vector3D<?, ?> vector) {
-		assert vector != null : "Point must be not null"; //$NON-NLS-1$
+		assert vector != null : "Point must be not null";
 		Vector3i vv;
 		try {
 			vv = (Vector3i) vector;
@@ -107,7 +107,7 @@ public class GeomFactory3i implements GeomFactory3ai<PathElement3i, Point3i, Vec
 
 	@Override
 	public Path3i newPath(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : "Path winding rule must be not null";
 		return new Path3i(rule);
 	}
 
@@ -118,9 +118,9 @@ public class GeomFactory3i implements GeomFactory3ai<PathElement3i, Point3i, Vec
 
 	@Override
 	public RectangularPrism3i newBox(int x, int y, int z, int width, int height, int depth) {
-		assert width >= 0 : "Width must be positive or zero"; //$NON-NLS-1$
-		assert height >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
-		assert depth >= 0 : "Depth must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0 : "Width must be positive or zero";
+		assert height >= 0 : "Height must be positive or zero";
+		assert depth >= 0 : "Depth must be positive or zero";
 		return new RectangularPrism3i(x, y, z, width, height, depth);
 	}
 
@@ -168,12 +168,14 @@ public class GeomFactory3i implements GeomFactory3ai<PathElement3i, Point3i, Vec
 
 	@Override
 	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
-		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$ // TODO
+		throw new UnsupportedOperationException("Not yet implemented");
+		// TODO
 	}
 
 	@Override
 	public Quaternion newQuaternion(double attitude, double bank, double heading) {
-		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$ // TODO
+		throw new UnsupportedOperationException("Not yet implemented");
+		// TODO
 	}
 
 }

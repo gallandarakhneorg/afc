@@ -24,6 +24,8 @@ import java.util.Objects;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.ReflectionUtil;
+
 /** Describe an element of the graph during an iteration.
  *
  * @param <PT> is the type of node in the graph
@@ -134,20 +136,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	@Pure
 	@Override
 	public String toString() {
-		final StringBuilder buffer = new StringBuilder();
-		buffer.append(this.currentSegment.toString());
-		buffer.append(">"); //$NON-NLS-1$
-		buffer.append(getDistanceToReachSegment());
-		if (this.previousSegment != null) {
-			buffer.append("<"); //$NON-NLS-1$
-			buffer.append(this.previousSegment.toString());
-		}
-		if (isCulDeSac()) {
-			buffer.append("]"); //$NON-NLS-1$
-		} else if (this.isTerminalSegment()) {
-			buffer.append("|"); //$NON-NLS-1$
-		}
-		return buffer.toString();
+		return ReflectionUtil.toString(this);
 	}
 
 	@Pure

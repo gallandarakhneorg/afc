@@ -122,7 +122,7 @@ public class Path3i extends AbstractShape3i<Path3i>
      * @param windingRule the path winding rule.
      */
 	public Path3i(PathWindingRule windingRule) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert windingRule != null : "Path winding rule must be not null";
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new int[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -133,8 +133,8 @@ public class Path3i extends AbstractShape3i<Path3i>
      * @param iterator the iterator that provides the elements to copy.
      */
 	public Path3i(PathWindingRule windingRule, Iterator<PathElement3i> iterator) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
-		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert windingRule != null : "Path winding rule must be not null";
+		assert iterator != null : "Iterator must be not null";
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new int[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -184,7 +184,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	private void ensureSlots(boolean needMove, int nbSlots) {
 		if (needMove && this.numTypes == 0) {
-			throw new IllegalStateException("missing initial moveto in path definition"); //$NON-NLS-1$
+			throw new IllegalStateException("missing initial moveto in path definition");
 		}
 		if (this.types.length == this.numTypes) {
 			this.types = Arrays.copyOf(this.types, this.types.length + GROW_SIZE);
@@ -197,7 +197,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null";
 		final int px = point.ix();
 		final int py = point.iy();
 		final int pz = point.iz();
@@ -250,22 +250,6 @@ public class Path3i extends AbstractShape3i<Path3i>
 		return bits ^ (bits >> 31);
 	}
 
-	@Pure
-	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-        if (this.numCoords > 0) {
-			b.append(this.coords[0]);
-            for (int i = 1; i < this.numCoords; ++i) {
-				b.append(", "); //$NON-NLS-1$
-				b.append(this.coords[i]);
-			}
-		}
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
-	}
-
 	@Override
 	public void translate(int dx, int dy, int dz) {
         for (int i = 0; i < this.numCoords; i += 3) {
@@ -287,7 +271,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	@Override
 	public void transform(Transform3D transform) {
-        assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+        assert transform != null : "Transformation must be not null";
 		final Point3D<?, ?> p = new InnerComputationPoint3ai();
         for (int i = 0; i < this.numCoords; i += 3) {
             p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
@@ -336,7 +320,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 	@Override
 	@Pure
 	public void toBoundingBox(RectangularPrism3i box) {
-        assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+        assert box != null : "Rectangle must be not null";
         RectangularPrism3i bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
@@ -487,7 +471,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 	@Override
 	@Pure
 	public void toBoundingBoxWithCtrlPoints(RectangularPrism3i box) {
-		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null";
         RectangularPrism3i bb = this.logicalBounds == null ? null : this.logicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
@@ -756,7 +740,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	@Override
 	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : "Path winding rule must be not null";
 		this.windingRule = rule;
 	}
 
@@ -825,7 +809,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	@Override
 	public void set(Path3i path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		assert path != null : "Path must be not null";
 		clear();
 		add(path.getPathIterator());
 	}

@@ -27,6 +27,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
@@ -136,28 +137,8 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 
 	@Pure
 	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getX1());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getY1());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getZ1());
-		b.append("|"); //$NON-NLS-1$
-		b.append(getX2());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getY2());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getZ2());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
-	}
-
-	@Pure
-	@Override
 	public Segment3dfx createTransformedShape(Transform3D transform) {
-		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+		assert transform != null : "Transformation must be not null";
 		final Point3dfx point = getGeomFactory().newPoint(getX1(), getY1(), getZ1());
 		transform.transform(point);
 		final double x1 = point.getX();
@@ -221,7 +202,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	@Pure
 	public DoubleProperty x1Property() {
 		if (this.ax == null) {
-			this.ax = new SimpleDoubleProperty(this, "x1"); //$NON-NLS-1$
+			this.ax = new SimpleDoubleProperty(this, MathFXAttributeNames.X1);
 		}
 		return this.ax;
 	}
@@ -239,7 +220,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	@Pure
 	public DoubleProperty y1Property() {
 		if (this.ay == null) {
-			this.ay = new SimpleDoubleProperty(this, "y1"); //$NON-NLS-1$
+			this.ay = new SimpleDoubleProperty(this, MathFXAttributeNames.Y1);
 		}
 		return this.ay;
 	}
@@ -257,7 +238,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	@Pure
 	public DoubleProperty z1Property() {
 		if (this.az == null) {
-			this.az = new SimpleDoubleProperty(this, "z1"); //$NON-NLS-1$
+			this.az = new SimpleDoubleProperty(this, MathFXAttributeNames.Z1);
 		}
 		return this.az;
 	}
@@ -275,7 +256,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	@Pure
 	public DoubleProperty x2Property() {
 		if (this.bx == null) {
-			this.bx = new SimpleDoubleProperty(this, "x2"); //$NON-NLS-1$
+			this.bx = new SimpleDoubleProperty(this, MathFXAttributeNames.X2);
 		}
 		return this.bx;
 	}
@@ -293,7 +274,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	@Pure
 	public DoubleProperty y2Property() {
 		if (this.by == null) {
-			this.by = new SimpleDoubleProperty(this, "y2"); //$NON-NLS-1$
+			this.by = new SimpleDoubleProperty(this, MathFXAttributeNames.Y2);
 		}
 		return this.by;
 	}
@@ -311,7 +292,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	@Pure
 	public DoubleProperty z2Property() {
 		if (this.bz == null) {
-			this.bz = new SimpleDoubleProperty(this, "z2"); //$NON-NLS-1$
+			this.bz = new SimpleDoubleProperty(this, MathFXAttributeNames.Z2);
 		}
 		return this.bz;
 	}
@@ -329,7 +310,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	@Override
 	public ObjectProperty<RectangularPrism3dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> toBoundingBox(),
 			        x1Property(), y1Property(), z1Property(),
 			        x2Property(), y2Property(), z2Property()));

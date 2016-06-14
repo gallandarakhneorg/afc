@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d3.afp;
 
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
@@ -65,7 +66,7 @@ public class InnerComputationVector3afp implements Vector3D<InnerComputationVect
 
 	@Override
 	public String toString() {
-		return "[" + this.x + "; " + this.y + "; " + this.z + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		return Tuple3D.toString(this.x, this.y, this.z);
 	}
 
 	@Override
