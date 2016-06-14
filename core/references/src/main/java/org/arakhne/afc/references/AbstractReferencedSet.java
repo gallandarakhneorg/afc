@@ -141,7 +141,7 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 				reference.enqueue();
 				reference.clear();
 			}
-		};
+		}
 
 		while ((obj = this.queue.poll()) != null) {
 			obj.clear();
