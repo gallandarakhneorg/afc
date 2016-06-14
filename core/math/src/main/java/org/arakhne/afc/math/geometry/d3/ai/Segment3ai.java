@@ -411,10 +411,8 @@ public interface Segment3ai<
 	static int computeSideLinePoint(int x1, int y1, int z1, int x2, int y2, int z2, int px, int py, int pz) {
 		final int segmentX = x2 - x1;
 		final int segmentY = y2 - y1;
-		final int segmentZ = z2 - z1;
 		final int targetX = px - x1;
 		final int targetY = py - y1;
-		final int targetZ = pz - z1;
 		final int side = segmentX * targetY - segmentY * targetX;
 		return (side < 0) ? -1 : ((side > 0) ? 1 : 0);
 	}
@@ -462,8 +460,6 @@ public interface Segment3ai<
 		final int xmax = cx + Math.abs(radius);
 		final int ymin = cy - Math.abs(radius);
 		final int ymax = cy + Math.abs(radius);
-		final int zmin = cz - Math.abs(radius);
-		final int zmax = cz + Math.abs(radius);
 
 		// The line is entirely on the top or on the bottom of the shadow
 		if (y0 < ymin && y1 < ymin) {
@@ -1580,7 +1576,6 @@ public interface Segment3ai<
                     code3 = 0;
                     x = 0;
                     y = 0;
-                    z = 0;
                 }
 
                 if (code3 != 0) {
