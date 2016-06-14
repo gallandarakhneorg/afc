@@ -152,9 +152,8 @@ public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector
 	public DoubleProperty lengthProperty() {
 		if (this.lengthProperty == null) {
 			this.lengthProperty = new ReadOnlyDoubleWrapper(this, MathFXAttributeNames.LENGTH);
-			this.lengthProperty.bind(Bindings.createDoubleBinding(() -> {
-				return Math.sqrt(lengthSquaredProperty().doubleValue());
-			}, lengthSquaredProperty()));
+			this.lengthProperty.bind(Bindings.createDoubleBinding(() ->
+				Math.sqrt(lengthSquaredProperty().doubleValue()), lengthSquaredProperty()));
 		}
 		return this.lengthProperty;
 	}

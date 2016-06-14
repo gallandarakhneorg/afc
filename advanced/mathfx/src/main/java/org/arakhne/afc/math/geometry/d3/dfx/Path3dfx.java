@@ -880,9 +880,8 @@ public class Path3dfx
 	public DoubleProperty lengthProperty() {
 	    if (this.length == null) {
 	        this.length = new ReadOnlyDoubleWrapper();
-	        this.length.bind(Bindings.createDoubleBinding(() -> {
-	            return Path3afp.computeLength(getPathIterator());
-	        },
+	        this.length.bind(Bindings.createDoubleBinding(() ->
+	            Path3afp.computeLength(getPathIterator()),
 	                innerTypesProperty(), innerCoordinatesProperty()));
 	    }
 		return this.length;

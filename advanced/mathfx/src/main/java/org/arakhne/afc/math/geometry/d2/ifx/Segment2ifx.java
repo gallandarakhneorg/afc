@@ -261,9 +261,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
-			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-				return toBoundingBox();
-			},
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> toBoundingBox(),
 					x1Property(), y1Property(),
 					x2Property(), y2Property()));
 		}
