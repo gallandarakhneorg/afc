@@ -2005,7 +2005,7 @@ public interface Path2ai<
         while (pi.hasNext()) {
             pe = pi.next();
 
-            boolean foundCandidate = false;
+            final boolean foundCandidate;
             final int candidateX;
             final int candidateY;
 
@@ -2840,7 +2840,7 @@ public interface Path2ai<
             if (this.typeIndex >= this.path.getPathElementCount()) {
                 throw new NoSuchElementException();
             }
-            E element = null;
+            final E element;
             switch (this.path.getPathElementTypeAt(type)) {
             case MOVE_TO:
                 if ((this.coordIndex + 2) > (this.path.size() * 2)) {
@@ -2977,7 +2977,7 @@ public interface Path2ai<
             if (this.typeIndex >= this.path.getPathElementCount()) {
                 throw new NoSuchElementException();
             }
-            E element = null;
+            final E element;
             switch (this.path.getPathElementTypeAt(this.typeIndex++)) {
             case MOVE_TO:
                 this.movex = this.path.getCoordAt(this.coordIndex++);
