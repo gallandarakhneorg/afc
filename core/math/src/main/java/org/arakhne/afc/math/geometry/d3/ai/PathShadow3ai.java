@@ -283,8 +283,6 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 		final int shadowYmin = Math.min(shadow_y0, shadow_y1);
 		final int shadowYmax = Math.max(shadow_y0, shadow_y1);
 		final int shadowZmin = Math.min(shadow_z0, shadow_z1);
-		final int shadowZmax = Math.max(shadow_z0, shadow_z1);
-
 		data.updateShadowLimits(shadow_x0, shadow_y0, shadow_z0, shadow_x1, shadow_y1, shadow_z1);
 
         if (sy0 < shadowYmin && sy1 < shadowYmin) {
