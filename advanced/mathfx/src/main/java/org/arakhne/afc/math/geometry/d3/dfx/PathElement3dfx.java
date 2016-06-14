@@ -525,11 +525,11 @@ public abstract class PathElement3dfx implements PathElement3afp {
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
-				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
-				    return MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
+				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
+				    MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
 				            && MathUtil.isEpsilonEqual(fromYProperty().get(), toYProperty().get())
-				            && MathUtil.isEpsilonEqual(fromZProperty().get(), toZProperty().get());
-				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty(), fromZProperty(), toZProperty()));
+				            && MathUtil.isEpsilonEqual(fromZProperty().get(), toZProperty().get()),
+						fromXProperty(), toXProperty(), fromYProperty(), toYProperty(), fromZProperty(), toZProperty()));
 			}
 			return this.isEmpty;
 		}
@@ -795,14 +795,14 @@ public abstract class PathElement3dfx implements PathElement3afp {
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
-				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
-				    return MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
+				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
+				    MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
 				            && MathUtil.isEpsilonEqual(fromYProperty().get(), toYProperty().get())
 				            && MathUtil.isEpsilonEqual(fromZProperty().get(), toZProperty().get())
 				            && MathUtil.isEpsilonEqual(ctrlX1Property().get(), toXProperty().get())
 				            && MathUtil.isEpsilonEqual(ctrlY1Property().get(), toYProperty().get())
-				            && MathUtil.isEpsilonEqual(ctrlZ1Property().get(), toZProperty().get());
-				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty(), fromZProperty(), toZProperty()));
+				            && MathUtil.isEpsilonEqual(ctrlZ1Property().get(), toZProperty().get()),
+						fromXProperty(), toXProperty(), fromYProperty(), toYProperty(), fromZProperty(), toZProperty()));
 			}
 			return this.isEmpty;
 		}
@@ -1104,8 +1104,8 @@ public abstract class PathElement3dfx implements PathElement3afp {
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
-				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
-				    return MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
+				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
+				    MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
 				            && MathUtil.isEpsilonEqual(fromYProperty().get(), toYProperty().get())
 				            && MathUtil.isEpsilonEqual(fromZProperty().get(), toZProperty().get())
 				            && MathUtil.isEpsilonEqual(ctrlX1Property().get(), toXProperty().get())
@@ -1113,8 +1113,8 @@ public abstract class PathElement3dfx implements PathElement3afp {
 				            && MathUtil.isEpsilonEqual(ctrlZ1Property().get(), toZProperty().get())
 				            && MathUtil.isEpsilonEqual(ctrlX2Property().get(), toXProperty().get())
 				            && MathUtil.isEpsilonEqual(ctrlY2Property().get(), toYProperty().get())
-				            && MathUtil.isEpsilonEqual(ctrlZ2Property().get(), toZProperty().get());
-				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty(), fromZProperty(), toZProperty()));
+				            && MathUtil.isEpsilonEqual(ctrlZ2Property().get(), toZProperty().get()),
+						fromXProperty(), toXProperty(), fromYProperty(), toYProperty(), fromZProperty(), toZProperty()));
 			}
 			return this.isEmpty;
 		}
@@ -1384,11 +1384,11 @@ public abstract class PathElement3dfx implements PathElement3afp {
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
-				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
-				    return MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
+				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
+				    MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
 				            && MathUtil.isEpsilonEqual(fromYProperty().get(), toYProperty().get())
-				            && MathUtil.isEpsilonEqual(fromZProperty().get(), toZProperty().get());
-				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty(), fromZProperty(), toZProperty()));
+				            && MathUtil.isEpsilonEqual(fromZProperty().get(), toZProperty().get()),
+						fromXProperty(), toXProperty(), fromYProperty(), toYProperty(), fromZProperty(), toZProperty()));
 			}
 			return this.isEmpty;
 		}
