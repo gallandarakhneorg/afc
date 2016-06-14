@@ -213,9 +213,8 @@ public class Circle2ifx
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
-			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-				return toBoundingBox();
-			}, xProperty(), yProperty(), radiusProperty()));
+			this.boundingBox.bind(Bindings.createObjectBinding(() ->
+				toBoundingBox(), xProperty(), yProperty(), radiusProperty()));
 		}
 		return this.boundingBox;
 	}
