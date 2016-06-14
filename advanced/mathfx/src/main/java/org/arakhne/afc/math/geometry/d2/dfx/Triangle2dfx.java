@@ -338,11 +338,10 @@ public class Triangle2dfx
 	public ReadOnlyBooleanProperty ccwProperty() {
 		if (this.ccw == null) {
 			this.ccw = new ReadOnlyBooleanWrapper(this, "ccw"); //$NON-NLS-1$
-			this.ccw.bind(Bindings.createBooleanBinding(() -> {
-				return Triangle2afp.isCCW(
+			this.ccw.bind(Bindings.createBooleanBinding(() ->
+				Triangle2afp.isCCW(
 						getX1(), getY1(), getX2(), getY2(),
-						getX3(), getY3());
-			},
+						getX3(), getY3()),
 					x1Property(), y1Property(),
 					x2Property(), y2Property(),
 					x3Property(), y3Property()));
@@ -354,9 +353,8 @@ public class Triangle2dfx
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-				return toBoundingBox();
-			},
+			this.boundingBox.bind(Bindings.createObjectBinding(() ->
+				toBoundingBox(),
 					x1Property(), y1Property(),
 					x2Property(), y2Property(),
 					x3Property(), y3Property()));
