@@ -213,8 +213,6 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 				}
 			}
 		}
-		entry = null;
-		value = null;
 		Reference<? extends V> reference;
 		while ((reference = this.queue.poll()) != null) {
 			if (reference instanceof ReferencableValue<?, ?>) {
