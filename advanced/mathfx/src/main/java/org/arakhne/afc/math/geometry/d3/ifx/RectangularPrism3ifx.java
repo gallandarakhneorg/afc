@@ -445,9 +445,8 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	public ObjectProperty<RectangularPrism3ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-			    return toBoundingBox();
-			},
+			this.boundingBox.bind(Bindings.createObjectBinding(() ->
+			    toBoundingBox(),
 			        minXProperty(), minYProperty(), widthProperty(), heightProperty()));
 		}
 		return this.boundingBox;

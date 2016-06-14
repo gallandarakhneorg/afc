@@ -433,9 +433,8 @@ public abstract class AbstractRectangularShape3ifx<IT extends AbstractRectangula
 	public ObjectProperty<RectangularPrism3ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-			    return toBoundingBox();
-			},
+			this.boundingBox.bind(Bindings.createObjectBinding(() ->
+			    toBoundingBox(),
 			        minXProperty(), minYProperty(), widthProperty(), heightProperty()));
 		}
 		return this.boundingBox;

@@ -330,9 +330,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	public ObjectProperty<RectangularPrism3dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-			    return toBoundingBox();
-			},
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> toBoundingBox(),
 			        x1Property(), y1Property(), z1Property(),
 			        x2Property(), y2Property(), z2Property()));
 		}

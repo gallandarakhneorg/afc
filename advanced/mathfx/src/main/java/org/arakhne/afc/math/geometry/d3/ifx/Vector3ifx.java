@@ -144,9 +144,8 @@ public class Vector3ifx extends Tuple3ifx<Vector3ifx> implements Vector3D<Vector
 	public DoubleProperty lengthProperty() {
 		if (this.lengthProperty == null) {
 			this.lengthProperty = new ReadOnlyDoubleWrapper(this, "length"); //$NON-NLS-1$
-			this.lengthProperty.bind(Bindings.createDoubleBinding(() -> {
-			    return Math.sqrt(lengthSquaredProperty().doubleValue());
-			}, lengthSquaredProperty()));
+			this.lengthProperty.bind(Bindings.createDoubleBinding(() ->
+			    Math.sqrt(lengthSquaredProperty().doubleValue()), lengthSquaredProperty()));
 		}
 		return this.lengthProperty;
 	}
@@ -163,11 +162,10 @@ public class Vector3ifx extends Tuple3ifx<Vector3ifx> implements Vector3D<Vector
 	public DoubleProperty lengthSquaredProperty() {
 		if (this.lengthSquareProperty == null) {
 			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, "lengthSquared"); //$NON-NLS-1$
-			this.lengthSquareProperty.bind(Bindings.createDoubleBinding(() -> {
-			    return Vector3ifx.this.x.doubleValue() * Vector3ifx.this.x.doubleValue()
-			            + Vector3ifx.this.y.doubleValue() * Vector3ifx.this.y.doubleValue()
-			            + Vector3ifx.this.z.doubleValue() * Vector3ifx.this.z.doubleValue();
-			}, this.x, this.y, this.z));
+			this.lengthSquareProperty.bind(Bindings.createDoubleBinding(() ->
+					Vector3ifx.this.x.doubleValue() * Vector3ifx.this.x.doubleValue()
+							+ Vector3ifx.this.y.doubleValue() * Vector3ifx.this.y.doubleValue()
+							+ Vector3ifx.this.z.doubleValue() * Vector3ifx.this.z.doubleValue(), this.x, this.y, this.z));
 		}
 		return this.lengthSquareProperty;
 	}
