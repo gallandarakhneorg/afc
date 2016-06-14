@@ -452,7 +452,6 @@ public interface Segment3afp<
 		final double y21 = y2 - y1;
 		final double y43 = y4 - y3;
 		final double z21 = z2 - z1;
-	    final double z43 = z4 - z3;
 
 		final double denom = y43 * x21 - x43 * y21;
 		if (denom == 0.) {
@@ -460,7 +459,6 @@ public interface Segment3afp<
 		}
 		final double x13 = x1 - x3;
 		final double y13 = y1 - y3;
-		final double z13 = z1 - z3;
 		double intersectionFactor1 = x43 * y13 - y43 * x13;
 		final double intersectionFactor2 = x21 * y13 - y21 * x13;
 		if (intersectionFactor1 == intersectionFactor2) {
@@ -842,7 +840,6 @@ public interface Segment3afp<
             double epsilon) {
 		final double x21 = x2 - x1;
 		final double y21 = y2 - y1;
-		final double z21 = z2 - z1;
 		double xp1 = px - x1;
 		double yp1 = py - y1;
 		double ccw = xp1 * y21 - yp1 * x21;
@@ -1299,8 +1296,6 @@ public interface Segment3afp<
 		final double xmax = Math.max(sx1, sx2);
 		final double ymin = Math.min(sy1, sy2);
 		final double ymax = Math.max(sy1, sy2);
-		final double zmin = Math.min(sz1, sz2);
-		final double zmax = Math.max(sz1, sz2);
 
 		if (y0 <= ymin && y1 <= ymin) {
 			return numCrosses;
