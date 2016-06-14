@@ -19,32 +19,6 @@ The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may
 
 # 1. Content of the AFC
 
-## 1.1 Compatibility with other Languages than Java
-
-AFC is a Java library that provides extensions for being used with other programming languages.
-
-For example, [Vector2D](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/geometry/d2/Vector2D.html) provides overloading function for operator `+`. In this way, this operator may be used by typing `v1 + 1` instead of `v1.add(1)`.
-
-### 1.1.1 SARL agent-oriented programming language
-
-AFC library is compatible with the [SARL](http://www.sarl.io) agent-oriented programming language, which is a Xtext-based language (see below).
-Indeed, the AFC classes use the specific annotations: `@Pure` for making [pure functions](https://en.wikipedia.org/wiki/Pure_function), and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
-
-### 1.1.2 Scala object-oriented programming language
-
-AFC library is compatible with the [Scala](http://scala-lang.org) object-oriented programming language.
-Indeed, the AFC classes provide the overridings of the operators (`$plus`, `$minus`, etc.) for vectors, matrices, etc.
-
-### 1.1.3 Xtend object-oriented programming language
-
-AFC library is compatible with the [Xtend](https://www.eclipse.org/xtend/) object-oriented programming language, which is a Xtext-based language (see below).
-Indeed, the AFC classes use the specific annotations: `@Pure` for making [pure functions](https://en.wikipedia.org/wiki/Pure_function), and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
-
-### 1.1.4 Other Xtext-base languages
-
-AFC library is compatible with all the languages that are defined upon the [Xtext](https://www.eclipse.org/Xtext/) framework for development of programming languages and domain-specific languages.
-Indeed, the AFC classes use the specific annotations: `@Pure` for making [pure functions](https://en.wikipedia.org/wiki/Pure_function), and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
-
 ## 1.1. Alive Modules
 
 AFC library contains the following alive modules:
@@ -52,16 +26,15 @@ AFC library contains the following alive modules:
 
 Name | Group Id | Artifact Id | Explanation
 -----|----------|-------------|------------
+[Agent Motion Algos](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/agentmotion/package-summary.html) | org.arakhne.afc.advanced | agentmotion | Collection of algorithms for calculating the motion of mobile agents.
+[General Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/util/package-summary.html) | org.arakhne.afc.core | util | General utility classes that do not fit in the other AFC modules
+[Generic Attribute API](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/attrs/collection/package-summary.html) | org.arakhne.afc.advanced | attributes | Library for creating generic attributes, aka. Variant attributes.
+[Input-Output Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/filefilter/package-summary.html) | org.arakhne.afc.core | inputoutput | General utilities related to IO
+[JavaFX Math Tools](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/geometry/d2/dfx/package-summary.html) | org.arakhne.afc.advanced | mathfx | JavaFX implementation of the mathematic and geometry tools
+[Math and Physics Tools](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/package-summary.html) | org.arakhne.afc.core | math | Mathematic and Geometry tools and primitives
+[Text Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/text/package-summary.html) | org.arakhne.afc.core | text | Utilities for string of characters
 [VM Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/vmutil/package-summary.html) | org.arakhne.afc.core | vmutils | Utilities related to the virtual machine, file systems, etc.
 [Weak Reference Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/references/package-summary.html) | org.arakhne.afc.core | references | Set of classes for creating advanced weak references.
-[Text Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/text/package-summary.html) | org.arakhne.afc.core | text | Utilities for string of characters
-[Input-Output Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/filefilter/package-summary.html) | org.arakhne.afc.core | inputoutput | General utilities related to IO
-[General Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/util/package-summary.html) | org.arakhne.afc.core | util | General utility classes that do not fit in the other AFC modules
-[Math Tools](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/package-summary.html) | org.arakhne.afc.core | math | Mathematic and Geometry tools and primitives
-[JavaFX Math Tools](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/geometry/d2/dfx/package-summary.html) | org.arakhne.afc.advanced | mathfx | JavaFX implementation of the mathematic and geometry tools
-[Generic Attribute API](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/attrs/collection/package-summary.html) | org.arakhne.afc.advanced | attributes | Library for creating generic attributes, aka. Variant attributes.
-[Agent Motion Algos](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/agentmotion/package-summary.html) | org.arakhne.afc.advanced | agentmotion | Collection of algorithms for calculating the motion of mobile agents.
-
 
 ## 1.2. Deprecated and Dead Modules
 
@@ -71,15 +44,40 @@ The table presents the modules, the version from which they are deprecated, and 
 
 Name | Group Id | Artifact Id | Explanation | Deprecation Start | Total Removal
 -----|----------|-------------|-------------|-------------------|--------------
-Base UI Tools | org.arakhne.afc.ui | base | Base tools for user interfaces. | 13.0 | 15.0
-AWT Tools | org.arakhne.afc.ui | awt | Extra AWT widgets. | 13.0 | 15.0
-Swing Widgets | org.arakhne.afc.ui | swing |  Extra Swing widgets. | 13.0 | 15.0
-Android Tools | org.arakhne.afc.ui | android | Extra Android widgets and activities. | 13.0 | 15.0
-Vector Window Toolkit | org.arakhne.afc.ui | vector | Vectorial primitives for building vectorial graphical editors. | 13.0 | 15.0
-AWT implementation of vector | org.arakhne.afc.ui | awt-vector | AWT implementation of the vectorial primitives. | 13.0 | 15.0
 Android implementation of vector | org.arakhne.afc.ui | android-vector | Android implementation of the vectorial  primitives.| 13.0 | 15.0
+Android Tools | org.arakhne.afc.ui | android | Extra Android widgets and activities. | 13.0 | 15.0
 Atomic deployment of files | org.arakhne.afc.maven | atomicdeploy | Maven plugin for deploying aa single file. | 13.0 | 15.0
+AWT implementation of vector | org.arakhne.afc.ui | awt-vector | AWT implementation of the vectorial primitives. | 13.0 | 15.0
+AWT Tools | org.arakhne.afc.ui | awt | Extra AWT widgets. | 13.0 | 15.0
+Base UI Tools | org.arakhne.afc.ui | base | Base tools for user interfaces. | 13.0 | 15.0
+Swing Widgets | org.arakhne.afc.ui | swing |  Extra Swing widgets. | 13.0 | 15.0
+Vector Window Toolkit | org.arakhne.afc.ui | vector | Vectorial primitives for building vectorial graphical editors. | 13.0 | 15.0
 
+## 1.1 Compatibility with other Languages than Java
+
+AFC is a Java library that provides extensions for being used with other programming languages.
+
+For example, [Vector2D](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/geometry/d2/Vector2D.html) provides overloading function for operator `+`. In this way, this operator may be used by typing `v1 + 1` instead of `v1.add(1)`.
+
+### 1.3.1 SARL agent-oriented programming language
+
+AFC library is compatible with the [SARL](http://www.sarl.io) agent-oriented programming language, which is a Xtext-based language (see below).
+Indeed, the AFC classes use the specific annotations: `@Pure` for making [pure functions](https://en.wikipedia.org/wiki/Pure_function), and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
+
+### 1.3.2 Scala object-oriented programming language
+
+AFC library is compatible with the [Scala](http://scala-lang.org) object-oriented programming language.
+Indeed, the AFC classes provide the overridings of the operators (`$plus`, `$minus`, etc.) for vectors, matrices, etc.
+
+### 1.3.3 Xtend object-oriented programming language
+
+AFC library is compatible with the [Xtend](https://www.eclipse.org/xtend/) object-oriented programming language, which is a Xtext-based language (see below).
+Indeed, the AFC classes use the specific annotations: `@Pure` for making [pure functions](https://en.wikipedia.org/wiki/Pure_function), and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
+
+### 1.3.4 Other Xtext-base languages
+
+AFC library is compatible with all the languages that are defined upon the [Xtext](https://www.eclipse.org/Xtext/) framework for development of programming languages and domain-specific languages.
+Indeed, the AFC classes use the specific annotations: `@Pure` for making [pure functions](https://en.wikipedia.org/wiki/Pure_function), and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
 
 # 2. Requirements
 
