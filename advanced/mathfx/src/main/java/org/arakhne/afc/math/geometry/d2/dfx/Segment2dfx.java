@@ -262,9 +262,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-				return toBoundingBox();
-			},
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> toBoundingBox(),
 					x1Property(), y1Property(),
 					x2Property(), y2Property()));
 		}
