@@ -853,9 +853,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	public DoubleProperty lengthProperty() {
 		if (this.length == null) {
 			this.length = new ReadOnlyDoubleWrapper();
-			this.length.bind(Bindings.createDoubleBinding(() -> {
-				return Path2afp.calculatesPathLength(getPathIterator());
-			},
+            this.length.bind(Bindings.createDoubleBinding(() -> Path2afp.calculatesPathLength(getPathIterator()),
 					innerTypesProperty(), innerCoordinatesProperty()));
 		}
 		return this.length;

@@ -427,9 +427,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
-			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-				return toBoundingBox();
-			},
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> toBoundingBox(),
 				centerXProperty(), centerYProperty(),
 				firstAxisProperty(), firstAxisExtentProperty(),
 				secondAxisExtentProperty()));
