@@ -73,7 +73,7 @@ public class GenerateSourceMojo extends AbstractReplaceMojo {
 
 	@Override
 	protected final synchronized void executeMojo() throws MojoExecutionException {
-		File targetDir;
+		final File targetDir;
 		if (this.outputLocation == null) {
 			targetDir = new File(getGeneratedSourceDirectory(), "java"); //$NON-NLS-1$
 		} else {
