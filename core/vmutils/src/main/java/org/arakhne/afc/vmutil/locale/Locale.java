@@ -431,7 +431,7 @@ public final class Locale {
 	 */
 	private static CharBuffer decodeString(byte[] bytes, Charset charset, int referenceLength) {
 		try {
-			Charset autodetectedCharset;
+			final Charset autodetectedCharset;
 			final CharsetDecoder decoder = charset.newDecoder();
 			final CharBuffer buffer = decoder.decode(ByteBuffer.wrap(bytes));
 			if ((decoder.isAutoDetecting())
