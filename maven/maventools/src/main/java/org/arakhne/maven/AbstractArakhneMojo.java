@@ -793,17 +793,17 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	public final synchronized ExtendedArtifact readPomFile(File pomFile) {
-		String groupId = null;
-		String artifactId = null;
-		String name = null;
-		String version = null;
-		String url = null;
-		Organization organization = null;
-		Scm scm = null;
+		String groupId;
+		final String artifactId;
+		final String name;
+		String version;
+		final String url;
+		final Organization organization;
+		Scm scm;
 		List<Developer> developers;
 		List<Contributor> contributors;
 		List<License> licenses;
-		Parent parent = null;
+		final Parent parent;
 
 		getLog().debug("Read pom file: " + pomFile.toString()); //$NON-NLS-1$
 

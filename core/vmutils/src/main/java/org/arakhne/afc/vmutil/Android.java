@@ -114,7 +114,7 @@ public final class Android {
 
 	private static Class<?> getInnerClass(String enclosingClassname, String innerClassname) throws AndroidException {
 		final ClassLoader loader = ClassLoaderFinder.findClassLoader();
-		Throwable ex = null;
+		final Throwable ex;
 		try {
 			return Class.forName(
 					enclosingClassname + "$" + innerClassname, //$NON-NLS-1$
