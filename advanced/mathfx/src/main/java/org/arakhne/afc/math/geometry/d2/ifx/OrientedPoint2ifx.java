@@ -384,9 +384,8 @@ public class OrientedPoint2ifx
     public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
         if (this.boundingBox == null) {
             this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
-            this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-                return toBoundingBox();
-            }, this.dx, this.dy, this.px, this.py));
+            this.boundingBox.bind(Bindings.createObjectBinding(() ->
+                toBoundingBox(), this.dx, this.dy, this.px, this.py));
         }
         return this.boundingBox;
     }

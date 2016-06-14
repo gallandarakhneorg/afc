@@ -336,9 +336,8 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
-			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-				return toBoundingBox();
-			},
+			this.boundingBox.bind(Bindings.createObjectBinding(() ->
+				toBoundingBox(),
 					minXProperty(), minYProperty(), widthProperty(), heightProperty()));
 		}
 		return this.boundingBox;

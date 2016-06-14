@@ -154,9 +154,8 @@ public class Vector2dfx extends Tuple2dfx<Vector2dfx> implements Vector2D<Vector
 	public ReadOnlyDoubleProperty lengthProperty() {
 		if (this.lengthProperty == null) {
 			this.lengthProperty = new ReadOnlyDoubleWrapper(this, MathFXAttributeNames.LENGTH);
-			this.lengthProperty.bind(Bindings.createDoubleBinding(() -> {
-				return Math.sqrt(lengthSquaredProperty().doubleValue());
-			}, lengthSquaredProperty()));
+			this.lengthProperty.bind(Bindings.createDoubleBinding(() ->
+					Math.sqrt(lengthSquaredProperty().doubleValue()), lengthSquaredProperty()));
 		}
 		return this.lengthProperty.getReadOnlyProperty();
 	}
@@ -173,10 +172,9 @@ public class Vector2dfx extends Tuple2dfx<Vector2dfx> implements Vector2D<Vector
 	public ReadOnlyDoubleProperty lengthSquaredProperty() {
 		if (this.lengthSquareProperty == null) {
 			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, MathFXAttributeNames.LENGTH_SQUARED);
-			this.lengthSquareProperty.bind(Bindings.createDoubleBinding(() -> {
-				return Vector2dfx.this.x.doubleValue() * Vector2dfx.this.x.doubleValue()
-						+ Vector2dfx.this.y.doubleValue() * Vector2dfx.this.y.doubleValue();
-			}, this.x, this.y));
+			this.lengthSquareProperty.bind(Bindings.createDoubleBinding(() ->
+				Vector2dfx.this.x.doubleValue() * Vector2dfx.this.x.doubleValue()
+						+ Vector2dfx.this.y.doubleValue() * Vector2dfx.this.y.doubleValue(), this.x, this.y));
 		}
 		return this.lengthSquareProperty.getReadOnlyProperty();
 	}

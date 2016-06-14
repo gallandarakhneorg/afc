@@ -493,10 +493,10 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_EMPTY);
-				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
-					return fromXProperty().get() == toXProperty().get()
-							&& fromYProperty().get() == toYProperty().get();
-				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
+				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
+					fromXProperty().get() == toXProperty().get()
+							&& fromYProperty().get() == toYProperty().get(),
+						fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
 			}
 			return this.isEmpty;
 		}
@@ -661,12 +661,12 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_EMPTY);
-				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
-					return fromXProperty().get() == toXProperty().get()
+				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
+					fromXProperty().get() == toXProperty().get()
 							&& fromYProperty().get() == toYProperty().get()
 							&& ctrlX1Property().get() == toXProperty().get()
-							&& ctrlY1Property().get() == toYProperty().get();
-				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
+							&& ctrlY1Property().get() == toYProperty().get(),
+						fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
 			}
 			return this.isEmpty;
 		}
@@ -877,14 +877,14 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_EMPTY);
-				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
-					return fromXProperty().get() == toXProperty().get()
+				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
+					fromXProperty().get() == toXProperty().get()
 							&& fromYProperty().get() == toYProperty().get()
 							&& ctrlX1Property().get() == toXProperty().get()
 							&& ctrlY1Property().get() == toYProperty().get()
 							&& ctrlX2Property().get() == toXProperty().get()
-							&& ctrlY2Property().get() == toYProperty().get();
-				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
+							&& ctrlY2Property().get() == toYProperty().get(),
+						fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
 			}
 			return this.isEmpty;
 		}
@@ -1099,10 +1099,10 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_EMPTY);
-				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
-					return fromXProperty().get() == toXProperty().get()
-							&& fromYProperty().get() == toYProperty().get();
-				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
+				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
+					fromXProperty().get() == toXProperty().get()
+							&& fromYProperty().get() == toYProperty().get(),
+						fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
 			}
 			return this.isEmpty;
 		}
@@ -1286,10 +1286,10 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
 				this.isEmpty = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_EMPTY);
-				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
-					return fromXProperty().get() == toXProperty().get()
-							&& fromYProperty().get() == toYProperty().get();
-				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
+				this.isEmpty.bind(Bindings.createBooleanBinding(() ->
+					fromXProperty().get() == toXProperty().get()
+							&& fromYProperty().get() == toYProperty().get(),
+						fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
 			}
 			return this.isEmpty;
 		}
