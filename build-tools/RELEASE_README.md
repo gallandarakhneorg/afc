@@ -8,14 +8,16 @@ A) PHASE 1: RELEASE VERSION
 
 A.1) Remove "-SNAPSHOT" in all the poms, and AndroidManifest.xml.
 
-A.2) Updgrade Maven dependencies and plugins.
+A.2) Change the flags "bytecode.optimize" and "bytecode.debug" in pom.xml 
 
-A.3) Compiling locally without error.
+A.3) Updgrade Maven dependencies and plugins.
+
+A.4) Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
      $> mvn clean install -P generate-android-libraries
 
-A.4) Create the aggregated documentation, and copy the generated archive file into a safe folder:
+A.5) Create the aggregated documentation, and copy the generated archive file into a safe folder:
 
      $> mvn-javadoc-aggregate -P generate-android-libraries
 
@@ -23,7 +25,7 @@ A.4) Create the aggregated documentation, and copy the generated archive file in
 
     $> mvn -P generate-android-libraries -Dmaven.test.skip=true clean org.arakhne.afc.maven:tag-replacer:generatereplacesrc javadoc:aggregate
 
-A.5) Prepare the bundles for Maven Central, and copy the generated archive files into a safe folder:
+A.6) Prepare the bundles for Maven Central, and copy the generated archive files into a safe folder:
 
      $> ./build-tools/src/main/resources/bash/prepare-bundles-for-central.sh -P generate-android-libraries
 
@@ -31,7 +33,7 @@ A.5) Prepare the bundles for Maven Central, and copy the generated archive files
 
      $> mvn-create-bundle --create -Dmaven.test.skip=true -DperformRelease=true -P generate-android-libraries
 
-A.6) Commit, Tag and push to Github:
+A.7) Commit, Tag and push to Github:
 
      $> git commit
      $> git tag "vX.Y.Z"
