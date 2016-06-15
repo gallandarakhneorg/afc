@@ -265,7 +265,7 @@ public enum AttributeType {
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
 	public String getName() {
 		final StringFactory stringFactory = FACTORY_MAP.get(this);
-		if(stringFactory != null) {
+		if (stringFactory != null) {
 			return stringFactory.createString();
 		}
 		return Locale.getStringFrom(NAME_RESOURCE_FILE, "OTHER"); //$NON-NLS-1$
