@@ -32,6 +32,7 @@ import org.w3c.dom.Element;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@FunctionalInterface
 public interface XMLConstraint {
 
 	/** Replies if the given element is validating the constraints.

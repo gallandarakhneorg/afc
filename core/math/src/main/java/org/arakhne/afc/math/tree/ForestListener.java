@@ -31,6 +31,7 @@ import java.util.EventListener;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@FunctionalInterface
 public interface ForestListener extends EventListener {
 
 	/** A child of the specified node was added.

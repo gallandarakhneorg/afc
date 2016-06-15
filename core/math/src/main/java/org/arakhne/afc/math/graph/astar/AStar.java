@@ -397,7 +397,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		try {
 			return path.add(segment);
 		} catch (Throwable e) {
-			throw new IllegalStateException("no path factory found", e);
+			throw new IllegalStateException(e);
 		}
 	}
 

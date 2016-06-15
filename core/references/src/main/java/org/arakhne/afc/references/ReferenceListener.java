@@ -30,6 +30,7 @@ import java.util.EventListener;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@FunctionalInterface
 public interface ReferenceListener extends EventListener {
 
 	/** Invoked when at least one reference was released.
@@ -39,8 +40,6 @@ public interface ReferenceListener extends EventListener {
 	 *
 	 * @param released is the count of released objects.
 	 */
-	default void referenceReleased(int released) {
-		//
-	}
+	void referenceReleased(int released);
 
 }

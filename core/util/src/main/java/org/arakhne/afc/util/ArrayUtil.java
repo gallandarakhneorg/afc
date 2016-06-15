@@ -1105,6 +1105,7 @@ public final class ArrayUtil {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@FunctionalInterface
 	public interface Filter<T> {
 
 		/** Filtering the objects.

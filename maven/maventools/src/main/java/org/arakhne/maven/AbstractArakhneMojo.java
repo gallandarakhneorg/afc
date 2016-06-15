@@ -1461,6 +1461,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 *
 	 * @component
 	 */
+	@FunctionalInterface
 	public interface FindFileListener extends EventListener {
 
 		/** Invoked when a file which is not matching the file filter was found.

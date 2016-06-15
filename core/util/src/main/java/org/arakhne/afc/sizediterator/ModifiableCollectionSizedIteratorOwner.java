@@ -28,6 +28,7 @@ package org.arakhne.afc.sizediterator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@FunctionalInterface
 public interface ModifiableCollectionSizedIteratorOwner<M> {
 
 	/** Invoked just before an element is removed from a
@@ -35,8 +36,6 @@ public interface ModifiableCollectionSizedIteratorOwner<M> {
 	 *
 	 * @param data is the removed data.
 	 */
-	default void onRemoveFromIterator(M data) {
-		//
-	}
+	void onRemoveFromIterator(M data);
 
 }

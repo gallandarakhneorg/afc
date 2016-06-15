@@ -30,14 +30,13 @@ import java.util.EventListener;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@FunctionalInterface
 public interface AttributeChangeListener extends EventListener {
 
 	/** Invoked when the attribute's value changed.
 	 *
 	 * @param event describes the changes.
 	 */
-	default void onAttributeChangeEvent(AttributeChangeEvent event) {
-		//
-	}
+	void onAttributeChangeEvent(AttributeChangeEvent event);
 
 }
