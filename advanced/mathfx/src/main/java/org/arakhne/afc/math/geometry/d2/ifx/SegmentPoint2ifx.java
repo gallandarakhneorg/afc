@@ -30,10 +30,10 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 
-/** Segment with 2 points with floating-point precision FX properties.
+/** A 2D segment/line encapsulating points with 2 integer FX properties.
  *
  *  <p>This segment is defined by its two extremities. It should not differ from
- *  the original Segment2dfx except from storage type.
+ *  the original Segment2ifx except from storage type.
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @author $Author: hjaffali$

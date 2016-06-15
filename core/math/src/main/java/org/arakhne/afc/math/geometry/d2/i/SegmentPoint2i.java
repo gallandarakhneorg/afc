@@ -27,8 +27,11 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
-/** A 2D segment/line with 2 integer numbers.
+/** A 2D segment/line encapsulating points with 2 integer numbers.
  *
+ *  <p>This segment is defined by its two extremities. It should not differ from
+ *  the original Segment2i except from storage type.
+ * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -40,9 +43,9 @@ public class SegmentPoint2i extends AbstractShape2i<SegmentPoint2i>
 
 	private static final long serialVersionUID = 4069080422632034507L;
 
-	private Point2i p1;
+	private Point2i p1 = new Point2i();
 
-	private Point2i p2;
+	private Point2i p2 = new Point2i();
 
 	/** Construct an empty segment.
 	 */
@@ -55,14 +58,31 @@ public class SegmentPoint2i extends AbstractShape2i<SegmentPoint2i>
 	 * @param p2 second point.
 	 */
 	public SegmentPoint2i(Point2D<?, ?> p1, Point2D<?, ?> p2) {
-		this(p1.ix(), p1.iy(), p2.ix(), p2.iy());
+	    this(p1.ix(), p1.iy(), p2.ix(), p2.iy());
+	}
+
+	/** Construct a segment with the two given points.
+	 * @param p1 first point.
+	 * @param p2 second point.
+	 */
+	public SegmentPoint2i(Point2i p1, Point2i p2) {
+		this.p1 = p1;
+		this.p2 = p2;
 	}
 
 	/** Constructor by copy.
 	 * @param segment the segment to copy.
 	 */
 	public SegmentPoint2i(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
-		this(segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2());
+	    this(segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2());
+	}
+
+	/** Constructor by copy.
+	 * @param segment the segment to copy.
+	 */
+	public SegmentPoint2i(SegmentPoint2i segment) {
+	    this.p1 = segment.p1;
+	    this.p2 = segment.p2;
 	}
 
 	/** Construct a segment with the two given points.

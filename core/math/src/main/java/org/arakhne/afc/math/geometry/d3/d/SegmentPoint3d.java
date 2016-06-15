@@ -18,18 +18,18 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d2.d;
+package org.arakhne.afc.math.geometry.d3.d;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
+import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 
-/** A 2D segment/line encapsulating points with 2 double precision numbers.
+/** A 3D segment/line encapsulating points with 3 double precision numbers.
  *
  *  <p>This segment is defined by its two extremities. It should not differ from
- *  the original Segment2d except from storage type.
+ *  the original Segment3d except from storage type.
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -38,18 +38,18 @@ import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class SegmentPoint2d extends AbstractShape2d<SegmentPoint2d>
-		implements Segment2afp<Shape2d<?>, SegmentPoint2d, PathElement2d, Point2d, Vector2d, Rectangle2d> {
+public class SegmentPoint3d extends AbstractShape3d<SegmentPoint3d>
+	implements Segment3afp<Shape3d<?>, SegmentPoint3d, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
 
 	private static final long serialVersionUID = -5667213589442134247L;
 
-	private Point2d p1 = new Point2d();
+	private Point3d p1 = new Point3d();
 
-	private Point2d p2 = new Point2d();
+	private Point3d p2 = new Point3d();
 
 	/** Construct an empty segment.
-	 */
-	public SegmentPoint2d() {
+     */
+	public SegmentPoint3d() {
 		//
 	}
 
@@ -57,42 +57,44 @@ public class SegmentPoint2d extends AbstractShape2d<SegmentPoint2d>
 	 * @param p1 first point.
 	 * @param p2 second point.
 	 */
-	public SegmentPoint2d(Point2D<?, ?> p1, Point2D<?, ?> p2) {
-	    this(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+	public SegmentPoint3d(Point3D<?, ?> p1, Point3D<?, ?> p2) {
+	    this(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ());
 	}
 
 	/** Construct a segment from the two given points.
-	 * @param p1 first point.
-	 * @param p2 second point.
-	 */
-	public SegmentPoint2d(Point2d p1, Point2d p2) {
-		this.p1 = p1;
-		this.p2 = p2;
+     * @param p1 first point.
+     * @param p2 second point.
+     */
+	public SegmentPoint3d(Point3d p1, Point3d p2) {
+	    this.p1 = p1;
+	    this.p2 = p2;
 	}
 
 	/** Constructor by copy.
 	 * @param segment the segment to copy.
 	 */
-	public SegmentPoint2d(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
-	    this(segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2());
+	public SegmentPoint3d(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+	    this(segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2());
 	}
 
 	/** Constructor by copy.
-	 * @param segment the segment to copy.
-	 */
-	public SegmentPoint2d(SegmentPoint2d segment) {
+     * @param segment the segment to copy.
+     */
+	public SegmentPoint3d(SegmentPoint3d segment) {
 	    this.p1 = segment.p1;
 	    this.p2 = segment.p2;
 	}
 
 	/** Construct a segment from the two given points.
-	 * @param x1 x coordinate of the first point.
-	 * @param y1 y coordinate of the first point.
-	 * @param x2 x coordinate of the second point.
-	 * @param y2 y coordinate of the second point.
-	 */
-	public SegmentPoint2d(double x1, double y1, double x2, double y2) {
-		set(x1, y1, x2, y2);
+     * @param x1 x coordinate of the first point.
+     * @param y1 y coordinate of the first point.
+     * @param z1 z coordinate of the first point.
+     * @param x2 x coordinate of the second point.
+     * @param y2 y coordinate of the second point.
+     * @param z2 z coordinate of the second point.
+     */
+	public SegmentPoint3d(double x1, double y1, double z1, double x2, double y2, double z2) {
+		set(x1, y1, z1, x2, y2, z2);
 	}
 
 	@Pure
@@ -101,47 +103,34 @@ public class SegmentPoint2d extends AbstractShape2d<SegmentPoint2d>
 		int bits = 1;
 		bits = 31 * bits + this.p1.hashCode();
 		bits = 31 * bits + this.p2.hashCode();
-        return bits ^ (bits >> 31);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure
 	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("("); //$NON-NLS-1$
-		b.append(getX1());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getY1());
-		b.append(")-("); //$NON-NLS-1$
-		b.append(getX2());
-		b.append(", "); //$NON-NLS-1$
-		b.append(getY2());
-		b.append(")"); //$NON-NLS-1$
-		return b.toString();
-	}
-
-	@Pure
-	@Override
-	public SegmentPoint2d createTransformedShape(Transform2D transform) {
+	public SegmentPoint3d createTransformedShape(Transform3D transform) {
 		if (transform == null || transform.isIdentity()) {
 			return clone();
 		}
-		final Point2d point = getGeomFactory().newPoint(getX1(), getY1());
+		final Point3d point = getGeomFactory().newPoint(getX1(), getY1(), getZ1());
 		transform.transform(point);
-		final double x1 = point.x;
-		final double y1 = point.y;
-		point.set(getX2(), getY2());
+		final double x1 = point.getX();
+		final double y1 = point.getY();
+		final double z1 = point.getZ();
+		point.set(getX2(), getY2(), getZ2());
 		transform.transform(point);
-		return new SegmentPoint2d(x1, y1, point.getX(), point.getY());
+		return new SegmentPoint3d(x1, y1, z1, point.getX(), point.getY(), point.getZ());
 	}
 
 	@Override
-	public void set(double x1, double y1, double x2, double y2) {
-		if (this.p1.x != x1 || this.p1.y != y1 || this.p2.x != x2 || this.p2.y != y2) {
+	public void set(double x1, double y1, double z1, double x2, double y2, double z2) {
+		if (this.p1.x != x1 || this.p1.y != y1 || this.p1.z != z1 || this.p2.x != x2 || this.p2.y != y2 || this.p2.z != z2) {
 			this.p1.x = x1;
 			this.p1.y = y1;
+			this.p1.z = z1;
 			this.p2.x = x2;
 			this.p2.y = y2;
+			this.p2.z = z2;
 			fireGeometryChange();
 		}
 	}
@@ -176,6 +165,20 @@ public class SegmentPoint2d extends AbstractShape2d<SegmentPoint2d>
 
 	@Pure
 	@Override
+	public double getZ1() {
+	    return this.p1.z;
+	}
+
+	@Override
+	public void setZ1(double z) {
+		if (this.p1.z != z) {
+			this.p1.z = z;
+			fireGeometryChange();
+		}
+	}
+
+	@Pure
+	@Override
 	public double getX2() {
 	    return this.p2.x;
 	}
@@ -202,45 +205,61 @@ public class SegmentPoint2d extends AbstractShape2d<SegmentPoint2d>
 		}
 	}
 
+	@Pure
 	@Override
-	public Point2d getP1() {
+	public double getZ2() {
+	    return this.p2.z;
+	}
+
+	@Override
+	public void setZ2(double z) {
+		if (this.p2.z != z) {
+			this.p2.z = z;
+			fireGeometryChange();
+		}
+	}
+
+	@Override
+	public Point3d getP1() {
 		return this.p1;
 	}
 
 	@Override
-	public void setP1(double x, double y) {
+	public void setP1(double x, double y, double z) {
 	    this.p1.x = x;
 	    this.p1.y = y;
+	    this.p1.z = z;
 	    fireGeometryChange();
 	}
 
-	/** Set the first point of the segment.
+	/** Sets the first point of the segment.
 	 *
-	 * @param p1 the point to set.
+	 * @param point the point to set.
 	 */
-	public void setP1(Point2d p1) {
-	    this.p1 = p1;
+	public void setP1(Point3d point) {
+	    this.p1 = point;
 	    fireGeometryChange();
 	}
 
 	@Override
-	public Point2d getP2() {
+	public Point3d getP2() {
 		return this.p2;
 	}
 
 	@Override
-	public void setP2(double x, double y) {
+	public void setP2(double x, double y, double z) {
 	    this.p2.x = x;
 	    this.p2.y = y;
+	    this.p2.z = z;
 	    fireGeometryChange();
 	}
 
-	/** Set the second point of the segment.
+	/** Sets the second point of the segment.
 	 *
-	 * @param p2 the point to set.
+	 * @param point the point to set.
 	 */
-	public void setP2(Point2d p2) {
-	    this.p2 = p2;
+	public void setP2(Point3d point) {
+	    this.p2 = point;
 	    fireGeometryChange();
 	}
 

@@ -31,7 +31,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 
-/** Segment with 2 points with floating-point precision FX properties.
+/** A 2D segment/line encapsulating points with 2 double precision FX properties.
  *
  *  <p>This segment is defined by its two extremities. It should not differ from
  *  the original Segment2dfx except from storage type.
@@ -145,7 +145,9 @@ public class SegmentPoint2dfx extends AbstractShape2dfx<SegmentPoint2dfx>
 	@Pure
 	@Override
 	public SegmentPoint2dfx createTransformedShape(Transform2D transform) {
-		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+        if (transform == null || transform.isIdentity()) {
+            return clone();
+        }
 		final Point2dfx point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
 		final double x1 = point.getX();
@@ -249,19 +251,14 @@ public class SegmentPoint2dfx extends AbstractShape2dfx<SegmentPoint2dfx>
 	}
 
 	@Override
-	public Point2dfx getP2() {
-		return this.p2;
-	}
-
-	@Override
 	public void setP1(double x, double y) {
-		this.p1.set(x, y);
+	    this.p1.set(x, y);
 	}
 
 	@Override
 	public void setP1(Point2D<?, ?> pt) {
-		this.p1.setX(pt.getX());
-		this.p1.setY(pt.getY());
+	    this.p1.setX(pt.getX());
+	    this.p1.setY(pt.getY());
 	}
 
 	/** Set the oriented point as the first point of this SegmentPoint2dfx to preserve length.
@@ -269,6 +266,11 @@ public class SegmentPoint2dfx extends AbstractShape2dfx<SegmentPoint2dfx>
 	 */
 	public void setP1(Point2dfx pt) {
 	    this.p1 = pt;
+	}
+
+	@Override
+	public Point2dfx getP2() {
+		return this.p2;
 	}
 
 	@Override
