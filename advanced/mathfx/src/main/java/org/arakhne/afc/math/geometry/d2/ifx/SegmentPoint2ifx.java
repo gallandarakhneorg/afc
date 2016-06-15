@@ -263,13 +263,12 @@ public class SegmentPoint2ifx extends AbstractShape2ifx<SegmentPoint2ifx>
 		this.p1.setY(pt.iy());
 	}
 
-	// TODO : fix type hierarchy problem
-	//	/** Set the oriented point as the first point of this SegmentPoint2dfx to preserve length.
-	//	 * @param pt the point.
-	//	 */
-	//	public void setP1(OrientedPoint2dfx pt) {
-	//		this.p1 = pt;
-	//	}
+	/** Set the oriented point as the first point of this SegmentPoint2dfx to preserve length.
+	 * @param pt the point.
+	 */
+	public void setP1(OrientedPoint2ifx pt) {
+	    this.p1 = pt;
+	}
 
 	@Override
 	public void setP2(int x, int y) {
@@ -282,13 +281,12 @@ public class SegmentPoint2ifx extends AbstractShape2ifx<SegmentPoint2ifx>
 		this.p2.setY(pt.iy());
 	}
 
-	// TODO : fix type hierachy problem
-	//	/** Set the oriented point as the second point of this SegmentPoint2dfx to preserve length.
-	//	 * @param pt the point.
-	//	 */
-	//	public void setP2(OrientedPoint2dfx pt) {
-	//		this.p2 = pt;
-	//	}
+	/** Set the oriented point as the second point of this SegmentPoint2dfx to preserve length.
+	 * @param pt the point.
+	 */
+	public void setP2(OrientedPoint2ifx pt) {
+	    this.p2 = pt;
+	}
 
 	@Override
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {

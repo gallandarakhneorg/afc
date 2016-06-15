@@ -126,12 +126,24 @@ public class SegmentPoint2d extends AbstractShape2d<SegmentPoint2d>
 		}
 	}
 
+	@Pure
+	@Override
+	public double getX1() {
+	    return this.p1.x;
+	}
+
 	@Override
 	public void setX1(double x) {
 		if (this.p1.x != x) {
 			this.p1.x = x;
 			fireGeometryChange();
 		}
+	}
+
+	@Pure
+	@Override
+	public double getY1() {
+	    return this.p1.y;
 	}
 
 	@Override
@@ -142,12 +154,24 @@ public class SegmentPoint2d extends AbstractShape2d<SegmentPoint2d>
 		}
 	}
 
+	@Pure
+	@Override
+	public double getX2() {
+	    return this.p2.x;
+	}
+
 	@Override
 	public void setX2(double x) {
 		if (this.p2.x != x) {
 			this.p2.x = x;
 			fireGeometryChange();
 		}
+	}
+
+	@Pure
+	@Override
+	public double getY2() {
+	    return this.p2.y;
 	}
 
 	@Override
@@ -158,38 +182,46 @@ public class SegmentPoint2d extends AbstractShape2d<SegmentPoint2d>
 		}
 	}
 
-	@Pure
-	@Override
-	public double getX1() {
-		return this.p1.x;
-	}
-
-	@Pure
-	@Override
-	public double getY1() {
-		return this.p1.y;
-	}
-
-	@Pure
-	@Override
-	public double getX2() {
-		return this.p2.x;
-	}
-
-	@Pure
-	@Override
-	public double getY2() {
-		return this.p2.y;
-	}
-
 	@Override
 	public Point2d getP1() {
 		return this.p1;
 	}
 
 	@Override
+	public void setP1(double x, double y) {
+	    this.p1.x = x;
+	    this.p1.y = y;
+	    fireGeometryChange();
+	}
+
+	/** Set the first point of the segment.
+	 *
+	 * @param p1 the point to set.
+	 */
+	public void setP1(Point2d p1) {
+	    this.p1 = p1;
+	    fireGeometryChange();
+	}
+
+	@Override
 	public Point2d getP2() {
 		return this.p2;
+	}
+
+	@Override
+	public void setP2(double x, double y) {
+	    this.p2.x = x;
+	    this.p2.y = y;
+	    fireGeometryChange();
+	}
+
+	/** Set the second point of the segment.
+	 *
+	 * @param p2 the point to set.
+	 */
+	public void setP2(Point2d p2) {
+	    this.p2 = p2;
+	    fireGeometryChange();
 	}
 
 }

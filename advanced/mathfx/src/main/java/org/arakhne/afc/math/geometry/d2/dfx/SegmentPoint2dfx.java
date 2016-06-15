@@ -26,6 +26,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
@@ -263,13 +264,12 @@ public class SegmentPoint2dfx extends AbstractShape2dfx<SegmentPoint2dfx>
 		this.p1.setY(pt.getY());
 	}
 
-	// TODO : fix type hierarchy problem
-	//	/** Set the oriented point as the first point of this SegmentPoint2dfx to preserve length.
-	//	 * @param pt the point.
-	//	 */
-	//	public void setP1(OrientedPoint2dfx pt) {
-	//		this.p1 = pt;
-	//	}
+	/** Set the oriented point as the first point of this SegmentPoint2dfx to preserve length.
+	 * @param pt the point.
+	 */
+	public void setP1(Point2dfx pt) {
+	    this.p1 = pt;
+	}
 
 	@Override
 	public void setP2(double x, double y) {
@@ -282,18 +282,17 @@ public class SegmentPoint2dfx extends AbstractShape2dfx<SegmentPoint2dfx>
 		this.p2.setY(pt.getY());
 	}
 
-	// TODO : fix type hierachy problem
-	//	/** Set the oriented point as the second point of this SegmentPoint2dfx to preserve length.
-	//	 * @param pt the point.
-	//	 */
-	//	public void setP2(OrientedPoint2dfx pt) {
-	//		this.p2 = pt;
-	//	}
+	/** Set the oriented point as the second point of this SegmentPoint2dfx to preserve length.
+	 * @param pt the point.
+	 */
+	public void setP2(Point2dfx pt) {
+	    this.p2 = pt;
+	}
 
 	@Override
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 			    return toBoundingBox();
 			}, x1Property(), y1Property(),
