@@ -56,6 +56,4 @@ public interface TestShapeFactory<P extends Point2D<? super P, ? super V>, V ext
 
 	MultiShape2afp<?, ?, ?, ?, P, V, B> createMultiShape();
 
-    OrientedPoint2D createOrientedPoint(double x, double y, double length, double dirX, double dirY);
-
 }

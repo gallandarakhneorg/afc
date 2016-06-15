@@ -145,10 +145,6 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	public final Vector2D createVector(double x, double y) {
 		return this.factory.createVector(x, y);
 	}
-	
-	public final OrientedPoint2D createOrientedPoint(double x, double y, double length, double dirX, double dirY) {
-	    return this.factory.createOrientedPoint(x, y, length, dirX, dirY);
-	}
 
 	public final Path2afp<?, ?, ?, ?, ?, B> createPath() {
 		return this.factory.createPath(null);

@@ -22,10 +22,10 @@ package org.arakhne.afc.math.geometry.d2.d;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.OrientedPoint2afp;
 
 /** 2D oriented point with double precision floating-point numbers.
  *
@@ -35,14 +35,10 @@ import org.arakhne.afc.math.geometry.d2.afp.OrientedPoint2afp;
  * @mavenartifactid $ArtifactId$
  */
 public class OrientedPoint2d
-    extends AbstractShape2d<OrientedPoint2d>
-    implements OrientedPoint2afp<Shape2d<?>, OrientedPoint2d, PathElement2d, Point2d, Vector2d, Rectangle2d> {
+    extends Point2d
+    implements OrientedPoint2D<Point2d, Vector2d> {
 
     private static final long serialVersionUID = 6296312122530686621L;
-
-    private double px;
-
-    private double py;
 
     private double dx;
 
@@ -56,11 +52,11 @@ public class OrientedPoint2d
         //
     }
 
-    /** Construct an oriented point from a point.
-     * @param point the point.
+    /** Constructor by copy.
+     * @param tuple the tuple to copy.
      */
-    public OrientedPoint2d(Point2D<?, ?> point) {
-        this(point.getX(), point.getY());
+    public OrientedPoint2d(Tuple2D<?> tuple) {
+        super(tuple);
     }
 
     /** Construct an oriented point from a point and its length on a polyline.
@@ -76,7 +72,7 @@ public class OrientedPoint2d
      * @param y y coordinate of the point.
      */
     public OrientedPoint2d(double x, double y) {
-        set(x, y);
+        super(x, y);
     }
 
     /** Construct an oriented point from the two given coordinates and the length of the point on a polyline.
@@ -130,8 +126,7 @@ public class OrientedPoint2d
     @Override
     public int hashCode() {
         int bits = 1;
-        bits = 31 * bits + Double.hashCode(this.px);
-        bits = 31 * bits + Double.hashCode(this.py);
+        bits = 31 * bits + super.hashCode();
         bits = 31 * bits + Double.hashCode(this.dx);
         bits = 31 * bits + Double.hashCode(this.dy);
         bits = 31 * bits + Double.hashCode(this.len);
@@ -139,201 +134,33 @@ public class OrientedPoint2d
     }
 
     @Override
-    public OrientedPoint2d createTransformedShape(Transform2D transform) {
-        if (transform == null || transform.isIdentity()) {
-            return clone();
-        }
-        final Point2d point = getGeomFactory().newPoint(getX(), getY());
-        transform.transform(point);
-        final double x1 = point.getX();
-        final double y1 = point.getY();
-        point.set(getDirectionX(), getDirectionY());
-        transform.transform(point);
-        return getGeomFactory().newOrientedPoint(x1, y1, point.getX(), point.getY());
-    }
-
-    @Override
-    public void set(int x, int y) {
-        if (this.px != x || this.py != y) {
-            this.px = x;
-            this.py = y;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
-    public void set(int x, int y, int length) {
-        if (this.px != x || this.py != y || this.len != length) {
-            this.px = x;
-            this.py = y;
-            this.len = length;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
-    public void set(int x, int y, int dirX, int dirY) {
-        if (this.px != x || this.py != y || this.dx != dirX || this.dy != dirY) {
-            this.px = x;
-            this.py = y;
-            this.dx = dirX;
-            this.dy = dirY;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
-    public void set(int x, int y, int length, int dirX, int dirY) {
-        if (this.px != x || this.py != y || this.len != length || this.dx != dirX || this.dy != dirY) {
-            this.px = x;
-            this.py = y;
-            this.dx = dirX;
-            this.dy = dirY;
-            this.len = length;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
-    public void set(double x, double y) {
-        if (this.px != x || this.py != y) {
-            this.px = x;
-            this.py = y;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
-    public void set(double x, double y, double length) {
-        if (this.px != x || this.py != y || this.len != length) {
-            this.px = x;
-            this.py = y;
-            this.len = length;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
-    public void set(double x, double y, double dirX, double dirY) {
-        if (this.px != x || this.py != y || this.dx != dirX || this.dy != dirY) {
-            this.px = x;
-            this.py = y;
-            this.dx = dirX;
-            this.dy = dirY;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
-    public void set(double x, double y, double length, double dirX, double dirY) {
-        if (this.px != x || this.py != y || this.len != length || this.dx != dirX || this.dy != dirY) {
-            this.px = x;
-            this.py = y;
-            this.dx = dirX;
-            this.dy = dirY;
-            this.len = length;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
-    public void setX(int x) {
-        if (this.px != x) {
-            this.px = x;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
-    public void setX(double x) {
-        if (this.px != x) {
-            this.px = x;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
-    public void setY(int y) {
-        if (this.py != y) {
-            this.py = y;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
-    public void setY(double y) {
-        if (this.py != y) {
-            this.py = y;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
     public void setDirectionX(int dirX) {
-        if (this.dx != dirX) {
-            this.dx = dirX;
-            fireGeometryChange();
-        }
+        this.dx = dirX;
     }
 
     @Override
     public void setDirectionX(double dirX) {
-        if (this.dx != dirX) {
-            this.dx = dirX;
-            fireGeometryChange();
-        }
+        this.dx = dirX;
     }
 
     @Override
     public void setDirectionY(int dirY) {
-        if (this.dy != dirY) {
-            this.dy = dirY;
-            fireGeometryChange();
-        }
+        this.dy = dirY;
     }
 
     @Override
     public void setDirectionY(double dirY) {
-        if (this.dy != dirY) {
-            this.dy = dirY;
-            fireGeometryChange();
-        }
+        this.dy = dirY;
     }
 
     @Override
     public void setLength(int length) {
-        if (this.len != length) {
-            this.len = length;
-            fireGeometryChange();
-        }
+        this.len = length;
     }
 
     @Override
     public void setLength(double length) {
-        if (this.len != length) {
-            this.len = length;
-            fireGeometryChange();
-        }
-    }
-
-    @Override
-    public double getX() {
-        return this.px;
-    }
-
-    @Override
-    public int ix() {
-        return (int) Math.round(this.px);
-    }
-
-    @Override
-    public double getY() {
-        return this.py;
-    }
-
-    @Override
-    public int iy() {
-        return (int) Math.round(this.py);
+        this.len = length;
     }
 
     @Override
@@ -343,7 +170,7 @@ public class OrientedPoint2d
 
     @Override
     public int idx() {
-        return (int) Math.round(this.dx);
+        return (int) this.dx;
     }
 
     @Override
@@ -353,7 +180,7 @@ public class OrientedPoint2d
 
     @Override
     public int idy() {
-        return (int) Math.round(this.dy);
+        return (int) this.dy;
     }
 
     @Override
@@ -363,6 +190,6 @@ public class OrientedPoint2d
 
     @Override
     public int ilen() {
-        return (int) Math.round(this.len);
+        return (int) this.len;
     }
 }

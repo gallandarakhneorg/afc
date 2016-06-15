@@ -20,17 +20,14 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
+import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.ai.OrientedPoint2ai;
 
 /** 2D oriented point with integer FX properties.
  *
@@ -40,14 +37,10 @@ import org.arakhne.afc.math.geometry.d2.ai.OrientedPoint2ai;
  * @mavenartifactid $ArtifactId$
  */
 public class OrientedPoint2ifx
-    extends AbstractShape2ifx<OrientedPoint2ifx>
-    implements OrientedPoint2ai<Shape2ifx<?>, OrientedPoint2ifx, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
+    extends Point2ifx
+    implements OrientedPoint2D<Point2ifx, Vector2ifx> {
 
     private static final long serialVersionUID = 1696624733007552173L;
-
-    private IntegerProperty px;
-
-    private IntegerProperty py;
 
     private IntegerProperty dx;
 
@@ -61,11 +54,11 @@ public class OrientedPoint2ifx
         //
     }
 
-    /** Construct an oriented point from a point.
-     * @param point the point.
+    /** Constructor by copy.
+     * @param tuple the tuple to copy.
      */
-    public OrientedPoint2ifx(Point2D<?, ?> point) {
-        this(point.ix(), point.iy());
+    public OrientedPoint2ifx(Point2D<?, ?> tuple) {
+        super(tuple);
     }
 
     /** Construct an oriented point from a point and its length on a polyline.
@@ -81,8 +74,7 @@ public class OrientedPoint2ifx
      * @param y y coordinate of the point.
      */
     public OrientedPoint2ifx(int x, int y) {
-        xProperty().set(x);
-        yProperty().set(y);
+        super(x, y);
     }
 
     /** Construct an oriented point from the two given coordinates.
@@ -90,8 +82,7 @@ public class OrientedPoint2ifx
      * @param y y coordinate of the point.
      */
     public OrientedPoint2ifx(IntegerProperty x, IntegerProperty y) {
-        this.px = x;
-        this.py = y;
+        super(x, y);
     }
 
     /** Construct an oriented point from the two given coordinates and the length of the point on a polyline.
@@ -100,8 +91,7 @@ public class OrientedPoint2ifx
      * @param length the length
      */
     public OrientedPoint2ifx(int x, int y, int length) {
-        xProperty().set(x);
-        yProperty().set(y);
+        super(x, y);
         lengthProperty().set(length);
     }
 
@@ -111,8 +101,7 @@ public class OrientedPoint2ifx
      * @param length the length
      */
     public OrientedPoint2ifx(IntegerProperty x, IntegerProperty y, IntegerProperty length) {
-        this.px = x;
-        this.py = y;
+        super(x, y);
         this.len = length;
     }
 
@@ -140,8 +129,7 @@ public class OrientedPoint2ifx
      * @param dirY y coordinate of the vector.
      */
     public OrientedPoint2ifx(int x, int y, int dirX, int dirY) {
-        xProperty().set(x);
-        yProperty().set(y);
+        super(x, y);
         dirXProperty().set(dirX);
         dirYProperty().set(dirY);
     }
@@ -154,8 +142,7 @@ public class OrientedPoint2ifx
      * @param dirY y coordinate of the vector.
      */
     public OrientedPoint2ifx(int x, int y, int length, int dirX, int dirY) {
-        xProperty().set(x);
-        yProperty().set(y);
+        super(x, y);
         lengthProperty().set(length);
         dirXProperty().set(dirX);
         dirYProperty().set(dirY);
@@ -165,8 +152,7 @@ public class OrientedPoint2ifx
     @Override
     public int hashCode() {
         int bits = 1;
-        bits = 31 * bits + Integer.hashCode(ix());
-        bits = 31 * bits + Integer.hashCode(iy());
+        bits = 31 * bits + super.hashCode();
         bits = 31 * bits + Integer.hashCode(idx());
         bits = 31 * bits + Integer.hashCode(idy());
         bits = 31 * bits + Integer.hashCode(ilen());
@@ -175,15 +161,7 @@ public class OrientedPoint2ifx
 
     @Override
     public OrientedPoint2ifx clone() {
-        final OrientedPoint2ifx clone = super.clone();
-        if (clone.px != null) {
-            clone.px = null;
-            clone.xProperty().set(ix());
-        }
-        if (clone.py != null) {
-            clone.py = null;
-            clone.yProperty().set(iy());
-        }
+        final OrientedPoint2ifx clone = (OrientedPoint2ifx) super.clone();
         if (clone.dx != null) {
             clone.dx = null;
             clone.dirXProperty().set(idx());
@@ -200,26 +178,6 @@ public class OrientedPoint2ifx
     }
 
     @Override
-    public double getX() {
-        return this.px == null ? 0 : this.px.doubleValue();
-    }
-
-    @Override
-    public int ix() {
-        return this.px == null ? 0 : this.px.intValue();
-    }
-
-    @Override
-    public double getY() {
-        return this.py == null ? 0 : this.py.doubleValue();
-    }
-
-    @Override
-    public int iy() {
-        return this.py == null ? 0 : this.py.intValue();
-    }
-
-    @Override
     public double getDirectionX() {
         return this.dx == null ? 0 : this.dx.doubleValue();
     }
@@ -227,46 +185,6 @@ public class OrientedPoint2ifx
     @Override
     public int idx() {
         return this.dx == null ? 0 : this.dx.intValue();
-    }
-
-    @Override
-    public double getDirectionY() {
-        return this.dy == null ? 0 : this.dy.doubleValue();
-    }
-
-    @Override
-    public int idy() {
-        return this.dy == null ? 0 : this.dy.intValue();
-    }
-
-    @Override
-    public double getLength() {
-        return this.len == null ? 0 : this.len.doubleValue();
-    }
-
-    @Override
-    public int ilen() {
-        return this.len == null ? 0 : this.len.intValue();
-    }
-
-    @Override
-    public void setX(int x) {
-        xProperty().set(x);
-    }
-
-    @Override
-    public void setX(double x) {
-        xProperty().set((int) Math.round(x));
-    }
-
-    @Override
-    public void setY(int y) {
-        yProperty().set(y);
-    }
-
-    @Override
-    public void setY(double y) {
-        yProperty().set((int) Math.round(y));
     }
 
     @Override
@@ -280,6 +198,16 @@ public class OrientedPoint2ifx
     }
 
     @Override
+    public double getDirectionY() {
+        return this.dy == null ? 0 : this.dy.doubleValue();
+    }
+
+    @Override
+    public int idy() {
+        return this.dy == null ? 0 : this.dy.intValue();
+    }
+
+    @Override
     public void setDirectionY(int dirY) {
         dirYProperty().set(dirY);
     }
@@ -290,6 +218,16 @@ public class OrientedPoint2ifx
     }
 
     @Override
+    public double getLength() {
+        return this.len == null ? 0 : this.len.doubleValue();
+    }
+
+    @Override
+    public int ilen() {
+        return this.len == null ? 0 : this.len.intValue();
+    }
+
+    @Override
     public void setLength(double length) {
         lengthProperty().set((int) Math.round(length));
     }
@@ -297,30 +235,6 @@ public class OrientedPoint2ifx
     @Override
     public void setLength(int length) {
         lengthProperty().set(length);
-    }
-
-    /** Replies the x property.
-     *
-     * @return the x property.
-     */
-    @Pure
-    public IntegerProperty xProperty() {
-        if (this.px == null) {
-            this.px = new SimpleIntegerProperty(this, MathFXAttributeNames.X);
-        }
-        return this.px;
-    }
-
-    /** Replies the y property.
-     *
-     * @return the y property.
-     */
-    @Pure
-    public IntegerProperty yProperty() {
-        if (this.py == null) {
-            this.py = new SimpleIntegerProperty(this, MathFXAttributeNames.Y);
-        }
-        return this.py;
     }
 
     /** Replies the property that is the x coordinate of the direction vector.
@@ -357,15 +271,5 @@ public class OrientedPoint2ifx
             this.len = new SimpleIntegerProperty(this, MathFXAttributeNames.LENGTH);
         }
         return this.len;
-    }
-
-    @Override
-    public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
-        if (this.boundingBox == null) {
-            this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
-            this.boundingBox.bind(Bindings.createObjectBinding(() ->
-                toBoundingBox(), this.dx, this.dy, this.px, this.py));
-        }
-        return this.boundingBox;
     }
 }

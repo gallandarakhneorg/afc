@@ -19,13 +19,63 @@
  */
 package org.arakhne.afc.math.geometry.d2.d;
 
+<<<<<<< 5a3f4e74bcd01f44f4482566f5b5ac94a62323cb
 import org.arakhne.afc.math.geometry.d2.afp.AbstractOrientedPoint2afpTest;
+=======
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.arakhne.afc.math.geometry.d2.AbstractOrientedPoint2DTest;
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
+>>>>>>> [math/fx] Update of OrientedPoint hierarchy
 
 @SuppressWarnings("all")
-public class OrientedPoint2dTest extends AbstractOrientedPoint2afpTest<OrientedPoint2d, Rectangle2d> {
+public class OrientedPoint2dTest extends AbstractOrientedPoint2DTest<OrientedPoint2d, Vector2d, OrientedPoint2d> {
     
     @Override
-    protected TestShapeFactory2d createFactory() {
-        return TestShapeFactory2d.SINGLETON;
+    public boolean isIntCoordinates() {
+        return false;
     }
+
+    @Override
+    public OrientedPoint2d createPoint(double x, double y) {
+        return new OrientedPoint2d(x, y);
+    }
+
+    @Override
+    public Vector2d createVector(double x, double y) {
+        return new Vector2d(x, y);
+    }
+    
+    @Override
+    public OrientedPoint2d createTuple(double x, double y) {
+        return new OrientedPoint2d(x, y);
+    }
+
+    @Override
+    public void operator_andShape2D() {
+        Shape2D shape = new Circle2d(5, 8, 5);
+        assertFalse(createPoint(0,0).operator_and(shape));
+        assertFalse(createPoint(11,10).operator_and(shape));
+        assertFalse(createPoint(11,50).operator_and(shape));
+        assertFalse(createPoint(9,12).operator_and(shape));
+        assertTrue(createPoint(9,11).operator_and(shape));
+        assertTrue(createPoint(8,12).operator_and(shape));
+        assertTrue(createPoint(3,7).operator_and(shape));
+        assertFalse(createPoint(10,11).operator_and(shape));
+        assertTrue(createPoint(9,10).operator_and(shape));
+    }
+    
+    @Override
+    public void operator_upToShape2D() {
+        Shape2D shape = new Circle2d(5, 8, 5);
+        assertEpsilonEquals(3.74643, createPoint(.5,.5).operator_upTo(shape));
+        assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4).operator_upTo(shape));
+        assertEpsilonEquals(1.6483, createPoint(-1.2,5.6).operator_upTo(shape));
+        assertEpsilonEquals(0, createPoint(7.6,5.6).operator_upTo(shape));
+    }
+    
 }

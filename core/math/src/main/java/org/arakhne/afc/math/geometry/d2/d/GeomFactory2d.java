@@ -171,26 +171,6 @@ public class GeomFactory2d implements GeomFactory2afp<PathElement2d, Point2d, Ve
 	}
 
 	@Override
-	public OrientedPoint2d newOrientedPoint(double x, double y) {
-	    return new OrientedPoint2d(x, y);
-	}
-
-	@Override
-	public OrientedPoint2d newOrientedPoint(double x, double y, double length) {
-	    return new OrientedPoint2d(x, y, length);
-	}
-
-	@Override
-	public OrientedPoint2d newOrientedPoint(double x, double y, double dirX, double dirY) {
-	    return new OrientedPoint2d(x, y, dirX, dirY);
-	}
-
-	@Override
-	public OrientedPoint2d newOrientedPoint(double x, double y, double length, double dirX, double dirY) {
-	    return new OrientedPoint2d(x, y, length, dirX, dirY);
-	}
-
-	@Override
 	public MultiShape2d<?> newMultiShape() {
 		return new MultiShape2d<>();
 	}

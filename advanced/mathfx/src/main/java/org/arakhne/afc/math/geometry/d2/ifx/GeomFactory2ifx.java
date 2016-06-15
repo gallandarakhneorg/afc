@@ -213,26 +213,6 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	}
 
 	@Override
-	public OrientedPoint2ifx newOrientedPoint(int x, int y) {
-	    return new OrientedPoint2ifx(x, y);
-	}
-
-	@Override
-    public OrientedPoint2ifx newOrientedPoint(int x, int y, int length) {
-	    return new OrientedPoint2ifx(x, y, length);
-	}
-
-	@Override
-    public OrientedPoint2ifx newOrientedPoint(int x, int y, int dirX, int dirY) {
-	    return new OrientedPoint2ifx(x, y, dirX, dirY);
-	}
-
-    @Override
-    public OrientedPoint2ifx newOrientedPoint(int x, int y, int length, int dirX, int dirY) {
-	    return new OrientedPoint2ifx(x, y, length, dirX, dirY);
-	}
-
-	@Override
 	public MultiShape2ifx<?> newMultiShape() {
 		return new MultiShape2ifx<>();
 	}
