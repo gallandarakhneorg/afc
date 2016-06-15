@@ -30,6 +30,7 @@ import java.util.EventListener;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@FunctionalInterface
 public interface ShapeGeometryChangeListener extends EventListener {
 
 	/** Invoked when the given shape has change of geometry.

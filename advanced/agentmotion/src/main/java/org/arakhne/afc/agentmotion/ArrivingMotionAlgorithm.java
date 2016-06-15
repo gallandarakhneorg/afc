@@ -33,6 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@FunctionalInterface
 public interface ArrivingMotionAlgorithm {
 
 	/** Calculate the linear motion for arriving the target point.

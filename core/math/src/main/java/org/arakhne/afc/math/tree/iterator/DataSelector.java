@@ -35,6 +35,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @see PostfixDataDepthFirstTreeIterator
  * @see DataBroadFirstTreeIterator
  */
+@FunctionalInterface
 public interface DataSelector<D> {
 
 	/** Replies if the specified data could be replied by the iterator.

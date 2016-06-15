@@ -37,6 +37,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @see PostfixDataDepthFirstTreeIterator
  * @see DataBroadFirstTreeIterator
  */
+@FunctionalInterface
 public interface NodeSelector<N extends TreeNode<?, ?>> {
 
 	/** Replies if the specified node could be treated by the iterator.
