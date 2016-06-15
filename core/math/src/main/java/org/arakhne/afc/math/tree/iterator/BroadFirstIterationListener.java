@@ -31,6 +31,7 @@ import java.util.EventListener;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@FunctionalInterface
 public interface BroadFirstIterationListener extends EventListener {
 
 	/** Invoked when a row of tree nodes was completely replied by the iterator.

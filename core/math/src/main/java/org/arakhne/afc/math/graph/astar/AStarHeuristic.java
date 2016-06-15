@@ -35,6 +35,7 @@ import org.arakhne.afc.math.graph.GraphPoint;
  * @since 13.0
  * @see AStar
  */
+@FunctionalInterface
 public interface AStarHeuristic<PT extends GraphPoint<PT, ?>> {
 
 	/** Evaluate the distance between two points in the graph.
