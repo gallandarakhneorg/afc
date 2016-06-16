@@ -464,20 +464,16 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 		}
 
 		public void setCrossingForYMax(int x, int y) {
-            if (y >= this.getYmax()) {
-                if (x < this.getX4ymax()) {
-					this.setX4ymax(x);
-					this.setHasX4ymax(true);
-				}
+            if (y >= this.getYmax() && x < this.getX4ymax()) {
+				this.setX4ymax(x);
+				this.setHasX4ymax(true);
 			}
 		}
 
 		public void setCrossingForYMin(int x, int y) {
-            if (y <= this.getYmin()) {
-                if (x < this.getX4ymin()) {
-					this.setX4ymin(x);
-					this.setHasX4ymin(true);
-				}
+            if (y <= this.getYmin() && x < this.getX4ymin()) {
+				this.setX4ymin(x);
+				this.setHasX4ymin(true);
 			}
 		}
 

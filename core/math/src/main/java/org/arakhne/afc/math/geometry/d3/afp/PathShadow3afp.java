@@ -505,20 +505,16 @@ public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
         }
 
         public void setCrossingCoordinateForYMax(double x, double y) {
-            if (MathUtil.compareEpsilon(y, this.ymax) >= 0) {
-                if (x > this.x4ymax) {
-                    this.x4ymax = x;
-                    this.hasX4ymax = true;
-                }
+            if (MathUtil.compareEpsilon(y, this.ymax) >= 0 && x > this.x4ymax) {
+				this.x4ymax = x;
+				this.hasX4ymax = true;
             }
         }
 
         public void setCrossingCoordinateForYMin(double x, double y) {
-            if (MathUtil.compareEpsilon(y, this.ymin) <= 0) {
-                if (x > this.x4ymin) {
-                    this.x4ymin = x;
-                    this.hasX4ymin = true;
-                }
+            if (MathUtil.compareEpsilon(y, this.ymin) <= 0 && x > this.x4ymin) {
+				this.x4ymin = x;
+				this.hasX4ymin = true;
             }
         }
 
