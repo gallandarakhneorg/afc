@@ -2910,9 +2910,7 @@ public final class FileSystem {
 						newPathBuffer.toString(),
 						url.getQuery(),
 						url.getRef()).toURL();
-			} catch (MalformedURLException exception) {
-				//
-			} catch (URISyntaxException exception) {
+			} catch (MalformedURLException | URISyntaxException exception) {
 				//
 			}
 
