@@ -1004,9 +1004,7 @@ public class AttributeValueImpl implements AttributeValue {
 			default:
 				throw new InvalidAttributeTypeException();
 			}
-		} catch (ClassCastException exception) {
-			//
-		} catch (NumberFormatException exception) {
+		} catch (ClassCastException | NumberFormatException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();
@@ -1408,9 +1406,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case TYPE:
 			default:
 			}
-		} catch (ClassCastException exception) {
-			//
-		} catch (NumberFormatException exception) {
+		} catch (ClassCastException | NumberFormatException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();
@@ -1587,9 +1583,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case TYPE:
 			default:
 			}
-		} catch (ClassCastException exception) {
-			//
-		} catch (NumberFormatException exception) {
+		} catch (ClassCastException | NumberFormatException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();
@@ -1695,9 +1689,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case TYPE:
 			default:
 			}
-		} catch (ClassCastException exception) {
-			//
-		} catch (NumberFormatException exception) {
+		} catch (ClassCastException | NumberFormatException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();
@@ -1811,9 +1803,7 @@ public class AttributeValueImpl implements AttributeValue {
 			default:
 				break;
 			}
-		} catch (ClassCastException exception) {
-			//
-		} catch (NumberFormatException exception) {
+		} catch (ClassCastException | NumberFormatException exception) {
 			//
 		}
 		if (this.value == null) {
@@ -1873,9 +1863,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case TYPE:
 			default:
 			}
-		} catch (ClassCastException exception) {
-			//
-		} catch (MalformedURLException exception) {
+		} catch (ClassCastException | MalformedURLException exception) {
 			//
 		}
 		if (this.value == null) {
@@ -1948,9 +1936,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case TYPE:
 			default:
 			}
-		} catch (ClassCastException exception) {
-			//
-		} catch (URISyntaxException exception) {
+		} catch (ClassCastException | URISyntaxException exception) {
 			//
 		}
 		if (this.value == null) {
@@ -2186,9 +2172,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case TYPE:
 			default:
 			}
-		} catch (ClassCastException exception) {
-			//
-		} catch (NumberFormatException exception) {
+		} catch (ClassCastException | NumberFormatException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();
@@ -2339,9 +2323,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case TYPE:
 			default:
 			}
-		} catch (ClassCastException exception) {
-			//
-		} catch (NumberFormatException exception) {
+		} catch (ClassCastException | NumberFormatException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();
@@ -2458,11 +2440,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case TYPE:
 			default:
 			}
-		} catch (ClassCastException exception) {
-			//
-		} catch (NumberFormatException exception) {
-			//
-		} catch (UnknownHostException e) {
+		} catch (ClassCastException | NumberFormatException | UnknownHostException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();
@@ -2558,7 +2536,7 @@ public class AttributeValueImpl implements AttributeValue {
 	@Override
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public <T extends Enum<T>> T getEnumeration(Class<T> type) throws InvalidAttributeTypeException,
-	AttributeNotInitializedException {
+		AttributeNotInitializedException {
 		if (this.value == null) {
 			return null;
 		}
