@@ -27,6 +27,8 @@
 		<android.platform>16</android.platform>
 		<!-- Name of the emulator you want to use when debugging -->
 		<android.emulator>emulated</android.emulator>
+		<!-- Absolute path to the JDT compiler configuration -->
+		<jdtcompilerconfpath>${mainbasedir}/build-tools/src/main/resources/maven/maven-jdt-conf.properties</jdtcompilerconfpath>
 	</properties>
 
 	<!-- ======================================= -->
