@@ -160,101 +160,25 @@ public enum AttributeType {
 	 */
 	private static final Map<AttributeType, StringFactory> FACTORY_MAP =
 			Collections.unmodifiableMap(new HashMap<AttributeType, StringFactory>() {{
-					put(AttributeType.INTEGER, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "INTEGER"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.REAL, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "FLOAT"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.STRING, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "STRING"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.BOOLEAN, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "BOOLEAN"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.DATE, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "DATE"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.OBJECT, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "OBJECT"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.TIMESTAMP, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "TIMESTAMP"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.POINT3D, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "POINT3D"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.POINT, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "POINT2D"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.COLOR, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "COLOR"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.IMAGE, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "ICON"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.POLYLINE, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "POLYLINE"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.POLYLINE3D, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "POLYLINE3D"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.UUID, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "UUID"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.URL, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "URL"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.URI, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "URI"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.INET_ADDRESS, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "INET_ADDRESS"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.ENUMERATION, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "ENUMERATION"); //$NON-NLS-1$
-						}
-					});
-					put(AttributeType.TYPE, new StringFactory() {
-						public String createString() {
-							return Locale.getStringFrom(NAME_RESOURCE_FILE, "TYPE"); //$NON-NLS-1$
-						}
-					});
+					put(AttributeType.INTEGER, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "INTEGER")); //$NON-NLS-1$
+					put(AttributeType.REAL, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "FLOAT")); //$NON-NLS-1$
+					put(AttributeType.STRING, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "STRING")); //$NON-NLS-1$
+					put(AttributeType.BOOLEAN, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "BOOLEAN")); //$NON-NLS-1$
+					put(AttributeType.DATE, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "DATE")); //$NON-NLS-1$
+					put(AttributeType.OBJECT, () ->  Locale.getStringFrom(NAME_RESOURCE_FILE, "OBJECT")); //$NON-NLS-1$
+					put(AttributeType.TIMESTAMP, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "TIMESTAMP")); //$NON-NLS-1$
+					put(AttributeType.POINT3D, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "POINT3D")); //$NON-NLS-1$
+					put(AttributeType.POINT, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "POINT2D")); //$NON-NLS-1$
+					put(AttributeType.COLOR, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "COLOR")); //$NON-NLS-1$
+					put(AttributeType.IMAGE, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "ICON")); //$NON-NLS-1$
+					put(AttributeType.POLYLINE, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "POLYLINE")); //$NON-NLS-1$
+					put(AttributeType.POLYLINE3D, () ->  Locale.getStringFrom(NAME_RESOURCE_FILE, "POLYLINE3D")); //$NON-NLS-1$
+					put(AttributeType.UUID, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "UUID")); //$NON-NLS-1$
+					put(AttributeType.URL, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "URL")); //$NON-NLS-1$
+					put(AttributeType.URI, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "URI")); //$NON-NLS-1$
+					put(AttributeType.INET_ADDRESS, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "INET_ADDRESS")); //$NON-NLS-1$
+					put(AttributeType.ENUMERATION, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "ENUMERATION")); //$NON-NLS-1$
+					put(AttributeType.TYPE, () -> Locale.getStringFrom(NAME_RESOURCE_FILE, "TYPE")); //$NON-NLS-1$
 				}});
 
 	/** Replies the name of this type (localized).
@@ -262,7 +186,7 @@ public enum AttributeType {
 	 * @return the localized name of this type.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
+	@SuppressWarnings({"checkstyle:returncount"})
 	public String getName() {
 		final StringFactory stringFactory = FACTORY_MAP.get(this);
 		if (stringFactory != null) {
@@ -945,6 +869,7 @@ public enum AttributeType {
 	 *  @mavenartifactid $ArtifactId$
 	 *  @mavengroupid $GroupId$
 	 */
+	@FunctionalInterface
 	private interface StringFactory {
 		String createString();
 	}
