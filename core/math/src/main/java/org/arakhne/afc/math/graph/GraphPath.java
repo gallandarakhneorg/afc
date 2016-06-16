@@ -487,9 +487,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 				add(idx, s);
 				changed = true;
 				++idx;
-			} catch (IndexOutOfBoundsException e) {
-				//
-			} catch (IllegalArgumentException e2) {
+			} catch (IndexOutOfBoundsException | IllegalArgumentException e) {
 				//
 			}
 		}

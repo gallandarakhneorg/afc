@@ -827,12 +827,9 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 			licenses = model.getLicenses();
 
 			parent = model.getParent();
-		} catch (IOException e) {
-			return null;
-		} catch (XmlPullParserException e) {
+		} catch (IOException | XmlPullParserException e) {
 			return null;
 		}
-
 		if (developers == null) {
 			developers = new ArrayList<>();
 		} else {
@@ -1351,15 +1348,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 								this.next = dependencyProject;
 								isTreated = true;
 							}
-						} catch (MojoExecutionException e) {
-							getBuildContext().addMessage(
-									this.projectFile,
-									1, 1,
-									"Unable to retreive the Maven plugin: " + artifactId, //$NON-NLS-1$
-									BuildContext.SEVERITY_WARNING,
-									e);
-							isTreated = true;
-						} catch (ProjectBuildingException e) {
+						} catch (MojoExecutionException | ProjectBuildingException e) {
 							getBuildContext().addMessage(
 									this.projectFile,
 									1, 1,

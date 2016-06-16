@@ -1028,9 +1028,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 				path.add(segment, startPoint);
 				path.setFirstSegmentReversable(false);
 				return path;
-			} catch (InstantiationException e) {
-				throw new IllegalArgumentException(e);
-			} catch (IllegalAccessException e) {
+			} catch (InstantiationException | IllegalAccessException e) {
 				throw new IllegalArgumentException(e);
 			}
 		}
