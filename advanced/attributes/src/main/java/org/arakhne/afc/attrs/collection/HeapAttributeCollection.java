@@ -779,9 +779,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		Object rawValue;
 		try {
 			rawValue = valueOfOldName.getValue();
-		} catch (InvalidAttributeTypeException e) {
-			rawValue = null;
-		} catch (AttributeNotInitializedException e) {
+		} catch (InvalidAttributeTypeException | AttributeNotInitializedException e) {
 			rawValue = null;
 		}
 

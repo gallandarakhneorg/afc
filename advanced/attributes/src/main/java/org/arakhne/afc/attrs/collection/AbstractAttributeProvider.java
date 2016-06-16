@@ -505,9 +505,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		if (value != null) {
 			try {
 				return (T) value.getEnumeration();
-			} catch (AttributeException exception) {
-				//
-			} catch (ClassCastException exception) {
+			} catch (AttributeException | ClassCastException exception) {
 				//
 			}
 		}
@@ -521,9 +519,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		if (value != null) {
 			try {
 				return value.getJavaClass();
-			} catch (AttributeException exception) {
-				//
-			} catch (ClassCastException exception) {
+			} catch (AttributeException | ClassCastException exception) {
 				//
 			}
 		}
