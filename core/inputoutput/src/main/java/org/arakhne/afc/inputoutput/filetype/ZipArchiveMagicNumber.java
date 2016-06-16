@@ -102,34 +102,43 @@ public abstract class ZipArchiveMagicNumber extends MagicNumber {
 		stream.resetOverridingStream();
 	}
 
-	@SuppressWarnings("resource")
+	/** Replies if the given ZIP stream contains data of the expected type.
+	 *
+	 * @throws IOException if the stream cannot be read.
+	 */
+	private boolean isContentTypeIn(ZipInputStream stream) throws IOException {
+		boolean isContentType = false;
+		if (this.innerFile != null) {
+			final String strInner = this.innerFile.toString();
+			InputStream dataStream = null;
+			ZipEntry zipEntry = stream.getNextEntry();
+			while (zipEntry != null && dataStream == null) {
+				if (strInner.equals(zipEntry.getName())) {
+					dataStream = stream;
+				} else {
+					zipEntry = stream.getNextEntry();
+				}
+			}
+			if (dataStream != null) {
+				isContentType = isContentType(stream, zipEntry, dataStream);
+			}
+		} else {
+			isContentType = isContentType(stream, null, null);
+		}
+		return isContentType;
+	}
+
 	@Override
 	protected final boolean isContentType(MagicNumberStream stream) {
+		boolean isContentType = false;
 		try (InputStream is = stream.getInputStream()) {
 			if (is instanceof ZipInputStream) {
-				final ZipInputStream zis = (ZipInputStream) is;
-				if (this.innerFile != null) {
-					final String strInner = this.innerFile.toString();
-					InputStream dataStream = null;
-					ZipEntry zipEntry = zis.getNextEntry();
-					while (zipEntry != null && dataStream == null) {
-						if (strInner.equals(zipEntry.getName())) {
-							dataStream = zis;
-						} else {
-							zipEntry = zis.getNextEntry();
-						}
-					}
-					if (dataStream != null) {
-						return isContentType(zis, zipEntry, dataStream);
-					}
-				} else {
-					return isContentType(zis, null, null);
-				}
+				isContentType = isContentTypeIn((ZipInputStream) is);
 			}
 		} catch (Exception e) {
 			//
 		}
-		return false;
+		return isContentType;
 	}
 
 	/** Replies if the specified stream contains data

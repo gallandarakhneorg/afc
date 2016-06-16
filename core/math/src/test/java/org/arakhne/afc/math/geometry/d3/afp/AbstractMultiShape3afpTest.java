@@ -51,10 +51,10 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	@Override
 	protected final T createShape() {
 		T shape = (T) createMultiShape();
-		firstObject = (C) createRectangularPrism(5, 8, 0, 2, 1, 0);
-		secondObject = (C) createSphere(-5, 18, 0, 2);
-		shape.add(firstObject);
-		shape.add(secondObject);
+		this.firstObject = (C) createRectangularPrism(5, 8, 0, 2, 1, 0);
+		this.secondObject = (C) createSphere(-5, 18, 0, 2);
+		shape.add(this.firstObject);
+		shape.add(this.secondObject);
 		return shape;
 	}
 
@@ -107,8 +107,8 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	public void equalsToShape() {
 		assertFalse(this.shape.equalsToShape(null));
 		assertFalse(this.shape.equalsToShape((T) createMultiShape()));
-		assertTrue(this.shape.equalsToShape((T) this.shape));
-		assertTrue(this.shape.equalsToShape((T) this.shape.clone()));
+		assertTrue(this.shape.equalsToShape(this.shape));
+		assertTrue(this.shape.equalsToShape(this.shape.clone()));
 	}
 
 	@Override
@@ -425,7 +425,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 
 	@Override
 	public void getPathIterator() {
-		PathIterator3afp pi = (PathIterator3afp) this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 5, 8, 0);
 		assertElement(pi, PathElementType.LINE_TO, 7, 8, 0);
 		assertElement(pi, PathElementType.LINE_TO, 7, 9, 0);
@@ -783,9 +783,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNull(this.shape.getFirstShapeContaining(createPoint(-6, 8, 0)));
 		assertNull(this.shape.getFirstShapeContaining(createPoint(4, 17, 0)));
 		// Inside circle
-		assertSame(secondObject, this.shape.getFirstShapeContaining(createPoint(-4, 19, 0)));
+		assertSame(this.secondObject, this.shape.getFirstShapeContaining(createPoint(-4, 19, 0)));
 		// Inside rectangle
-		assertSame(firstObject, this.shape.getFirstShapeContaining(createPoint(6, 8.25, 0)));
+		assertSame(this.firstObject, this.shape.getFirstShapeContaining(createPoint(6, 8.25, 0)));
 	}
 	
 	@Test
@@ -803,16 +803,16 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.getShapesContaining(createPoint(-6, 8, 0)).isEmpty());
 		assertTrue(this.shape.getShapesContaining(createPoint(4, 17, 0)).isEmpty());
 		// Inside circle
-		assertEquals(Arrays.asList(secondObject), this.shape.getShapesContaining(createPoint(-4, 19, 0)));
+		assertEquals(Arrays.asList(this.secondObject), this.shape.getShapesContaining(createPoint(-4, 19, 0)));
 		// Inside rectangle
-		assertEquals(Arrays.asList(firstObject), this.shape.getShapesContaining(createPoint(6, 8.25, 0)));
+		assertEquals(Arrays.asList(this.firstObject), this.shape.getShapesContaining(createPoint(6, 8.25, 0)));
 	}
 
 	@Test
 	public void getFirstShapeIntersectingShape3D() {
 		MultiShape3D shape3d = this.shape;
 		
-		assertSame(firstObject, shape3d.getFirstShapeIntersecting(createSphere(4.75, 8, 0, .5)));
+		assertSame(this.firstObject, shape3d.getFirstShapeIntersecting(createSphere(4.75, 8, 0, .5)));
 		
 		Path3afp path = createPath();
 		path.moveTo(-6, 2, 0);
@@ -824,14 +824,14 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 
 		assertNull(shape3d.getFirstShapeIntersecting(path));
 		path.closePath();
-		assertSame(firstObject, shape3d.getFirstShapeIntersecting(path));
+		assertSame(this.firstObject, shape3d.getFirstShapeIntersecting(path));
 	}
 	
 	@Test
 	public void getShapesIntersectingShape3D() {
 		MultiShape3D shape3d = this.shape;
 		
-		assertEquals(Arrays.asList(firstObject), shape3d.getShapesIntersecting(createSphere(4.75, 8, 0, .5)));
+		assertEquals(Arrays.asList(this.firstObject), shape3d.getShapesIntersecting(createSphere(4.75, 8, 0, .5)));
 		
 		Path3afp path = createPath();
 		path.moveTo(-6, 2, 0);
@@ -843,15 +843,15 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 
 		assertTrue(shape3d.getShapesIntersecting(path).isEmpty());
 		path.closePath();
-		assertEquals(Arrays.asList(firstObject, secondObject), shape3d.getShapesIntersecting(path));
+		assertEquals(Arrays.asList(this.firstObject, this.secondObject), shape3d.getShapesIntersecting(path));
 	}
 
 	@Test
 	public void getBackendDataList() {
 		assertNotNull(this.shape.getBackendDataList());
 		assertEquals(2, this.shape.getBackendDataList().size());
-		assertSame(firstObject, this.shape.getBackendDataList().get(0));
-		assertSame(secondObject, this.shape.getBackendDataList().get(1));
+		assertSame(this.firstObject, this.shape.getBackendDataList().get(0));
+		assertSame(this.secondObject, this.shape.getBackendDataList().get(1));
 	}
 
 	@Test
@@ -866,7 +866,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(20, box.getMaxY());
 		assertEpsilonEquals(20, box.getMaxZ());
 
-		firstObject.translate(12, -7, 0);
+		this.firstObject.translate(12, -7, 0);
 		
 		// C:  -7; 16; -3; 20
 		// R:   5;  8;  7;  9
@@ -895,7 +895,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(20, box.getMaxY());
 		assertEpsilonEquals(20, box.getMaxZ());
 
-		secondObject.translate(12, -7, 0);
+		this.secondObject.translate(12, -7, 0);
 		
 		// C:  -7; 16; -3; 20
 		// R:   5;  8;  7;  9
@@ -953,7 +953,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(20, box.getMaxY());
 		assertEpsilonEquals(20, box.getMaxZ());
 
-		this.shape.remove(firstObject);
+		this.shape.remove(this.firstObject);
 		
 		// C:  -7; 16; -3; 20
 		// R:   5;  8;  7;  9
@@ -980,7 +980,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(20, box.getMaxY());
 		assertEpsilonEquals(20, box.getMaxZ());
 
-		this.shape.remove(secondObject);
+		this.shape.remove(this.secondObject);
 		
 		// C:  -7; 16; -3; 20
 		// R:   5;  8;  7;  9
@@ -1007,8 +1007,8 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(20, box.getMaxY());
 		assertEpsilonEquals(20, box.getMaxZ());
 
-		this.shape.remove(secondObject);
-		secondObject.translate(1453, -451, 0);
+		this.shape.remove(this.secondObject);
+		this.secondObject.translate(1453, -451, 0);
 		
 		box = this.shape.toBoundingBox();
 		assertNotNull(box);

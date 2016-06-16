@@ -25,6 +25,7 @@ import java.io.Serializable;
 import org.arakhne.afc.math.generic.Vector3D;
 import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.Matrix4d;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** A 4 element unit quaternion represented by single precision floating
  * point x,y,z,w coordinates.  The quaternion is always normalized.
@@ -230,15 +231,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "(" 
-				+this.x
-				+";" 
-				+this.y
-				+";" 
-				+this.z
-				+";" 
-				+this.w
-				+")"; 
+		return ReflectionUtil.toString(this);
 	}
 
 	/**

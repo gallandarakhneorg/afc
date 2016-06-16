@@ -21,15 +21,13 @@
 package org.arakhne.afc.vmutil;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.util.Locale;
 
-import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 @SuppressWarnings("all")
 public class ReflectionUtilTest {
@@ -76,16 +74,16 @@ public class ReflectionUtilTest {
 				new Object[] { 1 }));
 		assertFalse(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class },
-				new Object[] { 'c', "a" })); 
+				new Object[] { 'c', "a" }));  //$NON-NLS-1$
 		assertTrue(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class },
-				new Object[] { 3., "a" })); 
+				new Object[] { 3., "a" }));  //$NON-NLS-1$
 		assertTrue(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class },
-				new Object[] { 4., "a" })); 
+				new Object[] { 4., "a" }));  //$NON-NLS-1$
 		assertFalse(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class },
-				new Object[] { 1, "a" })); 
+				new Object[] { 1, "a" }));  //$NON-NLS-1$
 		assertFalse(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class },
 				new Object[] { 'c', true }));
@@ -107,35 +105,35 @@ public class ReflectionUtilTest {
 				new Object[] { 1. }));
 		assertFalse(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class, Array.class },
-				new Object[] { 1., "a" })); 
+				new Object[] { 1., "a" }));  //$NON-NLS-1$
 		assertFalse(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class, Array.class },
-				new Object[] { 1., "a", null })); 
+				new Object[] { 1., "a", null }));  //$NON-NLS-1$
 		assertFalse(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class, Array.class },
-				new Object[] { 1., "a", new int[0] })); 
+				new Object[] { 1., "a", new int[0] }));  //$NON-NLS-1$
 		assertTrue(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Double.class, String.class, int[].class },
-				new Object[] { 1., "a", new int[0] })); 
+				new Object[] { 1., "a", new int[0] }));  //$NON-NLS-1$
 
 		assertTrue(ReflectionUtil.matchesParameters(
 				new Class<?>[] { Number.class, String.class, int[].class },
-				new Object[] { 1., "a", new int[0] })); 
+				new Object[] { 1., "a", new int[0] }));  //$NON-NLS-1$
 	}
 	
 	@Test
 	public void forNameStringClassLoader() {
-		assertInlineParameterUsage(ReflectionUtil.class, "forName", String.class, ClassLoader.class);
+		assertInlineParameterUsage(ReflectionUtil.class, "forName", String.class, ClassLoader.class); //$NON-NLS-1$
 	}
 	
 	@Test
 	public void getPackageClassesPackage() {
-		assertInlineParameterUsage(ReflectionUtil.class, "getPackageClasses", Package.class);
+		assertInlineParameterUsage(ReflectionUtil.class, "getPackageClasses", Package.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void matchesParametersMethodObjectArray() {
-		assertInlineParameterUsage(ReflectionUtil.class, "matchesParameters", Method.class, Object[].class);
+		assertInlineParameterUsage(ReflectionUtil.class, "matchesParameters", Method.class, Object[].class); //$NON-NLS-1$
 	}
 
 }

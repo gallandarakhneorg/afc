@@ -23,6 +23,8 @@ package org.arakhne.afc.math.geometry.d3;
 @SuppressWarnings("all")
 public final class Point3DStub implements Point3D<Point3DStub, Vector3DStub> {
 
+	private static final long serialVersionUID = 8895374463661941246L;
+
 	private double x;
 	
 	private double y;

@@ -188,7 +188,7 @@ public abstract class AbstractRectangularPrism3afpTest<T extends RectangularPris
 		assertFalse(this.shape.equalsToShape(null));
 		assertFalse(this.shape.equalsToShape((T) createRectangularPrism(0, 8, 0, 5, 12, 0)));
 		assertFalse(this.shape.equalsToShape((T) createRectangularPrism(5, 8, 0, 5, 0, 0)));
-		assertTrue(this.shape.equalsToShape((T) this.shape));
+		assertTrue(this.shape.equalsToShape(this.shape));
 		assertTrue(this.shape.equalsToShape((T) createRectangularPrism(5, 8, 0, 5, 10, 0)));
 	}
 
@@ -812,6 +812,7 @@ public abstract class AbstractRectangularPrism3afpTest<T extends RectangularPris
 		assertTrue(this.shape.contains(createPoint(35, 24, 0)));
 	}
 
+	@Override
 	@Test
 	public void inflate() {
 		this.shape.inflate(1, 2, 0, 3, 4, 0);
@@ -925,11 +926,13 @@ public abstract class AbstractRectangularPrism3afpTest<T extends RectangularPris
 		assertEpsilonEquals(13, p.getY());
 	}
 
+	@Override
 	@Test
 	public void getCenterX() {
 		assertEpsilonEquals(7.5, this.shape.getCenterX());
 	}
 
+	@Override
 	@Test
 	public void getCenterY() {
 		assertEpsilonEquals(13, this.shape.getCenterY());

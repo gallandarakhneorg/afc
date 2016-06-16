@@ -32,26 +32,32 @@ public class TestShapeFactory3ifx implements TestShapeFactory3ai<Point3ifx, Vect
 	
 	public static final TestShapeFactory3ifx SINGLETON = new TestShapeFactory3ifx();
 	
+	@Override
 	public Segment3ai<?, ?, ?, Point3ifx, Vector3ifx, RectangularPrism3ifx> createSegment(int x1, int y1, int z1, int x2, int y2, int z2) {
 		return new Segment3ifx(x1, y1, z1, x2, y2, z2);
 	}
 	
+	@Override
 	public RectangularPrism3ifx createRectangularPrism(int x, int y, int z, int width, int height, int depth) {
 		return new RectangularPrism3ifx(x, y, z, width, height, depth);
 	}
 
+	@Override
 	public Sphere3ai<?, ?, ?, Point3ifx, Vector3ifx, RectangularPrism3ifx> createSphere(int x, int y, int z, int radius) {
 		return new Sphere3ifx(x, y, z, radius);
 	}
 	
+	@Override
 	public Point3ifx createPoint(int x, int y, int z) {
 		return new Point3ifx(x, y, z);
 	}
 
+	@Override
 	public Vector3ifx createVector(int x, int y, int z) {
 		return new Vector3ifx(x, y, z);
 	}
 
+	@Override
 	public Path3ai<?, ?, ?, Point3ifx, Vector3ifx, RectangularPrism3ifx> createPath(PathWindingRule rule) {
 		if (rule == null) {
 			return new Path3ifx();
@@ -60,6 +66,7 @@ public class TestShapeFactory3ifx implements TestShapeFactory3ai<Point3ifx, Vect
 
 	}
 	
+	@Override
 	public MultiShape3ai<?, ?, ?, ?, Point3ifx, Vector3ifx, RectangularPrism3ifx> createMultiShape() {
 		return new MultiShape3ifx();
 	}

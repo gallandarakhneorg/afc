@@ -55,8 +55,8 @@ public class MultiShape2dfxTest extends AbstractMultiShape2afpTest<MultiShape2df
 		ListProperty<Shape2dfx<?>> property = this.shape.elementsProperty();
 		assertNotNull(property);
 		assertEquals(2, property.size());
-		assertSame(firstObject, property.get(0));
-		assertSame(secondObject, property.get(1));
+		assertSame(this.firstObject, property.get(0));
+		assertSame(this.secondObject, property.get(1));
 	}
 
 }

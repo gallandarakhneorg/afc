@@ -29,7 +29,7 @@ public class LibraryLoaderTest {
 
 	@Test
 	public void loadPlatformDependentLibraryString() {
-		assertInlineParameterUsage(LibraryLoader.class, "loadPlatformDependentLibrary", String.class);
+		assertInlineParameterUsage(LibraryLoader.class, "loadPlatformDependentLibrary", String.class); //$NON-NLS-1$
 	}
 
 }

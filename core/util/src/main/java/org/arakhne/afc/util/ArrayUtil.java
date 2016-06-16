@@ -173,7 +173,7 @@ public final class ArrayUtil {
 	@Inline(value = "ArrayUtil.mergeWithoutNull($1, $2)", imported = {ArrayUtil.class})
 	@SuppressWarnings("all")
 	@Deprecated
-	public static <T> T[] merge_without_null(Class<T> clazz, @SuppressWarnings("unchecked") T[]... arrays) {
+	public static <T> T[] merge_without_null(Class<T> clazz, T[]... arrays) {
 		return mergeWithoutNull(clazz, arrays);
 	}
 
@@ -191,7 +191,7 @@ public final class ArrayUtil {
 	@Inline(value = "ArrayUtil.mergeWithoutNull($1, $2)", imported = {ArrayUtil.class})
 	@SuppressWarnings("all")
 	@Deprecated
-	public static <T> T[] merge_without_null(Class<T> clazz, @SuppressWarnings("unchecked") T... elements) {
+	public static <T> T[] merge_without_null(Class<T> clazz, T... elements) {
 		return mergeWithoutNull(clazz, elements);
 	}
 
@@ -210,7 +210,7 @@ public final class ArrayUtil {
 	@Inline(value = "ArrayUtil.mergeWithoutNull($1, $2, $3)", imported = {ArrayUtil.class})
 	@SuppressWarnings("all")
 	@Deprecated
-	public static <T> T[] merge_without_null(Class<T> clazz, T[] source, @SuppressWarnings("unchecked") T... elements) {
+	public static <T> T[] merge_without_null(Class<T> clazz, T[] source, T... elements) {
 		return mergeWithoutNull(clazz, source, elements);
 	}
 

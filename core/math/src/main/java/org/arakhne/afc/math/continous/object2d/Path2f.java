@@ -35,6 +35,7 @@ import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.math.geometry.d2.d.Path2d;
 import org.arakhne.afc.math.matrix.Transform2D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 
 /** A generic path.
@@ -289,7 +290,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException("missing initial moveto in path definition");  //$NON-NLS-1$
 		}
 
 		Path2f subPath;
@@ -444,7 +445,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException("missing initial moveto in path definition");  //$NON-NLS-1$
 		}
 
 		float movx = element.toX;
@@ -598,7 +599,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException("missing initial moveto in path definition");  //$NON-NLS-1$
 		}
 
 		float movx = element.toX;
@@ -747,7 +748,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException("missing initial moveto in path definition");  //$NON-NLS-1$
 		}
 
 		float movx = element.toX;
@@ -912,7 +913,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		PathElement2f pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException("missing initial moveto in path definition");  //$NON-NLS-1$
 		}
 
 		Path2f subPath;
@@ -1142,17 +1143,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
-		b.append("["); 
-		if (this.numCoords>0) {
-			b.append(this.coords[0]);
-			for(int i=1; i<this.numCoords; ++i) {
-				b.append(", "); 
-				b.append(this.coords[i]);
-			}
-		}
-		b.append("]"); 
-		return b.toString();
+		return ReflectionUtil.toString(this);
 	}
 
 	@Override
@@ -1208,7 +1199,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 	private void ensureSlots(boolean needMove, int n) {
 		if (needMove && this.numTypes==0) {
-			throw new IllegalStateException("missing initial moveto in path definition"); 
+			throw new IllegalStateException("missing initial moveto in path definition");  //$NON-NLS-1$
 		}
 		if (this.types.length==this.numTypes) {
 			this.types = Arrays.copyOf(this.types, this.types.length+GROW_SIZE);
@@ -1589,7 +1580,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		PathElement2f pathElement1 = iterator1.next();
 
 		if (pathElement1.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in the first path definition"); 
+			throw new IllegalArgumentException("missing initial moveto in the first path definition");  //$NON-NLS-1$
 		}
 
 		Path2f subPath;
@@ -2919,7 +2910,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		@Override
 		public PathElement2f next() {
 			if (this.done) {
-				throw new NoSuchElementException("flattening iterator out of bounds"); 
+				throw new NoSuchElementException("flattening iterator out of bounds");  //$NON-NLS-1$
 			}
 
 			PathElement2f element;
@@ -3011,7 +3002,6 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 			return Path2f.this.toPointArray();
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public <T> T[] toArray(T[] a) {
 			Iterator<Point2D> iterator = new PointIterator();

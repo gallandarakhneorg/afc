@@ -29,7 +29,7 @@ import org.junit.Test;
 import org.arakhne.afc.math.geometry.d2.AbstractTuple2DTest;
 
 @SuppressWarnings("all")
-public class Tuple2dfxTest extends AbstractTuple2DTest<Tuple2dfx, Tuple2dfx> {
+public class Tuple2dfxTest extends AbstractTuple2DTest<Tuple2dfx> {
 
 	@Override
 	public boolean isIntCoordinates() {

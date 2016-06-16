@@ -44,7 +44,7 @@ public class UnitVectorProperty3dfxTest extends AbstractMathTestCase {
 	
 	@Before
 	public void setUp() {
-		this.property = new UnitVectorProperty3dfx(this, "test", new GeomFactory3dfx());
+		this.property = new UnitVectorProperty3dfx(this, "test", new GeomFactory3dfx()); //$NON-NLS-1$
 		double length = Math.sqrt(ox * ox + oy * oy + oz * oz);
 		this.property.set(ox / length, oy / length, oz / length);
 	}

@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.ai.Sphere3ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A circle with 2 integer numbers.
  *
@@ -57,7 +58,7 @@ public class Sphere3i extends AbstractShape3i<Sphere3i>
      * @param radius the radius of the sphere.
      */
 	public Sphere3i(Point3D<?, ?> center, int radius) {
-		assert center != null : "Center point must be not null";
+		assert center != null : AssertMessages.notNullParameter(0);
 		set(center.ix(), center.iy(), center.iz(), radius);
 	}
 
@@ -76,7 +77,7 @@ public class Sphere3i extends AbstractShape3i<Sphere3i>
 	 * @param sphere the sphere to copy.
 	 */
 	public Sphere3i(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Circle must be not null";
+		assert sphere != null : AssertMessages.notNullParameter();
 		set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
 	}
 
@@ -141,7 +142,7 @@ public class Sphere3i extends AbstractShape3i<Sphere3i>
 
 	@Override
 	public void setRadius(int radius) {
-		assert radius >= 0 : "Radius must be positive or equal";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter();
 		if (this.radius != radius) {
 			this.radius = radius;
 			fireGeometryChange();
@@ -150,7 +151,7 @@ public class Sphere3i extends AbstractShape3i<Sphere3i>
 
 	@Override
 	public void set(int x, int y, int z, int radius) {
-		assert radius >= 0 : "Radius must be positive or zero";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		if (this.centerX != x || this.centerY != y || this.centerZ != z || this.radius != radius) {
 			this.centerX = x;
 			this.centerY = y;

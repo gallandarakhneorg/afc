@@ -29,6 +29,7 @@ import java.util.ListIterator;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Container for grouping of shapes.
  *
@@ -63,7 +64,7 @@ public interface MultiShape3D<
 	 */
 	@Pure
 	default CT getFirstShapeContaining(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null";
+		assert point != null : AssertMessages.notNullParameter();
 		if (toBoundingBox().contains(point)) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.contains(point)) {
@@ -82,7 +83,7 @@ public interface MultiShape3D<
 	@Pure
 	@Unefficient
 	default List<CT> getShapesContaining(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null";
+		assert point != null : AssertMessages.notNullParameter();
 		final List<CT> list = new ArrayList<>();
 		if (toBoundingBox().contains(point)) {
 			for (final CT shape : getBackendDataList()) {
@@ -128,7 +129,7 @@ public interface MultiShape3D<
 
 	@Override
 	default void set(IT multishape) {
-		assert multishape != null : "Multishape must be not null";
+		assert multishape != null : AssertMessages.notNullParameter();
 		final List<CT> backend = getBackendDataList();
 		backend.clear();
 		backend.addAll(multishape.getBackendDataList());
@@ -394,8 +395,8 @@ public interface MultiShape3D<
 		 * @param iterator the original iterator.
 		 */
 		public BackendIterator(MultiShape3D<?, ?, CT, ?, ?, ?, ?> backend, ListIterator<CT> iterator) {
-			assert backend != null : "Backend must be not null";
-			assert iterator != null : "Iterator must be not null";
+			assert backend != null : AssertMessages.notNullParameter();
+			assert iterator != null : AssertMessages.notNullParameter();
 			this.backend = backend;
 			this.iterator = iterator;
 		}
@@ -474,8 +475,8 @@ public interface MultiShape3D<
 		 * @param list the original list.
 		 */
 		public BackendList(MultiShape3D<?, ?, CT, ?, ?, ?, ?> backend, List<CT> list) {
-			assert backend != null : "Backend must be not null";
-			assert list != null : "List must be not null";
+			assert backend != null : AssertMessages.notNullParameter();
+			assert list != null : AssertMessages.notNullParameter();
 			this.backend = backend;
 			this.list = list;
 		}

@@ -59,7 +59,7 @@ public interface Shape3afp<
 	@Pure
 	@Override
 	default boolean contains(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null";
+		assert point != null : AssertMessages.notNullParameter();
 		return contains(point.getX(), point.getY(), point.getZ());
 	}
 
@@ -74,7 +74,7 @@ public interface Shape3afp<
 	@Unefficient
 	@Override
 	default boolean contains(Shape3D<?, ?, ?, ?, ?, ?> shape) {
-	    assert shape != null : "Shape must be not null";
+	    assert shape != null : AssertMessages.notNullParameter();
         if (isEmpty()) {
             return false;
         }
@@ -168,7 +168,7 @@ public interface Shape3afp<
 	@Pure
 	@Override
 	default void translate(Vector3D<?, ?> vector) {
-	    assert vector != null : "Vector must be not null";
+	    assert vector != null : AssertMessages.notNullParameter();
 	    translate(vector.getX(), vector.getY(), vector.getZ());
 	}
 
@@ -234,7 +234,7 @@ public interface Shape3afp<
 	 */
 	@Pure
 	default boolean intersects(Path3afp<?, ?, ?, ?, ?, ?> path) {
-		assert path != null : "Path must be not null";
+		assert path != null : AssertMessages.notNullParameter();
 		return intersects(path.getPathIterator());
 	}
 

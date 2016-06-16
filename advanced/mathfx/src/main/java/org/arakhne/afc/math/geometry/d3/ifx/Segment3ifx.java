@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.ai.Segment3ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A 3D segment/line with 3 integer FX properties.
  *
@@ -137,7 +138,7 @@ public class Segment3ifx extends AbstractShape3ifx<Segment3ifx>
 	@Pure
 	@Override
 	public Shape3ifx<?> createTransformedShape(Transform3D transform) {
-		assert transform != null : "Transformation must be not null";
+		assert transform != null : AssertMessages.notNullParameter();
 		final Point3ifx point = getGeomFactory().newPoint(getX1(), getY1(), getZ1());
 		transform.transform(point);
 		final int x1 = point.ix();

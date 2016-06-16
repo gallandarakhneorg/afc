@@ -27,7 +27,7 @@ public class DAEFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".dae";
+		return ".dae"; //$NON-NLS-1$
 	}
 
 	@Override

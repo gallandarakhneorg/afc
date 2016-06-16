@@ -20,26 +20,17 @@
 
 package org.arakhne.afc.inputoutput.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import org.arakhne.afc.testtools.AbstractTestCase;
-import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.Resources;
-import org.arakhne.afc.vmutil.URISchemeType;
 
 @SuppressWarnings("all")
 public class DefaultXMLEntityResolverTest extends AbstractTestCase {
@@ -58,7 +49,7 @@ public class DefaultXMLEntityResolverTest extends AbstractTestCase {
 	
 	@Test
 	public void resolveEntityStringString_resourceUrl() throws Exception {
-		URL resource = Resources.getResource(getClass(), "xmlResource.txt");
+		URL resource = Resources.getResource(getClass(), "xmlResource.txt"); //$NON-NLS-1$
 		InputSource src = this.resolver.resolveEntity(null, resource.toString());
 		assertNotNull(src);
 		assertNotNull(src.getByteStream());
@@ -66,7 +57,7 @@ public class DefaultXMLEntityResolverTest extends AbstractTestCase {
 
 	@Test
 	public void resolveEntityStringString_resourceName() throws Exception {
-		String resource = getClass().getPackage().getName().replace('.', '/') + "/xmlResource.txt";
+		String resource = getClass().getPackage().getName().replace('.', '/') + "/xmlResource.txt"; //$NON-NLS-1$
 		InputSource src = this.resolver.resolveEntity(null, resource);
 		assertNotNull(src);
 		assertNotNull(src.getByteStream());

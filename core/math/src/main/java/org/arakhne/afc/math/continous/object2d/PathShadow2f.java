@@ -27,6 +27,7 @@ import org.arakhne.afc.math.generic.Path2D;
 import org.arakhne.afc.math.generic.PathElementType;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** Shadow of a path.
  *
@@ -132,7 +133,7 @@ public class PathShadow2f {
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
 		float movx = element.toX;
@@ -364,41 +365,7 @@ public class PathShadow2f {
 
 		@Override
 		public String toString() {
-			StringBuilder b = new StringBuilder();
-			b.append("SHADOW {\n\tlow: ( "); 
-			b.append(this.xmin4ymin);
-			b.append(" | "); 
-			b.append(this.ymin);
-			b.append(" )\n\thigh: ( "); 
-			b.append(this.xmin4ymax);
-			b.append(" | "); 
-			b.append(this.ymax);
-			b.append(")\n}\nCROSSINGS {\n\tcrossings="); 
-			b.append(this.crossings);
-			b.append("\n\tlow: "); 
-			if (this.hasX4ymin) {
-				b.append("( "); 
-				b.append(this.x4ymin);
-				b.append(" | "); 
-				b.append(this.ymin);
-				b.append(" )\n"); 
-			}
-			else {
-				b.append("none\n"); 
-			}
-			b.append("\thigh: "); 
-			if (this.hasX4ymax) {
-				b.append("( "); 
-				b.append(this.x4ymax);
-				b.append(" | "); 
-				b.append(this.ymax);
-				b.append(" )\n"); 
-			}
-			else {
-				b.append("none\n"); 
-			}
-			b.append("}\n"); 
-			return b.toString();
+			return ReflectionUtil.toString(this);
 		}
 
 		public PathShadowData(float xmax, float miny, float maxy) {

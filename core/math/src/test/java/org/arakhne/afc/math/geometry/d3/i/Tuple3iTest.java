@@ -23,7 +23,7 @@ package org.arakhne.afc.math.geometry.d3.i;
 import org.arakhne.afc.math.geometry.d3.AbstractTuple3DTest;
 
 @SuppressWarnings("all")
-public class Tuple3iTest extends AbstractTuple3DTest<Tuple3i, Tuple3i> {
+public class Tuple3iTest extends AbstractTuple3DTest<Tuple3i> {
 
 	@Override
 	public boolean isIntCoordinates() {

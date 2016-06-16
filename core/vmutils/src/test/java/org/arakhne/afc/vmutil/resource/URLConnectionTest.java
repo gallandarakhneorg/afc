@@ -43,7 +43,7 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class URLConnectionTest {
 
-	private static final String RESOURCE_URL = "resource:org/arakhne/afc/vmutil/test.txt"; 
+	private static final String RESOURCE_URL = "resource:org/arakhne/afc/vmutil/test.txt";  //$NON-NLS-1$
 
 	private URLConnection connection;
 
@@ -78,7 +78,7 @@ public class URLConnectionTest {
 				line = br.readLine();
 			}
 		}
-		assertEquals("TEST1: FOR UNIT TEST ONLY", line); 
+		assertEquals("TEST1: FOR UNIT TEST ONLY", line);  //$NON-NLS-1$
 	}
 
 }

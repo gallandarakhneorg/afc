@@ -55,96 +55,6 @@ public interface OrientedPoint2afp<
         B extends Rectangle2afp<?, ?, IE, P, V, B>>
         extends Shape2afp<ST, IT, IE, P, V, B>, OrientedPoint2D<ST, IT, PathIterator2afp<IE>, P, V, B> {
 
-    /** Iterator on the elements of the oriented points.
-     * It replies : the point and the extremities of the
-     * two orientation vectors.
-     *
-     * @param <T> the type of the path elements.
-     * @author $Author: tpiotrow$
-     * @version $FullVersion$
-     * @mavengroupid $GroupId$
-     * @mavenartifactid $ArtifactId$
-     */
-    // TODO : complete point iterator. The iterator may return only the point or the point and its
-    // orientation vectors. As such, it may or may not contain multiple moveto elements.
-    class OrientedPointPathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
-
-        private int index;
-
-        private OrientedPoint2afp<?, ?, T, ?, ?, ?> point;
-
-        private Transform2D transform;
-
-        private double px;
-
-        private double py;
-
-        private double dx;
-
-        private double dy;
-
-        /**
-         * @param point the iterated oriented point.
-         * @param transform the transformation, or <code>null</code>.
-         */
-        public OrientedPointPathIterator(OrientedPoint2afp<?, ?, T, ?, ?, ?> point, Transform2D transform) {
-            assert point != null : AssertMessages.notNullParameter();
-            this.point = point;
-            this.transform = transform == null || transform.isIdentity() ? null : transform;
-            this.px = point.getX();
-            this.py = point.getY();
-            this.dx = point.getDirectionX();
-            this.dy = point.getDirectionY();
-        }
-
-        @Override
-        public PathWindingRule getWindingRule() {
-            return PathWindingRule.NON_ZERO;
-        }
-
-        @Override
-        public boolean isPolyline() {
-            return false;
-        }
-
-        @Override
-        public boolean isCurved() {
-            return false;
-        }
-
-        @Override
-        public boolean isMultiParts() {
-            return true;
-        }
-
-        @Override
-        public boolean isPolygon() {
-            return false;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return this.index <= 2;
-        }
-
-        @Override
-        public T next() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
-            return this.point.getGeomFactory();
-        }
-
-        @Override
-        public PathIterator2afp<T> restartIterations() {
-            return new OrientedPointPathIterator<>(this.point, this.transform);
-        }
-
-    }
-
     @Override
     default PathIterator2afp<IE> getPathIterator(Transform2D transform) {
         return new OrientedPointPathIterator<>(this, transform);
@@ -324,6 +234,96 @@ public interface OrientedPoint2afp<
     @Override
     default void translate(double dx, double dy) {
         set(getX() + dx, getY() + dy, getDirectionX() + dx, getDirectionY() + dy);
+    }
+
+    /** Iterator on the elements of the oriented points.
+     * It replies : the point and the extremities of the
+     * two orientation vectors.
+     *
+     * @param <T> the type of the path elements.
+     * @author $Author: tpiotrow$
+     * @version $FullVersion$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     */
+    // TODO : complete point iterator. The iterator may return only the point or the point and its
+    // orientation vectors. As such, it may or may not contain multiple moveto elements.
+    class OrientedPointPathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
+
+        private int index;
+
+        private OrientedPoint2afp<?, ?, T, ?, ?, ?> point;
+
+        private Transform2D transform;
+
+        //TODO private double px;
+
+        //TODO private double py;
+
+        //TODO private double dx;
+
+        //TODO private double dy;
+
+        /**
+         * @param point the iterated oriented point.
+         * @param transform the transformation, or <code>null</code>.
+         */
+        public OrientedPointPathIterator(OrientedPoint2afp<?, ?, T, ?, ?, ?> point, Transform2D transform) {
+            assert point != null : AssertMessages.notNullParameter();
+            this.point = point;
+            this.transform = transform == null || transform.isIdentity() ? null : transform;
+            //TODO this.px = point.getX();
+            //TODO this.py = point.getY();
+            //TODO this.dx = point.getDirectionX();
+            //TODO this.dy = point.getDirectionY();
+        }
+
+        @Override
+        public PathWindingRule getWindingRule() {
+            return PathWindingRule.NON_ZERO;
+        }
+
+        @Override
+        public boolean isPolyline() {
+            return false;
+        }
+
+        @Override
+        public boolean isCurved() {
+            return false;
+        }
+
+        @Override
+        public boolean isMultiParts() {
+            return true;
+        }
+
+        @Override
+        public boolean isPolygon() {
+            return false;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.index <= 2;
+        }
+
+        @Override
+        public T next() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
+            return this.point.getGeomFactory();
+        }
+
+        @Override
+        public PathIterator2afp<T> restartIterations() {
+            return new OrientedPointPathIterator<>(this.point, this.transform);
+        }
+
     }
 
 }

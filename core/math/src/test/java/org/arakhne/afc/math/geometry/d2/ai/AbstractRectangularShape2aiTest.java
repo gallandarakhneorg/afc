@@ -24,7 +24,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
@@ -46,7 +45,7 @@ public abstract class AbstractRectangularShape2aiTest<T extends Rectangle2ai<?, 
 	@Test
 	@Override
 	public void toBoundingBoxB() {
-		B box = (B) createRectangle(0, 0, 0, 0);
+		B box = createRectangle(0, 0, 0, 0);
 		this.shape.toBoundingBox(box);
 		assertEquals(this.shape.getMinX(), box.getMinX());
 		assertEquals(this.shape.getMinY(), box.getMinY());

@@ -105,14 +105,14 @@ public enum CoordinateSystem3D implements CoordinateSystem {
      */
     XYZ_RIGHT_HAND(1, 0, 0, 1);
 
-    private static final byte PIVOT_SYSTEM = 0;
+    //TODDO: private static final byte PIVOT_SYSTEM = 0;
 
     private static CoordinateSystem3D userDefault;
 
-    private final byte system;
+    //TODO: private final byte system;
 
     CoordinateSystem3D(int lefty, int leftz, int topy, int topz) {
-        this.system = toSystemIndex(lefty, leftz, topy, topz);
+        //TODO: this.system = toSystemIndex(lefty, leftz, topy, topz);
     }
 
     @Pure

@@ -142,7 +142,7 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 		}
 		PathElement3afp pe = pi.next();
 		if (!type.equals(pe.getType())) {
-			throw new ComparisonFailure("not same element type.", type.name(), pe.getType().name());
+			throw new ComparisonFailure("not same element type.", type.name(), pe.getType().name()); //$NON-NLS-1$
 		}
 		double[] c = new double[coords.length];
 		pe.toArray(c);
@@ -366,7 +366,7 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	 * @throws IOException Input/output exception
 	 */
 	public static File generateTestPicture(Shape3afp<?, ?, ?, ?, ?, ?> shape) throws IOException {
-		File filename = File.createTempFile("testShape", ".png");
+		File filename = File.createTempFile("testShape", ".png"); //$NON-NLS-1$ //$NON-NLS-2$
 		RectangularPrism3afp box = shape.toBoundingBox();
 		PathIterator3afp<?> iterator = shape.getPathIterator();
 		Path2D path = new Path2D.Double(
@@ -411,7 +411,7 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
 		g2d.setColor(Color.BLACK);
 		g2d.draw(path);
-		ImageIO.write(image, "png", filename);
+		ImageIO.write(image, "png", filename); //$NON-NLS-1$
 		return filename;
 	}	
 

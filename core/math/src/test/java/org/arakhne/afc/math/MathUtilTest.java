@@ -48,7 +48,7 @@ public class MathUtilTest extends AbstractMathTestCase {
 		assertEquals(1, MathUtil.sign(145.25));
 		assertEquals(1, MathUtil.sign(0.25));
 		//
-		assertInlineParameterUsage(MathUtil.class, "sign", double.class);
+		assertInlineParameterUsage(MathUtil.class, "sign", double.class); //$NON-NLS-1$
 	}
 	
 	@Test
@@ -111,7 +111,7 @@ public class MathUtilTest extends AbstractMathTestCase {
 		assertFalse(MathUtil.isEpsilonZero(Double.NEGATIVE_INFINITY));
 		assertFalse(MathUtil.isEpsilonZero(Double.POSITIVE_INFINITY));
 		//
-		assertInlineParameterUsage(MathUtil.class, "isEpsilonZero", double.class);
+		assertInlineParameterUsage(MathUtil.class, "isEpsilonZero", double.class); //$NON-NLS-1$
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class MathUtilTest extends AbstractMathTestCase {
 		assertFalse(MathUtil.isEpsilonZero(Double.NEGATIVE_INFINITY, Math.ulp(0)));
 		assertFalse(MathUtil.isEpsilonZero(Double.POSITIVE_INFINITY, Math.ulp(0)));
 		//
-		assertInlineParameterUsage(MathUtil.class, "isEpsilonZero", double.class, double.class);
+		assertInlineParameterUsage(MathUtil.class, "isEpsilonZero", double.class, double.class); //$NON-NLS-1$
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public class MathUtilTest extends AbstractMathTestCase {
 		assertFalse(MathUtil.isEpsilonEqual(Double.NEGATIVE_INFINITY, 0.));
 		assertFalse(MathUtil.isEpsilonEqual(Double.POSITIVE_INFINITY, 0.));
 		//
-		assertInlineParameterUsage(MathUtil.class, "isEpsilonEqual", double.class, double.class);
+		assertInlineParameterUsage(MathUtil.class, "isEpsilonEqual", double.class, double.class); //$NON-NLS-1$
 	}
 
 	@Test
@@ -396,32 +396,32 @@ public class MathUtilTest extends AbstractMathTestCase {
 
 	@Test
 	public void cot() {
-		assertInlineParameterUsage(MathUtil.class, "cot", double.class);
+		assertInlineParameterUsage(MathUtil.class, "cot", double.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void crd() {
-		assertInlineParameterUsage(MathUtil.class, "crd", double.class);
+		assertInlineParameterUsage(MathUtil.class, "crd", double.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void csc() {
-		assertInlineParameterUsage(MathUtil.class, "csc", double.class);
+		assertInlineParameterUsage(MathUtil.class, "csc", double.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void exsec() {
-		assertInlineParameterUsage(MathUtil.class, "exsec", double.class);
+		assertInlineParameterUsage(MathUtil.class, "exsec", double.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void sec() {
-		assertInlineParameterUsage(MathUtil.class, "sec", double.class);
+		assertInlineParameterUsage(MathUtil.class, "sec", double.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void versin() {
-		assertInlineParameterUsage(MathUtil.class, "versin", double.class);
+		assertInlineParameterUsage(MathUtil.class, "versin", double.class); //$NON-NLS-1$
 	}
 
 }

@@ -41,7 +41,7 @@ public class UnitVectorPropertyTest extends AbstractMathTestCase {
 	
 	@Before
 	public void setUp() {
-		this.property = new UnitVectorProperty(this, "test", new GeomFactory2dfx());
+		this.property = new UnitVectorProperty(this, "test", new GeomFactory2dfx()); //$NON-NLS-1$
 		double length = Math.hypot(ox, oy);
 		this.property.set(ox / length, oy / length);
 	}

@@ -20,12 +20,11 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -34,6 +33,12 @@ import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.ComparisonFailure;
+import org.junit.Rule;
+import org.junit.Test;
+
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -41,11 +46,6 @@ import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule
 import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ComparisonFailure;
-import org.junit.Rule;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?>,
@@ -184,16 +184,16 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	 */
 	public void assertElement(PathIterator2afp<?> pi, PathElementType type, double... coords) {
 		if (!pi.hasNext()) {
-			fail("expected path element but the iterator is empty"); 
+			fail("expected path element but the iterator is empty");  //$NON-NLS-1$
 		}
 		PathElement2afp pe = pi.next();
 		if (!type.equals(pe.getType())) {
-			throw new ComparisonFailure("not same element type.", type.name(), pe.getType().name());
+			throw new ComparisonFailure("not same element type.", type.name(), pe.getType().name()); //$NON-NLS-1$
 		}
 		double[] c = new double[coords.length];
 		pe.toArray(c);
 		if (!isEpsilonEquals(c, coords)) {
-			throw new ComparisonFailure("not same coordinates.",  
+			throw new ComparisonFailure("not same coordinates.",   //$NON-NLS-1$
 					Arrays.toString(coords),
 					Arrays.toString(c));
 		}
@@ -245,7 +245,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	 */
 	public static void assertNoElement(PathIterator2afp<?> pi) {
 		if (pi.hasNext()) {
-			fail("expected no path element but the iterator is not empty: " 
+			fail("expected no path element but the iterator is not empty: "  //$NON-NLS-1$
 					+ pi.next());
 		}
 	}
@@ -263,7 +263,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	    //distance = shape1.getDistance(point); 
 	    //assertEpsilonZero("Closest point " + point + " is not in the first shape: " + shape1 + ". Distance: " + distance, distance);
         distance = shape2.getDistance(point); 
-	    assertEpsilonZero("Closest point " + point + " is not in the second shape: " + shape2 + ". Distance: " + distance, distance);
+	    assertEpsilonZero("Closest point " + point + " is not in the second shape: " + shape2 + ". Distance: " + distance, distance); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	@Test
@@ -470,7 +470,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	 * @throws IOException Input/output exception
 	 */
 	public static File generateTestPicture(Shape2afp<?, ?, ?, ?, ?, ?> shape) throws IOException {
-		File filename = File.createTempFile("testShape", ".png");
+		File filename = File.createTempFile("testShape", ".png"); //$NON-NLS-1$ //$NON-NLS-2$
 		Rectangle2afp box = shape.toBoundingBox();
 		PathIterator2afp<?> iterator = shape.getPathIterator();
 		Path2D path = new Path2D.Double(
@@ -515,7 +515,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
 		g2d.setColor(Color.BLACK);
 		g2d.draw(path);
-		ImageIO.write(image, "png", filename);
+		ImageIO.write(image, "png", filename); //$NON-NLS-1$
 		return filename;
 	}	
 

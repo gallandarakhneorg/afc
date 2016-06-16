@@ -23,6 +23,8 @@ package org.arakhne.afc.math.geometry.d3;
 @SuppressWarnings("all")
 public final class Vector3DStub implements UnmodifiableVector3D<Vector3DStub, Point3DStub> {
 
+	private static final long serialVersionUID = 1169443458519502398L;
+
 	private double x;
 	
 	private double y;

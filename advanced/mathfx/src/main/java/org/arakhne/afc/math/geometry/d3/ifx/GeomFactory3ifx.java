@@ -28,6 +28,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.ai.GeomFactory3ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Factory of geometrical elements.
  *
@@ -46,7 +47,7 @@ public class GeomFactory3ifx implements GeomFactory3ai<PathElement3ifx, Point3if
 
 	@Override
 	public Point3ifx convertToPoint(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null";
+		assert point != null : AssertMessages.notNullParameter();
 		try {
 			return (Point3ifx) point;
 		} catch (Throwable exception) {
@@ -56,19 +57,19 @@ public class GeomFactory3ifx implements GeomFactory3ai<PathElement3ifx, Point3if
 
 	@Override
 	public Point3ifx convertToPoint(Vector3D<?, ?> vector) {
-	    assert vector != null : "Vector must be not null";
+	    assert vector != null : AssertMessages.notNullParameter();
 	    return new Point3ifx(vector.ix(), vector.iy(), vector.iz());
 	}
 
 	@Override
 	public Vector3ifx convertToVector(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null";
+		assert point != null : AssertMessages.notNullParameter();
 		return new Vector3ifx(point.ix(), point.iy(), point.iz());
 	}
 
 	@Override
 	public Vector3ifx convertToVector(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null";
+		assert vector != null : AssertMessages.notNullParameter();
 		Vector3ifx vv;
 		try {
 			vv = (Vector3ifx) vector;
@@ -122,7 +123,7 @@ public class GeomFactory3ifx implements GeomFactory3ai<PathElement3ifx, Point3if
 
 	@Override
 	public Path3ifx newPath(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null";
+		assert rule != null : AssertMessages.notNullParameter();
 		return new Path3ifx(rule);
 	}
 
@@ -132,10 +133,11 @@ public class GeomFactory3ifx implements GeomFactory3ai<PathElement3ifx, Point3if
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:magicnumber")
 	public RectangularPrism3ifx newBox(int x, int y, int z, int width, int height, int depth) {
-		assert width >= 0 : "Width must be positive or zero";
-		assert height >= 0 : "Height must be positive or zero";
-		assert depth >= 0 : "Depth must be positive or zero";
+		assert width >= 0 : AssertMessages.positiveOrZeroParameter(3);
+		assert height >= 0 : AssertMessages.positiveOrZeroParameter(4);
+		assert depth >= 0 : AssertMessages.positiveOrZeroParameter(5);
 		return new RectangularPrism3ifx(x, y, z, width, height, depth);
 	}
 
@@ -217,13 +219,13 @@ public class GeomFactory3ifx implements GeomFactory3ai<PathElement3ifx, Point3if
 
 	@Override
 	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
-		throw new UnsupportedOperationException("Not yet implemented");
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$
 		// TODO
 	}
 
 	@Override
 	public Quaternion newQuaternion(double attitude, double bank, double heading) {
-		throw new UnsupportedOperationException("Not yet implemented");
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$
 		// TODO
 	}
 

@@ -29,6 +29,8 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Shadow of a path that is used for computing the crossing values
  * between a shape and the shadow.
@@ -47,7 +49,7 @@ public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
 
 	private final B bounds;
 
-	private boolean started;
+	//TODO private boolean started;
 
 	/** Construct new path shadow.
 	 * @param path the path that is constituting the shadow.
@@ -61,8 +63,8 @@ public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
 	 * @param bounds the bounds of the shadow.
 	 */
 	public PathShadow3afp(PathIterator3afp<?> pathIterator, B bounds) {
-	    assert pathIterator != null : "PathIterator must be not null";
-		assert bounds != null : "Bounds must be not null";
+	    assert pathIterator != null : AssertMessages.notNullParameter(0);
+		assert bounds != null : AssertMessages.notNullParameter(1);
 		this.path = pathIterator;
 		this.bounds = bounds;
 	}
@@ -161,7 +163,7 @@ public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
 
 		element = pi.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition");
+			throw new IllegalArgumentException(Locale.getString(Path3afp.class, "E1")); //$NON-NLS-1$
 		}
 
 		Path3afp<?, ?, E, ?, ?, ?> localPath;
@@ -301,9 +303,6 @@ public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
 		final double shadowXMax = Math.max(shadow_x0, shadow_x1);
 		final double shadowYMin = Math.min(shadow_y0, shadow_y1);
 		final double shadowYMax = Math.max(shadow_y0, shadow_y1);
-		final double shadowZMin = Math.min(shadow_z0, shadow_z1);
-		final double shadowZMax = Math.max(shadow_z0, shadow_z1);
-
 
         if (sy0 <= shadowYMin && sy1 <= shadowYMin) {
             return;
@@ -450,18 +449,6 @@ public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
          */
         public void setCrossings(int crossings) {
             this.crossings = crossings;
-        }
-
-        /** Increment number of crossings.
-         */
-        public void incrementCrossings() {
-            ++this.crossings;
-        }
-
-        /** Decrement number of crossings.
-         */
-        public void decrementCrossings() {
-            --this.crossings;
         }
 
         /** Replies if a x coordinate is known for ymin.

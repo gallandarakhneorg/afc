@@ -31,22 +31,22 @@ public class Base64CoderTest extends AbstractTestCase {
 
 	@Test
 	public void decodeString() {
-		assertInlineParameterUsage(Base64Coder.class, "decode", String.class);
+		assertInlineParameterUsage(Base64Coder.class, "decode", String.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void decodeStringString() {
-		assertInlineParameterUsage(Base64Coder.class, "decodeString", String.class);
+		assertInlineParameterUsage(Base64Coder.class, "decodeString", String.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void encodeByteArray() {
-		assertInlineParameterUsage(Base64Coder.class, "encode", byte[].class);
+		assertInlineParameterUsage(Base64Coder.class, "encode", byte[].class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void encodeStringString() {
-		assertInlineParameterUsage(Base64Coder.class, "encodeString", String.class);
+		assertInlineParameterUsage(Base64Coder.class, "encodeString", String.class); //$NON-NLS-1$
 	}
 
 }

@@ -19,10 +19,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.d;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.AbstractOrientedPoint2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 
 @SuppressWarnings("all")
 public class OrientedPoint2dTest extends AbstractOrientedPoint2afpTest<OrientedPoint2d, Rectangle2d> {

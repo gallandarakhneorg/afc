@@ -24,12 +24,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Rule;
+import org.junit.Test;
+
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.junit.Rule;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public class Matrix2dTest extends AbstractMathTestCase {
@@ -543,7 +544,7 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m, mean);
 		for(int i=0; i<2; ++i) {
 			for(int j=0; j<2; ++j) {
-				assertEpsilonEquals("i="+i+"; j="+j,  
+				assertEpsilonEquals("i="+i+"; j="+j,   //$NON-NLS-1$ //$NON-NLS-2$
 						expected.getElement(i, j), 
 						mat.getElement(i, j));
 			}
@@ -586,7 +587,7 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(expectedMean, mean);
 		for(int i=0; i<2; ++i) {
 			for(int j=0; j<2; ++j) {
-				assertEpsilonEquals("i="+i+"; j="+j,  
+				assertEpsilonEquals("i="+i+"; j="+j,   //$NON-NLS-1$ //$NON-NLS-2$
 						expectedCov.getElement(i, j), 
 						cov.getElement(i, j));
 			}

@@ -29,6 +29,7 @@ import org.arakhne.afc.math.generic.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.matrix.Transform2D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 
 
@@ -634,17 +635,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
-		b.append("["); 
-		b.append(getMinX());
-		b.append(";"); 
-		b.append(getMinY());
-		b.append(";"); 
-		b.append(getMaxX());
-		b.append(";"); 
-		b.append(getMaxY());
-		b.append("]"); 
-		return b.toString();
+		return ReflectionUtil.toString(this);
 	}
 
 	/** Move this rectangle to avoid collision 

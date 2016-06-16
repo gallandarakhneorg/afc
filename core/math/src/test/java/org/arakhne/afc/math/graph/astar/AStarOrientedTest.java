@@ -46,8 +46,7 @@ public class AStarOrientedTest extends AbstractMathTestCase {
 
 	private AStar<AStarPathStub,AStarEdgeStub,AStarNodeStub> astar;
 	private AStarNodeStub A, B, C, D, E;
-	@SuppressWarnings("unused")
-	private AStarEdgeStub AB, CA, DA, BD, EC, DE, DC;
+	private AStarEdgeStub AB, BD, DE, DC;
 	private AStarHeuristicStub h;
 	
 	/**
@@ -58,18 +57,15 @@ public class AStarOrientedTest extends AbstractMathTestCase {
 	public void setUp() throws Exception {
 		this.h = new AStarHeuristicStub();
 		this.astar = new AStar<>(this.h, AStarPathStub.class);
-		this.A = new AStarNodeStub("A", 0, 0); 
-		this.B = new AStarNodeStub("B", 20, 0); 
-		this.C = new AStarNodeStub("C", 0, 20); 
-		this.D = new AStarNodeStub("D", 20, 20); 
-		this.E = new AStarNodeStub("E", 10, 40); 
-		this.AB = new AStarEdgeStub("A-B", this.A, this.B, true); 
-		this.BD = new AStarEdgeStub("B-D", this.B, this.D, true); 
-		this.CA = new AStarEdgeStub("C-A", this.C, this.A, true); 
-		this.DA = new AStarEdgeStub("D-A", this.D, this.A, true); 
-		this.DC = new AStarEdgeStub("D-C", this.D, this.C, true); 
-		this.DE = new AStarEdgeStub("D-E", this.D, this.E, true); 
-		this.EC = new AStarEdgeStub("E-C", this.E, this.C, true); 
+		this.A = new AStarNodeStub("A", 0, 0);  //$NON-NLS-1$
+		this.B = new AStarNodeStub("B", 20, 0);  //$NON-NLS-1$
+		this.C = new AStarNodeStub("C", 0, 20);  //$NON-NLS-1$
+		this.D = new AStarNodeStub("D", 20, 20);  //$NON-NLS-1$
+		this.E = new AStarNodeStub("E", 10, 40);  //$NON-NLS-1$
+		this.AB = new AStarEdgeStub("A-B", this.A, this.B, true);  //$NON-NLS-1$
+		this.BD = new AStarEdgeStub("B-D", this.B, this.D, true);  //$NON-NLS-1$
+		this.DC = new AStarEdgeStub("D-C", this.D, this.C, true);  //$NON-NLS-1$
+		this.DE = new AStarEdgeStub("D-E", this.D, this.E, true);  //$NON-NLS-1$
 		reset();
 	}
 	
@@ -80,7 +76,7 @@ public class AStarOrientedTest extends AbstractMathTestCase {
 	@After
 	public void tearDown() throws Exception {
 		this.astar = null;
-		this.AB = this.CA = this.DA = this.BD = this.EC = this.DE = this.DC = null;
+		this.AB = this.BD = this.DE = this.DC = null;
 		this.A = this.B = this.C = this.D = this.E = null;
 		this.h = null;
 	}
@@ -216,10 +212,11 @@ public class AStarOrientedTest extends AbstractMathTestCase {
 		list = this.astar.findPath(this.B, this.A);
 		
 		assertNotNull(list);
-		assertEquals(3, list.size());
+		assertEquals(4, list.size());
 		assertTrue(list.contains(this.B));
 		assertTrue(list.contains(this.D));
-		assertTrue(list.contains(this.A));
+		assertTrue(list.contains(this.C));
+		assertTrue(list.contains(this.E));
 	}
 
 	/**

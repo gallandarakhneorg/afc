@@ -174,7 +174,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 
 	@Override
 	public float getDistanceLinf(Point3D p1) {
-	      return (float) (MathUtil.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY()), Math.abs(this.z-p1.getZ())));
+	      return (MathUtil.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY()), Math.abs(this.z-p1.getZ())));
 	}
 
 	@Override

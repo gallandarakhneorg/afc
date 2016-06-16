@@ -34,7 +34,6 @@ import org.junit.Assume;
 import org.junit.ComparisonFailure;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Incubating;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.d3.Vector3D.PowerResult;
@@ -42,7 +41,7 @@ import org.arakhne.afc.math.geometry.d3.Vector3D.PowerResult;
 @SuppressWarnings("all")
 public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super P>, P extends Point3D<? super P, ? super V>,
 	TT extends Tuple3D>
-	extends AbstractTuple3DTest<V, TT> {
+	extends AbstractTuple3DTest<TT> {
 
 	public abstract V createVector(double x, double y, double z);
 
@@ -338,29 +337,29 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	
 	public final void assertEpsilonEquals(double expected, PowerResult<?> actual) {
 		if (actual == null) {
-			fail("Result is null");
+			fail("Result is null"); //$NON-NLS-1$
 			return;
 		}
 		if (actual.isVectorial()) {
-			throw new ComparisonFailure("Not same result type", Double.toString(expected), actual.toString());
+			throw new ComparisonFailure("Not same result type", Double.toString(expected), actual.toString()); //$NON-NLS-1$
 		}
 		assertEpsilonEquals(expected, actual.getScalar());
 	}
 
 	public final void assertEpsilonEquals(double expectedX, double expectedY, PowerResult<?> actual) {
 		if (actual == null) {
-			fail("Result is null");
+			fail("Result is null"); //$NON-NLS-1$
 			return;
 		}
 		if (!actual.isVectorial()) {
-			throw new ComparisonFailure("Not same result type", "[" + expectedX + ";" + expectedY + "]",
+			throw new ComparisonFailure("Not same result type", "[" + expectedX + ";" + expectedY + "]", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 					actual.toString());
 		}
 		Vector3D<?, ?> vector = actual.getVector();
 		assert (vector != null);
 		if (!isEpsilonEquals(expectedX, vector.getX())
 			|| !isEpsilonEquals(expectedY, vector.getY())) {
-			throw new ComparisonFailure("Not same result type", "[" + expectedX + ";" + expectedY + "]",
+			throw new ComparisonFailure("Not same result type", "[" + expectedX + ";" + expectedY + "]", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 					actual.toString());
 		}
 	}

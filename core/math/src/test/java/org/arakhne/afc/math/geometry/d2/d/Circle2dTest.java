@@ -20,27 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.d;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Iterator;
-
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.AbstractCircle2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.OrientedRectangle2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
-import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.d.Circle2d;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public class Circle2dTest extends AbstractCircle2afpTest<Circle2d, Rectangle2d> {

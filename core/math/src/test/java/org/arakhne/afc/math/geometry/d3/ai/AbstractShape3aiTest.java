@@ -38,7 +38,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Incubating;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -358,7 +357,7 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	 * @throws IOException Input/output exception
 	 */
 	public static File generateTestPicture(Shape3ai<?, ?, ?, ?, ?, ?> shape) throws IOException {
-		File filename = File.createTempFile("testShape", ".png");
+		File filename = File.createTempFile("testShape", ".png"); //$NON-NLS-1$ //$NON-NLS-2$
 		RectangularPrism3ai box = shape.toBoundingBox();
 		PathIterator3ai<?> iterator = shape.getPathIterator();
 		Path2D path = new Path2D.Double(
@@ -403,7 +402,7 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
 		g2d.setColor(Color.BLACK);
 		g2d.draw(path);
-		ImageIO.write(image, "png", filename);
+		ImageIO.write(image, "png", filename); //$NON-NLS-1$
 		return filename;
 	}	
 

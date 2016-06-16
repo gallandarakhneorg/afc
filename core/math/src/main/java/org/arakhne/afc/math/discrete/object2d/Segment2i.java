@@ -28,6 +28,7 @@ import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 import org.arakhne.afc.math.matrix.Transform2D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 
 
@@ -1065,17 +1066,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
-		b.append("["); 
-		b.append(getX1());
-		b.append(";"); 
-		b.append(getY1());
-		b.append("|"); 
-		b.append(getX2());
-		b.append(";"); 
-		b.append(getY2());
-		b.append("]"); 
-		return b.toString();
+		return ReflectionUtil.toString(this);
 	}
 
 	/** Iterator on the path elements of the segment.

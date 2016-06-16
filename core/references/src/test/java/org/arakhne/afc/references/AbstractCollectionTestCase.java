@@ -62,12 +62,12 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
 		int refCount = 10;
 		this.reference = new ArrayList<>(refCount);
 		for(int idx=0; idx<refCount; idx++) {
-			this.reference.add("REF_"+idx); 
+			this.reference.add("REF_"+idx);  //$NON-NLS-1$
 		}
 		
 		this.unreference = new ArrayList<>(5);
 		for(int idx=0; idx<5; idx++) {
-			this.unreference.add("UNREF_"+idx); 
+			this.unreference.add("UNREF_"+idx);  //$NON-NLS-1$
 		}
 
 		this.collection = createCollection();
@@ -235,10 +235,10 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
         int testCount = this.RANDOM.nextInt(5)+1;
         
         for(int i=0; i<testCount; i++) {
-        	msg = "test "+(i+1)+"/"+testCount;  
+        	msg = "test "+(i+1)+"/"+testCount;   //$NON-NLS-1$ //$NON-NLS-2$
         
 	        // Add an element
-	        String newElement = "NEWELT"+i; 
+	        String newElement = "NEWELT"+i;  //$NON-NLS-1$
 	        this.reference.add(newElement);
 	        Assert.assertTrue(msg,this.collection.add(newElement));
 	        Assert.assertEquals(msg,this.reference.size(), this.collection.size());
@@ -256,7 +256,7 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
         int removalIndex;
         
         for(int i=0; i<testCount; i++) {
-        	msg = "test "+(i+1)+"/"+testCount;  
+        	msg = "test "+(i+1)+"/"+testCount;   //$NON-NLS-1$ //$NON-NLS-2$
 
         	removalIndex = this.RANDOM.nextInt(this.reference.size());
 

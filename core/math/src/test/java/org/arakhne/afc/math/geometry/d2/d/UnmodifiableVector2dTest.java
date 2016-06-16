@@ -20,16 +20,8 @@
 
 package org.arakhne.afc.math.geometry.d2.d;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.arakhne.afc.math.geometry.d2.AbstractUnmodifiableVector2DTest;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.d.Circle2d;
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 
 @SuppressWarnings("all")
 public class UnmodifiableVector2dTest extends AbstractUnmodifiableVector2DTest<Vector2d, Point2d> {

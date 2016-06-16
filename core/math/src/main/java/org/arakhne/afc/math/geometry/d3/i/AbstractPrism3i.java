@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d3.i;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.ai.Prism3ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A rectangular shape with 2 integer numbers.
  *
@@ -63,7 +64,7 @@ public abstract class AbstractPrism3i<IT extends AbstractPrism3i<?>>
 	 * @param shape the shape to copy.
 	 */
 	public AbstractPrism3i(Prism3ai<?, ?, ?, ?, ?, ?> shape) {
-	    assert shape != null : "Shape must be not null";
+	    assert shape != null : AssertMessages.notNullParameter();
 	    this.minx = shape.getMinX();
 	    this.miny = shape.getMinY();
         this.minz = shape.getMinZ();

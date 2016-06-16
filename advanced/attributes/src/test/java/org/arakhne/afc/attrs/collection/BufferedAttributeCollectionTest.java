@@ -43,7 +43,7 @@ class CacheProviderStub extends BufferedAttributeCollection {
 
 	private static final long serialVersionUID = -1506117010970624098L;
 	
-	private final Map<String, Attribute> attributes = new HashMap<String,Attribute>();
+	private final Map<String, Attribute> attributes = new HashMap<>();
 	
 	/**
 	 */
@@ -70,7 +70,7 @@ class CacheProviderStub extends BufferedAttributeCollection {
 
 	@Override
 	public Collection<String> getAllAttributeNames() {
-		return new ArrayList<String>(this.attributes.keySet());
+		return new ArrayList<>(this.attributes.keySet());
 	}
 
 	@Override
@@ -154,7 +154,7 @@ public class BufferedAttributeCollectionTest extends AbstractAttributeCollection
 	/**
 	 */
 	public BufferedAttributeCollectionTest() {
-		super("BufferedAttributeProviderTest"); 
+		super("BufferedAttributeProviderTest");  //$NON-NLS-1$
 	}
 	
 	@Override

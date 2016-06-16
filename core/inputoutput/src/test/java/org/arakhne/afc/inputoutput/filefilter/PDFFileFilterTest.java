@@ -25,7 +25,7 @@ public class PDFFileFilterTest extends AbstractBaseFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".pdf";
+		return ".pdf"; //$NON-NLS-1$
 	}
 
 	@Override

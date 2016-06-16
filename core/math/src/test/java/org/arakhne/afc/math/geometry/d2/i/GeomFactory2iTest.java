@@ -20,24 +20,25 @@
 
 package org.arakhne.afc.math.geometry.d2.i;
 
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.AbstractGeomFactory2aiTest;
 import org.arakhne.afc.math.geometry.d2.ai.GeomFactory2ai;
-import org.junit.Rule;
 
 @SuppressWarnings("all")
 public class GeomFactory2iTest extends AbstractGeomFactory2aiTest {
 
+	@Override
 	protected GeomFactory2ai<?, ?, ?, ?> createFactory() {
 		return new GeomFactory2i();
 	}
 	
+	@Override
 	protected Point2D createPoint(int x, int y) {
 		return new Point2i(x, y);
 	}
 
+	@Override
 	protected Vector2D createVector(int x, int y) {
 		return new Vector2i(x, y);
 	}

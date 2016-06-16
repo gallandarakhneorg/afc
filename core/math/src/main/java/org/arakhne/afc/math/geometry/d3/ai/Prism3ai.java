@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a rectangular shape on a plane.
  *
@@ -51,7 +52,7 @@ public interface Prism3ai<
 
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must not be null";
+		assert box != null : AssertMessages.notNullParameter();
 		box.setFromCorners(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ());
 	}
 
@@ -69,10 +70,11 @@ public interface Prism3ai<
     * @param height height of the prism.
     * @param depth depth of the prism.
     */
+	@SuppressWarnings("checkstyle:magicnumber")
 	default void set(int x, int y, int z, int width, int height, int depth) {
-		assert width >= 0 : "Width must be positive or zero";
-		assert height >= 0 : "Height must be positive or zero";
-		assert depth >= 0 : "Height must be positive or zero";
+		assert width >= 0 : AssertMessages.positiveOrZeroParameter(3);
+		assert height >= 0 : AssertMessages.positiveOrZeroParameter(4);
+		assert depth >= 0 : AssertMessages.positiveOrZeroParameter(5);
 		setFromCorners(x, y, z, x + width, y + height, z + depth);
 	}
 
@@ -82,8 +84,8 @@ public interface Prism3ai<
 	 * @param max is the max corner of the prism.
 	 */
 	default void set(Point3D<?, ?> min, Point3D<?, ?> max) {
-		assert min != null : "Minimum point must be not be null";
-		assert max != null : "Maximum point must be not be null";
+		assert min != null : AssertMessages.notNullParameter(0);
+		assert max != null : AssertMessages.notNullParameter(1);
 		setFromCorners(min.ix(), min.iy(), min.iz(), max.ix(), max.iy(), max.iz());
 	}
 
@@ -92,7 +94,7 @@ public interface Prism3ai<
 	 * @param width the width of the prism.
 	 */
 	default void setWidth(int width) {
-		assert width >= 0 : "Width must be positive or zero";
+		assert width >= 0 : AssertMessages.positiveOrZeroParameter();
 		setMaxX(getMinX() + width);
 	}
 
@@ -101,7 +103,7 @@ public interface Prism3ai<
 	 * @param height the height of the prism.
 	 */
 	default void setHeight(int height) {
-		assert height >= 0 : "Height must be positive or zero";
+		assert height >= 0 : AssertMessages.positiveOrZeroParameter();
 		setMaxY(getMinY() + height);
 	}
 
@@ -110,7 +112,7 @@ public interface Prism3ai<
 	 * @param depth the depth of the prism
 	 */
 	default void setDepth(int depth) {
-		assert depth >= 0 : "Height must be positive or zero";
+		assert depth >= 0 : AssertMessages.positiveOrZeroParameter();
 		setMaxZ(getMinZ() + depth);
 	}
 
@@ -131,8 +133,8 @@ public interface Prism3ai<
 	 * @param p2 the second corner.
 	 */
 	default void setFromCorners(Point3D<?, ?> p1, Point3D<?, ?> p2) {
-		assert p1 != null : "First corner must be not be null";
-		assert p2 != null : "Second corner must be not be null";
+		assert p1 != null : AssertMessages.notNullParameter(0);
+		assert p2 != null : AssertMessages.notNullParameter(1);
 		setFromCorners(p1.ix(), p1.iy(), p1.iz(), p2.ix(), p2.iy(), p2.iz());
 	}
 
@@ -167,8 +169,8 @@ public interface Prism3ai<
      * @param corner the specified corner point
      */
 	default void setFromCenter(Point3D<?, ?> center, Point3D<?, ?> corner) {
-		assert center != null : "Center must be not be null";
-		assert corner != null : "Corner must be not be null";
+		assert center != null : AssertMessages.notNullParameter(0);
+		assert corner != null : AssertMessages.notNullParameter(1);
 		setFromCenter(center.ix(), center.iy(), center.iz(), corner.ix(), corner.iy(), corner.iz());
 	}
 

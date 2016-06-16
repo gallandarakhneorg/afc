@@ -103,6 +103,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 		assertTrue(this.shape.equalsToPathIterator(createRectangularPrism(5, 8, 0, 10, 5, 0).getPathIterator()));
 	}
 
+	@Override
 	@Test
 	@Ignore
 	public void getPointIterator() {
@@ -491,6 +492,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 		assertFalse(this.shape.intersects(createSegment(16,0,0,100,100,0)));
 	}
 
+	@Override
 	@Test
 	@Ignore
 	public void intersectsPath3ai() {
@@ -736,6 +738,7 @@ public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism
 		assertFalse(RectangularPrism3ai.intersectsRectangleSegment(5, 8, 0, 15, 13, 0, 16, 0, 0, 116, 100, 0));
 	}
 
+	@Override
 	@Test
 	public void inflate() {
 		this.shape.inflate(1, 2, 0, 3, 4, 0);

@@ -31,7 +31,7 @@ public class UniformStochasticLawTest extends AbstractMathTestCase {
 
 	@Test
 	public void random() {
-		assertInlineParameterUsage(UniformStochasticLaw.class, "random", double.class, double.class);
+		assertInlineParameterUsage(UniformStochasticLaw.class, "random", double.class, double.class); //$NON-NLS-1$
 	}
 	
 }

@@ -21,22 +21,23 @@
 package org.arakhne.afc.math.geometry.d2;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.Assume;
-import org.junit.Rule;
 import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 
 @SuppressWarnings("all")
 public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>,
 		TT extends Tuple2D>
-		extends AbstractTuple2DTest<P, TT> {
+		extends AbstractTuple2DTest<TT> {
 	
 	public abstract P createPoint(double x, double y);
 
@@ -48,7 +49,7 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 		assertTrue(Point2D.isCollinearPoints(-6, -4, -1, 3, 4, 10));
 		assertFalse(Point2D.isCollinearPoints(0, 0, 1, 1, 1, -5));
 		//
-		assertInlineParameterUsage(Point2D.class, "isCollinearPoints",
+		assertInlineParameterUsage(Point2D.class, "isCollinearPoints", //$NON-NLS-1$
 				double.class, double.class, double.class, double.class, double.class, double.class);
 	}
 
@@ -65,7 +66,7 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 		assertEpsilonEquals(5, Point2D.getDistanceSquaredPointPoint(0, 0, 1, 2));
 		assertEpsilonEquals(2, Point2D.getDistanceSquaredPointPoint(0, 0, 1, 1));
 		//
-		assertInlineParameterUsage(Point2D.class, "getDistancePointPoint", double.class, double.class, double.class, double.class);
+		assertInlineParameterUsage(Point2D.class, "getDistancePointPoint", double.class, double.class, double.class, double.class); //$NON-NLS-1$
 	}
 
 	@Test
@@ -75,7 +76,7 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 		assertEpsilonEquals(0, Point2D.getDistanceL1PointPoint(1, 2, 1.0, 2.0));
 		assertEpsilonEquals(4, Point2D.getDistanceL1PointPoint(1.0, 2.0, -1, 0));
 		//
-		assertInlineParameterUsage(Point2D.class, "getDistanceL1PointPoint", double.class, double.class, double.class, double.class);
+		assertInlineParameterUsage(Point2D.class, "getDistanceL1PointPoint", double.class, double.class, double.class, double.class); //$NON-NLS-1$
 	}
 
 	@Test
@@ -85,7 +86,7 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 		assertEpsilonEquals(0, Point2D.getDistanceLinfPointPoint(1,2,1.0,2.0));
 		assertEpsilonEquals(2, Point2D.getDistanceLinfPointPoint(1.0,2.0,-1,0));
 		//
-		assertInlineParameterUsage(Point2D.class, "getDistanceLinfPointPoint", double.class, double.class, double.class, double.class);
+		assertInlineParameterUsage(Point2D.class, "getDistanceLinfPointPoint", double.class, double.class, double.class, double.class); //$NON-NLS-1$
 	}
 
 	@Test
@@ -98,7 +99,7 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 		assertEpsilonEquals(5, point.getDistanceSquared(point3));
 		assertEpsilonEquals(2, point.getDistanceSquared(point4));
 		//
-		assertInlineParameterUsage(Point2D.class, "getDistanceSquaredPointPoint", double.class, double.class, double.class, double.class);
+		assertInlineParameterUsage(Point2D.class, "getDistanceSquaredPointPoint", double.class, double.class, double.class, double.class); //$NON-NLS-1$
 	}
 	
 	@Test
@@ -433,7 +434,6 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 	@Test
 	public void addVector2D() {
 		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
 		Vector2D vector1 = createVector(0, 0);
 		Vector2D vector2 = createVector(1, 2);
 		Vector2D vector3 = createVector(1, -5);
@@ -626,7 +626,6 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 	@Test
 	public void scaleAddIntVector2D() {
 		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
 		Vector2D vector1 = createVector(0, 0);
 		Vector2D vector2 = createVector(1, 2);
 		Vector2D vector3 = createVector(1, -5);
@@ -654,7 +653,6 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 	public void scaleAddDoubleVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
 		Vector2D vector1 = createVector(0, 0);
 		Vector2D vector2 = createVector(1, 2);
 		Vector2D vector3 = createVector(1, -5);
@@ -682,7 +680,6 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 	public void scaleAddDoubleVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
 		Vector2D vector1 = createVector(0, 0);
 		Vector2D vector2 = createVector(1, 2);
 		Vector2D vector3 = createVector(1, -5);
@@ -736,7 +733,6 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 	@Test
 	public void subVector2D() {
 		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
 		Vector2D vector1 = createVector(0, 0);
 		Vector2D vector2 = createVector(1, 2);
 		Vector2D vector3 = createVector(1, -5);
@@ -763,11 +759,9 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 	@Test
 	public void operator_addVector2D() {
 		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
 		Vector2D vector1 = createVector(0, 0);
 		Vector2D vector2 = createVector(1, 2);
 		Vector2D vector3 = createVector(1, -5);
-		Point2D r;
 		
 		point.operator_add(vector1);
 		assertFpPointEquals(1, 2, point);
@@ -791,7 +785,6 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 	@Test
 	public void operator_removeVector2D() {
 		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
 		Vector2D vector1 = createVector(0, 0);
 		Vector2D vector2 = createVector(1, 2);
 		Vector2D vector3 = createVector(1, -5);

@@ -187,7 +187,7 @@ public interface Shape3D<
 	 */
 	@Pure
 	default double getDistance(Point3D<?, ?> point) {
-		assert point != null : "Point must not be null";
+		assert point != null : AssertMessages.notNullParameter();
 		return Math.sqrt(getDistanceSquared(point));
 	}
 

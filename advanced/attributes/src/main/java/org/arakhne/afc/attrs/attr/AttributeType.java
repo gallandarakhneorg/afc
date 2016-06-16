@@ -832,7 +832,7 @@ public enum AttributeType {
 		return java.net.URI.class.cast(obj);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static Enum<?> castEnumeration(Object obj) {
 		if (obj == null) {
 			return null;

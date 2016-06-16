@@ -27,7 +27,7 @@ public class D3DSFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".3ds";
+		return ".3ds"; //$NON-NLS-1$
 	}
 
 	@Override

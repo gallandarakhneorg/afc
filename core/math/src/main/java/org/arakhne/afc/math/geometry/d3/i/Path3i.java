@@ -34,6 +34,8 @@ import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.ai.InnerComputationPoint3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
 import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Path with 2 integer numbers.
  *
@@ -122,7 +124,7 @@ public class Path3i extends AbstractShape3i<Path3i>
      * @param windingRule the path winding rule.
      */
 	public Path3i(PathWindingRule windingRule) {
-		assert windingRule != null : "Path winding rule must be not null";
+		assert windingRule != null : AssertMessages.notNullParameter();
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new int[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -133,8 +135,8 @@ public class Path3i extends AbstractShape3i<Path3i>
      * @param iterator the iterator that provides the elements to copy.
      */
 	public Path3i(PathWindingRule windingRule, Iterator<PathElement3i> iterator) {
-		assert windingRule != null : "Path winding rule must be not null";
-		assert iterator != null : "Iterator must be not null";
+		assert windingRule != null : AssertMessages.notNullParameter(0);
+		assert iterator != null : AssertMessages.notNullParameter(1);
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new int[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -184,7 +186,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	private void ensureSlots(boolean needMove, int nbSlots) {
 		if (needMove && this.numTypes == 0) {
-			throw new IllegalStateException("missing initial moveto in path definition");
+			throw new IllegalStateException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 		if (this.types.length == this.numTypes) {
 			this.types = Arrays.copyOf(this.types, this.types.length + GROW_SIZE);
@@ -197,7 +199,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null";
+		assert point != null : AssertMessages.notNullParameter();
 		final int px = point.ix();
 		final int py = point.iy();
 		final int pz = point.iz();
@@ -271,7 +273,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	@Override
 	public void transform(Transform3D transform) {
-        assert transform != null : "Transformation must be not null";
+        assert transform != null : AssertMessages.notNullParameter();
 		final Point3D<?, ?> p = new InnerComputationPoint3ai();
         for (int i = 0; i < this.numCoords; i += 3) {
             p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
@@ -320,7 +322,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 	@Override
 	@Pure
 	public void toBoundingBox(RectangularPrism3i box) {
-        assert box != null : "Rectangle must be not null";
+        assert box != null : AssertMessages.notNullParameter();
         RectangularPrism3i bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
@@ -471,7 +473,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 	@Override
 	@Pure
 	public void toBoundingBoxWithCtrlPoints(RectangularPrism3i box) {
-		assert box != null : "Rectangle must be not null";
+		assert box != null : AssertMessages.notNullParameter();
         RectangularPrism3i bb = this.logicalBounds == null ? null : this.logicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
@@ -740,7 +742,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	@Override
 	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null";
+		assert rule != null : AssertMessages.notNullParameter();
 		this.windingRule = rule;
 	}
 
@@ -809,7 +811,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	@Override
 	public void set(Path3i path) {
-		assert path != null : "Path must be not null";
+		assert path != null : AssertMessages.notNullParameter();
 		clear();
 		add(path.getPathIterator());
 	}

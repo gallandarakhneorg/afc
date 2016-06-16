@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.discrete.object2d;
 
 import org.arakhne.afc.math.generic.Tuple2D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** 2D tuple with 2 integers.
  *
@@ -100,9 +101,6 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 		this.y = (int)y;
 	}
 
-	/** {@inheritDoc}
-	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public T clone() {
 		try {
@@ -556,10 +554,6 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object t1) {
 		try {
@@ -608,11 +602,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 */
 	@Override
 	public String toString() {
-		return "(" 
-				+this.x
-				+";" 
-				+this.y
-				+")"; 
+		return ReflectionUtil.toString(this);
 	}
 
 }

@@ -23,14 +23,13 @@ package org.arakhne.afc.math.matrix;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Rule;
+import org.junit.Test;
+
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.d.Vector3d;
-
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public class Matrix3dTest extends AbstractMathTestCase {

@@ -27,7 +27,7 @@ public class BMPFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".bmp";
+		return ".bmp"; //$NON-NLS-1$
 	}
 
 	@Override

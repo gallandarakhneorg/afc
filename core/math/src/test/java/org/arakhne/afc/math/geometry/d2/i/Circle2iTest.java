@@ -20,25 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.i;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Iterator;
-
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.AbstractCircle2aiTest;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
-import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
-import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.i.Point2i;
-import org.arakhne.afc.math.geometry.d2.i.Rectangle2i;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public class Circle2iTest extends AbstractCircle2aiTest<Circle2i, Rectangle2i> {

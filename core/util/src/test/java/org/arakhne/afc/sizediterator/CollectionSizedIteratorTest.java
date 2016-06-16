@@ -53,11 +53,11 @@ public class CollectionSizedIteratorTest {
 	@Before
 	public void setUp() throws Exception {
 		this.collection = new ArrayList<>();
-		this.collection.add(this.s1 = "s1"); 
-		this.collection.add(this.s2 = "s2"); 
-		this.collection.add(this.s3 = "s3"); 
-		this.collection.add(this.s4 = "s4"); 
-		this.collection.add(this.s5 = "s5"); 
+		this.collection.add(this.s1 = "s1");  //$NON-NLS-1$
+		this.collection.add(this.s2 = "s2");  //$NON-NLS-1$
+		this.collection.add(this.s3 = "s3");  //$NON-NLS-1$
+		this.collection.add(this.s4 = "s4");  //$NON-NLS-1$
+		this.collection.add(this.s5 = "s5");  //$NON-NLS-1$
 		this.iterator = new CollectionSizedIterator<>(this.collection);
 	}
 	
@@ -99,7 +99,7 @@ public class CollectionSizedIteratorTest {
 		assertSame(this.s5, this.iterator.next());
 		try {
 			this.iterator.next();
-			fail("expecting NoSuchElementException"); 
+			fail("expecting NoSuchElementException");  //$NON-NLS-1$
 		}
 		catch(NoSuchElementException exception) {
 			// Expected exception

@@ -20,18 +20,12 @@
 
 package org.arakhne.afc.inputoutput.filefilter;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.net.URL;
 
-import junit.framework.TestCase;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-
-import org.arakhne.afc.vmutil.FileSystem;
-import org.arakhne.afc.vmutil.Resources;
 
 @SuppressWarnings("all")
 public abstract class AbstractFileFilterTest extends AbstractBaseFileFilterTest {

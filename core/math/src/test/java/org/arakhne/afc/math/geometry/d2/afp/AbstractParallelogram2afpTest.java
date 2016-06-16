@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -29,6 +29,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Test;
+
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -36,9 +38,6 @@ import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-
-import org.junit.Ignore;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractParallelogram2afpTest<T extends Parallelogram2afp<?, T, ?, ?, ?, B>,
@@ -65,17 +64,15 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
     @Override
     protected final T createShape() {
-        return (T) createParallelogram(cx, cy, ux, uy, e1, vx, vy, e2);
+        return (T) createParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2);
     }
 
     @Test
     public void staticCalculatesOrthogonalAxes() {
         double obrux = 0.8944271909999159;
         double obruy = -0.4472135954999579;
-        double obre1 = 13.99999;
         double obrvx = 0.4472135954999579;
         double obrvy = 0.8944271909999159;
-        double obre2 = 12.99999;
         List points = Arrays.asList(
                 createPoint(11.7082, -0.94427), createPoint(16.18034, 8),
                 createPoint(-1.7082, 16.94427), createPoint(-6.18034, 8));
@@ -91,39 +88,39 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
     @Test
     public void staticFindsVectorProjectionRAxisPoint() {
-        assertEpsilonEquals(-e1, Parallelogram2afp.findsVectorProjectionRAxisPoint(ux, uy, vx, vy, pEx - cx, pEy - cy));
-        assertEpsilonEquals(e1, Parallelogram2afp.findsVectorProjectionRAxisPoint(ux, uy, vx, vy, pFx - cx, pFy - cy));
-        assertEpsilonEquals(e1, Parallelogram2afp.findsVectorProjectionRAxisPoint(ux, uy, vx, vy, pGx - cx, pGy - cy));
-        assertEpsilonEquals(-e1, Parallelogram2afp.findsVectorProjectionRAxisPoint(ux, uy, vx, vy, pHx - cx, pHy - cy));
-        assertEpsilonEquals(-12.36932, Parallelogram2afp.findsVectorProjectionRAxisPoint(ux, uy, vx, vy, -cx, -cy));
+        assertEpsilonEquals(-this.e1, Parallelogram2afp.findsVectorProjectionRAxisPoint(this.ux, this.uy, this.vx, this.vy, this.pEx - this.cx, this.pEy - this.cy));
+        assertEpsilonEquals(this.e1, Parallelogram2afp.findsVectorProjectionRAxisPoint(this.ux, this.uy, this.vx, this.vy, this.pFx - this.cx, this.pFy - this.cy));
+        assertEpsilonEquals(this.e1, Parallelogram2afp.findsVectorProjectionRAxisPoint(this.ux, this.uy, this.vx, this.vy, this.pGx - this.cx, this.pGy - this.cy));
+        assertEpsilonEquals(-this.e1, Parallelogram2afp.findsVectorProjectionRAxisPoint(this.ux, this.uy, this.vx, this.vy, this.pHx - this.cx, this.pHy - this.cy));
+        assertEpsilonEquals(-12.36932, Parallelogram2afp.findsVectorProjectionRAxisPoint(this.ux, this.uy, this.vx, this.vy, -this.cx, -this.cy));
     }
 
     @Test
     public void staticFindsVectorProjectionSAxisVector() {
-        assertEpsilonEquals(-e2, Parallelogram2afp.findsVectorProjectionSAxisVector(ux, uy, vx, vy, pEx - cx, pEy - cy));
-        assertEpsilonEquals(-e2, Parallelogram2afp.findsVectorProjectionSAxisVector(ux, uy, vx, vy, pFx - cx, pFy - cy));
-        assertEpsilonEquals(e2, Parallelogram2afp.findsVectorProjectionSAxisVector(ux, uy, vx, vy, pGx - cx, pGy - cy));
-        assertEpsilonEquals(e2, Parallelogram2afp.findsVectorProjectionSAxisVector(ux, uy, vx, vy, pHx - cx, pHy - cy));
-        assertEpsilonEquals(4.24264, Parallelogram2afp.findsVectorProjectionSAxisVector(ux, uy, vx, vy, -cx, -cy));
+        assertEpsilonEquals(-this.e2, Parallelogram2afp.findsVectorProjectionSAxisVector(this.ux, this.uy, this.vx, this.vy, this.pEx - this.cx, this.pEy - this.cy));
+        assertEpsilonEquals(-this.e2, Parallelogram2afp.findsVectorProjectionSAxisVector(this.ux, this.uy, this.vx, this.vy, this.pFx - this.cx, this.pFy - this.cy));
+        assertEpsilonEquals(this.e2, Parallelogram2afp.findsVectorProjectionSAxisVector(this.ux, this.uy, this.vx, this.vy, this.pGx - this.cx, this.pGy - this.cy));
+        assertEpsilonEquals(this.e2, Parallelogram2afp.findsVectorProjectionSAxisVector(this.ux, this.uy, this.vx, this.vy, this.pHx - this.cx, this.pHy - this.cy));
+        assertEpsilonEquals(4.24264, Parallelogram2afp.findsVectorProjectionSAxisVector(this.ux, this.uy, this.vx, this.vy, -this.cx, -this.cy));
     }
 
     @Test
     public void staticCalculatesCenterPointAxisExtents() {
         List points = Arrays.asList(
-                createPoint(pEx, pEy), createPoint(pGx, pGy),
-                createPoint(pFx, pFy), createPoint(pEx, pEy));
+                createPoint(this.pEx, this.pEy), createPoint(this.pGx, this.pGy),
+                createPoint(this.pFx, this.pFy), createPoint(this.pEx, this.pEy));
         Vector2D R, S;
         Point2D center;
         Tuple2D extents;
-        R = createVector(ux, uy);
-        S = createVector(vx, vy);
+        R = createVector(this.ux, this.uy);
+        S = createVector(this.vx, this.vy);
         center = createPoint(Double.NaN, Double.NaN);
         extents = createVector(Double.NaN, Double.NaN);
         Parallelogram2afp.calculatesCenterPointAxisExtents(points, R, S, center, extents);
-        assertEpsilonEquals(cx, center.getX());
-        assertEpsilonEquals(cy, center.getY());
-        assertEpsilonEquals(e1, extents.getX());
-        assertEpsilonEquals(e2, extents.getY());
+        assertEpsilonEquals(this.cx, center.getX());
+        assertEpsilonEquals(this.cy, center.getY());
+        assertEpsilonEquals(this.e1, extents.getX());
+        assertEpsilonEquals(this.e2, extents.getY());
     }
 
     @Test
@@ -133,121 +130,121 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 -20, 9,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
-        assertFpPointEquals(pHx, pHy, closest);
+        assertFpPointEquals(this.pHx, this.pHy, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 0, 0,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
         assertFpPointEquals(1.90983, 1.90983, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 5, -10,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
         assertFpPointEquals(9.40983, -5.59017, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 14, -20,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
-        assertFpPointEquals(pEx, pEy, closest);
+        assertFpPointEquals(this.pEx, this.pEy, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 -6, 15,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
         assertFpPointEquals(-3.81679, 14.4542, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 0, 10,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
         assertFpPointEquals(0, 10, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 10, 0,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
         assertFpPointEquals(10, 0, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 15, -4,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
         assertFpPointEquals(13.99326, -3.74832, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 -5, 25,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
         assertFpPointEquals(-1.40503, 24.10126, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 0, 20,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
         assertFpPointEquals(0, 20, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 10, 10,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
         assertFpPointEquals(10, 10, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 20, 0,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
         assertFpPointEquals(15.22856, 1.19286, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 -3, 35,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
-        assertFpPointEquals(pGx, pGy, closest);
+        assertFpPointEquals(this.pGx, this.pGy, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 5, 35,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
-        assertFpPointEquals(pGx, pGy, closest);
+        assertFpPointEquals(this.pGx, this.pGy, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 20, 15,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
         assertFpPointEquals(15.59017, 10.59017, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 35, 10,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
-        assertFpPointEquals(pFx, pFy, closest);
+        assertFpPointEquals(this.pFx, this.pFy, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(
                 -8, 29,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 closest);
-        assertFpPointEquals(pGx, pGy, closest);
+        assertFpPointEquals(this.pGx, this.pGy, closest);
 
         closest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsClosestPointPointParallelogram(0, 0,
@@ -300,121 +297,121 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 -20, 9,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pEx, pEy, farthest);
+        assertFpPointEquals(this.pEx, this.pEy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 0, 0,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pGx, pGy, farthest);
+        assertFpPointEquals(this.pGx, this.pGy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 5, -10,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pGx, pGy, farthest);
+        assertFpPointEquals(this.pGx, this.pGy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 14, -20,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pGx, pGy, farthest);
+        assertFpPointEquals(this.pGx, this.pGy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 -6, 15,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pEx, pEy, farthest);
+        assertFpPointEquals(this.pEx, this.pEy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 0, 10,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pEx, pEy, farthest);
+        assertFpPointEquals(this.pEx, this.pEy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 10, 0,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pGx, pGy, farthest);
+        assertFpPointEquals(this.pGx, this.pGy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 15, -4,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pGx, pGy, farthest);
+        assertFpPointEquals(this.pGx, this.pGy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 -5, 25,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pEx, pEy, farthest);
+        assertFpPointEquals(this.pEx, this.pEy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 0, 20,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pEx, pEy, farthest);
+        assertFpPointEquals(this.pEx, this.pEy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 10, 10,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pGx, pGy, farthest);
+        assertFpPointEquals(this.pGx, this.pGy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 20, 0,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pGx, pGy, farthest);
+        assertFpPointEquals(this.pGx, this.pGy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 -3, 35,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pEx, pEy, farthest);
+        assertFpPointEquals(this.pEx, this.pEy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 5, 35,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pEx, pEy, farthest);
+        assertFpPointEquals(this.pEx, this.pEy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 20, 15,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pHx, pHy, farthest);
+        assertFpPointEquals(this.pHx, this.pHy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 35, 10,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pHx, pHy, farthest);
+        assertFpPointEquals(this.pHx, this.pHy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(
                 -8, 29,
-                cx, cy, ux, uy, e1, vx, vy, e2,
+                this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 farthest);
-        assertFpPointEquals(pEx, pEy, farthest);
+        assertFpPointEquals(this.pEx, this.pEy, farthest);
 
         farthest = createPoint(Double.NaN, Double.NaN);
         Parallelogram2afp.findsFarthestPointPointParallelogram(0, 0,
@@ -429,157 +426,157 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
     @Test
     public void staticContainsParallelogramPoint() {
-        assertFalse(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 0));
-        assertFalse(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -20, 0));
-        assertTrue(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 12, -4));
-        assertTrue(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 14, 0));
-        assertFalse(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 15, 0));
-        assertFalse(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 20, 8));
-        assertTrue(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 8, 16));
-        assertFalse(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -4, 20));
-        assertFalse(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -5, 12));
 
-        assertTrue(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 6));
-        assertTrue(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 7));
-        assertTrue(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 8));
-        assertTrue(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 9));
-        assertTrue(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 10));
-        assertFalse(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 27));
 
-        assertTrue(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
-                cx, cy));
+        assertTrue(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
+                this.cx, this.cy));
 
-        assertTrue(Parallelogram2afp.containsParallelogramPoint(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.containsParallelogramPoint(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 16, 8));
     }
 
     @Test
     public void staticContainsParallelogramRectangle() {
-        assertFalse(Parallelogram2afp.containsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.containsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 0, 1, 1));
-        assertFalse(Parallelogram2afp.containsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.containsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 1, 1, 1));
-        assertFalse(Parallelogram2afp.containsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.containsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 2, 1, 1));
-        assertFalse(Parallelogram2afp.containsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.containsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 3, 1, 1));
-        assertTrue(Parallelogram2afp.containsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.containsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 4, 1, 1));
-        assertTrue(Parallelogram2afp.containsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.containsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 5, 1, 1));
-        assertTrue(Parallelogram2afp.containsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.containsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 6, 1, 1));
     }
 
     @Test
     public void staticIntersectsParallelogramSegment() {
-        assertFalse(Parallelogram2afp.intersectsParallelogramSegment(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramSegment(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 0, 1, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramSegment(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramSegment(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 5, 5, 4, 6));
-        assertTrue(Parallelogram2afp.intersectsParallelogramSegment(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramSegment(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 2, -2, 5, 0));
-        assertFalse(Parallelogram2afp.intersectsParallelogramSegment(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramSegment(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -20, -5, -10, 6));
-        assertFalse(Parallelogram2afp.intersectsParallelogramSegment(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramSegment(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -5, 0, -10, 16));
-        assertTrue(Parallelogram2afp.intersectsParallelogramSegment(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramSegment(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -10, 1, 10, 20));
     }
 
     @Test
     public void staticIntersectsParallelogramCircle() {
-        assertFalse(Parallelogram2afp.intersectsParallelogramCircle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramCircle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 .5, .5, .5));
-        assertFalse(Parallelogram2afp.intersectsParallelogramCircle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramCircle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 .5, 1.5, .5));
-        assertFalse(Parallelogram2afp.intersectsParallelogramCircle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramCircle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 .5, 2.5, .5));
-        assertTrue(Parallelogram2afp.intersectsParallelogramCircle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramCircle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 .5, 3.5, .5));
-        assertTrue(Parallelogram2afp.intersectsParallelogramCircle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramCircle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 4.5, 3.5, .5));
 
-        assertFalse(Parallelogram2afp.intersectsParallelogramCircle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramCircle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 10, -7, .5));
-        assertFalse(Parallelogram2afp.intersectsParallelogramCircle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramCircle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 10.1, -7, .5));
-        assertTrue(Parallelogram2afp.intersectsParallelogramCircle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramCircle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 10.2, -7, .5));
 
-        assertTrue(Parallelogram2afp.intersectsParallelogramCircle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramCircle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 10, -1, 5));
     }
 
     @Test
     public void staticIntersectsParallelogramEllipse() {
-        assertFalse(Parallelogram2afp.intersectsParallelogramEllipse(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramEllipse(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 0, 2, 1));
-        assertFalse(Parallelogram2afp.intersectsParallelogramEllipse(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramEllipse(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 1, 2, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 2, 2, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 3, 2, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 4, 2, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 1, 3, 2, 1));
 
-        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 5, 5, 2, 1));
 
-        assertFalse(Parallelogram2afp.intersectsParallelogramEllipse(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramEllipse(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0.1, 1, 2, 1));
-        assertFalse(Parallelogram2afp.intersectsParallelogramEllipse(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramEllipse(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0.2, 1, 2, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0.3, 1, 2, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramEllipse(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0.4, 1, 2, 1));
 
-        assertFalse(Parallelogram2afp.intersectsParallelogramEllipse(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramEllipse(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -7, 7.5, 2, 1));
     }
 
     @Test
     public void staticIntersectsParallelogramTriangle() {
-        assertTrue(Parallelogram2afp.intersectsParallelogramTriangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramTriangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -5, 15, -3, 16, -8, 19));
-        assertTrue(Parallelogram2afp.intersectsParallelogramTriangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramTriangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -5, 15, -8, 19, -3, 16));
-        assertFalse(Parallelogram2afp.intersectsParallelogramTriangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramTriangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, -5, 2, -4, -3, -1));
-        assertFalse(Parallelogram2afp.intersectsParallelogramTriangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramTriangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, -5, -3, -1, 2, -4));
-        assertFalse(Parallelogram2afp.intersectsParallelogramTriangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramTriangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 20, 0, 22, 1, 17, 4));
-        assertFalse(Parallelogram2afp.intersectsParallelogramTriangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramTriangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 20, 0, 17, 4, 22, 1));
-        assertFalse(Parallelogram2afp.intersectsParallelogramTriangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramTriangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 17.18034, 9, 19.18034, 10, 14.18034, 13));
-        assertFalse(Parallelogram2afp.intersectsParallelogramTriangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramTriangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 17.18034, 9, 14.18034, 13, 19.18034, 10));
-        assertTrue(Parallelogram2afp.intersectsParallelogramTriangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramTriangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 10, 2, 11, -3, 14));
-        assertTrue(Parallelogram2afp.intersectsParallelogramTriangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramTriangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 10, -3, 14, 2, 11));
-        assertTrue(Parallelogram2afp.intersectsParallelogramTriangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramTriangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 20, 2, 21, -3, 24));
     }
 
@@ -595,77 +592,77 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         // P - (-0.9284766908852592,0.3713906763541037) * 5 + (0.3713906763541037,0.9284766908852592) * 3
         // P - (-0.9284766908852592,0.3713906763541037) * 5 - (0.3713906763541037,0.9284766908852592) * 3
         // P + (-0.9284766908852592,0.3713906763541037) * 5 - (0.3713906763541037,0.9284766908852592) * 3
-        assertFalse(Parallelogram2afp.intersectsParallelogramParallelogram(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -10, 0,
                 ux2, uy2, et1, vx2, vy2, et2));
-        assertFalse(Parallelogram2afp.intersectsParallelogramParallelogram(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -15, 25,
                 ux2, uy2, et1, vx2, vy2, et2));
-        assertFalse(Parallelogram2afp.intersectsParallelogramParallelogram(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 2, -6,
                 ux2, uy2, et1, vx2, vy2, et2));
-        assertFalse(Parallelogram2afp.intersectsParallelogramParallelogram(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 2, -5,
                 ux2, uy2, et1, vx2, vy2, et2));
-        assertTrue(Parallelogram2afp.intersectsParallelogramParallelogram(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 2, -4,
                 ux2, uy2, et1, vx2, vy2, et2));
-        assertTrue(Parallelogram2afp.intersectsParallelogramParallelogram(cx, cy, ux, uy, e1, vx, vy, e2,
-                pEx, pEy,
+        assertTrue(Parallelogram2afp.intersectsParallelogramParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
+                this.pEx, this.pEy,
                 ux2, uy2, et1, vx2, vy2, et2));
-        assertTrue(Parallelogram2afp.intersectsParallelogramParallelogram(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 6, 6,
                 ux2, uy2, et1, vx2, vy2, et2));
-        assertTrue(Parallelogram2afp.intersectsParallelogramParallelogram(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 6, 6,
                 ux2, uy2, 10 * et1, vx2, vy2, 10 * et2));
     }
 
     @Test
     public void staticIntersectsParallelogramRectangle() {
-        assertFalse(Parallelogram2afp.intersectsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 0, 1, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 2, 1, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -5.5, 8.5, 1, 1));
-        assertFalse(Parallelogram2afp.intersectsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -6, 16, 1, 1));
-        assertFalse(Parallelogram2afp.intersectsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 146, 16, 1, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 12, 14, 1, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 8, 1, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 10, -1, 1, 1));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -15, -10, 35, 40));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -4.79634, 14.50886, 1, 1));
     }
 
     @Test
     public void staticIntersectsParallelogramRoundRectangle() {
-        assertFalse(Parallelogram2afp.intersectsParallelogramRoundRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramRoundRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 0, 1, 1, .1, .05));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRoundRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRoundRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 2, 1, 1, .1, .05));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRoundRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRoundRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -5.5, 8.5, 1, 1, .1, .05));
-        assertFalse(Parallelogram2afp.intersectsParallelogramRoundRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramRoundRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -6, 16, 1, 1, .1, .05));
-        assertFalse(Parallelogram2afp.intersectsParallelogramRoundRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramRoundRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 146, 16, 1, 1, .1, .05));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRoundRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRoundRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 12, 14, 1, 1, .1, .05));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRoundRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRoundRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 0, 8, 1, 1, .1, .05));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRoundRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRoundRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 10, -1, 1, 1, .1, .05));
-        assertTrue(Parallelogram2afp.intersectsParallelogramRoundRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertTrue(Parallelogram2afp.intersectsParallelogramRoundRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -15, -10, 35, 40, .1, .05));
-        assertFalse(Parallelogram2afp.intersectsParallelogramRoundRectangle(cx, cy, ux, uy, e1, vx, vy, e2,
+        assertFalse(Parallelogram2afp.intersectsParallelogramRoundRectangle(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2,
                 -4.79634, 14.50886, 1, 1, .1, .05));
     }
 
@@ -675,54 +672,54 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertNotNull(clone);
         assertNotSame(this.shape, clone);
         assertEquals(this.shape.getClass(), clone.getClass());
-        assertEpsilonEquals(cx, clone.getCenterX());
-        assertEpsilonEquals(cy, clone.getCenterY());
-        assertEpsilonEquals(ux, clone.getFirstAxisX());
-        assertEpsilonEquals(uy, clone.getFirstAxisY());
-        assertEpsilonEquals(e1, clone.getFirstAxisExtent());
-        assertEpsilonEquals(vx, clone.getSecondAxisX());
-        assertEpsilonEquals(vy, clone.getSecondAxisY());
-        assertEpsilonEquals(e2, clone.getSecondAxisExtent());
+        assertEpsilonEquals(this.cx, clone.getCenterX());
+        assertEpsilonEquals(this.cy, clone.getCenterY());
+        assertEpsilonEquals(this.ux, clone.getFirstAxisX());
+        assertEpsilonEquals(this.uy, clone.getFirstAxisY());
+        assertEpsilonEquals(this.e1, clone.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, clone.getSecondAxisX());
+        assertEpsilonEquals(this.vy, clone.getSecondAxisY());
+        assertEpsilonEquals(this.e2, clone.getSecondAxisExtent());
     }
 
     @Override
     public void equalsObject() {
         assertFalse(this.shape.equals(null));
         assertFalse(this.shape.equals(new Object()));
-        assertFalse(this.shape.equals(createParallelogram(0, cy, ux, uy, e1, vx, vy, e2)));
-        assertFalse(this.shape.equals(createParallelogram(cx, cy, ux, uy, e1, vx, vy, 20)));
+        assertFalse(this.shape.equals(createParallelogram(0, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2)));
+        assertFalse(this.shape.equals(createParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, 20)));
         assertFalse(this.shape.equals(createSegment(5, 8, 6, 10)));
         assertTrue(this.shape.equals(this.shape));
-        assertTrue(this.shape.equals(createParallelogram(cx, cy, ux, uy, e1, vx, vy, e2)));
+        assertTrue(this.shape.equals(createParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2)));
     }
 
     @Override
     public void equalsObject_withPathIterator() {
         assertFalse(this.shape.equals((PathIterator2afp) null));
-        assertFalse(this.shape.equals(createParallelogram(0, cy, ux, uy, e1, vx, vy, e2).getPathIterator()));
-        assertFalse(this.shape.equals(createParallelogram(cx, cy, ux, uy, e1, vx, vy, 20).getPathIterator()));
+        assertFalse(this.shape.equals(createParallelogram(0, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2).getPathIterator()));
+        assertFalse(this.shape.equals(createParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, 20).getPathIterator()));
         assertFalse(this.shape.equals(createSegment(5, 8, 6, 10).getPathIterator()));
         assertTrue(this.shape.equals(this.shape.getPathIterator()));
-        assertTrue(this.shape.equals(createParallelogram(cx, cy, ux, uy, e1, vx, vy, e2).getPathIterator()));
+        assertTrue(this.shape.equals(createParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2).getPathIterator()));
     }
 
     @Override
     public void equalsToPathIterator() {
         assertFalse(this.shape.equalsToPathIterator(null));
-        assertFalse(this.shape.equalsToPathIterator(createParallelogram(0, cy, ux, uy, e1, vx, vy, e2).getPathIterator()));
-        assertFalse(this.shape.equalsToPathIterator(createParallelogram(cx, cy, ux, uy, e1, vx, vy, 20).getPathIterator()));
+        assertFalse(this.shape.equalsToPathIterator(createParallelogram(0, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2).getPathIterator()));
+        assertFalse(this.shape.equalsToPathIterator(createParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, 20).getPathIterator()));
         assertFalse(this.shape.equalsToPathIterator(createSegment(5, 8, 6, 10).getPathIterator()));
         assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
-        assertTrue(this.shape.equalsToPathIterator(createParallelogram(cx, cy, ux, uy, e1, vx, vy, e2).getPathIterator()));
+        assertTrue(this.shape.equalsToPathIterator(createParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2).getPathIterator()));
     }
 
     @Override
     public void equalsToShape() {
         assertFalse(this.shape.equalsToShape(null));
-        assertFalse(this.shape.equalsToShape((T) createParallelogram(0, cy, ux, uy, e1, vx, vy, e2)));
-        assertFalse(this.shape.equalsToShape((T) createParallelogram(cx, cy, ux, uy, e1, vx, vy, 20)));
+        assertFalse(this.shape.equalsToShape((T) createParallelogram(0, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2)));
+        assertFalse(this.shape.equalsToShape((T) createParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, 20)));
         assertTrue(this.shape.equalsToShape(this.shape));
-        assertTrue(this.shape.equalsToShape((T) createParallelogram(cx, cy, ux, uy, e1, vx, vy, e2)));
+        assertTrue(this.shape.equalsToShape((T) createParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2)));
     }
 
     @Override
@@ -762,7 +759,7 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertTrue(this.shape.contains(0, 9));
         assertTrue(this.shape.contains(0, 10));
         assertFalse(this.shape.contains(0, 27));
-        assertTrue(this.shape.contains(cx, cy));
+        assertTrue(this.shape.contains(this.cx, this.cy));
         assertTrue(this.shape.contains(16, 8));
     }
 
@@ -783,7 +780,7 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertTrue(this.shape.contains(createPoint(0, 9)));
         assertTrue(this.shape.contains(createPoint(0, 10)));
         assertFalse(this.shape.contains(createPoint(0, 27)));
-        assertTrue(this.shape.contains(createPoint(cx, cy)));
+        assertTrue(this.shape.contains(createPoint(this.cx, this.cy)));
         assertTrue(this.shape.contains(createPoint( 16, 8)));
     }
 
@@ -792,8 +789,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         Point2D closest;
 
         closest = this.shape.getClosestPointTo(createPoint(-20, 9));
-        assertEpsilonEquals(pHx, closest.getX());
-        assertEpsilonEquals(pHy, closest.getY());
+        assertEpsilonEquals(this.pHx, closest.getX());
+        assertEpsilonEquals(this.pHy, closest.getY());
 
         closest = this.shape.getClosestPointTo(createPoint(0, 0));
         assertEpsilonEquals(1.90983, closest.getX());
@@ -804,8 +801,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertEpsilonEquals(-5.59017, closest.getY());
 
         closest = this.shape.getClosestPointTo(createPoint(14, -20));
-        assertEpsilonEquals(pEx, closest.getX());
-        assertEpsilonEquals(pEy, closest.getY());
+        assertEpsilonEquals(this.pEx, closest.getX());
+        assertEpsilonEquals(this.pEy, closest.getY());
 
         closest = this.shape.getClosestPointTo(createPoint(-6, 15));
         assertEpsilonEquals(-3.81679, closest.getX());
@@ -840,24 +837,24 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertEpsilonEquals(1.19286, closest.getY());
 
         closest = this.shape.getClosestPointTo(createPoint(-3, 35));
-        assertEpsilonEquals(pGx, closest.getX());
-        assertEpsilonEquals(pGy, closest.getY());
+        assertEpsilonEquals(this.pGx, closest.getX());
+        assertEpsilonEquals(this.pGy, closest.getY());
 
         closest = this.shape.getClosestPointTo(createPoint(5, 35));
-        assertEpsilonEquals(pGx, closest.getX());
-        assertEpsilonEquals(pGy, closest.getY());
+        assertEpsilonEquals(this.pGx, closest.getX());
+        assertEpsilonEquals(this.pGy, closest.getY());
 
         closest = this.shape.getClosestPointTo(createPoint(20, 15));
         assertEpsilonEquals(15.59017, closest.getX());
         assertEpsilonEquals(10.59017, closest.getY());
 
         closest = this.shape.getClosestPointTo(createPoint(35, 10));
-        assertEpsilonEquals(pFx, closest.getX());
-        assertEpsilonEquals(pFy, closest.getY());
+        assertEpsilonEquals(this.pFx, closest.getX());
+        assertEpsilonEquals(this.pFy, closest.getY());
 
         closest = this.shape.getClosestPointTo(createPoint(-8, 29));
-        assertEpsilonEquals(pGx, closest.getX());
-        assertEpsilonEquals(pGy, closest.getY());
+        assertEpsilonEquals(this.pGx, closest.getX());
+        assertEpsilonEquals(this.pGy, closest.getY());
     }
 
     @Override
@@ -865,98 +862,98 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         Point2D farthest;
 
         farthest = this.shape.getFarthestPointTo(createPoint(-20, 9));
-        assertEpsilonEquals(pEx, farthest.getX());
-        assertEpsilonEquals(pEy, farthest.getY());
+        assertEpsilonEquals(this.pEx, farthest.getX());
+        assertEpsilonEquals(this.pEy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(0, 0));
-        assertEpsilonEquals(pGx, farthest.getX());
-        assertEpsilonEquals(pGy, farthest.getY());
+        assertEpsilonEquals(this.pGx, farthest.getX());
+        assertEpsilonEquals(this.pGy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(5, -10));
-        assertEpsilonEquals(pGx, farthest.getX());
-        assertEpsilonEquals(pGy, farthest.getY());
+        assertEpsilonEquals(this.pGx, farthest.getX());
+        assertEpsilonEquals(this.pGy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(14, -20));
-        assertEpsilonEquals(pGx, farthest.getX());
-        assertEpsilonEquals(pGy, farthest.getY());
+        assertEpsilonEquals(this.pGx, farthest.getX());
+        assertEpsilonEquals(this.pGy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(-6, 15));
-        assertEpsilonEquals(pEx, farthest.getX());
-        assertEpsilonEquals(pEy, farthest.getY());
+        assertEpsilonEquals(this.pEx, farthest.getX());
+        assertEpsilonEquals(this.pEy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(0, 10));
-        assertEpsilonEquals(pEx, farthest.getX());
-        assertEpsilonEquals(pEy, farthest.getY());
+        assertEpsilonEquals(this.pEx, farthest.getX());
+        assertEpsilonEquals(this.pEy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(10, 0));
-        assertEpsilonEquals(pGx, farthest.getX());
-        assertEpsilonEquals(pGy, farthest.getY());
+        assertEpsilonEquals(this.pGx, farthest.getX());
+        assertEpsilonEquals(this.pGy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(15, -4));
-        assertEpsilonEquals(pGx, farthest.getX());
-        assertEpsilonEquals(pGy, farthest.getY());
+        assertEpsilonEquals(this.pGx, farthest.getX());
+        assertEpsilonEquals(this.pGy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(-5, 25));
-        assertEpsilonEquals(pEx, farthest.getX());
-        assertEpsilonEquals(pEy, farthest.getY());
+        assertEpsilonEquals(this.pEx, farthest.getX());
+        assertEpsilonEquals(this.pEy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(0, 20));
-        assertEpsilonEquals(pEx, farthest.getX());
-        assertEpsilonEquals(pEy, farthest.getY());
+        assertEpsilonEquals(this.pEx, farthest.getX());
+        assertEpsilonEquals(this.pEy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(10, 10));
-        assertEpsilonEquals(pGx, farthest.getX());
-        assertEpsilonEquals(pGy, farthest.getY());
+        assertEpsilonEquals(this.pGx, farthest.getX());
+        assertEpsilonEquals(this.pGy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(20, 0));
-        assertEpsilonEquals(pGx, farthest.getX());
-        assertEpsilonEquals(pGy, farthest.getY());
+        assertEpsilonEquals(this.pGx, farthest.getX());
+        assertEpsilonEquals(this.pGy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(-3, 35));
-        assertEpsilonEquals(pEx, farthest.getX());
-        assertEpsilonEquals(pEy, farthest.getY());
+        assertEpsilonEquals(this.pEx, farthest.getX());
+        assertEpsilonEquals(this.pEy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(5, 35));
-        assertEpsilonEquals(pEx, farthest.getX());
-        assertEpsilonEquals(pEy, farthest.getY());
+        assertEpsilonEquals(this.pEx, farthest.getX());
+        assertEpsilonEquals(this.pEy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(20, 15));
-        assertEpsilonEquals(pHx, farthest.getX());
-        assertEpsilonEquals(pHy, farthest.getY());
+        assertEpsilonEquals(this.pHx, farthest.getX());
+        assertEpsilonEquals(this.pHy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(35, 10));
-        assertEpsilonEquals(pHx, farthest.getX());
-        assertEpsilonEquals(pHy, farthest.getY());
+        assertEpsilonEquals(this.pHx, farthest.getX());
+        assertEpsilonEquals(this.pHy, farthest.getY());
 
         farthest = this.shape.getFarthestPointTo(createPoint(-8, 29));
-        assertEpsilonEquals(pEx, farthest.getX());
-        assertEpsilonEquals(pEy, farthest.getY());
+        assertEpsilonEquals(this.pEx, farthest.getX());
+        assertEpsilonEquals(this.pEy, farthest.getY());
     }
 
     @Override
     public void translateDoubleDouble() {
         this.shape.translate(123.456, 789.123);
-        assertEpsilonEquals(cx + 123.456, this.shape.getCenterX());
-        assertEpsilonEquals(cy + 789.123, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.cx + 123.456, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy + 789.123, this.shape.getCenterY());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Override
     public void translateVector2D() {
         this.shape.translate(createVector(123.456, 789.123));
-        assertEpsilonEquals(cx + 123.456, this.shape.getCenterX());
-        assertEpsilonEquals(cy + 789.123, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.cx + 123.456, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy + 789.123, this.shape.getCenterY());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Override
@@ -1059,95 +1056,95 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
     @Override
     public void getPathIterator() {
         PathIterator2afp pi = this.shape.getPathIterator();
-        assertElement(pi, PathElementType.MOVE_TO, pGx, pGy);
-        assertElement(pi, PathElementType.LINE_TO, pHx, pHy);
-        assertElement(pi, PathElementType.LINE_TO, pEx, pEy);
-        assertElement(pi, PathElementType.LINE_TO, pFx, pFy);
-        assertElement(pi, PathElementType.CLOSE, pGx, pGy);
+        assertElement(pi, PathElementType.MOVE_TO, this.pGx, this.pGy);
+        assertElement(pi, PathElementType.LINE_TO, this.pHx, this.pHy);
+        assertElement(pi, PathElementType.LINE_TO, this.pEx, this.pEy);
+        assertElement(pi, PathElementType.LINE_TO, this.pFx, this.pFy);
+        assertElement(pi, PathElementType.CLOSE, this.pGx, this.pGy);
         assertNoElement(pi);
     }
 
     @Override
     public void getPathIteratorTransform2D() {
         PathIterator2afp pi = this.shape.getPathIterator(null);
-        assertElement(pi, PathElementType.MOVE_TO, pGx, pGy);
-        assertElement(pi, PathElementType.LINE_TO, pHx, pHy);
-        assertElement(pi, PathElementType.LINE_TO, pEx, pEy);
-        assertElement(pi, PathElementType.LINE_TO, pFx, pFy);
-        assertElement(pi, PathElementType.CLOSE, pGx, pGy);
+        assertElement(pi, PathElementType.MOVE_TO, this.pGx, this.pGy);
+        assertElement(pi, PathElementType.LINE_TO, this.pHx, this.pHy);
+        assertElement(pi, PathElementType.LINE_TO, this.pEx, this.pEy);
+        assertElement(pi, PathElementType.LINE_TO, this.pFx, this.pFy);
+        assertElement(pi, PathElementType.CLOSE, this.pGx, this.pGy);
         assertNoElement(pi);
 
         Transform2D transform;
 
         transform = new Transform2D();
         pi = this.shape.getPathIterator(transform);
-        assertElement(pi, PathElementType.MOVE_TO, pGx, pGy);
-        assertElement(pi, PathElementType.LINE_TO, pHx, pHy);
-        assertElement(pi, PathElementType.LINE_TO, pEx, pEy);
-        assertElement(pi, PathElementType.LINE_TO, pFx, pFy);
-        assertElement(pi, PathElementType.CLOSE, pGx, pGy);
+        assertElement(pi, PathElementType.MOVE_TO, this.pGx, this.pGy);
+        assertElement(pi, PathElementType.LINE_TO, this.pHx, this.pHy);
+        assertElement(pi, PathElementType.LINE_TO, this.pEx, this.pEy);
+        assertElement(pi, PathElementType.LINE_TO, this.pFx, this.pFy);
+        assertElement(pi, PathElementType.CLOSE, this.pGx, this.pGy);
         assertNoElement(pi);
 
         transform = new Transform2D();
         transform.setTranslation(18,  -45);
         pi = this.shape.getPathIterator(transform);
-        assertElement(pi, PathElementType.MOVE_TO, pGx + 18, pGy - 45);
-        assertElement(pi, PathElementType.LINE_TO, pHx + 18, pHy - 45);
-        assertElement(pi, PathElementType.LINE_TO, pEx + 18, pEy - 45);
-        assertElement(pi, PathElementType.LINE_TO, pFx + 18, pFy - 45);
-        assertElement(pi, PathElementType.CLOSE, pGx + 18, pGy - 45);
+        assertElement(pi, PathElementType.MOVE_TO, this.pGx + 18, this.pGy - 45);
+        assertElement(pi, PathElementType.LINE_TO, this.pHx + 18, this.pHy - 45);
+        assertElement(pi, PathElementType.LINE_TO, this.pEx + 18, this.pEy - 45);
+        assertElement(pi, PathElementType.LINE_TO, this.pFx + 18, this.pFy - 45);
+        assertElement(pi, PathElementType.CLOSE, this.pGx + 18, this.pGy - 45);
         assertNoElement(pi);
     }
 
     @Override
     public void createTransformedShape() {
         PathIterator2afp pi = this.shape.createTransformedShape(null).getPathIterator();
-        assertElement(pi, PathElementType.MOVE_TO, pGx, pGy);
-        assertElement(pi, PathElementType.LINE_TO, pHx, pHy);
-        assertElement(pi, PathElementType.LINE_TO, pEx, pEy);
-        assertElement(pi, PathElementType.LINE_TO, pFx, pFy);
-        assertElement(pi, PathElementType.CLOSE, pGx, pGy);
+        assertElement(pi, PathElementType.MOVE_TO, this.pGx, this.pGy);
+        assertElement(pi, PathElementType.LINE_TO, this.pHx, this.pHy);
+        assertElement(pi, PathElementType.LINE_TO, this.pEx, this.pEy);
+        assertElement(pi, PathElementType.LINE_TO, this.pFx, this.pFy);
+        assertElement(pi, PathElementType.CLOSE, this.pGx, this.pGy);
         assertNoElement(pi);
 
         Transform2D transform;
 
         transform = new Transform2D();
         pi = this.shape.createTransformedShape(transform).getPathIterator();
-        assertElement(pi, PathElementType.MOVE_TO, pGx, pGy);
-        assertElement(pi, PathElementType.LINE_TO, pHx, pHy);
-        assertElement(pi, PathElementType.LINE_TO, pEx, pEy);
-        assertElement(pi, PathElementType.LINE_TO, pFx, pFy);
-        assertElement(pi, PathElementType.CLOSE, pGx, pGy);
+        assertElement(pi, PathElementType.MOVE_TO, this.pGx, this.pGy);
+        assertElement(pi, PathElementType.LINE_TO, this.pHx, this.pHy);
+        assertElement(pi, PathElementType.LINE_TO, this.pEx, this.pEy);
+        assertElement(pi, PathElementType.LINE_TO, this.pFx, this.pFy);
+        assertElement(pi, PathElementType.CLOSE, this.pGx, this.pGy);
         assertNoElement(pi);
 
         transform = new Transform2D();
         transform.setTranslation(18,  -45);
         pi = this.shape.createTransformedShape(transform).getPathIterator();
-        assertElement(pi, PathElementType.MOVE_TO, pGx + 18, pGy - 45);
-        assertElement(pi, PathElementType.LINE_TO, pHx + 18, pHy - 45);
-        assertElement(pi, PathElementType.LINE_TO, pEx + 18, pEy - 45);
-        assertElement(pi, PathElementType.LINE_TO, pFx + 18, pFy - 45);
-        assertElement(pi, PathElementType.CLOSE, pGx + 18, pGy - 45);
+        assertElement(pi, PathElementType.MOVE_TO, this.pGx + 18, this.pGy - 45);
+        assertElement(pi, PathElementType.LINE_TO, this.pHx + 18, this.pHy - 45);
+        assertElement(pi, PathElementType.LINE_TO, this.pEx + 18, this.pEy - 45);
+        assertElement(pi, PathElementType.LINE_TO, this.pFx + 18, this.pFy - 45);
+        assertElement(pi, PathElementType.CLOSE, this.pGx + 18, this.pGy - 45);
         assertNoElement(pi);
     }
 
     @Override
     public void toBoundingBox() {
         B box = this.shape.toBoundingBox();
-        assertEpsilonEquals(pHx, box.getMinX());
-        assertEpsilonEquals(pEy, box.getMinY());
-        assertEpsilonEquals(pFx, box.getMaxX());
-        assertEpsilonEquals(pGy, box.getMaxY());
+        assertEpsilonEquals(this.pHx, box.getMinX());
+        assertEpsilonEquals(this.pEy, box.getMinY());
+        assertEpsilonEquals(this.pFx, box.getMaxX());
+        assertEpsilonEquals(this.pGy, box.getMaxY());
     }
 
     @Override
     public void toBoundingBoxB() {
         B box = createRectangle(0, 0, 0, 0);
         this.shape.toBoundingBox(box);
-        assertEpsilonEquals(pHx, box.getMinX());
-        assertEpsilonEquals(pEy, box.getMinY());
-        assertEpsilonEquals(pFx, box.getMaxX());
-        assertEpsilonEquals(pGy, box.getMaxY());
+        assertEpsilonEquals(this.pHx, box.getMinX());
+        assertEpsilonEquals(this.pEy, box.getMinY());
+        assertEpsilonEquals(this.pFx, box.getMaxX());
+        assertEpsilonEquals(this.pGy, box.getMaxY());
     }
 
     @Override
@@ -1207,12 +1204,12 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         this.shape.setCenter(123.456, -789.123);
         assertEpsilonEquals(123.456, this.shape.getCenterX());
         assertEpsilonEquals(-789.123, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Test
@@ -1220,107 +1217,107 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         this.shape.setCenter(createPoint(123.456, -789.123));
         assertEpsilonEquals(123.456, this.shape.getCenterX());
         assertEpsilonEquals(-789.123, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Test
     public void setCenterX() {
         this.shape.setCenterX(123.456);
         assertEpsilonEquals(123.456, this.shape.getCenterX());
-        assertEpsilonEquals(cy, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.cy, this.shape.getCenterY());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Test
     public void setCenterY() {
         this.shape.setCenterY(123.456);
-        assertEpsilonEquals(cx, this.shape.getCenterX());
+        assertEpsilonEquals(this.cx, this.shape.getCenterX());
         assertEpsilonEquals(123.456, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Test
     public void getFirstAxis() {
         Vector2D v = this.shape.getFirstAxis();
-        assertEpsilonEquals(ux, v.getX());
-        assertEpsilonEquals(uy, v.getY());
+        assertEpsilonEquals(this.ux, v.getX());
+        assertEpsilonEquals(this.uy, v.getY());
     }
 
     @Test
     public void getFirstAxisX() {
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
     }
 
     @Test
     public void getFirstAxisY() {
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
     }
 
     @Test
     public void getSecondAxis() {
         Vector2D v = this.shape.getSecondAxis();
-        assertEpsilonEquals(vx, v.getX());
-        assertEpsilonEquals(vy, v.getY());
+        assertEpsilonEquals(this.vx, v.getX());
+        assertEpsilonEquals(this.vy, v.getY());
     }
 
     @Test
     public void getSecondAxisX() {
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
     }
 
     @Test
     public void getSecondAxisY() {
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
     }
 
     @Test
     public void getFirstAxisExtent() {
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
     }
 
     @Test
     public void setFirstAxisExtent() {
         this.shape.setFirstAxisExtent(123.456);
-        assertEpsilonEquals(cx, this.shape.getCenterX());
-        assertEpsilonEquals(cy, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.cx, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy, this.shape.getCenterY());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
         assertEpsilonEquals(123.456, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Test
     public void getSecondAxisExtent() {
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Test
     public void setSecondAxisExtent() {
         this.shape.setSecondAxisExtent(123.456);
-        assertEpsilonEquals(cx, this.shape.getCenterX());
-        assertEpsilonEquals(cy, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.cx, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy, this.shape.getCenterY());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
         assertEpsilonEquals(123.456, this.shape.getSecondAxisExtent());
     }
 
@@ -1328,14 +1325,14 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
     public void setFirstAxisDoubleDouble_unitVector() {
         Vector2D newU = createVector(123.456, 456.789).toUnitVector();
         this.shape.setFirstAxis(newU.getX(), newU.getY());
-        assertEpsilonEquals(cx, this.shape.getCenterX());
-        assertEpsilonEquals(cy, this.shape.getCenterY());
+        assertEpsilonEquals(this.cx, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy, this.shape.getCenterY());
         assertEpsilonEquals(newU.getX(), this.shape.getFirstAxisX());
         assertEpsilonEquals(newU.getY(), this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Test(expected = AssertionError.class)
@@ -1347,14 +1344,14 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
     public void setFirstAxisVector2D_unitVector() {
         Vector2D newU = createVector(123.456, 456.789).toUnitVector();
         this.shape.setFirstAxis(newU);
-        assertEpsilonEquals(cx, this.shape.getCenterX());
-        assertEpsilonEquals(cy, this.shape.getCenterY());
+        assertEpsilonEquals(this.cx, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy, this.shape.getCenterY());
         assertEpsilonEquals(newU.getX(), this.shape.getFirstAxisX());
         assertEpsilonEquals(newU.getY(), this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Test(expected = AssertionError.class)
@@ -1366,42 +1363,42 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
     public void setFirstAxisVector2DDouble_unitVector() {
         Vector2D newU = createVector(123.456, 456.789).toUnitVector();
         this.shape.setFirstAxis(newU, 159.753);
-        assertEpsilonEquals(cx, this.shape.getCenterX());
-        assertEpsilonEquals(cy, this.shape.getCenterY());
+        assertEpsilonEquals(this.cx, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy, this.shape.getCenterY());
         assertEpsilonEquals(newU.getX(), this.shape.getFirstAxisX());
         assertEpsilonEquals(newU.getY(), this.shape.getFirstAxisY());
         assertEpsilonEquals(159.753, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Test
     public void setFirstAxisDoubleDoubleDouble() {
         Vector2D newU = createVector(123.456, 456.789).toUnitVector();
         this.shape.setFirstAxis(newU.getX(), newU.getY(), 159.753);
-        assertEpsilonEquals(cx, this.shape.getCenterX());
-        assertEpsilonEquals(cy, this.shape.getCenterY());
+        assertEpsilonEquals(this.cx, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy, this.shape.getCenterY());
         assertEpsilonEquals(newU.getX(), this.shape.getFirstAxisX());
         assertEpsilonEquals(newU.getY(), this.shape.getFirstAxisY());
         assertEpsilonEquals(159.753, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Test
     public void setSecondAxisDoubleDouble_unitVector() {
         Vector2D newV = createVector(123.456, 456.789).toUnitVector();
         this.shape.setSecondAxis(newV.getX(), newV.getY());
-        assertEpsilonEquals(cx, this.shape.getCenterX());
-        assertEpsilonEquals(cy, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.cx, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy, this.shape.getCenterY());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
         assertEpsilonEquals(newV.getX(), this.shape.getSecondAxisX());
         assertEpsilonEquals(newV.getY(), this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Test(expected = AssertionError.class)
@@ -1413,14 +1410,14 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
     public void setSecondAxisVector2D_unitVector() {
         Vector2D newV = createVector(123.456, 456.789).toUnitVector();
         this.shape.setSecondAxis(newV);
-        assertEpsilonEquals(cx, this.shape.getCenterX());
-        assertEpsilonEquals(cy, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.cx, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy, this.shape.getCenterY());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
         assertEpsilonEquals(newV.getX(), this.shape.getSecondAxisX());
         assertEpsilonEquals(newV.getY(), this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Test(expected = AssertionError.class)
@@ -1432,11 +1429,11 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
     public void setSecondAxisVector2DDouble() {
         Vector2D newV = createVector(123.456, 456.789).toUnitVector();
         this.shape.setSecondAxis(newV, 159.753);
-        assertEpsilonEquals(cx, this.shape.getCenterX());
-        assertEpsilonEquals(cy, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.cx, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy, this.shape.getCenterY());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
         assertEpsilonEquals(newV.getX(), this.shape.getSecondAxisX());
         assertEpsilonEquals(newV.getY(), this.shape.getSecondAxisY());
         assertEpsilonEquals(159.753, this.shape.getSecondAxisExtent());
@@ -1446,11 +1443,11 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
     public void setSecondAxisDoubleDoubleDouble() {
         Vector2D newV = createVector(123.456, 456.789).toUnitVector();
         this.shape.setSecondAxis(newV.getX(), newV.getY(), 159.753);
-        assertEpsilonEquals(cx, this.shape.getCenterX());
-        assertEpsilonEquals(cy, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.cx, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy, this.shape.getCenterY());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
         assertEpsilonEquals(newV.getX(), this.shape.getSecondAxisX());
         assertEpsilonEquals(newV.getY(), this.shape.getSecondAxisY());
         assertEpsilonEquals(159.753, this.shape.getSecondAxisExtent());
@@ -1490,10 +1487,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
     public void setFromPointCloudIterable() {
         double obrux = 0.8944271909999159;
         double obruy = -0.4472135954999579;
-        double obre1 = 13.99999;
         double obrvx = 0.4472135954999579;
         double obrvy = 0.8944271909999159;
-        double obre2 = 12.99999;
 
         this.shape.setFromPointCloud((List) Arrays.asList(
                 createPoint(11.7082, -0.94427), createPoint(16.18034, 8),
@@ -1513,10 +1508,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
     public void setFromPointCloudPoint2DArray() {
         double obrux = 0.8944271909999159;
         double obruy = -0.4472135954999579;
-        double obre1 = 13.99999;
         double obrvx = 0.4472135954999579;
         double obrvy = 0.8944271909999159;
-        double obre2 = 12.99999;
 
         this.shape.setFromPointCloud(
                 createPoint(11.7082, -0.94427), createPoint(16.18034, 8),
@@ -1643,7 +1636,7 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
                 ux2, uy2, et1, vx2, vy2, et2)));
         assertTrue(this.shape.intersects(createParallelogram(2, -4,
                 ux2, uy2, et1, vx2, vy2, et2)));
-        assertTrue(this.shape.intersects(createParallelogram(pEx, pEy,
+        assertTrue(this.shape.intersects(createParallelogram(this.pEx, this.pEy,
                 ux2, uy2, et1, vx2, vy2, et2)));
         assertTrue(this.shape.intersects(createParallelogram(6, 6,
                 ux2, uy2, et1, vx2, vy2, et2)));
@@ -1698,84 +1691,84 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
     @Override
     public void operator_addVector2D() {
         this.shape.operator_add(createVector(123.456, 789.123));
-        assertEpsilonEquals(cx + 123.456, this.shape.getCenterX());
-        assertEpsilonEquals(cy + 789.123, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.cx + 123.456, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy + 789.123, this.shape.getCenterY());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Override
     public void operator_plusVector2D() {
         T shape = this.shape.operator_plus(createVector(123.456, 789.123));
-        assertEpsilonEquals(cx + 123.456, shape.getCenterX());
-        assertEpsilonEquals(cy + 789.123, shape.getCenterY());
-        assertEpsilonEquals(ux, shape.getFirstAxisX());
-        assertEpsilonEquals(uy, shape.getFirstAxisY());
-        assertEpsilonEquals(e1, shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, shape.getSecondAxisX());
-        assertEpsilonEquals(vy, shape.getSecondAxisY());
-        assertEpsilonEquals(e2, shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.cx + 123.456, shape.getCenterX());
+        assertEpsilonEquals(this.cy + 789.123, shape.getCenterY());
+        assertEpsilonEquals(this.ux, shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, shape.getSecondAxisExtent());
     }
 
     @Override
     public void operator_removeVector2D() {
         this.shape.operator_remove(createVector(123.456, 789.123));
-        assertEpsilonEquals(cx - 123.456, this.shape.getCenterX());
-        assertEpsilonEquals(cy - 789.123, this.shape.getCenterY());
-        assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-        assertEpsilonEquals(uy, this.shape.getFirstAxisY());
-        assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-        assertEpsilonEquals(vy, this.shape.getSecondAxisY());
-        assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.cx - 123.456, this.shape.getCenterX());
+        assertEpsilonEquals(this.cy - 789.123, this.shape.getCenterY());
+        assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
     }
 
     @Override
     public void operator_minusVector2D() {
         T shape = this.shape.operator_minus(createVector(123.456, 789.123));
-        assertEpsilonEquals(cx - 123.456, shape.getCenterX());
-        assertEpsilonEquals(cy - 789.123, shape.getCenterY());
-        assertEpsilonEquals(ux, shape.getFirstAxisX());
-        assertEpsilonEquals(uy, shape.getFirstAxisY());
-        assertEpsilonEquals(e1, shape.getFirstAxisExtent());
-        assertEpsilonEquals(vx, shape.getSecondAxisX());
-        assertEpsilonEquals(vy, shape.getSecondAxisY());
-        assertEpsilonEquals(e2, shape.getSecondAxisExtent());
+        assertEpsilonEquals(this.cx - 123.456, shape.getCenterX());
+        assertEpsilonEquals(this.cy - 789.123, shape.getCenterY());
+        assertEpsilonEquals(this.ux, shape.getFirstAxisX());
+        assertEpsilonEquals(this.uy, shape.getFirstAxisY());
+        assertEpsilonEquals(this.e1, shape.getFirstAxisExtent());
+        assertEpsilonEquals(this.vx, shape.getSecondAxisX());
+        assertEpsilonEquals(this.vy, shape.getSecondAxisY());
+        assertEpsilonEquals(this.e2, shape.getSecondAxisExtent());
     }
 
     @Override
     public void operator_multiplyTransform2D() {
         PathIterator2afp pi = this.shape.operator_multiply(null).getPathIterator();
-        assertElement(pi, PathElementType.MOVE_TO, pGx, pGy);
-        assertElement(pi, PathElementType.LINE_TO, pHx, pHy);
-        assertElement(pi, PathElementType.LINE_TO, pEx, pEy);
-        assertElement(pi, PathElementType.LINE_TO, pFx, pFy);
-        assertElement(pi, PathElementType.CLOSE, pGx, pGy);
+        assertElement(pi, PathElementType.MOVE_TO, this.pGx, this.pGy);
+        assertElement(pi, PathElementType.LINE_TO, this.pHx, this.pHy);
+        assertElement(pi, PathElementType.LINE_TO, this.pEx, this.pEy);
+        assertElement(pi, PathElementType.LINE_TO, this.pFx, this.pFy);
+        assertElement(pi, PathElementType.CLOSE, this.pGx, this.pGy);
         assertNoElement(pi);
 
         Transform2D transform;
 
         transform = new Transform2D();
         pi = this.shape.operator_multiply(transform).getPathIterator();
-        assertElement(pi, PathElementType.MOVE_TO, pGx, pGy);
-        assertElement(pi, PathElementType.LINE_TO, pHx, pHy);
-        assertElement(pi, PathElementType.LINE_TO, pEx, pEy);
-        assertElement(pi, PathElementType.LINE_TO, pFx, pFy);
-        assertElement(pi, PathElementType.CLOSE, pGx, pGy);
+        assertElement(pi, PathElementType.MOVE_TO, this.pGx, this.pGy);
+        assertElement(pi, PathElementType.LINE_TO, this.pHx, this.pHy);
+        assertElement(pi, PathElementType.LINE_TO, this.pEx, this.pEy);
+        assertElement(pi, PathElementType.LINE_TO, this.pFx, this.pFy);
+        assertElement(pi, PathElementType.CLOSE, this.pGx, this.pGy);
         assertNoElement(pi);
 
         transform = new Transform2D();
         transform.setTranslation(18,  -45);
         pi = this.shape.operator_multiply(transform).getPathIterator();
-        assertElement(pi, PathElementType.MOVE_TO, pGx + 18, pGy - 45);
-        assertElement(pi, PathElementType.LINE_TO, pHx + 18, pHy - 45);
-        assertElement(pi, PathElementType.LINE_TO, pEx + 18, pEy - 45);
-        assertElement(pi, PathElementType.LINE_TO, pFx + 18, pFy - 45);
-        assertElement(pi, PathElementType.CLOSE, pGx + 18, pGy - 45);
+        assertElement(pi, PathElementType.MOVE_TO, this.pGx + 18, this.pGy - 45);
+        assertElement(pi, PathElementType.LINE_TO, this.pHx + 18, this.pHy - 45);
+        assertElement(pi, PathElementType.LINE_TO, this.pEx + 18, this.pEy - 45);
+        assertElement(pi, PathElementType.LINE_TO, this.pFx + 18, this.pFy - 45);
+        assertElement(pi, PathElementType.CLOSE, this.pGx + 18, this.pGy - 45);
         assertNoElement(pi);
     }
 
@@ -1796,7 +1789,7 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertTrue(this.shape.operator_and(createPoint(0, 9)));
         assertTrue(this.shape.operator_and(createPoint(0, 10)));
         assertFalse(this.shape.operator_and(createPoint(0, 27)));
-        assertTrue(this.shape.operator_and(createPoint(cx, cy)));
+        assertTrue(this.shape.operator_and(createPoint(this.cx, this.cy)));
         assertTrue(this.shape.operator_and(createPoint( 16, 8)));
     }
 
@@ -1830,7 +1823,7 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
     @Test
     public void isCCW() {
         assertTrue(this.shape.isCCW());
-        assertTrue(createParallelogram(cx, cy, ux, uy, e1, vx, vy, e2).isCCW());
+        assertTrue(createParallelogram(this.cx, this.cy, this.ux, this.uy, this.e1, this.vx, this.vy, this.e2).isCCW());
         assertTrue(createParallelogram(
                 4.7, 15,
                 0.12403, 0.99228, 18.02776,
@@ -1849,7 +1842,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
                 0.9998000599800071, 0.01999600119960014, 2).isCCW());
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToCircle2afp() {
         assertFpPointEquals(0.90983, 2.90983, this.shape.getClosestPointTo(createCircle(0, 2, 1)));
         assertFpPointEquals(-5.18034, 9, this.shape.getClosestPointTo(createCircle(-12, 8, 1)));
@@ -1857,7 +1851,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertClosestPointInBothShapes(this.shape, createCircle(12, 10, 1));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredCircle2afp() {
         assertEpsilonEquals(0.08219, this.shape.getDistanceSquared(createCircle(0, 2, 1)));
         assertEpsilonEquals(34.72259, this.shape.getDistanceSquared(createCircle(-12, 8, 1)));
@@ -1865,7 +1860,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createCircle(12, 10, 1)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToSegment2afp() {
         assertFpPointEquals(0.40983, 3.40983, this.shape.getClosestPointTo(createSegment(-2, 2, 0, 3)));
         assertFpPointEquals(-5.18034, 9, this.shape.getClosestPointTo(createSegment(-12, 8, -10, 9)));
@@ -1873,7 +1869,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertClosestPointInBothShapes(this.shape, createSegment(12, 10, 14, 11));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredSegment2afp() {
         assertEpsilonEquals(0.33592, this.shape.getDistanceSquared(createSegment(-2, 2, 0, 3)));
         assertEpsilonEquals(23.22912, this.shape.getDistanceSquared(createSegment(-12, 8, -10, 9)));
@@ -1885,7 +1882,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         return createTriangle(dx, dy, dx + 6, dy + 3, dx - 1, dy + 2.5);
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToTriangle2afp() {
         assertFpPointEquals(3.40983, 0.40983, this.shape.getClosestPointTo(createTestTriangle(-5, -5)));
         assertFpPointEquals(-5.18034, 9, this.shape.getClosestPointTo(createTestTriangle(-14, 5)));
@@ -1893,7 +1891,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertClosestPointInBothShapes(this.shape, createTestTriangle(5, 5));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredTriangle2afp() {
         assertEpsilonEquals(11.61456, this.shape.getDistanceSquared(createTestTriangle(-5, -5)));
         assertEpsilonEquals(8.95048, this.shape.getDistanceSquared(createTestTriangle(-14, 5)));
@@ -1901,7 +1900,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestTriangle(5, 5)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToRectangle2afp() {
         assertFpPointEquals(2.40983, 1.40983, this.shape.getClosestPointTo(createRectangle(-5, -5, 2, 1)));
         assertFpPointEquals(-5.18034, 9, this.shape.getClosestPointTo(createRectangle(-14, 5, 2, 1)));
@@ -1909,7 +1909,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertClosestPointInBothShapes(this.shape, createRectangle(5, 5, 2, 1));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredRectangle2afp() {
         assertEpsilonEquals(58.53252, this.shape.getDistanceSquared(createRectangle(-5, -5, 2, 1)));
         assertEpsilonEquals(55.50776, this.shape.getDistanceSquared(createRectangle(-14, 5, 2, 1)));
@@ -1917,7 +1918,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createRectangle(5, 5, 2, 1)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToEllipse2afp() {
         assertFpPointEquals(2.52323, 1.29643, this.shape.getClosestPointTo(createEllipse(-5, -5, 2, 1)));
         assertFpPointEquals(-5.18034, 9, this.shape.getClosestPointTo(createEllipse(-14, 5, 2, 1)));
@@ -1925,7 +1927,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertClosestPointInBothShapes(this.shape, createRectangle(5, 5, 2, 1));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredEllipse2afp() {
         assertEpsilonEquals(62.73969, this.shape.getDistanceSquared(createEllipse(-5, -5, 2, 1)));
         assertEpsilonEquals(58.33165, this.shape.getDistanceSquared(createEllipse(-14, 5, 2, 1)));
@@ -1933,7 +1936,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createEllipse(5, 5, 2, 1)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToRoundRectangle2afp() {
         assertFpPointEquals(2.39519, 1.42447, this.shape.getClosestPointTo(createRoundRectangle(-5, -5, 2, 1, .2, .1)));
         assertFpPointEquals(-5.18034, 9, this.shape.getClosestPointTo(createRoundRectangle(-14, 5, 2, 1, .2, .1)));
@@ -1941,7 +1945,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertClosestPointInBothShapes(this.shape, createRoundRectangle(5, 5, 2, 1, .2, .1));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredRoundRectangle2afp() {
         assertEpsilonEquals(59.36397, this.shape.getDistanceSquared(createRoundRectangle(-5, -5, 2, 1, .2, .1)));
         assertEpsilonEquals(56.0487, this.shape.getDistanceSquared(createRoundRectangle(-14, 5, 2, 1, .2, .1)));
@@ -1958,7 +1963,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         return multishape;
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToMultiShape2afp() {
         assertFpPointEquals(4.40983, -0.59017, this.shape.getClosestPointTo(createTestMultiShape(-5, -5)));
         assertFpPointEquals(-5.18034, 9, this.shape.getClosestPointTo(createTestMultiShape(-18, 5)));
@@ -1966,7 +1972,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertClosestPointInBothShapes(this.shape, createTestMultiShape(5, 5));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredMultiShape2afp() {
         assertEpsilonEquals(11.61456, this.shape.getDistanceSquared(createTestMultiShape(-5, -5)));
         assertEpsilonEquals(37.86844, this.shape.getDistanceSquared(createTestMultiShape(-18, 5)));
@@ -1982,7 +1989,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         return path;
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToPath2afp() {
         assertFpPointEquals(2.15983, 1.65983, this.shape.getClosestPointTo(createNonEmptyPath(-5, -5)));
         assertFpPointEquals(-5.18034, 9, this.shape.getClosestPointTo(createNonEmptyPath(-18, 5)));
@@ -1990,7 +1998,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertClosestPointInBothShapes(this.shape, createNonEmptyPath(5, 5));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredPath2afp() {
         assertEpsilonEquals(75.88701, this.shape.getDistanceSquared(createNonEmptyPath(-5, -5)));
         assertEpsilonEquals(151.95437, this.shape.getDistanceSquared(createNonEmptyPath(-18, 5)));
@@ -2004,7 +2013,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         return createParallelogram(dx, dy, r.getX(), r.getY(), 2, s.getX(), s.getY(), 1);
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToParallelogram2afp() {
         assertFpPointEquals(2.63744, 1.18222, this.shape.getClosestPointTo(createTestParallelogram(-5, -5)));
         assertFpPointEquals(-5.18034, 9, this.shape.getClosestPointTo(createTestParallelogram(-18, 5)));
@@ -2012,7 +2022,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertClosestPointInBothShapes(this.shape, createTestParallelogram(5, 5));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredParallelogram2afp() {
         assertEpsilonEquals(49.8011, this.shape.getDistanceSquared(createTestParallelogram(-5, -5)));
         assertEpsilonEquals(111.35891, this.shape.getDistanceSquared(createTestParallelogram(-18, 5)));
@@ -2025,7 +2036,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         return createOrientedRectangle(dx, dy, r.getX(), r.getY(), 2, 1);
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToOrientedRectangle2afp() {
         assertFpPointEquals(2.0311, 1.78856, this.shape.getClosestPointTo(createTestOrientedRectangle(-5, -5)));
         assertFpPointEquals(-5.18034, 9, this.shape.getClosestPointTo(createTestOrientedRectangle(-18, 5)));
@@ -2033,7 +2045,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
         assertClosestPointInBothShapes(this.shape, createTestOrientedRectangle(5, 5));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredOrientedRectangle2afp() {
         assertEpsilonEquals(56.88921, this.shape.getDistanceSquared(createTestOrientedRectangle(-5, -5)));
         assertEpsilonEquals(130.12055, this.shape.getDistanceSquared(createTestOrientedRectangle(-18, 5)));

@@ -37,7 +37,7 @@ public class HeapAttributeCollectionTest extends AbstractAttributeCollectionTest
 	/**
 	 */
 	public HeapAttributeCollectionTest() {
-		super("HeapAttributeProviderTest"); 
+		super("HeapAttributeProviderTest");  //$NON-NLS-1$
 	}
 	
 	@Override

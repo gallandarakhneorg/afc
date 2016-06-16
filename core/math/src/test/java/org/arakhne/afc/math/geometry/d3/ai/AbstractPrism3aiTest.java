@@ -45,7 +45,7 @@ public abstract class AbstractPrism3aiTest<T extends RectangularPrism3ai<?, T, ?
 	@Test
 	@Override
 	public void toBoundingBoxB() {
-		B box = (B) createRectangularPrism(0, 0, 0, 0, 0, 0);
+		B box = createRectangularPrism(0, 0, 0, 0, 0, 0);
 		this.shape.toBoundingBox(box);
 		assertEquals(this.shape.getMinX(), box.getMinX());
 		assertEquals(this.shape.getMinY(), box.getMinY());

@@ -28,14 +28,17 @@ import org.arakhne.afc.math.geometry.d2.ai.GeomFactory2ai;
 @SuppressWarnings("all")
 public class GeomFactory2ifxTest extends AbstractGeomFactory2aiTest {
 
+	@Override
 	protected GeomFactory2ai<?, ?, ?, ?> createFactory() {
 		return new GeomFactory2ifx();
 	}
 	
+	@Override
 	protected Point2D createPoint(int x, int y) {
 		return new Point2ifx(x, y);
 	}
 
+	@Override
 	protected Vector2D createVector(int x, int y) {
 		return new Vector2ifx(x, y);
 	}

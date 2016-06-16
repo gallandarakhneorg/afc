@@ -28,14 +28,17 @@ import org.arakhne.afc.math.geometry.d3.ai.GeomFactory3ai;
 @SuppressWarnings("all")
 public class GeomFactory3iTest extends AbstractGeomFactory3aiTest {
 
+	@Override
 	protected GeomFactory3ai<?, ?, ?, ?> createFactory() {
 		return new GeomFactory3i();
 	}
 	
+	@Override
 	protected Point3D createPoint(int x, int y, int z) {
 		return new Point3i(x, y, z);
 	}
 
+	@Override
 	protected Vector3D createVector(int x, int y, int z) {
 		return new Vector3i(x, y, z);
 	}

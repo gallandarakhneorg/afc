@@ -20,15 +20,12 @@
 
 package org.arakhne.afc.math.extensions.xtext;
 
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.Test;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.matrix.Matrix2d;
 import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.Matrix4d;
-import org.arakhne.afc.vmutil.annotations.XtextOperator;
-import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 @SuppressWarnings("all")
 public class MatrixExtensionsTest extends AbstractMathTestCase {

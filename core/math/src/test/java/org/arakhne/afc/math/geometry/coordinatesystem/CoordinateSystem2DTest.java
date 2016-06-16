@@ -21,19 +21,20 @@
 package org.arakhne.afc.math.geometry.coordinatesystem;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
-import static org.junit.Assert.*;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * Unit test for {@link CoordinateSystem2D}.
@@ -61,22 +62,17 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	@Test
 	public void getViewVector() {
 		Vector2D v;
-		v = CoordinateSystem2D.XY_RIGHT_HAND.getViewVector();
-		assertFpVectorEquals(1, 0, v);
-		v = CoordinateSystem2D.XY_LEFT_HAND.getViewVector();
+		v = CoordinateSystem2D.getViewVector();
 		assertFpVectorEquals(1, 0, v);
 		//
-		assertInlineParameterUsage(CoordinateSystem2D.class, "getViewVector");
+		assertInlineParameterUsage(CoordinateSystem2D.class, "getViewVector"); //$NON-NLS-1$
 	}
 	
 	@Test
 	public void getViewVectorTuple2D() {
 		Vector2D t = new Vector2d();
 		Vector2D v;
-		v = CoordinateSystem2D.XY_RIGHT_HAND.getViewVector(t);
-		assertSame(t, v);
-		assertFpVectorEquals(1, 0, t);
-		v = CoordinateSystem2D.XY_LEFT_HAND.getViewVector(t);
+		v = CoordinateSystem2D.getViewVector(t);
 		assertSame(t, v);
 		assertFpVectorEquals(1, 0, t);
 	}
@@ -960,7 +956,7 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	@Test
 	public void getBackVector() {
 		assertFpVectorEquals(-1, 0, CoordinateSystem2D.getBackVector());
-		assertInlineParameterUsage(CoordinateSystem2D.class, "getBackVector");
+		assertInlineParameterUsage(CoordinateSystem2D.class, "getBackVector"); //$NON-NLS-1$
 	}
 
 }

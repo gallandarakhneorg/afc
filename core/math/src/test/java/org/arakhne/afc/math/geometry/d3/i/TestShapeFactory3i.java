@@ -34,26 +34,32 @@ public class TestShapeFactory3i implements TestShapeFactory3ai<Point3i, Vector3i
 	
 	public static final TestShapeFactory3i SINGLETON = new TestShapeFactory3i();
 	
+	@Override
 	public Segment3ai<?, ?, ?, Point3i, Vector3i, RectangularPrism3i> createSegment(int x1, int y1, int z1, int x2, int y2, int z2) {
 		return new Segment3i(x1, y1, z1, x2, y2, z2);
 	}
 	
+	@Override
 	public RectangularPrism3i createRectangularPrism(int x, int y, int z, int width, int height, int depth) {
 		return new RectangularPrism3i(x, y, z, width, height, depth);
 	}
 
+	@Override
 	public Sphere3ai<?, ?, ?, Point3i, Vector3i, RectangularPrism3i> createSphere(int x, int y, int z, int radius) {
 		return new Sphere3i(x, y, z, radius);
 	}
 	
+	@Override
 	public Point3D createPoint(int x, int y, int z) {
 		return new Point3i(x, y, z);
 	}
 
+	@Override
 	public Vector3D createVector(int x, int y, int z) {
 		return new Vector3i(x, y, z);
 	}
 
+	@Override
 	public Path3ai<?, ?, ?, Point3i, Vector3i, RectangularPrism3i> createPath(PathWindingRule rule) {
 		if (rule == null) {
 			return new Path3i();
@@ -61,6 +67,7 @@ public class TestShapeFactory3i implements TestShapeFactory3ai<Point3i, Vector3i
 		return new Path3i(rule);
 	}
 	
+	@Override
 	public MultiShape3ai<?, ?, ?, ?, Point3i, Vector3i, RectangularPrism3i> createMultiShape() {
 		return new MultiShape3i();
 	}

@@ -29,27 +29,27 @@ public class OperatingSystemTest {
 
 	@Test
 	public void getCurrentOSName() {
-		assertInlineParameterUsage(OperatingSystem.class, "getCurrentOSName");
+		assertInlineParameterUsage(OperatingSystem.class, "getCurrentOSName"); //$NON-NLS-1$
 	}
 
 	@Test
 	public void getCurrentOSVersion() {
-		assertInlineParameterUsage(OperatingSystem.class, "getCurrentOSVersion");
+		assertInlineParameterUsage(OperatingSystem.class, "getCurrentOSVersion"); //$NON-NLS-1$
 	}
 
 	@Test
 	public void getOSSerialNumber() {
-		assertInlineParameterUsage(OperatingSystem.class, "getOSSerialNumber");
+		assertInlineParameterUsage(OperatingSystem.class, "getOSSerialNumber"); //$NON-NLS-1$
 	}
 
 	@Test
 	public void getOSUUID() {
-		assertInlineParameterUsage(OperatingSystem.class, "getOSUUID");
+		assertInlineParameterUsage(OperatingSystem.class, "getOSUUID"); //$NON-NLS-1$
 	}
 
 	@Test
 	public void is64BitOperatingSystem() {
-		assertInlineParameterUsage(OperatingSystem.class, "is64BitOperatingSystem");
+		assertInlineParameterUsage(OperatingSystem.class, "is64BitOperatingSystem"); //$NON-NLS-1$
 	}
 
 }

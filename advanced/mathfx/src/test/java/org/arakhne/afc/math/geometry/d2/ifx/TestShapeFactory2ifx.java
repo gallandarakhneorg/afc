@@ -34,26 +34,32 @@ public class TestShapeFactory2ifx implements TestShapeFactory<Point2ifx, Vector2
 	
 	public static final TestShapeFactory2ifx SINGLETON = new TestShapeFactory2ifx();
 	
+	@Override
 	public Segment2ai<?, ?, ?, Point2ifx, Vector2ifx, Rectangle2ifx> createSegment(int x1, int y1, int x2, int y2) {
 		return new Segment2ifx(x1, y1, x2, y2);
 	}
 	
+	@Override
 	public Rectangle2ifx createRectangle(int x, int y, int width, int height) {
 		return new Rectangle2ifx(x, y, width, height);
 	}
 
+	@Override
 	public Circle2ai<?, ?, ?, Point2ifx, Vector2ifx, Rectangle2ifx> createCircle(int x, int y, int radius) {
 		return new Circle2ifx(x, y, radius);
 	}
 	
+	@Override
 	public Point2D createPoint(int x, int y) {
 		return new Point2ifx(x, y);
 	}
 
+	@Override
 	public Vector2D createVector(int x, int y) {
 		return new Vector2ifx(x, y);
 	}
 
+	@Override
 	public Path2ai<?, ?, ?, Point2ifx, Vector2ifx, Rectangle2ifx> createPath(PathWindingRule rule) {
 		if (rule == null) {
 			return new Path2ifx();
@@ -62,6 +68,7 @@ public class TestShapeFactory2ifx implements TestShapeFactory<Point2ifx, Vector2
 
 	}
 	
+	@Override
 	public MultiShape2ai<?, ?, ?, ?, Point2ifx, Vector2ifx, Rectangle2ifx> createMultiShape() {
 		return new MultiShape2ifx();
 	}

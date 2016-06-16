@@ -26,6 +26,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d3.afp.PathElement3afp;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** An element of the path with 2 double precision floating-point numbers.
  *
@@ -65,7 +66,7 @@ public abstract class PathElement3d implements PathElement3afp {
 	 * @param toz the z coordinate of the target point.
 	 */
 	PathElement3d(PathElementType type, double tox, double toy, double toz) {
-		assert type != null : "Path element type must be not null";
+		assert type != null : AssertMessages.notNullParameter(0);
 		this.type = type;
 		this.toX = tox;
 		this.toY = toy;
@@ -180,8 +181,8 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Array size is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
 			array[0] = (int) this.toX;
 			array[1] = (int) this.toY;
 			array[2] = (int) this.toZ;
@@ -189,8 +190,8 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Array size is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
 			array[0] = this.toX;
 			array[1] = this.toY;
 			array[2] = this.toZ;
@@ -336,8 +337,8 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Array size is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
 			array[0] = (int) this.toX;
 			array[1] = (int) this.toY;
 			array[2] = (int) this.toZ;
@@ -345,8 +346,8 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Array size is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
 			array[0] = this.toX;
 			array[1] = this.toY;
 			array[2] = this.toY;
@@ -514,8 +515,8 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 6 : "Array size is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 6 : AssertMessages.tooSmallArrayParameter(array.length, 6);
 			array[0] = (int) this.ctrlX;
 			array[1] = (int) this.ctrlY;
 			array[2] = (int) this.ctrlZ;
@@ -526,8 +527,8 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 4 : "Array size is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 6 : AssertMessages.tooSmallArrayParameter(array.length, 6);
 			array[0] = this.ctrlX;
 			array[1] = this.ctrlY;
 			array[2] = this.ctrlZ;
@@ -721,8 +722,8 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 9 : "Array size is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 9 : AssertMessages.tooSmallArrayParameter(array.length, 9);
 			array[0] = (int) this.ctrlX1;
 			array[1] = (int) this.ctrlY1;
 			array[2] = (int) this.ctrlZ1;
@@ -736,8 +737,8 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 9 : "Array size is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 9 : AssertMessages.tooSmallArrayParameter(array.length, 9);
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlZ1;
@@ -891,8 +892,8 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Array size is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
 			array[0] = (int) this.toX;
 			array[1] = (int) this.toY;
 			array[2] = (int) this.toZ;
@@ -900,8 +901,8 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null";
-            assert array.length >= 3 : "Array size is too small";
+			assert array != null : AssertMessages.notNullParameter();
+            assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
 			array[0] = this.toX;
 			array[1] = this.toY;
 			array[2] = this.toZ;

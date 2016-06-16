@@ -29,6 +29,7 @@ import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.GeomFactory3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Factory of geometrical elements.
  *
@@ -47,7 +48,7 @@ public class GeomFactory3dfx implements GeomFactory3afp<PathElement3dfx, Point3d
 
 	@Override
 	public Point3dfx convertToPoint(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null : AssertMessages.notNullParameter();
 		try {
 			return (Point3dfx) pt;
 		} catch (Throwable exception) {
@@ -57,7 +58,7 @@ public class GeomFactory3dfx implements GeomFactory3afp<PathElement3dfx, Point3d
 
 	@Override
 	public Point3dfx convertToPoint(Vector3D<?, ?> v) {
-	    assert v != null : "Vector must be not null";
+	    assert v != null : AssertMessages.notNullParameter();
 	    Point3dfx pt;
 	    try {
 	        final Vector3dfx pp = (Vector3dfx) v;
@@ -70,7 +71,7 @@ public class GeomFactory3dfx implements GeomFactory3afp<PathElement3dfx, Point3d
 
 	@Override
 	public Vector3dfx convertToVector(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null : AssertMessages.notNullParameter();
 		Vector3dfx v;
 		try {
 			final Point3dfx pp = (Point3dfx) pt;
@@ -83,7 +84,7 @@ public class GeomFactory3dfx implements GeomFactory3afp<PathElement3dfx, Point3d
 
 	@Override
 	public Vector3dfx convertToVector(Vector3D<?, ?> v) {
-		assert v != null : "Vector must be not null";
+		assert v != null : AssertMessages.notNullParameter();
 		Vector3dfx vv;
 		try {
 			vv = (Vector3dfx) v;
@@ -141,16 +142,17 @@ public class GeomFactory3dfx implements GeomFactory3afp<PathElement3dfx, Point3d
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:magicnumber")
 	public RectangularPrism3dfx newBox(double x, double y, double z, double width, double height, double depth) {
-		assert width >= 0. : "Width must be positive or zero";
-		assert height >= 0. : "Height must be positive or zero";
-		assert depth >= 0. : "Height must be positive or zero";
+		assert width >= 0. : AssertMessages.positiveOrZeroParameter(3);
+		assert height >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert depth >= 0. : AssertMessages.positiveOrZeroParameter(5);
 		return new RectangularPrism3dfx(x, y, z, width, height, depth);
 	}
 
 	@Override
 	public Path3afp<?, ?, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> newPath(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null";
+		assert rule != null : AssertMessages.notNullParameter();
 		return new Path3dfx(rule);
 	}
 
@@ -234,13 +236,13 @@ public class GeomFactory3dfx implements GeomFactory3afp<PathElement3dfx, Point3d
 
 	@Override
 	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
-		throw new UnsupportedOperationException("Not yet implemented");
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$
 		// TODO
 	}
 
 	@Override
 	public Quaternion newQuaternion(double attitude, double bank, double heading) {
-		throw new UnsupportedOperationException("Not yet implemented");
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$
 		// TODO
 	}
 

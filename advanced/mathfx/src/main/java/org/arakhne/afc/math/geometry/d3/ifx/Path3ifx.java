@@ -46,6 +46,8 @@ import org.arakhne.afc.math.geometry.d3.afp.InnerComputationPoint3afp;
 import org.arakhne.afc.math.geometry.d3.ai.InnerComputationPoint3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
 import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Path with 3 integer FX properties.
  *
@@ -120,7 +122,7 @@ public class Path3ifx
      * @param windingRule the path winding rule.
      */
 	public Path3ifx(PathWindingRule windingRule) {
-		assert windingRule != null : "Path winding rule must be not null";
+		assert windingRule != null : AssertMessages.notNullParameter(0);
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
 		}
@@ -131,8 +133,8 @@ public class Path3ifx
      * @param iterator the iterator that provides the elements to copy.
      */
 	public Path3ifx(PathWindingRule windingRule, Iterator<PathElement3ifx> iterator) {
-		assert windingRule != null : "Path winding rule must be not null";
-		assert iterator != null : "Iterator must be not null";
+		assert windingRule != null : AssertMessages.notNullParameter(0);
+		assert iterator != null : AssertMessages.notNullParameter(1);
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
 		}
@@ -149,7 +151,7 @@ public class Path3ifx
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null : AssertMessages.notNullParameter();
 		if (this.coords != null && !this.coords.isEmpty()) {
             for (int i = 0; i < this.coords.size(); i++) {
                 final double x = this.coords.get(i);
@@ -224,7 +226,7 @@ public class Path3ifx
 
 	@Override
 	public void transform(Transform3D transform) {
-		assert transform != null : "Transformation must be not null";
+		assert transform != null : AssertMessages.notNullParameter();
 		final Point3D<?, ?> p = new InnerComputationPoint3ai();
 		if (this.coords != null && !this.coords.isEmpty()) {
 			final ListIterator<Integer> li = this.coords.listIterator();
@@ -312,7 +314,7 @@ public class Path3ifx
 
 	@Override
 	public void toBoundingBox(RectangularPrism3ifx box) {
-		assert box != null : "Rectangle must be not null";
+		assert box != null : AssertMessages.notNullParameter();
 		box.set(boundingBoxProperty().get());
 	}
 
@@ -334,7 +336,7 @@ public class Path3ifx
 
 	@Override
 	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null";
+		assert rule != null : AssertMessages.notNullParameter();
 		if (this.windingRule != null || rule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(rule);
 		}
@@ -480,7 +482,7 @@ public class Path3ifx
 
 	@Override
 	public void toBoundingBoxWithCtrlPoints(RectangularPrism3ifx box) {
-		assert box != null : "Rectangle must be not null";
+		assert box != null : AssertMessages.notNullParameter();
 		box.set(controlPointBoundingBoxProperty().get());
 	}
 
@@ -698,7 +700,7 @@ public class Path3ifx
 
 	private void ensureMoveTo() {
 		if (this.types == null || this.types.isEmpty()) {
-			throw new IllegalStateException("missing initial moveto in path definition");
+			throw new IllegalStateException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 	}
 
@@ -834,7 +836,7 @@ public class Path3ifx
 
 	@Override
 	public void set(Path3ifx path) {
-		assert path != null : "Path must be not null";
+		assert path != null : AssertMessages.notNullParameter();
 		clear();
 		add(path.getPathIterator());
 	}

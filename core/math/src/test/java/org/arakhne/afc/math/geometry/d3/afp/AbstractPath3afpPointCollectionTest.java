@@ -35,7 +35,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Incubating;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -64,7 +63,7 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
 	@Before
 	public void setUp() throws Exception {
 		this.factory = createFactory();
-		this.shape = (Path3afp<?, ?, ?, P, V, B>) this.factory.createPath(PathWindingRule.EVEN_ODD);
+		this.shape = this.factory.createPath(PathWindingRule.EVEN_ODD);
 		this.shape.moveTo(1, 1, 0);
 		this.shape.lineTo(2, 2, 0);
 		this.shape.quadTo(3, 0, 0, 4, 3, 0);

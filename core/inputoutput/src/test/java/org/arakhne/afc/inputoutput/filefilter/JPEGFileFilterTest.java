@@ -27,7 +27,7 @@ public class JPEGFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".jpg";
+		return ".jpg"; //$NON-NLS-1$
 	}
 
 	@Override

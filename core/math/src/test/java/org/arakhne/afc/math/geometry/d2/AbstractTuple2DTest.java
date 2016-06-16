@@ -26,19 +26,18 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Random;
-
-import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.arakhne.afc.math.AbstractMathTestCase;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
+import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
+
 @SuppressWarnings("all")
-public abstract class AbstractTuple2DTest<T extends Tuple2D, TT extends Tuple2D> extends AbstractMathTestCase {
+public abstract class AbstractTuple2DTest<TT extends Tuple2D> extends AbstractMathTestCase {
 	
 	@Rule
 	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();

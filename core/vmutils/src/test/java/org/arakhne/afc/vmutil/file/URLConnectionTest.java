@@ -53,7 +53,7 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class URLConnectionTest {
 
-	private static final String RESOURCE_URL = "org/arakhne/afc/vmutil/test.txt"; 
+	private static final String RESOURCE_URL = "org/arakhne/afc/vmutil/test.txt";  //$NON-NLS-1$
 
 	private URLConnection connection;
 
@@ -81,9 +81,9 @@ public class URLConnectionTest {
 	 */
 	@Test
 	public void getHeaderFieldKeyInt() {
-		assertEquals("content-type", this.connection.getHeaderFieldKey(0)); 
-		assertEquals("content-length", this.connection.getHeaderFieldKey(1)); 
-		assertEquals("last-modified", this.connection.getHeaderFieldKey(2)); 
+		assertEquals("content-type", this.connection.getHeaderFieldKey(0));  //$NON-NLS-1$
+		assertEquals("content-length", this.connection.getHeaderFieldKey(1));  //$NON-NLS-1$
+		assertEquals("last-modified", this.connection.getHeaderFieldKey(2));  //$NON-NLS-1$
 		assertNull(this.connection.getHeaderFieldKey(3));
 	}
 
@@ -91,8 +91,8 @@ public class URLConnectionTest {
 	 */
 	@Test
 	public void getHeaderFieldInt() {
-		assertEquals("text/plain", this.connection.getHeaderField(0)); 
-		assertEquals("25", this.connection.getHeaderField(1)); 
+		assertEquals("text/plain", this.connection.getHeaderField(0));  //$NON-NLS-1$
+		assertEquals("25", this.connection.getHeaderField(1));  //$NON-NLS-1$
 		assertNotNull(this.connection.getHeaderField(2));
 		assertNull(this.connection.getHeaderField(3));
 	}
@@ -101,10 +101,10 @@ public class URLConnectionTest {
 	 */
 	@Test
 	public void getHeaderFieldString() {
-		assertEquals("text/plain", this.connection.getHeaderField("content-type"));  
-		assertEquals("25", this.connection.getHeaderField("content-length"));  
-		assertNotNull(this.connection.getHeaderField("last-modified")); 
-		assertNull(this.connection.getHeaderField("expires")); 
+		assertEquals("text/plain", this.connection.getHeaderField("content-type"));   //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("25", this.connection.getHeaderField("content-length"));   //$NON-NLS-1$ //$NON-NLS-2$
+		assertNotNull(this.connection.getHeaderField("last-modified"));  //$NON-NLS-1$
+		assertNull(this.connection.getHeaderField("expires"));  //$NON-NLS-1$
 	}
 
 	/**
@@ -114,10 +114,10 @@ public class URLConnectionTest {
 		Map<?,?> map = this.connection.getHeaderFields();
 		assertNotNull(map);
 		assertEquals(3, map.size());
-		assertEquals(Collections.singletonList("text/plain"), map.get("content-type"));  
-		assertEquals(Collections.singletonList("25"), map.get("content-length"));  
-		assertNotNull(map.get("last-modified")); 
-		assertNull(map.get("expires")); 
+		assertEquals(Collections.singletonList("text/plain"), map.get("content-type"));   //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(Collections.singletonList("25"), map.get("content-length"));   //$NON-NLS-1$ //$NON-NLS-2$
+		assertNotNull(map.get("last-modified"));  //$NON-NLS-1$
+		assertNull(map.get("expires"));  //$NON-NLS-1$
 	}
 
 	/**
@@ -131,16 +131,15 @@ public class URLConnectionTest {
 				line = br.readLine();
 			}
 		}
-		assertEquals("TEST1: FOR UNIT TEST ONLY", line); 
+		assertEquals("TEST1: FOR UNIT TEST ONLY", line);  //$NON-NLS-1$
 	}
 
 	/**
 	 * @throws IOException
 	 */
-	@SuppressWarnings("static-method")
 	@Test
 	public void getOutputStream() throws IOException {
-		File tmpFile = File.createTempFile("unittest", ".txt");  
+		File tmpFile = File.createTempFile("unittest", ".txt");   //$NON-NLS-1$ //$NON-NLS-2$
 		tmpFile.deleteOnExit();
 
 		URLConnection con = new URLConnection(tmpFile.toURI().toURL());
@@ -149,7 +148,7 @@ public class URLConnectionTest {
 		try (OutputStream os = con.getOutputStream()) {
 			try (OutputStreamWriter osw = new OutputStreamWriter(os)) {
 				try (BufferedWriter bw = new BufferedWriter(osw)) {
-					bw.write("HELLO WORLD!"); 
+					bw.write("HELLO WORLD!");  //$NON-NLS-1$
 				}
 			}
 		}
@@ -160,7 +159,7 @@ public class URLConnectionTest {
 		try (BufferedReader br = new BufferedReader(new FileReader(tmpFile))) {
 			line = br.readLine();
 		}
-		assertEquals("HELLO WORLD!", line); 
+		assertEquals("HELLO WORLD!", line);  //$NON-NLS-1$
 	}
 
 }

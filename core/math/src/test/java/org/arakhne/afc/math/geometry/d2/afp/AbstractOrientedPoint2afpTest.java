@@ -20,12 +20,11 @@
 package org.arakhne.afc.math.geometry.d2.afp;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings("all")
 public abstract class AbstractOrientedPoint2afpTest<T extends OrientedPoint2afp<?,T,?,?,?,B>,
         B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
@@ -62,245 +61,367 @@ public abstract class AbstractOrientedPoint2afpTest<T extends OrientedPoint2afp<
 
     @Override
     @Test
-    public void equalsToPathIterator() {}
+    public void equalsToPathIterator() {
+    	//
+    }
 
     @Override
     @Test
-    public void equalsToShape() {}
+    public void equalsToShape() {
+    	//
+    }
 
     @Override
     @Test
-    public void isEmpty() {}
+    public void isEmpty() {
+    	//
+    }
 
     @Override
     @Test
-    public void clear() {}
+    public void clear() {
+    	//
+    }
 
     @Override
     @Test
-    public void containsPoint2D() {}
+    public void containsPoint2D() {
+    	//
+    }
     
     @Override
     @Test
-    public void getClosestPointTo() {}
+    public void getClosestPointTo() {
+    	//
+    }
     
     @Override
     @Test
-    public void getFarthestPointTo() {}
+    public void getFarthestPointTo() {
+    	//
+    }
 
     @Override
     @Test
-    public void getClosestPointToEllipse2afp() {}
+    public void getClosestPointToEllipse2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getClosestPointToCircle2afp() {}
+    public void getClosestPointToCircle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getClosestPointToRectangle2afp() {}
+    public void getClosestPointToRectangle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getClosestPointToSegment2afp() {}
+    public void getClosestPointToSegment2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getClosestPointToTriangle2afp() {}
+    public void getClosestPointToTriangle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getClosestPointToPath2afp() {}
+    public void getClosestPointToPath2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getClosestPointToOrientedRectangle2afp() {}
+    public void getClosestPointToOrientedRectangle2afp() {
+    	//
+    }
         
     @Override
     @Test
-    public void getClosestPointToParallelogram2afp() {}
+    public void getClosestPointToParallelogram2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getClosestPointToRoundRectangle2afp() {}
+    public void getClosestPointToRoundRectangle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getClosestPointToMultiShape2afp() {}
+    public void getClosestPointToMultiShape2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getDistance() {}
+    public void getDistance() {
+    	//
+    }
 
     @Override
     @Test
-    public void getDistanceSquared() {}
+    public void getDistanceSquared() {
+    	//
+    }
 
     @Override
     @Test
-    public void getDistanceL1() {}
+    public void getDistanceL1() {
+    	//
+    }
 
     @Override
     @Test
-    public void getDistanceLinf() {}
+    public void getDistanceLinf() {
+    	//
+    }
 
     @Override
     @Test
-    public void setIT() {}
+    public void setIT() {
+    	//
+    }
 
     @Override
     @Test
-    public void getPathIterator() {}
+    public void getPathIterator() {
+    	//
+    }
 
     @Override
     @Test
-    public void getPathIteratorTransform2D() {}
+    public void getPathIteratorTransform2D() {
+    	//
+    }
 
     @Override
     @Test
-    public void createTransformedShape() {}
+    public void createTransformedShape() {
+    	//
+    }
 
     @Override
     @Test
-    public void translateVector2D() {} 
+    public void translateVector2D() {
+    	//
+    } 
 
     @Override
     @Test
-    public void toBoundingBox() {}
+    public void toBoundingBox() {
+    	//
+    }
     
     @Override
     @Test
-    public void toBoundingBoxB() {}
+    public void toBoundingBoxB() {
+    	//
+    }
 
     @Override
     @Test
-    public void containsRectangle2afp() {}
+    public void containsRectangle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void containsShape2D() {}
+    public void containsShape2D() {
+    	//
+    }
 
     @Override
     @Test
-    public void intersectsRectangle2afp() {}
+    public void intersectsRectangle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void intersectsCircle2afp() {}
+    public void intersectsCircle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void intersectsTriangle2afp() {}
+    public void intersectsTriangle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void intersectsEllipse2afp() {}
+    public void intersectsEllipse2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void intersectsSegment2afp() {}
+    public void intersectsSegment2afp() {
+    	//
+    }
     
     @Override
     @Test
-    public void intersectsPath2afp() {}
+    public void intersectsPath2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void intersectsPathIterator2afp() {}
+    public void intersectsPathIterator2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void intersectsOrientedRectangle2afp() {}
+    public void intersectsOrientedRectangle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void intersectsParallelogram2afp() {}
+    public void intersectsParallelogram2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void intersectsRoundRectangle2afp() {}
+    public void intersectsRoundRectangle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getDistanceSquaredRectangle2afp() {}
+    public void getDistanceSquaredRectangle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getDistanceSquaredCircle2afp() {} 
+    public void getDistanceSquaredCircle2afp() {
+    	//
+    } 
 
     @Override
     @Test
-    public void getDistanceSquaredTriangle2afp() {}
+    public void getDistanceSquaredTriangle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getDistanceSquaredEllipse2afp() {}
+    public void getDistanceSquaredEllipse2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getDistanceSquaredSegment2afp() {}
+    public void getDistanceSquaredSegment2afp() {
+    	//
+    }
     
     @Override
     @Test
-    public void getDistanceSquaredPath2afp() {}
+    public void getDistanceSquaredPath2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getDistanceSquaredOrientedRectangle2afp() {}
+    public void getDistanceSquaredOrientedRectangle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getDistanceSquaredParallelogram2afp() {}
+    public void getDistanceSquaredParallelogram2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getDistanceSquaredRoundRectangle2afp() {}
+    public void getDistanceSquaredRoundRectangle2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void getDistanceSquaredMultiShape2afp() {}
+    public void getDistanceSquaredMultiShape2afp() {
+    	//
+    }
 
     @Override
     @Test
-    public void translateDoubleDouble() {}
+    public void translateDoubleDouble() {
+    	//
+    }
 
     @Override
     @Test
-    public void containsDoubleDouble() {}
+    public void containsDoubleDouble() {
+    	//
+    }
 
     @Override
     @Test
-    public void intersectsShape2D() {}
+    public void intersectsShape2D() {
+    	//
+    }
 
     @Override
     @Test
-    public void operator_addVector2D() {}
+    public void operator_addVector2D() {
+    	//
+    }
 
     @Override
     @Test
-    public void operator_plusVector2D() {}
+    public void operator_plusVector2D() {
+    	//
+    }
 
     @Override
     @Test
-    public void operator_removeVector2D() {}
+    public void operator_removeVector2D() {
+    	//
+    }
 
     @Override
     @Test
-    public void operator_minusVector2D() {}
+    public void operator_minusVector2D() {
+    	//
+    }
 
     @Override
     @Test
-    public void operator_multiplyTransform2D() {}
+    public void operator_multiplyTransform2D() {
+    	//
+    }
 
     @Override
     @Test
-    public void operator_andPoint2D() {} 
+    public void operator_andPoint2D() {
+    	//
+    } 
 
     @Override
     @Test
-    public void operator_andShape2D() {}
+    public void operator_andShape2D() {
+    	//
+    }
 
     @Override
     @Test
-    public void operator_upToPoint2D() {}
+    public void operator_upToPoint2D() {
+    	//
+    }
 }

@@ -24,7 +24,6 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,17 +33,16 @@ import java.util.regex.Pattern;
 
 import org.junit.ComparisonFailure;
 import org.junit.Test;
-import org.junit.internal.ArrayComparisonFailure;
 
 @SuppressWarnings("all")
 public class ClasspathUtilTest {
 
-	private void assertSystemClasspath(Iterator<URL> urls) throws MalformedURLException {
+	private void assertSystemClasspath(Iterator<URL> urls) {
 		assertClasspathEquals(urls, notExpandedClasspath());
 	}
 	
 	private static String toString(String url) {
-		if (Pattern.matches("^.*[/\\\\]$", url)) {
+		if (Pattern.matches("^.*[/\\\\]$", url)) { //$NON-NLS-1$
 			return url.substring(0, url.length() - 1);
 		}
 		return url;
@@ -68,7 +66,7 @@ public class ClasspathUtilTest {
 			assertArrayEquals(expecteds, tab);
 		} catch (Throwable exception) {
 			throw new ComparisonFailure(exception.getMessage(),
-					Arrays.toString(expecteds).replaceAll(" +", "\n"), Arrays.toString(tab).replaceAll(" +", "\n"));
+					Arrays.toString(expecteds).replaceAll(" +", "\n"), Arrays.toString(tab).replaceAll(" +", "\n")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		}
 	}
 
@@ -87,15 +85,15 @@ public class ClasspathUtilTest {
 
 	static {
 		try {
-			URL1 = new File((File) null, "classpath1").toURI().toURL();
-			URL2 = new File((File) null, "classpath2").toURI().toURL();
+			URL1 = new File((File) null, "classpath1").toURI().toURL(); //$NON-NLS-1$
+			URL2 = new File((File) null, "classpath2").toURI().toURL(); //$NON-NLS-1$
 		} catch (Exception exception) {
 			throw new RuntimeException(exception);
 		}
 	}
 	
-	private static String[] notExpandedClasspath() throws MalformedURLException {
-		String[] system = System.getProperty("java.class.path").split( 
+	private static String[] notExpandedClasspath() {
+		String[] system = System.getProperty("java.class.path").split(  //$NON-NLS-1$
 				Pattern.quote(File.pathSeparator));
 		for (int i = 0; i < system.length; ++i) {
 			system[i] = toString(system[i]);
@@ -103,7 +101,7 @@ public class ClasspathUtilTest {
 		return system;
 	}
 
-	private static String[] expandedClasspath() throws MalformedURLException {
+	private static String[] expandedClasspath() {
 		String[] system = notExpandedClasspath();
 		String[] exp = Arrays.copyOf(system, system.length + 2);
 		exp[exp.length - 2] = toString(URL1);

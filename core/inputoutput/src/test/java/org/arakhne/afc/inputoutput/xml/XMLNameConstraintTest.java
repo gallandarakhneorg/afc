@@ -60,7 +60,7 @@ public class XMLNameConstraintTest {
 			if (XMLUtil.ATTR_NAME.equals(inv.getArgumentAt(0, String.class))) {
 				return this.name;
 			}
-			fail("Invalid attribute name");
+			fail("Invalid attribute name"); //$NON-NLS-1$
 			return null;
 		});
 		assertTrue(this.constraint.isValidElement(element));
@@ -73,7 +73,7 @@ public class XMLNameConstraintTest {
 			if (XMLUtil.ATTR_NAME.equals(inv.getArgumentAt(0, String.class))) {
 				return UUID.randomUUID().toString();
 			}
-			fail("Invalid attribute name");
+			fail("Invalid attribute name"); //$NON-NLS-1$
 			return null;
 		});
 		assertFalse(this.constraint.isValidElement(element));

@@ -32,30 +32,36 @@ public class TestShapeFactory3d implements TestShapeFactory3afp<Point3d, Vector3
 	
 	public static final TestShapeFactory3d SINGLETON = new TestShapeFactory3d();
 	
+	@Override
 	public Segment3afp<?, ?, ?, Point3d, Vector3d, RectangularPrism3d> createSegment(double x1, double y1, double z1, double x2, double y2, double z2) {
 		return new Segment3d(x1, y1, z1, x2, y2, z2);
 	}
 	
+	@Override
 	public RectangularPrism3d createRectangularPrism(double x, double y, double z, double width, double height, double depth) {
-		assert width >= 0 : "Width must be positive or zero";
-		assert height >= 0 : "Height must be positive or zero";
-		assert depth >= 0 : "depth must be positive or zero";
+		assert width >= 0 : "Width must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
+		assert depth >= 0 : "depth must be positive or zero"; //$NON-NLS-1$
 		return new RectangularPrism3d(x, y, z, width, height, depth);
 	}
 
+	@Override
 	public Sphere3afp<?, ?, ?, Point3d, Vector3d, RectangularPrism3d> createSphere(double x, double y, double z, double radius) {
-		assert radius >= 0 : "Radius must be positive or zero";
+		assert radius >= 0 : "Radius must be positive or zero"; //$NON-NLS-1$
 		return new Sphere3d(x, y, z, radius);
 	}
 	
+	@Override
 	public Point3d createPoint(double x, double y, double z) {
 		return new Point3d(x, y, z);
 	}
 
+	@Override
 	public Vector3d createVector(double x, double y, double z) {
 		return new Vector3d(x, y, z);
 	}
 
+	@Override
 	public Path3afp<?, ?, ?, Point3d, Vector3d, RectangularPrism3d> createPath(PathWindingRule rule) {
 		if (rule == null) {
 			return new Path3d();

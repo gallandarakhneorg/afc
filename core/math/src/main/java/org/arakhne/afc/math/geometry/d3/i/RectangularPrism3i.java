@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A rectangle with 2 integer numbers.
  *
@@ -62,8 +63,8 @@ public class RectangularPrism3i extends AbstractShape3i<RectangularPrism3i>
 	 * @param max is the max corner of the rectangular prism.
 	 */
 	public RectangularPrism3i(Point3D<?, ?> min, Point3D<?, ?> max) {
-		assert min != null : "Minimum corner must be not null";
-		assert max != null : "Maximum corner must be not null";
+		assert min != null : AssertMessages.notNullParameter(0);
+		assert max != null : AssertMessages.notNullParameter(1);
 		setFromCorners(min.ix(), min.iy(), min.iz(), max.ix(), max.iy(), max.iz());
 	}
 
@@ -75,10 +76,11 @@ public class RectangularPrism3i extends AbstractShape3i<RectangularPrism3i>
      * @param height height of the rectangular prism.
      * @param depth depth of the rectangular prism.
      */
+	@SuppressWarnings("checkstyle:magicnumber")
 	public RectangularPrism3i(int x, int y, int z, int width, int height, int depth) {
-		assert width >= 0. : "Width must be positive or zero";
-		assert height >= 0. : "Height must be positive or zero";
-		assert depth >= 0. : "Depth must be positive or zero";
+		assert width >= 0. : AssertMessages.positiveOrZeroParameter(3);
+		assert height >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert depth >= 0. : AssertMessages.positiveOrZeroParameter(5);
 		set(x, y, z, width, height, depth);
 	}
 

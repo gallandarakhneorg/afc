@@ -69,20 +69,20 @@ public class GraphPathTest {
 	public void setUp() throws Exception {
 		this.path = new GraphPathStub();
 		
-		this.c1 = new ConnectionStub("c1[s1,s4]"); 
-		this.c2 = new ConnectionStub("c2[s1,s2]"); 
-		this.c3 = new ConnectionStub("c3[s2,s3,s4]"); 
-		this.c4 = new ConnectionStub("c4[s3,s5]"); 
-		this.c5 = new ConnectionStub("c5[s5]"); 
-		this.c6 = new ConnectionStub("c6[s6]"); 
-		this.c7 = new ConnectionStub("c7[s6]"); 
+		this.c1 = new ConnectionStub("c1[s1,s4]");  //$NON-NLS-1$
+		this.c2 = new ConnectionStub("c2[s1,s2]");  //$NON-NLS-1$
+		this.c3 = new ConnectionStub("c3[s2,s3,s4]");  //$NON-NLS-1$
+		this.c4 = new ConnectionStub("c4[s3,s5]");  //$NON-NLS-1$
+		this.c5 = new ConnectionStub("c5[s5]");  //$NON-NLS-1$
+		this.c6 = new ConnectionStub("c6[s6]");  //$NON-NLS-1$
+		this.c7 = new ConnectionStub("c7[s6]");  //$NON-NLS-1$
 		
-		this.s1 = new SegmentStub("s1", this.c1, this.c2); 
-		this.s2 = new SegmentStub("s2", this.c2, this.c3); 
-		this.s3 = new SegmentStub("s3", this.c3, this.c4); 
-		this.s4 = new SegmentStub("s4", this.c1, this.c3); 
-		this.s5 = new SegmentStub("s5", this.c4, this.c5); 
-		this.s6 = new SegmentStub("s6", this.c6, this.c7); 
+		this.s1 = new SegmentStub("s1", this.c1, this.c2);  //$NON-NLS-1$
+		this.s2 = new SegmentStub("s2", this.c2, this.c3);  //$NON-NLS-1$
+		this.s3 = new SegmentStub("s3", this.c3, this.c4);  //$NON-NLS-1$
+		this.s4 = new SegmentStub("s4", this.c1, this.c3);  //$NON-NLS-1$
+		this.s5 = new SegmentStub("s5", this.c4, this.c5);  //$NON-NLS-1$
+		this.s6 = new SegmentStub("s6", this.c6, this.c7);  //$NON-NLS-1$
 	}
 	
 	/**
@@ -132,7 +132,7 @@ public class GraphPathTest {
 		assertSame(this.c3, this.path.getStartingPointFor(5));
 		try {
 			this.path.getStartingPointFor(6);
-			fail("expecting IndexOutOfBoundsException"); 
+			fail("expecting IndexOutOfBoundsException");  //$NON-NLS-1$
 		}
 		catch(IndexOutOfBoundsException e) {
 			//
@@ -164,7 +164,7 @@ public class GraphPathTest {
 		assertSame(this.c4, this.path.getStartingPointFor(7));
 		try {
 			this.path.getStartingPointFor(8);
-			fail("expecting IndexOutOfBoundsException"); 
+			fail("expecting IndexOutOfBoundsException");  //$NON-NLS-1$
 		}
 		catch(IndexOutOfBoundsException e) {
 			//
@@ -819,7 +819,7 @@ public class GraphPathTest {
 		assertSame(this.s2, this.path.get(5));
 		try {
 			this.path.get(6);
-			fail("expecting IndexOutOfBounds"); 
+			fail("expecting IndexOutOfBounds");  //$NON-NLS-1$
 		}
 		catch (Exception e) {
 			//
@@ -851,7 +851,7 @@ public class GraphPathTest {
 		assertSame(this.s5, this.path.get(7));
 		try {
 			this.path.get(8);
-			fail("expecting IndexOutOfBounds"); 
+			fail("expecting IndexOutOfBounds");  //$NON-NLS-1$
 		}
 		catch (Exception e) {
 			//
@@ -927,7 +927,7 @@ public class GraphPathTest {
 		
 		try {
 			this.path.add(45, this.s1);
-			fail("Expecting IndexOutOfBoundsException"); 
+			fail("Expecting IndexOutOfBoundsException");  //$NON-NLS-1$
 		}
 		catch(IndexOutOfBoundsException e ) {
 			// Expected exception
@@ -951,7 +951,7 @@ public class GraphPathTest {
 
 		try {
 			this.path.add(1, this.s2);
-			fail("Expecting IllegalArgumentException"); 
+			fail("Expecting IllegalArgumentException");  //$NON-NLS-1$
 		}
 		catch(IllegalArgumentException e) {
 			// expected exception

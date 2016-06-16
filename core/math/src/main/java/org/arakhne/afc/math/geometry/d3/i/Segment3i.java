@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.ai.Segment3ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A 2D segment/line with 2 integer numbers.
  *
@@ -100,7 +101,7 @@ public class Segment3i extends AbstractShape3i<Segment3i>
 	@Pure
 	@Override
 	public Shape3i<?> createTransformedShape(Transform3D transform) {
-		assert transform != null : "Transformation must be not null";
+		assert transform != null : AssertMessages.notNullParameter();
 		final Point3i point = getGeomFactory().newPoint(getX1(), getY1(), getZ1());
 		transform.transform(point);
 		final int x1 = point.ix();

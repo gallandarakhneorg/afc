@@ -46,44 +46,44 @@ public class TextUtilTest extends AbstractTestCase {
 		String[] res;
 		String[] actual;
 		
-		src = Locale.getString("A_SOURCE"); 
-		res = Locale.getString("A_RESULT").split("\n");  
+		src = Locale.getString("A_SOURCE");  //$NON-NLS-1$
+		res = Locale.getString("A_RESULT").split("\n");   //$NON-NLS-1$ //$NON-NLS-2$
 		actual = TextUtil.cutStringAsArray(src, 80);
 		assertNotNull(actual);
 		Assert.assertEquals(res.length, actual.length);
 		for(int i=0; i<res.length; i++) {
-			assertTrue("A:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80);   
-			Assert.assertEquals("A:Line "+(i+1), res[i], actual[i]); 
+			assertTrue("A:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80);    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Assert.assertEquals("A:Line "+(i+1), res[i], actual[i]);  //$NON-NLS-1$
 		}
 
-		src = Locale.getString("B_SOURCE"); 
-		res = Locale.getString("B_RESULT").split("\n");  
+		src = Locale.getString("B_SOURCE");  //$NON-NLS-1$
+		res = Locale.getString("B_RESULT").split("\n");   //$NON-NLS-1$ //$NON-NLS-2$
 		actual = TextUtil.cutStringAsArray(src, 80);
 		assertNotNull(actual);
 		Assert.assertEquals(res.length, actual.length);
 		for(int i=0; i<res.length; i++) {
-			assertTrue("B:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80);   
-			Assert.assertEquals("B:Line "+(i+1), res[i], actual[i]); 
+			assertTrue("B:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80);    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Assert.assertEquals("B:Line "+(i+1), res[i], actual[i]);  //$NON-NLS-1$
 		}
 
-		src = Locale.getString("C_SOURCE"); 
-		res = Locale.getString("C_RESULT").split("\n");  
+		src = Locale.getString("C_SOURCE");  //$NON-NLS-1$
+		res = Locale.getString("C_RESULT").split("\n");   //$NON-NLS-1$ //$NON-NLS-2$
 		actual = TextUtil.cutStringAsArray(src, 80);
 		assertNotNull(actual);
 		Assert.assertEquals(res.length, actual.length);
 		for(int i=0; i<res.length; i++) {
-			assertTrue("C:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80);   
-			Assert.assertEquals("C:Line "+(i+1), res[i], actual[i]); 
+			assertTrue("C:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80);    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Assert.assertEquals("C:Line "+(i+1), res[i], actual[i]);  //$NON-NLS-1$
 		}
 
-		src = Locale.getString("D_SOURCE"); 
-		res = Locale.getString("D_RESULT").split("\n");  
+		src = Locale.getString("D_SOURCE");  //$NON-NLS-1$
+		res = Locale.getString("D_RESULT").split("\n");   //$NON-NLS-1$ //$NON-NLS-2$
 		actual = TextUtil.cutStringAsArray(src, 80);
 		assertNotNull(actual);
 		Assert.assertEquals(res.length, actual.length);
 		for(int i=0; i<res.length; i++) {
-			assertTrue("D:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80);   
-			Assert.assertEquals("D:Line "+(i+1), res[i], actual[i]); 
+			assertTrue("D:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80);    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Assert.assertEquals("D:Line "+(i+1), res[i], actual[i]);  //$NON-NLS-1$
 		}
 	}
 
@@ -91,85 +91,85 @@ public class TextUtilTest extends AbstractTestCase {
 	public void cutString() throws Exception {
 		String src, res, actual;
 		
-		src = Locale.getString("A_SOURCE"); 
-		res = Locale.getString("A_RESULT"); 
+		src = Locale.getString("A_SOURCE");  //$NON-NLS-1$
+		res = Locale.getString("A_RESULT");  //$NON-NLS-1$
 		actual = TextUtil.cutString(src, 80);
 		assertNotNull(actual);
-		Assert.assertEquals("A:", res, actual); 
+		Assert.assertEquals("A:", res, actual);  //$NON-NLS-1$
 
-		src = Locale.getString("B_SOURCE"); 
-		res = Locale.getString("B_RESULT"); 
+		src = Locale.getString("B_SOURCE");  //$NON-NLS-1$
+		res = Locale.getString("B_RESULT");  //$NON-NLS-1$
 		actual = TextUtil.cutString(src, 80);
 		assertNotNull(actual);
-		Assert.assertEquals("B:", res, actual); 
+		Assert.assertEquals("B:", res, actual);  //$NON-NLS-1$
 
-		src = Locale.getString("C_SOURCE"); 
-		res = Locale.getString("C_RESULT"); 
+		src = Locale.getString("C_SOURCE");  //$NON-NLS-1$
+		res = Locale.getString("C_RESULT");  //$NON-NLS-1$
 		actual = TextUtil.cutString(src, 80);
 		assertNotNull(actual);
-		Assert.assertEquals("C:", res, actual); 
+		Assert.assertEquals("C:", res, actual);  //$NON-NLS-1$
 
-		src = Locale.getString("D_SOURCE"); 
-		res = Locale.getString("D_RESULT"); 
+		src = Locale.getString("D_SOURCE");  //$NON-NLS-1$
+		res = Locale.getString("D_RESULT");  //$NON-NLS-1$
 		actual = TextUtil.cutString(src, 80);
 		assertNotNull(actual);
-		Assert.assertEquals("D:", res, actual); 
+		Assert.assertEquals("D:", res, actual);  //$NON-NLS-1$
 	}
 	
 	@Test
 	public void splitBrackets() throws Exception {
 		String[] tab;
 		
-		tab = TextUtil.splitBrackets("{a}{b}{c}{d}"); 
+		tab = TextUtil.splitBrackets("{a}{b}{c}{d}");  //$NON-NLS-1$
 		assertArrayEquals(new String[]{
-				"a", 
-				"b", 
-				"c", 
-				"d", 
+				"a",  //$NON-NLS-1$
+				"b",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
 			}, tab);
 
-		tab = TextUtil.splitBrackets("start {a}bbb {b eee}{c}{d}zzz end"); 
+		tab = TextUtil.splitBrackets("start {a}bbb {b eee}{c}{d}zzz end");  //$NON-NLS-1$
 		assertArrayEquals(new String[]{
-				"start", 
-				"a", 
-				"bbb", 
-				"b eee", 
-				"c", 
-				"d", 
-				"zzz end", 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b eee",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end",  //$NON-NLS-1$
 			}, tab);
 
-		tab = TextUtil.splitBrackets("start {a}bbb {b {eee}}{c}{d}zzz end"); 
+		tab = TextUtil.splitBrackets("start {a}bbb {b {eee}}{c}{d}zzz end");  //$NON-NLS-1$
 		assertArrayEquals(new String[]{
-				"start", 
-				"a", 
-				"bbb", 
-				"b {eee}", 
-				"c", 
-				"d", 
-				"zzz end", 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b {eee}",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end",  //$NON-NLS-1$
 			}, tab);
 
-		tab = TextUtil.splitBrackets("start {a}bbb {b {e{e{e}f}}}{c}{d}zzz end"); 
+		tab = TextUtil.splitBrackets("start {a}bbb {b {e{e{e}f}}}{c}{d}zzz end");  //$NON-NLS-1$
 		assertArrayEquals(new String[]{
-				"start", 
-				"a", 
-				"bbb", 
-				"b {e{e{e}f}}", 
-				"c", 
-				"d", 
-				"zzz end", 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b {e{e{e}f}}",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end",  //$NON-NLS-1$
 			}, tab);
 
-		tab = TextUtil.splitBrackets("start {a}bbb {b {e{e{e}f}}}{}{d}zzz end"); 
+		tab = TextUtil.splitBrackets("start {a}bbb {b {e{e{e}f}}}{}{d}zzz end");  //$NON-NLS-1$
 		assertArrayEquals(new String[]{
-				"start", 
-				"a", 
-				"bbb", 
-				"b {e{e{e}f}}", 
-				"", 
-				"d", 
-				"zzz end", 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b {e{e{e}f}}",  //$NON-NLS-1$
+				"",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end",  //$NON-NLS-1$
 			}, tab);
 	}
 	
@@ -177,56 +177,56 @@ public class TextUtilTest extends AbstractTestCase {
 	public void splitCharCharStr() throws Exception {
 		String[] tab;
 		
-		tab = TextUtil.split('(',']',"(a](b](c](d]"); 
+		tab = TextUtil.split('(',']',"(a](b](c](d]");  //$NON-NLS-1$
 		assertArrayEquals(new String[]{
-				"a", 
-				"b", 
-				"c", 
-				"d", 
+				"a",  //$NON-NLS-1$
+				"b",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
 			}, tab);
 
-		tab = TextUtil.split('(',']',"start (a]bbb (b eee](c](d]zzz end"); 
+		tab = TextUtil.split('(',']',"start (a]bbb (b eee](c](d]zzz end");  //$NON-NLS-1$
 		assertArrayEquals(new String[]{
-				"start", 
-				"a", 
-				"bbb", 
-				"b eee", 
-				"c", 
-				"d", 
-				"zzz end", 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b eee",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end",  //$NON-NLS-1$
 			}, tab);
 
-		tab = TextUtil.split('(',']',"start (a]bbb (b (eee]](c](d]zzz end"); 
+		tab = TextUtil.split('(',']',"start (a]bbb (b (eee]](c](d]zzz end");  //$NON-NLS-1$
 		assertArrayEquals(new String[]{
-				"start", 
-				"a", 
-				"bbb", 
-				"b (eee]", 
-				"c", 
-				"d", 
-				"zzz end", 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b (eee]",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end",  //$NON-NLS-1$
 			}, tab);
 
-		tab = TextUtil.split('(',']',"start (a]bbb (b (e(e(e]f]]](c](d]zzz end"); 
+		tab = TextUtil.split('(',']',"start (a]bbb (b (e(e(e]f]]](c](d]zzz end");  //$NON-NLS-1$
 		assertArrayEquals(new String[]{
-				"start", 
-				"a", 
-				"bbb", 
-				"b (e(e(e]f]]", 
-				"c", 
-				"d", 
-				"zzz end", 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b (e(e(e]f]]",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end",  //$NON-NLS-1$
 			}, tab);
 
-		tab = TextUtil.split('(',']',"start (a]bbb (b (e(e(e]f]]](](d]zzz end"); 
+		tab = TextUtil.split('(',']',"start (a]bbb (b (e(e(e]f]]](](d]zzz end");  //$NON-NLS-1$
 		assertArrayEquals(new String[]{
-				"start", 
-				"a", 
-				"bbb", 
-				"b (e(e(e]f]]", 
-				"", 
-				"d", 
-				"zzz end", 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b (e(e(e]f]]",  //$NON-NLS-1$
+				"",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end",  //$NON-NLS-1$
 			}, tab);
 	}
 
@@ -234,56 +234,56 @@ public class TextUtilTest extends AbstractTestCase {
 	public void splitBracketsAsList() throws Exception {
 		List<String> tab;
 		
-		tab = TextUtil.splitBracketsAsList("{a}{b}{c}{d}"); 
+		tab = TextUtil.splitBracketsAsList("{a}{b}{c}{d}");  //$NON-NLS-1$
 		assertCollectionEquals(Arrays.asList(
-				"a", 
-				"b", 
-				"c", 
-				"d" 
+				"a",  //$NON-NLS-1$
+				"b",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d"  //$NON-NLS-1$
 			), tab);
 
-		tab = TextUtil.splitBracketsAsList("start {a}bbb {b eee}{c}{d}zzz end"); 
+		tab = TextUtil.splitBracketsAsList("start {a}bbb {b eee}{c}{d}zzz end");  //$NON-NLS-1$
 		assertCollectionEquals(Arrays.asList(
-				"start", 
-				"a", 
-				"bbb", 
-				"b eee", 
-				"c", 
-				"d", 
-				"zzz end" 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b eee",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end"  //$NON-NLS-1$
 			), tab);
 
-		tab = TextUtil.splitBracketsAsList("start {a}bbb {b {eee}}{c}{d}zzz end"); 
+		tab = TextUtil.splitBracketsAsList("start {a}bbb {b {eee}}{c}{d}zzz end");  //$NON-NLS-1$
 		assertCollectionEquals(Arrays.asList(
-				"start", 
-				"a", 
-				"bbb", 
-				"b {eee}", 
-				"c", 
-				"d", 
-				"zzz end" 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b {eee}",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end"  //$NON-NLS-1$
 			), tab);
 
-		tab = TextUtil.splitBracketsAsList("start {a}bbb {b {e{e{e}f}}}{c}{d}zzz end"); 
+		tab = TextUtil.splitBracketsAsList("start {a}bbb {b {e{e{e}f}}}{c}{d}zzz end");  //$NON-NLS-1$
 		assertCollectionEquals(Arrays.asList(
-				"start", 
-				"a", 
-				"bbb", 
-				"b {e{e{e}f}}", 
-				"c", 
-				"d", 
-				"zzz end" 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b {e{e{e}f}}",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end"  //$NON-NLS-1$
 			), tab);
 
-		tab = TextUtil.splitBracketsAsList("start {a}bbb {b {e{e{e}f}}}{}{d}zzz end"); 
+		tab = TextUtil.splitBracketsAsList("start {a}bbb {b {e{e{e}f}}}{}{d}zzz end");  //$NON-NLS-1$
 		assertCollectionEquals(Arrays.asList(
-				"start", 
-				"a", 
-				"bbb", 
-				"b {e{e{e}f}}", 
-				"", 
-				"d", 
-				"zzz end" 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b {e{e{e}f}}",  //$NON-NLS-1$
+				"",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end"  //$NON-NLS-1$
 			), tab);
 	}
 
@@ -291,56 +291,56 @@ public class TextUtilTest extends AbstractTestCase {
 	public void splitAsListCharCharStr() throws Exception {
 		List<String> tab;
 		
-		tab = TextUtil.splitAsList('|','=',"|a=|b=|c=|d="); 
+		tab = TextUtil.splitAsList('|','=',"|a=|b=|c=|d=");  //$NON-NLS-1$
 		assertCollectionEquals(Arrays.asList(
-				"a", 
-				"b", 
-				"c", 
-				"d" 
+				"a",  //$NON-NLS-1$
+				"b",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d"  //$NON-NLS-1$
 			), tab);
 
-		tab = TextUtil.splitAsList('|','=',"start |a=bbb |b eee=|c=|d=zzz end"); 
+		tab = TextUtil.splitAsList('|','=',"start |a=bbb |b eee=|c=|d=zzz end");  //$NON-NLS-1$
 		assertCollectionEquals(Arrays.asList(
-				"start", 
-				"a", 
-				"bbb", 
-				"b eee", 
-				"c", 
-				"d", 
-				"zzz end" 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b eee",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end"  //$NON-NLS-1$
 			), tab);
 
-		tab = TextUtil.splitAsList('|','=',"start |a=bbb |b |eee==|c=|d=zzz end"); 
+		tab = TextUtil.splitAsList('|','=',"start |a=bbb |b |eee==|c=|d=zzz end");  //$NON-NLS-1$
 		assertCollectionEquals(Arrays.asList(
-				"start", 
-				"a", 
-				"bbb", 
-				"b |eee=", 
-				"c", 
-				"d", 
-				"zzz end" 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b |eee=",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end"  //$NON-NLS-1$
 			), tab);
 
-		tab = TextUtil.splitAsList('|','=',"start |a=bbb |b |e|e|e=f===|c=|d=zzz end"); 
+		tab = TextUtil.splitAsList('|','=',"start |a=bbb |b |e|e|e=f===|c=|d=zzz end");  //$NON-NLS-1$
 		assertCollectionEquals(Arrays.asList(
-				"start", 
-				"a", 
-				"bbb", 
-				"b |e|e|e=f==", 
-				"c", 
-				"d", 
-				"zzz end" 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b |e|e|e=f==",  //$NON-NLS-1$
+				"c",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end"  //$NON-NLS-1$
 			), tab);
 
-		tab = TextUtil.splitAsList('|','=',"start |a=bbb |b |e|e|e=f===|=|d=zzz end"); 
+		tab = TextUtil.splitAsList('|','=',"start |a=bbb |b |e|e|e=f===|=|d=zzz end");  //$NON-NLS-1$
 		assertCollectionEquals(Arrays.asList(
-				"start", 
-				"a", 
-				"bbb", 
-				"b |e|e|e=f==", 
-				"", 
-				"d", 
-				"zzz end" 
+				"start",  //$NON-NLS-1$
+				"a",  //$NON-NLS-1$
+				"bbb",  //$NON-NLS-1$
+				"b |e|e|e=f==",  //$NON-NLS-1$
+				"",  //$NON-NLS-1$
+				"d",  //$NON-NLS-1$
+				"zzz end"  //$NON-NLS-1$
 			), tab);
 	}
 	
@@ -348,8 +348,8 @@ public class TextUtilTest extends AbstractTestCase {
 	public void parseHTML() {
 		String source, expected, actual;
 		
-		source = Locale.getString("HTML_JAVA_SOURCE"); 
-		expected = Locale.getString("HTML_JAVA_EXPECTED"); 
+		source = Locale.getString("HTML_JAVA_SOURCE");  //$NON-NLS-1$
+		expected = Locale.getString("HTML_JAVA_EXPECTED");  //$NON-NLS-1$
 		
 		assertNull(TextUtil.parseHTML(null));
 		
@@ -361,8 +361,8 @@ public class TextUtilTest extends AbstractTestCase {
 	public void toHTML() {
 		String source, expected, actual;
 		
-		source = Locale.getString("JAVA_HTML_SOURCE"); 
-		expected = Locale.getString("JAVA_HTML_EXPECTED"); 
+		source = Locale.getString("JAVA_HTML_SOURCE");  //$NON-NLS-1$
+		expected = Locale.getString("JAVA_HTML_EXPECTED");  //$NON-NLS-1$
 		
 		assertNull(TextUtil.toHTML(null));
 		
@@ -372,92 +372,92 @@ public class TextUtilTest extends AbstractTestCase {
 
 	@Test
 	public void equalsIgnoreAccentsStringStringMap() {
-		assertInlineParameterUsage(TextUtil.class, "equalsIgnoreAccents", String.class, String.class, Map.class);
+		assertInlineParameterUsage(TextUtil.class, "equalsIgnoreAccents", String.class, String.class, Map.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void equalsIgnoreCaseAccentsStringStringMap() {
-		assertInlineParameterUsage(TextUtil.class, "equalsIgnoreCaseAccents", String.class, String.class, Map.class);
+		assertInlineParameterUsage(TextUtil.class, "equalsIgnoreCaseAccents", String.class, String.class, Map.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void joinStringBooleanArray() {
-		assertInlineParameterUsage(TextUtil.class, "join", String.class, boolean[].class);
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, boolean[].class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void joinStringByteArray() {
-		assertInlineParameterUsage(TextUtil.class, "join", String.class, byte[].class);
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, byte[].class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void joinStringCharArray() {
-		assertInlineParameterUsage(TextUtil.class, "join", String.class, char[].class);
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, char[].class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void joinStringShortArray() {
-		assertInlineParameterUsage(TextUtil.class, "join", String.class, short[].class);
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, short[].class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void joinStringDoubleArray() {
-		assertInlineParameterUsage(TextUtil.class, "join", String.class, double[].class);
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, double[].class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void joinStringFloatArray() {
-		assertInlineParameterUsage(TextUtil.class, "join", String.class, float[].class);
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, float[].class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void joinStringIntArray() {
-		assertInlineParameterUsage(TextUtil.class, "join", String.class, int[].class);
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, int[].class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void joinStringLongArray() {
-		assertInlineParameterUsage(TextUtil.class, "join", String.class, long[].class);
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, long[].class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void joinStringIterable() {
-		assertInlineParameterUsage(TextUtil.class, "join", String.class, Iterable.class);
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, Iterable.class); //$NON-NLS-1$
 	}
 	
 	@Test
 	public void joinStringStringStringObjectArray() {
-		assertInlineParameterUsage(TextUtil.class, "join", String.class, String.class, String.class, Object[].class);
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, String.class, String.class, Object[].class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void joinStringObjectArray() {
-		assertInlineParameterUsage(TextUtil.class, "join", String.class, Object[].class);
+		assertInlineParameterUsage(TextUtil.class, "join", String.class, Object[].class); //$NON-NLS-1$
 	}
 	
 	@Test
 	public void mergeBracketsIterable() {
-		assertInlineParameterUsage(TextUtil.class, "mergeBrackets", Iterable.class);
+		assertInlineParameterUsage(TextUtil.class, "mergeBrackets", Iterable.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void mergeBracketsObjectArray() {
-		assertInlineParameterUsage(TextUtil.class, "mergeBrackets", Object[].class);
+		assertInlineParameterUsage(TextUtil.class, "mergeBrackets", Object[].class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void splitBracketsString() {
-		assertInlineParameterUsage(TextUtil.class, "splitBrackets", String.class);
+		assertInlineParameterUsage(TextUtil.class, "splitBrackets", String.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void splitBracketsAsListString() {
-		assertInlineParameterUsage(TextUtil.class, "splitBracketsAsList", String.class);
+		assertInlineParameterUsage(TextUtil.class, "splitBracketsAsList", String.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void splitBracketsAsUUIDsString() {
-		assertInlineParameterUsage(TextUtil.class, "splitBracketsAsUUIDs", String.class);
+		assertInlineParameterUsage(TextUtil.class, "splitBracketsAsUUIDs", String.class); //$NON-NLS-1$
 	}
 
 }

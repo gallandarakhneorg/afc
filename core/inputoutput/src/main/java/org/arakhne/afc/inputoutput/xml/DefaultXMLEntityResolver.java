@@ -128,40 +128,58 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 	}
 
 	@SuppressWarnings("resource")
-	private static InputSource search(String systemId, URL path) {
-		InputStream systemIdStream = null;
-		URL systemUrl = null;
-		try {
-			systemUrl = new URL(systemId);
-			if (path != null) {
-				systemUrl = FileSystem.makeAbsolute(path, systemUrl);
+	private static InputSource getInputSourceFromSystemUrl(URL systemUrl) {
+		if (systemUrl != null) {
+			try {
+				final InputStream systemIdStream = systemUrl.openStream();
+				if (systemIdStream != null) {
+					return new InputSource(systemIdStream);
+				}
+			} catch (Exception e) {
+				//
 			}
-			systemIdStream = systemUrl.openStream();
-			if (systemIdStream != null) {
-				return new InputSource(systemIdStream);
-			}
-		} catch (Exception e) {
-			//
 		}
+		return null;
+	}
 
+	@SuppressWarnings("resource")
+	private static InputSource getInputSourceFromResources(URL systemUrl, String systemId, URL containerPath) {
 		if (systemUrl != null && URISchemeType.getSchemeType(systemUrl).isFileBasedScheme()) {
 			final String file = systemUrl.getPath();
-			systemIdStream = Resources.getResourceAsStream(file);
+			final InputStream systemIdStream = Resources.getResourceAsStream(file);
 			if (systemIdStream != null) {
 				return new InputSource(systemIdStream);
 			}
 		} else {
 			String id = systemId;
-			if (path != null) {
-				id = FileSystem.join(path, systemId).getPath();
+			if (containerPath != null) {
+				id = FileSystem.join(containerPath, systemId).getPath();
 			}
-			systemIdStream = Resources.getResourceAsStream(id);
+			final InputStream systemIdStream = Resources.getResourceAsStream(id);
 			if (systemIdStream != null) {
 				return new InputSource(systemIdStream);
 			}
 		}
-
 		return null;
+	}
+
+	private static InputSource search(String systemId, URL containerPath) {
+		URL systemUrl = null;
+		try {
+			systemUrl = new URL(systemId);
+			if (containerPath != null) {
+				systemUrl = FileSystem.makeAbsolute(containerPath, systemUrl);
+			}
+		} catch (Exception e) {
+			//
+		}
+
+		final InputSource source = getInputSourceFromSystemUrl(systemUrl);
+		if (source != null) {
+			return source;
+		}
+
+		return getInputSourceFromResources(systemUrl, systemId, containerPath);
 	}
 
 	@Override

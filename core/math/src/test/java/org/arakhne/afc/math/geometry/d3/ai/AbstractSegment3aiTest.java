@@ -873,6 +873,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEquals(654, this.shape.getY2());
 	}
 
+	@Override
 	@Test
 	public void toBoundingBoxB() {
 		B bb = createRectangularPrism(0, 0, 0, 0, 0, 0);
@@ -883,6 +884,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEpsilonEquals(5, bb.getMaxY());
 	}
 
+	@Override
 	@Test
 	@Ignore
 	public void containsRectangularPrism3ai() {
@@ -921,6 +923,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEquals(5, this.shape.getY2());
 	}
 
+	@Override
 	@Test
 	public void intersectsRectangularPrism3ai() {
 		assertTrue(this.shape.intersects(createRectangularPrism(0,0, 0,1,1, 0)));
@@ -932,6 +935,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertFalse(this.shape.intersects(createRectangularPrism(0,3, 0,3,10, 0)));
 	}
 
+	@Override
 	@Test
 	public void intersectsSphere3ai() {
 		assertTrue(this.shape.intersects(createSphere(0,0,0,1)));
@@ -959,6 +963,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertFalse(this.shape.intersects(createSegment(0,3,0,1,2,0)));
 	}
 	
+	@Override
 	@Test
 	@Ignore
 	public void intersectsPath3ai() {

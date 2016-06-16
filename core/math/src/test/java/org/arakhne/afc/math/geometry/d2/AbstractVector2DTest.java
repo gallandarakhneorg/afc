@@ -31,17 +31,18 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D.PowerResult;
 import org.junit.Assume;
 import org.junit.ComparisonFailure;
 import org.junit.Test;
 
+import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D.PowerResult;
+
 @SuppressWarnings("all")
 public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super P>, P extends Point2D<? super P, ? super V>,
 	TT extends Tuple2D>
-	extends AbstractTuple2DTest<V, TT> {
+	extends AbstractTuple2DTest<TT> {
 
 	public abstract V createVector(double x, double y);
 
@@ -54,7 +55,7 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		double length = Math.sqrt(5. * 5. + 18. * 18.);
 		assertTrue(Vector2D.isUnitVector(5. / length, 18. / length));
 		//
-		assertInlineParameterUsage(Vector2D.class, "isUnitVector", double.class, double.class);
+		assertInlineParameterUsage(Vector2D.class, "isUnitVector", double.class, double.class); //$NON-NLS-1$
 	}
 
 	@Test
@@ -64,7 +65,7 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		double length = Math.sqrt(5. * 5. + 18. * 18.);
 		assertTrue(Vector2D.isUnitVector(5. / length, 18. / length, MathConstants.UNIT_VECTOR_EPSILON));
 		//
-		assertInlineParameterUsage(Vector2D.class, "isUnitVector", double.class, double.class, double.class);
+		assertInlineParameterUsage(Vector2D.class, "isUnitVector", double.class, double.class, double.class); //$NON-NLS-1$
 	}
 
 	@Test
@@ -76,7 +77,7 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertFalse(Vector2D.isOrthogonal(1., 0, 1., 2));
 		assertTrue(Vector2D.isOrthogonal(1., 0, 0, 1 + Math.ulp(1)));
 		//
-		assertInlineParameterUsage(Vector2D.class, "isOrthogonal",
+		assertInlineParameterUsage(Vector2D.class, "isOrthogonal", //$NON-NLS-1$
 				double.class, double.class, double.class, double.class);
 	}
 
@@ -89,7 +90,7 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertFalse(Vector2D.isOrthogonal(1., 0, 1., 2, MathConstants.UNIT_VECTOR_EPSILON));
 		assertTrue(Vector2D.isOrthogonal(1., 0, 0, 1 + Math.ulp(1), MathConstants.UNIT_VECTOR_EPSILON));
 		//
-		assertInlineParameterUsage(Vector2D.class, "isOrthogonal",
+		assertInlineParameterUsage(Vector2D.class, "isOrthogonal", //$NON-NLS-1$
 				double.class, double.class, double.class, double.class, double.class);
 	}
 
@@ -99,7 +100,7 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertTrue(Vector2D.isCollinearVectors(1, 0, -3, 0));
 		assertFalse(Vector2D.isCollinearVectors(1, 0, 4, 4));
 		//
-		assertInlineParameterUsage(Vector2D.class, "isCollinearVectors",
+		assertInlineParameterUsage(Vector2D.class, "isCollinearVectors", //$NON-NLS-1$
 				double.class, double.class, double.class, double.class);
 	}
 
@@ -112,7 +113,7 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertEpsilonEquals(-2, Vector2D.perpProduct(1, 2, 3, 4));
 		assertEpsilonEquals(-4, Vector2D.perpProduct(1, 2, 1, -2));
 		//
-		assertInlineParameterUsage(Vector2D.class, "perpProduct",
+		assertInlineParameterUsage(Vector2D.class, "perpProduct", //$NON-NLS-1$
 				double.class, double.class, double.class, double.class);
 	}
 
@@ -125,7 +126,7 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertEpsilonEquals(11, Vector2D.dotProduct(1, 2, 3, 4));
 		assertEpsilonEquals(-3, Vector2D.dotProduct(1, 2, 1, -2));
 		//
-		assertInlineParameterUsage(Vector2D.class, "dotProduct",
+		assertInlineParameterUsage(Vector2D.class, "dotProduct", //$NON-NLS-1$
 				double.class, double.class, double.class, double.class);
 	}
 
@@ -146,7 +147,7 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertTrue(Vector2D.isCCW(1, 0, -1, 0));
 		assertTrue(Vector2D.isCCW(1, 45, -5, 18));
 		//
-        assertInlineParameterUsage(Vector2D.class, "isCCW",
+        assertInlineParameterUsage(Vector2D.class, "isCCW", //$NON-NLS-1$
                 double.class, double.class, double.class, double.class);
 	}
 
@@ -167,7 +168,7 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 				Math.PI,
 				Vector2D.angleOfVector(0, 0, -1, 0));
 		//
-		assertInlineParameterUsage(Vector2D.class, "angleOfVector",
+		assertInlineParameterUsage(Vector2D.class, "angleOfVector", //$NON-NLS-1$
 				double.class, double.class, double.class, double.class);
 	}
 
@@ -177,7 +178,7 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertEpsilonEquals(PI / 2. + Math.acos(1 / Math.sqrt(5)), Vector2D.angleOfVector(-2, 1));
 		assertEpsilonEquals(PI / 4., Vector2D.angleOfVector(1, 1));
 		//
-		assertInlineParameterUsage(Vector2D.class, "angleOfVector",
+		assertInlineParameterUsage(Vector2D.class, "angleOfVector", //$NON-NLS-1$
 				double.class, double.class);
 	}
 
@@ -435,29 +436,29 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 
 	public final void assertEpsilonEquals(double expected, PowerResult<?> actual) {
 		if (actual == null) {
-			fail("Result is null");
+			fail("Result is null"); //$NON-NLS-1$
 			return;
 		}
 		if (actual.isVectorial()) {
-			throw new ComparisonFailure("Not same result type", Double.toString(expected), actual.toString());
+			throw new ComparisonFailure("Not same result type", Double.toString(expected), actual.toString()); //$NON-NLS-1$
 		}
 		assertEpsilonEquals(expected, actual.getScalar());
 	}
 
 	public final void assertEpsilonEquals(double expectedX, double expectedY, PowerResult<?> actual) {
 		if (actual == null) {
-			fail("Result is null");
+			fail("Result is null"); //$NON-NLS-1$
 			return;
 		}
 		if (!actual.isVectorial()) {
-			throw new ComparisonFailure("Not same result type", "[" + expectedX + ";" + expectedY + "]",
+			throw new ComparisonFailure("Not same result type", "[" + expectedX + ";" + expectedY + "]", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 					actual.toString());
 		}
 		Vector2D<?, ?> vector = actual.getVector();
 		assert (vector != null);
 		if (!isEpsilonEquals(expectedX, vector.getX())
 			|| !isEpsilonEquals(expectedY, vector.getY())) {
-			throw new ComparisonFailure("Not same result type", "[" + expectedX + ";" + expectedY + "]",
+			throw new ComparisonFailure("Not same result type", "[" + expectedX + ";" + expectedY + "]", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 					actual.toString());
 		}
 	}

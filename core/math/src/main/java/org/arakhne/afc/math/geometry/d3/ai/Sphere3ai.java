@@ -35,6 +35,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3iComparator;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Fonctional interface that represented a 3D sphere.
  *
@@ -74,7 +75,7 @@ public interface Sphere3ai<
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean contains(int cx, int cy, int cz, int cr, int x, int y, int z) {
-		assert cr >= 0 : "Circle radius must be positive or zero.";
+		assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
 
 		final int vx = x - cx;
 		final int vy = y - cy;
@@ -84,7 +85,7 @@ public interface Sphere3ai<
 			final int octant;
             final boolean xpos = vx >= 0;
             final boolean ypos = vy >= 0;
-            final boolean zpos = vz >= 0;
+            //TODO final boolean zpos = vz >= 0;
             if (xpos) {
                 if (ypos) {
                     octant = 0;
@@ -156,8 +157,8 @@ public interface Sphere3ai<
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean contains(int cx, int cy, int cz, int cr, int quadrant, int x, int y, int z) {
-		assert cr >= 0 : "Circle radius must be positive or zero.";
-		assert quadrant >= 0 && quadrant <= 3 : "invalid quadrant value";
+		assert cr >= 0 : AssertMessages.positiveOrZeroParameter(3);
+		assert quadrant >= 0 && quadrant <= 3 : AssertMessages.outsideRangeInclusiveParameter(quadrant, 0, 3);
 
 		final int vx = x - cx;
 		final int vy = y - cy;
@@ -218,17 +219,17 @@ public interface Sphere3ai<
     @Override
     @SuppressWarnings({"checkstyle:booleanexpressioncomplexity", "checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity"})
     default boolean contains(RectangularPrism3ai<?, ?, ?, ?, ?, ?> box) {
-        assert box != null : "Rectangle must be not null.";
+        assert box != null : AssertMessages.notNullParameter();
         final int cx = getX();
         final int cy = getY();
         final int cz = getZ();
         final int radius = getRadius();
         final int vx1 = box.getMinX() - cx;
         final int vy1 = box.getMinY() - cy;
-        final int vz1 = box.getMinZ() - cz;
+        //TODO final int vz1 = box.getMinZ() - cz;
         final int vx2 = box.getMaxX() - cx;
         final int vy2 = box.getMaxY() - cy;
-        final int vz2 = box.getMaxZ() - cz;
+        //TODO final int vz2 = box.getMaxZ() - cz;
 
         if (vx1 >= -radius && vx1 <= radius && vy1 >= -radius && vy1 <= radius && vx2 >= -radius && vx2 <= radius
                 && vy2 >= -radius && vy2 <= radius) {
@@ -300,8 +301,8 @@ public interface Sphere3ai<
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	static void computeClosestPointTo(int cx, int cy, int cz, int cr, int x, int y, int z, Point3D<?, ?> result) {
-		assert cr >= 0 : "Circle radius must be positive or zero.";
-		assert result != null : "Result point must be positive or zero.";
+		assert cr >= 0 : AssertMessages.positiveOrZeroParameter(3);
+		assert result != null : AssertMessages.notNullParameter(7);
 
 		final int vx = x - cx;
 		final int vy = y - cy;
@@ -370,7 +371,7 @@ public interface Sphere3ai<
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	static void computeFarthestPointTo(int cx, int cy, int cz, int cr, int x, int y, int z, Point3D<?, ?> result) {
-		assert cr >= 0 : "Circle radius must be positive or zero.";
+		assert cr >= 0 : AssertMessages.positiveOrZeroParameter(3);
 
 		final int vx = x - cx;
 		final int vy = y - cy;
@@ -428,9 +429,10 @@ public interface Sphere3ai<
 	 * <code>false</code>
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean intersectsSphereSphere(int x1, int y1, int z1, int radius1, int x2, int y2, int z2, int radius2) {
-		assert radius1 >= 0 : "Radius of the first sphere must be positive or zero.";
-		assert radius2 >= 0 : "Radius of the second sphere must be positive or zero.";
+		assert radius1 >= 0 : AssertMessages.positiveOrZeroParameter(3);
+		assert radius2 >= 0 : AssertMessages.positiveOrZeroParameter(7);
 		final Point3D<?, ?> point = new InnerComputationPoint3ai();
 		computeClosestPointTo(x1, y1, z1, radius1, x2, y2, z2, point);
 		return contains(x2, y2, z2, radius2, point.ix(), point.iy(), point.iz());
@@ -455,7 +457,7 @@ public interface Sphere3ai<
 	@SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsSphereRectangularPrism(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3,
             int z3) {
-		assert radius >= 0 : "Circle radius must be positive or zero.";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		final Point3D<?, ?> point = new InnerComputationPoint3ai();
 		RectangularPrism3ai.computeClosestPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1, point);
 		return contains(x1, y1, z1, radius, point.ix(), point.iy(), point.iz());
@@ -478,7 +480,7 @@ public interface Sphere3ai<
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean intersectsSphereSegment(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3, int z3) {
-		assert radius >= 0 : "Circle radius must be positive or zero.";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		final Point3D<?, ?> point = new InnerComputationPoint3ai();
 		Segment3ai.computeClosestPointToPoint(x2, y2, z1, x3, y3, z3, x1, y1, z1, point);
 		return contains(x1, y1, z1, radius, point.ix(), point.iy(), point.iz());
@@ -502,8 +504,9 @@ public interface Sphere3ai<
 	static <P extends Point3D<? super P, ? super V>, V extends Vector3D<? super V, ? super P>>
 	  Iterator<P> getPointIterator(int cx, int cy, int cz, int radius, int firstOctantIndex, int nbOctants,
 			GeomFactory3ai<?, P, V, ?> factory) {
-		assert radius >= 0 : "Circle radius must be positive or zero.";
-		assert firstOctantIndex >= 0 && firstOctantIndex < 8 : "invalid quadrant value";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
+		assert firstOctantIndex >= 0 && firstOctantIndex < 8
+				: AssertMessages.outsideRangeInclusiveParameter(firstOctantIndex, 0, 7);
 		int maxOctant;
         maxOctant = Math.min(8, firstOctantIndex + nbOctants);
 		if (maxOctant > 8) {
@@ -672,7 +675,7 @@ public interface Sphere3ai<
 	@Pure
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Box must be not null.";
+		assert box != null : AssertMessages.notNullParameter();
 		final int centerX = getX();
 		final int centerY = getY();
 		final int centerZ = getZ();
@@ -689,7 +692,7 @@ public interface Sphere3ai<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null.";
+		assert pt != null : AssertMessages.notNullParameter();
 		final P c = getClosestPointTo(pt);
 		return c.getDistanceSquared(pt);
 	}
@@ -697,7 +700,7 @@ public interface Sphere3ai<
 	@Pure
 	@Override
 	default double getDistanceL1(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null.";
+		assert pt != null : AssertMessages.notNullParameter();
 		final P c = getClosestPointTo(pt);
 		return c.getDistanceL1(pt);
 	}
@@ -712,7 +715,7 @@ public interface Sphere3ai<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null.";
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointTo(getX(), getY(), getZ(), getRadius(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
@@ -746,7 +749,7 @@ public interface Sphere3ai<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null.";
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeFarthestPointTo(getX(), getY(), getZ(), getRadius(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
@@ -755,7 +758,7 @@ public interface Sphere3ai<
 	@Pure
 	@Override
 	default boolean intersects(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : "Rectangle must be not null.";
+		assert rectangularPrism != null : AssertMessages.notNullParameter();
 		return intersectsSphereRectangularPrism(
 				getX(), getY(), getZ(), getRadius(),
 				rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ(),
@@ -765,7 +768,7 @@ public interface Sphere3ai<
 	@Pure
 	@Override
 	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Circle must be not null.";
+		assert sphere != null : AssertMessages.notNullParameter();
 		return intersectsSphereSphere(
 				getX(), getY(), getZ(), getRadius(),
 				sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
@@ -774,7 +777,7 @@ public interface Sphere3ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null.";
+		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsSphereSegment(
 				getX(), getY(), getZ(), getRadius(),
 				segment.getX1(), segment.getY1(), segment.getZ1(),
@@ -784,7 +787,7 @@ public interface Sphere3ai<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator3ai<?> iterator) {
-		assert iterator != null : "Iterator must be not null.";
+		assert iterator != null : AssertMessages.notNullParameter();
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path3ai.computeCrossingsFromSphere(
 				0,
@@ -797,7 +800,7 @@ public interface Sphere3ai<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null";
+		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
 
@@ -868,7 +871,7 @@ public interface Sphere3ai<
 		 * @param sphere the sphere.
 		 */
 		public AbstractCirclePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?> sphere) {
-			assert sphere != null : "Circle must be not null.";
+			assert sphere != null : AssertMessages.notNullParameter();
 			this.sphere = sphere;
 		}
 
@@ -1061,7 +1064,7 @@ public interface Sphere3ai<
 		 */
 		public TransformedCirclePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?> sphere, Transform3D transform) {
 			super(sphere);
-			assert transform != null : "Transformation must not be null.";
+			assert transform != null : AssertMessages.notNullParameter(1);
 			this.transform = transform;
 			if (sphere.isEmpty()) {
 				this.index = 6;
@@ -1149,7 +1152,7 @@ public interface Sphere3ai<
 
 		private final int cy;
 
-		private final int cz;
+		//TODO private final int cz;
 
 		private final int cr;
 
@@ -1163,7 +1166,7 @@ public interface Sphere3ai<
 
 		private int y;
 
-		private int z;
+		//TODO private int z;
 
 		private int dval;
 
@@ -1185,14 +1188,16 @@ public interface Sphere3ai<
 		 */
 		public SpherePerimeterIterator(GeomFactory3D<V, P> factory,
 				int centerX, int centerY, int centerZ, int radius, int initialOctant, int lastOctant, boolean skip) {
-			assert factory != null : "Factory must be not null.";
-			assert radius >= 0 : "Circle radius must be positive or zero.";
-			assert initialOctant >= 0 && initialOctant < 8 : "Initial octant must be in [0; 7]";
-			assert lastOctant > initialOctant && lastOctant <= 8 : "Last octant must be in [initialOctant + 1; 8]";
+			assert factory != null : AssertMessages.notNullParameter(0);
+			assert radius >= 0 : AssertMessages.positiveOrZeroParameter(4);
+			assert initialOctant >= 0 && initialOctant < 8
+					: AssertMessages.outsideRangeInclusiveParameter(initialOctant, 0, 7);
+			assert lastOctant > initialOctant && lastOctant <= 8
+					: AssertMessages.outsideRangeInclusiveParameter(lastOctant, initialOctant + 1, 8);
 			this.factory = factory;
 			this.cx = centerX;
 			this.cy = centerY;
-			this.cz = centerZ;
+			//TODO this.cz = centerZ;
 			this.cr = radius;
 			this.skip = skip;
 			this.maxOctant = lastOctant;

@@ -55,7 +55,7 @@ public abstract class AbstractPathWindingRule2afpTest<P extends Point2D<? super 
 	@Before
 	public void setUp() throws Exception {
 		this.factory = createFactory();
-		this.shape = (Path2afp<?, ?, ?, P, V, B>) this.factory.createPath(PathWindingRuleTestRule.CURRENT_RULE);
+		this.shape = this.factory.createPath(PathWindingRuleTestRule.CURRENT_RULE);
 		this.shape.moveTo(1, -3);
 		this.shape.lineTo(4, -4);
 		this.shape.lineTo(6, -2);

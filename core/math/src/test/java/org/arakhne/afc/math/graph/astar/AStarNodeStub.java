@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.graph.GraphPoint;
 
@@ -67,17 +66,17 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append("{N="); 
+		b.append("{N=");  //$NON-NLS-1$
 		b.append(this.id);
-		b.append(";E="); 
+		b.append(";E=");  //$NON-NLS-1$
 		b.append(this.astarEntryConnection);
-		b.append(";g="); 
+		b.append(";g=");  //$NON-NLS-1$
 		b.append(Double.toString(getCost()));
-		b.append(";h="); 
+		b.append(";h=");  //$NON-NLS-1$
 		b.append(Double.toString(getEstimatedCost()));
-		b.append(";f="); 
+		b.append(";f=");  //$NON-NLS-1$
 		b.append(Double.toString(getPathCost()));
-		b.append("}"); 
+		b.append("}");  //$NON-NLS-1$
 		return b.toString();
 	}
 

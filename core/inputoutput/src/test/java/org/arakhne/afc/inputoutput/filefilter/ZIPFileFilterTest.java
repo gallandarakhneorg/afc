@@ -27,7 +27,7 @@ public class ZIPFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".zip";
+		return ".zip"; //$NON-NLS-1$
 	}
 
 	@Override

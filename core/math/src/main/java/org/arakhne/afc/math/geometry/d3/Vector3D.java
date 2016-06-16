@@ -399,7 +399,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
      */
     @Pure
     default double signedAngle(Vector3D<?, ?> vector) {
-        assert vector != null : "Vector must be not be null";
+        assert vector != null : AssertMessages.notNullParameter();
         return signedAngle(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ());
     }
 
@@ -410,8 +410,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector2 the second tuple
 	 */
 	default void add(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null";
-		assert vector2 != null : "Second vector must be not null";
+		assert vector1 != null : AssertMessages.notNullParameter(0);
+		assert vector2 != null : AssertMessages.notNullParameter(1);
 		set(vector1.getX() + vector2.getX(),
 			vector1.getY() + vector2.getY(),
 			vector1.getZ() + vector2.getZ());
@@ -423,7 +423,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector the other tuple
 	 */
 	default void add(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null";
+		assert vector != null : AssertMessages.notNullParameter();
 		set(getX() + vector.getX(),
 			getY() + vector.getY(),
 			getZ() + vector.getZ());
@@ -437,8 +437,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector2 the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null";
-		assert vector2 != null : "Second vector must be not null";
+		assert vector1 != null : AssertMessages.notNullParameter(0);
+		assert vector2 != null : AssertMessages.notNullParameter(1);
 		set(scale * vector1.getX() + vector2.getX(),
 			scale * vector1.getY() + vector2.getY(),
 			scale * vector1.getZ() + vector2.getY());
@@ -452,8 +452,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector2 the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null";
-		assert vector2 != null : "Second vector must be not null";
+		assert vector1 != null : AssertMessages.notNullParameter(0);
+		assert vector2 != null : AssertMessages.notNullParameter(1);
 		set(scale * vector1.getX() + vector2.getX(),
 			scale * vector1.getY() + vector2.getY(),
 			scale * vector1.getZ() + vector2.getY());
@@ -466,7 +466,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null";
+		assert vector != null : AssertMessages.notNullParameter();
 		set(scale * getX() + vector.getX(),
 			scale * getY() + vector.getY(),
 			scale * getZ() + vector.getZ());
@@ -479,7 +479,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null";
+		assert vector != null : AssertMessages.notNullParameter();
 		set(scale * getX() + vector.getX(),
 			scale * getY() + vector.getY(),
 			scale * getZ() + vector.getZ());
@@ -492,8 +492,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector2 the second tuple
 	 */
 	default void sub(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null";
-		assert vector2 != null : "Second vector must be not null";
+		assert vector1 != null : AssertMessages.notNullParameter(0);
+		assert vector2 != null : AssertMessages.notNullParameter(1);
 		set(vector1.getX() - vector2.getX(), vector1.getY() - vector2.getY(), vector1.getZ() - vector2.getZ());
 	}
 
@@ -504,8 +504,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param point2 the second tuple
 	 */
 	default void sub(Point3D<?, ?> point1, Point3D<?, ?> point2) {
-		assert point1 != null : "First point must be not null";
-		assert point2 != null : "Second point must be not null";
+		assert point1 != null : AssertMessages.notNullParameter(0);
+		assert point2 != null : AssertMessages.notNullParameter(1);
 		set(point1.getX() - point2.getX(), point1.getY() - point2.getY(), point1.getZ() - point2.getZ());
 	}
 
@@ -515,7 +515,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector the other tuple
 	 */
 	default void sub(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null";
+		assert vector != null : AssertMessages.notNullParameter();
 		set(getX() - vector.getX(), getY() - vector.getY(), getZ() - vector.getZ());
 	}
 
@@ -557,7 +557,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default double dot(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null";
+		assert vector != null : AssertMessages.notNullParameter();
 		return dotProduct(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ());
 	}
 
@@ -573,7 +573,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default double perp(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null";
+		assert vector != null : AssertMessages.notNullParameter();
 		return perpProduct(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ());
 	}
 
@@ -595,7 +595,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RV cross(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null";
+		assert vector != null : AssertMessages.notNullParameter();
 		final RV result = getGeomFactory().newVector();
 		crossProduct(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ(), result);
 		return result;
@@ -620,8 +620,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @see #crossRightHand(Vector3D, Vector3D)
 	 */
 	default void cross(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null";
-		assert vector2 != null : "Second vector must be not null";
+		assert vector1 != null : AssertMessages.notNullParameter(0);
+		assert vector2 != null : AssertMessages.notNullParameter(1);
 		crossProduct(vector1.getX(), vector1.getY(), vector1.getZ(), vector2.getX(), vector2.getY(), vector2.getZ(), this);
 	}
 
@@ -636,7 +636,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RV crossLeftHand(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null";
+		assert vector != null : AssertMessages.notNullParameter();
 		final RV result = getGeomFactory().newVector();
 		crossProductLeftHand(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ(), result);
 		return result;
@@ -653,8 +653,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector2 the right operand.
 	 */
 	default void crossLeftHand(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null";
-		assert vector2 != null : "Second vector must be not null";
+		assert vector1 != null : AssertMessages.notNullParameter(0);
+		assert vector2 != null : AssertMessages.notNullParameter(1);
         crossProductLeftHand(vector1.getX(), vector1.getY(), vector1.getZ(), vector2.getX(), vector2.getY(), vector2.getZ(),
                 this);
 	}
@@ -670,7 +670,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default Vector3D<?, ?> crossRightHand(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null";
+		assert vector != null : AssertMessages.notNullParameter();
 		final RV result = getGeomFactory().newVector();
 		crossProductRightHand(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ(), result);
 		return result;
@@ -687,8 +687,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector2 the right operand
 	 */
 	default void crossRightHand(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null";
-		assert vector2 != null : "Second vector must be not null";
+		assert vector1 != null : AssertMessages.notNullParameter(0);
+		assert vector2 != null : AssertMessages.notNullParameter(1);
         crossProductRightHand(vector1.getX(), vector1.getY(), vector1.getZ(), vector2.getX(), vector2.getY(), vector2.getZ(),
                 this);
 	}
@@ -722,7 +722,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector the un-normalized vector
 	 */
 	default void normalize(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not be null";
+		assert vector != null : AssertMessages.notNullParameter();
 		final double x = vector.getX();
 		final double y = vector.getY();
 		final double z = vector.getZ();
@@ -788,7 +788,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default boolean isColinear(Vector3D<?, ?> vector) {
-		assert vector != null : "Vector must be not null";
+		assert vector != null : AssertMessages.notNullParameter();
 		return isCollinearVectors(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ());
 	}
 
@@ -995,7 +995,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
      */
     @Pure
     default RV operator_minus(Vector3D<?, ?> v) {
-        assert v != null : "Vector must be not null";
+        assert v != null : AssertMessages.notNullParameter();
         return getGeomFactory().newVector(getX() - v.getX(), getY() - v.getY(), getZ() - v.getZ());
     }
 
@@ -1057,7 +1057,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RV operator_plus(Vector3D<?, ?> v) {
-		assert v != null : "Vector must be not null";
+		assert v != null : AssertMessages.notNullParameter();
 		return getGeomFactory().newVector(getX() + v.getX(), getY() + v.getY(), getZ() + v.getZ());
 	}
 
@@ -1073,7 +1073,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RP operator_plus(Point3D<?, ?> point) {
-	    assert point != null : "Point must be not null";
+	    assert point != null : AssertMessages.notNullParameter();
 	    return getGeomFactory().newPoint(getX() + point.getX(), getY() + point.getY(), getZ() + point.getZ());
 	}
 
@@ -1141,7 +1141,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 		 * @param vector the vector result.
 		 */
 		PowerResult(T vector) {
-			assert vector != null : "Vector must be not null";
+			assert vector != null : AssertMessages.notNullParameter();
 			this.scalar = Double.NaN;
 			this.vector = vector;
 		}

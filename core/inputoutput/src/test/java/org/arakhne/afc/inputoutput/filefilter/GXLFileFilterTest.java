@@ -25,7 +25,7 @@ public class GXLFileFilterTest extends AbstractBaseFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".gxl";
+		return ".gxl"; //$NON-NLS-1$
 	}
 
 	@Override

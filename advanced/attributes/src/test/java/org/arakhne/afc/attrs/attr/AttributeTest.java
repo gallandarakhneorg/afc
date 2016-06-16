@@ -20,7 +20,8 @@
 
 package org.arakhne.afc.attrs.attr;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -63,7 +64,7 @@ public class AttributeTest extends AbstractTestCase {
 	protected static void assertAllGetFailed(AttributeValue attr, AttributeType type) {
 		try {
 			attr.getValue();
-			fail("getValue: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getValue: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -71,7 +72,7 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getBoolean();
-			fail("getBoolean: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getBoolean: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -79,7 +80,7 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getColor();
-			fail("getColor: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getColor: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -87,7 +88,7 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getDate();
-			fail("getDate: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getDate: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -95,7 +96,7 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getImage();
-			fail("getImage: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getImage: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -103,7 +104,7 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getInteger();
-			fail("getInteger: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getInteger: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -112,19 +113,19 @@ public class AttributeTest extends AbstractTestCase {
 		try {
 			attr.getJavaObject();
 			if (type.isBaseType())
-				fail("getJavaObject: the exception AttributeNotInitializedException was not thrown for "+type); 
+				fail("getJavaObject: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeNotInitializedException exception) {
 			// expected case
 		}
 		catch(InvalidAttributeTypeException exception) {
 			if (attr.isObjectValue())
-				fail("getJavaObject: unexpected exception InvalidAttributeTypeException for "+type); 
+				fail("getJavaObject: unexpected exception InvalidAttributeTypeException for "+type);  //$NON-NLS-1$
 		}
 
 		try {
 			attr.getPoint();
-			fail("getPoint: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getPoint: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -132,7 +133,7 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getPoint3D();
-			fail("getPoint3D: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getPoint3D: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -140,7 +141,7 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getPoint3D();
-			fail("getPoint3D: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getPoint3D: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -148,7 +149,7 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getPolyline3D();
-			fail("getPolyline3D: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getPolyline3D: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -156,7 +157,7 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getReal();
-			fail("getReal: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getReal: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -164,19 +165,19 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getString();
-			fail("getString: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getString: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeNotInitializedException exception) {
 			// expected case
 		}
 		catch(InvalidAttributeTypeException exception) {
 			if (!attr.isObjectValue())
-				fail("getString: unexpected exception InvalidAttributeTypeException for "+type); 
+				fail("getString: unexpected exception InvalidAttributeTypeException for "+type);  //$NON-NLS-1$
 		}
 
 		try {
 			attr.getTimestamp();
-			fail("getTimestamp: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getTimestamp: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -184,7 +185,7 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getURI();
-			fail("getURI: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getURI: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -192,7 +193,7 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getURL();
-			fail("getURL: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getURL: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -200,7 +201,7 @@ public class AttributeTest extends AbstractTestCase {
 
 		try {
 			attr.getUUID();
-			fail("getUUID: the exception AttributeNotInitializedException was not thrown for "+type); 
+			fail("getUUID: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -217,7 +218,7 @@ public class AttributeTest extends AbstractTestCase {
 			Class<? extends AttributeValue> clazz = attr.getClass();
 			Method method = clazz.getMethod(methodName);
 			method.invoke(attr);
-			fail("the exception AttributeException was not thrown"); 
+			fail("the exception AttributeException was not thrown");  //$NON-NLS-1$
 		}
 		catch(InvocationTargetException e) {
 			Throwable ex = e.getTargetException();
@@ -225,7 +226,7 @@ public class AttributeTest extends AbstractTestCase {
 				//
 			}
 			else {
-				fail("the exception AttributeException was not thrown"); 
+				fail("the exception AttributeException was not thrown");  //$NON-NLS-1$
 			}
 		}
 	}
@@ -243,18 +244,18 @@ public class AttributeTest extends AbstractTestCase {
 		
 		try {
 			attr.getValue();
-			fail("the exception AttributeNotInitializedException was not thrown"); 
+			fail("the exception AttributeNotInitializedException was not thrown");  //$NON-NLS-1$
 		}
 		catch(AttributeNotInitializedException exception) {
 			// expected case
 		}
 		catch(InvalidAttributeTypeException exception) {
-			fail("unexpected exception InvalidAttributeTypeException"); 
+			fail("unexpected exception InvalidAttributeTypeException");  //$NON-NLS-1$
 		}
 
 		try {
 			attr.getBoolean();
-			fail("the exception AttributeNotInitializedException was not thrown"); 
+			fail("the exception AttributeNotInitializedException was not thrown");  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -272,28 +273,28 @@ public class AttributeTest extends AbstractTestCase {
 
 			assertFalse(attr.isAssigned());
 			assertEquals(type.isBaseType(),attr.isBaseType());
-			assertEquals("on type "+type, 
+			assertEquals("on type "+type,  //$NON-NLS-1$
 					!type.isBaseType(),
 					attr.isObjectValue());
 			
 			if (type.isNullAllowed()) {
-				assertAttributeException(attr, "getBoolean"); 
-				assertAttributeException(attr, "getColor"); 
-				assertAttributeException(attr, "getDate"); 
-				assertAttributeException(attr, "getImage"); 
-				assertAttributeException(attr, "getInteger"); 
+				assertAttributeException(attr, "getBoolean");  //$NON-NLS-1$
+				assertAttributeException(attr, "getColor");  //$NON-NLS-1$
+				assertAttributeException(attr, "getDate");  //$NON-NLS-1$
+				assertAttributeException(attr, "getImage");  //$NON-NLS-1$
+				assertAttributeException(attr, "getInteger");  //$NON-NLS-1$
 				assertNull(attr.getJavaObject());
-				assertAttributeException(attr, "getPoint"); 
-				assertAttributeException(attr, "getPoint3D"); 
-				assertAttributeException(attr, "getPolyline"); 
-				assertAttributeException(attr, "getPolyline3D"); 
-				assertAttributeException(attr, "getReal"); 
-				assertAttributeException(attr, "getString"); 
-				assertAttributeException(attr, "getTimestamp"); 
-				assertAttributeException(attr, "getURI"); 
-				assertAttributeException(attr, "getURL"); 
-				assertAttributeException(attr, "getUUID"); 
-				assertAttributeException(attr, "getValue"); 
+				assertAttributeException(attr, "getPoint");  //$NON-NLS-1$
+				assertAttributeException(attr, "getPoint3D");  //$NON-NLS-1$
+				assertAttributeException(attr, "getPolyline");  //$NON-NLS-1$
+				assertAttributeException(attr, "getPolyline3D");  //$NON-NLS-1$
+				assertAttributeException(attr, "getReal");  //$NON-NLS-1$
+				assertAttributeException(attr, "getString");  //$NON-NLS-1$
+				assertAttributeException(attr, "getTimestamp");  //$NON-NLS-1$
+				assertAttributeException(attr, "getURI");  //$NON-NLS-1$
+				assertAttributeException(attr, "getURL");  //$NON-NLS-1$
+				assertAttributeException(attr, "getUUID");  //$NON-NLS-1$
+				assertAttributeException(attr, "getValue");  //$NON-NLS-1$
 			}
 			else {
 				assertAllGetFailed(attr, type);
@@ -313,23 +314,23 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertFalse((Boolean)attr.getValue());
 		assertFalse(attr.getBoolean());
-		assertAttributeException(attr,"getColor"); 
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(0, attr.getInteger());
 		assertEpsilonEquals(0., attr.getReal());
 		assertEquals(0, attr.getTimestamp());
 		assertEquals(Boolean.toString(false),attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
-		assertAttributeException(attr,"getPoint"); 
-		assertAttributeException(attr,"getPoint3D"); 
-		assertAttributeException(attr,"getPolyline"); 
-		assertAttributeException(attr,"getPolyline3D"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPoint");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPoint3D");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
 	}
 
 	@Test
 	public void attributeImplColor() throws Exception {
-		String txt = "255;0;0;255"; 
+		String txt = "255;0;0;255";  //$NON-NLS-1$
 		Attribute attr = new AttributeImpl(randomString(),Colors.RED);
 		
 		assertEquals(AttributeType.COLOR, attr.getType());
@@ -339,10 +340,10 @@ public class AttributeTest extends AbstractTestCase {
 		assertTrue(attr.isObjectValue());
 		
 		assertEquals(Colors.RED,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
 		assertEquals(Colors.RED,attr.getColor());
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(Colors.RED.getRGB(), attr.getInteger());
 		assertEpsilonEquals(Colors.RED.getRGB(), attr.getReal());
 		assertEquals(Colors.RED.getRGB(), attr.getTimestamp());
@@ -350,14 +351,14 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(VectorToolkit.color(255,0,0), attr.getJavaObject());
 		assertEquals(new Point2d(255,0),attr.getPoint());
 		assertEquals(new Point3d(255,0,0),attr.getPoint3D());
-		assertAttributeException(attr,"getPolyline"); 
-		assertAttributeException(attr,"getPolyline3D"); 
+		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
 	}
 
 	@Test
 	public void attributeImplDate() throws Exception {
 		Date currentDate = new Date();
-		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd"); 
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");  //$NON-NLS-1$
 		String txt = fmt.format(currentDate);
 		Attribute attr = new AttributeImpl(randomString(),currentDate);
 		
@@ -368,10 +369,10 @@ public class AttributeTest extends AbstractTestCase {
 		assertTrue(attr.isObjectValue());
 		
 		assertEquals(currentDate,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
 		assertEquals(VectorToolkit.color((int)currentDate.getTime()), attr.getColor());
 		assertEquals(currentDate,attr.getDate());
-		assertAttributeException(attr,"getImage"); 
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(currentDate.getTime(),attr.getInteger());
 		assertEpsilonEquals(currentDate.getTime(),attr.getReal());
 		assertEquals(currentDate.getTime(),attr.getTimestamp());
@@ -379,8 +380,8 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(currentDate, attr.getJavaObject());
 		assertEquals(new Point2d(currentDate.getTime(), 0), attr.getPoint());
 		assertEquals(new Point3d(currentDate.getTime(), 0, 0), attr.getPoint3D());
-		assertAttributeException(attr,"getPolyline"); 
-		assertAttributeException(attr,"getPolyline3D"); 
+		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
 	}
 
 	@Test
@@ -399,16 +400,16 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(nb!=0f, attr.getBoolean());
 		assertEquals(VectorToolkit.color((int)nb), attr.getColor());
 		assertEquals(new Date((long)nb),attr.getDate());
-		assertAttributeException(attr,"getImage"); 
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals((long)nb,attr.getInteger());
 		assertEpsilonEquals(nb,attr.getReal());
 		assertEquals((long)nb,attr.getTimestamp());
 		assertEquals(txt,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertEquals(new Point2d(nb,0),attr.getPoint());
 		assertEquals(new Point3d(nb,0,0),attr.getPoint3D());
-		assertAttributeException(attr,"getPolyline"); 
-		assertAttributeException(attr,"getPolyline3D"); 
+		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
 	}
 	
 	@Test
@@ -427,16 +428,16 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(nb!=0., attr.getBoolean());
 		assertEquals(VectorToolkit.color((int)nb), attr.getColor());
 		assertEquals(new Date((long)nb),attr.getDate());
-		assertAttributeException(attr,"getImage"); 
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals((long)nb,attr.getInteger());
 		assertEpsilonEquals(nb,attr.getReal());
 		assertEquals((long)nb,attr.getTimestamp());
 		assertEquals(txt,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertEquals(new Point2d(nb,0),attr.getPoint());
 		assertEquals(new Point3d(nb,0,0),attr.getPoint3D());
-		assertAttributeException(attr,"getPolyline"); 
-		assertAttributeException(attr,"getPolyline3D"); 
+		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
 	}
 
 	@Test
@@ -451,19 +452,19 @@ public class AttributeTest extends AbstractTestCase {
 		assertTrue(attr.isObjectValue());
 		
 		assertEquals(ic,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
-		assertAttributeException(attr,"getColor"); 
-		assertAttributeException(attr,"getDate"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
 		assertEquals(ic,attr.getImage());
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(ic.toString(), attr.getString());
 		assertEquals(ic,attr.getJavaObject());
-		assertAttributeException(attr,"getPoint"); 
-		assertAttributeException(attr,"getPoint3D"); 
-		assertAttributeException(attr,"getPolyline"); 
-		assertAttributeException(attr,"getPolyline3D"); 
+		assertAttributeException(attr,"getPoint");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPoint3D");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
 	}
 
 	@Test
@@ -482,16 +483,16 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(nb!=0, attr.getBoolean());
 		assertEquals(VectorToolkit.color(nb), attr.getColor());
 		assertEquals(new Date(nb),attr.getDate());
-		assertAttributeException(attr,"getImage"); 
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(nb,attr.getInteger());
 		assertEquals(nb,(int)attr.getReal());
 		assertEquals(nb,attr.getTimestamp());
 		assertEquals(txt,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertEquals(new Point2d(nb,0),attr.getPoint());
 		assertEquals(new Point3d(nb,0,0),attr.getPoint3D());
-		assertAttributeException(attr,"getPolyline"); 
-		assertAttributeException(attr,"getPolyline3D"); 
+		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
 	}
 
 	@Test
@@ -510,23 +511,23 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(nb!=0, attr.getBoolean());
 		assertEquals(VectorToolkit.color((int)nb), attr.getColor());
 		assertEquals(new Date(nb),attr.getDate());
-		assertAttributeException(attr,"getImage"); 
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(nb,attr.getInteger());
 		assertEpsilonEquals(nb,attr.getReal());
 		assertEquals(nb,attr.getTimestamp());
 		assertEquals(txt,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertEquals(new Point2d(nb,0),attr.getPoint());
 		assertEquals(new Point3d(nb,0,0),attr.getPoint3D());
-		assertAttributeException(attr,"getPolyline"); 
-		assertAttributeException(attr,"getPolyline3D"); 
+		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
 	}
 
 	@Test
 	public void attributeImplPoint2d() throws Exception {
 		Point2D pt = new Point2d(Math.random(),Math.random());
 		Point3D pt3d = new Point3d(pt.getX(),pt.getY(),0.);
-		String str = pt.getX()+";"+pt.getY(); 
+		String str = pt.getX()+";"+pt.getY();  //$NON-NLS-1$
 		Attribute attr = new AttributeImpl(randomString(),pt);
 		
 		assertEquals(AttributeType.POINT, attr.getType());
@@ -536,13 +537,13 @@ public class AttributeTest extends AbstractTestCase {
 		assertTrue(attr.isObjectValue());
 		
 		assertEquals(pt,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
 		assertEquals(VectorToolkit.color((float) pt.getX(), (float) pt.getY(), 0),attr.getColor());
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
 		assertEquals(pt, attr.getJavaObject());
 		assertEquals(pt,attr.getPoint());
@@ -557,7 +558,7 @@ public class AttributeTest extends AbstractTestCase {
 		double y = Math.random();
 		Point2D pt = new Point2d(x,y);
 		Point3D pt3d = new Point3d(x,y,0.);
-		String str = (x)+";"+(y); 
+		String str = (x)+";"+(y);  //$NON-NLS-1$
 		Attribute attr = new AttributeImpl(randomString(),x,y);
 		
 		assertEquals(AttributeType.POINT, attr.getType());
@@ -567,13 +568,13 @@ public class AttributeTest extends AbstractTestCase {
 		assertTrue(attr.isObjectValue());
 		
 		assertEquals(pt,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
 		assertEquals(VectorToolkit.color((float) pt.getX(), (float) pt.getY(), 0),attr.getColor());
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
 		assertEquals(pt, attr.getJavaObject());
 		assertEquals(pt,attr.getPoint());
@@ -589,7 +590,7 @@ public class AttributeTest extends AbstractTestCase {
 		double z = Math.random();
 		Point3D pt = new Point3d(x,y,z);
 		Point2D pt2d = new Point2d(x,y);
-		String str = (x)+";"+(y)+";"+(z);  
+		String str = (x)+";"+(y)+";"+(z);   //$NON-NLS-1$ //$NON-NLS-2$
 		Attribute attr = new AttributeImpl(randomString(),pt);
 		
 		assertEquals(AttributeType.POINT3D, attr.getType());
@@ -599,13 +600,13 @@ public class AttributeTest extends AbstractTestCase {
 		assertTrue(attr.isObjectValue());
 		
 		assertEquals(pt,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
 		assertEquals(VectorToolkit.color((float) pt.getX(), (float) pt.getY(), (float) pt.getZ()), attr.getColor());
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
 		assertEquals(pt, attr.getJavaObject());
 		assertEquals(pt2d,attr.getPoint());
@@ -621,7 +622,7 @@ public class AttributeTest extends AbstractTestCase {
 		double z = Math.random();
 		Point3D pt = new Point3d(x,y,z);
 		Point2D pt2d = new Point2d(x,y);
-		String str = (x)+";"+(y)+";"+(z);  
+		String str = (x)+";"+(y)+";"+(z);   //$NON-NLS-1$ //$NON-NLS-2$
 		Attribute attr = new AttributeImpl(randomString(),x,y,z);
 		
 		assertEquals(AttributeType.POINT3D, attr.getType());
@@ -631,13 +632,13 @@ public class AttributeTest extends AbstractTestCase {
 		assertTrue(attr.isObjectValue());
 		
 		assertEquals(pt,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
 		assertEquals(VectorToolkit.color((float) pt.getX(), (float) pt.getY(), (float) pt.getZ()),attr.getColor());
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
 		assertEquals(pt, attr.getJavaObject());
 		assertEquals(pt2d,attr.getPoint());
@@ -661,18 +662,18 @@ public class AttributeTest extends AbstractTestCase {
 		assertFalse(attr.isObjectValue());
 		
 		assertEquals(str,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
-		assertAttributeException(attr,"getColor"); 
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertEpsilonEquals(x,attr.getReal());
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertEquals(pt2d,attr.getPoint());
 		assertEquals(pt3d,attr.getPoint3D());
-		assertAttributeException(attr,"getJavaObject"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertArrayEquals(new Point2D[]{pt2d},attr.getPolyline());
 		assertArrayEquals(new Point3D[]{pt3d},attr.getPolyline3D());
 	}
@@ -690,18 +691,18 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertEquals(str,attr.getValue());
 		assertTrue(attr.getBoolean());
-		assertAttributeException(attr,"getColor"); 
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
-		assertAttributeException(attr,"getPoint"); 
-		assertAttributeException(attr,"getPoint3D"); 
-		assertAttributeException(attr,"getPolyline"); 
-		assertAttributeException(attr,"getPolyline3D"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPoint");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPoint3D");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
 	}
 
 	@Test
@@ -710,7 +711,7 @@ public class AttributeTest extends AbstractTestCase {
 		Point2D pt2d = new Point2d(c.getRed(),c.getGreen());
 		Point2D pt2d2 = new Point2d(c.getBlue(),0);
 		Point3D pt3d = new Point3d(c.getRed(),c.getGreen(),c.getBlue());
-		String str = c.getRed()+";"+c.getGreen()+";"+c.getBlue();  
+		String str = c.getRed()+";"+c.getGreen()+";"+c.getBlue();   //$NON-NLS-1$ //$NON-NLS-2$
 		Attribute attr = new AttributeImpl(randomString(),str);
 		
 		assertEquals(AttributeType.STRING, attr.getType());
@@ -720,15 +721,15 @@ public class AttributeTest extends AbstractTestCase {
 		assertFalse(attr.isObjectValue());
 		
 		assertEquals(str,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
 		assertEquals(c,attr.getColor());
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertEquals(pt2d,attr.getPoint());
 		assertEquals(pt3d,attr.getPoint3D());
 		assertArrayEquals(new Point2D[]{pt2d,pt2d2},attr.getPolyline());
@@ -738,7 +739,7 @@ public class AttributeTest extends AbstractTestCase {
 	@Test
 	public void attributeImplString_Date() throws Exception {
 		Date currentDate = new Date();
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");  //$NON-NLS-1$
 		String str = format.format(currentDate); 
 		Attribute attr = new AttributeImpl(randomString(),str);
 		
@@ -749,19 +750,19 @@ public class AttributeTest extends AbstractTestCase {
 		assertFalse(attr.isObjectValue());
 		
 		assertEquals(str,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
-		assertAttributeException(attr,"getColor"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertEpsilonEquals(currentDate,attr.getDate());
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
-		assertAttributeException(attr,"getPoint"); 
-		assertAttributeException(attr,"getPoint3D"); 
-		assertAttributeException(attr,"getPolyline"); 
-		assertAttributeException(attr,"getPolyline3D"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPoint");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPoint3D");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
 	}
 
 	@Test
@@ -777,19 +778,19 @@ public class AttributeTest extends AbstractTestCase {
 		assertFalse(attr.isObjectValue());
 		
 		assertEquals(str,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
-		assertAttributeException(attr,"getColor"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertEpsilonEquals(currentDate,attr.getDate());
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
-		assertAttributeException(attr,"getPoint"); 
-		assertAttributeException(attr,"getPoint3D"); 
-		assertAttributeException(attr,"getPolyline"); 
-		assertAttributeException(attr,"getPolyline3D"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPoint");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPoint3D");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
 	}
 
 	@Test
@@ -807,15 +808,15 @@ public class AttributeTest extends AbstractTestCase {
 		assertFalse(attr.isObjectValue());
 		
 		assertEquals(str,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
-		assertAttributeException(attr,"getColor"); 
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(nb,attr.getInteger());
-		assertEpsilonEquals((double)nb,attr.getReal());
+		assertEpsilonEquals(nb,attr.getReal());
 		assertEquals(nb,attr.getTimestamp());
 		assertEquals(str,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertEquals(pt2d,attr.getPoint());
 		assertEquals(pt3d,attr.getPoint3D());
 		assertArrayEquals(new Point2D[]{pt2d},attr.getPolyline());
@@ -837,15 +838,15 @@ public class AttributeTest extends AbstractTestCase {
 		assertFalse(attr.isObjectValue());
 		
 		assertEquals(str,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
-		assertAttributeException(attr,"getColor"); 
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(nb,attr.getInteger());
 		assertEpsilonEquals(nb,attr.getReal());
 		assertEquals(nb,attr.getTimestamp());
 		assertEquals(str,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertEquals(pt2d,attr.getPoint());
 		assertEquals(pt3d,attr.getPoint3D());
 		assertArrayEquals(new Point2D[]{pt2d},attr.getPolyline());
@@ -867,15 +868,15 @@ public class AttributeTest extends AbstractTestCase {
 		assertFalse(attr.isObjectValue());
 		
 		assertEquals(str,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
-		assertAttributeException(attr,"getColor"); 
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertEpsilonEquals(nb,attr.getReal());
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertEquals(pt2d,attr.getPoint());
 		assertEquals(pt3d,attr.getPoint3D());
 		assertArrayEquals(new Point2D[]{pt2d},attr.getPolyline());
@@ -888,7 +889,7 @@ public class AttributeTest extends AbstractTestCase {
 		double y = Math.random()+256;
 		Point2D pt2d = new Point2d(x,y);
 		Point3D pt3d = new Point3d(x,y,0);
-		String str = x+";"+y; 
+		String str = x+";"+y;  //$NON-NLS-1$
 		Attribute attr = new AttributeImpl(randomString(),str);
 		
 		assertEquals(AttributeType.STRING, attr.getType());
@@ -898,15 +899,15 @@ public class AttributeTest extends AbstractTestCase {
 		assertFalse(attr.isObjectValue());
 		
 		assertEquals(str,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
-		assertAttributeException(attr,"getColor"); 
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertEquals(pt2d,attr.getPoint());
 		assertEquals(pt3d,attr.getPoint3D());
 		assertArrayEquals(new Point2D[]{pt2d},attr.getPolyline());
@@ -921,7 +922,7 @@ public class AttributeTest extends AbstractTestCase {
 		Point2D pt2d = new Point2d(x,y);
 		Point2D pt2d2 = new Point2d(z,0);
 		Point3D pt3d = new Point3d(x,y,z);
-		String str = x+";"+y+";"+z;  
+		String str = x+";"+y+";"+z;   //$NON-NLS-1$ //$NON-NLS-2$
 		Attribute attr = new AttributeImpl(randomString(),str);
 		
 		assertEquals(AttributeType.STRING, attr.getType());
@@ -931,15 +932,15 @@ public class AttributeTest extends AbstractTestCase {
 		assertFalse(attr.isObjectValue());
 		
 		assertEquals(str,attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
-		assertAttributeException(attr,"getColor"); 
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
-		assertAttributeException(attr,"getJavaObject"); 
+		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertEquals(pt2d,attr.getPoint());
 		assertEquals(pt3d,attr.getPoint3D());
 		assertArrayEquals(new Point2D[]{pt2d,pt2d2},attr.getPolyline());
@@ -959,7 +960,7 @@ public class AttributeTest extends AbstractTestCase {
 		Point2D[] list = new Point2D[]{ pt1, pt2 };
 		Point3D[] list2 = new Point3D[]{ new Point3d(x1,y1,0), new Point3d(x2,y2,0) };
 
-		String str = (x1)+";"+(y1)+";"+(x2)+";"+(y2);   
+		String str = (x1)+";"+(y1)+";"+(x2)+";"+(y2);    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		Attribute attr = new AttributeImpl(randomString(),list);
 		
@@ -970,17 +971,17 @@ public class AttributeTest extends AbstractTestCase {
 		assertTrue(attr.isObjectValue());
 		
 		assertArrayEquals(list,(Point2D[])attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
-		assertAttributeException(attr,"getColor"); 
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
 		assertArrayEquals(list, attr.getJavaObject());
-		assertAttributeException(attr,"getPoint"); 
-		assertAttributeException(attr,"getPoint3D"); 
+		assertAttributeException(attr,"getPoint");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPoint3D");  //$NON-NLS-1$
 		assertArrayEquals(list,attr.getPolyline());
 		assertArrayEquals(list2,attr.getPolyline3D());
 	}
@@ -1000,7 +1001,7 @@ public class AttributeTest extends AbstractTestCase {
 		Point3D[] list = new Point3D[]{ pt1, pt2 };
 		Point2D[] list2 = new Point2D[]{ new Point2d(x1,y1), new Point2d(x2,y2) };
 
-		String str = (x1)+";"+(y1)+";"+(z1)+";"+(x2)+";"+(y2)+";"+(z2);     
+		String str = (x1)+";"+(y1)+";"+(z1)+";"+(x2)+";"+(y2)+";"+(z2);      //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 		Attribute attr = new AttributeImpl(randomString(),list);
 		
@@ -1011,60 +1012,60 @@ public class AttributeTest extends AbstractTestCase {
 		assertTrue(attr.isObjectValue());
 		
 		assertArrayEquals(list,(Point3D[])attr.getValue());
-		assertAttributeException(attr,"getBoolean"); 
-		assertAttributeException(attr,"getColor"); 
-		assertAttributeException(attr,"getDate"); 
-		assertAttributeException(attr,"getImage"); 
-		assertAttributeException(attr,"getInteger"); 
-		assertAttributeException(attr,"getReal"); 
-		assertAttributeException(attr,"getTimestamp"); 
+		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
+		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
+		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
+		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
+		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
+		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
+		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
 		assertEquals(str,attr.getString());
 		assertArrayEquals(list, attr.getJavaObject());
-		assertAttributeException(attr,"getPoint"); 
-		assertAttributeException(attr,"getPoint3D"); 
+		assertAttributeException(attr,"getPoint");  //$NON-NLS-1$
+		assertAttributeException(attr,"getPoint3D");  //$NON-NLS-1$
 		assertArrayEquals(list2,attr.getPolyline());
 		assertArrayEquals(list,attr.getPolyline3D());
 	}
 
 	@Test
 	public void testEquals() {
-		AttributeImpl attr = new AttributeImpl("A1"); 
+		AttributeImpl attr = new AttributeImpl("A1");  //$NON-NLS-1$
 		
 		attr.setBoolean(true);
-		assertTrue(attr.equals(new AttributeImpl("A1", true))); 
-		assertFalse(attr.equals(new AttributeImpl("A1", false))); 
-		assertFalse(attr.equals(new AttributeImpl("A2", true))); 
-		assertFalse(attr.equals(new AttributeImpl("A2", false))); 
+		assertTrue(attr.equals(new AttributeImpl("A1", true)));  //$NON-NLS-1$
+		assertFalse(attr.equals(new AttributeImpl("A1", false)));  //$NON-NLS-1$
+		assertFalse(attr.equals(new AttributeImpl("A2", true)));  //$NON-NLS-1$
+		assertFalse(attr.equals(new AttributeImpl("A2", false)));  //$NON-NLS-1$
 		assertTrue(attr.equals(new AttributeValueImpl(true)));
 		assertFalse(attr.equals(new AttributeValueImpl(false)));
 		assertTrue(attr.equals(true));
 		assertFalse(attr.equals(false));
-		assertTrue(attr.equals(new AttributeValueImpl("true"))); 
-		assertFalse(attr.equals(new AttributeValueImpl("false"))); 
-		assertTrue(attr.equals("true")); 
-		assertFalse(attr.equals("false")); 
+		assertTrue(attr.equals(new AttributeValueImpl("true")));  //$NON-NLS-1$
+		assertFalse(attr.equals(new AttributeValueImpl("false")));  //$NON-NLS-1$
+		assertTrue(attr.equals("true"));  //$NON-NLS-1$
+		assertFalse(attr.equals("false"));  //$NON-NLS-1$
 		assertFalse(attr.equals(new AttributeValueImpl(1.)));
-		assertFalse(attr.equals(new AttributeValueImpl("1."))); 
+		assertFalse(attr.equals(new AttributeValueImpl("1.")));  //$NON-NLS-1$
 		assertFalse(attr.equals(1.));
-		assertFalse(attr.equals("toto")); 
+		assertFalse(attr.equals("toto"));  //$NON-NLS-1$
 
 		attr.setBoolean(false);
-		assertFalse(attr.equals(new AttributeImpl("A1", true))); 
-		assertTrue(attr.equals(new AttributeImpl("A1", false))); 
-		assertFalse(attr.equals(new AttributeImpl("A2", true))); 
-		assertFalse(attr.equals(new AttributeImpl("A2", false))); 
+		assertFalse(attr.equals(new AttributeImpl("A1", true)));  //$NON-NLS-1$
+		assertTrue(attr.equals(new AttributeImpl("A1", false)));  //$NON-NLS-1$
+		assertFalse(attr.equals(new AttributeImpl("A2", true)));  //$NON-NLS-1$
+		assertFalse(attr.equals(new AttributeImpl("A2", false)));  //$NON-NLS-1$
 		assertFalse(attr.equals(new AttributeValueImpl(true)));
 		assertTrue(attr.equals(new AttributeValueImpl(false)));
 		assertFalse(attr.equals(true));
 		assertTrue(attr.equals(false));
-		assertFalse(attr.equals(new AttributeValueImpl("true"))); 
-		assertTrue(attr.equals(new AttributeValueImpl("false"))); 
-		assertFalse(attr.equals("true")); 
-		assertTrue(attr.equals("false")); 
+		assertFalse(attr.equals(new AttributeValueImpl("true")));  //$NON-NLS-1$
+		assertTrue(attr.equals(new AttributeValueImpl("false")));  //$NON-NLS-1$
+		assertFalse(attr.equals("true"));  //$NON-NLS-1$
+		assertTrue(attr.equals("false"));  //$NON-NLS-1$
 		assertFalse(attr.equals(new AttributeValueImpl(1.)));
-		assertFalse(attr.equals(new AttributeValueImpl("1."))); 
+		assertFalse(attr.equals(new AttributeValueImpl("1.")));  //$NON-NLS-1$
 		assertFalse(attr.equals(1.));
-		assertFalse(attr.equals("toto")); 
+		assertFalse(attr.equals("toto"));  //$NON-NLS-1$
 	}
 	
 }

@@ -23,6 +23,8 @@ package org.arakhne.afc.math.geometry.d2;
 @SuppressWarnings("all")
 public final class Vector2DStub implements UnmodifiableVector2D<Vector2DStub, Point2DStub> {
 
+	private static final long serialVersionUID = -3369358905831236398L;
+
 	private double x;
 	
 	private double y;

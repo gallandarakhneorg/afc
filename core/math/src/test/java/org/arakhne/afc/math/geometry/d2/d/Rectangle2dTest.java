@@ -21,8 +21,6 @@
 package org.arakhne.afc.math.geometry.d2.d;
 
 import org.arakhne.afc.math.geometry.d2.afp.AbstractRectangle2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 
 @SuppressWarnings("all")
 public class Rectangle2dTest extends AbstractRectangle2afpTest<Rectangle2d, Rectangle2d> {

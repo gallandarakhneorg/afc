@@ -55,37 +55,37 @@ public abstract class AbstractDataTreeIteratorTest extends AbstractTreeIteratorT
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		this.child1.addUserData("a"); 
+		this.child1.addUserData("a");  //$NON-NLS-1$
 		
-		this.child11.addUserData("b"); 
+		this.child11.addUserData("b");  //$NON-NLS-1$
 		
-		this.child12.addUserData("c"); 
-		this.child12.addUserData("d"); 
+		this.child12.addUserData("c");  //$NON-NLS-1$
+		this.child12.addUserData("d");  //$NON-NLS-1$
 		
-		this.child121.addUserData("e"); 
-		this.child121.addUserData("f"); 
-		this.child121.addUserData("g"); 
+		this.child121.addUserData("e");  //$NON-NLS-1$
+		this.child121.addUserData("f");  //$NON-NLS-1$
+		this.child121.addUserData("g");  //$NON-NLS-1$
 		
-		this.child1211.addUserData("h"); 
+		this.child1211.addUserData("h");  //$NON-NLS-1$
 		
-		this.child1212.addUserData("i"); 
+		this.child1212.addUserData("i");  //$NON-NLS-1$
 		
-		this.child12121.addUserData("j"); 
-		this.child12121.addUserData("k"); 
+		this.child12121.addUserData("j");  //$NON-NLS-1$
+		this.child12121.addUserData("k");  //$NON-NLS-1$
 		
-		this.child12122.addUserData("l"); 
-		this.child12122.addUserData("m"); 
-		this.child12122.addUserData("n"); 
+		this.child12122.addUserData("l");  //$NON-NLS-1$
+		this.child12122.addUserData("m");  //$NON-NLS-1$
+		this.child12122.addUserData("n");  //$NON-NLS-1$
 
-		this.child21.addUserData("o"); 
+		this.child21.addUserData("o");  //$NON-NLS-1$
 
-		this.child22.addUserData("p"); 
+		this.child22.addUserData("p");  //$NON-NLS-1$
 
-		this.child211.addUserData("q"); 
-		this.child211.addUserData("r"); 
+		this.child211.addUserData("q");  //$NON-NLS-1$
+		this.child211.addUserData("r");  //$NON-NLS-1$
 
-		this.child222.addUserData("s"); 
-		this.child222.addUserData("t"); 
+		this.child222.addUserData("s");  //$NON-NLS-1$
+		this.child222.addUserData("t");  //$NON-NLS-1$
 	}
 	
 }

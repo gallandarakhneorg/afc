@@ -66,7 +66,7 @@ class ReadOnlyCacheProviderStub extends AbstractBufferedAttributeProvider {
 
 	@Override
 	public Collection<String> getAllAttributeNames() {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		for (Attribute attr : this.attributes) {
 			list.add(attr.getName());
 		}
@@ -113,7 +113,7 @@ public class AbstractBufferedAttributeProviderTest extends AbstractAttributeProv
 	/**
 	 */
 	public AbstractBufferedAttributeProviderTest() {
-		super("BufferedAttributeContainerTest"); 
+		super("BufferedAttributeContainerTest");  //$NON-NLS-1$
 	}
 	
 	@Override

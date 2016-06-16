@@ -34,6 +34,8 @@ import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.afp.InnerComputationPoint3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Path with 2 double precision floating-point numbers.
  *
@@ -128,7 +130,7 @@ public class Path3d extends AbstractShape3d<Path3d>
      * @param windingRule the path winding rule.
      */
 	public Path3d(PathWindingRule windingRule) {
-		assert windingRule != null : "Path winding rule must be not null";
+		assert windingRule != null : AssertMessages.notNullParameter();
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -139,8 +141,8 @@ public class Path3d extends AbstractShape3d<Path3d>
      * @param iterator the iterator that provides the elements to copy.
      */
 	public Path3d(PathWindingRule windingRule, Iterator<PathElement3d> iterator) {
-		assert windingRule != null : "Path winding rule must be not null";
-		assert iterator != null : "Iterator must be not null";
+		assert windingRule != null : AssertMessages.notNullParameter(0);
+		assert iterator != null : AssertMessages.notNullParameter(1);
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -156,7 +158,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	private void ensureSlots(boolean needMove, int nbSlots) {
         if (needMove && this.numTypes == 0) {
-			throw new IllegalStateException("missing initial moveto in path definition");
+			throw new IllegalStateException(Locale.getString("E1")); //$NON-NLS-1$
 		}
         if (this.types.length == this.numTypes) {
             this.types = Arrays.copyOf(this.types, this.types.length + GROW_SIZE);
@@ -169,7 +171,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null";
+		assert point != null : AssertMessages.notNullParameter();
         for (int i = 0; i < this.numCoords; i += 3) {
 			final double x = this.coords[i];
 			final double y = this.coords[i + 1];
@@ -241,7 +243,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	public void transform(Transform3D transform) {
-        assert transform != null : "Transformation must be not null";
+        assert transform != null : AssertMessages.notNullParameter();
 		final Point3D<?, ?> p = new InnerComputationPoint3afp();
         for (int i = 0; i < this.numCoords; i += 3) {
             p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
@@ -288,7 +290,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	public void toBoundingBox(RectangularPrism3d box) {
-		assert box != null : "Rectangle must be not null";
+		assert box != null : AssertMessages.notNullParameter();
         RectangularPrism3d bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
@@ -436,7 +438,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Override
 	@Pure
 	public void toBoundingBoxWithCtrlPoints(RectangularPrism3d box) {
-		assert box != null : "Rectangle must be not null";
+		assert box != null : AssertMessages.notNullParameter();
         RectangularPrism3d bb = this.logicalBounds == null ? null : this.logicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
@@ -534,7 +536,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Override
 	@Pure
 	public Point3d getPointAt(int index) {
-		assert index >= 0 && index < size() : "Index must be in [0;" + size() + ")";
+		assert index >= 0 && index < size() : AssertMessages.outsideRangeInclusiveParameter(index, 0, index - 1);
 		return getGeomFactory().newPoint(
                 this.coords[index * 2], this.coords[index * 2 + 1], this.coords[index * 2 + 2]);
 	}
@@ -718,7 +720,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null";
+		assert rule != null : AssertMessages.notNullParameter();
 		this.windingRule = rule;
 	}
 
@@ -796,7 +798,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	public void set(Path3d path) {
-		assert path != null : "Path must be not null";
+		assert path != null : AssertMessages.notNullParameter();
 		clear();
 		add(path.getPathIterator());
 	}

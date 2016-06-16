@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d3.ai.PathElement3ai;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /**
  * An element of the path with 2 integer numbers.
@@ -72,7 +73,7 @@ public abstract class PathElement3i implements PathElement3ai {
      *            the z coordinate of the target point.
      */
     PathElement3i(PathElementType type, int tox, int toy, int toz) {
-        assert type != null : "Path element type must be not null";
+        assert type != null : AssertMessages.notNullParameter(0);
         this.type = type;
         this.toX = tox;
         this.toY = toy;
@@ -189,8 +190,8 @@ public abstract class PathElement3i implements PathElement3ai {
 
         @Override
         public void toArray(int[] array) {
-            assert array != null : "Array must be not null";
-            assert array.length >= 3 : "Array size is too small";
+            assert array != null : AssertMessages.notNullParameter();
+            assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
             array[0] = this.toX;
             array[1] = this.toY;
             array[2] = this.toZ;
@@ -198,8 +199,8 @@ public abstract class PathElement3i implements PathElement3ai {
 
         @Override
         public void toArray(double[] array) {
-            assert array != null : "Array must be not null";
-            assert array.length >= 3 : "Array size is too small";
+            assert array != null : AssertMessages.notNullParameter();
+            assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
             array[0] = this.toX;
             array[1] = this.toY;
             array[2] = this.toZ;
@@ -335,8 +336,8 @@ public abstract class PathElement3i implements PathElement3ai {
 
         @Override
         public void toArray(int[] array) {
-            assert array != null : "Array must be not null";
-            assert array.length >= 3 : "Array size is too small";
+            assert array != null : AssertMessages.notNullParameter();
+            assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
             array[0] = this.toX;
             array[1] = this.toY;
             array[2] = this.toZ;
@@ -344,8 +345,8 @@ public abstract class PathElement3i implements PathElement3ai {
 
         @Override
         public void toArray(double[] array) {
-            assert array != null : "Array must be not null";
-            assert array.length >= 3 : "Array size is too small";
+            assert array != null : AssertMessages.notNullParameter();
+            assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
             array[0] = this.toX;
             array[1] = this.toY;
             array[2] = this.toZ;
@@ -498,8 +499,8 @@ public abstract class PathElement3i implements PathElement3ai {
 
         @Override
         public void toArray(int[] array) {
-            assert array != null : "Array must be not null";
-            assert array.length >= 6 : "Array size is too small";
+            assert array != null : AssertMessages.notNullParameter();
+            assert array.length >= 6 : AssertMessages.tooSmallArrayParameter(array.length, 6);
             array[0] = this.ctrlX;
             array[1] = this.ctrlY;
             array[2] = this.ctrlZ;
@@ -510,8 +511,8 @@ public abstract class PathElement3i implements PathElement3ai {
 
         @Override
         public void toArray(double[] array) {
-            assert array != null : "Array must be not null";
-            assert array.length >= 6 : "Array size is too small";
+            assert array != null : AssertMessages.notNullParameter();
+            assert array.length >= 6 : AssertMessages.tooSmallArrayParameter(array.length, 6);
             array[0] = this.ctrlX;
             array[1] = this.ctrlY;
             array[2] = this.ctrlZ;
@@ -687,8 +688,8 @@ public abstract class PathElement3i implements PathElement3ai {
 
         @Override
         public void toArray(int[] array) {
-            assert array != null : "Array must be not null";
-            assert array.length >= 9 : "Array size is too small";
+            assert array != null : AssertMessages.notNullParameter();
+            assert array.length >= 9 : AssertMessages.tooSmallArrayParameter(array.length, 9);
             array[0] = this.ctrlX1;
             array[1] = this.ctrlY1;
             array[2] = this.ctrlZ1;
@@ -702,8 +703,8 @@ public abstract class PathElement3i implements PathElement3ai {
 
         @Override
         public void toArray(double[] array) {
-            assert array != null : "Array must be not null";
-            assert array.length >= 9 : "Array size is too small";
+            assert array != null : AssertMessages.notNullParameter();
+            assert array.length >= 9 : AssertMessages.tooSmallArrayParameter(array.length, 9);
             array[0] = this.ctrlX1;
             array[1] = this.ctrlY1;
             array[2] = this.ctrlZ1;
@@ -847,8 +848,8 @@ public abstract class PathElement3i implements PathElement3ai {
 
         @Override
         public void toArray(int[] array) {
-            assert array != null : "Array must be not null";
-            assert array.length >= 3 : "Array size is too small";
+            assert array != null : AssertMessages.notNullParameter();
+            assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
             array[0] = this.toX;
             array[1] = this.toY;
             array[2] = this.toZ;
@@ -856,8 +857,8 @@ public abstract class PathElement3i implements PathElement3ai {
 
         @Override
         public void toArray(double[] array) {
-            assert array != null : "Array must be not null";
-            assert array.length >= 3 : "Array size is too small";
+            assert array != null : AssertMessages.notNullParameter();
+            assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
             array[0] = this.toX;
             array[1] = this.toY;
             array[2] = this.toZ;

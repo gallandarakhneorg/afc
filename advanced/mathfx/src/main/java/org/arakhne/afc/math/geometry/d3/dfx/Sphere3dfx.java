@@ -30,6 +30,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Sphere with 3 double precision floating-point FX properties.
  *
@@ -66,7 +67,7 @@ public class Sphere3dfx
      * @param radius the radius of the sphere.
      */
 	public Sphere3dfx(Point3D<?, ?> center, double radius) {
-		assert center != null : "Center must be not null";
+		assert center != null : AssertMessages.notNullParameter(0);
 		set(center.getX(), center.getY(), center.getZ(), radius);
 	}
 
@@ -84,7 +85,7 @@ public class Sphere3dfx
      * @param sphere the sphere to copy.
      */
 	public Sphere3dfx(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Circle must be not null";
+		assert sphere != null : AssertMessages.notNullParameter();
 		set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
 	}
 
@@ -205,7 +206,7 @@ public class Sphere3dfx
 
 	@Override
 	public void setRadius(double radius) {
-		assert radius >= 0 : "Radius must be positive or zero";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter();
 		radiusProperty().set(radius);
 	}
 
@@ -230,7 +231,7 @@ public class Sphere3dfx
 
 	@Override
 	public void set(double x, double y, double z, double radius) {
-		assert radius >= 0 : "Radius must be positive or zero";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		xProperty().set(x);
 		yProperty().set(y);
 		zProperty().set(z);

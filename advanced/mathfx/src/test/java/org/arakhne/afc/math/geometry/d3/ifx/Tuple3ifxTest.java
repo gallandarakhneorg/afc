@@ -30,7 +30,7 @@ import org.junit.Test;
 import org.arakhne.afc.math.geometry.d3.AbstractTuple3DTest;
 
 @SuppressWarnings("all")
-public class Tuple3ifxTest extends AbstractTuple3DTest<Tuple3ifx, Tuple3ifx> {
+public class Tuple3ifxTest extends AbstractTuple3DTest<Tuple3ifx> {
 
 	@Override
 	public boolean isIntCoordinates() {

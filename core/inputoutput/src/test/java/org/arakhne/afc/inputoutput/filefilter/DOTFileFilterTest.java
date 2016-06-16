@@ -25,7 +25,7 @@ public class DOTFileFilterTest extends AbstractBaseFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".dot";
+		return ".dot"; //$NON-NLS-1$
 	}
 
 	@Override

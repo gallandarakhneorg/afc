@@ -31,6 +31,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.afp.RectangularPrism3afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Rectangular Prism with 3 double precision floating-point FX properties.
  *
@@ -83,8 +84,8 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	 * @param max is the max corner of the rectangle.
 	 */
 	public RectangularPrism3dfx(Point3D<?, ?> min, Point3D<?, ?> max) {
-		assert min != null : "Minimum corner must be not null";
-		assert max != null : "Maximum corner must be not null";
+		assert min != null : AssertMessages.notNullParameter(0);
+		assert max != null : AssertMessages.notNullParameter(1);
 		setFromCorners(min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
 	}
 
@@ -96,10 +97,11 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
      * @param height height of the rectangle.
      * @param depth depth of the rectangle.
      */
+	@SuppressWarnings("checkstyle:magicnumber")
 	public RectangularPrism3dfx(double x, double y, double z, double width, double height, double depth) {
-		assert width >= 0. : "Width must be positive or zero";
-		assert height >= 0. : "Height must be positive or zero";
-		assert depth >= 0. : "Depth must be positive or zero";
+		assert width >= 0. : AssertMessages.positiveOrZeroParameter(3);
+		assert height >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert depth >= 0. : AssertMessages.positiveOrZeroParameter(5);
         setFromCorners(x, y, z, x + width, y + height, z + depth);
 	}
 

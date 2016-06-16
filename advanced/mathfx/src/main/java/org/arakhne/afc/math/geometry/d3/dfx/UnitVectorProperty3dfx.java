@@ -31,6 +31,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /**
  * A JavaFX property that is representing a unit vector.
@@ -123,7 +124,7 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 
 	@Override
 	public void set(Vector3dfx newValue) {
-		assert newValue != null : "Initial value must be not null";
+		assert newValue != null : AssertMessages.notNullParameter();
 		set(newValue.getX(), newValue.getY(), newValue.getZ());
 	}
 
@@ -134,7 +135,7 @@ public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 	 * @param z z coordinate of the vector.
 	 */
 	public void set(double x, double y, double z) {
-		assert Vector3D.isUnitVector(x, y, z) : "Vector coordinates must correspond to a unit vector";
+		assert Vector3D.isUnitVector(x, y, z) : AssertMessages.normalizedParameters(0, 1, 2);
 		if ((x != getX() || y != getY() || z != getZ()) && !isBound()) {
 			final Vector3dfx v = super.get();
 			v.set(x, y, z);

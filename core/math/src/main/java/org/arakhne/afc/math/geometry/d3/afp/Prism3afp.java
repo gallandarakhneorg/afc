@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /**
  * Base class for Prisms. Only rectangular prism
@@ -52,7 +53,7 @@ public interface Prism3afp<
 
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "rectangular prism must be not null";
+		assert box != null : AssertMessages.notNullParameter();
 		box.setFromCorners(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ());
 	}
 
@@ -70,10 +71,11 @@ public interface Prism3afp<
      * @param height height of the prism.
      * @param depth depth of the prism.
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	default void set(double x, double y, double z, double width, double height, double depth) {
-		assert width >= 0. : "Width must be positive or zero";
-		assert height >= 0. : "Height must be positive or zero";
-		assert depth >= 0. : "Depth must be positive or zero";
+		assert width >= 0. : AssertMessages.positiveOrZeroParameter(3);
+		assert height >= 0. : AssertMessages.positiveOrZeroParameter(4);
+		assert depth >= 0. : AssertMessages.positiveOrZeroParameter(5);
 		setFromCorners(x, y, z, x + width, y + height, z + depth);
 	}
 
@@ -83,14 +85,14 @@ public interface Prism3afp<
 	 * @param max is the max corner of the rectangular prism.
 	 */
 	default void set(Point3D<?, ?> min, Point3D<?, ?> max) {
-		assert min != null : "Minimum point must be not null";
-		assert max != null : "Maximum point must be not null";
+		assert min != null : AssertMessages.notNullParameter(0);
+		assert max != null : AssertMessages.notNullParameter(1);
 		setFromCorners(min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
 	}
 
     @Override
     default void set(IT shape) {
-        assert shape != null : "Shape must be not null";
+        assert shape != null : AssertMessages.notNullParameter();
         setFromCorners(shape.getMinX(), shape.getMinY(), shape.getMinZ(), shape.getMaxX(), shape.getMaxY(), shape.getMaxZ());
     }
 
@@ -99,7 +101,7 @@ public interface Prism3afp<
 	 * @param width the width of the prism.
 	 */
 	default void setWidth(double width) {
-		assert width >= 0. : "Width must be positive or zero";
+		assert width >= 0. : AssertMessages.positiveOrZeroParameter();
 		setMaxX(getMinX() + width);
 	}
 
@@ -108,7 +110,7 @@ public interface Prism3afp<
 	 * @param height the heigth of the prism.
 	 */
 	default void setHeight(double height) {
-		assert height >= 0. : "Height must be positive or zero";
+		assert height >= 0. : AssertMessages.positiveOrZeroParameter();
 		setMaxY(getMinY() + height);
 	}
 
@@ -117,7 +119,7 @@ public interface Prism3afp<
 	 * @param depth the depth of the prism
 	 */
 	default void setDepth(double depth) {
-		assert depth >= 0. : "Height must be positive or zero";
+		assert depth >= 0. : AssertMessages.positiveOrZeroParameter();
 		setMaxZ(getMinZ() + depth);
 	}
 
@@ -140,8 +142,8 @@ public interface Prism3afp<
 	 */
 	// This function has no default implementation for allowing implementation to be atomic.
 	default void setFromCorners(Point3D<?, ?> p1, Point3D<?, ?> p2) {
-		assert p1 != null : "First corner point must be not null";
-		assert p2 != null : "Second corner point must be not null";
+		assert p1 != null : AssertMessages.notNullParameter(0);
+		assert p2 != null : AssertMessages.notNullParameter(1);
 		setFromCorners(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ());
 	}
 
@@ -176,8 +178,8 @@ public interface Prism3afp<
      * @param corner the specified corner point
      */
 	default void setFromCenter(Point3D<?, ?> center, Point3D<?, ?> corner) {
-		assert center != null : "Center point must be not null";
-		assert corner != null : "Corner point must be not null";
+		assert center != null : AssertMessages.notNullParameter(0);
+		assert corner != null : AssertMessages.notNullParameter(1);
 		setFromCenter(center.getX(), center.getY(), center.getZ(), corner.getX(), corner.getY(), corner.getZ());
 	}
 
@@ -311,7 +313,7 @@ public interface Prism3afp<
 	 * @param center the center point.
 	 */
 	default void setCenter(Point3D<?, ?> center) {
-	    assert center != null : "Center point must be not null";
+	    assert center != null : AssertMessages.notNullParameter();
 	    setCenter(center.getX(), center.getY(), center.getZ());
 	}
 

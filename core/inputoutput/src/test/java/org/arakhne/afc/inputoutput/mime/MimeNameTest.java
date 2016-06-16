@@ -20,20 +20,19 @@
 
 package org.arakhne.afc.inputoutput.mime;
 
-import static org.junit.Assert.*;
-
-import javax.activation.MimeType;
-import javax.activation.MimeTypeParseException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import org.arakhne.afc.inputoutput.mime.MimeName;
 
 @SuppressWarnings("all")
 public class MimeNameTest {
 
 	@Test
-	public void toMimeType() throws MimeTypeParseException {
+	public void toMimeType() {
 		assertEquals(MimeName.MIME_COLLADA.getMimeConstant(), MimeName.MIME_COLLADA.toMimeType().toString());
 		assertEquals(MimeName.MIME_PBM.getMimeConstant(), MimeName.MIME_PBM.toMimeType().toString());
 		assertEquals(MimeName.MIME_SHAPE_FILE.getMimeConstant(), MimeName.MIME_SHAPE_FILE.toMimeType().toString());
@@ -41,39 +40,39 @@ public class MimeNameTest {
 
 	@Test
 	public void getMimeConstant() {
-		assertEquals("application/x-collada", MimeName.MIME_COLLADA.getMimeConstant());
-		assertEquals("image/x-portable-bitmap", MimeName.MIME_PBM.getMimeConstant());
-		assertEquals("application/x-shapefile", MimeName.MIME_SHAPE_FILE.getMimeConstant());
+		assertEquals("application/x-collada", MimeName.MIME_COLLADA.getMimeConstant()); //$NON-NLS-1$
+		assertEquals("image/x-portable-bitmap", MimeName.MIME_PBM.getMimeConstant()); //$NON-NLS-1$
+		assertEquals("application/x-shapefile", MimeName.MIME_SHAPE_FILE.getMimeConstant()); //$NON-NLS-1$
 	}
 
 	@Test
 	public void isMimeConstant() {
 		assertFalse(MimeName.MIME_COLLADA.isMimeConstant(null));
-		assertFalse(MimeName.MIME_COLLADA.isMimeConstant(""));
-		assertTrue(MimeName.MIME_COLLADA.isMimeConstant("application/x-collada"));
-		assertFalse(MimeName.MIME_COLLADA.isMimeConstant("application/collada"));
-		assertTrue(MimeName.MIME_PBM.isMimeConstant("image/x-portable-bitmap"));
-		assertFalse(MimeName.MIME_PBM.isMimeConstant("image/portable-bitmap"));
-		assertTrue(MimeName.MIME_SHAPE_FILE.isMimeConstant("application/x-shapefile"));
-		assertFalse(MimeName.MIME_SHAPE_FILE.isMimeConstant("application/shapefile"));
+		assertFalse(MimeName.MIME_COLLADA.isMimeConstant("")); //$NON-NLS-1$
+		assertTrue(MimeName.MIME_COLLADA.isMimeConstant("application/x-collada")); //$NON-NLS-1$
+		assertFalse(MimeName.MIME_COLLADA.isMimeConstant("application/collada")); //$NON-NLS-1$
+		assertTrue(MimeName.MIME_PBM.isMimeConstant("image/x-portable-bitmap")); //$NON-NLS-1$
+		assertFalse(MimeName.MIME_PBM.isMimeConstant("image/portable-bitmap")); //$NON-NLS-1$
+		assertTrue(MimeName.MIME_SHAPE_FILE.isMimeConstant("application/x-shapefile")); //$NON-NLS-1$
+		assertFalse(MimeName.MIME_SHAPE_FILE.isMimeConstant("application/shapefile")); //$NON-NLS-1$
 	}
 
 	@Test
 	public void staticParseMimeType() {
 		assertNull(MimeName.parseMimeType(null));
-		assertNull(MimeName.parseMimeType(""));
-		assertEquals(MimeName.MIME_COLLADA.getMimeConstant(), MimeName.parseMimeType("application/x-collada").toString());
-		assertEquals(MimeName.MIME_PBM.getMimeConstant(), MimeName.parseMimeType("image/x-portable-bitmap").toString());
-		assertEquals(MimeName.MIME_SHAPE_FILE.getMimeConstant(), MimeName.parseMimeType("application/x-shapefile").toString());
+		assertNull(MimeName.parseMimeType("")); //$NON-NLS-1$
+		assertEquals(MimeName.MIME_COLLADA.getMimeConstant(), MimeName.parseMimeType("application/x-collada").toString()); //$NON-NLS-1$
+		assertEquals(MimeName.MIME_PBM.getMimeConstant(), MimeName.parseMimeType("image/x-portable-bitmap").toString()); //$NON-NLS-1$
+		assertEquals(MimeName.MIME_SHAPE_FILE.getMimeConstant(), MimeName.parseMimeType("application/x-shapefile").toString()); //$NON-NLS-1$
 	}
 
 	@Test
 	public void staticParseMimeName() {
 		assertNull(MimeName.parseMimeName(null));
-		assertNull(MimeName.parseMimeName(""));
-		assertSame(MimeName.MIME_COLLADA, MimeName.parseMimeName("application/x-collada"));
-		assertSame(MimeName.MIME_PBM, MimeName.parseMimeName("image/x-portable-bitmap"));
-		assertSame(MimeName.MIME_SHAPE_FILE, MimeName.parseMimeName("application/x-shapefile"));
+		assertNull(MimeName.parseMimeName("")); //$NON-NLS-1$
+		assertSame(MimeName.MIME_COLLADA, MimeName.parseMimeName("application/x-collada")); //$NON-NLS-1$
+		assertSame(MimeName.MIME_PBM, MimeName.parseMimeName("image/x-portable-bitmap")); //$NON-NLS-1$
+		assertSame(MimeName.MIME_SHAPE_FILE, MimeName.parseMimeName("application/x-shapefile")); //$NON-NLS-1$
 	}
 
 }

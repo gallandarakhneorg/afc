@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Segment with 3 double precision floating-point FX properties.
  *
@@ -138,7 +139,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	@Pure
 	@Override
 	public Segment3dfx createTransformedShape(Transform3D transform) {
-		assert transform != null : "Transformation must be not null";
+		assert transform != null : AssertMessages.notNullParameter();
 		final Point3dfx point = getGeomFactory().newPoint(getX1(), getY1(), getZ1());
 		transform.transform(point);
 		final double x1 = point.getX();

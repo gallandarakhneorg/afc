@@ -71,7 +71,7 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 
 	protected static void assertInvalidValue(String message, AttributeProvider provider, String methodName, Object... parameters) throws Exception {
 		StringBuilder msg = new StringBuilder();
-		if (message!=null && !message.isEmpty()) msg.append(": "); 
+		if (message!=null && !message.isEmpty()) msg.append(": ");  //$NON-NLS-1$
 		try {
 			Class<?>[] classTab = new Class<?>[parameters.length];
 			for(int i=0; i<parameters.length; ++i) {
@@ -80,7 +80,7 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 			Class<? extends AttributeProvider> clazz = provider.getClass();
 			Method method = clazz.getMethod(methodName,classTab);
 			method.invoke(provider,parameters);
-			msg.append("the exception InvalidAttributeTypeException was not thrown: standard return from the function "); 
+			msg.append("the exception InvalidAttributeTypeException was not thrown: standard return from the function ");  //$NON-NLS-1$
 			msg.append(methodName);
 			fail(msg.toString());
 		}
@@ -90,11 +90,11 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 				// normal case
 			}
 			else {
-				msg.append("the exception InvalidAttributeTypeException was not thrown, exception: "); 
+				msg.append("the exception InvalidAttributeTypeException was not thrown, exception: ");  //$NON-NLS-1$
 				msg.append(ex);
-				msg.append(", file: "); 
+				msg.append(", file: ");  //$NON-NLS-1$
 				msg.append(ex.getStackTrace()[0].getFileName());
-				msg.append(", line: "); 
+				msg.append(", line: ");  //$NON-NLS-1$
 				msg.append(ex.getStackTrace()[0].getLineNumber());
 				fail(msg.toString());
 			}
@@ -116,12 +116,12 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 	@Before
 	public void setUp() throws Exception {
 		this.baseData = new Attribute[] {
-				new AttributeImpl("A",1), 
-				new AttributeImpl("B",2.), 
-				new AttributeImpl("C",true), 
-				new AttributeImpl("D","Hello"),  
-				new AttributeImpl("E",new Point2d(1,2)), 
-				new AttributeImpl("F","false"),  
+				new AttributeImpl("A",1),  //$NON-NLS-1$
+				new AttributeImpl("B",2.),  //$NON-NLS-1$
+				new AttributeImpl("C",true),  //$NON-NLS-1$
+				new AttributeImpl("D","Hello"),   //$NON-NLS-1$ //$NON-NLS-2$
+				new AttributeImpl("E",new Point2d(1,2)),  //$NON-NLS-1$
+				new AttributeImpl("F","false"),   //$NON-NLS-1$ //$NON-NLS-2$
 		};
 		this.testData = setUpTestCase();
 		if (this.testData instanceof AttributeCollection) {
@@ -143,7 +143,7 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 
 	@Test
 	public void iterator() {
-		ArrayList<Attribute> ref = new ArrayList<Attribute>();
+		ArrayList<Attribute> ref = new ArrayList<>();
 		ref.addAll(Arrays.asList(this.baseData));
 
 		Iterator<Attribute> it = this.testData.attributes().iterator();
@@ -159,15 +159,15 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 
 	@Test
 	public void hasAttribute() {
-		assertTrue(this.id, this.testData.hasAttribute("A")); 
-		assertFalse(this.id, this.testData.hasAttribute("X")); 
-		assertTrue(this.id, this.testData.hasAttribute("B")); 
-		assertFalse(this.id, this.testData.hasAttribute("Y")); 
-		assertTrue(this.id, this.testData.hasAttribute("C")); 
-		assertTrue(this.id, this.testData.hasAttribute("D")); 
-		assertFalse(this.id, this.testData.hasAttribute("Z")); 
-		assertTrue(this.id, this.testData.hasAttribute("E")); 
-		assertTrue(this.id, this.testData.hasAttribute("F")); 
+		assertTrue(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertTrue(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertTrue(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertTrue(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertTrue(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
 	}
 
 	@Test
@@ -177,12 +177,12 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 
 	@Test
 	public void getAllAttributesByType() {
-		HashMap<AttributeType,Collection<Attribute>> map = new HashMap<AttributeType,Collection<Attribute>>();
+		HashMap<AttributeType,Collection<Attribute>> map = new HashMap<>();
 		for(Attribute data : this.baseData) {
 			AttributeType type = data.getType();
 			Collection<Attribute> col = map.get(type);
 			if (col==null) {
-				col = new ArrayList<Attribute>();
+				col = new ArrayList<>();
 				map.put(type,col);
 			}
 			col.add(data);
@@ -195,176 +195,176 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 	@Test
 	public void getAllAttributeNames() {
 		assertEpsilonEquals(this.id, new String[] {
-				"A", 
-				"B", 
-				"C", 
-				"D", 
-				"E", 
-				"F", 
+				"A",  //$NON-NLS-1$
+				"B",  //$NON-NLS-1$
+				"C",  //$NON-NLS-1$
+				"D",  //$NON-NLS-1$
+				"E",  //$NON-NLS-1$
+				"F",  //$NON-NLS-1$
 		}, this.testData.getAllAttributeNames().toArray());
 	}
 
 	@Test
 	public void getAttributeString() {
-		assertEquals(this.id, this.baseData[0],this.testData.getAttribute("A")); 
-		assertNull(this.id, this.testData.getAttribute("X")); 
-		assertEquals(this.id, this.baseData[1],this.testData.getAttribute("B")); 
-		assertNull(this.id, this.testData.getAttribute("Y")); 
-		assertEquals(this.id, this.baseData[2],this.testData.getAttribute("C")); 
-		assertNull(this.id, this.testData.getAttribute("Z")); 
-		assertEquals(this.id, this.baseData[3],this.testData.getAttribute("D")); 
-		assertNull(this.id, this.testData.getAttribute("W")); 
-		assertEquals(this.id, this.baseData[4],this.testData.getAttribute("E")); 
-		assertEquals(this.id, this.baseData[5],this.testData.getAttribute("F")); 
+		assertEquals(this.id, this.baseData[0],this.testData.getAttribute("A"));  //$NON-NLS-1$
+		assertNull(this.id, this.testData.getAttribute("X"));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[1],this.testData.getAttribute("B"));  //$NON-NLS-1$
+		assertNull(this.id, this.testData.getAttribute("Y"));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[2],this.testData.getAttribute("C"));  //$NON-NLS-1$
+		assertNull(this.id, this.testData.getAttribute("Z"));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[3],this.testData.getAttribute("D"));  //$NON-NLS-1$
+		assertNull(this.id, this.testData.getAttribute("W"));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[4],this.testData.getAttribute("E"));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[5],this.testData.getAttribute("F"));  //$NON-NLS-1$
 	}
 
 	@Test
 	public void getAttributeStringAttributeValue() {
 		AttributeValue defaultValue = new AttributeValueImpl();
-		assertEquals(this.id, this.baseData[0],this.testData.getAttribute("A",defaultValue)); 
-		assertSame(this.id, defaultValue, this.testData.getAttribute("X", defaultValue)); 
-		assertEquals(this.id, this.baseData[1],this.testData.getAttribute("B", defaultValue)); 
-		assertSame(this.id, defaultValue, this.testData.getAttribute("Y", defaultValue)); 
-		assertEquals(this.id, this.baseData[2],this.testData.getAttribute("C", defaultValue)); 
-		assertSame(this.id, defaultValue, this.testData.getAttribute("Z", defaultValue)); 
-		assertEquals(this.id, this.baseData[3],this.testData.getAttribute("D", defaultValue)); 
-		assertSame(this.id, defaultValue, this.testData.getAttribute("W", defaultValue)); 
-		assertEquals(this.id, this.baseData[4],this.testData.getAttribute("E", defaultValue)); 
-		assertEquals(this.id, this.baseData[5],this.testData.getAttribute("F", defaultValue)); 
+		assertEquals(this.id, this.baseData[0],this.testData.getAttribute("A",defaultValue));  //$NON-NLS-1$
+		assertSame(this.id, defaultValue, this.testData.getAttribute("X", defaultValue));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[1],this.testData.getAttribute("B", defaultValue));  //$NON-NLS-1$
+		assertSame(this.id, defaultValue, this.testData.getAttribute("Y", defaultValue));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[2],this.testData.getAttribute("C", defaultValue));  //$NON-NLS-1$
+		assertSame(this.id, defaultValue, this.testData.getAttribute("Z", defaultValue));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[3],this.testData.getAttribute("D", defaultValue));  //$NON-NLS-1$
+		assertSame(this.id, defaultValue, this.testData.getAttribute("W", defaultValue));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[4],this.testData.getAttribute("E", defaultValue));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[5],this.testData.getAttribute("F", defaultValue));  //$NON-NLS-1$
 	}
 
 	@Test
 	public void getAttributeObject() {
-		assertEquals(this.id, this.baseData[0],this.testData.getAttributeObject("A")); 
-		assertNull(this.id, this.testData.getAttribute("X")); 
-		assertEquals(this.id, this.baseData[1],this.testData.getAttributeObject("B")); 
-		assertNull(this.id, this.testData.getAttribute("Y")); 
-		assertEquals(this.id, this.baseData[2],this.testData.getAttributeObject("C")); 
-		assertNull(this.id, this.testData.getAttribute("Z")); 
-		assertEquals(this.id, this.baseData[3],this.testData.getAttributeObject("D")); 
-		assertNull(this.id, this.testData.getAttribute("W")); 
-		assertEquals(this.id, this.baseData[4],this.testData.getAttributeObject("E")); 
-		assertEquals(this.id, this.baseData[5],this.testData.getAttributeObject("F")); 
+		assertEquals(this.id, this.baseData[0],this.testData.getAttributeObject("A"));  //$NON-NLS-1$
+		assertNull(this.id, this.testData.getAttribute("X"));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[1],this.testData.getAttributeObject("B"));  //$NON-NLS-1$
+		assertNull(this.id, this.testData.getAttribute("Y"));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[2],this.testData.getAttributeObject("C"));  //$NON-NLS-1$
+		assertNull(this.id, this.testData.getAttribute("Z"));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[3],this.testData.getAttributeObject("D"));  //$NON-NLS-1$
+		assertNull(this.id, this.testData.getAttribute("W"));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[4],this.testData.getAttributeObject("E"));  //$NON-NLS-1$
+		assertEquals(this.id, this.baseData[5],this.testData.getAttributeObject("F"));  //$NON-NLS-1$
 	}
 
 	@Test
 	public void getAttributeAsBoolString() throws Exception {
-		assertTrue(this.id, this.testData.getAttributeAsBool("A"));
-		assertTrue(this.id, this.testData.getAttributeAsBool("B"));
-		assertTrue(this.id, this.testData.getAttributeAsBool("C"));
-		assertInvalidValue(this.id, this.testData,"getAttributeAsBool","D"); 
-		assertInvalidValue(this.id, this.testData,"getAttributeAsBool","E"); 
-		assertFalse(this.id, this.testData.getAttributeAsBool("F"));
+		assertTrue(this.id, this.testData.getAttributeAsBool("A")); //$NON-NLS-1$
+		assertTrue(this.id, this.testData.getAttributeAsBool("B")); //$NON-NLS-1$
+		assertTrue(this.id, this.testData.getAttributeAsBool("C")); //$NON-NLS-1$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsBool","D");  //$NON-NLS-1$ //$NON-NLS-2$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsBool","E");  //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse(this.id, this.testData.getAttributeAsBool("F")); //$NON-NLS-1$
 	}
 
 	@Test
 	public void getAttributeStringBoolean() throws Exception {
-		assertTrue(this.id, this.testData.getAttribute("A",true));
-		assertTrue(this.id, this.testData.getAttribute("B",false));
-		assertTrue(this.id, this.testData.getAttribute("C",false));
-		assertTrue(this.id, this.testData.getAttribute("D",true));
-		assertFalse(this.id, this.testData.getAttribute("E",false));
-		assertFalse(this.id, this.testData.getAttribute("F",true));
+		assertTrue(this.id, this.testData.getAttribute("A",true)); //$NON-NLS-1$
+		assertTrue(this.id, this.testData.getAttribute("B",false)); //$NON-NLS-1$
+		assertTrue(this.id, this.testData.getAttribute("C",false)); //$NON-NLS-1$
+		assertTrue(this.id, this.testData.getAttribute("D",true)); //$NON-NLS-1$
+		assertFalse(this.id, this.testData.getAttribute("E",false)); //$NON-NLS-1$
+		assertFalse(this.id, this.testData.getAttribute("F",true)); //$NON-NLS-1$
 	}
 
 	@Test
 	public void getAttributeAsIntString() throws Exception {
-		assertEquals(this.id, 1,this.testData.getAttributeAsInt("A"));
-		assertEquals(this.id, 2,this.testData.getAttributeAsInt("B"));
-		assertEquals(this.id, 1, this.testData.getAttributeAsInt("C"));
-		assertInvalidValue(this.id, this.testData,"getAttributeAsInt","D"); 
-		assertInvalidValue(this.id, this.testData,"getAttributeAsInt","E"); 
-		assertInvalidValue(this.id, this.testData,"getAttributeAsInt","F"); 
+		assertEquals(this.id, 1,this.testData.getAttributeAsInt("A")); //$NON-NLS-1$
+		assertEquals(this.id, 2,this.testData.getAttributeAsInt("B")); //$NON-NLS-1$
+		assertEquals(this.id, 1, this.testData.getAttributeAsInt("C")); //$NON-NLS-1$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsInt","D");  //$NON-NLS-1$ //$NON-NLS-2$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsInt","E");  //$NON-NLS-1$ //$NON-NLS-2$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsInt","F");  //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	@Test
 	public void getAttributeStringInt() throws Exception {
-		assertEquals(this.id, 1,this.testData.getAttribute("A",5));
-		assertEquals(this.id, 2,this.testData.getAttribute("B",34));
-		assertEquals(this.id, 1,this.testData.getAttribute("C",18));
-		assertEquals(this.id, 24,this.testData.getAttribute("D",24));
-		assertEquals(this.id, -34,this.testData.getAttribute("E",-34));
-		assertEquals(this.id, 18,this.testData.getAttribute("F",18));
+		assertEquals(this.id, 1,this.testData.getAttribute("A",5)); //$NON-NLS-1$
+		assertEquals(this.id, 2,this.testData.getAttribute("B",34)); //$NON-NLS-1$
+		assertEquals(this.id, 1,this.testData.getAttribute("C",18)); //$NON-NLS-1$
+		assertEquals(this.id, 24,this.testData.getAttribute("D",24)); //$NON-NLS-1$
+		assertEquals(this.id, -34,this.testData.getAttribute("E",-34)); //$NON-NLS-1$
+		assertEquals(this.id, 18,this.testData.getAttribute("F",18)); //$NON-NLS-1$
 	}
 
 	@Test
 	public void getAttributeAsLongString() throws Exception {
-		assertEquals(this.id, 1,this.testData.getAttributeAsLong("A"));
-		assertEquals(this.id, 2,this.testData.getAttributeAsLong("B"));
-		assertEquals(this.id, 1, this.testData.getAttributeAsLong("C"));
-		assertInvalidValue(this.id, this.testData,"getAttributeAsLong","D"); 
-		assertInvalidValue(this.id, this.testData,"getAttributeAsLong","E"); 
-		assertInvalidValue(this.id, this.testData,"getAttributeAsLong","F"); 
+		assertEquals(this.id, 1,this.testData.getAttributeAsLong("A")); //$NON-NLS-1$
+		assertEquals(this.id, 2,this.testData.getAttributeAsLong("B")); //$NON-NLS-1$
+		assertEquals(this.id, 1, this.testData.getAttributeAsLong("C")); //$NON-NLS-1$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsLong","D");  //$NON-NLS-1$ //$NON-NLS-2$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsLong","E");  //$NON-NLS-1$ //$NON-NLS-2$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsLong","F");  //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Test
 	public void getAttributegStringLong() throws Exception {
-		assertEquals(this.id, 1,this.testData.getAttribute("A",5));
-		assertEquals(this.id, 2,this.testData.getAttribute("B",34));
-		assertEquals(this.id, 1,this.testData.getAttribute("C",18));
-		assertEquals(this.id, 24,this.testData.getAttribute("D",24));
-		assertEquals(this.id, -34,this.testData.getAttribute("E",-34));
-		assertEquals(this.id, 18,this.testData.getAttribute("F",18));
+		assertEquals(this.id, 1,this.testData.getAttribute("A",5)); //$NON-NLS-1$
+		assertEquals(this.id, 2,this.testData.getAttribute("B",34)); //$NON-NLS-1$
+		assertEquals(this.id, 1,this.testData.getAttribute("C",18)); //$NON-NLS-1$
+		assertEquals(this.id, 24,this.testData.getAttribute("D",24)); //$NON-NLS-1$
+		assertEquals(this.id, -34,this.testData.getAttribute("E",-34)); //$NON-NLS-1$
+		assertEquals(this.id, 18,this.testData.getAttribute("F",18)); //$NON-NLS-1$
 	}
 
 	@Test
 	public void getAttributeAsFloatString() throws Exception {
-		assertEpsilonEquals(this.id, 1f,this.testData.getAttributeAsFloat("A"));
-		assertEpsilonEquals(this.id, 2f,this.testData.getAttributeAsFloat("B"));
-		assertEpsilonEquals(this.id, 1f, this.testData.getAttributeAsFloat("C"));
-		assertInvalidValue(this.id, this.testData,"getAttributeAsFloat","D"); 
-		assertInvalidValue(this.id, this.testData,"getAttributeAsFloat","E"); 
-		assertInvalidValue(this.id, this.testData,"getAttributeAsFloat","F"); 
+		assertEpsilonEquals(this.id, 1f,this.testData.getAttributeAsFloat("A")); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, 2f,this.testData.getAttributeAsFloat("B")); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, 1f, this.testData.getAttributeAsFloat("C")); //$NON-NLS-1$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsFloat","D");  //$NON-NLS-1$ //$NON-NLS-2$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsFloat","E");  //$NON-NLS-1$ //$NON-NLS-2$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsFloat","F");  //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Test
 	public void getAttributeStringFloat() throws Exception {
-		assertEpsilonEquals(this.id, 1f,this.testData.getAttribute("A",5f));
-		assertEpsilonEquals(this.id, 2f,this.testData.getAttribute("B",34f));
-		assertEpsilonEquals(this.id, 1f,this.testData.getAttribute("C",18f));
-		assertEpsilonEquals(this.id, 24f,this.testData.getAttribute("D",24f));
-		assertEpsilonEquals(this.id, -34f,this.testData.getAttribute("E",-34f));
-		assertEpsilonEquals(this.id, 18f,this.testData.getAttribute("F",18f));
+		assertEpsilonEquals(this.id, 1f,this.testData.getAttribute("A",5f)); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, 2f,this.testData.getAttribute("B",34f)); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, 1f,this.testData.getAttribute("C",18f)); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, 24f,this.testData.getAttribute("D",24f)); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, -34f,this.testData.getAttribute("E",-34f)); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, 18f,this.testData.getAttribute("F",18f)); //$NON-NLS-1$
 	}
 
 	@Test
 	public void getAttributeAsDoubleString() throws Exception {
-		assertEpsilonEquals(this.id, 1.,this.testData.getAttributeAsDouble("A"));
-		assertEpsilonEquals(this.id, 2.,this.testData.getAttributeAsDouble("B"));
-		assertEpsilonEquals(this.id, 1., this.testData.getAttributeAsDouble("C"));
-		assertInvalidValue(this.id, this.testData,"getAttributeAsDouble","D"); 
-		assertInvalidValue(this.id, this.testData,"getAttributeAsDouble","E"); 
-		assertInvalidValue(this.id, this.testData,"getAttributeAsDouble","F"); 
+		assertEpsilonEquals(this.id, 1.,this.testData.getAttributeAsDouble("A")); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, 2.,this.testData.getAttributeAsDouble("B")); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, 1., this.testData.getAttributeAsDouble("C")); //$NON-NLS-1$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsDouble","D");  //$NON-NLS-1$ //$NON-NLS-2$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsDouble","E");  //$NON-NLS-1$ //$NON-NLS-2$
+		assertInvalidValue(this.id, this.testData,"getAttributeAsDouble","F");  //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Test
 	public void getAttributeStringDouble() throws Exception {
-		assertEpsilonEquals(this.id, 1.,this.testData.getAttribute("A",5.));
-		assertEpsilonEquals(this.id, 2.,this.testData.getAttribute("B",34.));
-		assertEpsilonEquals(this.id, 1.,this.testData.getAttribute("C",18.));
-		assertEpsilonEquals(this.id, 24.,this.testData.getAttribute("D",24.));
-		assertEpsilonEquals(this.id, -34.,this.testData.getAttribute("E",-34.));
-		assertEpsilonEquals(this.id, 18.,this.testData.getAttribute("F",18.));
+		assertEpsilonEquals(this.id, 1.,this.testData.getAttribute("A",5.)); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, 2.,this.testData.getAttribute("B",34.)); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, 1.,this.testData.getAttribute("C",18.)); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, 24.,this.testData.getAttribute("D",24.)); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, -34.,this.testData.getAttribute("E",-34.)); //$NON-NLS-1$
+		assertEpsilonEquals(this.id, 18.,this.testData.getAttribute("F",18.)); //$NON-NLS-1$
 	}
 
 	@Test
 	public void getAttributeAsStringString() throws Exception {
-		assertEquals(this.id, Long.toString(1),this.testData.getAttributeAsString("A"));
-		assertEquals(this.id, Double.toString(2.),this.testData.getAttributeAsString("B"));
-		assertEquals(this.id, Boolean.toString(true),this.testData.getAttributeAsString("C"));
-		assertEquals(this.id, "Hello",this.testData.getAttributeAsString("D")); 
-		assertEquals(this.id, 1.+";"+2.,this.testData.getAttributeAsString("E")); 		
-		assertEquals(this.id, Boolean.toString(false),this.testData.getAttributeAsString("F"));
+		assertEquals(this.id, Long.toString(1),this.testData.getAttributeAsString("A")); //$NON-NLS-1$
+		assertEquals(this.id, Double.toString(2.),this.testData.getAttributeAsString("B")); //$NON-NLS-1$
+		assertEquals(this.id, Boolean.toString(true),this.testData.getAttributeAsString("C")); //$NON-NLS-1$
+		assertEquals(this.id, "Hello",this.testData.getAttributeAsString("D"));  //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(this.id, 1.+";"+2.,this.testData.getAttributeAsString("E")); 		 //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(this.id, Boolean.toString(false),this.testData.getAttributeAsString("F")); //$NON-NLS-1$
 	}
 
 	@Test
 	public void getAttributeStringString() throws Exception {
-		assertEquals(this.id, Long.toString(1),this.testData.getAttribute("A","default")); 
-		assertEquals(this.id, Double.toString(2.),this.testData.getAttribute("B","default")); 
-		assertEquals(this.id, Boolean.toString(true),this.testData.getAttribute("C","default")); 
-		assertEquals(this.id, "Hello",this.testData.getAttribute("D","default"));  
-		assertEquals(this.id, 1.+";"+2.,this.testData.getAttribute("E","default"));  
-		assertEquals(this.id, Boolean.toString(false),this.testData.getAttribute("F","default")); 
+		assertEquals(this.id, Long.toString(1),this.testData.getAttribute("A","default"));  //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(this.id, Double.toString(2.),this.testData.getAttribute("B","default"));  //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(this.id, Boolean.toString(true),this.testData.getAttribute("C","default"));  //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(this.id, "Hello",this.testData.getAttribute("D","default"));   //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertEquals(this.id, 1.+";"+2.,this.testData.getAttribute("E","default"));   //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertEquals(this.id, Boolean.toString(false),this.testData.getAttribute("F","default"));  //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Test

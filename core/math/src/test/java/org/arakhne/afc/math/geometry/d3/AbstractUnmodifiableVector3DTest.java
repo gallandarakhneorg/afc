@@ -29,17 +29,20 @@ import org.arakhne.afc.math.geometry.d3.d.Tuple3d;
 public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? super V, ? super P>, P extends Point3D<? super P, ? super V>>
 		extends AbstractVector3DTest<V, P, Vector3D> {
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void absolute() {
 		getT().absolute();
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void absoluteT() {
 		Tuple3D c = new Tuple3d();
 		getT().absolute(c);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addIntIntInt() {
 		getT().add(6, 7, 0);
@@ -50,6 +53,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		getT().add(6.5, 7.5, 0);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addXInt() {
 		getT().addX(6);
@@ -60,6 +64,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		getT().addX(6.5);
 	}
 	
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addYInt() {
 	    getT().addY(6);
@@ -70,6 +75,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 	    getT().addY(6.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addZInt() {
 		getT().addZ(6);
@@ -80,17 +86,20 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		getT().addZ(6.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void negateT() {
 		Tuple3D c = new Tuple3d();
 		getT().negate(c);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void negate() {
 		getT().negate();
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleIntT() {
 		Tuple3D c = new Tuple3d(2, -1, 0);
@@ -103,6 +112,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		getT().scale(4.5, c);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleInt() {
 		getT().scale(4);
@@ -113,12 +123,14 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		getT().scale(4.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setTuple3D() {
 		Tuple3D c = new Tuple3d(-45, 78, 0);
 		getT().set(c);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setIntIntInt() {
 		getT().set(-45, 78, 0);
@@ -129,6 +141,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		getT().set(-45.5, 78.5, 0);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setIntArray() {
 		getT().set(new int[]{-45, 78, 0});
@@ -139,6 +152,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		getT().set(new double[]{-45.5, 78.5, 0});
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setXInt() {
 		getT().setX(45);
@@ -149,6 +163,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		getT().setX(45.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setYInt() {
 		getT().setY(45);
@@ -159,16 +174,19 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		getT().setY(45.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subIntIntInt() {
 		getT().sub(45, 78, 0);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subXInt() {
 		getT().subX(45);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subYInt() {
 		getT().subY(78);
@@ -189,120 +207,140 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		getT().subY(78.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().add(12.3, 4.56, 0);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().add(12.3, 4.56, 0);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addXDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().addX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addXDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().addX(12.3);
 	}
 	
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addYDouble_iffp() {
 	    Assume.assumeFalse(isIntCoordinates());
 	    getT().addY(12.3);
 	}
 	
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addYDouble_ifi() {
 	    Assume.assumeTrue(isIntCoordinates());
 	    getT().addY(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addZDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().addZ(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addZDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().addZ(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDoubleT_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().scale(12.3, createTuple(1,2, 0));
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDoubleT_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().scale(12.3, createTuple(1,2, 0));
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().scale(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().scale(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().set(12.3, 4.56, 0);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().set(12.3, 4.56, 0);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleArray_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().set(new double[] {12.3, 4.56, 0});
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleArray_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().set(new double[] {12.3, 4.56, 0});
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setXDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().setX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setXDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().setX(12.3);
 	}
 	
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setYDouble_ifi() {
 	    Assume.assumeTrue(isIntCoordinates());
 	    getT().setY(12.3);
 	}
 	
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setYDouble_iffp() {
 	    Assume.assumeFalse(isIntCoordinates());
@@ -321,36 +359,42 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		getT().setZ(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().sub(12.3, 4.56, 0);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().sub(12.3, 4.56, 0);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subXDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().subX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subXDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().subX(12.3);
 	}
 	
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subYDouble_iffp() {
 	    Assume.assumeFalse(isIntCoordinates());
 	    getT().subY(12.3);
 	}
 	
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subYDouble_ifi() {
 	    Assume.assumeTrue(isIntCoordinates());
@@ -369,6 +413,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		getT().subZ(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addVector3DVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -378,6 +423,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector5.add(vector3,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addVector3DVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -387,6 +433,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector5.add(vector3,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -395,6 +442,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector.add(vector3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -403,6 +451,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector.add(vector3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddIntVector3DVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -412,6 +461,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector3.scaleAdd(0,vector2,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddIntVector3DVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -421,6 +471,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector3.scaleAdd(0,vector2,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddDoubleVector3DVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -430,6 +481,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		newVector.scaleAdd(0.0, vector, vect);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddDoubleVector3DVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -439,6 +491,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		newVector.scaleAdd(0.0, vector, vect);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddIntVector3D() {
 		Vector3D vector = createVector(1,0, 0);
@@ -446,6 +499,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		newVector.scaleAdd(0,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddDoubleVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -454,6 +508,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		newVector.scaleAdd(0.5,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddDoubleVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -462,6 +517,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		newTuple.scaleAdd(0.5,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subVector3DVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -471,6 +527,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		newVector.sub(vect,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subVector3DVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -480,6 +537,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		newVector.sub(vect,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subPoint3DPoint3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -489,6 +547,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		newVector.sub(point,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subPoint3DPoint3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -498,6 +557,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		newPoint.sub(point,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -506,6 +566,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vect.sub(vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -514,6 +575,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vect.sub(vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void normalize_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -521,6 +583,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector.normalize();
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)  
 	public final void normalize_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -528,6 +591,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector.normalize();
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void normalizeVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -535,6 +599,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector.normalize(createVector(1,2, 0));
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)  
 	public final void normalizeVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -542,6 +607,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector.normalize(createVector(1,2, 0));
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setLength_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -550,6 +616,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector.setLength(newLength);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setLength_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -558,6 +625,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector.setLength(newLength);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void operator_addVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -566,6 +634,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector.operator_add(vector3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void operator_addVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -574,6 +643,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vector.operator_add(vector3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void operator_removeVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -582,6 +652,7 @@ public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? supe
 		vect.operator_remove(vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void operator_removeVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());

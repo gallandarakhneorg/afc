@@ -20,13 +20,14 @@
 
 package org.arakhne.afc.math.matrix;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Rule;
+import org.junit.Test;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.junit.Rule;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public class Matrix4dTest extends AbstractMathTestCase{

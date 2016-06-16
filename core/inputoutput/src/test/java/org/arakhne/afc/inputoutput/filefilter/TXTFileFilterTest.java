@@ -27,7 +27,7 @@ public class TXTFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".txt";
+		return ".txt"; //$NON-NLS-1$
 	}
 
 	@Override

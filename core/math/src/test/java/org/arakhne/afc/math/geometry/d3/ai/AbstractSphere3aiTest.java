@@ -30,7 +30,6 @@ import java.util.Iterator;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Incubating;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -141,6 +140,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertEquals(5, r1.getMaxZ());
 	}
 
+	@Override
 	@Test
 	public void getPointIterator() {
 		Iterator<? extends Point3D> iterator = this.shape.getPointIterator();
@@ -248,6 +248,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertFalse(iterator.hasNext());
 	}
 
+	@Override
 	@Test
 	public void getClosestPointTo() {
 		Point3D p;
@@ -278,6 +279,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertEquals(13, p.iy());
 	}
 
+	@Override
 	@Test
 	public void getFarthestPointTo() {
 		Point3D p;
@@ -308,6 +310,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertEquals(3, p.iy());
 	}
 	
+	@Override
 	@Test
 	public void containsIntInt() {
 		assertFalse(this.shape.contains(0,0, 0));
@@ -324,6 +327,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertFalse(this.shape.contains(0,0, 0));
 	}
 
+	@Override
 	@Test
 	public void containsRectangularPrism3ai() {
 		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,1,1, 0)));
@@ -335,6 +339,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertFalse(this.shape.contains(createRectangularPrism(9,11, 0,5,5, 0)));
 	}
 
+	@Override
 	@Test
 	public void intersectsRectangularPrism3ai() {
 		assertFalse(this.shape.intersects(createRectangularPrism(0,0, 0,1,1, 0)));
@@ -345,6 +350,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertFalse(this.shape.intersects(createRectangularPrism(16,0, 0,100,100, 0)));
 	}
 
+	@Override
 	@Test
 	public void intersectsSegment3ai() {
 		assertFalse(this.shape.intersects(createSegment(0,0, 0,1,1, 0)));
@@ -356,6 +362,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertFalse(this.shape.intersects(createSegment(8,13, 0,10,11, 0)));
 	}
 
+	@Override
 	@Test
 	@Ignore
 	public void intersectsPath3ai() {
@@ -393,6 +400,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertFalse(this.shape.intersects(path));
 	}
 
+	@Override
 	@Test
 	public void intersectsSphere3ai() {
 		assertFalse(this.shape.intersects(createSphere(0,0, 0,1)));
@@ -403,6 +411,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertFalse(this.shape.intersects(createSphere(5,15, 0,1)));
 	}
 
+	@Override
 	@Test
 	@Ignore
 	public void getPathIterator() {
@@ -416,6 +425,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertNoElement(pi);
 	}
 
+	@Override
 	@Test
 	@Ignore
 	public void getPathIteratorTransform3D() {
@@ -456,6 +466,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertNoElement(pi);
 	}
 
+	@Override
 	@Test
 	@Ignore
 	public void createTransformedShape() {
@@ -495,6 +506,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertNoElement(pi);
 	}
 
+	@Override
 	@Test
 	public void setIT() {
 		this.shape.set((T) createSphere(17, 20, 8, 7));
@@ -564,7 +576,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 	@Test
 	@Override
 	public void toBoundingBoxB() {
-		B r = (B) createRectangularPrism(0, 0, 0, 0, 0, 0);
+		B r = createRectangularPrism(0, 0, 0, 0, 0, 0);
 		this.shape.toBoundingBox(r);
 		assertEquals(0, r.getMinX());
 		assertEquals(3, r.getMinY());

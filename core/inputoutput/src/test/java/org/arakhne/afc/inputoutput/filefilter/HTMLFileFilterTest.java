@@ -27,7 +27,7 @@ public class HTMLFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".html";
+		return ".html"; //$NON-NLS-1$
 	}
 
 	@Override

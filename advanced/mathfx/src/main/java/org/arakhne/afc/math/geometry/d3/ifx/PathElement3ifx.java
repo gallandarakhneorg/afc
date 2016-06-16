@@ -27,6 +27,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d3.ai.PathElement3ai;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** An element of the path with 3 integer FX properties.
  *
@@ -65,10 +66,10 @@ public abstract class PathElement3ifx implements PathElement3ai {
 	 * @param toz the z coordinate of the target point.
 	 */
 	PathElement3ifx(PathElementType type, IntegerProperty tox, IntegerProperty toy, IntegerProperty toz) {
-		assert type != null : "Path winding rule must be not null";
-		assert tox != null : "Property toX must be not null";
-		assert toy != null : "Property toY must be not null";
-		assert toz != null : "Property toZ must be not null";
+		assert type != null : AssertMessages.notNullParameter(0);
+		assert tox != null : AssertMessages.notNullParameter(1);
+		assert toy != null : AssertMessages.notNullParameter(2);
+		assert toz != null : AssertMessages.notNullParameter(3);
 		this.type = type;
 		this.toX = tox;
 		this.toY = toy;
@@ -287,8 +288,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(0, 3);
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 			array[2] = this.toZ.get();
@@ -297,8 +298,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(0, 3);
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 			array[2] = this.toZ.get();
@@ -307,8 +308,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(0, 3);
 			array[0] = this.toX;
 			array[1] = this.toY;
 			array[2] = this.toZ;
@@ -460,8 +461,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		LinePathElement2ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty fromz, IntegerProperty tox,
 		        IntegerProperty toy, IntegerProperty toz) {
 		    super(PathElementType.LINE_TO, tox, toy, toz);
-		    assert fromx != null : "Property fromX must be not null";
-		    assert fromy != null : "Property fromY must be not null";
+		    assert fromx != null : AssertMessages.notNullParameter(0);
+		    assert fromy != null : AssertMessages.notNullParameter(1);
 		    this.fromX = fromx;
 		    this.fromY = fromy;
 		    this.fromZ = fromz;
@@ -516,8 +517,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(0, 3);
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 			array[2] = this.toZ.get();
@@ -526,8 +527,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(0, 3);
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 			array[2] = this.toZ.get();
@@ -542,8 +543,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(0, 3);
 			array[0] = this.toX;
 			array[1] = this.toY;
 			array[2] = this.toZ;
@@ -696,15 +697,16 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		 * @param toy y coordinate of the target point.
 		 * @param toz z coordinate of the target point.
 		 */
+		@SuppressWarnings("checkstyle:magicnumber")
 		QuadPathElement3ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty fromz, IntegerProperty ctrlx,
 		        IntegerProperty ctrly, IntegerProperty ctrlz, IntegerProperty tox, IntegerProperty toy, IntegerProperty toz) {
 		    super(PathElementType.QUAD_TO, tox, toy, toz);
-		    assert fromx != null : "Property fromX must be not null";
-		    assert fromy != null : "Property fromY must be not null";
-			assert fromz != null : "Property fromZ must be not null";
-			assert ctrlx != null : "Property ctrlX must be not null";
-			assert ctrly != null : "Property ctrlY must be not null";
-			assert ctrlz != null : "Property ctrlZ must be not null";
+		    assert fromx != null : AssertMessages.notNullParameter(0);
+		    assert fromy != null : AssertMessages.notNullParameter(1);
+			assert fromz != null : AssertMessages.notNullParameter(2);
+			assert ctrlx != null : AssertMessages.notNullParameter(3);
+			assert ctrly != null : AssertMessages.notNullParameter(4);
+			assert ctrlz != null : AssertMessages.notNullParameter(5);
 			this.fromX = fromx;
 			this.fromY = fromy;
 			this.fromZ = fromz;
@@ -772,8 +774,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 6 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 6 : AssertMessages.tooSmallArrayParameter(0, 6);
 			array[0] = this.ctrlX.get();
 			array[1] = this.ctrlY.get();
 			array[2] = this.ctrlZ.get();
@@ -785,8 +787,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 6 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 6 : AssertMessages.tooSmallArrayParameter(0, 6);
 			array[0] = this.ctrlX.get();
 			array[1] = this.ctrlY.get();
 			array[2] = this.ctrlZ.get();
@@ -804,8 +806,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 6 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 6 : AssertMessages.tooSmallArrayParameter(0, 6);
 			array[0] = this.ctrlX;
 			array[1] = this.ctrlY;
 			array[2] = this.ctrlZ;
@@ -970,20 +972,20 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		 * @param toy y coordinate of the target point.
 		 * @param toz z coordinate of the target point.
 		 */
-		@SuppressWarnings("checkstyle:parameternumber")
+		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 		CurvePathElement3ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty fromz, IntegerProperty ctrlx1,
 		        IntegerProperty ctrly1, IntegerProperty ctrlz1, IntegerProperty ctrlx2, IntegerProperty ctrly2,
                 IntegerProperty ctrlz2, IntegerProperty tox, IntegerProperty toy, IntegerProperty toz) {
 			super(PathElementType.CURVE_TO, tox, toy, toz);
-			assert fromx != null : "Property fromX must be not null";
-			assert fromy != null : "Property fromY must be not null";
-			assert fromz != null : "Property fromZ must be not null";
-			assert ctrlx1 != null : "Property ctrlX1 must be not null";
-			assert ctrly1 != null : "Property ctrlY1 must be not null";
-			assert ctrlz1 != null : "Property ctrlZ1 must be not null";
-			assert ctrlx2 != null : "Property ctrlX2 must be not null";
-			assert ctrly2 != null : "Property ctrlY2 must be not null";
-			assert ctrlz2 != null : "Property ctrlZ2 must be not null";
+			assert fromx != null : AssertMessages.notNullParameter(0);
+			assert fromy != null : AssertMessages.notNullParameter(1);
+			assert fromz != null : AssertMessages.notNullParameter(2);
+			assert ctrlx1 != null : AssertMessages.notNullParameter(3);
+			assert ctrly1 != null : AssertMessages.notNullParameter(4);
+			assert ctrlz1 != null : AssertMessages.notNullParameter(5);
+			assert ctrlx2 != null : AssertMessages.notNullParameter(6);
+			assert ctrly2 != null : AssertMessages.notNullParameter(7);
+			assert ctrlz2 != null : AssertMessages.notNullParameter(8);
 			this.fromX = fromx;
 			this.fromY = fromy;
 			this.fromZ = fromz;
@@ -1064,8 +1066,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 9 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 9 : AssertMessages.tooSmallArrayParameter(0, 9);
 			array[0] = this.ctrlX1.get();
 			array[1] = this.ctrlY1.get();
 			array[2] = this.ctrlZ1.get();
@@ -1080,8 +1082,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 9 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 9 : AssertMessages.tooSmallArrayParameter(0, 9);
 			array[0] = this.ctrlX1.get();
 			array[1] = this.ctrlY1.get();
 			array[2] = this.ctrlZ1.get();
@@ -1104,8 +1106,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 9 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 9 : AssertMessages.tooSmallArrayParameter(0, 9);
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlZ1;
@@ -1257,9 +1259,9 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		ClosePathElement3ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty fromz, IntegerProperty tox,
 		        IntegerProperty toy, IntegerProperty toz) {
 		    super(PathElementType.CLOSE, tox, toy, toz);
-		    assert fromx != null : "Property fromX must be not null";
-			assert fromy != null : "Property fromY must be not null";
-			assert fromz != null : "Property fromY must be not null";
+		    assert fromx != null : AssertMessages.notNullParameter(0);
+			assert fromy != null : AssertMessages.notNullParameter(1);
+			assert fromz != null : AssertMessages.notNullParameter(2);
 			this.fromX = fromx;
 			this.fromY = fromy;
 			this.fromZ = fromz;
@@ -1314,8 +1316,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(0, 3);
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 			array[2] = this.toZ.get();
@@ -1324,8 +1326,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(0, 3);
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 			array[2] = this.toZ.get();
@@ -1340,8 +1342,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
-			assert array != null : "Array must be not null";
-			assert array.length >= 3 : "Size of the array is too small";
+			assert array != null : AssertMessages.notNullParameter();
+			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(0, 3);
 			array[0] = this.toX;
 			array[1] = this.toY;
 			array[2] = this.toZ;

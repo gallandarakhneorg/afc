@@ -75,7 +75,7 @@ public interface Segment3ai<
 	@SuppressWarnings("checkstyle:parameternumber")
     static void computeClosestPointToPoint(int ax, int ay, int az, int bx, int by, int bz, int px, int py, int pz,
             Point3D<?, ?> result) {
-		assert result != null : "Result must be not be null";
+		assert result != null : AssertMessages.notNullParameter();
 
 		// Special case
 		//    0 1 2 3 4 5 6 7 8 9 10
@@ -358,7 +358,7 @@ public interface Segment3ai<
 	@SuppressWarnings("checkstyle:parameternumber")
     static void computeFarthestPointTo(int ax, int ay, int az, int bx, int by, int bz, int px, int py, int pz,
             Point3D<?, ?> result) {
-		assert result != null : "Result must be not be null";
+		assert result != null : AssertMessages.notNullParameter();
         final int v1x = px - ax;
         final int v1y = py - ay;
         final int v1z = pz - az;
@@ -411,10 +411,10 @@ public interface Segment3ai<
 	static int computeSideLinePoint(int x1, int y1, int z1, int x2, int y2, int z2, int px, int py, int pz) {
 		final int segmentX = x2 - x1;
 		final int segmentY = y2 - y1;
-		final int segmentZ = z2 - z1;
+		//TODO final int segmentZ = z2 - z1;
 		final int targetX = px - x1;
 		final int targetY = py - y1;
-		final int targetZ = pz - z1;
+		//TODO final int targetZ = pz - z1;
 		final int side = segmentX * targetY - segmentY * targetX;
 		return (side < 0) ? -1 : ((side > 0) ? 1 : 0);
 	}
@@ -447,14 +447,14 @@ public interface Segment3ai<
 	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static int computeCrossingsFromSphere(
 			int crossings,
 			int cx, int cy, int cz,
 			int radius,
 			int x0, int y0, int z0,
 			int x1, int y1, int z1) {
-		assert radius >= 0 : "Redius must be positive or zero";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(4);
 
 		int numCrosses = crossings;
 
@@ -462,8 +462,8 @@ public interface Segment3ai<
 		final int xmax = cx + Math.abs(radius);
 		final int ymin = cy - Math.abs(radius);
 		final int ymax = cy + Math.abs(radius);
-		final int zmin = cz - Math.abs(radius);
-		final int zmax = cz + Math.abs(radius);
+		//TODO final int zmin = cz - Math.abs(radius);
+		//TODO final int zmax = cz + Math.abs(radius);
 
 		// The line is entirely on the top or on the bottom of the shadow
 		if (y0 < ymin && y1 < ymin) {
@@ -1177,14 +1177,14 @@ public interface Segment3ai<
 	 * @param secondPoint the second point.
 	 */
 	default void set(Point3D<?, ?> firstPoint, Point3D<?, ?> secondPoint) {
-		assert firstPoint != null : "First point must be not be null";
-		assert secondPoint != null : "Second point must be not be null";
+		assert firstPoint != null : AssertMessages.notNullParameter(0);
+		assert secondPoint != null : AssertMessages.notNullParameter(1);
 		set(firstPoint.ix(), firstPoint.iy(), firstPoint.iz(), secondPoint.ix(), secondPoint.iy(), secondPoint.iz());
 	}
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Shape must be not be null";
+		assert shape != null : AssertMessages.notNullParameter();
 		set(shape.getX1(), shape.getY1(), shape.getZ1(), shape.getX2(), shape.getY2(), shape.getZ2());
 	}
 
@@ -1296,7 +1296,7 @@ public interface Segment3ai<
 	 */
 	@Pure
 	default void setP1(Point3D<?, ?> point) {
-		assert point != null : "Point must be not be null";
+		assert point != null : AssertMessages.notNullParameter();
 		set(point.ix(), point.iy(), point.iz(), getX2(), getY2(), getZ2());
 	}
 
@@ -1317,7 +1317,7 @@ public interface Segment3ai<
 	 */
 	@Pure
 	default void setP2(Point3D<?, ?> point) {
-		assert point != null : "Point must be not be null";
+		assert point != null : AssertMessages.notNullParameter();
 		set(getX1(), getY1(), getZ1(), point.ix(), point.iy(), point.iz());
 	}
 
@@ -1335,14 +1335,14 @@ public interface Segment3ai<
 	@Override
 	@Pure
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not be null";
+		assert box != null : AssertMessages.notNullParameter();
 		box.setFromCorners(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2());
 	}
 
 	@Pure
 	@Override
 	default double getDistanceSquared(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not be null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final P closestPoint = getClosestPointTo(pt);
 		return closestPoint.getDistanceSquared(pt);
 	}
@@ -1350,7 +1350,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default double getDistanceL1(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not be null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final P closestPoint = getClosestPointTo(pt);
 		return closestPoint.getDistanceL1(pt);
 	}
@@ -1358,7 +1358,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not be null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final P closestPoint = getClosestPointTo(pt);
 		return closestPoint.getDistanceLinf(pt);
 	}
@@ -1408,7 +1408,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not be null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointToPoint(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
@@ -1447,7 +1447,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not be null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeFarthestPointTo(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
@@ -1501,7 +1501,7 @@ public interface Segment3ai<
 	 * @see #createTransformedShape(Transform3D)
 	 */
 	default void transform(Transform3D transform) {
-		assert transform != null : "Transformation must be not be null";
+		assert transform != null : AssertMessages.notNullParameter();
 		final P p = getGeomFactory().newPoint(getX1(), getY1(), getZ1());
 		transform.transform(p);
 		setP1(p);
@@ -1523,11 +1523,12 @@ public interface Segment3ai<
 	 *     rectangle and the segment was clipped; <code>false</code> if the segment
 	 *     does not intersect the rectangle.
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	// TODO : integrate z coordinate
 	default boolean clipToRectangle(int rxmin, int rymin, int rzmin, int rxmax, int rymax, int rzmax) {
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax";
-		assert rymin <= rymax : "rymin must be lower or equal to rymax";
-		assert rzmin <= rzmax : "rymin must be lower or equal to rymax";
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(0, rxmin, 3, rxmax);
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(1, rymin, 4, rymax);
+		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(2, rzmin, 5, rzmax);
 
 		int x0 = getX1();
 		int y0 = getY1();
@@ -1551,7 +1552,7 @@ public interface Segment3ai<
             } else {
                 final int x;
                 final int y;
-                final int z;
+                //TODO final int z;
                 // failed both tests, so calculate the line segment to clip
                 // from an outside point to an intersection with clip edge
 
@@ -1580,7 +1581,7 @@ public interface Segment3ai<
                     code3 = 0;
                     x = 0;
                     y = 0;
-                    z = 0;
+                    //TODO z = 0;
                 }
 
                 if (code3 != 0) {
@@ -1607,7 +1608,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default boolean intersects(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : "Rectangular prism must be not be null";
+		assert rectangularPrism != null : AssertMessages.notNullParameter();
 		return RectangularPrism3ai.intersectsRectangleSegment(
 				rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ(),
 				rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ(),
@@ -1618,7 +1619,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Sphere must be not be null";
+		assert sphere != null : AssertMessages.notNullParameter();
 		return Sphere3ai.intersectsSphereSegment(
 				sphere.getX(), sphere.getY(), sphere.getZ(),
 				sphere.getRadius(),
@@ -1629,7 +1630,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not be null";
+		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsSegmentSegment(
 				getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
 				segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2());
@@ -1638,7 +1639,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator3ai<?> iterator) {
-		assert iterator != null : "Iterator must be not be null";
+		assert iterator != null : AssertMessages.notNullParameter();
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path3ai.computeCrossingsFromSegment(
 				0,
@@ -1652,7 +1653,7 @@ public interface Segment3ai<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null";
+		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
 
@@ -1693,13 +1694,13 @@ public interface Segment3ai<
 
 		private final int xstep;
 
-		private final int zstep;
+		//TODO private final int zstep;
 
 		private final int deltax;
 
 		private final int deltay;
 
-		private final int deltaz;
+		//TODO private final int deltaz;
 
 		private final int x1;
 
@@ -1721,7 +1722,7 @@ public interface Segment3ai<
 		 * @param z1 is the z-coordinate of the last point of the Bresenham line.
 		 */
 		public BresenhamLineIterator(GeomFactory3D<V, P> factory, int x0, int y0, int z0, int x1, int y1, int z1) {
-			assert factory != null : "Factory must be not be null";
+			assert factory != null : AssertMessages.notNullParameter(0);
 			this.factory = factory;
 			int localx0 = x0;
 			int localy0 = y0;
@@ -1756,7 +1757,7 @@ public interface Segment3ai<
 
 			this.deltax = Math.abs(localx1 - localx0);
 			this.deltay = Math.abs(localy1 - localy0);
-			this.deltaz = Math.abs(localz1 - localz0);
+			//TODO this.deltaz = Math.abs(localz1 - localz0);
 			this.error = this.deltax / 2;
 			this.y = localy0;
 
@@ -1773,9 +1774,9 @@ public interface Segment3ai<
             }
 
             if (localz0 < localz1) {
-                this.zstep = 1;
+                //TODO this.zstep = 1;
             } else {
-                this.zstep = -1;
+                //TODO this.zstep = -1;
             }
 
 			this.x1 = localx1;
@@ -1847,7 +1848,7 @@ public interface Segment3ai<
 		 * @param segment the element.
 		 */
 		public AbstractSegmentPathIterator(Segment3ai<?, ?, IE, ?, ?, ?> segment) {
-			assert segment != null : "Factory must be not be null";
+			assert segment != null : AssertMessages.notNullParameter();
 			this.segment = segment;
 		}
 
@@ -1926,7 +1927,7 @@ public interface Segment3ai<
 		 */
 		public TransformedSegmentPathIterator(Segment3ai<?, ?, IE, ?, ?, ?> segment, Transform3D transform) {
 			super(segment);
-			assert transform != null : "Transformation must be not be null";
+			assert transform != null : AssertMessages.notNullParameter();
 			this.transform = transform;
 			if (segment.getX1() == segment.getX2() && segment.getY1() == segment.getY2()) {
 				this.index = 2;

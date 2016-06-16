@@ -21,9 +21,6 @@
 package org.arakhne.afc.math.geometry.d2.d;
 
 import org.arakhne.afc.math.geometry.d2.afp.AbstractEllipse2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.d.Ellipse2d;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 
 @SuppressWarnings("all")
 public class Ellipse2dTest extends AbstractEllipse2afpTest<Ellipse2d, Rectangle2d> {

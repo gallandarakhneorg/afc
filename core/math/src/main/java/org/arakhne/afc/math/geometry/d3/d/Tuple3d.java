@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d3.d;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 3D tuple with 3 double precision floating-point numbers.
  *
@@ -62,7 +63,7 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple3d(Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must be not null";
+		assert tuple != null : AssertMessages.notNullParameter();
 		this.x = tuple.getX();
 		this.y = tuple.getY();
 		this.z = tuple.getZ();
@@ -72,8 +73,8 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple3d(int[] tuple) {
-		assert tuple != null : "Tuple must be not null";
-		assert tuple.length >= 3 : "Tuple size is too small";
+		assert tuple != null : AssertMessages.notNullParameter();
+		assert tuple.length >= 3 : AssertMessages.tooSmallArrayParameter(tuple.length, 3);
 		this.x = tuple[0];
 		this.y = tuple[1];
 		this.z = tuple[2];
@@ -83,8 +84,8 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple3d(double[] tuple) {
-		assert tuple != null : "Tuple must be not null";
-		assert tuple.length >= 2 : "Tuple size is too small";
+		assert tuple != null : AssertMessages.notNullParameter();
+		assert tuple.length >= 2 : AssertMessages.tooSmallArrayParameter(tuple.length, 2);
 		this.x = tuple[0];
 		this.y = tuple[1];
 	}
@@ -131,7 +132,7 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void absolute(Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must be not null";
+		assert tuple != null : AssertMessages.notNullParameter();
 		tuple.set(Math.abs(this.x), Math.abs(this.y), Math.abs(this.z));
 	}
 
@@ -181,7 +182,7 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void negate(Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must be not null";
+		assert tuple != null : AssertMessages.notNullParameter();
 		this.x = -tuple.getX();
 		this.y = -tuple.getY();
 		this.z = -tuple.getZ();
@@ -196,7 +197,7 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void scale(int scale, Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must be not null";
+		assert tuple != null : AssertMessages.notNullParameter(1);
 		this.x = scale * tuple.getX();
 		this.y = scale * tuple.getY();
 		this.z = scale * tuple.getZ();
@@ -204,7 +205,7 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void scale(double scale, Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must be not null";
+		assert tuple != null : AssertMessages.notNullParameter(1);
 		this.x = scale * tuple.getX();
 		this.y = scale * tuple.getY();
 		this.z = scale * tuple.getZ();
@@ -226,7 +227,7 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void set(Tuple3D<?> tuple) {
-		assert tuple != null : "Tuple must be not null";
+		assert tuple != null : AssertMessages.notNullParameter();
 		this.x = tuple.getX();
 		this.y = tuple.getY();
 		this.z = tuple.getZ();
@@ -248,8 +249,8 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void set(int[] tuple) {
-		assert tuple != null : "Tuple must be not null";
-		assert tuple.length >= 3 : "Tuple size is too small";
+		assert tuple != null : AssertMessages.notNullParameter();
+		assert tuple.length >= 3 : AssertMessages.tooSmallArrayParameter(tuple.length, 3);
 		this.x = tuple[0];
 		this.y = tuple[1];
 		this.z = tuple[2];
@@ -257,8 +258,8 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 
 	@Override
 	public void set(double[] tuple) {
-		assert tuple != null : "Tuple must be not null";
-		assert tuple.length >= 3 : "Tuple size is too small";
+		assert tuple != null : AssertMessages.notNullParameter();
+		assert tuple.length >= 3 : AssertMessages.tooSmallArrayParameter(tuple.length, 3);
 		this.x = tuple[0];
 		this.y = tuple[1];
 		this.z = tuple[2];

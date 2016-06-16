@@ -23,6 +23,8 @@ package org.arakhne.afc.math.geometry.d2;
 @SuppressWarnings("all")
 public final class Point2DStub implements Point2D<Point2DStub, Vector2DStub> {
 
+	private static final long serialVersionUID = -7864528630398049668L;
+
 	private double x;
 	
 	private double y;

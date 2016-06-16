@@ -59,8 +59,8 @@ public class MultiShape3dfxTest extends AbstractMultiShape3afpTest<MultiShape3df
 		ListProperty<Shape3dfx<?>> property = this.shape.elementsProperty();
 		assertNotNull(property);
 		assertEquals(2, property.size());
-		assertSame(firstObject, property.get(0));
-		assertSame(secondObject, property.get(1));
+		assertSame(this.firstObject, property.get(0));
+		assertSame(this.secondObject, property.get(1));
 	}
 
 }

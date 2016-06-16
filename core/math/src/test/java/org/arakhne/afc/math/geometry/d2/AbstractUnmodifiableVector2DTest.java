@@ -20,40 +20,31 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
-import static org.arakhne.afc.math.MathConstants.PI;
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-
-import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d2.Vector2D.PowerResult;
-import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.Assume;
-import org.junit.ComparisonFailure;
-import org.junit.Rule;
 import org.junit.Test;
+
+import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
 
 @SuppressWarnings("all")
 public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? super V, ? super P>, P extends Point2D<? super P, ? super V>>
 		extends AbstractVector2DTest<V, P, Vector2D> {
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void absolute() {
 		getT().absolute();
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void absoluteT() {
 		Tuple2D c = new Tuple2d();
 		getT().absolute(c);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addIntInt() {
 		getT().add(6, 7);
@@ -64,6 +55,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().add(6.5, 7.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addXInt() {
 		getT().addX(6);
@@ -74,6 +66,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().addX(6.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addYInt() {
 		getT().addY(6);
@@ -84,17 +77,20 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().addY(6.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void negateT() {
 		Tuple2D c = new Tuple2d();
 		getT().negate(c);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void negate() {
 		getT().negate();
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleIntT() {
 		Tuple2D c = new Tuple2d(2, -1);
@@ -107,6 +103,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().scale(4.5, c);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleInt() {
 		getT().scale(4);
@@ -117,12 +114,14 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().scale(4.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setTuple2D() {
 		Tuple2D c = new Tuple2d(-45, 78);
 		getT().set(c);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setIntInt() {
 		getT().set(-45, 78);
@@ -133,6 +132,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().set(-45.5, 78.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setIntArray() {
 		getT().set(new int[]{-45, 78});
@@ -143,6 +143,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().set(new double[]{-45.5, 78.5});
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setXInt() {
 		getT().setX(45);
@@ -153,6 +154,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().setX(45.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setYInt() {
 		getT().setY(45);
@@ -163,16 +165,19 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().setY(45.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subIntInt() {
 		getT().sub(45, 78);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subXInt() {
 		getT().subX(45);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subYInt() {
 		getT().subY(78);
@@ -193,150 +198,175 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().subY(78.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().add(12.3, 4.56);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().add(12.3, 4.56);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addXDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().addX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addXDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().addX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addYDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().addY(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addYDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().addY(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDoubleT_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().scale(12.3, createTuple(1,2));
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDoubleT_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().scale(12.3, createTuple(1,2));
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().scale(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().scale(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().set(12.3, 4.56);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().set(12.3, 4.56);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleArray_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().set(new double[] {12.3, 4.56});
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleArray_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().set(new double[] {12.3, 4.56});
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setXDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().setX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setXDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().setX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setYDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().setY(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setYDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().setY(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().sub(12.3, 4.56);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().sub(12.3, 4.56);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subXDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().subX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subXDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().subX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subYDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().subY(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subYDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().subY(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addVector2DVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -346,6 +376,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector5.add(vector3,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addVector2DVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -355,6 +386,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector5.add(vector3,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -363,6 +395,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector.add(vector3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -371,6 +404,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector.add(vector3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddIntVector2DVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -380,6 +414,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector3.scaleAdd(0,vector2,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddIntVector2DVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -389,6 +424,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector3.scaleAdd(0,vector2,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddDoubleVector2DVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -398,6 +434,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		newVector.scaleAdd(0.0, vector, vect);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddDoubleVector2DVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -407,6 +444,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		newVector.scaleAdd(0.0, vector, vect);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddIntVector2D() {
 		Vector2D vector = createVector(1,0);
@@ -414,6 +452,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		newVector.scaleAdd(0,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddDoubleVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -422,6 +461,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		newVector.scaleAdd(0.5,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddDoubleVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -430,6 +470,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		newTuple.scaleAdd(0.5,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subVector2DVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -439,6 +480,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		newVector.sub(vect,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subVector2DVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -448,6 +490,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		newVector.sub(vect,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subPoint2DPoint2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -457,6 +500,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		newVector.sub(point,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subPoint2DPoint2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -466,6 +510,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		newPoint.sub(point,vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -474,6 +519,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vect.sub(vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -482,12 +528,14 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vect.sub(vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void makeOrthogonal() {
 		Vector2D vector = createTuple(1,2);
 		vector.makeOrthogonal();
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void normalize_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -495,6 +543,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector.normalize();
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)  
 	public final void normalize_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -502,6 +551,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector.normalize();
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void normalizeVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -509,6 +559,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector.normalize(createVector(1,2));
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)  
 	public final void normalizeVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -516,18 +567,21 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector.normalize(createVector(1,2));
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turn_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().turn(MathConstants.DEMI_PI);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turn_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().turn(MathConstants.DEMI_PI);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnVector_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -536,6 +590,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turn(MathConstants.DEMI_PI, vector2);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnVector_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -544,12 +599,14 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turn(MathConstants.DEMI_PI, vector2);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnLeft_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().turnLeft(MathConstants.DEMI_PI);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnLeft_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -557,6 +614,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnLeft(MathConstants.DEMI_PI);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnLeft_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -564,6 +622,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnLeft(MathConstants.DEMI_PI);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnLeft_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -571,6 +630,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnLeft(MathConstants.DEMI_PI);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnRight_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -578,6 +638,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnRight(MathConstants.DEMI_PI);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnRight_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -585,6 +646,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnRight(MathConstants.DEMI_PI);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnRight_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -592,6 +654,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnRight(MathConstants.DEMI_PI);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnRight_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -599,6 +662,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnRight(MathConstants.DEMI_PI);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnLeftVector_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -608,6 +672,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnLeft(MathConstants.DEMI_PI, vector2);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnLeftVector_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -617,6 +682,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnLeft(MathConstants.DEMI_PI, vector2);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnLeftVector_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -626,6 +692,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnLeft(MathConstants.DEMI_PI, vector2);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnLeftVector_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -635,6 +702,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnLeft(MathConstants.DEMI_PI, vector2);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnRightVector_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -644,6 +712,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnRight(MathConstants.DEMI_PI, vector2);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnRightVector_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -653,6 +722,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnRight(MathConstants.DEMI_PI, vector2);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnRightVector_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -662,6 +732,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnRight(MathConstants.DEMI_PI, vector2);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnRightVector_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -671,6 +742,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		getT().turnRight(MathConstants.DEMI_PI, vector2);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setLength_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -679,6 +751,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector.setLength(newLength);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setLength_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -687,6 +760,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector.setLength(newLength);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void operator_addVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -695,6 +769,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector.operator_add(vector3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void operator_addVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
@@ -703,6 +778,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vector.operator_add(vector3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void operator_removeVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
@@ -711,6 +787,7 @@ public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? supe
 		vect.operator_remove(vector);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void operator_removeVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());

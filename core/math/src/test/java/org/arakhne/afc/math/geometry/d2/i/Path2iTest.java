@@ -20,11 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.i;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.AbstractPath2aiTest;
-import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
-import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
 
 @SuppressWarnings("all")
 public class Path2iTest extends AbstractPath2aiTest<Path2i, Rectangle2i> {

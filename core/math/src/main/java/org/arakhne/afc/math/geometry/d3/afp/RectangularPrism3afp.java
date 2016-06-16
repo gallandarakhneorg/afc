@@ -417,15 +417,15 @@ public interface RectangularPrism3afp<
 	 * <code>false</code>
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsRectangleRectangle(double x1, double y1, double z1, double x2, double y2, double z2, double x3,
             double y3, double z3, double x4, double y4, double z4) {
-		assert x1 <= x2 : "x1 must be lower or equal to x2";
-		assert y1 <= y2 : "y1 must be lower or equal to y2";
-		assert z1 <= z2 : "z1 must be lower or equal to z2";
-		assert x3 <= x4 : "x3 must be lower or equal to x4";
-		assert y3 <= y4 : "y3 must be lower or equal to x4";
-		assert z3 <= z4 : "z3 must be lower or equal to z4";
+		assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 3, x2);
+		assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 4, y2);
+		assert z1 <= z2 : AssertMessages.lowerEqualParameters(2, z1, 5, z2);
+		assert x3 <= x4 : AssertMessages.lowerEqualParameters(6, x3, 9, x4);
+		assert y3 <= y4 : AssertMessages.lowerEqualParameters(7, y3, 10, y4);
+		assert z3 <= z4 : AssertMessages.lowerEqualParameters(8, z3, 11, z4);
 		return x2 > x3 && x1 < x4 && y2 > y3 && y1 < y4 && z2 > z3 && z1 < z4;
 	}
 
@@ -448,11 +448,12 @@ public interface RectangularPrism3afp<
 	 */
 	@Pure
 	// TODO
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsRectangleLine(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
             double z3, double x4, double y4, double z4) {
-	    assert x1 <= x2 : "x1 must be lower or equal to x2";
-	    assert y1 <= y2 : "y1 must be lower or equal to y2";
+		assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 3, x2);
+		assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 4, y2);
+		assert z1 <= z2 : AssertMessages.lowerEqualParameters(2, z1, 5, z2);
 	    //		int a, b;
 	    //		a = Segment2afp.ccw(x3, y3, x4, y4, x1, y1, 0.);
 	    //		b = Segment2afp.ccw(x3, y3, x4, y4, x2, y1, 0.);
@@ -479,11 +480,11 @@ public interface RectangularPrism3afp<
 	 */
 	@Pure
 	// TODO
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsRectangleSegment(double rx1, double ry1, double rx2, double ry2, double sx1, double sy1, double sx2,
             double sy2) {
-	    assert rx1 <= rx2 : "rx1 must be lower or equal to rx2";
-	    assert ry1 <= ry2 : "ry1 must be lower or equal to ry2";
+		assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 3, rx2);
+		assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 4, ry2);
 	    //		double segmentX1 = sx1;
 	    //		double segmentY1 = sy1;
 	    //		double segmentX2 = sx2;
@@ -573,17 +574,17 @@ public interface RectangularPrism3afp<
 	 *     otherwise <code>false</code>.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean containsRectangleRectangle(double enclosingX1, double enclosingY1, double enclosingZ1,
 			double enclosingX2, double enclosingY2, double enclosingZ2,
 			double innerX1, double innerY1, double innerZ1,
 			double innerX2, double innerY2, double innerZ2) {
-		assert enclosingX1 <= enclosingX2 : "Enclosing x1 must be lower or equal to enclosing x2";
-		assert enclosingY1 <= enclosingY2 : "Enclosing y1 must be lower or equal to enclosing y2";
-		assert enclosingZ1 <= enclosingZ2 : "Enclosing z1 must be lower or equal to enclosing z2";
-		assert innerX1 <= innerX2 : "Inner x1 must be lower or equal to inner x2";
-		assert innerY1 <= innerY2 : "Inner y1 must be lower or equal to inner y2";
-		assert innerZ1 <= innerZ2 : "Inner y1 must be lower or equal to inner y2";
+		assert enclosingX1 <= enclosingX2 : AssertMessages.lowerEqualParameters(0, enclosingX1, 3, enclosingX2);
+		assert enclosingY1 <= enclosingY2 : AssertMessages.lowerEqualParameters(1, enclosingY1, 4, enclosingY2);
+		assert enclosingZ1 <= enclosingZ2 : AssertMessages.lowerEqualParameters(2, enclosingZ1, 5, enclosingZ2);
+		assert innerX1 <= innerX2 : AssertMessages.lowerEqualParameters(0, innerX1, 3, innerX2);
+		assert innerY1 <= innerY2 : AssertMessages.lowerEqualParameters(1, innerY1, 4, innerY2);
+		assert innerZ1 <= innerZ2 : AssertMessages.lowerEqualParameters(2, innerZ1, 5, innerZ2);
 		return innerX1 >= enclosingX1
 		    && innerY1 >= enclosingY1
 		    && innerZ1 >= enclosingZ1
@@ -607,13 +608,13 @@ public interface RectangularPrism3afp<
 	 *     otherwise <code>false</code>.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean containsRectanglePoint(
 			double rx1, double ry1, double rz1, double rx2, double ry2, double rz2,
 			double px, double py, double pz) {
-		assert rx1 <= rx2 : "rx1 must be lower or equal to rx2";
-		assert ry1 <= ry2 : "ry1 must be lower or equal to ry2";
-		assert rz1 <= rz2 : "rz1 must be lower or equal to rz2";
+		assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 3, rx2);
+		assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 4, ry2);
+		assert rz1 <= rz2 : AssertMessages.lowerEqualParameters(2, rz1, 5, rz2);
 		return (px >= rx1 && px <= rx2) && (py >= ry1 && py <= ry2) && (pz >= rz1 && pz <= rz2);
 	}
 
@@ -636,14 +637,14 @@ public interface RectangularPrism3afp<
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Shape must be not null";
+		assert shape != null : AssertMessages.notNullParameter();
 		setFromCorners(shape.getMinX(), shape.getMinY(), shape.getMinZ(), shape.getMaxX(), shape.getMaxY(), shape.getMaxZ());
 	}
 
 	@Pure
 	@Override
 	default double getDistanceSquared(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final double dx;
         if (pt.getX() < getMinX()) {
             dx = getMinX() - pt.getX();
@@ -674,7 +675,7 @@ public interface RectangularPrism3afp<
 	@Pure
 	@Override
 	default double getDistanceL1(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null :  AssertMessages.notNullParameter();
 		final double dx;
         if (pt.getX() < getMinX()) {
             dx = getMinX() - pt.getX();
@@ -705,7 +706,7 @@ public interface RectangularPrism3afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null :  AssertMessages.notNullParameter();
 		final double dx;
         if (pt.getX() < getMinX()) {
             dx = getMinX() - pt.getX();
@@ -742,7 +743,7 @@ public interface RectangularPrism3afp<
 	@Pure
 	@Override
 	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
-        assert rectangularPrism != null : "Rectangle must be not null";
+        assert rectangularPrism != null :  AssertMessages.notNullParameter();
         return containsRectangleRectangle(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
                 rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ(), rectangularPrism.getMaxX(),
                 rectangularPrism.getMaxY(), rectangularPrism.getMaxZ());
@@ -756,7 +757,7 @@ public interface RectangularPrism3afp<
 	 * @param pt the point
 	 */
 	default void add(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null :  AssertMessages.notNullParameter();
 		add(pt.getX(), pt.getY(), pt.getZ());
 	}
 
@@ -802,7 +803,7 @@ public interface RectangularPrism3afp<
 	 */
 	@Pure
 	default B createUnion(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : "Shape must be not null";
+		assert prism != null :  AssertMessages.notNullParameter();
 		final B rr = getGeomFactory().newBox();
 		rr.setFromCorners(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ());
 		rr.setUnion(prism);
@@ -824,7 +825,7 @@ public interface RectangularPrism3afp<
 	 */
 	@Pure
 	default B createIntersection(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : "Shape must be not null";
+		assert prism != null :  AssertMessages.notNullParameter();
 		final B rr = getGeomFactory().newBox();
 		final double x1 = Math.max(getMinX(), prism.getMinX());
 		final double y1 = Math.max(getMinY(), prism.getMinY());
@@ -847,7 +848,7 @@ public interface RectangularPrism3afp<
 	 * @see #createUnion(Prism3afp)
 	 */
 	default void setUnion(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : "Shape must be not null";
+		assert prism != null :  AssertMessages.notNullParameter();
 		setFromCorners(
 				Math.min(getMinX(), prism.getMinX()),
 				Math.min(getMinY(), prism.getMinY()),
@@ -867,7 +868,7 @@ public interface RectangularPrism3afp<
 	 * @see #clear()
 	 */
 	default void setIntersection(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : "Shape must be not null";
+		assert prism != null :  AssertMessages.notNullParameter();
 		final double x1 = Math.max(getMinX(), prism.getMinX());
 		final double y1 = Math.max(getMinY(), prism.getMinY());
 		final double z1 = Math.max(getMinZ(), prism.getMinZ());
@@ -884,7 +885,7 @@ public interface RectangularPrism3afp<
 	@Pure
 	@Override
 	default boolean intersects(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : "Rectangle must be not null";
+		assert prism != null :  AssertMessages.notNullParameter();
 		return intersectsRectangleRectangle(
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ(),
@@ -895,7 +896,7 @@ public interface RectangularPrism3afp<
 	@Pure
 	@Override
 	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Circle must be not null";
+		assert sphere != null :  AssertMessages.notNullParameter();
 		return Sphere3afp.intersectsSpherePrism(
 				sphere.getX(), sphere.getY(), sphere.getZ(),
 				sphere.getRadius(),
@@ -906,7 +907,7 @@ public interface RectangularPrism3afp<
 	@Pure
 	@Override
 	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null";
+		assert segment != null :  AssertMessages.notNullParameter();
 		return intersectsRectangleSegment(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -917,7 +918,7 @@ public interface RectangularPrism3afp<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
-		assert iterator != null : "Iterator must be not null";
+		assert iterator != null :  AssertMessages.notNullParameter();
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path3afp.computeCrossingsFromRect(
 				0,
@@ -931,7 +932,7 @@ public interface RectangularPrism3afp<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null";
+		assert multishape != null :  AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
 
@@ -943,8 +944,8 @@ public interface RectangularPrism3afp<
 	 */
 	// TODO : integrate z coordinate
 	default void avoidCollisionWith(RectangularPrism3afp<?, ?, ?, ?, ?, ?> reference, Vector3D<?, ?> result) {
-		assert reference != null : "Reference rectangle must be not null";
-		assert result != null : "Result vector must be not null";
+		assert reference != null :  AssertMessages.notNullParameter();
+		assert result != null : AssertMessages.notNullParameter();
 		final double dx1 = reference.getMaxX() - getMinX();
 		final double dx2 = getMaxX() - reference.getMinX();
 		final double dy1 = reference.getMaxY() - getMinY();
@@ -994,8 +995,8 @@ public interface RectangularPrism3afp<
 	 */
 	default void avoidCollisionWith(RectangularPrism3afp<?, ?, ?, ?, ?, ?> reference, Vector3D<?, ?> displacementDirection,
             Vector3D<?, ?> result) {
-		assert reference != null : "Reference rectangle must be not null";
-		assert result != null : "Result vector must be not null";
+		assert reference != null : AssertMessages.notNullParameter(0);
+		assert result != null : AssertMessages.notNullParameter(2);
 		if (displacementDirection == null || displacementDirection.getLengthSquared() == 0) {
 			avoidCollisionWith(reference, result);
 			return;
@@ -1052,7 +1053,7 @@ public interface RectangularPrism3afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final double x;
 		int same = 0;
         if (pt.getX() < getMinX()) {
@@ -1125,7 +1126,7 @@ public interface RectangularPrism3afp<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final double x;
         if (pt.getX() <= getCenterX()) {
             x = getMaxX();
@@ -1190,7 +1191,7 @@ public interface RectangularPrism3afp<
 		 * @param rectangle the iterated rectangle.
 		 */
 		public RectanglePathIterator(RectangularPrism3afp<?, ?, T, ?, ?, ?> rectangle) {
-			assert rectangle != null : "Rectangle must be not null";
+			assert rectangle != null : AssertMessages.notNullParameter();
 			this.rectangle = rectangle;
 			if (rectangle.isEmpty()) {
 				this.index = 5;
@@ -1337,8 +1338,8 @@ public interface RectangularPrism3afp<
 		 * @param transform the transformation.
 		 */
 		public TransformedRectanglePathIterator(RectangularPrism3afp<?, ?, T, ?, ?, ?> rectangle, Transform3D transform) {
-			assert rectangle != null : "Rectangle must be not null";
-			assert transform != null : "Transformation must be not null";
+			assert rectangle != null : AssertMessages.notNullParameter(0);
+			assert transform != null : AssertMessages.notNullParameter(1);
 			this.rectangle = rectangle;
 			this.transform = transform;
 			if (rectangle.isEmpty()) {

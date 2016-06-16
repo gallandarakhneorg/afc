@@ -51,7 +51,6 @@ public abstract class AbstractShape2f<T extends Shape2f> implements Shape2f {
 	
 	/** {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public T clone()  {
 		try {

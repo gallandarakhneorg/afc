@@ -25,7 +25,7 @@ public class JAVAFileFilterTest extends AbstractBaseFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".java";
+		return ".java"; //$NON-NLS-1$
 	}
 
 	@Override

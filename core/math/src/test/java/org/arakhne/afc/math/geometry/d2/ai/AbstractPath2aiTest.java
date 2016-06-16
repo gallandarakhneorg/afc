@@ -33,7 +33,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import org.arakhne.afc.math.MathConstants;
@@ -1265,7 +1264,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 	@Test
 	@Override
 	public void toBoundingBoxB() {
-		B bb = (B) createRectangle(0, 0, 0, 0);
+		B bb = createRectangle(0, 0, 0, 0);
 		this.shape.toBoundingBox(bb);
 		assertEquals(0, bb.getMinX());
 		assertEquals(-5, bb.getMinY());
@@ -1420,7 +1419,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	public void staticCalculatesDrawableElementBoundingBox() {
-		B box = (B) createRectangle(0, 0, 0, 0);
+		B box = createRectangle(0, 0, 0, 0);
 		assertTrue(Path2ai.calculatesDrawableElementBoundingBox(this.shape.getPathIterator(), box));
 		assertEquals(0, box.getMinX());
 		assertEquals(-5, box.getMinY());
@@ -2238,7 +2237,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 	public void generateShapeBitmap() throws IOException {
 		this.shape.arcTo(5, 5, 20, 10, 0, 1, ArcType.ARC_ONLY);
 		File filename = generateTestPicture(this.shape);
-		System.out.println("Filename: " + filename);
+		System.out.println("Filename: " + filename); //$NON-NLS-1$
 	}
 
 	@Test
@@ -2360,7 +2359,8 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		assertNoElement(pi);
 	}
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToCircle2ai() {
         assertIntPointEquals(0, 0, this.shape.getClosestPointTo(createCircle(-2, 1, 1)));
         assertClosestPointInBothShapes(this.shape, createCircle(-2, 1, 2));
@@ -2371,7 +2371,8 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
         assertIntPointEquals(6, 0, this.shape.getClosestPointTo(createCircle(20, 0, 2)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredCircle2ai() {
         assertEpsilonEquals(4, this.shape.getDistanceSquared(createCircle(-2, 1, 1)));
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createCircle(-2, 1, 2)));
@@ -2382,7 +2383,8 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
         assertEpsilonEquals(144, this.shape.getDistanceSquared(createCircle(20, 0, 2)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToSegment2ai() {
         assertIntPointEquals(1, 1, this.shape.getClosestPointTo(createSegment(-2, 1, 0, 2)));
         assertIntPointEquals(0, 0, this.shape.getClosestPointTo(createSegment(-2, 1, 0, 3)));
@@ -2393,7 +2395,8 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
         assertIntPointEquals(7, -1, this.shape.getClosestPointTo(createSegment(20, 0, 25, 4)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredSegment2ai() {
         assertEpsilonEquals(2, this.shape.getDistanceSquared(createSegment(-2, 1, 0, 2)));
         assertEpsilonEquals(5, this.shape.getDistanceSquared(createSegment(-2, 1, 0, 3)));
@@ -2404,7 +2407,8 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
         assertEpsilonEquals(170, this.shape.getDistanceSquared(createSegment(20, 0, 25, 4)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToRectangle2ai() {
         assertIntPointEquals(0, 0, this.shape.getClosestPointTo(createRectangle(-2, 1, 1, 1)));
         assertIntPointEquals(0, 0, this.shape.getClosestPointTo(createRectangle(-2, 1, 2, 2)));
@@ -2415,7 +2419,8 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
         assertIntPointEquals(7, -1, this.shape.getClosestPointTo(createRectangle(20, 0, 2, 2)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredRectangle2ai() {
         assertEpsilonEquals(2, this.shape.getDistanceSquared(createRectangle(-2, 1, 1, 1)));
         assertEpsilonEquals(1, this.shape.getDistanceSquared(createRectangle(-2, 1, 2, 2)));
@@ -2435,7 +2440,8 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
         return multishape;
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToMultiShape2ai() {
         assertClosestPointInBothShapes(this.shape, createTestMultiShape(-2, 1));
         assertIntPointEquals(2, 2, this.shape.getClosestPointTo(createTestMultiShape(-2, 2)));
@@ -2445,7 +2451,8 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
         assertIntPointEquals(7, -1, this.shape.getClosestPointTo(createTestMultiShape(20, 0)));
     }
         
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredMultiShape2ai() {
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestMultiShape(-2, 1)));
         assertEpsilonEquals(1, this.shape.getDistanceSquared(createTestMultiShape(-2, 2)));
@@ -2464,7 +2471,8 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
         return path;
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToPath2ai() {
         assertClosestPointInBothShapes(this.shape, createTestPath(-2, 1));
         assertClosestPointInBothShapes(this.shape, createTestPath(-2, 2));
@@ -2474,7 +2482,8 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
         assertIntPointEquals(7, -1, this.shape.getClosestPointTo(createTestPath(20, 0)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredPath2ai() {
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(-2, 1)));
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(-2, 2)));

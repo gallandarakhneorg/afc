@@ -25,7 +25,7 @@ public class GMLFileFilterTest extends AbstractBaseFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".gml";
+		return ".gml"; //$NON-NLS-1$
 	}
 
 	@Override

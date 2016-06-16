@@ -30,7 +30,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -50,10 +49,10 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 	@Override
 	protected final T createShape() {
 		T shape = (T) createMultiShape();
-		firstObject = (C) createRectangle(5, 8, 2, 1);
-		secondObject = (C) createCircle(-5, 18, 2);
-		shape.add(firstObject);
-		shape.add(secondObject);
+		this.firstObject = (C) createRectangle(5, 8, 2, 1);
+		this.secondObject = (C) createCircle(-5, 18, 2);
+		shape.add(this.firstObject);
+		shape.add(this.secondObject);
 		return shape;
 	}
 
@@ -106,8 +105,8 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 	public void equalsToShape() {
 		assertFalse(this.shape.equalsToShape(null));
 		assertFalse(this.shape.equalsToShape((T) createMultiShape()));
-		assertTrue(this.shape.equalsToShape((T) this.shape));
-		assertTrue(this.shape.equalsToShape((T) this.shape.clone()));
+		assertTrue(this.shape.equalsToShape(this.shape));
+		assertTrue(this.shape.equalsToShape(this.shape.clone()));
 	}
 
 	@Override
@@ -431,7 +430,7 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 
 	@Override
 	public void getPathIterator() {
-		PathIterator2ai pi = (PathIterator2ai) this.shape.getPathIterator();
+		PathIterator2ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 5, 8);
 		assertElement(pi, PathElementType.LINE_TO, 7, 8);
 		assertElement(pi, PathElementType.LINE_TO, 7, 9);
@@ -757,6 +756,7 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		assertTrue(this.shape.intersects((Shape2D) createRectangle(-6, 16, 1, 1)));
 	}
 
+	@Override
 	@Test
 	public void getPointIterator() {
 		Point2D p;
@@ -896,9 +896,9 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		assertNull(this.shape.getFirstShapeContaining(createPoint(-6, 8)));
 		assertNull(this.shape.getFirstShapeContaining(createPoint(4, 17)));
 		// Inside circle
-		assertSame(secondObject, this.shape.getFirstShapeContaining(createPoint(-4, 19)));
+		assertSame(this.secondObject, this.shape.getFirstShapeContaining(createPoint(-4, 19)));
 		// Inside rectangle
-		assertSame(firstObject, this.shape.getFirstShapeContaining(createPoint(6, 8)));
+		assertSame(this.firstObject, this.shape.getFirstShapeContaining(createPoint(6, 8)));
 	}
 	
 	@Test
@@ -916,9 +916,9 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		assertTrue(this.shape.getShapesContaining(createPoint(-6, 8)).isEmpty());
 		assertTrue(this.shape.getShapesContaining(createPoint(4, 17)).isEmpty());
 		// Inside circle
-		assertEquals(Arrays.asList(secondObject), this.shape.getShapesContaining(createPoint(-4, 19)));
+		assertEquals(Arrays.asList(this.secondObject), this.shape.getShapesContaining(createPoint(-4, 19)));
 		// Inside rectangle
-		assertEquals(Arrays.asList(firstObject), this.shape.getShapesContaining(createPoint(6, 8)));
+		assertEquals(Arrays.asList(this.firstObject), this.shape.getShapesContaining(createPoint(6, 8)));
 	}
 
 	@Test
@@ -926,10 +926,10 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		MultiShape2D shape2d = this.shape;
 		assertNull(shape2d.getFirstShapeIntersecting(createSegment(-20, 14, -19, 14)));
 		assertNull(shape2d.getFirstShapeIntersecting(createSegment(-2, -10, -1, -10)));
-		assertSame(secondObject, shape2d.getFirstShapeIntersecting(createSegment(-6, 16, -5, 16)));
-		assertSame(firstObject, shape2d.getFirstShapeIntersecting(createSegment(4, 8, 5, 8)));
-		assertSame(secondObject, shape2d.getFirstShapeIntersecting(createSegment(-4, 18, -3, 18)));
-		assertSame(firstObject, shape2d.getFirstShapeIntersecting(createSegment(5, 8, 6, 8)));
+		assertSame(this.secondObject, shape2d.getFirstShapeIntersecting(createSegment(-6, 16, -5, 16)));
+		assertSame(this.firstObject, shape2d.getFirstShapeIntersecting(createSegment(4, 8, 5, 8)));
+		assertSame(this.secondObject, shape2d.getFirstShapeIntersecting(createSegment(-4, 18, -3, 18)));
+		assertSame(this.firstObject, shape2d.getFirstShapeIntersecting(createSegment(5, 8, 6, 8)));
 	}
 
 	@Test
@@ -960,7 +960,7 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		path.lineTo(4, 21);
 		path.closePath();
 		
-		assertSame(firstObject, shape2d.getFirstShapeIntersecting(path));
+		assertSame(this.firstObject, shape2d.getFirstShapeIntersecting(path));
 	}
 
 	@Test
@@ -968,18 +968,18 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		MultiShape2D shape2d = this.shape;
 		assertTrue(shape2d.getShapesIntersecting(createSegment(-20, 14, -19, 14)).isEmpty());
 		assertTrue(shape2d.getShapesIntersecting(createSegment(-2, -10, -1, -10)).isEmpty());
-		assertEquals(Arrays.asList(secondObject), shape2d.getShapesIntersecting(createSegment(-6, 16, -5, 16)));
-		assertEquals(Arrays.asList(firstObject), shape2d.getShapesIntersecting(createSegment(4, 8, 5, 8)));
-		assertEquals(Arrays.asList(secondObject), shape2d.getShapesIntersecting(createSegment(-4, 18, -3, 18)));
-		assertEquals(Arrays.asList(firstObject), shape2d.getShapesIntersecting(createSegment(5, 8, 6, 8)));
+		assertEquals(Arrays.asList(this.secondObject), shape2d.getShapesIntersecting(createSegment(-6, 16, -5, 16)));
+		assertEquals(Arrays.asList(this.firstObject), shape2d.getShapesIntersecting(createSegment(4, 8, 5, 8)));
+		assertEquals(Arrays.asList(this.secondObject), shape2d.getShapesIntersecting(createSegment(-4, 18, -3, 18)));
+		assertEquals(Arrays.asList(this.firstObject), shape2d.getShapesIntersecting(createSegment(5, 8, 6, 8)));
 	}
 
 	@Test
 	public void getBackendDataList() {
 		assertNotNull(this.shape.getBackendDataList());
 		assertEquals(2, this.shape.getBackendDataList().size());
-		assertSame(firstObject, this.shape.getBackendDataList().get(0));
-		assertSame(secondObject, this.shape.getBackendDataList().get(1));
+		assertSame(this.firstObject, this.shape.getBackendDataList().get(0));
+		assertSame(this.secondObject, this.shape.getBackendDataList().get(1));
 	}
 
 	@Test
@@ -991,7 +991,7 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		assertEquals(7, box.getMaxX());
 		assertEquals(20, box.getMaxY());
 
-		firstObject.translate(12, -7);
+		this.firstObject.translate(12, -7);
 		
 		// C:  -7; 16; -3; 20
 		// R:   5;  8;  7;  9
@@ -1015,7 +1015,7 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		assertEquals(7, box.getMaxX());
 		assertEquals(20, box.getMaxY());
 
-		secondObject.translate(12, -7);
+		this.secondObject.translate(12, -7);
 		
 		// C:  -7; 16; -3; 20
 		// R:   5;  8;  7;  9
@@ -1063,7 +1063,7 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		assertEquals(7, box.getMaxX());
 		assertEquals(20, box.getMaxY());
 
-		this.shape.remove(firstObject);
+		this.shape.remove(this.firstObject);
 		
 		// C:  -7; 16; -3; 20
 		// R:   5;  8;  7;  9
@@ -1085,7 +1085,7 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		assertEquals(7, box.getMaxX());
 		assertEquals(20, box.getMaxY());
 
-		this.shape.remove(secondObject);
+		this.shape.remove(this.secondObject);
 		
 		// C:  -7; 16; -3; 20
 		// R:   5;  8;  7;  9
@@ -1107,8 +1107,8 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		assertEquals(7, box.getMaxX());
 		assertEquals(20, box.getMaxY());
 
-		this.shape.remove(secondObject);
-		secondObject.translate(1453,  -451);
+		this.shape.remove(this.secondObject);
+		this.secondObject.translate(1453,  -451);
 		
 		box = this.shape.toBoundingBox();
 		assertNotNull(box);
@@ -1118,7 +1118,8 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		assertEquals(9, box.getMaxY());
 	}
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToCircle2ai() {
         assertIntPointEquals(-5, 16, this.shape.getClosestPointTo(createCircle(-5, 9, 2)));
         assertClosestPointInBothShapes(this.shape, createCircle(5, 9, 2));
@@ -1126,7 +1127,8 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
         assertIntPointEquals(7, 9, this.shape.getClosestPointTo(createCircle(15, 10, 2)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredCircle2ai() {
         assertEpsilonEquals(25, this.shape.getDistanceSquared(createCircle(-5, 9, 2)));
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createCircle(5, 9, 2)));
@@ -1134,7 +1136,8 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
         assertEpsilonEquals(36, this.shape.getDistanceSquared(createCircle(15, 10, 2)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToSegment2ai() {
         assertIntPointEquals(-4, 16, this.shape.getClosestPointTo(createSegment(-5, 9, 2, 21)));
         assertClosestPointInBothShapes(this.shape, createSegment(5, 9, 2, 21));
@@ -1142,7 +1145,8 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
         assertIntPointEquals(7, 9, this.shape.getClosestPointTo(createSegment(15, 10, 2, 45)));
     }
     
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredSegment2ai() {
         assertEpsilonEquals(5, this.shape.getDistanceSquared(createSegment(-5, 9, 2, 21)));
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createSegment(5, 9, 2, 21)));
@@ -1150,7 +1154,8 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
         assertEpsilonEquals(58, this.shape.getDistanceSquared(createSegment(15, 10, 2, 45)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToRectangle2ai() {
         assertIntPointEquals(-5, 16, this.shape.getClosestPointTo(createRectangle(-5, 9, 2, 2)));
         assertClosestPointInBothShapes(this.shape, createRectangle(5, 9, 2, 2));
@@ -1158,7 +1163,8 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
         assertIntPointEquals(7, 9, this.shape.getClosestPointTo(createRectangle(15, 10, 2, 2)));
     }
     
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredRectangle2ai() {
         assertEpsilonEquals(25, this.shape.getDistanceSquared(createRectangle(-5, 9, 2, 2)));
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createRectangle(5, 9, 2, 2)));
@@ -1175,7 +1181,8 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
         return multishape;
     }
 
-    @Test
+    @Override
+	@Test
     public void getClosestPointToMultiShape2ai() {
         assertIntPointEquals(-4, 16, this.shape.getClosestPointTo(createTestMultiShape(-5, 9)));
         assertIntPointEquals(7, 9, this.shape.getClosestPointTo(createTestMultiShape(5, 9)));
@@ -1183,7 +1190,8 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
         assertClosestPointInBothShapes(this.shape, createTestMultiShape(15, 10));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredMultiShape2ai() {
         assertEpsilonEquals(17, this.shape.getDistanceSquared(createTestMultiShape(-5, 9)));
         assertEpsilonEquals(1, this.shape.getDistanceSquared(createTestMultiShape(5, 9)));
@@ -1200,7 +1208,8 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
         return path;
     }
         
-    @Test
+    @Override
+	@Test
     public void getClosestPointToPath2ai() {
         assertIntPointEquals(6, 8, this.shape.getClosestPointTo(createTestPath(-5, 9)));
         assertIntPointEquals(-5, 18, this.shape.getClosestPointTo(createTestPath(-8, 17)));
@@ -1208,7 +1217,8 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
         assertIntPointEquals(7, 9, this.shape.getClosestPointTo(createTestPath(15, 10)));
     }
 
-    @Test
+    @Override
+	@Test
     public void getDistanceSquaredPath2ai() {
         assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(-5, 9)));
         assertEpsilonEquals(9, this.shape.getDistanceSquared(createTestPath(5, 17)));

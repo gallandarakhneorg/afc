@@ -56,7 +56,7 @@ public class Vector2dTest extends AbstractVector2DTest<Vector2d, Point2d, Vector
 		assertFpVectorEquals(0, 1, Vector2d.toOrientationVector(Math.PI/2));
 		assertFpVectorEquals(0, -1, Vector2d.toOrientationVector(-Math.PI/2));
 
-        assertInlineParameterUsage(Vector2d.class, "toOrientationVector", double.class);
+        assertInlineParameterUsage(Vector2d.class, "toOrientationVector", double.class); //$NON-NLS-1$
 	}
 
 }

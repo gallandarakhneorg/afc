@@ -20,33 +20,28 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
-import org.junit.After;
 import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
+import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
+
 @SuppressWarnings("all")
-public abstract class AbstractUnmodifiableTuple2DTest<T extends Tuple2D, TT extends Tuple2D> extends AbstractTuple2DTest<T, TT> {
+public abstract class AbstractUnmodifiableTuple2DTest<TT extends Tuple2D> extends AbstractTuple2DTest<TT> {
 	
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void absolute() {
 		getT().absolute();
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void absoluteT() {
 		Tuple2D c = new Tuple2d();
 		getT().absolute(c);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addIntInt() {
 		getT().add(6, 7);
@@ -57,6 +52,7 @@ public abstract class AbstractUnmodifiableTuple2DTest<T extends Tuple2D, TT exte
 		getT().add(6.5, 7.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addXInt() {
 		getT().addX(6);
@@ -67,6 +63,7 @@ public abstract class AbstractUnmodifiableTuple2DTest<T extends Tuple2D, TT exte
 		getT().addX(6.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addYInt() {
 		getT().addY(6);
@@ -77,17 +74,20 @@ public abstract class AbstractUnmodifiableTuple2DTest<T extends Tuple2D, TT exte
 		getT().addY(6.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void negateT() {
 		Tuple2D c = new Tuple2d();
 		getT().negate(c);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void negate() {
 		getT().negate();
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleIntT() {
 		Tuple2D c = new Tuple2d(2, -1);
@@ -100,6 +100,7 @@ public abstract class AbstractUnmodifiableTuple2DTest<T extends Tuple2D, TT exte
 		getT().scale(4.5, c);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleInt() {
 		getT().scale(4);
@@ -110,12 +111,14 @@ public abstract class AbstractUnmodifiableTuple2DTest<T extends Tuple2D, TT exte
 		getT().scale(4.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setTuple2D() {
 		Tuple2D c = new Tuple2d(-45, 78);
 		getT().set(c);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setIntInt() {
 		getT().set(-45, 78);
@@ -126,6 +129,7 @@ public abstract class AbstractUnmodifiableTuple2DTest<T extends Tuple2D, TT exte
 		getT().set(-45.5, 78.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setIntArray() {
 		getT().set(new int[]{-45, 78});
@@ -136,6 +140,7 @@ public abstract class AbstractUnmodifiableTuple2DTest<T extends Tuple2D, TT exte
 		getT().set(new double[]{-45.5, 78.5});
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setXInt() {
 		getT().setX(45);
@@ -146,6 +151,7 @@ public abstract class AbstractUnmodifiableTuple2DTest<T extends Tuple2D, TT exte
 		getT().setX(45.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setYInt() {
 		getT().setY(45);
@@ -156,16 +162,19 @@ public abstract class AbstractUnmodifiableTuple2DTest<T extends Tuple2D, TT exte
 		getT().setY(45.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subIntInt() {
 		getT().sub(45, 78);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subXInt() {
 		getT().subX(45);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subYInt() {
 		getT().subY(78);
@@ -186,144 +195,168 @@ public abstract class AbstractUnmodifiableTuple2DTest<T extends Tuple2D, TT exte
 		getT().subY(78.5);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().add(12.3, 4.56);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().add(12.3, 4.56);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addXDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().addX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addXDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().addX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addYDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().addY(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addYDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().addY(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDoubleT_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().scale(12.3, createTuple(1,2));
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDoubleT_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().scale(12.3, createTuple(1,2));
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().scale(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().scale(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().set(12.3, 4.56);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().set(12.3, 4.56);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleArray_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().set(new double[] {12.3, 4.56});
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleArray_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().set(new double[] {12.3, 4.56});
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setXDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().setX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setXDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().setX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setYDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().setY(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setYDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().setY(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().sub(12.3, 4.56);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().sub(12.3, 4.56);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subXDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().subX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subXDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().subX(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subYDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().subY(12.3);
 	}
 
+	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subYDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());

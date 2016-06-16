@@ -66,7 +66,7 @@ public interface MultiShape3afp<
 	@Pure
 	@Override
 	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Circle must be not null";
+		assert sphere != null : AssertMessages.notNullParameter();
 		if (sphere.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(sphere)) {
@@ -80,7 +80,7 @@ public interface MultiShape3afp<
 	@Pure
 	@Override
 	default boolean intersects(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : "Rectangle must be not null";
+		assert prism != null : AssertMessages.notNullParameter();
 		if (prism.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(prism)) {
@@ -94,7 +94,7 @@ public interface MultiShape3afp<
 	@Pure
 	@Override
 	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null";
+		assert segment != null : AssertMessages.notNullParameter();
 		if (segment.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(segment)) {
@@ -122,7 +122,7 @@ public interface MultiShape3afp<
 	@Override
 	@Unefficient
 	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null";
+		assert multishape != null : AssertMessages.notNullParameter();
 		if (multishape.toBoundingBox().intersects(toBoundingBox())) {
 			for (final CT shape1 : getBackendDataList()) {
 				for (final Shape3afp<?, ?, ?, ?, ?, ?> shape2 : multishape.getBackendDataList()) {
@@ -151,7 +151,7 @@ public interface MultiShape3afp<
 	@Pure
 	@Override
 	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : "Rectangle must be not null";
+		assert rectangularPrism != null : AssertMessages.notNullParameter();
 		if (rectangularPrism.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
 				if (shape.contains(rectangularPrism)) {
@@ -185,7 +185,7 @@ public interface MultiShape3afp<
 	@Pure
 	@Override
 	default CT getFirstShapeIntersecting(ST shape) {
-		assert shape != null : "Input shape must be not null";
+		assert shape != null : AssertMessages.notNullParameter();
 		if (shape.intersects(toBoundingBox())) {
 			for (final CT innerShape : getBackendDataList()) {
 				if (innerShape.intersects(shape)) {
@@ -200,7 +200,7 @@ public interface MultiShape3afp<
 	@Override
 	@Pure
 	default List<CT> getShapesIntersecting(ST shape) {
-		assert shape != null : "Shape must be not null";
+		assert shape != null : AssertMessages.notNullParameter();
 		final List<CT> list = new ArrayList<>();
 		if (shape.intersects(toBoundingBox())) {
 			for (final CT subshape : getBackendDataList()) {
@@ -215,7 +215,7 @@ public interface MultiShape3afp<
 	@Pure
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not null";
+		assert box != null : AssertMessages.notNullParameter();
 		final Iterator<CT> iterator = getBackendDataList().iterator();
 		if (iterator.hasNext()) {
 			iterator.next().toBoundingBox(box);
@@ -363,8 +363,8 @@ public interface MultiShape3afp<
 		 */
 		public AbstractMultiShapePathIterator(List<? extends Shape3afp<?, ?, IE, ?, ?, ?>> list,
 				GeomFactory3afp<IE, ?, ?, ?> factory) {
-			assert list != null : "List of shapes must be not null";
-			assert factory != null : "Shape factory must be not null";
+			assert list != null : AssertMessages.notNullParameter(0);
+			assert factory != null : AssertMessages.notNullParameter(1);
 			this.list = list;
 			this.factory = factory;
 			this.shapesIterator = list.iterator();
@@ -407,7 +407,7 @@ public interface MultiShape3afp<
 
 		@Override
 		public IE next() {
-			assert this.next != null : "No such element";
+			assert this.next != null;
 			final IE elementToReturn = this.next;
 			searchNext();
 			return elementToReturn;
@@ -512,7 +512,7 @@ public interface MultiShape3afp<
 		public TransformedMultiShapePathIterator(List<? extends Shape3afp<?, ?, IE, ?, ?, ?>> list,
 				GeomFactory3afp<IE, ?, ?, ?> factory, Transform3D transform) {
 			super(list, factory);
-			assert transform != null : "Transformation must be not null";
+			assert transform != null : AssertMessages.notNullParameter(2);
 			this.transform = transform;
 			delayedInit(list);
 		}

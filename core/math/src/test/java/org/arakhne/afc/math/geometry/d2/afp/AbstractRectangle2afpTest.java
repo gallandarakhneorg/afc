@@ -26,7 +26,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import org.arakhne.afc.math.MathUtil;
@@ -210,7 +209,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFalse(this.shape.equalsToShape(null));
 		assertFalse(this.shape.equalsToShape((T) createRectangle(0, 8, 5, 12)));
 		assertFalse(this.shape.equalsToShape((T) createRectangle(5, 8, 5, 0)));
-		assertTrue(this.shape.equalsToShape((T) this.shape));
+		assertTrue(this.shape.equalsToShape(this.shape));
 		assertTrue(this.shape.equalsToShape((T) createRectangle(5, 8, 5, 10)));
 	}
 
@@ -984,6 +983,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertTrue(this.shape.contains(createPoint(35, 24)));
 	}
 
+	@Override
 	@Test
 	public void inflate() {
 		this.shape.inflate(1, 2, 3, 4);
@@ -1099,11 +1099,13 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertEpsilonEquals(13, p.getY());
 	}
 
+	@Override
 	@Test
 	public void getCenterX() {
 		assertEpsilonEquals(7.5, this.shape.getCenterX());
 	}
 
+	@Override
 	@Test
 	public void getCenterY() {
 		assertEpsilonEquals(13, this.shape.getCenterY());
@@ -1250,6 +1252,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 				1, 2).isCCW());
 	}
 
+	@Override
 	@Test
 	public void getClosestPointToCircle2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createCircle(0, 0, 1)));
@@ -1265,6 +1268,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createCircle(4.3, 7, 1)));
 	}
 
+	@Override
 	@Test
 	public void getDistanceSquaredCircle2afp() {
 		assertEpsilonEquals(71.13204, this.shape.getDistanceSquared(createCircle(0, 0, 1)));
@@ -1389,6 +1393,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(5.6, 12.5, result);
 	}
 
+	@Override
 	@Test
 	public void getClosestPointToRectangle2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createRectangle(0, 0, 1, 1)));
@@ -1419,6 +1424,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertClosestPointInBothShapes(this.shape, createRectangle(5.1, 12, 1, 1));
 	}
 
+	@Override
 	@Test
 	public void getDistanceSquaredRectangle2afp() {
 		assertEpsilonEquals(65, this.shape.getDistanceSquared(createRectangle(0, 0, 1, 1)));
@@ -1510,6 +1516,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(10, 13.66603, result);
 	}
 
+	@Override
 	@Test
 	public void getClosestPointToSegment2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createSegment(0, 0, 2, 1)));
@@ -1527,6 +1534,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertClosestPointInBothShapes(this.shape, createSegment(8, 20, 14, 8));
 	}
 
+	@Override
 	@Test
 	public void getDistanceSquaredSegment2afp() {
 		assertEpsilonEquals(58, this.shape.getDistanceSquared(createSegment(0, 0, 2, 1)));
@@ -1551,6 +1559,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		return multishape;
 	}
 
+	@Override
 	@Test
 	public void getClosestPointToMultiShape2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createTestMultiShape(-10, 7)));
@@ -1560,6 +1569,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertClosestPointInBothShapes(this.shape, createTestMultiShape(9, 6));
 	}
 
+	@Override
 	@Test
 	public void getDistanceSquaredMultiShape2afp() {
 		assertEpsilonEquals(53, this.shape.getDistanceSquared(createTestMultiShape(-10, 7)));
@@ -1573,6 +1583,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		return createTriangle(dx, dy, dx + 3, dy + 3, dx - 1, dy + 1);
 	}
 
+	@Override
 	@Test
 	public void getClosestPointToTriangle2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createTestTriangle(0, 4)));
@@ -1582,6 +1593,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertClosestPointInBothShapes(this.shape, createTestTriangle(10.5, 17.1));
 	}
 
+	@Override
 	@Test
 	public void getDistanceSquaredTriangle2afp() {
 		assertEpsilonEquals(5, this.shape.getDistanceSquared(createTestTriangle(0, 4)));
@@ -1618,6 +1630,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		}
 		return path;
 	}
+	@Override
 	@Test
 	public void getClosestPointToPath2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createSimpleTestPath(0, 0, false)));
@@ -1642,6 +1655,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createComplexTestPath(-2, 8, true, PathWindingRule.NON_ZERO)));
 	}
 
+	@Override
 	@Test
 	public void getDistanceSquaredPath2afp() {
 		assertEpsilonEquals(3.55882, this.shape.getDistanceSquared(createSimpleTestPath(0, 0, false)));
@@ -1666,6 +1680,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertEpsilonEquals(14.6789, this.shape.getDistanceSquared(createComplexTestPath(-2, 8, true, PathWindingRule.NON_ZERO)));
 	}
 
+	@Override
 	@Test
 	public void getClosestPointToEllipse2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createEllipse(0, 0, 2, 1)));
@@ -1675,6 +1690,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertClosestPointInBothShapes(this.shape, createEllipse(9.5, 9.5, 2, 1));
 	}
 
+	@Override
 	@Test
 	public void getDistanceSquaredEllipse2afp() {
 		assertEpsilonEquals(61.90769, this.shape.getDistanceSquared(createEllipse(0, 0, 2, 1)));
@@ -1684,6 +1700,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertEpsilonEquals(0, this.shape.getDistanceSquared(createEllipse(9.5, 9.5, 2, 1)));
 	}
 
+	@Override
 	@Test
 	public void getClosestPointToRoundRectangle2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createRoundRectangle(0, 0, 1, 1, .1, .1)));
@@ -1714,6 +1731,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertClosestPointInBothShapes(this.shape, createRoundRectangle(5.1, 12, 1, 1, .1, .1));
 	}
 
+	@Override
 	@Test
 	public void getDistanceSquaredRoundRectangle2afp() {
 		assertEpsilonEquals(65.59024, this.shape.getDistanceSquared(createRoundRectangle(0, 0, 1, 1, .1, .1)));
@@ -1777,6 +1795,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(6.85618, 8, result);
 	}
 
+	@Override
 	@Test
 	public void getClosestPointToParallelogram2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createTestParallelogram(0, 0)));
@@ -1786,6 +1805,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(10, 8, this.shape.getClosestPointTo(createTestParallelogram(14, 2)));
 	}
 
+	@Override
 	@Test
 	public void getDistanceSquaredParallelogram2afp() {
 		assertEpsilonEquals(58.82387, this.shape.getDistanceSquared(createTestParallelogram(0, 0)));
@@ -1800,6 +1820,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		return createOrientedRectangle(cx, cy, u.getX(), u.getY(), 2, 1);
 	}
 
+	@Override
 	@Test
 	public void getClosestPointToOrientedRectangle2afp() {
 		assertFpPointEquals(5, 8, this.shape.getClosestPointTo(createTestOrientedRectangle(0, 0)));
@@ -1809,6 +1830,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertFpPointEquals(5, 18, this.shape.getClosestPointTo(createTestOrientedRectangle(6, 20)));
 	}
 
+	@Override
 	@Test
 	public void getDistanceSquaredOrientedRectangle2afp() {
 		assertEpsilonEquals(54.38454, this.shape.getDistanceSquared(createTestOrientedRectangle(0, 0)));

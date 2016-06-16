@@ -30,6 +30,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.RoundRectangle2d;
 import org.arakhne.afc.math.matrix.Transform2D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 
 /** 2D round rectangle with floating-point points.
@@ -480,21 +481,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
-		b.append("["); 
-		b.append(getMinX());
-		b.append(";"); 
-		b.append(getMinY());
-		b.append(";"); 
-		b.append(getMaxX());
-		b.append(";"); 
-		b.append(getMaxY());
-		b.append("|"); 
-		b.append(getArcWidth());
-		b.append("x"); 
-		b.append(getArcHeight());
-		b.append("]"); 
-		return b.toString();
+		return ReflectionUtil.toString(this);
 	}
 
 	/** Iterator on the path elements of the rectangle.

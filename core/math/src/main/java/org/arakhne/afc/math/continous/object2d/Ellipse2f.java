@@ -29,6 +29,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
 import org.arakhne.afc.math.geometry.d2.d.Ellipse2d;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.matrix.Transform2D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 
 /** 2D ellipse with floating-point points.
@@ -503,17 +504,7 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
-		b.append("["); 
-		b.append(getMinX());
-		b.append(";"); 
-		b.append(getMinY());
-		b.append(";"); 
-		b.append(getMaxX());
-		b.append(";"); 
-		b.append(getMaxY());
-		b.append("]"); 
-		return b.toString();
+		return ReflectionUtil.toString(this);
 	}
 
 	/**

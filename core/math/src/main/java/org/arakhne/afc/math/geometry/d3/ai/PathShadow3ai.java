@@ -28,6 +28,8 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Shadow of a path that is used for computing the crossing values
  * between a shape and the shadow.
@@ -50,10 +52,10 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
      * @param path the path that is constituting the shadow.
      */
 	public PathShadow3ai(Path3ai<?, ?, ?, ?, ?, B> path) {
-		assert path != null : "Path must not be null";
+		assert path != null : AssertMessages.notNullParameter();
 		this.path = path;
 		this.bounds = this.path.toBoundingBox();
-		assert this.bounds != null : "Bounding box of the path must not be null";
+		assert this.bounds != null;
 	}
 
 	/** Compute the crossings between this shadow and
@@ -144,7 +146,7 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 
 		element = pi.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition");
+			throw new IllegalArgumentException(Locale.getString(Path3ai.class, "E1")); //$NON-NLS-1$
 		}
 
 		Path3ai<?, ?, E, ?, ?, ?> localPath;
@@ -283,8 +285,8 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 		final int shadowXmax = Math.max(shadow_x0, shadow_x1);
 		final int shadowYmin = Math.min(shadow_y0, shadow_y1);
 		final int shadowYmax = Math.max(shadow_y0, shadow_y1);
-		final int shadowZmin = Math.min(shadow_z0, shadow_z1);
-		final int shadowZmax = Math.max(shadow_z0, shadow_z1);
+		//TODO final int shadowZmin = Math.min(shadow_z0, shadow_z1);
+		//TODO final int shadowZmax = Math.max(shadow_z0, shadow_z1);
 
 		data.updateShadowLimits(shadow_x0, shadow_y0, shadow_z0, shadow_x1, shadow_y1, shadow_z1);
 
@@ -453,10 +455,8 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 		public void updateShadowLimits(int shadow_x0, int shadow_y0, int shadow_z0, int shadow_x1, int shadow_y1, int shadow_z1) {
 			final int xl;
 			final int yl;
-			final int zl;
 			final int xh;
 			final int yh;
-			final int zh;
             if (shadow_y0 < shadow_y1) {
 				xl = shadow_x0;
 				yl = shadow_y0;

@@ -126,16 +126,16 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	 */
 	protected void assertElement(PathIterator2ai<?> pi, PathElementType type, int... coords) {
 		if (!pi.hasNext()) {
-			fail("expected path element but the iterator is empty"); 
+			fail("expected path element but the iterator is empty");  //$NON-NLS-1$
 		}
 		PathElement2ai pe = pi.next();
 		if (!type.equals(pe.getType())) {
-			fail("expected: "+type+"; actual: "+pe.getType());  
+			fail("expected: "+type+"; actual: "+pe.getType());   //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		int[] c = new int[coords.length];
 		pe.toArray(c);
 		if (!isEquals(c, coords)) {
-			fail("expected: "+Arrays.toString(coords)+"; actual: "+Arrays.toString(c));  
+			fail("expected: "+Arrays.toString(coords)+"; actual: "+Arrays.toString(c));   //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 	
@@ -152,7 +152,7 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
         //distance = shape1.getDistance(point); 
         //assertEpsilonZero("Closest point " + point + " is not in the first shape: " + shape1 + ". Distance: " + distance, distance);
         distance = shape2.getDistance(point); 
-        assertEpsilonZero("Closest point " + point + " is not in the second shape: " + shape2 + ". Distance: " + distance, distance);
+        assertEpsilonZero("Closest point " + point + " is not in the second shape: " + shape2 + ". Distance: " + distance, distance); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /**
@@ -201,7 +201,7 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	 */
 	protected void assertNoElement(PathIterator2ai<?> pi) {
 		if (pi.hasNext()) {
-			fail("expected no path element but the iterator is not empty"); 
+			fail("expected no path element but the iterator is not empty");  //$NON-NLS-1$
 		}
 	}
 
@@ -367,7 +367,7 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	 * @throws IOException Input/output exception
 	 */
 	public static File generateTestPicture(Shape2ai<?, ?, ?, ?, ?, ?> shape) throws IOException {
-		File filename = File.createTempFile("testShape", ".png");
+		File filename = File.createTempFile("testShape", ".png"); //$NON-NLS-1$ //$NON-NLS-2$
 		Rectangle2ai box = shape.toBoundingBox();
 		PathIterator2ai<?> iterator = shape.getPathIterator();
 		Path2D path = new Path2D.Double(
@@ -412,7 +412,7 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
 		g2d.setColor(Color.BLACK);
 		g2d.draw(path);
-		ImageIO.write(image, "png", filename);
+		ImageIO.write(image, "png", filename); //$NON-NLS-1$
 		return filename;
 	}	
 

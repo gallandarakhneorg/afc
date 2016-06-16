@@ -29,6 +29,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.math.geometry.d2.d.Circle2d;
 import org.arakhne.afc.math.matrix.Transform2D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 
 
@@ -502,15 +503,8 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
-		b.append("["); 
-		b.append(getX());
-		b.append(";"); 
-		b.append(getY());
-		b.append(";"); 
-		b.append(getRadius());
-		b.append("]"); 
-		return b.toString();
+		return ReflectionUtil.toString(this);
+
 	}
 
 	/** Iterator on the path elements of the circle.

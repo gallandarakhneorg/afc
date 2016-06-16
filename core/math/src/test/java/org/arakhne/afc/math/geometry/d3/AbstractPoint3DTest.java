@@ -35,7 +35,7 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V>, V extends Vector3D<? super V, ? super P>,
 		TT extends Tuple3D>
-		extends AbstractTuple3DTest<P, TT> {
+		extends AbstractTuple3DTest<TT> {
 	
 	public abstract P createPoint(double x, double y, double z);
 
@@ -394,7 +394,6 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void addVector3D() {
 		Point3D point = createPoint(1, 2, 0);
-		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
 		Vector3D vector2 = createVector(1, 2, 0);
 		Vector3D vector3 = createVector(1, -5, 0);
@@ -587,7 +586,6 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void scaleAddIntVector3D() {
 		Point3D point = createPoint(1, 2, 0);
-		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
 		Vector3D vector2 = createVector(1, 2, 0);
 		Vector3D vector3 = createVector(1, -5, 0);
@@ -615,7 +613,6 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	public void scaleAddDoubleVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		Point3D point = createPoint(1, 2, 0);
-		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
 		Vector3D vector2 = createVector(1, 2, 0);
 		Vector3D vector3 = createVector(1, -5, 0);
@@ -643,7 +640,6 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	public void scaleAddDoubleVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Point3D point = createPoint(1, 2, 0);
-		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
 		Vector3D vector2 = createVector(1, 2, 0);
 		Vector3D vector3 = createVector(1, -5, 0);
@@ -697,7 +693,6 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void subVector3D() {
 		Point3D point = createPoint(1, 2, 0);
-		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
 		Vector3D vector2 = createVector(1, 2, 0);
 		Vector3D vector3 = createVector(1, -5, 0);
@@ -724,11 +719,9 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void operator_addVector3D() {
 		Point3D point = createPoint(1, 2, 0);
-		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
 		Vector3D vector2 = createVector(1, 2, 0);
 		Vector3D vector3 = createVector(1, -5, 0);
-		Point3D r;
 		
 		point.operator_add(vector1);
 		assertFpPointEquals(1, 2, 0, point);
@@ -752,7 +745,6 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void operator_removeVector3D() {
 		Point3D point = createPoint(1, 2, 0);
-		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
 		Vector3D vector2 = createVector(1, 2, 0);
 		Vector3D vector3 = createVector(1, -5, 0);

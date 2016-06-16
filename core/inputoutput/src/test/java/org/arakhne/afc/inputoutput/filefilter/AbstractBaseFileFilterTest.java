@@ -20,12 +20,13 @@
 
 package org.arakhne.afc.inputoutput.filefilter;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URL;
 
-import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,9 +47,9 @@ public abstract class AbstractBaseFileFilterTest {
 	@Before
 	public void setUp() throws Exception {
 		this.resource = Resources.getResource(getClass(), "test" + getExtension()); //$NON-NLS-1$
-		assertNotNull("Resource not found: " + "test" + getExtension(), this.resource); //$NON-NLS-1$
+		assertNotNull("Resource not found: " + "test" + getExtension(), this.resource); //$NON-NLS-1$ //$NON-NLS-2$
 		this.nothing = Resources.getResource(getClass(), "nothing.bin"); //$NON-NLS-1$
-		assertNotNull("Resource not found: nothing.bin", this.nothing);
+		assertNotNull("Resource not found: nothing.bin", this.nothing); //$NON-NLS-1$
 	}
 
 	@After
@@ -64,7 +65,7 @@ public abstract class AbstractBaseFileFilterTest {
 		File filename = null;
 		
 		try {
-			filename = File.createTempFile(getClass().getName(), getExtension()); //$NON-NLS-1$
+			filename = File.createTempFile(getClass().getName(), getExtension());
 			FileSystem.copy(this.resource, filename);
 		
 			assertTrue(filter.accept(filename));

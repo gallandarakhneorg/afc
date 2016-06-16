@@ -128,7 +128,7 @@ public class PrefixDepthFirstTreeIteratorTest extends AbstractTreeIteratorTest {
 		this.iterator.remove();
 		try {
 			this.iterator.remove();
-			fail("Expecting NoSuchElementException"); 
+			fail("Expecting NoSuchElementException");  //$NON-NLS-1$
 		}
 		catch(NoSuchElementException e) {
 			// Expected exception

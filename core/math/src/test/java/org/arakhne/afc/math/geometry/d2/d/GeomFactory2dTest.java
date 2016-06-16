@@ -31,14 +31,17 @@ import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 @SuppressWarnings("all")
 public class GeomFactory2dTest extends AbstractGeomFactory2afpTest {
 
+	@Override
 	protected GeomFactory2afp<?, ?, ?, ?> createFactory() {
 		return new GeomFactory2d();
 	}
 	
+	@Override
 	protected Point2D createPoint(double x, double y) {
 		return new Point2d(x, y);
 	}
 
+	@Override
 	protected Vector2D createVector(double x, double y) {
 		return new Vector2d(x, y);
 	}

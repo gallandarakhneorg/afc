@@ -557,10 +557,9 @@ public final class XMLUtil {
 	 * @return the value of the enumeration or <code>null</code> if none.
 	 */
 	@Pure
-	@SuppressWarnings("null")
 	public static <T extends Enum<T>> T getAttributeEnum(Node document, Class<T> type, boolean case_sensitive, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		return getAttributeEnumWithDefault(document, type, case_sensitive, (T) null, path);
+		return getAttributeEnumWithDefault(document, type, case_sensitive, null, path);
 	}
 
 	/** Read an enumeration value.
@@ -572,10 +571,9 @@ public final class XMLUtil {
 	 * @return the value of the enumeration or <code>null</code> if none.
 	 */
 	@Pure
-	@SuppressWarnings("null")
 	public static <T extends Enum<T>> T getAttributeEnum(Node document, Class<T> type, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		return getAttributeEnumWithDefault(document, type, true, (T) null, path);
+		return getAttributeEnumWithDefault(document, type, true, null, path);
 	}
 
 	/** Read an enumeration value.

@@ -20,12 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.d;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractParallelogram2afpTest;
 import org.arakhne.afc.math.geometry.d2.afp.AbstractPointCollectionTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
-import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 
 @SuppressWarnings("all")
 public class Path2dPointCollectionTest extends AbstractPointCollectionTest<Point2d, Vector2d, Rectangle2d> {

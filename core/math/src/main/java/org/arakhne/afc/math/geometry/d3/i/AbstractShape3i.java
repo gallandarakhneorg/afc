@@ -27,6 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.d3.PathIterator3D;
 import org.arakhne.afc.references.WeakArrayList;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Abstract shape with 2 integer numbers.
  *
@@ -48,7 +49,7 @@ public abstract class AbstractShape3i<T extends AbstractShape3i<?>> implements S
 	 * @param listener the listener.
 	 */
 	protected synchronized void addShapeGeometryChangeListener(ShapeGeometryChangeListener listener) {
-		assert listener != null : "Listener must be not null";
+		assert listener != null : AssertMessages.notNullParameter();
 		if (this.geometryListeners == null) {
 			this.geometryListeners = new WeakArrayList<>();
 		}
@@ -60,7 +61,7 @@ public abstract class AbstractShape3i<T extends AbstractShape3i<?>> implements S
 	 * @param listener the listener.
 	 */
 	protected synchronized void removeShapeGeometryChangeListener(ShapeGeometryChangeListener listener) {
-		assert listener != null : "Listener must be not null";
+		assert listener != null : AssertMessages.notNullParameter();
 		if (this.geometryListeners != null) {
 			this.geometryListeners.remove(listener);
 			if (this.geometryListeners.isEmpty()) {

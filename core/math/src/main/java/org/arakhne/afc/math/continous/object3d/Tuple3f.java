@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.continous.object3d;
 
 import org.arakhne.afc.math.generic.Tuple3D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** 3D tuple with 3 floating-point numbers.
  *
@@ -104,9 +105,6 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 		this.z = z;
 	}
 
-	/** {@inheritDoc}
-	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public T clone() {
 		try {
@@ -644,10 +642,6 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object t1) {
 		try {
@@ -701,13 +695,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 */
 	@Override
 	public String toString() {
-		return "(" 
-				+this.x
-				+";" 
-				+this.y
-				+";" 
-				+this.z
-				+")"; 
+		return ReflectionUtil.toString(this);
 	}
 
 }

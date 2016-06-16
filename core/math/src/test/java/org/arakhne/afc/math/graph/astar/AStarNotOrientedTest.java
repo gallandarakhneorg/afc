@@ -46,8 +46,7 @@ public class AStarNotOrientedTest extends AbstractMathTestCase {
 
 	private AStar<AStarPathStub,AStarEdgeStub,AStarNodeStub> astar;
 	private AStarNodeStub A, B, C, D, E;
-	@SuppressWarnings("unused")
-	private AStarEdgeStub AB, CA, DA, BD, EC, DE, DC;
+	private AStarEdgeStub AB, CA, DA, EC;
 	private AStarHeuristicStub h;
 	
 	/**
@@ -57,18 +56,15 @@ public class AStarNotOrientedTest extends AbstractMathTestCase {
 	public void setUp() throws Exception {
 		this.h = new AStarHeuristicStub();
 		this.astar = new AStar<>(this.h, AStarPathStub.class);
-		this.A = new AStarNodeStub("A", 0, 0); 
-		this.B = new AStarNodeStub("B", 20, 0); 
-		this.C = new AStarNodeStub("C", 0, 20); 
-		this.D = new AStarNodeStub("D", 20, 20); 
-		this.E = new AStarNodeStub("E", 10, 40); 
-		this.AB = new AStarEdgeStub("A-B", this.A, this.B, false); 
-		this.BD = new AStarEdgeStub("B-D", this.B, this.D, false); 
-		this.CA = new AStarEdgeStub("C-A", this.C, this.A, false); 
-		this.DA = new AStarEdgeStub("D-A", this.D, this.A, false); 
-		this.DC = new AStarEdgeStub("D-C", this.D, this.C, false); 
-		this.DE = new AStarEdgeStub("D-E", this.D, this.E, false); 
-		this.EC = new AStarEdgeStub("E-C", this.E, this.C, false); 
+		this.A = new AStarNodeStub("A", 0, 0);  //$NON-NLS-1$
+		this.B = new AStarNodeStub("B", 20, 0);  //$NON-NLS-1$
+		this.C = new AStarNodeStub("C", 0, 20);  //$NON-NLS-1$
+		this.D = new AStarNodeStub("D", 20, 20);  //$NON-NLS-1$
+		this.E = new AStarNodeStub("E", 10, 40);  //$NON-NLS-1$
+		this.AB = new AStarEdgeStub("A-B", this.A, this.B, false);  //$NON-NLS-1$
+		this.CA = new AStarEdgeStub("C-A", this.C, this.A, false);  //$NON-NLS-1$
+		this.DA = new AStarEdgeStub("D-A", this.D, this.A, false);  //$NON-NLS-1$
+		this.EC = new AStarEdgeStub("E-C", this.E, this.C, false);  //$NON-NLS-1$
 		reset();
 	}
 	
@@ -78,7 +74,7 @@ public class AStarNotOrientedTest extends AbstractMathTestCase {
 	@After
 	public void tearDown() throws Exception {
 		this.astar = null;
-		this.AB = this.CA = this.DA = this.BD = this.EC = this.DE = this.DC = null;
+		this.AB = this.CA = this.DA = this.EC = null;
 		this.A = this.B = this.C = this.D = this.E = null;
 		this.h = null;
 	}

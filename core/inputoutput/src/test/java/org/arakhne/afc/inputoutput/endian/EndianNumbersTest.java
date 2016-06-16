@@ -64,27 +64,27 @@ public final class EndianNumbersTest extends AbstractTestCase {
 	@Test
 	public void toLEDouble() {
 		assertEpsilonEquals(0, EndianNumbers.toLEDouble(123, 456, 789, 159, 753, 145, 487, 653));
-		assertInlineParameterUsage(EndianNumbers.class, "toLEDouble", int.class, int.class, int.class, int.class,
+		assertInlineParameterUsage(EndianNumbers.class, "toLEDouble", int.class, int.class, int.class, int.class, //$NON-NLS-1$
 				int.class, int.class, int.class, int.class);
 	}
 
 	@Test
 	public void toBEDouble() {
 		assertEpsilonEquals(0, EndianNumbers.toBEDouble(123, 456, 789, 159, 753, 145, 487, 653));
-		assertInlineParameterUsage(EndianNumbers.class, "toBEDouble", int.class, int.class, int.class, int.class,
+		assertInlineParameterUsage(EndianNumbers.class, "toBEDouble", int.class, int.class, int.class, int.class, //$NON-NLS-1$
 				int.class, int.class, int.class, int.class);
 	}
 
 	@Test
 	public void toLEFloat() {
 		assertEpsilonEquals(0, EndianNumbers.toLEFloat(123, 456, 789, 159));
-		assertInlineParameterUsage(EndianNumbers.class, "toLEFloat", int.class, int.class, int.class, int.class);
+		assertInlineParameterUsage(EndianNumbers.class, "toLEFloat", int.class, int.class, int.class, int.class); //$NON-NLS-1$
 	}
 
 	@Test
 	public void toBEFloat() {
 		assertEpsilonEquals(2.077795799172964e36, EndianNumbers.toBEFloat(123, 456, 789, 159));
-		assertInlineParameterUsage(EndianNumbers.class, "toBEFloat", int.class, int.class, int.class, int.class);
+		assertInlineParameterUsage(EndianNumbers.class, "toBEFloat", int.class, int.class, int.class, int.class); //$NON-NLS-1$
 	}
 
 	@Test
@@ -100,7 +100,7 @@ public final class EndianNumbersTest extends AbstractTestCase {
 	@Test
 	public void parseLEFloat() {
 		assertArrayEquals(new byte[]{-51, -27, 64, 70}, EndianNumbers.parseLEFloat(12345.45f));
-		assertInlineParameterUsage(EndianNumbers.class, "parseLEFloat", float.class);
+		assertInlineParameterUsage(EndianNumbers.class, "parseLEFloat", float.class); //$NON-NLS-1$
     }
 
 	@Test
@@ -111,7 +111,7 @@ public final class EndianNumbersTest extends AbstractTestCase {
 	@Test
 	public void parseLEDouble() {
 		assertArrayEquals(new byte[]{-113, -62, -43, 85, 52, 111, -99, 65}, EndianNumbers.parseLEDouble(123456789.45875));
-		assertInlineParameterUsage(EndianNumbers.class, "parseLEDouble", double.class);
+		assertInlineParameterUsage(EndianNumbers.class, "parseLEDouble", double.class); //$NON-NLS-1$
     }	
 
 	@Test
@@ -127,7 +127,7 @@ public final class EndianNumbersTest extends AbstractTestCase {
 	@Test
 	public void parseBEFloat() {
 		assertArrayEquals(new byte[]{70, 64, -27, -51}, EndianNumbers.parseBEFloat(12345.45f));
-		assertInlineParameterUsage(EndianNumbers.class, "parseBEFloat", float.class);
+		assertInlineParameterUsage(EndianNumbers.class, "parseBEFloat", float.class); //$NON-NLS-1$
     }
 
 	@Test
@@ -138,7 +138,7 @@ public final class EndianNumbersTest extends AbstractTestCase {
 	@Test
 	public void parseBEDouble() {
 		assertArrayEquals(new byte[]{65, -99, 111, 52, 85, -43, -62, -113}, EndianNumbers.parseBEDouble(123456789.45875));
-		assertInlineParameterUsage(EndianNumbers.class, "parseBEDouble", double.class);
+		assertInlineParameterUsage(EndianNumbers.class, "parseBEDouble", double.class); //$NON-NLS-1$
     }	
 	
 }

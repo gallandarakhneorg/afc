@@ -95,7 +95,7 @@ public class CallerTest {
 	 * @throws Exception
 	 */
 	public void getCallerMethod() throws Exception {
-    	assertEquals("innerinnerTestGetCallerMethod", 
+    	assertEquals("innerinnerTestGetCallerMethod",  //$NON-NLS-1$
     			this.caller.innerinnerTestGetCallerMethod());
 	}
 
@@ -119,11 +119,11 @@ public class CallerTest {
 	 * @throws Exception
 	 */
 	public void getCallerMethodInt() throws Exception {
-    	assertEquals("innerTestGetCallerMethod", 
+    	assertEquals("innerTestGetCallerMethod",  //$NON-NLS-1$
     			this.caller.innerinnerTestGetCallerMethod(0));
-    	assertEquals("innerinnerTestGetCallerMethod", 
+    	assertEquals("innerinnerTestGetCallerMethod",  //$NON-NLS-1$
     			this.caller.innerinnerTestGetCallerMethod(1));
-    	assertEquals("testGetCallerMethodInt", 
+    	assertEquals("testGetCallerMethodInt",  //$NON-NLS-1$
     			this.caller.innerinnerTestGetCallerMethod(2));
 	}
 	

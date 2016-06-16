@@ -21,6 +21,7 @@
 package org.arakhne.afc.vmutil;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
@@ -60,7 +61,6 @@ public final class ClasspathUtil {
 	 * @since 6.0
 	 */
 	@Pure
-	@SuppressWarnings("resource")
 	public static Iterator<URL> getClasspath() {
 		Iterator<URL> iterator = getStartClasspath();
 
@@ -71,11 +71,12 @@ public final class ClasspathUtil {
 		} catch (ClassCastException exception1) {
 			if (ClasspathUtil.class.getClassLoader() != loader) {
 				try {
-					final URLClassLoader dLoader = (URLClassLoader) loader;
-					iterator = new IteratorIterator(
-							new FilteringIterator(Arrays.asList(dLoader.getURLs()).iterator()),
-							iterator);
-				} catch (ClassCastException exception2) {
+					try (URLClassLoader dLoader = (URLClassLoader) loader) {
+						iterator = new IteratorIterator(
+								new FilteringIterator(Arrays.asList(dLoader.getURLs()).iterator()),
+								iterator);
+					}
+				} catch (ClassCastException | IOException exception2) {
 					//
 				}
 			}

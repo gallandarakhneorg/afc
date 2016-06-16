@@ -33,6 +33,7 @@ import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.math.matrix.Transform2D;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 
 /** A generic path with integer coordinates.
@@ -89,7 +90,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException("missing initial moveto in path definition");  //$NON-NLS-1$
 		}
 
 		int movx = element.toX;
@@ -210,7 +211,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException("missing initial moveto in path definition");  //$NON-NLS-1$
 		}
 
 		int movx = element.toX;
@@ -344,7 +345,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException("missing initial moveto in path definition");  //$NON-NLS-1$
 		}
 
 		int movx = element.toX;
@@ -548,7 +549,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		PathElement2i pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition"); 
+			throw new IllegalArgumentException("missing initial moveto in path definition");  //$NON-NLS-1$
 		}
 
 		int curx, cury, movx, movy, endx, endy;
@@ -828,17 +829,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
-		b.append("["); 
-		if (this.numCoords>0) {
-			b.append(this.coords[0]);
-			for(int i=1; i<this.numCoords; ++i) {
-				b.append(", "); 
-				b.append(this.coords[i]);
-			}
-		}
-		b.append("]"); 
-		return b.toString();
+		return ReflectionUtil.toString(this);
 	}
 
 	@Override
@@ -894,7 +885,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 	private void ensureSlots(boolean needMove, int n) {
 		if (needMove && this.numTypes==0) {
-			throw new IllegalStateException("missing initial moveto in path definition"); 
+			throw new IllegalStateException("missing initial moveto in path definition");  //$NON-NLS-1$
 		}
 		if (this.types.length==this.numTypes) {
 			this.types = Arrays.copyOf(this.types, this.types.length+GROW_SIZE);
@@ -2060,7 +2051,6 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			return Path2i.this.toPointArray();
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public <T> T[] toArray(T[] a) {
 			Iterator<Point2D> iterator = new PointIterator();
@@ -2733,7 +2723,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		@Override
 		public PathElement2i next() {
 			if (this.done) {
-				throw new NoSuchElementException("flattening iterator out of bounds"); 
+				throw new NoSuchElementException("flattening iterator out of bounds");  //$NON-NLS-1$
 			}
 
 			PathElement2i element;

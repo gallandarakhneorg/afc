@@ -40,7 +40,7 @@ public class AttributeValueComparatorTest extends AbstractTestCase {
 		AttributeValueImpl attr4 = new AttributeValueImpl(base_l);		
 		AttributeValueImpl attr5 = new AttributeValueImpl(attr1.getInteger());
 		
-		AttributeValueImpl attr6 = new AttributeValueImpl("bonjour"); 
+		AttributeValueImpl attr6 = new AttributeValueImpl("bonjour");  //$NON-NLS-1$
 		
 		AttributeValueComparator comp = new AttributeValueComparator();
 			

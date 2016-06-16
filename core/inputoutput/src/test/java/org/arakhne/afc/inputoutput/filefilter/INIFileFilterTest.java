@@ -27,7 +27,7 @@ public class INIFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".ini";
+		return ".ini"; //$NON-NLS-1$
 	}
 
 	@Override

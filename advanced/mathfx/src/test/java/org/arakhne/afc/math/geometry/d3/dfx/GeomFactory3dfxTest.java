@@ -28,14 +28,17 @@ import org.arakhne.afc.math.geometry.d3.afp.GeomFactory3afp;
 @SuppressWarnings("all")
 public class GeomFactory3dfxTest extends AbstractGeomFactory3afpTest {
 
+	@Override
 	protected GeomFactory3afp<?, ?, ?, ?> createFactory() {
 		return new GeomFactory3dfx();
 	}
 	
+	@Override
 	protected Point3D createPoint(double x, double y, double z) {
 		return new Point3dfx(x, y, z);
 	}
 
+	@Override
 	protected Vector3D createVector(double x, double y, double z) {
 		return new Vector3dfx(x, y, z);
 	}

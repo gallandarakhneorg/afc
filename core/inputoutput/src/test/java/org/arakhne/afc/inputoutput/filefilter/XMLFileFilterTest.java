@@ -27,7 +27,7 @@ public class XMLFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".xml";
+		return ".xml"; //$NON-NLS-1$
 	}
 
 	@Override

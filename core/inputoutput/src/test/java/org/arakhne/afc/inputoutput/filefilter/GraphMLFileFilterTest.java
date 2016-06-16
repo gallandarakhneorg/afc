@@ -25,7 +25,7 @@ public class GraphMLFileFilterTest extends AbstractBaseFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".grl";
+		return ".grl"; //$NON-NLS-1$
 	}
 
 	@Override

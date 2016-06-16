@@ -38,7 +38,7 @@ import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3DTestRule
 import org.arakhne.afc.math.geometry.d3.d.Tuple3d;
 
 @SuppressWarnings("all")
-public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D> extends AbstractMathTestCase {
+public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMathTestCase {
 	
 	@Rule
 	public CoordinateSystem3DTestRule csTestRule = new CoordinateSystem3DTestRule();

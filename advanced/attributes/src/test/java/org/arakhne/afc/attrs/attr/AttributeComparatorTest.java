@@ -40,7 +40,7 @@ public class AttributeComparatorTest extends AbstractTestCase {
 		AttributeValueImpl attr4 = new AttributeValueImpl(base_l);		
 		AttributeValueImpl attr5 = new AttributeValueImpl(attr1.getInteger());
 		
-		AttributeValueImpl attr6 = new AttributeValueImpl("bonjour"); 
+		AttributeValueImpl attr6 = new AttributeValueImpl("bonjour");  //$NON-NLS-1$
 		
 		AttributeComparator comp = new AttributeComparator();
 			
@@ -101,7 +101,7 @@ public class AttributeComparatorTest extends AbstractTestCase {
 		for(int i=5; i<50; ++i) {
 			String name1 = randomString();
 			String name2 = randomString();
-			String msg = "("+name1+"<=>"+name2+")";   
+			String msg = "("+name1+"<=>"+name2+")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			int cmpResult = name1.compareTo(name2);
 			
 			Attribute attr1 = new AttributeImpl(name1,1);

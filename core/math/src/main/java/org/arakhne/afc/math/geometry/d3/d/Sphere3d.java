@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A sphere with 3 double precision floating-point numbers.
  *
@@ -77,7 +78,7 @@ public class Sphere3d
 	 * @param sphere the sphere to copy.
 	 */
 	public Sphere3d(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Circle must be not null";
+		assert sphere != null : AssertMessages.notNullParameter();
 		set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
 	}
 
@@ -150,7 +151,7 @@ public class Sphere3d
 
 	@Override
 	public void set(double x, double y, double z, double radius) {
-		assert radius >= 0. : "Radius must be positive or zero";
+		assert radius >= 0. : AssertMessages.positiveOrZeroParameter(3);
 		if (this.centerX != x || this.centerY != y || this.centerZ != z || this.radius != radius) {
 			this.centerX = x;
 			this.centerY = y;

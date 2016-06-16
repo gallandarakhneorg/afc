@@ -20,22 +20,21 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 
-import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.math.matrix.Matrix3d;
-import org.arakhne.afc.math.matrix.SingularMatrixException;
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import org.arakhne.afc.math.AbstractMathTestCase;
+import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.matrix.SingularMatrixException;
 
 @SuppressWarnings("all")
 public class Transform2DTest extends AbstractMathTestCase {
@@ -702,7 +701,7 @@ public class Transform2DTest extends AbstractMathTestCase {
 		this.transform.setRotation(0.1);
 		assertEpsilonEquals(2.101, this.transform.getScaleX());
 		assertEpsilonEquals(4.52, this.transform.getScaleY());
-		assertEpsilonEquals("CS: " + CoordinateSystem2D.getDefaultCoordinateSystem(),
+		assertEpsilonEquals("CS: " + CoordinateSystem2D.getDefaultCoordinateSystem(), //$NON-NLS-1$
 				0.1, this.transform.getRotation());
 	}
 
@@ -719,7 +718,7 @@ public class Transform2DTest extends AbstractMathTestCase {
 		this.transform.setRotation(0.1);
 		assertEpsilonEquals(2.101, this.transform.getScaleX());
 		assertEpsilonEquals(4.52, this.transform.getScaleY());
-		assertEpsilonEquals("CS: " + CoordinateSystem2D.getDefaultCoordinateSystem(),
+		assertEpsilonEquals("CS: " + CoordinateSystem2D.getDefaultCoordinateSystem(), //$NON-NLS-1$
 				0.1, this.transform.getRotation());
 	}
 

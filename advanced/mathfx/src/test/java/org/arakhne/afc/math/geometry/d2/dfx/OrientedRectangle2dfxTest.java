@@ -38,11 +38,11 @@ public class OrientedRectangle2dfxTest extends AbstractOrientedRectangle2afpTest
 
 	@Test
 	public void centerXProperty() {
-		assertEpsilonEquals(cx, this.shape.getCenterX());
+		assertEpsilonEquals(this.cx, this.shape.getCenterX());
 		
 		DoubleProperty property = this.shape.centerXProperty();
 		assertNotNull(property);
-		assertEpsilonEquals(cx, property.get());
+		assertEpsilonEquals(this.cx, property.get());
 		
 		this.shape.setCenterX(456.159);
 		assertEpsilonEquals(456.159, property.get());
@@ -50,11 +50,11 @@ public class OrientedRectangle2dfxTest extends AbstractOrientedRectangle2afpTest
 
 	@Test
 	public void centerYProperty() {
-		assertEpsilonEquals(cy, this.shape.getCenterY());
+		assertEpsilonEquals(this.cy, this.shape.getCenterY());
 		
 		DoubleProperty property = this.shape.centerYProperty();
 		assertNotNull(property);
-		assertEpsilonEquals(cy, property.get());
+		assertEpsilonEquals(this.cy, property.get());
 		
 		this.shape.setCenterY(456.159);
 		assertEpsilonEquals(456.159, property.get());
@@ -62,13 +62,13 @@ public class OrientedRectangle2dfxTest extends AbstractOrientedRectangle2afpTest
 
 	@Test
 	public void firstAxisProperty_setObject() {
-		assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-		assertEpsilonEquals(uy, this.shape.getFirstAxisY());
+		assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+		assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
 		
 		UnitVectorProperty property = this.shape.firstAxisProperty();
 		assertNotNull(property);
-		assertEpsilonEquals(ux, property.getX());
-		assertEpsilonEquals(uy, property.getY());
+		assertEpsilonEquals(this.ux, property.getX());
+		assertEpsilonEquals(this.uy, property.getY());
 		
 		this.shape.setFirstAxis(0.500348, 0.865824);
 		assertEpsilonEquals(0.500348, property.getX());
@@ -77,13 +77,13 @@ public class OrientedRectangle2dfxTest extends AbstractOrientedRectangle2afpTest
 
 	@Test
 	public void firstAxisProperty_setProperty() {
-		assertEpsilonEquals(ux, this.shape.getFirstAxisX());
-		assertEpsilonEquals(uy, this.shape.getFirstAxisY());
+		assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
+		assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
 		
 		UnitVectorProperty property = this.shape.firstAxisProperty();
 		assertNotNull(property);
-		assertEpsilonEquals(ux, property.getX());
-		assertEpsilonEquals(uy, property.getY());
+		assertEpsilonEquals(this.ux, property.getX());
+		assertEpsilonEquals(this.uy, property.getY());
 		
 		property.set(0.500348, 0.865824);
 		assertEpsilonEquals(0.500348, property.getX());
@@ -98,11 +98,11 @@ public class OrientedRectangle2dfxTest extends AbstractOrientedRectangle2afpTest
 
 	@Test
 	public void firstAxisExtentProperty() {
-		assertEpsilonEquals(e1, this.shape.getFirstAxisExtent());
+		assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
 		
 		DoubleProperty property = this.shape.firstAxisExtentProperty();
 		assertNotNull(property);
-		assertEpsilonEquals(e1, property.get());
+		assertEpsilonEquals(this.e1, property.get());
 		
 		this.shape.setFirstAxisExtent(456.159);
 		assertEpsilonEquals(456.159, property.get());
@@ -110,22 +110,22 @@ public class OrientedRectangle2dfxTest extends AbstractOrientedRectangle2afpTest
 
 	@Test
 	public void secondAxisProperty() {
-		assertEpsilonEquals(vx, this.shape.getSecondAxisX());
-		assertEpsilonEquals(vy, this.shape.getSecondAxisY());
+		assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
+		assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
 		
 		ReadOnlyUnitVectorProperty property = this.shape.secondAxisProperty();
 		assertNotNull(property);
-		assertEpsilonEquals(vx, property.getX());
-		assertEpsilonEquals(vy, property.getY());
+		assertEpsilonEquals(this.vx, property.getX());
+		assertEpsilonEquals(this.vy, property.getY());
 	}
 
 	@Test
 	public void secondAxisExtentProperty() {
-		assertEpsilonEquals(e2, this.shape.getSecondAxisExtent());
+		assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
 		
 		DoubleProperty property = this.shape.secondAxisExtentProperty();
 		assertNotNull(property);
-		assertEpsilonEquals(e2, property.get());
+		assertEpsilonEquals(this.e2, property.get());
 		
 		this.shape.setSecondAxisExtent(456.159);
 		assertEpsilonEquals(456.159, property.get());
@@ -137,10 +137,10 @@ public class OrientedRectangle2dfxTest extends AbstractOrientedRectangle2afpTest
 		assertNotNull(property);
 		Rectangle2dfx box = property.get();
 		assertNotNull(box);
-		assertEpsilonEquals(pEx, box.getMinX());
-		assertEpsilonEquals(pFy, box.getMinY());
-		assertEpsilonEquals(pGx, box.getMaxX());
-		assertEpsilonEquals(pHy, box.getMaxY());
+		assertEpsilonEquals(this.pEx, box.getMinX());
+		assertEpsilonEquals(this.pFy, box.getMinY());
+		assertEpsilonEquals(this.pGx, box.getMaxX());
+		assertEpsilonEquals(this.pHy, box.getMaxY());
 	}
 
 }

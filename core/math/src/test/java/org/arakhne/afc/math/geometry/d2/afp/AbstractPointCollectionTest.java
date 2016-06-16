@@ -61,7 +61,7 @@ public abstract class AbstractPointCollectionTest<P extends Point2D<? super P, ?
 	@Before
 	public void setUp() throws Exception {
 		this.factory = createFactory();
-		this.shape = (Path2afp<?, ?, ?, P, V, B>) this.factory.createPath(PathWindingRule.EVEN_ODD);
+		this.shape = this.factory.createPath(PathWindingRule.EVEN_ODD);
 		this.shape.moveTo(1, 1);
 		this.shape.lineTo(2, 2);
 		this.shape.quadTo(3, 0, 4, 3);
@@ -271,7 +271,7 @@ public abstract class AbstractPointCollectionTest<P extends Point2D<? super P, ?
     public void retainAll() {
     	try {
     		this.collection.retainAll(Collections.emptyList());
-    		fail("Expecting an exception"); 
+    		fail("Expecting an exception");  //$NON-NLS-1$
     	}
     	catch(Throwable e1) {
     		e1.equals(e1);

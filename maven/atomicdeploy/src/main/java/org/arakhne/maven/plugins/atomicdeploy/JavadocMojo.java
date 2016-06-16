@@ -262,8 +262,8 @@ public class JavadocMojo extends AbstractArakhneMojo {
 		File indexFile = new File(javadocDir, "index.html");  //$NON-NLS-1$
 		if (javadocDir.isDirectory() && indexFile.isFile()) {
 			URL deployementURL = getInheritedSiteDeploymentURL(project, this.targetDirectoryName);
-			BuildContext buildContext = getBuildContext();
-			buildContext.removeMessages(project.getFile());
+			BuildContext localBuildContext = getBuildContext();
+			localBuildContext.removeMessages(project.getFile());
 			if (deployementURL!=null) {
 				if ("file".equalsIgnoreCase(deployementURL.getProtocol())) {  //$NON-NLS-1$
 					File output = new File(deployementURL.getPath());
@@ -279,7 +279,7 @@ public class JavadocMojo extends AbstractArakhneMojo {
 				}
 				else {
 					String message = "Unsupported transport protocol: "+deployementURL.getProtocol();  //$NON-NLS-1$
-					buildContext.addMessage(
+					localBuildContext.addMessage(
 							project.getFile(), 
 							1, 1, 
 							message, 
@@ -288,7 +288,7 @@ public class JavadocMojo extends AbstractArakhneMojo {
 			}
 			else {
 				String message = "No site deployement URL found";  //$NON-NLS-1$
-				buildContext.addMessage(
+				localBuildContext.addMessage(
 						project.getFile(), 
 						1, 1, 
 						message, 

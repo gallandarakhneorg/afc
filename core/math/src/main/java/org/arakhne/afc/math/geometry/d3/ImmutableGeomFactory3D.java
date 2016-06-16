@@ -168,7 +168,7 @@ final class ImmutableGeomFactory3D implements GeomFactory3D<ImmutableVector3D, I
 	 */
 	@Override
 	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
-		throw new UnsupportedOperationException("Not yet implemented");
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$
 		// TODO
 	}
 
@@ -177,7 +177,7 @@ final class ImmutableGeomFactory3D implements GeomFactory3D<ImmutableVector3D, I
 	 */
 	@Override
 	public Quaternion newQuaternion(double attitude, double bank, double heading) {
-		throw new UnsupportedOperationException("Not yet implemented");
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$
 		// TODO
 	}
 

@@ -1405,8 +1405,8 @@ extends AbstractShape3afpTest<T, B> {
 	public void equalsToShape() {
 		assertFalse(this.shape.equalsToShape(null));
 		assertFalse(this.shape.equalsToShape((T) createPath()));
-		assertTrue(this.shape.equalsToShape((T) this.shape));
-		assertTrue(this.shape.equalsToShape((T) this.shape.clone()));
+		assertTrue(this.shape.equalsToShape(this.shape));
+		assertTrue(this.shape.equalsToShape(this.shape.clone()));
 	}
 
 	@Override

@@ -75,13 +75,13 @@ public interface OrientedPoint3afp<
 
         private Transform3D transform;
 
-        private double px;
+        //TODO private double px;
 
-        private double py;
+        //TODO private double py;
 
-        private double dx;
+        //TODO private double dx;
 
-        private double dy;
+        //TODO private double dy;
 
         /**
          * @param point the iterated oriented point.
@@ -91,10 +91,10 @@ public interface OrientedPoint3afp<
             assert point != null : AssertMessages.notNullParameter();
             this.point = point;
             this.transform = transform == null || transform.isIdentity() ? null : transform;
-            this.px = point.getX();
-            this.py = point.getY();
-            this.dx = point.getDirectionX();
-            this.dy = point.getDirectionY();
+            //TODO this.px = point.getX();
+            //TODO this.py = point.getY();
+            //TODO this.dx = point.getDirectionX();
+            //TODO this.dy = point.getDirectionY();
         }
 
         @Override

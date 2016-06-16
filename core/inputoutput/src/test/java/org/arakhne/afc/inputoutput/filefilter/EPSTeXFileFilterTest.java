@@ -25,7 +25,7 @@ public class EPSTeXFileFilterTest extends AbstractBaseFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".pstex_t";
+		return ".pstex_t"; //$NON-NLS-1$
 	}
 
 	@Override

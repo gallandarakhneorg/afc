@@ -20,8 +20,9 @@
 
 package org.arakhne.afc.inputoutput.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -59,7 +60,7 @@ public class XMLIdentifierConstraintTest {
 			if (XMLUtil.ATTR_ID.equals(inv.getArgumentAt(0, String.class))) {
 				return this.id.toString();
 			}
-			fail("Invalid attribute name");
+			fail("Invalid attribute name"); //$NON-NLS-1$
 			return null;
 		});
 		assertTrue(this.constraint.isValidElement(element));
@@ -72,7 +73,7 @@ public class XMLIdentifierConstraintTest {
 			if (XMLUtil.ATTR_ID.equals(inv.getArgumentAt(0, String.class))) {
 				return UUID.randomUUID().toString();
 			}
-			fail("Invalid attribute name");
+			fail("Invalid attribute name"); //$NON-NLS-1$
 			return null;
 		});
 		assertFalse(this.constraint.isValidElement(element));

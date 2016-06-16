@@ -20,9 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
 @SuppressWarnings("all")
 public class ImmutableVector2DTest extends AbstractUnmodifiableVector2DTest<ImmutableVector2D, ImmutablePoint2D> {
 	

@@ -27,7 +27,7 @@ public class CSVFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".csv";
+		return ".csv"; //$NON-NLS-1$
 	}
 
 	@Override

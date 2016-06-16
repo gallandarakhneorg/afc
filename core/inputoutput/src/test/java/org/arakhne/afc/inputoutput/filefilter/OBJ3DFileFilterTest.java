@@ -27,7 +27,7 @@ public class OBJ3DFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".obj";
+		return ".obj"; //$NON-NLS-1$
 	}
 
 	@Override

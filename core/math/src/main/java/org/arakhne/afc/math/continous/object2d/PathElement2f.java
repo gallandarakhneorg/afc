@@ -23,6 +23,7 @@ package org.arakhne.afc.math.continous.object2d;
 import org.arakhne.afc.math.generic.PathElement2D;
 import org.arakhne.afc.math.generic.PathElementType;
 import org.arakhne.afc.math.geometry.d2.d.PathElement2d;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** An element of the path.
  *
@@ -181,9 +182,7 @@ public abstract class PathElement2f implements PathElement2D {
 
 		@Override
 		public String toString() {
-			return "MOVE("+ 
-					this.toX+"x"+ 
-					this.toY+")"; 
+			return ReflectionUtil.toString(this);
 		}
 
 		@Override
@@ -246,9 +245,7 @@ public abstract class PathElement2f implements PathElement2D {
 
 		@Override
 		public String toString() {
-			return "LINE("+ 
-					this.toX+"x"+ 
-					this.toY+")"; 
+			return ReflectionUtil.toString(this);
 		}
 
 	}
@@ -311,11 +308,7 @@ public abstract class PathElement2f implements PathElement2D {
 		
 		@Override
 		public String toString() {
-			return "QUAD("+ 
-					this.ctrlX1+"x"+ 
-					this.ctrlY1+"|"+ 
-					this.toX+"x"+ 
-					this.toY+")"; 
+			return ReflectionUtil.toString(this);
 		}
 
 	}
@@ -383,13 +376,7 @@ public abstract class PathElement2f implements PathElement2D {
 
 		@Override
 		public String toString() {
-			return "CURVE("+ 
-					this.ctrlX1+"x"+ 
-					this.ctrlY1+"|"+ 
-					this.ctrlX2+"x"+ 
-					this.ctrlY2+"|"+ 
-					this.toX+"x"+ 
-					this.toY+")"; 
+			return ReflectionUtil.toString(this);
 		}
 
 	}
@@ -446,7 +433,7 @@ public abstract class PathElement2f implements PathElement2D {
 		
 		@Override
 		public String toString() {
-			return "CLOSE"; 
+			return ReflectionUtil.toString(this);
 		}
 
 	}

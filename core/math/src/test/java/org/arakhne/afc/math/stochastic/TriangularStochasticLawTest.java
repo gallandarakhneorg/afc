@@ -31,7 +31,7 @@ public class TriangularStochasticLawTest extends AbstractMathTestCase {
 
 	@Test
 	public void random() {
-		assertInlineParameterUsage(TriangularStochasticLaw.class, "random", double.class, double.class, double.class);
+		assertInlineParameterUsage(TriangularStochasticLaw.class, "random", double.class, double.class, double.class); //$NON-NLS-1$
 	}
 	
 }

@@ -25,7 +25,7 @@ public class NGRFileFilterTest extends AbstractBaseFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".ngr";
+		return ".ngr"; //$NON-NLS-1$
 	}
 
 	@Override

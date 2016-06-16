@@ -27,7 +27,7 @@ public class PNGFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".png";
+		return ".png"; //$NON-NLS-1$
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public class GIFFileFilterTest extends AbstractFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".gif";
+		return ".gif"; //$NON-NLS-1$
 	}
 
 	@Override

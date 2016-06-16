@@ -21,9 +21,6 @@
 package org.arakhne.afc.math.geometry.d2.d;
 
 import org.arakhne.afc.math.geometry.d2.afp.AbstractParallelogram2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.d.Parallelogram2d;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 
 @SuppressWarnings("all")
 public class Parallelogram2dTest extends AbstractParallelogram2afpTest<Parallelogram2d, Rectangle2d> {

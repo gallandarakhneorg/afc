@@ -79,7 +79,7 @@ public class SingleIteratorTest {
 		assertSame(this.s1, this.iterator.next());
 		try {
 			this.iterator.next();
-			fail("expecting NoSuchElementException"); 
+			fail("expecting NoSuchElementException");  //$NON-NLS-1$
 		}
 		catch(NoSuchElementException exception) {
 			// expected exception
@@ -92,7 +92,7 @@ public class SingleIteratorTest {
 	public void remove() {
 		try {
 			this.iterator.remove();
-			fail("expecting UnsupportedOperationException"); 
+			fail("expecting UnsupportedOperationException");  //$NON-NLS-1$
 		}
 		catch(UnsupportedOperationException exception) {
 			// exepcted exception

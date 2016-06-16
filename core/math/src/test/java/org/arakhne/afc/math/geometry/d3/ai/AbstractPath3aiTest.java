@@ -1241,7 +1241,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Override
 	public void toBoundingBoxB() {
-		B bb = (B) createRectangularPrism(0, 0, 0, 0, 0, 0);
+		B bb = createRectangularPrism(0, 0, 0, 0, 0, 0);
 		this.shape.toBoundingBox(bb);
 		assertEquals(0, bb.getMinX());
 		assertEquals(-5, bb.getMinY());
@@ -1401,7 +1401,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Test
 	@Ignore
 	public void staticComputeDrawableElementBoundingBox() {
-		B box = (B) createRectangularPrism(0, 0, 0, 0, 0, 0);
+		B box = createRectangularPrism(0, 0, 0, 0, 0, 0);
 		assertTrue(Path3ai.computeDrawableElementBoundingBox(this.shape.getPathIterator(), box));
 		assertEquals(0, box.getMinX());
 		assertEquals(-5, box.getMinY());

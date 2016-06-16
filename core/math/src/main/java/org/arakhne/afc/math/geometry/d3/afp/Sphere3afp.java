@@ -72,7 +72,7 @@ public interface Sphere3afp<
 	 */
 	@Pure
 	static boolean containsSpherePoint(double cx, double cy, double cz, double radius, double px, double py, double pz) {
-		assert radius >= 0 : "sphere radius must be positive or zero";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		return Point3D.getDistanceSquaredPointPoint(
 				px, py, pz,
 				cx, cy, cz) <= (radius * radius);
@@ -94,13 +94,13 @@ public interface Sphere3afp<
 	 *     otherwise <code>false</code>.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean containsSphereRectangularPrism(double cx, double cy, double cz, double radius, double rxmin, double rymin,
             double rzmin, double rxmax, double rymax, double rzmax) {
-		assert radius >= 0 : "sphere radius must be positive or zero";
-		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax";
-		assert rymin <= rymax : "rymin must be lower or equal to rymax";
-		assert rzmin <= rzmax : "rzmin must be lower or equal to rzmax";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
+		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(4, rxmin, 7, rxmax);
+		assert rymin <= rymax : AssertMessages.lowerEqualParameters(5, rymin, 8, rymax);
+		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(6, rzmin, 9, rzmax);
 		final double rcx = (rxmin + rxmax) / 2;
 		final double rcy = (rymin + rymax) / 2;
 		final double rcz = (rzmin + rzmax) / 2;
@@ -139,11 +139,11 @@ public interface Sphere3afp<
 	 * <code>false</code>
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsSphereSphere(double x1, double y1, double z1, double radius1, double x2, double y2, double z2,
             double radius2) {
-		assert radius1 >= 0 : "First sphere radius must be positive or zero";
-		assert radius2 >= 0 : "Second sphere radius must be positive or zero";
+		assert radius1 >= 0 : AssertMessages.positiveOrZeroParameter(3);
+		assert radius2 >= 0 : AssertMessages.positiveOrZeroParameter(7);
 		final double r = radius1 + radius2;
 		return Point3D.getDistanceSquaredPointPoint(x1, y1, z1, x2, y2, z2) < (r * r);
 	}
@@ -164,13 +164,13 @@ public interface Sphere3afp<
 	 * <code>false</code>
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsSpherePrism(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
             double x3, double y3, double z3) {
-		assert radius >= 0 : "sphere radius must be positive or zero";
-		assert x2 <= x3 : "x2 must be lower or equal to x3";
-		assert y2 <= y3 : "y2 must be lower or equal to y3";
-		assert z2 <= z3 : "y2 must be lower or equal to y3";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
+		assert x2 <= x3 : AssertMessages.lowerEqualParameters(4, x2, 7, x3);
+		assert y2 <= y3 : AssertMessages.lowerEqualParameters(5, y2, 7, y3);
+		assert z2 <= z3 : AssertMessages.lowerEqualParameters(6, z2, 7, z3);
 		final double dx;
 		if (x1 < x2) {
 			dx = x2 - x1;
@@ -217,7 +217,7 @@ public interface Sphere3afp<
 	@SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsSphereLine(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
             double x3, double y3, double z3) {
-		assert radius >= 0 : "sphere radius must be positive or zero";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		return Segment3afp.computeDistanceSquaredLinePoint(x2, y2, z2, x3, y3, z3, x1, y1, z1) < (radius * radius);
 	}
 
@@ -240,7 +240,7 @@ public interface Sphere3afp<
 	@SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsSphereSegment(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
             double x3, double y3, double z3) {
-		assert radius >= 0 : "sphere radius must be positive or zero";
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		return Segment3afp.computeDistanceSquaredSegmentPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1) < (radius * radius);
 	}
 
@@ -296,7 +296,7 @@ public interface Sphere3afp<
 	 */
 	@Override
 	default void setCenter(Point3D<?, ?> center) {
-		assert center != null : "Point must be not null";
+		assert center != null : AssertMessages.notNullParameter();
 		set(center.getX(), center.getY(), center.getZ(), getRadius());
 	}
 
@@ -360,13 +360,13 @@ public interface Sphere3afp<
      * @param radius the radius.
 	 */
 	default void set(Point3D<?, ?> center, double radius) {
-		assert center != null : "Point must be not null";
+		assert center != null : AssertMessages.notNullParameter();
 		set(center.getX(), center.getY(), center.getZ(), radius);
 	}
 
 	@Override
 	default void set(IT shape) {
-		assert shape != null : "Shape must be not null";
+		assert shape != null : AssertMessages.notNullParameter();
 		set(shape.getX(), shape.getY(), shape.getZ(), shape.getRadius());
 	}
 
@@ -377,7 +377,7 @@ public interface Sphere3afp<
 
 	@Override
 	default void toBoundingBox(B box) {
-		assert box != null : "Rectangle must be not null";
+		assert box != null : AssertMessages.notNullParameter();
 		final double x = getX();
 		final double y = getY();
 		final double z = getZ();
@@ -395,7 +395,7 @@ public interface Sphere3afp<
 	@Pure
 	@Override
 	default double getDistance(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null : AssertMessages.notNullParameter();
 		double distance = Point3D.getDistancePointPoint(getX(), getY(), getZ(), pt.getX(), pt.getY(), pt.getZ());
 		distance = distance - getRadius();
 		return Math.max(0., distance);
@@ -404,7 +404,7 @@ public interface Sphere3afp<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final double x = getX();
 		final double y = getY();
 		final double z = getZ();
@@ -423,7 +423,7 @@ public interface Sphere3afp<
 	@Pure
 	@Override
 	default double getDistanceL1(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final Point3D<?, ?> r = getClosestPointTo(pt);
 		return r.getDistanceL1(pt);
 	}
@@ -431,7 +431,7 @@ public interface Sphere3afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final Point3D<?, ?> r = getClosestPointTo(pt);
 		return r.getDistanceLinf(pt);
 	}
@@ -444,7 +444,7 @@ public interface Sphere3afp<
 
 	@Override
 	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : "Rectangle must be not null";
+		assert rectangularPrism != null : AssertMessages.notNullParameter();
         return containsSphereRectangularPrism(getX(), getY(), getZ(), getRadius(), rectangularPrism.getMinX(),
                 rectangularPrism.getMinY(), rectangularPrism.getMinZ(), rectangularPrism.getMaxX(), rectangularPrism.getMaxY(),
                 rectangularPrism.getMaxZ());
@@ -458,7 +458,7 @@ public interface Sphere3afp<
 	@Pure
 	@Override
 	default boolean intersects(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : "Rectangle must be not null";
+		assert prism != null : AssertMessages.notNullParameter();
 		return intersectsSpherePrism(
 				getX(), getY(), getZ(), getRadius(),
 				prism.getMinX(), prism.getMinY(), prism.getMinZ(), prism.getMaxX(), prism.getMaxY(), prism.getMaxZ());
@@ -467,7 +467,7 @@ public interface Sphere3afp<
 	@Pure
 	@Override
 	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "sphere must be not null";
+		assert sphere != null : AssertMessages.notNullParameter();
 		return intersectsSphereSphere(
 				getX(), getY(), getZ(), getRadius(),
 				sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
@@ -476,7 +476,7 @@ public interface Sphere3afp<
 	@Pure
 	@Override
 	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must be not null";
+		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsSphereSegment(
 				getX(), getY(), getZ(), getRadius(),
 				segment.getX1(), segment.getY1(), segment.getZ1(),
@@ -486,7 +486,7 @@ public interface Sphere3afp<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
-		assert iterator != null : "Iterator must be not null";
+		assert iterator != null : AssertMessages.notNullParameter();
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path3afp.computeCrossingsFromSphere(
 				0,
@@ -500,14 +500,14 @@ public interface Sphere3afp<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null";
+		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
 
 	@Pure
 	@Override
 	default P getClosestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final double x = getX();
 		final double y = getY();
 		final double z = getZ();
@@ -566,7 +566,7 @@ public interface Sphere3afp<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must be not null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final double x = getX();
 		final double y = getY();
 		final double z = getZ();
@@ -824,7 +824,7 @@ public interface Sphere3afp<
 		 * @param sphere the sphere.
 		 */
 		public AbstractSpherePathIterator(Sphere3afp<?, ?, T, ?, ?, ?> sphere) {
-			assert sphere != null : "sphere must be not null";
+			assert sphere != null : AssertMessages.notNullParameter();
 			this.sphere = sphere;
 		}
 
@@ -1009,7 +1009,7 @@ public interface Sphere3afp<
 		 */
 		public TransformedCirclePathIterator(Sphere3afp<?, ?, T, ?, ?, ?> sphere, Transform3D transform) {
 			super(sphere);
-			assert transform != null : "Transformation must be not null";
+			assert transform != null : AssertMessages.notNullParameter();
 			this.transform = transform;
 			if (sphere.isEmpty()) {
 				this.index = NUMBER_ELEMENTS;

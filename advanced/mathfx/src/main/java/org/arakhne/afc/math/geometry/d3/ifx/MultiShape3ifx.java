@@ -39,6 +39,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.ai.MultiShape3ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Container for grouping of shapes.
  *
@@ -71,7 +72,7 @@ public class MultiShape3ifx<T extends Shape3ifx<?>> extends AbstractShape3ifx<Mu
 	 * @param shapes the shapes to add into the multishape.
 	 */
 	public MultiShape3ifx(@SuppressWarnings("unchecked") T... shapes) {
-		assert shapes != null : "Shape array must be not null";
+		assert shapes != null : AssertMessages.notNullParameter();
 		addAll(Arrays.asList(shapes));
 	}
 
@@ -80,7 +81,7 @@ public class MultiShape3ifx<T extends Shape3ifx<?>> extends AbstractShape3ifx<Mu
 	 * @param shapes the shapes to add into the multishape.
 	 */
 	public MultiShape3ifx(Iterable<? extends T> shapes) {
-		assert shapes != null : "Shape list must be not null";
+		assert shapes != null : AssertMessages.notNullParameter();
 		for (final T element : shapes) {
 			add(element);
 		}
@@ -155,7 +156,7 @@ public class MultiShape3ifx<T extends Shape3ifx<?>> extends AbstractShape3ifx<Mu
 	@Pure
 	@Override
 	public void toBoundingBox(RectangularPrism3ifx box) {
-		assert box != null : "Rectangle must be not null";
+		assert box != null : AssertMessages.notNullParameter();
 		box.set(boundingBoxProperty().get());
 	}
 
@@ -202,14 +203,14 @@ public class MultiShape3ifx<T extends Shape3ifx<?>> extends AbstractShape3ifx<Mu
 
 		@Override
 		protected void doAdd(int index, T element) {
-			assert element != null : "New element in the list of shapes must be not null";
+			assert element != null : AssertMessages.notNullParameter(1);
 			this.internalList.add(index, element);
 			bind(element);
 		}
 
 		@Override
 		protected T doSet(int index, T element) {
-			assert element != null : "New element in the list of shapes must be not null";
+			assert element != null : AssertMessages.notNullParameter(1);
 			final T old = this.internalList.set(index, element);
 			unbind(old);
 			bind(element);

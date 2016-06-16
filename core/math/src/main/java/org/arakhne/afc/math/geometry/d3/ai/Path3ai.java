@@ -37,6 +37,8 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Fonctional interface that represented a 2D path on a plane.
  *
@@ -85,8 +87,8 @@ public interface Path3ai<
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean computeDrawableElementBoundingBox(PathIterator3ai<?> iterator,
 			RectangularPrism3ai<?, ?, ?, ?, ?, ?> box) {
-		assert iterator != null : "Iterator must not be null";
-		assert box != null : "Rectangle must not be null";
+		assert iterator != null : AssertMessages.notNullParameter(0);
+		assert box != null : AssertMessages.notNullParameter(1);
 		final GeomFactory3ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
 		boolean foundOneLine = false;
 		int xmin = Integer.MAX_VALUE;
@@ -230,8 +232,8 @@ public interface Path3ai<
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean computeControlPointBoundingBox(PathIterator3ai<?> iterator,
 			RectangularPrism3ai<?, ?, ?, ?, ?, ?> box) {
-		assert iterator != null : "Iterator must be not null";
-		assert box != null : "Rectangle must be not null";
+		assert iterator != null : AssertMessages.notNullParameter(0);
+		assert box != null : AssertMessages.notNullParameter(1);
 		boolean foundOneControlPoint = false;
 		int xmin = Integer.MAX_VALUE;
 		int ymin = Integer.MAX_VALUE;
@@ -447,7 +449,7 @@ public interface Path3ai<
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:parameternumber"})
 	static int computeCrossingsFromSegment(int crossings, PathIterator3ai<?> pi, int x1, int y1, int z1, int x2, int y2, int z2,
 			CrossingComputationType type) {
-		assert pi != null : "Iterator must not be null";
+		assert pi != null : AssertMessages.notNullParameter(0);
 
 		// Copied from the AWT API
 		if (!pi.hasNext()) {
@@ -457,7 +459,7 @@ public interface Path3ai<
 
 		element = pi.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition");
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
 		int movx = element.getToX();
@@ -600,11 +602,11 @@ public interface Path3ai<
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber"})
 	static int computeCrossingsFromSphere(int crossings, PathIterator3ai<?> pi, int cx, int cy, int cz, int radius,
 			CrossingComputationType type) {
-		assert pi != null : "Iterator must not be null";
-		assert radius >= 0 : "Circle radius must be positive or zero";
+		assert pi != null : AssertMessages.notNullParameter(1);
+		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(5);
 
 		// Copied from the AWT API
 		if (!pi.hasNext()) {
@@ -614,7 +616,7 @@ public interface Path3ai<
 
 		element = pi.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition");
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
 		int movx = element.getToX();
@@ -770,7 +772,7 @@ public interface Path3ai<
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
     static int computeCrossingsFromPoint(int crossings, PathIterator3ai<?> pi, int px, int py, int pz,
             CrossingComputationType type) {
-		assert pi != null : "Iterator must not be null";
+		assert pi != null : AssertMessages.notNullParameter();
 
 		// Copied and adapted from the AWT API
 		if (!pi.hasNext()) {
@@ -780,7 +782,7 @@ public interface Path3ai<
 
 		element = pi.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition");
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
 		int movx = element.getToX();
@@ -934,8 +936,8 @@ public interface Path3ai<
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
     static int computeCrossingsFromPath(int crossings, PathIterator3ai<?> iterator, BasicPathShadow3ai shadow,
             CrossingComputationType type) {
-		assert iterator != null : "Iterator must not be null";
-		assert shadow != null : "The shadow projected on the right must not be null";
+		assert iterator != null : AssertMessages.notNullParameter(1);
+		assert shadow != null : AssertMessages.notNullParameter(2);
 
         if (!iterator.hasNext()) {
             return 0;
@@ -944,7 +946,7 @@ public interface Path3ai<
 		PathElement3ai pathElement1 = iterator.next();
 
 		if (pathElement1.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in the first path definition");
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
 		final GeomFactory3ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
@@ -1093,14 +1095,14 @@ public interface Path3ai<
 	 *         specified {@code PathIterator2f}; {@code false} otherwise
 	 */
 	static boolean contains(PathIterator3ai<?> pi, int x, int y, int z) {
-		assert pi != null : "Iterator must not be null";
+		assert pi != null : AssertMessages.notNullParameter(0);
 		// Copied from the AWT API
 		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
 		final int cross = computeCrossingsFromPoint(0, pi, x, y, z, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (cross & mask) != 0;
 	}
 
-    /**
+	/**
      * Tests if the specified rectangle is inside the closed
      * boundary of the specified {@link PathIterator3ai}.
      *
@@ -1118,11 +1120,12 @@ public interface Path3ai<
      * @return {@code true} if the specified rectangle is inside the
      *         specified {@code PathIterator2f}; {@code false} otherwise.
      */
+	@SuppressWarnings("checkstyle:magicnumber")
     static boolean contains(PathIterator3ai<?> pi, int rx, int ry, int rz, int rwidth, int rheight, int rdepth) {
-        assert pi != null : "Iterator must not be null";
-        assert rwidth >= 0 : "Rectangle width must be positive or zero.";
-        assert rheight >= 0 : "Rectangle height must be positive or zero";
-        assert rdepth >= 0 : "Rectangle height must be positive or zero";
+        assert pi != null : AssertMessages.notNullParameter(0);
+        assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(4);
+        assert rheight >= 0 : AssertMessages.positiveOrZeroParameter(5);
+        assert rdepth >= 0 : AssertMessages.positiveOrZeroParameter(6);
         // Copied from AWT API
         final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
         final int crossings = computeCrossingsFromRect(
@@ -1136,7 +1139,7 @@ public interface Path3ai<
     @Pure
     @Override
     default boolean contains(RectangularPrism3ai<?, ?, ?, ?, ?, ?> box) {
-        assert box != null : "Rectangle must not be null";
+        assert box != null : AssertMessages.notNullParameter();
         return contains(getPathIterator(),
                 box.getMinX(), box.getMinY(), box.getMinZ(), box.getWidth(), box.getHeight(), box.getHeight());
     }
@@ -1178,7 +1181,7 @@ public interface Path3ai<
 			int rxmax, int rymax, int rzmax,
 			CrossingComputationType type) {
 
-	    assert pi != null : "Iterator must not be null";
+	    assert pi != null : AssertMessages.notNullParameter(1);
 
 	    // Copied from AWT API
 	    if (!pi.hasNext()) {
@@ -1188,7 +1191,7 @@ public interface Path3ai<
 		PathElement3ai pathElement = pi.next();
 
 		if (pathElement.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition");
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
 		int numCrossings = crossings;
@@ -1324,7 +1327,7 @@ public interface Path3ai<
 		return numCrossings;
 	}
 
-	/**
+    /**
 	 * Tests if the interior of the specified {@link PathIterator3ai}
 	 * intersects the interior of a specified set of rectangular
 	 * coordinates.
@@ -1357,11 +1360,12 @@ public interface Path3ai<
 	 *         the interior of the specified set of rectangular
 	 *         coordinates intersect each other; {@code false} otherwise.
 	 */
+    @SuppressWarnings("checkstyle:magicnumber")
 	static boolean intersects(PathIterator3ai<?> pi, int x, int y, int z, int width, int height, int depth) {
-		assert pi != null : "Iterator must not be null";
-		assert width >= 0 : "Rectangle width must be positive or zero.";
-		assert height >= 0 : "Rectangle height must be positive or zero";
-		assert depth >= 0 : "Rectangle height must be positive or zero";
+		assert pi != null : AssertMessages.notNullParameter(0);
+		assert width >= 0 : AssertMessages.positiveOrZeroParameter(4);
+		assert height >= 0 : AssertMessages.positiveOrZeroParameter(5);
+		assert depth >= 0 : AssertMessages.positiveOrZeroParameter(6);
 
 		if (width == 0 || height == 0 || depth == 0) {
 			return false;
@@ -1375,7 +1379,7 @@ public interface Path3ai<
 	@Pure
 	@Override
 	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
-	    assert sphere != null : "Sphere must not be null";
+	    assert sphere != null : AssertMessages.notNullParameter();
 	    final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 	    final int crossings = computeCrossingsFromSphere(
 	            0,
@@ -1388,7 +1392,7 @@ public interface Path3ai<
 	@Pure
 	@Override
 	default boolean intersects(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
-	    assert rectangularPrism != null : "RectangularPrism must be not null";
+	    assert rectangularPrism != null : AssertMessages.notNullParameter();
         return intersects(getPathIterator(), rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ(),
                 rectangularPrism.getWidth(), rectangularPrism.getHeight(), rectangularPrism.getDepth());
 	}
@@ -1396,7 +1400,7 @@ public interface Path3ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
-	    assert segment != null : "Segment must not be null";
+	    assert segment != null : AssertMessages.notNullParameter();
 	    final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 	    final int crossings = computeCrossingsFromSegment(
 	            0,
@@ -1408,7 +1412,7 @@ public interface Path3ai<
 
 	@Override
 	default boolean intersects(PathIterator3ai<?> iterator) {
-	    assert iterator != null : "Iterator must not be null";
+	    assert iterator != null : AssertMessages.notNullParameter();
 	    final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 	    final int crossings = computeCrossingsFromPath(
 	            0, iterator,
@@ -1420,7 +1424,7 @@ public interface Path3ai<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-	    assert multishape != null : "MultiShape must be not null";
+	    assert multishape != null : AssertMessages.notNullParameter();
 	    return multishape.intersects(this);
 	}
 
@@ -1441,7 +1445,7 @@ public interface Path3ai<
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static void getClosestPointTo(PathIterator3ai<? extends PathElement3ai> pi, int x, int y, int z, Point3D<?, ?> result) {
-		assert pi != null : "Iterator must not be null";
+		assert pi != null : AssertMessages.notNullParameter(0);
 
 		int bestManhantanDist = Integer.MAX_VALUE;
 		int bestLinfinvDist = Integer.MAX_VALUE;
@@ -1540,7 +1544,7 @@ public interface Path3ai<
 
     @Override
     default P getClosestPointTo(Point3D<?, ?> pt) {
-        assert pt != null : "Point must not be null";
+        assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), pt.ix(), pt.iy(), pt.iz(), point);
         return point;
@@ -1586,7 +1590,7 @@ public interface Path3ai<
 	 * @param result the farthest point on the shape.
 	 */
 	static void getFarthestPointTo(PathIterator3ai<? extends PathElement3ai> pi, int x, int y, int z, Point3D<?, ?> result) {
-		assert pi != null : "Iterator must not be null";
+		assert pi != null : AssertMessages.notNullParameter(0);
 
 		int bestX = x;
 		int bestY = y;
@@ -1650,7 +1654,7 @@ public interface Path3ai<
 
     @Override
     default P getFarthestPointTo(Point3D<?, ?> pt) {
-        assert pt != null : "Point must not be null";
+        assert pt != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         getFarthestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), pt.ix(), pt.iy(), pt.iz(), point);
         return point;
@@ -1673,7 +1677,7 @@ public interface Path3ai<
     * @param iterator the iterator on the elements to add.
     */
 	default void add(Iterator<? extends PathElement3ai> iterator) {
-		assert iterator != null : "Iterator must not be null";
+		assert iterator != null : AssertMessages.notNullParameter();
 		PathElement3ai element;
 		while (iterator.hasNext()) {
 			element = iterator.next();
@@ -1706,7 +1710,7 @@ public interface Path3ai<
 	 * @param path the path to copy.
 	 */
 	default void set(Path3ai<?, ?, ?, ?, ?, ?> path) {
-		assert path != null : "Path must not be null";
+		assert path != null : AssertMessages.notNullParameter();
 		clear();
 		add(path.getPathIterator());
 	}
@@ -1723,7 +1727,7 @@ public interface Path3ai<
 
 	@Override
 	default void moveTo(Point3D<?, ?> position) {
-		assert position != null : "Position must not be null";
+		assert position != null : AssertMessages.notNullParameter();
 		moveTo(position.ix(), position.iy(), position.iz());
 	}
 
@@ -1740,7 +1744,7 @@ public interface Path3ai<
 
 	@Override
 	default void lineTo(Point3D<?, ?> to) {
-		assert to != null : "Position must not be null";
+		assert to != null : AssertMessages.notNullParameter();
 		lineTo(to.ix(), to.iy(), to.iz());
 	}
 
@@ -1763,8 +1767,8 @@ public interface Path3ai<
 
 	@Override
 	default void quadTo(Point3D<?, ?> ctrl, Point3D<?, ?> to) {
-		assert ctrl != null : "Control point must not be null";
-		assert to != null : "Destination point must not be null";
+		assert ctrl != null : AssertMessages.notNullParameter(0);
+		assert to != null : AssertMessages.notNullParameter(1);
 		quadTo(ctrl.ix(), ctrl.iy(), ctrl.iz(), to.ix(), to.iy(), to.iz());
 	}
 
@@ -1793,16 +1797,16 @@ public interface Path3ai<
 
 	@Override
 	default void curveTo(Point3D<?, ?> ctrl1, Point3D<?, ?> ctrl2, Point3D<?, ?> to) {
-		assert ctrl1 != null : "First control point must not be null";
-		assert ctrl2 != null : "Second control point must not be null";
-		assert to != null : "Destination point must not be null";
+		assert ctrl1 != null : AssertMessages.notNullParameter(0);
+		assert ctrl2 != null : AssertMessages.notNullParameter(1);
+		assert to != null : AssertMessages.notNullParameter(2);
 		curveTo(ctrl1.ix(), ctrl1.iy(), ctrl1.iz(), ctrl2.ix(), ctrl2.iy(), ctrl2.iz(), to.ix(), to.iy(), to.iz());
 	}
 
     @Pure
     @Override
     default double getDistanceSquared(Point3D<?, ?> point) {
-		assert point != null : "Point must not be null";
+		assert point != null : AssertMessages.notNullParameter();
 		final Point3D<?, ?> c = getClosestPointTo(point);
 		return c.getDistanceSquared(point);
 	}
@@ -1810,7 +1814,7 @@ public interface Path3ai<
 	@Pure
 	@Override
 	default double getDistanceL1(Point3D<?, ?> point) {
-		assert point != null : "Point must not be null";
+		assert point != null : AssertMessages.notNullParameter();
 		final Point3D<?, ?> c = getClosestPointTo(point);
 		return c.getDistanceL1(point);
 	}
@@ -1818,7 +1822,7 @@ public interface Path3ai<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point3D<?, ?> point) {
-		assert point != null : "Point must not be null";
+		assert point != null : AssertMessages.notNullParameter();
 		final Point3D<?, ?> c = getClosestPointTo(point);
 		return c.getDistanceLinf(point);
 	}
@@ -1836,7 +1840,7 @@ public interface Path3ai<
 		PathElement3ai pathElement = pi.next();
 
 		if (pathElement.getType() != PathElementType.MOVE_TO) {
-			throw new IllegalArgumentException("missing initial moveto in path definition");
+			throw new IllegalArgumentException(Locale.getString("E1")); //$NON-NLS-1$
 		}
 
 		while (pi.hasNext()) {
@@ -1855,7 +1859,7 @@ public interface Path3ai<
 				break;
 			case QUAD_TO:
 			case CURVE_TO:
-				throw new IllegalStateException("Curve in path is not supported");
+				throw new IllegalStateException();
 			case MOVE_TO:
 			case ARC_TO:
 			default:
@@ -1912,7 +1916,7 @@ public interface Path3ai<
 
 	@Override
 	default void setLastPoint(Point3D<?, ?> point) {
-		assert point != null : "Point must not be null";
+		assert point != null : AssertMessages.notNullParameter();
 		setLastPoint(point.ix(), point.iy(), point.iz());
 	}
 
@@ -2046,7 +2050,7 @@ public interface Path3ai<
 		 * @param path the path.
 		 */
 		public AbstractPathIterator(Path3ai<?, ?, E, ?, ?, ?> path) {
-			assert path != null : "Path must not be null";
+			assert path != null : AssertMessages.notNullParameter();
 			this.path = path;
 		}
 
@@ -2260,7 +2264,7 @@ public interface Path3ai<
 		 */
 		public TransformedPathIterator(Path3ai<?, ?, E, ?, ?, ?> path, Transform3D transform) {
 			super(path);
-			assert transform != null : "Transformation must not be null";
+			assert transform != null : AssertMessages.notNullParameter(1);
 			this.transform = transform;
 			this.p1 = new InnerComputationPoint3ai();
 			this.p2 = new InnerComputationPoint3ai();
@@ -2391,8 +2395,8 @@ public interface Path3ai<
 		 * @param factory the element factory.
 		 */
 		public PixelIterator(PathIterator3ai<?> pi, GeomFactory3ai<?, P, V, ?> factory) {
-			assert pi != null : "Iterator must not be null";
-			assert factory != null : "Factory must not be null";
+			assert pi != null : AssertMessages.notNullParameter(0);
+			assert factory != null : AssertMessages.notNullParameter(1);
 			this.pathIterator = pi;
 			this.factory = factory;
 			searchNext();
@@ -2471,7 +2475,7 @@ public interface Path3ai<
 		 * @param path the path from which the points are extracted.
 		 */
 		public PointCollection(Path3ai<?, ?, ?, P, V, ?> path) {
-			assert path != null : "Path must not be null";
+			assert path != null : AssertMessages.notNullParameter();
 			this.path = path;
 		}
 
@@ -2506,7 +2510,7 @@ public interface Path3ai<
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T> T[] toArray(T[] array) {
-			assert array != null : "Array must not be null";
+			assert array != null : AssertMessages.notNullParameter();
 			final Iterator<P> iterator = new PointIterator<>(this.path);
             for (int i = 0; i < array.length && iterator.hasNext(); ++i) {
                 array[i] = (T) iterator.next();
@@ -2538,7 +2542,7 @@ public interface Path3ai<
 
 		@Override
 		public boolean containsAll(Collection<?> collection) {
-			assert collection != null : "Collection must not be null";
+			assert collection != null : AssertMessages.notNullParameter();
             for (final Object obj : collection) {
 				if ((!(obj instanceof Point3D))
                         || (!this.path.contains((Point3D<?, ?>) obj))) {
@@ -2550,7 +2554,7 @@ public interface Path3ai<
 
 		@Override
 		public boolean addAll(Collection<? extends P> collection) {
-			assert collection != null : "Collection must not be null";
+			assert collection != null : AssertMessages.notNullParameter();
 			boolean changed = false;
             for (final P pts : collection) {
 				if (add(pts)) {
@@ -2562,7 +2566,7 @@ public interface Path3ai<
 
 		@Override
 		public boolean removeAll(Collection<?> collection) {
-			assert collection != null : "Collection must not be null";
+			assert collection != null : AssertMessages.notNullParameter();
 			boolean changed = false;
             for (final Object obj : collection) {
 				if (obj instanceof Point3D) {
@@ -2610,7 +2614,7 @@ public interface Path3ai<
 		 * @param path the path to iterate on.
 		 */
 		public PointIterator(Path3ai<?, ?, ?, P, V, ?> path) {
-			assert path != null : "Path must not be null";
+			assert path != null : AssertMessages.notNullParameter();
 			this.path = path;
 		}
 
@@ -2710,7 +2714,7 @@ public interface Path3ai<
 
 		/** The ending y of the last segment.
 		 */
-		private double currentZ;
+		//TODO private double currentZ;
 
 		/** The x of the last move segment.
 		 */
@@ -2760,10 +2764,10 @@ public interface Path3ai<
 		 */
 		public FlatteningPathIterator(Path3ai<?, ?, E, ?, ?, ?> path, PathIterator3ai<? extends E> pathIterator,
 				double flatness, int limit) {
-			assert path != null : "Path must not be null";
-			assert pathIterator != null : "Iterator must not be null";
-			assert flatness > 0f : "Flatness factor must be positive.";
-			assert limit >= 0 : "Number of recursive subdivisions must be positive or zero.";
+			assert path != null : AssertMessages.notNullParameter(0);
+			assert pathIterator != null : AssertMessages.notNullParameter(1);
+			assert flatness > 0f : AssertMessages.positiveOrZeroParameter(2);
+			assert limit >= 0 : AssertMessages.positiveOrZeroParameter(3);
 			this.path = path;
 			this.pathIterator = pathIterator;
 			this.squaredFlatness = flatness * flatness;
@@ -3156,7 +3160,7 @@ public interface Path3ai<
 		@Override
 		public E next() {
 			if (this.done) {
-				throw new NoSuchElementException("flattening iterator out of bounds");
+				throw new NoSuchElementException();
 			}
 
 			final E element;

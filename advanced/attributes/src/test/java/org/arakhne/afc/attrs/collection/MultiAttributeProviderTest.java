@@ -58,24 +58,24 @@ public class MultiAttributeProviderTest extends AbstractTestCase {
 		this.subcontainer2 = new HeapAttributeCollection();
 		this.subcontainer3 = new HeapAttributeCollection();
 		
-		this.subcontainer1.setAttribute("A", true); 
-		this.subcontainer1.setAttribute("B", 1); 
-		this.subcontainer1.setAttribute("C", new URL("http://www.multiagent.fr"));  
-		this.subcontainer1.setAttribute("E", new URL("http://www.multiagent.fr"));  
-		this.subcontainer1.setAttribute("Z1", "Z1");  
+		this.subcontainer1.setAttribute("A", true);  //$NON-NLS-1$
+		this.subcontainer1.setAttribute("B", 1);  //$NON-NLS-1$
+		this.subcontainer1.setAttribute("C", new URL("http://www.multiagent.fr"));   //$NON-NLS-1$ //$NON-NLS-2$
+		this.subcontainer1.setAttribute("E", new URL("http://www.multiagent.fr"));   //$NON-NLS-1$ //$NON-NLS-2$
+		this.subcontainer1.setAttribute("Z1", "Z1");   //$NON-NLS-1$ //$NON-NLS-2$
 
-		this.subcontainer2.setAttribute("A", true); 
-		this.subcontainer2.setAttribute("B", 1.); 
-		this.subcontainer2.setAttribute("D", "abc");  
-		this.subcontainer2.setAttribute("E", 1); 
-		this.subcontainer2.setAttribute("Z2", "Z2");  
+		this.subcontainer2.setAttribute("A", true);  //$NON-NLS-1$
+		this.subcontainer2.setAttribute("B", 1.);  //$NON-NLS-1$
+		this.subcontainer2.setAttribute("D", "abc");   //$NON-NLS-1$ //$NON-NLS-2$
+		this.subcontainer2.setAttribute("E", 1);  //$NON-NLS-1$
+		this.subcontainer2.setAttribute("Z2", "Z2");   //$NON-NLS-1$ //$NON-NLS-2$
 
-		this.subcontainer3.setAttribute("A", false); 
-		this.subcontainer3.setAttribute("B", 1); 
-		this.subcontainer3.setAttribute("C", new URL("http://www.multiagent.fr"));  
-		this.subcontainer3.setAttribute("D", "abc");  
-		this.subcontainer3.setAttribute("E", true); 
-		this.subcontainer3.setAttribute("Z3", "Z3");  
+		this.subcontainer3.setAttribute("A", false);  //$NON-NLS-1$
+		this.subcontainer3.setAttribute("B", 1);  //$NON-NLS-1$
+		this.subcontainer3.setAttribute("C", new URL("http://www.multiagent.fr"));   //$NON-NLS-1$ //$NON-NLS-2$
+		this.subcontainer3.setAttribute("D", "abc");   //$NON-NLS-1$ //$NON-NLS-2$
+		this.subcontainer3.setAttribute("E", true);  //$NON-NLS-1$
+		this.subcontainer3.setAttribute("Z3", "Z3");   //$NON-NLS-1$ //$NON-NLS-2$
 		
 		this.container.addAttributeContainer(this.subcontainer1);
 		this.container.addAttributeContainer(this.subcontainer2);
@@ -104,14 +104,14 @@ public class MultiAttributeProviderTest extends AbstractTestCase {
 		assertNotNull(names);
 		assertEquals(8, names.size());
 		assertEpsilonEquals(Arrays.asList(
-				"A", 
-				"B", 
-				"C", 
-				"D", 
-				"E", 
-				"Z1", 
-				"Z2", 
-				"Z3" 
+				"A",  //$NON-NLS-1$
+				"B",  //$NON-NLS-1$
+				"C",  //$NON-NLS-1$
+				"D",  //$NON-NLS-1$
+				"E",  //$NON-NLS-1$
+				"Z1",  //$NON-NLS-1$
+				"Z2",  //$NON-NLS-1$
+				"Z3"  //$NON-NLS-1$
 				), names);
 	}
 	
@@ -127,83 +127,83 @@ public class MultiAttributeProviderTest extends AbstractTestCase {
 
 	@Test
 	public void testHasAttributeString() {
-		assertTrue(this.container.hasAttribute("A")); 
-		assertTrue(this.container.hasAttribute("B")); 
-		assertTrue(this.container.hasAttribute("C")); 
-		assertTrue(this.container.hasAttribute("D")); 
-		assertTrue(this.container.hasAttribute("E")); 
-		assertFalse(this.container.hasAttribute("F")); 
-		assertTrue(this.container.hasAttribute("Z1")); 
-		assertTrue(this.container.hasAttribute("Z2")); 
-		assertTrue(this.container.hasAttribute("Z3")); 
-		assertFalse(this.container.hasAttribute("Z4")); 
+		assertTrue(this.container.hasAttribute("A"));  //$NON-NLS-1$
+		assertTrue(this.container.hasAttribute("B"));  //$NON-NLS-1$
+		assertTrue(this.container.hasAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.container.hasAttribute("D"));  //$NON-NLS-1$
+		assertTrue(this.container.hasAttribute("E"));  //$NON-NLS-1$
+		assertFalse(this.container.hasAttribute("F"));  //$NON-NLS-1$
+		assertTrue(this.container.hasAttribute("Z1"));  //$NON-NLS-1$
+		assertTrue(this.container.hasAttribute("Z2"));  //$NON-NLS-1$
+		assertTrue(this.container.hasAttribute("Z3"));  //$NON-NLS-1$
+		assertFalse(this.container.hasAttribute("Z4"));  //$NON-NLS-1$
 	}
 
 	@Test
 	public void testGetAttributeString() {
 		assertUninitialized(AttributeType.BOOLEAN,
-				this.container.getAttribute("A")); 
+				this.container.getAttribute("A"));  //$NON-NLS-1$
 		assertEquals(new AttributeValueImpl(1),
-				this.container.getAttribute("B")); 
+				this.container.getAttribute("B"));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.URL,
-				this.container.getAttribute("C")); 
+				this.container.getAttribute("C"));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.STRING,
-				this.container.getAttribute("D")); 
+				this.container.getAttribute("D"));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.OBJECT,
-				this.container.getAttribute("E")); 
-		assertNull(this.container.getAttribute("F")); 
+				this.container.getAttribute("E"));  //$NON-NLS-1$
+		assertNull(this.container.getAttribute("F"));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.STRING,
-				this.container.getAttribute("Z1")); 
+				this.container.getAttribute("Z1"));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.STRING,
-				this.container.getAttribute("Z2")); 
+				this.container.getAttribute("Z2"));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.STRING,
-				this.container.getAttribute("Z3")); 
-		assertNull(this.container.getAttribute("Z4")); 
+				this.container.getAttribute("Z3"));  //$NON-NLS-1$
+		assertNull(this.container.getAttribute("Z4"));  //$NON-NLS-1$
 	}
 
 	@Test
 	public void testGetAttributeStringAttributeValue() {
 		AttributeValue defaultValue = new AttributeValueImpl(456);
 		assertUninitialized(AttributeType.BOOLEAN,
-				this.container.getAttribute("A", defaultValue)); 
+				this.container.getAttribute("A", defaultValue));  //$NON-NLS-1$
 		assertEquals(new AttributeValueImpl(1),
-				this.container.getAttribute("B", defaultValue)); 
+				this.container.getAttribute("B", defaultValue));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.URL,
-				this.container.getAttribute("C", defaultValue)); 
+				this.container.getAttribute("C", defaultValue));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.STRING,
-				this.container.getAttribute("D", defaultValue)); 
+				this.container.getAttribute("D", defaultValue));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.OBJECT,
-				this.container.getAttribute("E", defaultValue)); 
-		assertSame(defaultValue, this.container.getAttribute("F", defaultValue)); 
+				this.container.getAttribute("E", defaultValue));  //$NON-NLS-1$
+		assertSame(defaultValue, this.container.getAttribute("F", defaultValue));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.STRING,
-				this.container.getAttribute("Z1", defaultValue)); 
+				this.container.getAttribute("Z1", defaultValue));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.STRING,
-				this.container.getAttribute("Z2", defaultValue)); 
+				this.container.getAttribute("Z2", defaultValue));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.STRING,
-				this.container.getAttribute("Z3", defaultValue)); 
-		assertSame(defaultValue, this.container.getAttribute("Z4", defaultValue)); 
+				this.container.getAttribute("Z3", defaultValue));  //$NON-NLS-1$
+		assertSame(defaultValue, this.container.getAttribute("Z4", defaultValue));  //$NON-NLS-1$
 	}
 
 	@Test
 	public void testGetAttributeObjectString() {
 		assertUninitialized(AttributeType.BOOLEAN,
-				this.container.getAttributeObject("A")); 
-		assertEquals(new AttributeImpl("B",1), 
-				this.container.getAttributeObject("B")); 
+				this.container.getAttributeObject("A"));  //$NON-NLS-1$
+		assertEquals(new AttributeImpl("B",1),  //$NON-NLS-1$
+				this.container.getAttributeObject("B"));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.URL,
-				this.container.getAttributeObject("C")); 
+				this.container.getAttributeObject("C"));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.STRING,
-				this.container.getAttributeObject("D")); 
+				this.container.getAttributeObject("D"));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.OBJECT,
-				this.container.getAttributeObject("E")); 
-		assertNull(this.container.getAttribute("F")); 
+				this.container.getAttributeObject("E"));  //$NON-NLS-1$
+		assertNull(this.container.getAttribute("F"));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.STRING,
-				this.container.getAttributeObject("Z1")); 
+				this.container.getAttributeObject("Z1"));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.STRING,
-				this.container.getAttributeObject("Z2")); 
+				this.container.getAttributeObject("Z2"));  //$NON-NLS-1$
 		assertUninitialized(AttributeType.STRING,
-				this.container.getAttributeObject("Z3")); 
-		assertNull(this.container.getAttributeObject("Z4")); 
+				this.container.getAttributeObject("Z3"));  //$NON-NLS-1$
+		assertNull(this.container.getAttributeObject("Z4"));  //$NON-NLS-1$
 	}
 
 	@Test
@@ -212,14 +212,14 @@ public class MultiAttributeProviderTest extends AbstractTestCase {
 		assertNotNull(attrs);
 		assertEquals(8, attrs.size());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("A", AttributeType.BOOLEAN), 
-				new AttributeImpl("B", 1), 
-				makeUninitialized("C", AttributeType.URL), 
-				makeUninitialized("D", AttributeType.STRING), 
-				makeUninitialized("E", AttributeType.OBJECT), 
-				makeUninitialized("Z1", AttributeType.STRING), 
-				makeUninitialized("Z2", AttributeType.STRING), 
-				makeUninitialized("Z3", AttributeType.STRING) 
+				makeUninitialized("A", AttributeType.BOOLEAN),  //$NON-NLS-1$
+				new AttributeImpl("B", 1),  //$NON-NLS-1$
+				makeUninitialized("C", AttributeType.URL),  //$NON-NLS-1$
+				makeUninitialized("D", AttributeType.STRING),  //$NON-NLS-1$
+				makeUninitialized("E", AttributeType.OBJECT),  //$NON-NLS-1$
+				makeUninitialized("Z1", AttributeType.STRING),  //$NON-NLS-1$
+				makeUninitialized("Z2", AttributeType.STRING),  //$NON-NLS-1$
+				makeUninitialized("Z3", AttributeType.STRING)  //$NON-NLS-1$
 		), attrs);
 	}
 
@@ -235,7 +235,7 @@ public class MultiAttributeProviderTest extends AbstractTestCase {
 		assertNotNull(attrs);
 		assertEquals(1, attrs.size());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("A", AttributeType.BOOLEAN) 
+				makeUninitialized("A", AttributeType.BOOLEAN)  //$NON-NLS-1$
 		), attrs);
 		
 		attrs = attrsbytype.get(AttributeType.COLOR);
@@ -251,14 +251,14 @@ public class MultiAttributeProviderTest extends AbstractTestCase {
 		assertNotNull(attrs);
 		assertEquals(1, attrs.size());
 		assertEpsilonEquals(Arrays.asList(
-				new AttributeImpl("B", 1) 
+				new AttributeImpl("B", 1)  //$NON-NLS-1$
 		), attrs);
 
 		attrs = attrsbytype.get(AttributeType.OBJECT);
 		assertNotNull(attrs);
 		assertEquals(1, attrs.size());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("E", AttributeType.OBJECT) 
+				makeUninitialized("E", AttributeType.OBJECT)  //$NON-NLS-1$
 		), attrs);
 
 		attrs = attrsbytype.get(AttributeType.POINT);
@@ -280,10 +280,10 @@ public class MultiAttributeProviderTest extends AbstractTestCase {
 		assertNotNull(attrs);
 		assertEquals(4, attrs.size());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("D", AttributeType.STRING), 
-				makeUninitialized("Z1", AttributeType.STRING), 
-				makeUninitialized("Z2", AttributeType.STRING), 
-				makeUninitialized("Z3", AttributeType.STRING) 
+				makeUninitialized("D", AttributeType.STRING),  //$NON-NLS-1$
+				makeUninitialized("Z1", AttributeType.STRING),  //$NON-NLS-1$
+				makeUninitialized("Z2", AttributeType.STRING),  //$NON-NLS-1$
+				makeUninitialized("Z3", AttributeType.STRING)  //$NON-NLS-1$
 		), attrs);
 
 		attrs = attrsbytype.get(AttributeType.TIMESTAMP);
@@ -296,7 +296,7 @@ public class MultiAttributeProviderTest extends AbstractTestCase {
 		assertNotNull(attrs);
 		assertEquals(1, attrs.size());
 		assertEpsilonEquals(Arrays.asList(
-				makeUninitialized("C", AttributeType.URL) 
+				makeUninitialized("C", AttributeType.URL)  //$NON-NLS-1$
 		), attrs);
 
 		attrs = attrsbytype.get(AttributeType.UUID);

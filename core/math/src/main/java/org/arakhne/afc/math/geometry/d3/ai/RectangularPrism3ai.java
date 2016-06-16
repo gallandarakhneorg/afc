@@ -77,15 +77,15 @@ public interface RectangularPrism3ai<
 	 * <code>false</code>
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsRectangleRectangle(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3,
             int x4, int y4, int z4) {
-		assert x1 <= x2 : "x1 must be lower or equal to x2";
-		assert y1 <= y2 : "y1 must be lower or equal to y2";
-		assert z1 <= z2 : "z1 must be lower or equal to z2";
-		assert x3 <= x4 : "x3 must be lower or equal to x4";
-		assert y3 <= y4 : "y3 must be lower or equal to y4";
-		assert z3 <= z4 : "z3 must be lower or equal to z4";
+		assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 3, x2);
+		assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 4, y2);
+		assert z1 <= z2 : AssertMessages.lowerEqualParameters(2, y1, 5, z2);
+		assert x3 <= x4 : AssertMessages.lowerEqualParameters(6, x3, 9, x4);
+		assert y3 <= y4 : AssertMessages.lowerEqualParameters(7, y3, 10, y4);
+		assert z3 <= z4 : AssertMessages.lowerEqualParameters(8, z3, 11, z4);
 		return x2 > x3 && x1 < x4 && y2 > y3 && y1 < y4 && z2  > z3 && z1 < z4;
 	}
 
@@ -113,12 +113,12 @@ public interface RectangularPrism3ai<
 	 * <code>false</code>
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:parameternumber"})
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsRectangleSegment(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3,
             int x4, int y4, int z4) {
-		assert x1 <= x2 : "x1 must be lower or equal to x2";
-		assert y1 <= y2 : "y1 must be lower or equal to y2";
-		assert z1 <= z2 : "y1 must be lower or equal to y2";
+		assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 3, x2);
+		assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 4, y2);
+		assert z1 <= z2 : AssertMessages.lowerEqualParameters(2, y1, 5, z2);
 
 		int c1 = MathUtil.getCohenSutherlandCode3D(x3, y3, z3, x1, y1, z1, x2, y2, z2);
 		final int c2 = MathUtil.getCohenSutherlandCode3D(x4, y4, z4, x1, y1, z1, x2, y2, z2);
@@ -213,13 +213,13 @@ public interface RectangularPrism3ai<
 	 * @param result the closest point.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void computeClosestPoint(int minx, int miny, int minz, int maxx, int maxy, int maxz, int px, int py, int pz,
             Point3D<?, ?> result) {
-		assert minx <= maxx : "minx must be lower or equal to maxx";
-		assert miny <= maxy : "miny must be lower or equal to maxy";
-		assert minz <= maxz : "minz must be lower or equal to maxz";
-		assert result != null : "Point must not be null";
+		assert minx <= maxx : AssertMessages.lowerEqualParameters(0, minx, 3, maxx);
+		assert miny <= maxy : AssertMessages.lowerEqualParameters(1, miny, 4, maxy);
+		assert minz <= maxz : AssertMessages.lowerEqualParameters(2, minz, 5, maxz);
+		assert result != null : AssertMessages.notNullParameter(9);
 
 		final int x;
 		int same = 0;
@@ -270,13 +270,13 @@ public interface RectangularPrism3ai<
 	 * @param result the farthest point.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void computeFarthestPoint(int minx, int miny, int minz, int maxx, int maxy, int maxz, int px, int py, int pz,
             Point3D<?, ?> result) {
-		assert minx <= maxx : "minx must be lower or equal to maxx";
-		assert miny <= maxy : "miny must be lower or equal to maxy";
-		assert minz <= maxz : "minz must be lower or equal to maxy";
-		assert result != null : "Point must not be null";
+		assert minx <= maxx : AssertMessages.lowerEqualParameters(0, minx, 3, maxx);
+		assert miny <= maxy : AssertMessages.lowerEqualParameters(1, miny, 4, maxy);
+		assert minz <= maxz : AssertMessages.lowerEqualParameters(2, minz, 5, maxz);
+		assert result != null : AssertMessages.notNullParameter(9);
 
 		final int x;
 		if (px <= ((minx + maxx) / 2)) {
@@ -458,7 +458,7 @@ public interface RectangularPrism3ai<
 	@Pure
 	@Override
 	default boolean intersects(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : "Rectangle must not be null";
+		assert rectangularPrism != null : AssertMessages.notNullParameter();
 		return intersectsRectangleRectangle(
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ(),
@@ -469,7 +469,7 @@ public interface RectangularPrism3ai<
 	@Pure
 	@Override
 	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "Circle must not be null";
+		assert sphere != null : AssertMessages.notNullParameter();
 		return Sphere3ai.intersectsSphereRectangularPrism(
 				sphere.getX(), sphere.getY(), sphere.getZ(),
 				sphere.getRadius(),
@@ -480,7 +480,7 @@ public interface RectangularPrism3ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
-		assert segment != null : "Segment must not be null";
+		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsRectangleSegment(
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ(),
@@ -490,7 +490,7 @@ public interface RectangularPrism3ai<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator3ai<?> iterator) {
-		assert iterator != null : "Iterator must not be null";
+		assert iterator != null : AssertMessages.notNullParameter();
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = Path3ai.computeCrossingsFromRect(
 				0,
@@ -504,7 +504,7 @@ public interface RectangularPrism3ai<
 	@Pure
 	@Override
 	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
-		assert multishape != null : "MultiShape must be not null";
+		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
 
@@ -517,7 +517,7 @@ public interface RectangularPrism3ai<
 	@Pure
 	@Override
 	default boolean contains(RectangularPrism3ai<?, ?, ?, ?, ?, ?> box) {
-		assert box != null : "Rectangle must not be null";
+		assert box != null : AssertMessages.notNullParameter();
 		return box.getMinX() >= getMinX() && box.getMaxX() <= getMaxX()
 				&& box.getMinY() >= getMinY() && box.getMaxY() <= getMaxY()
 				&& box.getMinZ() >= getMinZ() && box.getMaxZ() <= getMaxZ();
@@ -525,7 +525,7 @@ public interface RectangularPrism3ai<
 
 	@Override
 	default void set(IT rectangularPrism) {
-		assert rectangularPrism != null : "Rectangle must not be null";
+		assert rectangularPrism != null : AssertMessages.notNullParameter();
         setFromCorners(rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ(),
                 rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ());
 	}
@@ -533,7 +533,7 @@ public interface RectangularPrism3ai<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must not be null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestPoint(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
@@ -567,7 +567,7 @@ public interface RectangularPrism3ai<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point3D<?, ?> pt) {
-		assert pt != null : "Point must not be null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeFarthestPoint(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(), pt.ix(), pt.iy(), pt.iz(), point);
 		return point;
@@ -576,7 +576,7 @@ public interface RectangularPrism3ai<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point3D<?, ?> pt) {
-		assert pt != null : "Point must not be null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final int dx;
         if (pt.ix() < getMinX()) {
 			dx = getMinX() - pt.ix();
@@ -607,7 +607,7 @@ public interface RectangularPrism3ai<
 	@Pure
 	@Override
 	default double getDistanceL1(Point3D<?, ?> pt) {
-		assert pt != null : "Point must not be null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final int dx;
         if (pt.ix() < getMinX()) {
 			dx = getMinX() - pt.ix();
@@ -638,7 +638,7 @@ public interface RectangularPrism3ai<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point3D<?, ?> pt) {
-		assert pt != null : "Point must not be null";
+		assert pt != null : AssertMessages.notNullParameter();
 		final int dx;
         if (pt.ix() < getMinX()) {
 			dx = getMinX() - pt.ix();
@@ -679,7 +679,7 @@ public interface RectangularPrism3ai<
 	 */
 	@Pure
 	default Iterator<P> getPointIterator(Side startingBorder) {
-		assert startingBorder != null : "Side border must not be null";
+		assert startingBorder != null : AssertMessages.notNullParameter();
 		return new RectangleSideIterator<>(this, startingBorder);
 	}
 
@@ -706,7 +706,7 @@ public interface RectangularPrism3ai<
 	 */
 	@Pure
 	default B createUnion(Prism3ai<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : "Prism must be not null";
+		assert prism != null : AssertMessages.notNullParameter();
 		final B rr = getGeomFactory().newBox();
 		rr.setFromCorners(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ());
 		rr.setUnion(prism);
@@ -728,7 +728,7 @@ public interface RectangularPrism3ai<
 	 */
 	@Pure
 	default B createIntersection(Prism3ai<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : "Prism must be not null";
+		assert prism != null : AssertMessages.notNullParameter();
 		final B rr = getGeomFactory().newBox();
 		final int x1 = Math.max(getMinX(), prism.getMinX());
 		final int y1 = Math.max(getMinY(), prism.getMinY());
@@ -751,7 +751,7 @@ public interface RectangularPrism3ai<
 	 * @see #createUnion(Prism3ai)
 	 */
 	default void setUnion(Prism3ai<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : "Prism must be not null";
+		assert prism != null : AssertMessages.notNullParameter();
 		setFromCorners(
 				Math.min(getMinX(), prism.getMinX()),
 				Math.min(getMinY(), prism.getMinY()),
@@ -771,7 +771,7 @@ public interface RectangularPrism3ai<
 	 * @see #clear()
 	 */
 	default void setIntersection(Prism3ai<?, ?, ?, ?, ?, ?> prism) {
-		assert prism != null : "Shape must be not null";
+		assert prism != null : AssertMessages.notNullParameter();
 		final int x1 = Math.max(getMinX(), prism.getMinX());
 		final int y1 = Math.max(getMinY(), prism.getMinY());
 		final int z1 = Math.max(getMinZ(), prism.getMinZ());
@@ -853,8 +853,8 @@ public interface RectangularPrism3ai<
 		 * @param firstSide the first side to iterate on.
 		 */
 		public RectangleSideIterator(RectangularPrism3ai<?, ?, ?, P, V, ?> rectangle, Side firstSide) {
-			assert rectangle != null : "Rectangle must not be null";
-			assert firstSide != null : "First side must not be null";
+			assert rectangle != null : AssertMessages.notNullParameter(0);
+			assert firstSide != null : AssertMessages.notNullParameter(1);
 			this.factory = rectangle.getGeomFactory();
 			this.firstSide = firstSide;
 			this.x0 = rectangle.getMinX();
@@ -986,7 +986,7 @@ public interface RectangularPrism3ai<
 		 * @param rectangle is the rectangle to iterate.
 		 */
 		public RectanglePathIterator(RectangularPrism3ai<?, ?, E, ?, ?, ?> rectangle) {
-			assert rectangle != null : "Rectangle must not be null";
+			assert rectangle != null : AssertMessages.notNullParameter();
 			this.rectangle = rectangle;
 			if (rectangle.isEmpty()) {
 				this.index = 5;
@@ -1133,8 +1133,8 @@ public interface RectangularPrism3ai<
 		 * @param transform the transformation to apply on the rectangle.
 		 */
 		public TransformedRectanglePathIterator(RectangularPrism3ai<?, ?, E, ?, ?, ?> rectangle, Transform3D transform) {
-			assert rectangle != null : "Rectangle must not be null";
-			assert transform != null : "Transformation must not be null";
+			assert rectangle != null : AssertMessages.notNullParameter(0);
+			assert transform != null : AssertMessages.notNullParameter(1);
 			this.rectangle = rectangle;
 			this.transform = transform;
 			if (rectangle.isEmpty()) {

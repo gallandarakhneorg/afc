@@ -25,6 +25,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.ai.GeomFactory3ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Factory of geometrical elements.
  *
@@ -43,7 +44,7 @@ public class GeomFactory3i implements GeomFactory3ai<PathElement3i, Point3i, Vec
 
 	@Override
 	public Point3i convertToPoint(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null";
+		assert point != null : AssertMessages.notNullParameter();
 		try {
 			return (Point3i) point;
 		} catch (Throwable exception) {
@@ -53,19 +54,19 @@ public class GeomFactory3i implements GeomFactory3ai<PathElement3i, Point3i, Vec
 
     @Override
     public Point3i convertToPoint(Vector3D<?, ?> vector) {
-        assert vector != null : "Point must be not null";
+        assert vector != null : AssertMessages.notNullParameter();
         return new Point3i(vector.ix(), vector.iy(), vector.iz());
     }
 
 	@Override
 	public Vector3i convertToVector(Point3D<?, ?> point) {
-		assert point != null : "Point must be not null";
+		assert point != null : AssertMessages.notNullParameter();
 		return new Vector3i(point.ix(), point.iy(), point.iz());
 	}
 
 	@Override
 	public Vector3i convertToVector(Vector3D<?, ?> vector) {
-		assert vector != null : "Point must be not null";
+		assert vector != null : AssertMessages.notNullParameter();
 		Vector3i vv;
 		try {
 			vv = (Vector3i) vector;
@@ -107,7 +108,7 @@ public class GeomFactory3i implements GeomFactory3ai<PathElement3i, Point3i, Vec
 
 	@Override
 	public Path3i newPath(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null";
+		assert rule != null : AssertMessages.notNullParameter();
 		return new Path3i(rule);
 	}
 
@@ -117,10 +118,11 @@ public class GeomFactory3i implements GeomFactory3ai<PathElement3i, Point3i, Vec
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:magicnumber")
 	public RectangularPrism3i newBox(int x, int y, int z, int width, int height, int depth) {
-		assert width >= 0 : "Width must be positive or zero";
-		assert height >= 0 : "Height must be positive or zero";
-		assert depth >= 0 : "Depth must be positive or zero";
+		assert width >= 0 : AssertMessages.positiveOrZeroParameter(3);
+		assert height >= 0 : AssertMessages.positiveOrZeroParameter(4);
+		assert depth >= 0 : AssertMessages.positiveOrZeroParameter(5);
 		return new RectangularPrism3i(x, y, z, width, height, depth);
 	}
 
@@ -168,13 +170,13 @@ public class GeomFactory3i implements GeomFactory3ai<PathElement3i, Point3i, Vec
 
 	@Override
 	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
-		throw new UnsupportedOperationException("Not yet implemented");
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$
 		// TODO
 	}
 
 	@Override
 	public Quaternion newQuaternion(double attitude, double bank, double heading) {
-		throw new UnsupportedOperationException("Not yet implemented");
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$
 		// TODO
 	}
 

@@ -20,20 +20,14 @@
 
 package org.arakhne.afc.agentmotion;
 
-import java.io.Serializable;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
-
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.Test;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.testtools.AbstractTestCase;
-import org.arakhne.afc.vmutil.annotations.ScalaOperator;
-import org.arakhne.afc.vmutil.annotations.XtextOperator;
-import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 @SuppressWarnings("all")
 public class AgentMotionTest extends AbstractMathTestCase {
@@ -392,8 +386,6 @@ public class AgentMotionTest extends AbstractMathTestCase {
 
 	@Test
 	public void setAngularDouble() {
-		double x = getRandom().nextDouble();
-		double y = getRandom().nextDouble();
 		double r = getRandom().nextDouble();
 		AgentMotion m = new AgentMotion(-15, -16, -17);
 		
@@ -424,7 +416,6 @@ public class AgentMotionTest extends AbstractMathTestCase {
 	public void setLinearDoubleDouble() {
 		double x = getRandom().nextDouble();
 		double y = getRandom().nextDouble();
-		double r = getRandom().nextDouble();
 		AgentMotion m = new AgentMotion(-15, -16, -17);
 		
 		m.setLinear(x, y);
@@ -437,7 +428,6 @@ public class AgentMotionTest extends AbstractMathTestCase {
 	public void setLinearVector2D() {
 		double x = getRandom().nextDouble();
 		double y = getRandom().nextDouble();
-		double r = getRandom().nextDouble();
 		AgentMotion m = new AgentMotion(-15, -16, -17);
 		
 		m.setLinear(new Vector2d(x, y));

@@ -25,7 +25,7 @@ public class EPSFileFilterTest extends AbstractBaseFileFilterTest {
 
 	@Override
 	protected String getExtension() {
-		return ".eps";
+		return ".eps"; //$NON-NLS-1$
 	}
 
 	@Override
