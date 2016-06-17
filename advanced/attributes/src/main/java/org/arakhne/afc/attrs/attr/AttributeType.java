@@ -157,9 +157,10 @@ public enum AttributeType {
 		NAME_RESOURCE_FILE = pName + ".types"; //$NON-NLS-1$
 	}
 
-	@SuppressWarnings("serial")
 	private static final Map<AttributeType, TypeFactory<?>> DEFAULT_TYPE_FACTORY =
-			Collections.unmodifiableMap(new HashMap<AttributeType, TypeFactory<?>>() {{
+			Collections.unmodifiableMap(new HashMap<AttributeType, TypeFactory<?>>() {
+				private static final long serialVersionUID = -5930539797174658160L; {
+
 					put(AttributeType.BOOLEAN, () -> Boolean.FALSE);
 					put(AttributeType.INTEGER, () ->  new Long(0));
 					put(AttributeType.DATE, () ->  new Date());
