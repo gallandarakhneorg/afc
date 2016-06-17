@@ -19,18 +19,11 @@
  */
 package org.arakhne.afc.math.geometry.d2.d;
 
-<<<<<<< 5a3f4e74bcd01f44f4482566f5b5ac94a62323cb
-import org.arakhne.afc.math.geometry.d2.afp.AbstractOrientedPoint2afpTest;
-=======
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.geometry.d2.AbstractOrientedPoint2DTest;
-import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
->>>>>>> [math/fx] Update of OrientedPoint hierarchy
 
 @SuppressWarnings("all")
 public class OrientedPoint2dTest extends AbstractOrientedPoint2DTest<OrientedPoint2d, Vector2d, OrientedPoint2d> {

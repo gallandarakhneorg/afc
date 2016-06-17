@@ -21,7 +21,6 @@
 package org.arakhne.afc.math.geometry.d2.afp;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 

@@ -19,11 +19,6 @@
  */
 package org.arakhne.afc.math.geometry.d2;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
 @SuppressWarnings("all")
 public abstract class AbstractOrientedPoint2DTest<P extends Point2D<? super P, ? super V>,
         V extends Vector2D<? super V, ? super P>, TT extends Tuple2D> extends AbstractPoint2DTest<P, V, TT> {
