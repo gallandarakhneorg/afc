@@ -448,7 +448,7 @@ public enum AttributeType {
 	@Pure
 	public Object getDefaultValue() {
 		final TypeFactory<?> typeFactory = DEFAULT_TYPE_FACTORY.get(this);
-		if(typeFactory != null) {
+		if (typeFactory != null) {
 			return typeFactory.createType();
 		}
 		return Object.class;
