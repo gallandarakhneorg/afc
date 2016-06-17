@@ -25,7 +25,6 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
 import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
-import org.arakhne.afc.math.geometry.d2.afp.OrientedPoint2afp;
 import org.arakhne.afc.math.geometry.d2.afp.OrientedRectangle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
@@ -121,10 +120,5 @@ public class TestShapeFactory2d implements TestShapeFactory<Point2d, Vector2d, R
 	public MultiShape2afp<?, ?, ?, ?, Point2d, Vector2d, Rectangle2d> createMultiShape() {
 		return new MultiShape2d();
 	}
-
-    @Override
-    public OrientedPoint2afp createOrientedPoint(double x, double y, double length, double dirX, double dirY) {
-        return new OrientedPoint2d(x, y, length, dirX, dirY);
-    }
 
 }

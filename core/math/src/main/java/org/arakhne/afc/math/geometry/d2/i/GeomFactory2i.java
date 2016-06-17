@@ -165,26 +165,6 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Vec
 	}
 
 	@Override
-	public OrientedPoint2i newOrientedPoint(int x, int y) {
-	    return new OrientedPoint2i(x, y);
-	}
-
-	@Override
-	public OrientedPoint2i newOrientedPoint(int x, int y, int length) {
-	    return new OrientedPoint2i(x, y, length);
-	}
-
-    @Override
-    public OrientedPoint2i newOrientedPoint(int x, int y, int dirX, int dirY) {
-        return new OrientedPoint2i(x, y, dirX, dirY);
-    }
-
-    @Override
-    public OrientedPoint2i newOrientedPoint(int x, int y, int length, int dirX, int dirY) {
-        return new OrientedPoint2i(x, y, length, dirX, dirY);
-    }
-
-	@Override
 	public MultiShape2i<?> newMultiShape() {
 		return new MultiShape2i<>();
 	}
