@@ -1051,63 +1051,18 @@ public class AttributeValueImpl implements AttributeValue {
 			case REAL:
 				return ((Double) this.value).toString();
 			case POINT:
-				final Point2D<?, ?> pt2 = (Point2D<?, ?>) this.value;
-				final StringBuilder buffer1 = new StringBuilder();
-				buffer1.append(pt2.getX());
-				buffer1.append(";"); //$NON-NLS-1$
-				buffer1.append(pt2.getY());
-				return buffer1.toString();
+				return casePointGetString();
 			case POINT3D:
-				final Point3D<?, ?> pt3 = (Point3D<?, ?>) this.value;
-				final StringBuilder buffer2 = new StringBuilder();
-				buffer2.append(pt3.getX());
-				buffer2.append(";"); //$NON-NLS-1$
-				buffer2.append(pt3.getY());
-				buffer2.append(";"); //$NON-NLS-1$
-				buffer2.append(pt3.getZ());
-				return buffer2.toString();
+				return casePoint3DGetString();
 			case DATE:
 				final SimpleDateFormat dtformat = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 				return dtformat.format((Date) this.value);
 			case POLYLINE:
-				final StringBuilder buffer3 = new StringBuilder();
-				final Point2D<?, ?>[] lstpt2 = (Point2D<?, ?>[]) this.value;
-				for (int i = 0; i < lstpt2.length; ++i) {
-					if (lstpt2[i] != null) {
-						if (buffer3.length() > 0) {
-							buffer3.append(";"); //$NON-NLS-1$
-						}
-						buffer3.append(lstpt2[i].getX());
-						buffer3.append(";"); //$NON-NLS-1$
-						buffer3.append(lstpt2[i].getY());
-					}
-				}
-				return buffer3.toString();
+				return casePolylineGetString();
 			case POLYLINE3D:
-				final StringBuilder buffer4 = new StringBuilder();
-				final Point3D<?, ?>[] lstpt3 = (Point3D<?, ?>[]) this.value;
-				for (int i = 0; i < lstpt3.length; ++i) {
-					if (lstpt3[i] != null) {
-						if (buffer4.length() > 0) {
-							buffer4.append(";"); //$NON-NLS-1$
-						}
-						buffer4.append(lstpt3[i].getX());
-						buffer4.append(";"); //$NON-NLS-1$
-						buffer4.append(lstpt3[i].getY());
-						buffer4.append(";"); //$NON-NLS-1$
-						buffer4.append(lstpt3[i].getZ());
-					}
-				}
-				return buffer4.toString();
+				return casePolyline3DGetString();
 			case ENUMERATION:
-				final StringBuilder buffer5 = new StringBuilder();
-				final Enum<?> enumeration = (Enum<?>) this.value;
-				final Class<?> enumerationType = enumeration.getDeclaringClass();
-				final String typeName = enumerationType.getCanonicalName();
-				buffer5.append(typeName);
-				buffer5.append("."); //$NON-NLS-1$
-				buffer5.append(((Enum<?>) this.value).name());
-				return buffer5.toString();
+				return caseEnumerationGetString();
 			case TYPE:
 				return ((Class<?>) this.value).getCanonicalName();
 			case INET_ADDRESS:
@@ -1121,6 +1076,71 @@ public class AttributeValueImpl implements AttributeValue {
 			//
 		}
 		throw new InvalidAttributeTypeException();
+	}
+
+	private String casePointGetString() {
+		final Point2D<?, ?> pt2 = (Point2D<?, ?>) this.value;
+		final StringBuilder buffer1 = new StringBuilder();
+		buffer1.append(pt2.getX());
+		buffer1.append(";"); //$NON-NLS-1$
+		buffer1.append(pt2.getY());
+		return buffer1.toString();
+	}
+
+	private String casePoint3DGetString() {
+		final Point3D<?, ?> pt3 = (Point3D<?, ?>) this.value;
+		final StringBuilder buffer2 = new StringBuilder();
+		buffer2.append(pt3.getX());
+		buffer2.append(";"); //$NON-NLS-1$
+		buffer2.append(pt3.getY());
+		buffer2.append(";"); //$NON-NLS-1$
+		buffer2.append(pt3.getZ());
+		return buffer2.toString();
+	}
+
+	private String casePolylineGetString() {
+		final StringBuilder buffer3 = new StringBuilder();
+		final Point2D<?, ?>[] lstpt2 = (Point2D<?, ?>[]) this.value;
+		for (int i = 0; i < lstpt2.length; ++i) {
+			if (lstpt2[i] != null) {
+				if (buffer3.length() > 0) {
+					buffer3.append(";"); //$NON-NLS-1$
+				}
+				buffer3.append(lstpt2[i].getX());
+				buffer3.append(";"); //$NON-NLS-1$
+				buffer3.append(lstpt2[i].getY());
+			}
+		}
+		return buffer3.toString();
+	}
+
+	private String casePolyline3DGetString() {
+		final StringBuilder buffer4 = new StringBuilder();
+		final Point3D<?, ?>[] lstpt3 = (Point3D<?, ?>[]) this.value;
+		for (int i = 0; i < lstpt3.length; ++i) {
+			if (lstpt3[i] != null) {
+				if (buffer4.length() > 0) {
+					buffer4.append(";"); //$NON-NLS-1$
+				}
+				buffer4.append(lstpt3[i].getX());
+				buffer4.append(";"); //$NON-NLS-1$
+				buffer4.append(lstpt3[i].getY());
+				buffer4.append(";"); //$NON-NLS-1$
+				buffer4.append(lstpt3[i].getZ());
+			}
+		}
+		return buffer4.toString();
+	}
+
+	private String caseEnumerationGetString() {
+		final StringBuilder buffer5 = new StringBuilder();
+		final Enum<?> enumeration = (Enum<?>) this.value;
+		final Class<?> enumerationType = enumeration.getDeclaringClass();
+		final String typeName = enumerationType.getCanonicalName();
+		buffer5.append(typeName);
+		buffer5.append("."); //$NON-NLS-1$
+		buffer5.append(((Enum<?>) this.value).name());
+		return buffer5.toString();
 	}
 
 	@Override
