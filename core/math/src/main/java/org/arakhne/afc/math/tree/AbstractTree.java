@@ -144,89 +144,48 @@ public abstract class AbstractTree<D, N extends TreeNode<D, N>>
 	@Pure
 	@Override
 	public final Iterable<N> toDepthFirstIterable() {
-		return new Iterable<N>() {
-			@Override
-			public Iterator<N> iterator() {
-				return AbstractTree.this.depthFirstIterator();
-			}
-		};
+		return () ->  this.depthFirstIterator();
 	}
 
 	@Pure
 	@Override
 	public final Iterable<N> toDepthFirstIterable(final DepthFirstNodeOrder nodeOrder) {
-		return new Iterable<N>() {
-			@Override
-			public Iterator<N> iterator() {
-				return AbstractTree.this.depthFirstIterator(nodeOrder);
-			}
-		};
+		return () -> this.depthFirstIterator(nodeOrder);
 	}
 
 	@Override
 	@Pure
 	public final Iterable<N> toDepthFirstIterable(final int infixPosition) {
-		return new Iterable<N>() {
-			@Override
-			public Iterator<N> iterator() {
-				return AbstractTree.this.depthFirstIterator(infixPosition);
-			}
-		};
+		return () -> this.depthFirstIterator(infixPosition);
 	}
 
 	@Pure
 	@Override
 	public final Iterable<N> toBroadFirstIterable() {
-		return new Iterable<N>() {
-			@Override
-			public Iterator<N> iterator() {
-				return AbstractTree.this.broadFirstIterator();
-			}
-		};
+		return () -> this.broadFirstIterator();
 	}
 
 	@Override
 	@Pure
 	public final Iterable<D> toDataDepthFirstIterable() {
-		return new Iterable<D>() {
-			@Override
-			public Iterator<D> iterator() {
-				return AbstractTree.this.dataDepthFirstIterator();
-			}
-		};
+		return () -> this.dataDepthFirstIterator();
 	}
 
 	@Override
 	@Pure
 	public final Iterable<D> toDataDepthFirstIterable(final DepthFirstNodeOrder nodeOrder) {
-		return new Iterable<D>() {
-			@Override
-			public Iterator<D> iterator() {
-				return AbstractTree.this.dataDepthFirstIterator(nodeOrder);
-			}
-		};
+		return () -> this.dataDepthFirstIterator(nodeOrder);
 	}
 
 	@Override
 	@Pure
 	public final Iterable<D> toDataDepthFirstIterable(final int infixPosition) {
-		return new Iterable<D>() {
-			@Override
-			public Iterator<D> iterator() {
-				return AbstractTree.this.dataDepthFirstIterator(infixPosition);
-			}
-		};
+		return () -> this.dataDepthFirstIterator(infixPosition);
 	}
 
 	@Pure
 	@Override
 	public final Iterable<D> toDataBroadFirstIterable() {
-		return new Iterable<D>() {
-			@Override
-			public Iterator<D> iterator() {
-				return AbstractTree.this.dataBroadFirstIterator();
-			}
-		};
+		return () -> this.dataBroadFirstIterator();
 	}
-
 }
