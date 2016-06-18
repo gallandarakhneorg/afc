@@ -1,5 +1,6 @@
 = Arakhnê Foundation Classes
 :toc: right
+:toc-placement!:
 :hide-uri-scheme:
 
 The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may be used to build applications. The Arakhnê Foundation Classes provide tools that are not directly available in the standard Java API.
@@ -18,6 +19,8 @@ image:https://img.shields.io/badge/compliant-OSGI-yellowgreen.svg?style=flat-squ
 
 image:https://img.shields.io/github/license/gallandarakhneorg/afc.svg?style=flat-square[link=https://opensource.org/licenses/Apache-2.0]
 image:https://cla-assistant.io/readme/badge/gallandarakhneorg/afc[link=https://cla-assistant.io/gallandarakhneorg/afc]
+
+toc::[]
 
 == 1. Content of the AFC
 
