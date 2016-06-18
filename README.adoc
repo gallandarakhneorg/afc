@@ -1,5 +1,5 @@
 = Arakhnê Foundation Classes
-:toc:
+:toc: right
 :hide-uri-scheme:
 
 The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may be used to build applications. The Arakhnê Foundation Classes provide tools that are not directly available in the standard Java API.
@@ -24,4 +24,305 @@ image:https://cla-assistant.io/readme/badge/gallandarakhneorg/afc[link=https://c
 === 1.1. Alive Modules
 
 AFC library contains the following alive modules:
+
+[cols="2,1,1,3", options="header"]
+|===
+|Name
+| Group Id
+| Artifact Id
+| Explanation
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/agentmotion/package-summary.html[Agent Motion Algos]
+| org.arakhne.afc.advanced
+| agentmotion
+| Collection of algorithms for calculating the motion of mobile agents.
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/util/package-summary.html[General Utilities]
+| org.arakhne.afc.core
+| util
+| General utility classes that do not fit in the other AFC modules
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/attrs/collection/package-summary.html[Generic Attribute API]
+| org.arakhne.afc.advanced
+| attributes
+| Library for creating generic attributes, aka. Variant attributes.
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/filefilter/package-summary.html[Input-Output Utilities]
+| org.arakhne.afc.core
+| inputoutput
+| General utilities related to IO
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/geometry/d2/dfx/package-summary.html[JavaFX Math Tools]
+| org.arakhne.afc.advanced
+| mathfx
+| JavaFX implementation of the mathematic and geometry tools
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/package-summary.html[Math and Physics Tools]
+| org.arakhne.afc.core
+| math
+| Mathematic and Geometry tools and primitives
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/text/package-summary.html[Text Utilities]
+| org.arakhne.afc.core
+| text
+| Utilities for string of characters
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/vmutil/package-summary.html[VM Utilities]
+| org.arakhne.afc.core
+| vmutils
+| Utilities related to the virtual machine, file systems, etc.
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/references/package-summary.html[Weak Reference Utilities]
+| org.arakhne.afc.core
+| references
+| Set of classes for creating advanced weak references.
+|===
+
+=== 1.2. Deprecated and Dead Modules
+
+AFC library contains the following deprecated modules (deprecated modules are subject to removal in next version).
+The table presents the modules, the version from which they are deprecated, and the version at which they will be totaly removed from.
+
+
+[cols="2,1,1,3,1,1", options="header"]
+|===
+| Name
+| Group Id
+| Artifact Id
+| Explanation
+| Deprecation Start
+| Total Removal
+
+| Android implementation of vector
+| org.arakhne.afc.ui
+| android-vector
+| Android implementation of the vectorial  primitives.
+| 13.0
+| 15.0
+
+| Android Tools
+| org.arakhne.afc.ui
+| android
+| Extra Android widgets and activities.
+| 13.0
+| 15.0
+
+| Atomic deployment of files
+| org.arakhne.afc.maven
+| atomicdeploy
+| Maven plugin for deploying a single file.
+| 13.0
+| 15.0
+
+| AWT implementation of vector
+| org.arakhne.afc.ui
+| awt-vector
+| AWT implementation of the vectorial primitives.
+| 13.0
+| 15.0
+
+| AWT Tools
+| org.arakhne.afc.ui
+| awt
+| Extra AWT widgets.
+| 13.0
+| 15.0
+
+| Base UI Tools
+| org.arakhne.afc.ui
+| base
+| Base tools for user interfaces.
+| 13.0
+| 15.0
+
+| Swing Widgets
+| org.arakhne.afc.ui
+| swing
+|  Extra Swing widgets.
+| 13.0
+| 15.0
+
+| Vector Window Toolkit
+| org.arakhne.afc.ui
+| vector
+| Vectorial primitives for building vectorial graphical editors.
+| 13.0
+| 15.0
+|===
+
+=== 1.3 Compatibility with other Languages than Java
+
+AFC is a Java library that provides extensions for being used with other programming languages.
+
+For example, link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/geometry/d2/Vector2D.html[Vector2D] provides overloading function for operator `+`. In this way, this operator may be used by typing `v1 + 1` instead of `v1.add(1)`.
+
+==== 1.3.1 SARL agent-oriented programming language
+
+AFC library is compatible with the link:http://www.sarl.io[SARL] agent-oriented programming language, which is a Xtext-based language (see below).
+Indeed, the AFC classes use the specific annotations: `@Pure` for making link:https://en.wikipedia.org/wiki/Pure_function[pure functions], and `@Inline` for link:https://en.wikipedia.org/wiki/Inline_function[inline functions]. AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
+
+==== 1.3.2 Scala object-oriented programming language
+
+AFC library is compatible with the link:http://scala-lang.org[Scala] object-oriented programming language.
+Indeed, the AFC classes provide the overridings of the operators (`$plus`, `$minus`, etc.) for vectors, matrices, etc.
+
+==== 1.3.3 Xtend object-oriented programming language
+
+AFC library is compatible with the link:https://www.eclipse.org/xtend/[Xtend] object-oriented programming language, which is a Xtext-based language (see below).
+Indeed, the AFC classes use the specific annotations: `@Pure` for making link:https://en.wikipedia.org/wiki/Pure_function[pure functions], and `@Inline` for [inline functions](https://en.wikipedia.org/wiki/Inline_function)). AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
+
+==== 1.3.4 Other Xtext-base languages
+
+AFC library is compatible with all the languages that are defined upon the link:https://www.eclipse.org/Xtext/[Xtext] framework for development of programming languages and domain-specific languages.
+Indeed, the AFC classes use the specific annotations: `@Pure` for making link:https://en.wikipedia.org/wiki/Pure_function[pure functions], and `@Inline` for link:https://en.wikipedia.org/wiki/Inline_function[inline functions]. AFC also provides the overridings of the operators (`operator_plus`, `operator_minus`, etc.) for vectors, matrices, etc.
+
+== 2. Requirements
+
+* Java Development Toolkit (JDK) 1.8 or higher.
+
+== 3. Using AFC in a Maven project
+
+=== 3.1. Recommendations
+
+For making your experience with AFC the best, we recommend you:
+
+* *to enable the assertions at development time (with the `-ea` command line option).*
+
+=== 3.2. Use the stable version
+
+The lastest stable version of AFC is available on link:http://search.maven.org/[Maven Central].
+Consequently, you could directly include the AFC module that you want to use into the Maven dependencies of your project.
+For example, if you want to use the "vmutils" module:
+
+```xml
+	...
+	<dependency>
+	  <groupId>org.arakhne.core</groupId>
+	  <artifactId>vmutils</artifactId>
+	  <version>13.0</version>
+	</dependency>
+	...
+```
+
+Please, replace Version `12.0` in the previous snipset by the number of the version you want to use (`12.0` is the first version that is available on Maven Central).
+
+=== 3.3. Use of the development version
+
+New features, enhancements and bug fixes are available in the SNAPSHOT (development) version of AFC.
+For using this version, you must add the Maven Repository Server of AFC in your pom file:
+
+```xml
+	...
+	<dependencies>
+	  <dependency>
+	    <groupId>org.arakhne.core</groupId>
+	    <artifactId>vmutils</artifactId>
+	    <version>14.0-SNAPSHOT</version>
+	  </dependency>
+	<dependencies>
+	...
+	<repositories>
+	  <repository>
+	    <id>org.arakhne-maven</id>
+	    <name>Arakhnê.org Snapshots</name>
+	    <url>http://download.tuxfamily.org/arakhne/maven/</url>
+	  </repository>
+	</repositories>
+	<pluginRepositories>
+    	  <pluginRepository>
+	    <id>org.arakhne-maven</id>
+	    <name>Arakhnê.org Snapshots</name>
+	    <url>http://download.tuxfamily.org/arakhne/maven/</url>
+	    <snapshots>
+	      <enabled>true</enabled>
+	    </snapshots>
+	  </pluginRepository>
+	</pluginRepositories>
+	...
+```
+
+== 4. Issues
+
+Issues related to the AFC are tracked on link:https://github.com/gallandarakhneorg/afc/issues[GitHub]
+You must use this issue tracker to report and follow your issues.
+
+== 5. Contributions
+
+Any contribution to the AFC library is welcome.
+
+=== 5.1. Installing the Development Environment
+
+For setting up the development environment, you should follow the steps:
+
+* Download and install "Eclipse for Java Developers".
+* Download the link:./build-tools/src/main/resources/eclipse/contributors.p2f[contributors.p2f] file that specifies the Eclipse plugins for the development environment.
+* Install the Eclipse plugins by selecting in Eclipse: `File > Import > Install > Install software items from file.`
+* Download the link:./build-tools/src/main/resources/eclipse/contributors.epf[contributors.epf] file that contains the Eclipse general preferences related to the AFC project.
+* Import the general preferences: `File > Import > General > Preferences`
+
+=== 5.2. Obtaining the AFC Source Code
+
+For obtaining the code of the AFC library, you must clone it from the Git:
+```bash
+git clone https://github.com/gallandarakhneorg/afc
+```
+
+CAUTION: Due to an issue in the Eclipse Checkstyle plugin, it is mandatory to install the `build-tools` module in the your `.m2` repository prior to the first launch of the Eclipse IDE: `mvn clean install -Dcheckstyle.skip=true`
+
+=== 5.3. Compiling the AFC Source Code
+
+Maven is the standard tool for compiling the AFC library. It is recommended to launch the Maven compilation process on the command at least before submitting a pull request. The command line is:
+```bash
+mvn clean install
+```
+
+=== 5.4. Sending the Contribution
+
+For sending your contribution to the AFC master repositoty, you must request a pull (PR) to the link:https://github.com/gallandarakhneorg/afc/[GitHub repository].
+
+For being merged, your must ensure the following points:
+
+* Your PR must be compilable with Maven.
+* Your PR must pass the compilation process successfully, including the code compilation, unit tests, and code style checking. This process is supported by Travis-CI for linux and OSX platforms, and AppVeyor for Windows platforms.
+* You must sign the link:./CLA.md[Contributor License Agreement] on GitHub. It is supported by link:https://cla-assistant.io/gallandarakhneorg/afc[cla-assistant].
+* Your PR should be reviewed by one or more of the main contributors for ensure it is following the development rules and philosophy related to AFC.
+
+The page of your PR on Github is displaying the status of your PR.
+If one point is failing, please follows the steps:
+
+* Go on the Travis-CI or AppVeyor console for obtaining the cause of the failure.
+* Fix the code of your PR on your local copy.
+* Commit on your local repository, compile, and test until you have fixed the issue.
+* Push the changes on the same PR, i.e. the same Git repository as the one used for the PR. *Do not create a new PR for the fix.*
+* The GitHub platform will relaunch the CI process automatically.
+
+== 6. Authors
+
+* Alexandre WILLAUME, junior developer, vmutil module.
+* Christophe BOHRHAUER, student developer, math module.
+* Hamza JAFFALI, student developer, math module.
+* Christophe BOHRHAUER, student developer, math module.
+* Marc BAUMGARTNER, contributor.
+* Maxime GROLLEAU, student developer, math module.
+* Mahdi HANNOUN, Founder, original Author.
+* Nicolas GAUD, senior developer, math module.
+* Olivier LAMOTTE, senior developer, vmutil and math modules.
+* link:http://www.arakhne.org/homes/galland.html[Stéphane GALLAND], founder, original author.
+* Thomas PIOTROWSKI, student developer, math module.
+* Yuku SUGIANTO, contributor.
+
+== 7. License of AFC
+
+The Arakhnê Foundation Classes are distributed under the link:./LICENSE[Apache v2 license], and is copyrigthed to the original authors and the other authors, as expressed in the link:./NOTICE[NOTICE].
+
+== 8. Success Stories
+
+The following projects have sucessfully used a module of the AFC:
+
+* link:http://www.sarl.io[SARL agent-programming language]
+* link:https://github.com/gallandarakhne.org/jaak[Jaak Simulation Library]
+* link:http://www.janusproject.io[Janus agent platform]
+* link:http://www.multiagent.fr/MultiAgentWiki:MetroB[Metro-B]
+* link:http://www.arakhne.org/neteditor[NetEditor]
+* link:http://www.multiagent.fr/MultiAgentWiki:FLO[FLO Train Simulator]
 
