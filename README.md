@@ -156,9 +156,9 @@ Any contribution to the AFC library is welcome.
 
 For setting up the development environment, you should follow the steps:
 * Download and install "Eclipse for Java Developers".
-* Download the [contributors.p2f](./etc/contributors.p2f) file that specifies the Eclipse plugins for the development environment.
+* Download the [contributors.p2f](./build-tools/src/main/resources/eclipse/contributors.p2f) file that specifies the Eclipse plugins for the development environment.
 * Install the Eclipse plugins by selecting in Eclipse: `File > Import > Install > Install software items from file.`
-* Download the [contributors.epf](./etc/contributors.epf) file that contains the Eclipse general preferences related to the AFC project.
+* Download the [contributors.epf](./build-tools/src/main/resources/eclipse/contributors.epf) file that contains the Eclipse general preferences related to the AFC project.
 * Import the general preferences: `File > Import > General > Preferences`
 
 ## 5.2. Obtaining the AFC Source Code
