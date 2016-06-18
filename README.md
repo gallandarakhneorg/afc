@@ -53,7 +53,7 @@ Base UI Tools | org.arakhne.afc.ui | base | Base tools for user interfaces. | 13
 Swing Widgets | org.arakhne.afc.ui | swing |  Extra Swing widgets. | 13.0 | 15.0
 Vector Window Toolkit | org.arakhne.afc.ui | vector | Vectorial primitives for building vectorial graphical editors. | 13.0 | 15.0
 
-## 1.1 Compatibility with other Languages than Java
+## 1.3 Compatibility with other Languages than Java
 
 AFC is a Java library that provides extensions for being used with other programming languages.
 
