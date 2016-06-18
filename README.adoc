@@ -326,6 +326,7 @@ The following projects have sucessfully used a module of the AFC:
 * link:https://github.com/gallandarakhne.org/jaak[Jaak Simulation Library]
 * link:http://www.janusproject.io[Janus agent platform]
 * link:http://www.multiagent.fr/MultiAgentWiki:MetroB[Metro-B]
+* link:http://www.multiagent.fr/MultiAgentWiki:SARTRE[SARTRE]
 * link:http://www.arakhne.org/neteditor[NetEditor]
 * link:http://www.multiagent.fr/MultiAgentWiki:FLO[FLO Train Simulator]
 
