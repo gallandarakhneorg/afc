@@ -184,16 +184,18 @@ mvn clean install
 
 For sending your contribution to the AFC master repositoty, you must request a pull (PR) to the [GitHub repository](https://github.com/gallandarakhneorg/afc/).
 
-For being merged, your PR must:
-* be compilable with Maven.
-* pass the compilation process successfully, including the code compilation, unit testing, and code style checking. This process is supported by Travis-CI;
-* sign the [Contributor License Agreement](./CLA.md) on GitHub. It is supported by [cla-assistant](https://cla-assistant.io/gallandarakhneorg/afc);
-* be reviewed by one or more of the main contributors for ensure your PR is following the development rules and philosophy related to the AFC.
+For being merged, your must ensure the following points:
+* Your PR must be compilable with Maven.
+* Your PR must pass the compilation process successfully, including the code compilation, unit tests, and code style checking. This process is supported by Travis-CI for linux and OSX platforms, and AppVeyor for Windows platforms;
+* You must sign the [Contributor License Agreement](./CLA.md) on GitHub. It is supported by [cla-assistant](https://cla-assistant.io/gallandarakhneorg/afc);
+* Your PR should be reviewed by one or more of the main contributors for ensure it is following the development rules and philosophy related to AFC.
 
-If the CI process is failing on your PR, please follows the steps:
-* Go on the Travis-CI output for obtaining the cause of the failure.
+The page of your PR on Github is displaying the status of your PR.
+If one point is failing, please follows the steps:
+* Go on the Travis-CI or AppVeyor console for obtaining the cause of the failure.
 * Fix the code of your PR on your local copy.
-* Commit on your local repository, and push the changes on the same PR. **Do not create a new PR for the fix.**
+* Commit on your local repository, compile, and test until you have fixed the issue.
+* Push the changes on the same PR, i.e. the same Git repository as the one used for the PR. **Do not create a new PR for the fix.**
 * The GitHub platform will relaunch the CI process automatically.
 
 # 6. License of AFC
