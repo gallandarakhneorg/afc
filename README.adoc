@@ -1,0 +1,27 @@
+= Arakhnê Foundation Classes
+:toc:
+:hide-uri-scheme:
+
+The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may be used to build applications. The Arakhnê Foundation Classes provide tools that are not directly available in the standard Java API.
+
+image:https://img.shields.io/badge/requires-Java%208-red.svg?style=flat-square[link=https://www.java.com]
+image:https://travis-ci.org/gallandarakhneorg/afc.svg?branch=master[link=https://travis-ci.org/gallandarakhneorg/afc]
+image:https://ci.appveyor.com/api/projects/status/github/gallandarakhneorg/afc?branch=master&svg=true[link=https://ci.appveyor.com/project/gallandarakhneorg/afc]
+
+image:https://img.shields.io/badge/compliant-Maven-yellowgreen.svg?style=flat-square[link=http://maven.apache.com]
+image:https://img.shields.io/badge/compliant-Java-yellowgreen.svg?style=flat-square[link=https://www.java.com]
+image:https://img.shields.io/badge/compliant-SARL-yellowgreen.svg?style=flat-square[link=http://sarl.io]
+image:https://img.shields.io/badge/compliant-Scala-yellowgreen.svg?style=flat-square[link=http://scala-lang.org]
+image:https://img.shields.io/badge/compliant-Xtext-yellowgreen.svg?style=flat-square[link=https://eclipse.org/Xtext]
+image:https://img.shields.io/badge/compliant-Xtend-yellowgreen.svg?style=flat-square[link=https://eclipse.org/Xtext]
+image:https://img.shields.io/badge/compliant-OSGI-yellowgreen.svg?style=flat-square[link=https://www.osgi.org]
+
+image:https://img.shields.io/github/license/gallandarakhneorg/afc.svg?style=flat-square[link=https://opensource.org/licenses/Apache-2.0]
+image:https://cla-assistant.io/readme/badge/gallandarakhneorg/afc[link=https://cla-assistant.io/gallandarakhneorg/afc]
+
+== 1. Content of the AFC
+
+=== 1.1. Alive Modules
+
+AFC library contains the following alive modules:
+
