@@ -66,7 +66,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 	@Test
 	public void getName() {
 		for(AttributeType type : AttributeType.values()) {
-			String name = type.getName();
+			String name = type.getLocalizedName();
 			assertNotNull(name);
 			assertNotSame("", name);  //$NON-NLS-1$
 		}
@@ -1168,4 +1168,12 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertTrue(AttributeType.ENUMERATION.isAssignableFrom(AttributeType.ENUMERATION));
 	}
 
+	@Test
+	public void getLocalizedName() {
+		for (AttributeType type : AttributeType.values()) {
+			String name = type.getLocalizedName();
+			assertNotEquals("Invalid attribute name", "OTHER", name); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
+	
 }

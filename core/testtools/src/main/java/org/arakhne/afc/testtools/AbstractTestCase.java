@@ -209,6 +209,30 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		}
 	}
 
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 */
+	public static void assertNotEquals(Object expected, Object actual) {
+		assertNotEquals(null, expected, actual);
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param message the error message.
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 */
+	public static void assertNotEquals(String message, Object expected, Object actual) {
+		if (!Objects.equals(expected, actual)) {
+			throw new junit.framework.ComparisonFailure(message,
+					Objects.toString(expected), Objects.toString(actual));
+		}
+	}
+
 	/** Test if the given value is not a number.
 	 *
 	 * @param value the value to test.

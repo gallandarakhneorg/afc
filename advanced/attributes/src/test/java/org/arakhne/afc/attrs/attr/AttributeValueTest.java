@@ -3359,7 +3359,7 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		v = AttributeValueImpl.parse("java.lang.String");  //$NON-NLS-1$
 		assertSame(AttributeType.TYPE, v.getType());
 
-		v = AttributeValueImpl.parse(AttributeType.class.getName()+"."+AttributeType.ENUMERATION.toString());  //$NON-NLS-1$
+		v = AttributeValueImpl.parse(AttributeType.class.getName()+"."+AttributeType.ENUMERATION.name());  //$NON-NLS-1$
 		assertSame(AttributeType.ENUMERATION, v.getType());
 
 		v = AttributeValueImpl.parse("3eade434-b267-4ffa-a574-2e2cbff0151a");  //$NON-NLS-1$
