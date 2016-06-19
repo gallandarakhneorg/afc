@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>p2</artifactId>
+		<groupId>org.arakhne.afc.p2</groupId>
+		<version>14.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>p2-repository</artifactId>
+	<name>P2 Repository</name>
+	<packaging>pom</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.reficio</groupId>
+				<artifactId>p2-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-cli</id>
+						<phase>install</phase>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<id>org.mockito:mockito-core:${mockito.version}</id>
+								</artifact>
+							</artifacts>
+							<features>
+								<artifact>
+									<id>org.arakhne.afc.p2:mockito:${afc.version}</id>
+									<source>false</source>
+									<transitive>false</transitive>
+								</artifact>
+							</features>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>wagon-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-upload</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>upload</goal>
+						</goals>
+						<configuration>
+							<serverId>${afc.deployment.server}</serverId>
+							<fromDir>${project.build.directory}/repository</fromDir>
+							<includes>*</includes>
+							<url>${afc.deployment.base}</url>
+							<toDir>p2</toDir>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

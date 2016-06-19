@@ -9,7 +9,7 @@
 	<name>Arakhnê Foundation Classes</name>
 	<inceptionYear>2006</inceptionYear>
 	<url>http://www.arakhne.org/afc/</url>
-	<description>Collection of Java utilities.</description>
+	<description>Math, geometric, physic tools and other Java utilities.</description>
 
 	<properties>
 		<afc.version>14.0-SNAPSHOT</afc.version>
@@ -29,6 +29,11 @@
 		<android.emulator>emulated</android.emulator>
 		<!-- Absolute path to the JDT compiler configuration -->
 		<jdtcompilerconfpath>${mainbasedir}/build-tools/src/main/resources/maven/maven-jdt-conf.properties</jdtcompilerconfpath>
+		<!-- Version of Mockito library -->
+		<mockito.version>2.0.64-beta</mockito.version>
+		<!-- URL of the deployment server base -->
+		<afc.deployment.server>org.arakhne-ftp</afc.deployment.server>
+		<afc.deployment.base>ftp://ftp.tuxfamily.org/arakhne/arakhne-repository</afc.deployment.base>
 	</properties>
 
 	<!-- ======================================= -->
@@ -201,7 +206,7 @@
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
-				<version>2.0.64-beta</version>
+				<version>${mockito.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -216,6 +221,7 @@
 		<module>core</module>
 		<module>ui</module>
 		<module>advanced</module>
+		<module>p2</module>
 	</modules>
 
 	<licenses>
@@ -363,10 +369,20 @@
 	<!-- ==== Devel Configuration === -->
 	<!-- ======================================= -->
 
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/gallandarakhneorg/afc</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>Travis-CI</system>
+		<url>https://travis-ci.org/gallandarakhneorg/afc</url>
+	</ciManagement>
+
 	<distributionManagement>
 		<repository>
-			<id>org.arakhne-ftp</id>
-			<url>ftp://ftp.tuxfamily.org/arakhne/arakhne-repository/maven</url>
+			<id>${afc.deployment.server}</id>
+			<url>${afc.deployment.base}/maven</url>
 		</repository>
 	</distributionManagement>
 
@@ -411,6 +427,11 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-plugin-plugin</artifactId>
 					<version>3.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>wagon-maven-plugin</artifactId>
+					<version>1.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -842,5 +863,4 @@
 			</pluginRepositories>
 		</profile>
 	</profiles>
-
 </project>
