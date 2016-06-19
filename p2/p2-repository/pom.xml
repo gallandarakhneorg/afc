@@ -54,7 +54,7 @@
 						<configuration>
 							<serverId>${afc.deployment.server}</serverId>
 							<fromDir>${project.build.directory}/repository</fromDir>
-							<includes>*</includes>
+							<includes>**/*</includes>
 							<url>${afc.deployment.base}</url>
 							<toDir>p2</toDir>
 						</configuration>
