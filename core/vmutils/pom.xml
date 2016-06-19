@@ -110,6 +110,7 @@
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>testtools</artifactId>
 			<scope>test</scope>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>

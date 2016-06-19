@@ -200,8 +200,8 @@
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
-				<artifactId>mockito-all</artifactId>
-				<version>2.0.2-beta</version>
+				<artifactId>mockito-core</artifactId>
+				<version>2.0.64-beta</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -471,6 +471,11 @@
 					<groupId>org.codehaus.gmavenplus</groupId>
 					<artifactId>gmavenplus-plugin</artifactId>
 					<version>1.5</version>
+				</plugin>
+				<plugin>
+					<groupId>org.reficio</groupId>
+					<artifactId>p2-maven-plugin</artifactId>
+					<version>1.1.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>

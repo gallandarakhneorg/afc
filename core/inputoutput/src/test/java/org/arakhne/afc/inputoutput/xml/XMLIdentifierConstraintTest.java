@@ -57,7 +57,7 @@ public class XMLIdentifierConstraintTest {
 	public void isValidElement_valid() {
 		Element element = mock(Element.class);
 		when(element.getAttribute(anyString())).then((inv) -> {
-			if (XMLUtil.ATTR_ID.equals(inv.getArgumentAt(0, String.class))) {
+			if (XMLUtil.ATTR_ID.equals(inv.getArgument(0))) {
 				return this.id.toString();
 			}
 			fail("Invalid attribute name"); //$NON-NLS-1$
@@ -70,7 +70,7 @@ public class XMLIdentifierConstraintTest {
 	public void isValidElement_invalid() {
 		Element element = mock(Element.class);
 		when(element.getAttribute(anyString())).then((inv) -> {
-			if (XMLUtil.ATTR_ID.equals(inv.getArgumentAt(0, String.class))) {
+			if (XMLUtil.ATTR_ID.equals(inv.getArgument(0))) {
 				return UUID.randomUUID().toString();
 			}
 			fail("Invalid attribute name"); //$NON-NLS-1$

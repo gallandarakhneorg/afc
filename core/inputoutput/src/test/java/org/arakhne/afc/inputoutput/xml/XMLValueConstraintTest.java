@@ -67,7 +67,7 @@ public class XMLValueConstraintTest {
 	public void isValidElement_valid() {
 		Element element = mock(Element.class);
 		when(element.getAttribute(anyString())).then((inv) -> {
-			if (this.name.equals(inv.getArgumentAt(0, String.class))) {
+			if (this.name.equals(inv.getArgument(0))) {
 				return this.value.toString();
 			}
 			fail("Invalid attribute name"); //$NON-NLS-1$
@@ -80,7 +80,7 @@ public class XMLValueConstraintTest {
 	public void isValidElement_invalid() {
 		Element element = mock(Element.class);
 		when(element.getAttribute(anyString())).then((inv) -> {
-			if (this.name.equals(inv.getArgumentAt(0, String.class))) {
+			if (this.name.equals(inv.getArgument(0))) {
 				return UUID.randomUUID().toString();
 			}
 			fail("Invalid attribute name"); //$NON-NLS-1$

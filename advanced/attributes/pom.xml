@@ -45,6 +45,7 @@
 			<artifactId>math</artifactId>
 			<type>test-jar</type>
 			<scope>test</scope>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
