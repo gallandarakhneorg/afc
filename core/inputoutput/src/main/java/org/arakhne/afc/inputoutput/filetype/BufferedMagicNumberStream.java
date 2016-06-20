@@ -71,11 +71,11 @@ final class BufferedMagicNumberStream extends FilterInputStream {
 		final int currentSize = this.buffer.length;
 
 		if (desiredSize > currentSize) {
-			byte[] readBuffer = new byte[desiredSize - currentSize];
+			final byte[] readBuffer = new byte[desiredSize - currentSize];
 			final int count = this.in.read(readBuffer);
 
 			if (count > 0) {
-				byte[] newBuffer = new byte[currentSize + count];
+				final byte[] newBuffer = new byte[currentSize + count];
 				System.arraycopy(this.buffer, 0, newBuffer, 0, currentSize);
 				System.arraycopy(readBuffer, 0, newBuffer, currentSize, count);
 				this.buffer = newBuffer;
