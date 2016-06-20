@@ -76,9 +76,9 @@ public class OrientedPoint2ifx
         super(x, y);
     }
 
-    /** Construct an oriented point from a point and a direction vector.
+    /** Construct an oriented point from a point and a tangent vector.
      * @param point the point.
-     * @param vector the direction vector.
+     * @param vector the tangent vector.
      */
     public OrientedPoint2ifx(Point2D<?, ?> point, Vector2D<?, ?> vector) {
         this(point.ix(), point.iy(), vector.ix(), vector.iy());
@@ -87,13 +87,13 @@ public class OrientedPoint2ifx
     /** Construct an oriented point from the two given coordinates.
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
+     * @param tanX x coordinate of the vector.
+     * @param tanY y coordinate of the vector.
      */
-    public OrientedPoint2ifx(int x, int y, int dirX, int dirY) {
+    public OrientedPoint2ifx(int x, int y, int tanX, int tanY) {
         super(x, y);
-        dirXProperty().set(dirX);
-        dirYProperty().set(dirY);
+        tanXProperty().set(tanX);
+        tanYProperty().set(tanY);
     }
 
     @Pure
@@ -101,8 +101,8 @@ public class OrientedPoint2ifx
     public int hashCode() {
         int bits = 1;
         bits = 31 * bits + super.hashCode();
-        bits = 31 * bits + Integer.hashCode(idx());
-        bits = 31 * bits + Integer.hashCode(idy());
+        bits = 31 * bits + Integer.hashCode(itx());
+        bits = 31 * bits + Integer.hashCode(ity());
         return bits ^ (bits >> 31);
     }
 
@@ -111,73 +111,73 @@ public class OrientedPoint2ifx
         final OrientedPoint2ifx clone = (OrientedPoint2ifx) super.clone();
         if (clone.dx != null) {
             clone.dx = null;
-            clone.dirXProperty().set(idx());
+            clone.tanXProperty().set(itx());
         }
         if (clone.dy != null) {
             clone.dy = null;
-            clone.dirYProperty().set(idy());
+            clone.tanYProperty().set(ity());
         }
         return clone;
     }
 
     @Override
-    public double getDirectionX() {
+    public double getTangentX() {
         return this.dx == null ? 0 : this.dx.doubleValue();
     }
 
     @Override
-    public int idx() {
+    public int itx() {
         return this.dx == null ? 0 : this.dx.intValue();
     }
 
     @Override
-    public void setDirectionX(int dirX) {
-        dirXProperty().set(dirX);
+    public void setTangentX(int tanX) {
+        tanXProperty().set(tanX);
     }
 
     @Override
-    public void setDirectionX(double dirX) {
-        dirXProperty().set((int) Math.round(dirX));
+    public void setTangentX(double tanX) {
+        tanXProperty().set((int) Math.round(tanX));
     }
 
     @Override
-    public double getDirectionY() {
+    public double getTangentY() {
         return this.dy == null ? 0 : this.dy.doubleValue();
     }
 
     @Override
-    public int idy() {
+    public int ity() {
         return this.dy == null ? 0 : this.dy.intValue();
     }
 
     @Override
-    public void setDirectionY(int dirY) {
-        dirYProperty().set(dirY);
+    public void setTangentY(int tanY) {
+        tanYProperty().set(tanY);
     }
 
     @Override
-    public void setDirectionY(double dirY) {
-        dirYProperty().set((int) Math.round(dirY));
+    public void setTangentY(double tanY) {
+        tanYProperty().set((int) Math.round(tanY));
     }
 
-    /** Replies the property that is the x coordinate of the direction vector.
+    /** Replies the property that is the x coordinate of the tangent vector.
      *
-     * @return the direction vector x property.
+     * @return the tangent vector x property.
      */
     @Pure
-    public IntegerProperty dirXProperty() {
+    public IntegerProperty tanXProperty() {
         if (this.dx == null) {
             this.dx = new SimpleIntegerProperty(this, MathFXAttributeNames.X1);
         }
         return this.dx;
     }
 
-    /** Replies the property that is the y coordinate of the direction vector.
+    /** Replies the property that is the y coordinate of the tangent vector.
      *
-     * @return the direction vector y property.
+     * @return the tangent vector y property.
      */
     @Pure
-    public IntegerProperty dirYProperty() {
+    public IntegerProperty tanYProperty() {
         if (this.dy == null) {
             this.dy = new SimpleIntegerProperty(this, MathFXAttributeNames.Y1);
         }

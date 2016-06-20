@@ -65,9 +65,9 @@ public class OrientedPoint2d
         super(x, y);
     }
 
-    /** Construct an oriented point from a point and a direction vector.
+    /** Construct an oriented point from a point and a tangent vector.
      * @param point the point.
-     * @param vector the direction vector.
+     * @param vector the tangent vector.
      */
     public OrientedPoint2d(Point2D<?, ?> point, Vector2D<?, ?> vector) {
         this(point.getX(), point.getY(), vector.getX(), vector.getY());
@@ -76,11 +76,11 @@ public class OrientedPoint2d
     /** Construct an oriented point from the two given coordinates.
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
+     * @param tanX x coordinate of the vector.
+     * @param tanY y coordinate of the vector.
      */
-    public OrientedPoint2d(double x, double y, double dirX, double dirY) {
-        set(x, y, dirX, dirY);
+    public OrientedPoint2d(double x, double y, double tanX, double tanY) {
+        set(x, y, tanX, tanY);
     }
 
     @Pure
@@ -94,42 +94,42 @@ public class OrientedPoint2d
     }
 
     @Override
-    public void setDirectionX(int dirX) {
-        this.dx = dirX;
+    public void setTangentX(int tanX) {
+        this.dx = tanX;
     }
 
     @Override
-    public void setDirectionX(double dirX) {
-        this.dx = dirX;
+    public void setTangentX(double tanX) {
+        this.dx = tanX;
     }
 
     @Override
-    public void setDirectionY(int dirY) {
-        this.dy = dirY;
+    public void setTangentY(int tanY) {
+        this.dy = tanY;
     }
 
     @Override
-    public void setDirectionY(double dirY) {
-        this.dy = dirY;
+    public void setTangentY(double tanY) {
+        this.dy = tanY;
     }
 
     @Override
-    public double getDirectionX() {
+    public double getTangentX() {
         return this.dx;
     }
 
     @Override
-    public int idx() {
+    public int itx() {
         return (int) this.dx;
     }
 
     @Override
-    public double getDirectionY() {
+    public double getTangentY() {
         return this.dy;
     }
 
     @Override
-    public int idy() {
+    public int ity() {
         return (int) this.dy;
     }
 }
