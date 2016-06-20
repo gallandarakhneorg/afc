@@ -27,15 +27,27 @@
 							<artifacts>
 								<artifact>
 									<id>org.mockito:mockito-core:${mockito.version}</id>
+									<override>true</override>
+									<instructions>
+										<Bundle-SymbolicName>org.mockito.mockito-core</Bundle-SymbolicName>
+										<Embed-Dependency>mockito-core</Embed-Dependency>
+										<Export-Package>
+											!mockito-core-${mockito.version}.jar,
+											!asm-license.txt,
+											!cglib-license.txt,
+											!LICENSE,
+											!NOTICE,
+											*
+										</Export-Package>
+										<!-- Getting rid of Ant. See https://code.google.com/p/mockito/issues/detail?id=67#c13 -->
+										<Import-Package>
+											org.hamcrest;core=split,
+											!org.apache.tools.ant.*,
+											*
+										</Import-Package>
+									</instructions>
 								</artifact>
 							</artifacts>
-							<features>
-								<artifact>
-									<id>org.arakhne.afc.p2:mockito:${afc.version}</id>
-									<source>false</source>
-									<transitive>false</transitive>
-								</artifact>
-							</features>
 						</configuration>
 					</execution>
 				</executions>
