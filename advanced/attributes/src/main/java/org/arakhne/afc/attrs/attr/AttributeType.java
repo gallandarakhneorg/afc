@@ -30,11 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -67,88 +63,187 @@ public enum AttributeType {
 	/** Represents an enumeration.
 	 * @see Enum
 	 */
-	ENUMERATION,
+	ENUMERATION {
+		@Override
+		public Object getDefaultValue() {
+			return null;
+		}
+	},
 
 	/** Represents a Java type.
 	 */
-	TYPE,
+	TYPE {
+		@Override
+		public Object getDefaultValue() {
+			return Object.class;
+		}
+	},
 
 	/** Represents an unique universal identifier.
 	 */
-	UUID,
+	UUID {
+		@Override
+		public Object getDefaultValue() {
+			return java.util.UUID.fromString("00000000-0000-0000-0000-000000000000"); //$NON-NLS-1$
+		}
+	},
 
 	/** Represents an integer.
 	 */
-	INTEGER,
+	INTEGER {
+		@Override
+		public Object getDefaultValue() {
+			return Long.valueOf(0);
+		}
+	},
 
 	/** Represents a floating number.
 	 */
-	REAL,
+	REAL {
+		@Override
+		public Object getDefaultValue() {
+			return Double.valueOf(0);
+		}
+	},
 
 	/** Represents a date.
 	 */
-	DATE,
+	DATE {
+		@Override
+		public Object getDefaultValue() {
+			return new Date();
+		}
+	},
 
 	/** Represents a boolean value.
 	 */
-	BOOLEAN,
+	BOOLEAN {
+		@Override
+		public Object getDefaultValue() {
+			return Boolean.FALSE;
+		}
+	},
 
 	/** Represents an Internet address.
 	 * @see Inet4Address
 	 * @see Inet6Address
 	 * @see InetSocketAddress
 	 */
-	INET_ADDRESS,
+	INET_ADDRESS {
+		@Override
+		public Object getDefaultValue() {
+			try {
+				return InetAddress.getLocalHost();
+			} catch (UnknownHostException exception) {
+				return null;
+			}
+		}
+	},
 
 	/** Represents a color value.
 	 * @deprecated No replacement
 	 */
 	@Deprecated
-	COLOR,
+	COLOR {
+		@Override
+		public Object getDefaultValue() {
+			return Colors.BLACK;
+		}
+	},
 
 	/** Represents an URL.
 	 * @see java.net.URL
 	 */
-	URL,
+	URL {
+		@Override
+		public Object getDefaultValue() {
+			return null;
+		}
+	},
 
 	/** Represents an URI.
 	 * @see java.net.URI
 	 */
-	URI,
+	URI {
+		@Override
+		public Object getDefaultValue() {
+			return null;
+		}
+	},
 
 	/** Represents a timestamp value.
 	 */
-	TIMESTAMP,
+	TIMESTAMP {
+		@Override
+		public Object getDefaultValue() {
+			return new Timestamp(System.currentTimeMillis());
+		}
+	},
 
 	/** Represents a 3d point value.
 	 */
-	POINT3D,
+	POINT3D {
+		@Override
+		public Object getDefaultValue() {
+			return new Point3d();
+		}
+	},
 
 	/** Represents a 2d point value.
 	 */
-	POINT,
+	POINT {
+		@Override
+		public Object getDefaultValue() {
+			return new Point2d();
+		}
+	},
 
 	/** Represents a list of 3d points.
 	 */
-	POLYLINE3D,
+	POLYLINE3D {
+		@Override
+		public Object getDefaultValue() {
+			return  new Point3D[0];
+		}
+	},
 
 	/** Represents a list of 2d points.
 	 */
-	POLYLINE,
+	POLYLINE {
+		@Override
+		public Object getDefaultValue() {
+			return new Point2D[0];
+		}
+	},
 
 	/** Represents an image value.
 	 * @deprecated No replacement
 	 */
 	@Deprecated
-	IMAGE,
+	IMAGE {
+		@Override
+		public Object getDefaultValue() {
+			return null;
+		}
+	},
 
 	/** Represents a string.
 	 */
-	STRING,
+	STRING {
+		@Override
+		public Object getDefaultValue() {
+			return new String();
+		}
+	},
 
 	/** Represents a java-object value.
 	 */
-	OBJECT;
+	OBJECT {
+		@Override
+		public Object getDefaultValue() {
+			return null;
+		}
+	};
 
 	private static final String NAME_RESOURCE_FILE;
 
@@ -158,39 +253,6 @@ public enum AttributeType {
 		final String pName = AttributeType.class.getPackage().getName();
 		NAME_RESOURCE_FILE = pName + ".types"; //$NON-NLS-1$
 	}
-
-	private static final Map<AttributeType, TypeFactory<?>> DEFAULT_TYPE_FACTORY =
-			Collections.unmodifiableMap(new HashMap<AttributeType, TypeFactory<?>>() {
-				private static final long serialVersionUID = -5930539797174658160L; {
-
-					put(AttributeType.BOOLEAN, () -> Boolean.FALSE);
-					put(AttributeType.INTEGER, () ->  new Long(0));
-					put(AttributeType.DATE, () ->  new Date());
-					put(AttributeType.REAL, () ->  new Double(0));
-					put(AttributeType.STRING, () ->  new String());
-					put(AttributeType.BOOLEAN, () ->  new String());
-					put(AttributeType.TIMESTAMP, () -> new Timestamp(System.currentTimeMillis()));
-					put(AttributeType.POINT3D, () -> new Point3d());
-					put(AttributeType.POINT, () ->  new Point2d());
-					put(AttributeType.COLOR, () -> Colors.BLACK);
-					put(AttributeType.UUID, () ->
-							java.util.UUID.fromString("00000000-0000-0000-0000-000000000000")); //$NON-NLS-1$
-					put(AttributeType.URL, () ->   null);
-					put(AttributeType.URI, () ->   null);
-					put(AttributeType.POLYLINE, () ->   new Point2D[0]);
-					put(AttributeType.POLYLINE3D, () ->   new Point3D[0]);
-					put(AttributeType.OBJECT, () ->   null);
-					put(AttributeType.IMAGE, () ->   null);
-					put(AttributeType.ENUMERATION, () ->   null);
-					put(AttributeType.TYPE, () ->   Object.class);
-					put(AttributeType.INET_ADDRESS, () ->   {
-						try {
-							return InetAddress.getLocalHost();
-						} catch (UnknownHostException exception) {
-							return null;
-						}
-				 	});
-				}});
 
 	/** Replies the name of this type (localized).
 	 *
@@ -423,13 +485,7 @@ public enum AttributeType {
 	 * @return the default value.
 	 */
 	@Pure
-	public Object getDefaultValue() {
-		final TypeFactory<?> typeFactory = DEFAULT_TYPE_FACTORY.get(this);
-		if (typeFactory != null) {
-			return typeFactory.createType();
-		}
-		return Object.class;
-	}
+	public abstract Object getDefaultValue();
 
 	/**
 	 * Replies if this attribute type is
