@@ -2698,10 +2698,6 @@ public class Matrix3d implements Serializable, Cloneable {
 
             single_values[1] = ha;
             single_values[0] = fa;
-            clt = 1.;
-            crt = 1.;
-            slt = 0.;
-            srt = 0.;
         } else {
             boolean gasmal = true;
 
