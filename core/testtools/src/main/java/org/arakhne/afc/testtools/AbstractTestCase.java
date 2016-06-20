@@ -1039,13 +1039,16 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	protected static void assertException(String message, Class<? extends Throwable> expectedException,
 			Object object, String methodName, Class<?>[] types, Object... values) {
 		assert object != null;
-		final Class<?> objType;
+		Class<?> objType;
 		Object obj = object;
 		if (obj instanceof Class<?>) {
 			objType = (Class<?>) obj;
 			obj = null;
 		} else {
 			objType = obj.getClass();
+		}
+		while (Enum.class.isAssignableFrom(objType) && !objType.isEnum()) {
+			objType = objType.getSuperclass();
 		}
 		Method method = null;
 		Throwable t = null;

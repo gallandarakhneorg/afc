@@ -68,6 +68,54 @@ public enum AttributeType {
 		public Object getDefaultValue() {
 			return null;
 		}
+
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null || obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj instanceof CharSequence) {
+				final String enumStr = obj.toString();
+				final int index = enumStr.lastIndexOf('.');
+				if (index > 0) {
+					final String enumName = enumStr.substring(0, index);
+					final String constantName = enumStr.substring(index + 1);
+					try {
+						final Class type = Class.forName(enumName);
+						if (Enum.class.isAssignableFrom(type)) {
+							final Enum<?> v = Enum.valueOf(type, constantName.toUpperCase());
+							if (v != null) {
+								return v;
+							}
+						}
+					} catch (Throwable exception) {
+						//
+					}
+				}
+			}
+			return Enum.class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return true;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == ENUMERATION || type == STRING || type == OBJECT;
+		}
 	},
 
 	/** Represents a Java type.
@@ -76,6 +124,44 @@ public enum AttributeType {
 		@Override
 		public Object getDefaultValue() {
 			return Object.class;
+		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				throw new NullPointerException();
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj instanceof CharSequence) {
+				try {
+					return Class.forName(((CharSequence) obj).toString());
+				} catch (ClassNotFoundException e) {
+					//
+				}
+			}
+			return Class.class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == TYPE || type == STRING || type == OBJECT;
 		}
 	},
 
@@ -86,6 +172,37 @@ public enum AttributeType {
 		public Object getDefaultValue() {
 			return java.util.UUID.fromString("00000000-0000-0000-0000-000000000000"); //$NON-NLS-1$
 		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				throw new NullPointerException();
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			return java.util.UUID.class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return true;
+		}
 	},
 
 	/** Represents an integer.
@@ -94,6 +211,45 @@ public enum AttributeType {
 		@Override
 		public Object getDefaultValue() {
 			return Long.valueOf(0);
+		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				throw new NullPointerException();
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			final long value;
+			if (obj instanceof Enum<?>) {
+				value = ((Enum<?>) obj).ordinal();
+			} else {
+				value = ((Number) obj).longValue();
+			}
+			return Long.valueOf(value);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return true;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return true;
+		}
+
+		@Override
+		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == INTEGER || type == REAL || type == TIMESTAMP || type == STRING
+					|| type == DATE || type == BOOLEAN || type == COLOR || type == ENUMERATION ||  type == OBJECT;
 		}
 	},
 
@@ -104,6 +260,45 @@ public enum AttributeType {
 		public Object getDefaultValue() {
 			return Double.valueOf(0);
 		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				throw new NullPointerException();
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			final double value;
+			if (obj instanceof Enum<?>) {
+				value = ((Enum<?>) obj).ordinal();
+			} else {
+				value = ((Number) obj).doubleValue();
+			}
+			return Double.valueOf(value);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return true;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return true;
+		}
+
+		@Override
+		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == INTEGER || type == REAL || type == TIMESTAMP || type == STRING
+					|| type == DATE || type == BOOLEAN || type == COLOR || type == ENUMERATION ||  type == OBJECT;
+		}
 	},
 
 	/** Represents a date.
@@ -113,6 +308,43 @@ public enum AttributeType {
 		public Object getDefaultValue() {
 			return new Date();
 		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				throw new NullPointerException();
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj instanceof Number) {
+				return new Date(((Number) obj).longValue());
+			}
+			if (obj instanceof Calendar) {
+				return ((Calendar) obj).getTime();
+			}
+			return Date.class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == DATE || type == REAL || type == INTEGER || type == TIMESTAMP || type == STRING || type == OBJECT;
+		}
 	},
 
 	/** Represents a boolean value.
@@ -121,6 +353,37 @@ public enum AttributeType {
 		@Override
 		public Object getDefaultValue() {
 			return Boolean.FALSE;
+		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				throw new NullPointerException();
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			return Boolean.class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return true;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == BOOLEAN || type == STRING || type == INTEGER || type == TIMESTAMP || type == REAL || type == OBJECT;
 		}
 	},
 
@@ -138,6 +401,70 @@ public enum AttributeType {
 				return null;
 			}
 		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null || obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj instanceof InetSocketAddress) {
+				return ((InetSocketAddress) obj).getAddress();
+			}
+			if (obj instanceof java.net.URL) {
+				final java.net.URL url = (java.net.URL) obj;
+				try {
+					return InetAddress.getByName(url.getHost());
+				} catch (UnknownHostException exception) {
+					//
+				}
+			}
+			if (obj instanceof java.net.URI) {
+				final java.net.URI uri = (java.net.URI) obj;
+				try {
+					return InetAddress.getByName(uri.getHost());
+				} catch (UnknownHostException exception) {
+					//
+				}
+			}
+			if (obj instanceof CharSequence) {
+				return getInetAddressFromCharacterSequence(obj);
+			}
+			return InetAddress.class.cast(obj);
+		}
+
+		private InetAddress getInetAddressFromCharacterSequence(Object obj) {
+			try {
+				final String ipStr = obj.toString();
+				final int index = ipStr.lastIndexOf("/"); //$NON-NLS-1$
+				if (index >= 0) {
+					return InetAddress.getByName(ipStr.substring(index + 1));
+				}
+				return InetAddress.getByName(ipStr);
+			} catch (UnknownHostException exception) {
+				//
+			}
+			return null;
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return true;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == INET_ADDRESS || type == STRING || type == URL || type == URI  || type == OBJECT;
+		}
 	},
 
 	/** Represents a color value.
@@ -149,6 +476,42 @@ public enum AttributeType {
 		public Object getDefaultValue() {
 			return Colors.BLACK;
 		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				throw new NullPointerException();
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj instanceof Number) {
+				return VectorToolkit.color(((Number) obj).intValue());
+			}
+			return Color.class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == COLOR || type == POINT || type == POINT3D || type == STRING || type == INTEGER
+					|| type == REAL || type == TIMESTAMP || type == DATE || type == OBJECT;
+		}
 	},
 
 	/** Represents an URL.
@@ -158,6 +521,57 @@ public enum AttributeType {
 		@Override
 		public Object getDefaultValue() {
 			return null;
+		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null || obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj instanceof java.net.URI) {
+				try {
+					return ((java.net.URI) obj).toURL();
+				} catch (MalformedURLException e) {
+					//
+				}
+			}
+			if (obj instanceof InetAddress) {
+				try {
+					return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
+							((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
+				} catch (MalformedURLException e) {
+					//
+				}
+			}
+			if (obj instanceof InetSocketAddress) {
+				try {
+					return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
+							((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
+				} catch (MalformedURLException e) {
+					//
+				}
+			}
+			return java.net.URL.class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return true;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == URI || type == URL || type == INET_ADDRESS || type == STRING || type == OBJECT;
 		}
 	},
 
@@ -169,6 +583,57 @@ public enum AttributeType {
 		public Object getDefaultValue() {
 			return null;
 		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null || obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj instanceof java.net.URL) {
+				try {
+					return ((java.net.URL) obj).toURI();
+				} catch (URISyntaxException e) {
+					//
+				}
+			}
+			if (obj instanceof InetAddress) {
+				try {
+					return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
+							((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
+				} catch (URISyntaxException e) {
+					//
+				}
+			}
+			if (obj instanceof InetSocketAddress) {
+				try {
+					return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
+							((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
+				} catch (URISyntaxException e) {
+					//
+				}
+			}
+			return java.net.URI.class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return true;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == URI || type == URL || type == INET_ADDRESS || type == STRING || type == UUID || type == OBJECT;
+		}
 	},
 
 	/** Represents a timestamp value.
@@ -177,6 +642,48 @@ public enum AttributeType {
 		@Override
 		public Object getDefaultValue() {
 			return new Timestamp(System.currentTimeMillis());
+		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				throw new NullPointerException();
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj instanceof Calendar) {
+				return ((Calendar) obj).getTimeInMillis();
+			}
+			if (obj instanceof Date) {
+				return ((Date) obj).getTime();
+			}
+			if (obj instanceof Number && !(obj instanceof Timestamp)) {
+				return ((Number) obj).longValue();
+			}
+			return Timestamp.class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return true;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return true;
+		}
+
+		@Override
+		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == INTEGER || type == REAL || type == TIMESTAMP || type == STRING || type == DATE
+					|| type == BOOLEAN || type == COLOR || type == OBJECT;
 		}
 	},
 
@@ -187,6 +694,42 @@ public enum AttributeType {
 		public Object getDefaultValue() {
 			return new Point3d();
 		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				throw new NullPointerException();
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj instanceof Tuple3D && !(obj instanceof Point3D)) {
+				return new Point3d((Tuple3D<?>) obj);
+			}
+			return Point3D.class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == POINT || type == POINT3D || type == COLOR || type == REAL || type == INTEGER
+					|| type == TIMESTAMP || type == DATE || type == STRING || type == OBJECT;
+		}
 	},
 
 	/** Represents a 2d point value.
@@ -195,6 +738,42 @@ public enum AttributeType {
 		@Override
 		public Object getDefaultValue() {
 			return new Point2d();
+		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				throw new NullPointerException();
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj instanceof Tuple2D && !(obj instanceof Point2D)) {
+				return new Point2d((Tuple2D<?>) obj);
+			}
+			return Point2D.class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == POINT || type == POINT3D || type == COLOR || type == REAL || type == INTEGER
+					|| type == TIMESTAMP || type == DATE || type == STRING || type == OBJECT;
 		}
 	},
 
@@ -205,6 +784,49 @@ public enum AttributeType {
 		public Object getDefaultValue() {
 			return  new Point3D[0];
 		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				throw new NullPointerException();
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj.getClass().isArray()) {
+				final Class<?> elementType = obj.getClass().getComponentType();
+				if (Tuple3D.class.isAssignableFrom(elementType)
+						&& !Point3D.class.isAssignableFrom(elementType)) {
+					final int length = Array.getLength(obj);
+					final Point3D<?, ?>[] tab = new Point3D[length];
+					for (int i = 0; i < length; ++i) {
+						tab[i] = new Point3d((Tuple3D<?>) Array.get(obj, i));
+					}
+					return tab;
+				}
+			}
+			return Point3D[].class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == POLYLINE || type == POLYLINE3D || type == POINT || type == POINT3D || type == STRING || type == OBJECT;
+		}
 	},
 
 	/** Represents a list of 2d points.
@@ -213,6 +835,49 @@ public enum AttributeType {
 		@Override
 		public Object getDefaultValue() {
 			return new Point2D[0];
+		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				throw new NullPointerException();
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj.getClass().isArray()) {
+				final Class<?> elementType = obj.getClass().getComponentType();
+				if (Tuple2D.class.isAssignableFrom(elementType)
+						&& !Point2D.class.isAssignableFrom(elementType)) {
+					final int length = Array.getLength(obj);
+					final Point2D<?, ?>[] tab = new Point2D[length];
+					for (int i = 0; i < length; ++i) {
+						tab[i] = new Point2d((Tuple2D<?>) Array.get(obj, i));
+					}
+					return tab;
+				}
+			}
+			return Point2D[].class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == POLYLINE || type == POLYLINE3D || type == POINT || type == POINT3D || type == STRING || type == OBJECT;
 		}
 	},
 
@@ -225,6 +890,34 @@ public enum AttributeType {
 		public Object getDefaultValue() {
 			return null;
 		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null || obj instanceof NullAttribute) {
+				return null;
+			}
+			return Image.class.cast(obj);
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return true;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return type == IMAGE || type == OBJECT;
+		}
 	},
 
 	/** Represents a string.
@@ -234,6 +927,43 @@ public enum AttributeType {
 		public Object getDefaultValue() {
 			return new String();
 		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj == null) {
+				return ""; //$NON-NLS-1$
+			}
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			if (obj instanceof Enum<?>) {
+				final Enum<?> enumValue = (Enum<?>) obj;
+				return enumValue.getClass().getCanonicalName()
+						+ "." //$NON-NLS-1$
+						+ enumValue.name();
+			}
+			return obj.toString();
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return true;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return true;
+		}
 	},
 
 	/** Represents a java-object value.
@@ -242,6 +972,34 @@ public enum AttributeType {
 		@Override
 		public Object getDefaultValue() {
 			return null;
+		}
+
+		@Override
+		public Object cast(Object obj) {
+			if (obj instanceof NullAttribute) {
+				return null;
+			}
+			return obj;
+		}
+
+		@Override
+		public boolean isNumberType() {
+			return false;
+		}
+
+		@Override
+		public boolean isNullAllowed() {
+			return true;
+		}
+
+		@Override
+		public boolean isBaseType() {
+			return false;
+		}
+
+		@Override
+		public boolean isAssignableFrom(AttributeType type) {
+			return true;
 		}
 	};
 
@@ -496,13 +1254,7 @@ public enum AttributeType {
 	 *     otherwise <code>false</code>
 	 */
 	@Pure
-	public boolean isBaseType() {
-		return this == INTEGER
-				|| this == REAL
-				|| this == TIMESTAMP
-				|| this == BOOLEAN
-				|| this == STRING;
-	}
+	public abstract boolean isBaseType();
 
 	/**
 	 * Replies if this attribute type is
@@ -514,11 +1266,7 @@ public enum AttributeType {
 	 * @since 4.0
 	 */
 	@Pure
-	public boolean isNumberType() {
-		return this == INTEGER
-				|| this == REAL
-				|| this == TIMESTAMP;
-	}
+	public abstract boolean isNumberType();
 
 	/**
 	 * Replies if a null value is allowed for this attribute type.
@@ -527,14 +1275,7 @@ public enum AttributeType {
 	 *     otherwise <code>false</code>
 	 */
 	@Pure
-	public boolean isNullAllowed() {
-		return this == OBJECT
-				|| this == IMAGE
-				|| this == URI
-				|| this == URL
-				|| this == INET_ADDRESS
-				|| this == ENUMERATION;
-	}
+	public abstract boolean isNullAllowed();
 
 	/** Replies if a value of the given attribute type may
 	 * be cast to a value of this attribute type.
@@ -554,51 +1295,7 @@ public enum AttributeType {
 	 * @since 4.0
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
-		"checkstyle:booleanexpressioncomplexity"})
-	public boolean isAssignableFrom(AttributeType type) {
-		switch (this) {
-		case INTEGER:
-		case REAL:
-			return type == INTEGER || type == REAL || type == TIMESTAMP || type == STRING
-				|| type == DATE || type == BOOLEAN || type == COLOR || type == ENUMERATION ||  type == OBJECT;
-		case TIMESTAMP:
-			return type == INTEGER || type == REAL || type == TIMESTAMP || type == STRING || type == DATE
-				|| type == BOOLEAN || type == COLOR || type == OBJECT;
-		case BOOLEAN:
-			return type == BOOLEAN || type == STRING || type == INTEGER || type == TIMESTAMP || type == REAL || type == OBJECT;
-		case DATE:
-			return type == DATE || type == REAL || type == INTEGER || type == TIMESTAMP || type == STRING || type == OBJECT;
-		case POINT3D:
-		case POINT:
-			return type == POINT || type == POINT3D || type == COLOR || type == REAL || type == INTEGER
-				|| type == TIMESTAMP || type == DATE || type == STRING || type == OBJECT;
-		case COLOR:
-			return type == COLOR || type == POINT || type == POINT3D || type == STRING || type == INTEGER
-				|| type == REAL || type == TIMESTAMP || type == DATE || type == OBJECT;
-		case URL:
-			return type == URI || type == URL || type == INET_ADDRESS || type == STRING || type == OBJECT;
-		case URI:
-			return type == URI || type == URL || type == INET_ADDRESS || type == STRING || type == UUID || type == OBJECT;
-		case POLYLINE3D:
-		case POLYLINE:
-			return type == POLYLINE || type == POLYLINE3D || type == POINT || type == POINT3D || type == STRING || type == OBJECT;
-		case IMAGE:
-			return type == IMAGE || type == OBJECT;
-		case INET_ADDRESS:
-			return type == INET_ADDRESS || type == STRING || type == URL || type == URI  || type == OBJECT;
-		case ENUMERATION:
-			return type == ENUMERATION || type == STRING || type == OBJECT;
-		case TYPE:
-			return type == TYPE || type == STRING || type == OBJECT;
-		case UUID:
-		case STRING:
-		case OBJECT:
-			return true;
-		default:
-		}
-		return false;
-	}
+	public abstract boolean isAssignableFrom(AttributeType type);
 
 	/** Cast the specified value to corresponds to the
 	 * default storage standard for attributes.
@@ -609,377 +1306,6 @@ public enum AttributeType {
 	 * @throws NullPointerException if null value is not allowed.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-	public Object cast(Object obj) {
-		if (obj instanceof NullAttribute) {
-			return null;
-		}
-		switch (this) {
-		case INTEGER:
-			return castInteger(obj);
-		case REAL:
-			return castReal(obj);
-		case STRING:
-			return castString(obj);
-		case BOOLEAN:
-			return castBoolean(obj);
-		case DATE:
-			return castDate(obj);
-		case TIMESTAMP:
-			return castTimestamp(obj);
-		case POINT3D:
-			return castPoint3D(obj);
-		case POINT:
-			return castPoint2D(obj);
-		case COLOR:
-			return castColor(obj);
-		case URL:
-			return castUrl(obj);
-		case URI:
-			return castUri(obj);
-		case POLYLINE3D:
-			return castPolyline3D(obj);
-		case POLYLINE:
-			return castPolyline2D(obj);
-		case IMAGE:
-			return castImage(obj);
-		case INET_ADDRESS:
-			return castInetAddress(obj);
-		case ENUMERATION:
-			return castEnumeration(obj);
-		case TYPE:
-			return castType(obj);
-		case UUID:
-			return castUuid(obj);
-		case OBJECT:
-			if (obj == null) {
-				return null;
-			}
-			break;
-		default:
-			throw new ClassCastException();
-		}
-		return obj;
-	}
+	public abstract Object cast(Object obj);
 
-	private static Class<?> castType(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			throw new NullPointerException();
-		}
-		if (obj instanceof CharSequence) {
-			try {
-				return Class.forName(((CharSequence) obj).toString());
-			} catch (ClassNotFoundException e) {
-				//
-			}
-		}
-		return Class.class.cast(obj);
-	}
-
-	private static Number castTimestamp(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			throw new NullPointerException();
-		}
-		if (obj instanceof Calendar) {
-			return ((Calendar) obj).getTimeInMillis();
-		}
-		if (obj instanceof Date) {
-			return ((Date) obj).getTime();
-		}
-		if (obj instanceof Number && !(obj instanceof Timestamp)) {
-			return ((Number) obj).longValue();
-		}
-		return Timestamp.class.cast(obj);
-	}
-
-	private static Boolean castBoolean(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			throw new NullPointerException();
-		}
-		return Boolean.class.cast(obj);
-	}
-
-	private static UUID castUuid(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			throw new NullPointerException();
-		}
-		return java.util.UUID.class.cast(obj);
-	}
-
-	private static long castInteger(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			throw new NullPointerException();
-		}
-		if (obj instanceof Enum<?>) {
-			return ((Enum<?>) obj).ordinal();
-		}
-		return ((Number) obj).longValue();
-	}
-
-	private static double castReal(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			throw new NullPointerException();
-		}
-		if (obj instanceof Enum<?>) {
-			return ((Enum<?>) obj).ordinal();
-		}
-		return ((Number) obj).doubleValue();
-	}
-
-	private static String castString(Object obj) {
-		if (obj == null) {
-			return ""; //$NON-NLS-1$
-		}
-		if (obj instanceof Enum<?>) {
-			final Enum<?> enumValue = (Enum<?>) obj;
-			return enumValue.getClass().getCanonicalName()
-					+ "." //$NON-NLS-1$
-					+ enumValue.name();
-		}
-		return obj.toString();
-	}
-
-	private static Date castDate(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			throw new NullPointerException();
-		}
-		if (obj instanceof Number) {
-			return new Date(((Number) obj).longValue());
-		}
-		if (obj instanceof Calendar) {
-			return ((Calendar) obj).getTime();
-		}
-		return Date.class.cast(obj);
-	}
-
-	private static Point3D<?, ?> castPoint3D(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			throw new NullPointerException();
-		}
-		if (obj instanceof Tuple3D && !(obj instanceof Point3D)) {
-			return new Point3d((Tuple3D<?>) obj);
-		}
-		return Point3D.class.cast(obj);
-	}
-
-	private static Point2D<?, ?> castPoint2D(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			throw new NullPointerException();
-		}
-		if (obj instanceof Tuple2D && !(obj instanceof Point2D)) {
-			return new Point2d((Tuple2D<?>) obj);
-		}
-		return Point2D.class.cast(obj);
-	}
-
-	private static Color castColor(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			throw new NullPointerException();
-		}
-		if (obj instanceof Number) {
-			return VectorToolkit.color(((Number) obj).intValue());
-		}
-		return Color.class.cast(obj);
-	}
-
-	private static java.net.URL castUrl(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			return null;
-		}
-		if (obj instanceof java.net.URI) {
-			try {
-				return ((java.net.URI) obj).toURL();
-			} catch (MalformedURLException e) {
-				//
-			}
-		}
-		if (obj instanceof InetAddress) {
-			try {
-				return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
-						((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
-			} catch (MalformedURLException e) {
-				//
-			}
-		}
-		if (obj instanceof InetSocketAddress) {
-			try {
-				return new java.net.URL(AttributeConstants.DEFAULT_SCHEME.name(),
-						((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
-			} catch (MalformedURLException e) {
-				//
-			}
-		}
-		return java.net.URL.class.cast(obj);
-	}
-
-	private static Image castImage(Object obj) {
-		if (obj == null) {
-			return null;
-		}
-		return Image.class.cast(obj);
-	}
-
-	private static java.net.URI castUri(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			return null;
-		}
-		if (obj instanceof java.net.URL) {
-			try {
-				return ((java.net.URL) obj).toURI();
-			} catch (URISyntaxException e) {
-				//
-			}
-		}
-		if (obj instanceof InetAddress) {
-			try {
-				return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
-						((InetAddress) obj).getHostAddress(), ""); //$NON-NLS-1$
-			} catch (URISyntaxException e) {
-				//
-			}
-		}
-		if (obj instanceof InetSocketAddress) {
-			try {
-				return new java.net.URI(AttributeConstants.DEFAULT_SCHEME.name(),
-						((InetSocketAddress) obj).getAddress().getHostAddress(), ""); //$NON-NLS-1$
-			} catch (URISyntaxException e) {
-				//
-			}
-		}
-		return java.net.URI.class.cast(obj);
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private static Enum<?> castEnumeration(Object obj) {
-		if (obj == null) {
-			return null;
-		}
-		if (obj instanceof CharSequence) {
-			final String enumStr = obj.toString();
-			final int index = enumStr.lastIndexOf('.');
-			if (index > 0) {
-				final String enumName = enumStr.substring(0, index);
-				final String constantName = enumStr.substring(index + 1);
-				try {
-					final Class type = Class.forName(enumName);
-					if (Enum.class.isAssignableFrom(type)) {
-						final Enum<?> v = Enum.valueOf(type, constantName.toUpperCase());
-						if (v != null) {
-							return v;
-						}
-					}
-				} catch (Throwable exception) {
-					//
-				}
-			}
-		}
-		return Enum.class.cast(obj);
-	}
-
-	private static Point2D<?, ?>[] castPolyline2D(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			throw new NullPointerException();
-		}
-		if (obj.getClass().isArray()) {
-			final Class<?> elementType = obj.getClass().getComponentType();
-			if (Tuple2D.class.isAssignableFrom(elementType)
-					&& !Point2D.class.isAssignableFrom(elementType)) {
-				final int length = Array.getLength(obj);
-				final Point2D<?, ?>[] tab = new Point2D[length];
-				for (int i = 0; i < length; ++i) {
-					tab[i] = new Point2d((Tuple2D<?>) Array.get(obj, i));
-				}
-				return tab;
-			}
-		}
-		return Point2D[].class.cast(obj);
-	}
-
-	private static InetAddress castInetAddress(Object obj) {
-		if (obj == null) {
-			return null;
-		}
-		if (obj instanceof InetSocketAddress) {
-			return ((InetSocketAddress) obj).getAddress();
-		}
-		if (obj instanceof java.net.URL) {
-			final java.net.URL url = (java.net.URL) obj;
-			try {
-				return InetAddress.getByName(url.getHost());
-			} catch (UnknownHostException exception) {
-				//
-			}
-		}
-		if (obj instanceof java.net.URI) {
-			final java.net.URI uri = (java.net.URI) obj;
-			try {
-				return InetAddress.getByName(uri.getHost());
-			} catch (UnknownHostException exception) {
-				//
-			}
-		}
-		if (obj instanceof CharSequence) {
-			return getInetAddressFromCharacterSequence(obj);
-		}
-		return InetAddress.class.cast(obj);
-	}
-
-	private static InetAddress getInetAddressFromCharacterSequence(Object obj) {
-		try {
-			final String ipStr = obj.toString();
-			final int index = ipStr.lastIndexOf("/"); //$NON-NLS-1$
-			if (index >= 0) {
-				return InetAddress.getByName(ipStr.substring(index + 1));
-			}
-			return InetAddress.getByName(ipStr);
-		} catch (UnknownHostException exception) {
-			//
-		}
-		return null;
-	}
-
-	private static Point3D<?, ?>[] castPolyline3D(Object obj) {
-		// Possible ClassCastException
-		if (obj == null) {
-			throw new NullPointerException();
-		}
-		if (obj.getClass().isArray()) {
-			final Class<?> elementType = obj.getClass().getComponentType();
-			if (Tuple3D.class.isAssignableFrom(elementType)
-					&& !Point3D.class.isAssignableFrom(elementType)) {
-				final int length = Array.getLength(obj);
-				final Point3D<?, ?>[] tab = new Point3D[length];
-				for (int i = 0; i < length; ++i) {
-					tab[i] = new Point3d((Tuple3D<?>) Array.get(obj, i));
-				}
-				return tab;
-			}
-		}
-		return Point3D[].class.cast(obj);
-	}
-
-	/** Default type factory interface.
-	 * @author $Author: fozgul$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @param  <T> generic type.
-	 */
-	@FunctionalInterface
-	public interface TypeFactory<T> {
-		T  createType();
-	}
 }
