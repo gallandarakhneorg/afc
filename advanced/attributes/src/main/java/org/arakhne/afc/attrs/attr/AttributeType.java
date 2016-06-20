@@ -30,7 +30,11 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -154,6 +158,39 @@ public enum AttributeType {
 		final String pName = AttributeType.class.getPackage().getName();
 		NAME_RESOURCE_FILE = pName + ".types"; //$NON-NLS-1$
 	}
+
+	private static final Map<AttributeType, TypeFactory<?>> DEFAULT_TYPE_FACTORY =
+			Collections.unmodifiableMap(new HashMap<AttributeType, TypeFactory<?>>() {
+				private static final long serialVersionUID = -5930539797174658160L; {
+
+					put(AttributeType.BOOLEAN, () -> Boolean.FALSE);
+					put(AttributeType.INTEGER, () ->  new Long(0));
+					put(AttributeType.DATE, () ->  new Date());
+					put(AttributeType.REAL, () ->  new Double(0));
+					put(AttributeType.STRING, () ->  new String());
+					put(AttributeType.BOOLEAN, () ->  new String());
+					put(AttributeType.TIMESTAMP, () -> new Timestamp(System.currentTimeMillis()));
+					put(AttributeType.POINT3D, () -> new Point3d());
+					put(AttributeType.POINT, () ->  new Point2d());
+					put(AttributeType.COLOR, () -> Colors.BLACK);
+					put(AttributeType.UUID, () ->
+							java.util.UUID.fromString("00000000-0000-0000-0000-000000000000")); //$NON-NLS-1$
+					put(AttributeType.URL, () ->   null);
+					put(AttributeType.URI, () ->   null);
+					put(AttributeType.POLYLINE, () ->   new Point2D[0]);
+					put(AttributeType.POLYLINE3D, () ->   new Point3D[0]);
+					put(AttributeType.OBJECT, () ->   null);
+					put(AttributeType.IMAGE, () ->   null);
+					put(AttributeType.ENUMERATION, () ->   null);
+					put(AttributeType.TYPE, () ->   Object.class);
+					put(AttributeType.INET_ADDRESS, () ->   {
+						try {
+							return InetAddress.getLocalHost();
+						} catch (UnknownHostException exception) {
+							return null;
+						}
+				 	});
+				}});
 
 	/** Replies the name of this type (localized).
 	 *
@@ -386,53 +423,12 @@ public enum AttributeType {
 	 * @return the default value.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public Object getDefaultValue() {
-		switch (this) {
-		case INTEGER:
-			return new Long(0);
-		case REAL:
-			return new Double(0);
-		case STRING:
-			return new String();
-		case BOOLEAN:
-			return Boolean.FALSE;
-		case DATE:
-			return new Date();
-		case TIMESTAMP:
-			return new Timestamp(System.currentTimeMillis());
-		case POINT3D:
-			return new Point3d();
-		case POINT:
-			return new Point2d();
-		case COLOR:
-			return Colors.BLACK;
-		case UUID:
-			return java.util.UUID.fromString("00000000-0000-0000-0000-000000000000"); //$NON-NLS-1$
-		case URL:
-			return null;
-		case URI:
-			return null;
-		case POLYLINE3D:
-			return new Point3D[0];
-		case POLYLINE:
-			return new Point2D[0];
-		case OBJECT:
-			return null;
-		case IMAGE:
-			return null;
-		case INET_ADDRESS:
-			try {
-				return InetAddress.getLocalHost();
-			} catch (UnknownHostException exception) {
-				return null;
-			}
-		case ENUMERATION:
-			return null;
-		case TYPE:
-		default:
-			return Object.class;
+		final TypeFactory<?> typeFactory = DEFAULT_TYPE_FACTORY.get(this);
+		if (typeFactory != null) {
+			return typeFactory.createType();
 		}
+		return Object.class;
 	}
 
 	/**
@@ -919,4 +915,15 @@ public enum AttributeType {
 		return Point3D[].class.cast(obj);
 	}
 
+	/** Default type factory interface.
+	 * @author $Author: fozgul$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @param  <T> generic type.
+	 */
+	@FunctionalInterface
+	public interface TypeFactory<T> {
+		T  createType();
+	}
 }
