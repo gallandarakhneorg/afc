@@ -183,7 +183,7 @@ Indeed, the AFC classes use the specific annotations: `@Pure` for making link:ht
 
 * Java Development Toolkit (JDK) 1.8 or higher.
 
-== 3. Using AFC in a Maven project
+== 3. Using AFC
 
 === 3.1. Recommendations
 
@@ -191,7 +191,7 @@ For making your experience with AFC the best, we recommend you:
 
 * *to enable the assertions at development time (with the `-ea` command line option).*
 
-=== 3.2. Use the stable version
+=== 3.2. Use the stable version with Maven
 
 The lastest stable version of AFC is available on link:http://search.maven.org/[Maven Central].
 Consequently, you could directly include the AFC module that you want to use into the Maven dependencies of your project.
@@ -209,7 +209,7 @@ For example, if you want to use the "vmutils" module:
 
 Please, replace Version `12.0` in the previous snipset by the number of the version you want to use (`12.0` is the first version that is available on Maven Central).
 
-=== 3.3. Use of the development version
+=== 3.3. Use of the development version with Maven
 
 New features, enhancements and bug fixes are available in the SNAPSHOT (development) version of AFC.
 For using this version, you must add the Maven Repository Server of AFC in your pom file:
@@ -244,16 +244,33 @@ For using this version, you must add the Maven Repository Server of AFC in your 
 	...
 ```
 
-== 4. Issues
+== 4. P2 Repository
+
+A P2 repository is set up and accesible at the address: `http://download.tuxfamily.org/arakhne/p2`.
+
+The bundles that are available on this P2 repository are:
+
+[cols="2,1,1,3,1,1", options="header"]
+|===
+| Name
+| Id
+| Version
+
+| Mockito and related dependencies
+| org.mockito-core
+| 20.0.64.beta
+|===
+
+== 5. Issues
 
 Issues related to the AFC are tracked on link:https://github.com/gallandarakhneorg/afc/issues[GitHub]
 You must use this issue tracker to report and follow your issues.
 
-== 5. Contributions
+== 6. Contributions
 
 Any contribution to the AFC library is welcome.
 
-=== 5.1. Installing the Development Environment
+=== 6.1. Installing the Development Environment
 
 For setting up the development environment, you should follow the steps:
 
@@ -263,7 +280,7 @@ For setting up the development environment, you should follow the steps:
 * Download the link:./build-tools/src/main/resources/eclipse/contributors.epf[contributors.epf] file that contains the Eclipse general preferences related to the AFC project.
 * Import the general preferences: `File > Import > General > Preferences`
 
-=== 5.2. Obtaining the AFC Source Code
+=== 6.2. Obtaining the AFC Source Code
 
 For obtaining the code of the AFC library, you must clone it from the Git:
 ```bash
@@ -272,14 +289,14 @@ git clone https://github.com/gallandarakhneorg/afc
 
 CAUTION: Due to an issue in the Eclipse Checkstyle plugin, it is mandatory to install the `build-tools` module in the your `.m2` repository prior to the first launch of the Eclipse IDE: `mvn clean install -Dcheckstyle.skip=true`
 
-=== 5.3. Compiling the AFC Source Code
+=== 6.3. Compiling the AFC Source Code
 
 Maven is the standard tool for compiling the AFC library. It is recommended to launch the Maven compilation process on the command at least before submitting a pull request. The command line is:
 ```bash
 mvn clean install
 ```
 
-=== 5.4. Sending the Contribution
+=== 6.4. Sending the Contribution
 
 For sending your contribution to the AFC master repositoty, you must request a pull (PR) to the link:https://github.com/gallandarakhneorg/afc/[GitHub repository].
 
@@ -299,26 +316,26 @@ If one point is failing, please follows the steps:
 * Push the changes on the same PR, i.e. the same Git repository as the one used for the PR. *Do not create a new PR for the fix.*
 * The GitHub platform will relaunch the CI process automatically.
 
-== 6. Authors
+== 7. Authors
 
-* Alexandre WILLAUME, junior developer, vmutil module.
-* Christophe BOHRHAUER, student developer, math module.
-* Hamza JAFFALI, student developer, math module.
-* Christophe BOHRHAUER, student developer, math module.
-* Marc BAUMGARTNER, contributor.
-* Maxime GROLLEAU, student developer, math module.
-* Mahdi HANNOUN, Founder, original Author.
+* Marc BAUMGARTNER, author of copied source code.
+* Christophe BOHRHAUER, link:http://www.utbm.fr/[UTBM] student developer, math module.
+* link:http://www.arakhne.org/homes/galland.html[Stéphane GALLAND], founder, original and active author.
 * Nicolas GAUD, senior developer, math module.
+* Maxime GROLLEAU, link:http://www.utbm.fr/[UTBM] student developer, math module.
+* Mahdi HANNOUN, founder, original and former author.
+* Hamza JAFFALI, link:http://www.utbm.fr/[UTBM] student developer, math module.
 * Olivier LAMOTTE, senior developer, vmutil and math modules.
-* link:http://www.arakhne.org/homes/galland.html[Stéphane GALLAND], founder, original author.
-* Thomas PIOTROWSKI, student developer, math module.
-* Yuku SUGIANTO, contributor.
+* Fevzi OZGUL, senior developer, cleaning and optimization.
+* Thomas PIOTROWSKI, link:http://www.utbm.fr/[UTBM] student developer, math module.
+* Yuku SUGIANTO, author of copied source code.
+* Alexandre WILLAUME, link:http://www.utbm.fr/[UTBM] junior developer, vmutil module.
 
-== 7. License of AFC
+== 8. License of AFC
 
 The Arakhnê Foundation Classes are distributed under the link:./LICENSE[Apache v2 license], and is copyrigthed to the original authors and the other authors, as expressed in the link:./NOTICE[NOTICE].
 
-== 8. Success Stories
+== 9. Success Stories
 
 The following projects have sucessfully used a module of the AFC:
 
