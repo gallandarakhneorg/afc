@@ -34,10 +34,10 @@ public class DateFormatException extends Exception {
 
 	/** Constructor.
 	 *
-	 * @param invalid_date is the invalid date
+	 * @param invalidDate is the invalid date
 	 */
-	public DateFormatException(String invalid_date) {
-		super(invalid_date);
+	public DateFormatException(String invalidDate) {
+		super(invalidDate);
 	}
 
 }

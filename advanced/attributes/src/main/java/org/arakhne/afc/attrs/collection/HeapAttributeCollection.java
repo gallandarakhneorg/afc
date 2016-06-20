@@ -224,11 +224,11 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 	@Pure
 	@Override
-	public AttributeValue getAttribute(String name, AttributeValue default_value) {
+	public AttributeValue getAttribute(String name, AttributeValue defaultValue) {
 		final AttributeValue value = getStoredAttributeValue(name,
-				default_value == null ? null : default_value.getType());
+				defaultValue == null ? null : defaultValue.getType());
 		if (value == null) {
-			return default_value;
+			return defaultValue;
 		}
 		return value;
 	}

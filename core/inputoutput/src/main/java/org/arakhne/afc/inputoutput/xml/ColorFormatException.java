@@ -34,10 +34,10 @@ public class ColorFormatException extends Exception {
 
 	/** Constructor.
 	 *
-	 * @param invalid_color is the invalid color
+	 * @param invalidColor is the invalid color
 	 */
-	public ColorFormatException(String invalid_color) {
-		super(invalid_color);
+	public ColorFormatException(String invalidColor) {
+		super(invalidColor);
 	}
 
 }
