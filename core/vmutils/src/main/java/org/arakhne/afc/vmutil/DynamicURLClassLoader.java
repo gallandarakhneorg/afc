@@ -142,7 +142,6 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 		URL[] tab = new URL[set.size()];
 		set.toArray(tab);
 		this.ucp = new sun.misc.URLClassPath(tab);
-		tab = null;
 	}
 
 	/**
