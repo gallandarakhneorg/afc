@@ -1198,44 +1198,9 @@ public class AttributeValueImpl implements AttributeValue {
 			case TIMESTAMP:
 				return new Date(((Timestamp) this.value).longValue());
 			case STRING:
-				final String txt = (String) this.value;
-				DateFormat fmt;
-				Date dt;
-
-				dt = extractDate(txt, Locale.getDefault());
-				if (dt != null) {
-					return dt;
-				}
-
-				dt = extractDate(txt, Locale.US);
-				if (dt != null) {
-					return dt;
-				}
-
-				dt = extractDate(txt, Locale.UK);
-				if (dt != null) {
-					return dt;
-				}
-
-				try {
-					fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
-					return fmt.parse(txt);
-				} catch (ParseException exception) {
-					//
-				}
-				fmt = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
-				return fmt.parse(txt);
+				return caseStringGetDate();
 			case OBJECT:
-				if (this.value instanceof Date) {
-					return (Date) this.value;
-				}
-				if (this.value instanceof Calendar) {
-					return ((Calendar) this.value).getTime();
-				}
-				if (this.value instanceof Number) {
-					return new Date(((Number) this.value).longValue());
-				}
-				break;
+				return caseObjectGetDate();
 			case BOOLEAN:
 			case COLOR:
 			case IMAGE:
@@ -1257,6 +1222,49 @@ public class AttributeValueImpl implements AttributeValue {
 		throw new InvalidAttributeTypeException();
 	}
 
+	private Date caseObjectGetDate() {
+		if (this.value instanceof Date) {
+			return (Date) this.value;
+		}
+		if (this.value instanceof Calendar) {
+			return ((Calendar) this.value).getTime();
+		}
+		if (this.value instanceof Number) {
+			return new Date(((Number) this.value).longValue());
+		}
+		return null;
+	}
+
+	private Date caseStringGetDate() throws Exception {
+		final String txt = (String) this.value;
+		DateFormat fmt;
+		Date dt;
+
+		dt = extractDate(txt, Locale.getDefault());
+		if (dt != null) {
+			return dt;
+		}
+
+		dt = extractDate(txt, Locale.US);
+		if (dt != null) {
+			return dt;
+		}
+
+		dt = extractDate(txt, Locale.UK);
+		if (dt != null) {
+			return dt;
+		}
+
+		try {
+			fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
+			return fmt.parse(txt);
+		} catch (ParseException exception) {
+			//
+		}
+		fmt = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
+		return fmt.parse(txt);
+	}
+
 	@Override
 	public void setDate(Date value) {
 		this.value = value;
@@ -1274,44 +1282,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case BOOLEAN:
 				return ((Boolean) this.value).booleanValue();
 			case STRING:
-				// Do not use the function Boolean.parseBoolean() because
-				// it replies false when the string does not contains "true"
-				if (TRUE_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
-					return true;
-				}
-				if (YES_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
-					return true;
-				}
-				if (OUI_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
-					return true;
-				}
-				if (T_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
-					return true;
-				}
-				if (Y_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
-					return true;
-				}
-				if (O_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
-					return true;
-				}
-
-				if (FALSE_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
-					return false;
-				}
-				if (NO_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
-					return false;
-				}
-				if (NON_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
-					return false;
-				}
-				if (F_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
-					return false;
-				}
-				if (N_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
-					return false;
-				}
-
-				break;
+				return caseStringGetBoolean();
 			case INTEGER:
 				return ((Long) this.value).longValue() != 0;
 			case TIMESTAMP:
@@ -1342,6 +1313,47 @@ public class AttributeValueImpl implements AttributeValue {
 			//
 		}
 		throw new InvalidAttributeTypeException();
+	}
+
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+	private boolean caseStringGetBoolean() {
+		// Do not use the function Boolean.parseBoolean() because
+		// it replies false when the string does not contains "true"
+		if (TRUE_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
+			return true;
+		}
+		if (YES_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
+			return true;
+		}
+		if (OUI_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
+			return true;
+		}
+		if (T_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
+			return true;
+		}
+		if (Y_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
+			return true;
+		}
+		if (O_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
+			return true;
+		}
+
+		if (FALSE_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
+			return false;
+		}
+		if (NO_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
+			return false;
+		}
+		if (NON_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
+			return false;
+		}
+		if (F_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
+			return false;
+		}
+		if (N_CONSTANT.compareToIgnoreCase((String) this.value) == 0) {
+			return false;
+		}
+		return false;
 	}
 
 	@Override
@@ -1403,16 +1415,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case COLOR:
 				return ((Color) this.value).getRGB();
 			case OBJECT:
-				if (this.value instanceof Number) {
-					return ((Number) this.value).longValue();
-				}
-				if (this.value instanceof Date) {
-					return ((Date) this.value).getTime();
-				}
-				if (this.value instanceof Calendar) {
-					return ((Calendar) this.value).getTimeInMillis();
-				}
-				break;
+				return caseObjectGetTimestamp();
 			case IMAGE:
 			case POINT:
 			case POINT3D:
@@ -1430,6 +1433,19 @@ public class AttributeValueImpl implements AttributeValue {
 			//
 		}
 		throw new InvalidAttributeTypeException();
+	}
+
+	private long caseObjectGetTimestamp() {
+		if (this.value instanceof Number) {
+			return ((Number) this.value).longValue();
+		}
+		if (this.value instanceof Date) {
+			return ((Date) this.value).getTime();
+		}
+		if (this.value instanceof Calendar) {
+			return ((Calendar) this.value).getTimeInMillis();
+		}
+		return 0L;
 	}
 
 	@Override
@@ -1582,15 +1598,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case STRING:
 				return parsePoint((String) this.value, false);
 			case OBJECT:
-				if (this.value instanceof Tuple3D<?>) {
-					final Tuple3D<?> t3 = (Tuple3D<?>) this.value;
-					return new Point2d(t3.getX(), t3.getY());
-				}
-				if (this.value instanceof Tuple2D<?>) {
-					final Tuple2D<?> t2 = (Tuple2D<?>) this.value;
-					return new Point2d(t2.getX(), t2.getY());
-				}
-				break;
+				return caseObjectGetPoint();
 			case BOOLEAN:
 			case IMAGE:
 			case POLYLINE:
@@ -1607,6 +1615,18 @@ public class AttributeValueImpl implements AttributeValue {
 			//
 		}
 		throw new InvalidAttributeTypeException();
+	}
+
+	private Point2D<?, ?> caseObjectGetPoint() {
+		if (this.value instanceof Tuple3D<?>) {
+			final Tuple3D<?> t3 = (Tuple3D<?>) this.value;
+			return new Point2d(t3.getX(), t3.getY());
+		}
+		if (this.value instanceof Tuple2D<?>) {
+			final Tuple2D<?> t2 = (Tuple2D<?>) this.value;
+			return new Point2d(t2.getX(), t2.getY());
+		}
+		return null;
 	}
 
 	@Override
@@ -1684,19 +1704,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case DATE:
 				return VectorToolkit.color((int) ((Date) this.value).getTime());
 			case OBJECT:
-				if (this.value instanceof Color) {
-					return (Color) this.value;
-				}
-				if (this.value instanceof Number) {
-					return VectorToolkit.color(((Number) this.value).intValue());
-				}
-				if (this.value instanceof Date) {
-					return VectorToolkit.color((int) ((Date) this.value).getTime());
-				}
-				if (this.value instanceof Calendar) {
-					return VectorToolkit.color((int) ((Calendar) this.value).getTimeInMillis());
-				}
-				break;
+				return caseObjectGetColor();
 			case BOOLEAN:
 			case IMAGE:
 			case POLYLINE:
@@ -1713,6 +1721,22 @@ public class AttributeValueImpl implements AttributeValue {
 			//
 		}
 		throw new InvalidAttributeTypeException();
+	}
+
+	private Color caseObjectGetColor() {
+		if (this.value instanceof Color) {
+			return (Color) this.value;
+		}
+		if (this.value instanceof Number) {
+			return VectorToolkit.color(((Number) this.value).intValue());
+		}
+		if (this.value instanceof Date) {
+			return VectorToolkit.color((int) ((Date) this.value).getTime());
+		}
+		if (this.value instanceof Calendar) {
+			return VectorToolkit.color((int) ((Calendar) this.value).getTimeInMillis());
+		}
+		return null;
 	}
 
 	@Override
@@ -1796,14 +1820,7 @@ public class AttributeValueImpl implements AttributeValue {
 				}
 				break;
 			case OBJECT:
-				if (this.value instanceof UUID) {
-					return (UUID) this.value;
-				}
-				if (this.value instanceof URI
-						&& UUID_STR.equalsIgnoreCase(((URI) this.value).getScheme())) {
-					return extractUUIDFromString((URI) this.value);
-				}
-				break;
+				return caseObjectGetUUID();
 			case STRING:
 			case BOOLEAN:
 			case COLOR:
@@ -1843,6 +1860,17 @@ public class AttributeValueImpl implements AttributeValue {
 		return UUID.nameUUIDFromBytes(s.getBytes());
 	}
 
+	private UUID caseObjectGetUUID() {
+		if (this.value instanceof UUID) {
+			return (UUID) this.value;
+		}
+		if (this.value instanceof URI
+				&& UUID_STR.equalsIgnoreCase(((URI) this.value).getScheme())) {
+			return extractUUIDFromString((URI) this.value);
+		}
+		return null;
+	}
+
 	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
@@ -1858,13 +1886,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case STRING:
 				return new URL((String) this.value);
 			case OBJECT:
-				if (this.value instanceof URL) {
-					return (URL) this.value;
-				}
-				if (this.value instanceof URI) {
-					return ((URI) this.value).toURL();
-				}
-				break;
+				return caseObjectGetURL();
 			case INET_ADDRESS:
 				return new URL(DEFAULT_SCHEME.name(), ((InetAddress) this.value).getHostAddress(), ""); //$NON-NLS-1$
 			case UUID:
@@ -1900,6 +1922,16 @@ public class AttributeValueImpl implements AttributeValue {
 		}
 	}
 
+	private URL caseObjectGetURL() throws MalformedURLException {
+		if (this.value instanceof URL) {
+			return (URL) this.value;
+		}
+		if (this.value instanceof URI) {
+			return ((URI) this.value).toURL();
+		}
+		return null;
+	}
+
 	private static URI parseURI(String text) {
 		try {
 			final URI uri = new URI(text);
@@ -1929,16 +1961,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case UUID:
 				return new URI(UUID_STR + ":" + ((UUID) this.value).toString()); //$NON-NLS-1$
 			case OBJECT:
-				if (this.value instanceof URI) {
-					return (URI) this.value;
-				}
-				if (this.value instanceof URL) {
-					return ((URL) this.value).toURI();
-				}
-				if (this.value instanceof UUID) {
-					return new URI(UUID_STR + ":" + ((UUID) this.value).toString()); //$NON-NLS-1$
-				}
-				break;
+				return caseObjectGetURI();
 			case INET_ADDRESS:
 				return new URI(DEFAULT_SCHEME.name(), ((InetAddress) this.value).getHostAddress(), ""); //$NON-NLS-1$
 			case BOOLEAN:
@@ -1971,6 +1994,19 @@ public class AttributeValueImpl implements AttributeValue {
 		} catch (URISyntaxException exception) {
 			throw new InvalidAttributeTypeException();
 		}
+	}
+
+	private URI caseObjectGetURI() throws URISyntaxException {
+		if (this.value instanceof URI) {
+			return (URI) this.value;
+		}
+		if (this.value instanceof URL) {
+			return ((URL) this.value).toURI();
+		}
+		if (this.value instanceof UUID) {
+			return new URI(UUID_STR + ":" + ((UUID) this.value).toString()); //$NON-NLS-1$
+		}
+		return null;
 	}
 
 	@Override
@@ -2129,54 +2165,13 @@ public class AttributeValueImpl implements AttributeValue {
 						((Point3D<?, ?>) this.value).clone(),
 				};
 			case POLYLINE:
-				final Point2D<?, ?>[] current = (Point2D<?, ?>[]) this.value;
-				final Point3D<?, ?>[] tab = new Point3D[current.length];
-				for (int i = 0; i < current.length; ++i) {
-					tab[i] = new Point3d(
-							current[i].getX(),
-							current[i].getY(),
-							0);
-				}
-				return tab;
+				return casePolylineGetPolyline3D();
 			case POLYLINE3D:
 				return (Point3D[]) this.value;
 			case STRING:
 				return parsePolyline3D((String) this.value, false);
 			case OBJECT:
-				if (this.value instanceof Tuple2D<?>) {
-					final Tuple2D<?> t2 = (Tuple2D<?>) this.value;
-					return new Point3D[] {
-						new Point3d(t2.getX(), t2.getY(), 0),
-					};
-				} else if (this.value instanceof Tuple3D<?>) {
-					final Tuple3D<?> t2 = (Tuple3D<?>) this.value;
-					return new Point3D[] {
-						new Point3d(t2.getX(), t2.getY(), t2.getZ()),
-					};
-				} else if (this.value.getClass().isArray()) {
-					final Class<?> elementType = this.value.getClass().getComponentType();
-					if (Point3D.class.equals(elementType)) {
-						return (Point3D[]) this.value;
-					}
-					final int size = Array.getLength(this.value);
-					if (Tuple3D.class.isAssignableFrom(elementType)) {
-						final Point3D<?, ?>[] pa3 = new Point3D[size];
-						for (int i = 0; i < pa3.length; ++i) {
-							final Tuple3D<?> t = (Tuple3D<?>) Array.get(this.value, i);
-							pa3[i] = new Point3d(t);
-						}
-						return pa3;
-					}
-					if (Tuple2D.class.isAssignableFrom(elementType)) {
-						final Point3D<?, ?>[] pa3 = new Point3D[size];
-						for (int i = 0; i < pa3.length; ++i) {
-							final Tuple2D<?> t = (Tuple2D<?>) Array.get(this.value, i);
-							pa3[i] = new Point3d(t.getX(), t.getY(), 0);
-						}
-						return pa3;
-					}
-				}
-				break;
+				return caseObjectGetPolyline3D();
 			case BOOLEAN:
 			case COLOR:
 			case DATE:
@@ -2196,6 +2191,52 @@ public class AttributeValueImpl implements AttributeValue {
 			//
 		}
 		throw new InvalidAttributeTypeException();
+	}
+
+	private Point3D<?, ?>[] casePolylineGetPolyline3D() {
+		final Point2D<?, ?>[] current = (Point2D<?, ?>[]) this.value;
+		final Point3D<?, ?>[] tab = new Point3D[current.length];
+		for (int i = 0; i < current.length; ++i) {
+			tab[i] = new Point3d(
+					current[i].getX(),
+					current[i].getY(),
+					0);
+		}
+		return tab;
+	}
+
+	private Point3D<?, ?>[] caseObjectGetPolyline3D() {
+		if (this.value instanceof Tuple2D<?>) {
+			final Tuple2D<?> t2 = (Tuple2D<?>) this.value;
+			return new Point3D[] {new Point3d(t2.getX(), t2.getY(), 0),
+			};
+		} else if (this.value instanceof Tuple3D<?>) {
+			final Tuple3D<?> t2 = (Tuple3D<?>) this.value;
+			return new Point3D[] {new Point3d(t2.getX(), t2.getY(), t2.getZ()), };
+		} else if (this.value.getClass().isArray()) {
+			final Class<?> elementType = this.value.getClass().getComponentType();
+			if (Point3D.class.equals(elementType)) {
+				return (Point3D[]) this.value;
+			}
+			final int size = Array.getLength(this.value);
+			if (Tuple3D.class.isAssignableFrom(elementType)) {
+				final Point3D<?, ?>[] pa3 = new Point3D[size];
+				for (int i = 0; i < pa3.length; ++i) {
+					final Tuple3D<?> t = (Tuple3D<?>) Array.get(this.value, i);
+					pa3[i] = new Point3d(t);
+				}
+				return pa3;
+			}
+			if (Tuple2D.class.isAssignableFrom(elementType)) {
+				final Point3D<?, ?>[] pa3 = new Point3D[size];
+				for (int i = 0; i < pa3.length; ++i) {
+					final Tuple2D<?> t = (Tuple2D<?>) Array.get(this.value, i);
+					pa3[i] = new Point3d(t.getX(), t.getY(), 0);
+				}
+				return pa3;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -2428,16 +2469,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case STRING:
 				return extractInetAddress();
 			case OBJECT:
-				if (this.value instanceof InetAddress) {
-					return (InetAddress) this.value;
-				}
-				if (this.value instanceof InetSocketAddress) {
-					return ((InetSocketAddress) this.value).getAddress();
-				}
-				if (this.value != null) {
-					return extractInetAddress();
-				}
-				return null;
+				return caseObjectGetInetAddress();
 			case URI:
 				final URI uri = (URI) this.value;
 				return InetAddress.getByName(uri.getHost());
@@ -2464,6 +2496,19 @@ public class AttributeValueImpl implements AttributeValue {
 			//
 		}
 		throw new InvalidAttributeTypeException();
+	}
+
+	private InetAddress caseObjectGetInetAddress() {
+		if (this.value instanceof InetAddress) {
+			return (InetAddress) this.value;
+		}
+		if (this.value instanceof InetSocketAddress) {
+			return ((InetSocketAddress) this.value).getAddress();
+		}
+		if (this.value != null) {
+			return extractInetAddress();
+		}
+		return null;
 	}
 
 	@Override
@@ -2512,16 +2557,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case ENUMERATION:
 				return (Enum<?>) this.value;
 			case STRING:
-				final int index = ((String) this.value).lastIndexOf('.');
-				if (index >= 0) {
-					final String classname = ((String) this.value).substring(0, index);
-					final String enumName = ((String) this.value).substring(index + 1);
-					final Class classType = Class.forName(classname);
-					if (Enum.class.isAssignableFrom(classType)) {
-						return Enum.valueOf(classType, enumName);
-					}
-				}
-				break;
+				return caseStringGetEnumeration();
 			case OBJECT:
 				if (this.value instanceof Enum<?>) {
 					return (Enum<?>) this.value;
@@ -2610,6 +2646,19 @@ public class AttributeValueImpl implements AttributeValue {
 		this.value = enumConstant;
 		this.type = AttributeType.ENUMERATION;
 		this.assigned = this.value != null;
+	}
+
+	private Enum<?> caseStringGetEnumeration() throws ClassNotFoundException {
+		final int index = ((String) this.value).lastIndexOf('.');
+		if (index >= 0) {
+			final String classname = ((String) this.value).substring(0, index);
+			final String enumName = ((String) this.value).substring(index + 1);
+			final Class classType = Class.forName(classname);
+			if (Enum.class.isAssignableFrom(classType)) {
+				return Enum.valueOf(classType, enumName);
+			}
+		}
+		return null;
 	}
 
 	@Pure
