@@ -715,7 +715,7 @@ public final class TextUtil {
 			// inclusive
 			int startOffset = 0;
 			// exclusive
-			int endOffset = 0;
+			int endOffset;
 			int depth = 0;
 
 			final StringBuilder token = new StringBuilder();
