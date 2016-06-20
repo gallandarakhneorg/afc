@@ -2463,13 +2463,14 @@ public class Matrix3d implements Serializable, Cloneable {
             final double shift = computeShift(sValue[1], eValue[1], sValue[2]);
             double fvalue = (Math.abs(sValue[0]) - shift) * (dSign(cb48, sValue[0]) + shift / sValue[0]);
             double gvalue = eValue[0];
-            double rvalue;
 
-            rvalue = computeRot(fvalue, gvalue, sinr, cosr, 0);
+            computeRot(fvalue, gvalue, sinr, cosr, 0);
             fvalue = cosr[0] * sValue[0] + sinr[0] * eValue[0];
             eValue[0] = cosr[0] * eValue[0] - sinr[0] * sValue[0];
             gvalue = sinr[0] * sValue[1];
             sValue[1] = cosr[0] * sValue[1];
+
+            double rvalue;
 
             rvalue = computeRot(fvalue, gvalue, sinl, cosl, 0);
             sValue[0] = rvalue;
@@ -2747,7 +2748,7 @@ public class Matrix3d implements Serializable, Cloneable {
                     r = Math.sqrt(l * l + mm);
                 }
 
-                double a = (s + r) * .5;
+                final double a;
 
                 if (ga > fa) {
                     pmax = 2;
@@ -3896,3 +3897,4 @@ public class Matrix3d implements Serializable, Cloneable {
     }
 
 }
+
