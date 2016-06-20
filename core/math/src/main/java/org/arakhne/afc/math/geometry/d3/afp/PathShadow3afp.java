@@ -294,15 +294,15 @@ public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
       "checkstyle:npathcomplexity"})
 	private static void computeCrossings2(
-			double shadow_x0, double shadow_y0, double shadow_z0,
-			double shadow_x1, double shadow_y1, double shadow_z1,
+			double shadowX0, double shadowY0, double shadowZ0,
+			double shadowX1, double shadowY1, double shadowZ1,
 			double sx0, double sy0, double sz0,
 			double sx1, double sy1, double sz1,
 			PathShadowData data) {
-		final double shadowXMin = Math.min(shadow_x0, shadow_x1);
-		final double shadowXMax = Math.max(shadow_x0, shadow_x1);
-		final double shadowYMin = Math.min(shadow_y0, shadow_y1);
-		final double shadowYMax = Math.max(shadow_y0, shadow_y1);
+		final double shadowXMin = Math.min(shadowX0, shadowX1);
+		final double shadowXMax = Math.max(shadowX0, shadowX1);
+		final double shadowYMin = Math.min(shadowY0, shadowY1);
+		final double shadowYMax = Math.max(shadowY0, shadowY1);
 
         if (sy0 <= shadowYMin && sy1 <= shadowYMin) {
             return;
@@ -340,39 +340,39 @@ public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
 				}
 			}
 		} else if (Segment3afp.intersectsSegmentSegmentWithoutEnds(
-				shadow_x0, shadow_y0, shadow_z0, shadow_x1, shadow_y1, shadow_z1,
+				shadowX0, shadowY0, shadowZ0, shadowX1, shadowY1, shadowZ1,
 				sx0, sy0, sz0, sx1, sy1, sz1)) {
 			data.setCrossings(MathConstants.SHAPE_INTERSECTS);
 		} else {
 			final int side1;
 			final int side2;
-            final boolean isUp = shadow_y0 <= shadow_y1;
+            final boolean isUp = shadowY0 <= shadowY1;
 			if (isUp) {
 				side1 = Segment3afp.computeSideLinePoint(
-						shadow_x0, shadow_y0, shadow_z0,
-						shadow_x1, shadow_y1, shadow_z1,
+						shadowX0, shadowY0, shadowZ0,
+						shadowX1, shadowY1, shadowZ1,
 						sx0, sy0, sz0, 0.);
 				side2 = Segment3afp.computeSideLinePoint(
-						shadow_x0, shadow_y0, shadow_z0,
-						shadow_x1, shadow_y1, shadow_z1,
+						shadowX0, shadowY0, shadowZ0,
+						shadowX1, shadowY1, shadowZ1,
 						sx1, sy1, sz1, 0.);
 			} else {
 				side1 = Segment3afp.computeSideLinePoint(
-						shadow_x1, shadow_y1, shadow_z1,
-						shadow_x0, shadow_y0, shadow_z0,
+						shadowX1, shadowY1, shadowZ1,
+						shadowX0, shadowY0, shadowZ0,
 						sx0, sy0, sz0, 0.);
 				side2 = Segment3afp.computeSideLinePoint(
-						shadow_x1, shadow_y1, shadow_z1,
-						shadow_x0, shadow_y0, shadow_z0,
+						shadowX1, shadowY1, shadowZ1,
+						shadowX0, shadowY0, shadowZ0,
 						sx1, sy1, sz1, 0.);
 			}
             if (side1 > 0 || side2 > 0) {
 				computeCrossings3(
-						shadow_x0, shadow_y0,
+						shadowX0, shadowY0,
 						sx0, sy0, sx1, sy1,
 						data, isUp);
 				computeCrossings3(
-						shadow_x1, shadow_y1,
+						shadowX1, shadowY1,
 						sx0, sy0, sx1, sy1,
 						data, !isUp);
 			}

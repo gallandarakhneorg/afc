@@ -199,12 +199,12 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 
 	@Pure
 	@Override
-	public AttributeValue getAttribute(String name, AttributeValue default_value) {
+	public AttributeValue getAttribute(String name, AttributeValue defaultValue) {
 		final AttributeValue value = extractValueForSafe(name);
 		if (value != null) {
 			return new AttributeValueImpl(value);
 		}
-		return default_value;
+		return defaultValue;
 	}
 
 	@Pure

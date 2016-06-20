@@ -552,14 +552,14 @@ public final class XMLUtil {
 	 * @param <T> is the type of the enumeration.
 	 * @param document is the XML document to explore.
 	 * @param type is the type of the enumeration.
-	 * @param case_sensitive indicates of the {@code path}'s components are case sensitive.
+	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
 	 * @return the value of the enumeration or <code>null</code> if none.
 	 */
 	@Pure
-	public static <T extends Enum<T>> T getAttributeEnum(Node document, Class<T> type, boolean case_sensitive, String... path) {
+	public static <T extends Enum<T>> T getAttributeEnum(Node document, Class<T> type, boolean caseSensitive, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		return getAttributeEnumWithDefault(document, type, case_sensitive, null, path);
+		return getAttributeEnumWithDefault(document, type, caseSensitive, null, path);
 	}
 
 	/** Read an enumeration value.
@@ -627,15 +627,15 @@ public final class XMLUtil {
 	 * the attribute.
 	 *
 	 * @param document is the XML document to explore.
-	 * @param case_sensitive indicates of the {@code path}'s components are case sensitive.
+	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
 	 * @return the float value of the specified attribute or <code>null</code> if
 	 *     it was node found in the document
 	 */
 	@Pure
-	public static float getAttributeFloat(Node document, boolean case_sensitive, String... path) {
+	public static float getAttributeFloat(Node document, boolean caseSensitive, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		return getAttributeFloatWithDefault(document, case_sensitive, 0f, path);
+		return getAttributeFloatWithDefault(document, caseSensitive, 0f, path);
 	}
 
 	/** Replies the float value that corresponds to the specified attribute's path.
@@ -703,15 +703,15 @@ public final class XMLUtil {
 	 * the attribute.
 	 *
 	 * @param document is the XML document to explore.
-	 * @param case_sensitive indicates of the {@code path}'s components are case sensitive.
+	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
 	 * @return the integer value of the specified attribute or <code>null</code> if
 	 *     it was node found in the document
 	 */
 	@Pure
-	public static int getAttributeInt(Node document, boolean case_sensitive, String... path) {
+	public static int getAttributeInt(Node document, boolean caseSensitive, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		return getAttributeIntWithDefault(document, case_sensitive, 0, path);
+		return getAttributeIntWithDefault(document, caseSensitive, 0, path);
 	}
 
 	/** Replies the integer value that corresponds to the specified attribute's path.
@@ -778,15 +778,15 @@ public final class XMLUtil {
 	 * the attribute.
 	 *
 	 * @param document is the XML document to explore.
-	 * @param case_sensitive indicates of the {@code path}'s components are case sensitive.
+	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
 	 * @return the long value of the specified attribute or <code>null</code> if
 	 *     it was node found in the document
 	 */
 	@Pure
-	public static long getAttributeLong(Node document, boolean case_sensitive, String... path) {
+	public static long getAttributeLong(Node document, boolean caseSensitive, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		return getAttributeLongWithDefault(document, case_sensitive, 0, path);
+		return getAttributeLongWithDefault(document, caseSensitive, 0, path);
 	}
 
 	/** Replies the long value that corresponds to the specified attribute's path.
@@ -931,15 +931,15 @@ public final class XMLUtil {
 	 * the attribute.
 	 *
 	 * @param document is the XML document to explore.
-	 * @param case_sensitive indicates of the {@code path}'s components are case sensitive.
+	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
 	 * @return the UUID in the specified attribute or <code>null</code> if
 	 *     it was node found in the document
 	 */
 	@Pure
-	public static UUID getAttributeUUID(Node document, boolean case_sensitive, String... path) {
+	public static UUID getAttributeUUID(Node document, boolean caseSensitive, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		return getAttributeUUIDWithDefault(document, case_sensitive, null, path);
+		return getAttributeUUIDWithDefault(document, caseSensitive, null, path);
 	}
 
 	/** Replies the UUID that corresponds to the specified attribute's path.
@@ -1262,14 +1262,14 @@ public final class XMLUtil {
 	 * the desired node.
 	 *
 	 * @param document is the XML document to explore.
-	 * @param case_sensitive indicates of the {@code path}'s components are case sensitive.
+	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of names.
 	 * @return the node or <code>null</code> if it was not found in the document.
 	 */
 	@Pure
-	public static Element getElementFromPath(Node document, boolean case_sensitive, String... path) {
+	public static Element getElementFromPath(Node document, boolean caseSensitive, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		return getElementFromPath(document, case_sensitive, 0, path);
+		return getElementFromPath(document, caseSensitive, 0, path);
 	}
 
 	/** Replies the node that corresponds to the specified path.

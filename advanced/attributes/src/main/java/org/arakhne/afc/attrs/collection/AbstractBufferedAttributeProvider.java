@@ -146,12 +146,12 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 
 	@Pure
 	@Override
-	public AttributeValue getAttribute(String name, AttributeValue default_value) {
+	public AttributeValue getAttribute(String name, AttributeValue defaultValue) {
 		AttributeValue value;
 		try {
 			value = new AttributeValueImpl(extractValueFor(name));
 		} catch (AttributeException exception) {
-			value = default_value;
+			value = defaultValue;
 		}
 		return value;
 	}
