@@ -139,7 +139,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 		final Set<URL> set = new HashSet<>();
 		set.addAll(Arrays.asList(this.ucp.getURLs()));
 		set.removeAll(Arrays.asList(urls));
-		URL[] tab = new URL[set.size()];
+		final URL[] tab = new URL[set.size()];
 		set.toArray(tab);
 		this.ucp = new sun.misc.URLClassPath(tab);
 	}

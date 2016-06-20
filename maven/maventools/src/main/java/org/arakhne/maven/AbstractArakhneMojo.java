@@ -799,7 +799,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 		String version;
 		final String url;
 		Organization organization = null;
-		Scm scm;
+		final Scm scm;
 		List<Developer> developers;
 		List<Contributor> contributors;
 		List<License> licenses;
