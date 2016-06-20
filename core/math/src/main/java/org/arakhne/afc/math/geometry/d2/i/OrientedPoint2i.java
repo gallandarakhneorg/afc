@@ -44,8 +44,6 @@ public class OrientedPoint2i
 
     private int dy;
 
-    private int len;
-
     /** Construct an empty oriented point.
      */
     public OrientedPoint2i() {
@@ -59,14 +57,6 @@ public class OrientedPoint2i
         super(point);
     }
 
-    /** Construct an oriented point from a point and its length on a polyline.
-     * @param point the point.
-     * @param length the length.
-     */
-    public OrientedPoint2i(Point2D<?, ?> point, int length) {
-        this(point.ix(), point.iy(), length);
-    }
-
     /** Construct an oriented point from the two given coordinates.
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
@@ -75,30 +65,12 @@ public class OrientedPoint2i
         super(x, y);
     }
 
-    /** Construct an oriented point from the two given coordinates and the length of the point on a polyline.
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length
-     */
-    public OrientedPoint2i(int x, int y, int length) {
-        set(x, y, length);
-    }
-
     /** Construct an oriented point from a point and a direction vector.
      * @param point the point.
      * @param vector the direction vector.
      */
     public OrientedPoint2i(Point2D<?, ?> point, Vector2D<?, ?> vector) {
         this(point.ix(), point.iy(), vector.ix(), vector.iy());
-    }
-
-    /** Construct an oriented point from a point, its length, and a direction vector.
-     * @param point the point.
-     * @param length the length of the point
-     * @param vector the direction vector.
-     */
-    public OrientedPoint2i(Point2D<?, ?> point, int length, Vector2D<?, ?> vector) {
-        this(point.ix(), point.iy(), length, vector.ix(), vector.iy());
     }
 
     /** Construct an oriented point from the two given coordinates.
@@ -111,17 +83,6 @@ public class OrientedPoint2i
         set(x, y, dirX, dirY);
     }
 
-    /** Construct an oriented point from the given coordinates.
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length of the point on the polyline.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     */
-    public OrientedPoint2i(int x, int y, int length, int dirX, int dirY) {
-        set(x, y, length, dirX, dirY);
-    }
-
     @Pure
     @Override
     public int hashCode() {
@@ -129,7 +90,6 @@ public class OrientedPoint2i
         bits = 31 * bits + super.hashCode();
         bits = 31 * bits + Integer.hashCode(this.dx);
         bits = 31 * bits + Integer.hashCode(this.dy);
-        bits = 31 * bits + Integer.hashCode(this.len);
         return bits ^ (bits >> 31);
     }
 
@@ -173,23 +133,4 @@ public class OrientedPoint2i
         this.dy = (int) Math.round(dirY);
     }
 
-    @Override
-    public double getLength() {
-        return this.len;
-    }
-
-    @Override
-    public int ilen() {
-        return this.len;
-    }
-
-    @Override
-    public void setLength(int length) {
-        this.len = length;
-    }
-
-    @Override
-    public void setLength(double length) {
-        this.len = (int) Math.round(length);
-    }
 }

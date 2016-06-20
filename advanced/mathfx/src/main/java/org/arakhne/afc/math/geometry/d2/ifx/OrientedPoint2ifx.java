@@ -27,6 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 
 /** 2D oriented point with integer FX properties.
@@ -46,8 +47,6 @@ public class OrientedPoint2ifx
 
     private IntegerProperty dy;
 
-    private IntegerProperty len;
-
     /** Construct an empty oriented point.
      */
     public OrientedPoint2ifx() {
@@ -57,16 +56,8 @@ public class OrientedPoint2ifx
     /** Constructor by copy.
      * @param tuple the tuple to copy.
      */
-    public OrientedPoint2ifx(Point2D<?, ?> tuple) {
+    public OrientedPoint2ifx(Tuple2D<?> tuple) {
         super(tuple);
-    }
-
-    /** Construct an oriented point from a point and its length on a polyline.
-     * @param point the point.
-     * @param length the length.
-     */
-    public OrientedPoint2ifx(Point2D<?, ?> point, int length) {
-        this(point.ix(), point.iy(), length);
     }
 
     /** Construct an oriented point from the two given coordinates.
@@ -85,41 +76,12 @@ public class OrientedPoint2ifx
         super(x, y);
     }
 
-    /** Construct an oriented point from the two given coordinates and the length of the point on a polyline.
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length
-     */
-    public OrientedPoint2ifx(int x, int y, int length) {
-        super(x, y);
-        lengthProperty().set(length);
-    }
-
-    /** Construct an oriented point from the two given coordinates and the length of the point on a polyline.
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length
-     */
-    public OrientedPoint2ifx(IntegerProperty x, IntegerProperty y, IntegerProperty length) {
-        super(x, y);
-        this.len = length;
-    }
-
     /** Construct an oriented point from a point and a direction vector.
      * @param point the point.
      * @param vector the direction vector.
      */
     public OrientedPoint2ifx(Point2D<?, ?> point, Vector2D<?, ?> vector) {
         this(point.ix(), point.iy(), vector.ix(), vector.iy());
-    }
-
-    /** Construct an oriented point from a point, its length, and a direction vector.
-     * @param point the point.
-     * @param length the length of the point
-     * @param vector the direction vector.
-     */
-    public OrientedPoint2ifx(Point2D<?, ?> point, int length, Vector2D<?, ?> vector) {
-        this(point.ix(), point.iy(), length, vector.ix(), vector.iy());
     }
 
     /** Construct an oriented point from the two given coordinates.
@@ -134,20 +96,6 @@ public class OrientedPoint2ifx
         dirYProperty().set(dirY);
     }
 
-    /** Construct an oriented point from the given coordinates.
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length of the point on the polyline.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     */
-    public OrientedPoint2ifx(int x, int y, int length, int dirX, int dirY) {
-        super(x, y);
-        lengthProperty().set(length);
-        dirXProperty().set(dirX);
-        dirYProperty().set(dirY);
-    }
-
     @Pure
     @Override
     public int hashCode() {
@@ -155,7 +103,6 @@ public class OrientedPoint2ifx
         bits = 31 * bits + super.hashCode();
         bits = 31 * bits + Integer.hashCode(idx());
         bits = 31 * bits + Integer.hashCode(idy());
-        bits = 31 * bits + Integer.hashCode(ilen());
         return bits ^ (bits >> 31);
     }
 
@@ -169,10 +116,6 @@ public class OrientedPoint2ifx
         if (clone.dy != null) {
             clone.dy = null;
             clone.dirYProperty().set(idy());
-        }
-        if (clone.len != null) {
-            clone.len = null;
-            clone.lengthProperty().set(ilen());
         }
         return clone;
     }
@@ -217,26 +160,6 @@ public class OrientedPoint2ifx
         dirYProperty().set((int) Math.round(dirY));
     }
 
-    @Override
-    public double getLength() {
-        return this.len == null ? 0 : this.len.doubleValue();
-    }
-
-    @Override
-    public int ilen() {
-        return this.len == null ? 0 : this.len.intValue();
-    }
-
-    @Override
-    public void setLength(double length) {
-        lengthProperty().set((int) Math.round(length));
-    }
-
-    @Override
-    public void setLength(int length) {
-        lengthProperty().set(length);
-    }
-
     /** Replies the property that is the x coordinate of the direction vector.
      *
      * @return the direction vector x property.
@@ -259,17 +182,5 @@ public class OrientedPoint2ifx
             this.dy = new SimpleIntegerProperty(this, MathFXAttributeNames.Y1);
         }
         return this.dy;
-    }
-
-    /** Replies the length property of the point.
-     *
-     * @return the length property.
-     */
-    @Pure
-    public IntegerProperty lengthProperty() {
-        if (this.len == null) {
-            this.len = new SimpleIntegerProperty(this, MathFXAttributeNames.LENGTH);
-        }
-        return this.len;
     }
 }

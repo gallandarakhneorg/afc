@@ -128,48 +128,11 @@ public interface OrientedPoint2D<RP extends Point2D<? super RP, ? super RV>, RV 
         return idx();
     }
 
-    /** Replies the geometrical length of this point on
-     * the polyline.
-     *
-     * @return the length of the point on the polyline
-     */
-    @Pure double getLength();
-
-    /** Replies the geometrical length of this point on
-     * the polyline.
-     *
-     * @return the length of the point on the polyline
-     */
-    @Pure int ilen();
-
-    /** Sets a new value for the length of the point.
-     *
-     * @param length the length of the point on the polyline.
-     */
-    void setLength(int length);
-
-    /** Sets a new value for the length of the point.
-     *
-     * @param length the length of the point on the polyline.
-     */
-    void setLength(double length);
-
     /** Replies this point.
      * @return this point
      */
     default RP getPoint() {
         return getGeomFactory().newPoint(getX(), getY());
-    }
-
-    /** Change the point.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length of the point on the polyline.
-     */
-    default void set(int x, int y, int length) {
-        Point2D.super.set(x, y);
-        setLength(length);
     }
 
     /** Change the point and its orientation vector.
@@ -189,52 +152,11 @@ public interface OrientedPoint2D<RP extends Point2D<? super RP, ? super RV>, RV 
      *
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
-     * @param length the length of the point on the polyline.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     */
-    default void set(int x, int y, int length, int dirX, int dirY) {
-        Point2D.super.set(x, y);
-        setLength(length);
-        setDirectionX(dirX);
-        setDirectionY(dirY);
-    }
-
-    /** Change the point.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length of the point on the polyline.
-     */
-    default void set(double x, double y, double length) {
-        Point2D.super.set(x, y);
-        setLength(length);
-    }
-
-    /** Change the point and its orientation vector.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
      * @param dirX x coordinate of the vector.
      * @param dirY y coordinate of the vector.
      */
     default void set(double x, double y, double dirX, double dirY) {
         Point2D.super.set(x, y);
-        setDirectionX(dirX);
-        setDirectionY(dirY);
-    }
-
-    /** Change the point and its orientation vector.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length of the point on the polyline.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     */
-    default void set(double x, double y, double length, double dirX, double dirY) {
-        Point2D.super.set(x, y);
-        setLength(length);
         setDirectionX(dirX);
         setDirectionY(dirY);
     }
