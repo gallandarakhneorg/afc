@@ -2464,7 +2464,7 @@ public class Matrix3d implements Serializable, Cloneable {
             double fvalue = (Math.abs(sValue[0]) - shift) * (dSign(cb48, sValue[0]) + shift / sValue[0]);
             double gvalue = eValue[0];
 
-
+            computeRot(fvalue, gvalue, sinr, cosr, 0);
             fvalue = cosr[0] * sValue[0] + sinr[0] * eValue[0];
             eValue[0] = cosr[0] * eValue[0] - sinr[0] * sValue[0];
             gvalue = sinr[0] * sValue[1];
