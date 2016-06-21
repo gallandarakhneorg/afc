@@ -53,12 +53,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	/**
 	 *Center of the OBR.
 	 */
-	private DoubleProperty cx;
-
-	/**
-	 *Center of the OBR.
-	 */
-	private DoubleProperty cy;
+	private Point2dfx center = new Point2dfx();
 
 	/**
 	 *The first axis of the OBR.
@@ -145,13 +140,9 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Override
 	public OrientedRectangle2dfx clone() {
 		final OrientedRectangle2dfx clone = super.clone();
-		if (clone.cx != null) {
-			clone.cx = null;
-			clone.centerXProperty().set(getCenterX());
-		}
-		if (clone.cy != null) {
-			clone.cy = null;
-			clone.centerYProperty().set(getCenterY());
+		if (clone.center != null) {
+			clone.center = null;
+			clone.center = this.center.clone();
 		}
 		if (clone.raxis != null) {
 			clone.raxis = null;
@@ -187,19 +178,19 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Pure
 	@Override
 	public Point2dfx getCenter() {
-		return getGeomFactory().newPoint(centerXProperty(), centerYProperty());
+		return this.center;
 	}
 
 	@Pure
 	@Override
 	public double getCenterX() {
-		return this.cx == null ? 0 : this.cx.get();
+		return this.center.getX();
 	}
 
 	@Pure
 	@Override
 	public double getCenterY() {
-		return this.cy == null ? 0 : this.cy.get();
+		return this.center.getY();
 	}
 
 	/** Replies the property for the x coordinate of the rectangle's center.
@@ -208,10 +199,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	 */
 	@Pure
 	public DoubleProperty centerXProperty() {
-		if (this.cx == null) {
-			this.cx = new SimpleDoubleProperty(this, MathFXAttributeNames.CENTER_X);
-		}
-		return this.cx;
+		return this.center.xProperty();
 	}
 
 	/** Replies the property for the y coordinate of the rectangle's center.
@@ -220,10 +208,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	 */
 	@Pure
 	public DoubleProperty centerYProperty() {
-		if (this.cy == null) {
-			this.cy = new SimpleDoubleProperty(this, MathFXAttributeNames.CENTER_Y);
-		}
-		return this.cy;
+		return this.center.yProperty();
 	}
 
 	@Override

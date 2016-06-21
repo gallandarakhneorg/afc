@@ -43,8 +43,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Rectangle2dfxOld extends AbstractShape2dfx<Rectangle2dfxOld>
-		implements Rectangle2afp<Shape2dfx<?>, Rectangle2dfxOld, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfxOld> {
+public class Rectangle2dfxOld extends AbstractShape2dfx<Rectangle2dfx>
+		implements Rectangle2afp<Shape2dfx<?>, Rectangle2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
 
 	private static final long serialVersionUID = -1393290109630714626L;
 
@@ -95,31 +95,31 @@ public class Rectangle2dfxOld extends AbstractShape2dfx<Rectangle2dfxOld>
 	/** Constructor by copy.
 	 * @param rectangle the shape to copy.
 	 */
-	public Rectangle2dfxOld(Rectangle2dfxOld rectangle) {
+	public Rectangle2dfxOld(Rectangle2dfx rectangle) {
 		set(rectangle);
 	}
 
 	@Override
-	public Rectangle2dfxOld clone() {
-		final Rectangle2dfxOld clone = super.clone();
-		if (clone.minX != null) {
-			clone.minX = null;
-			clone.minXProperty().set(getMinX());
-		}
-		if (clone.minY != null) {
-			clone.minY = null;
-			clone.minYProperty().set(getMinY());
-		}
-		if (clone.maxX != null) {
-			clone.maxX = null;
-			clone.maxXProperty().set(getMaxX());
-		}
-		if (clone.maxY != null) {
-			clone.maxY = null;
-			clone.maxYProperty().set(getMaxY());
-		}
-		clone.width = null;
-		clone.height = null;
+	public Rectangle2dfx clone() {
+		final Rectangle2dfx clone = super.clone();
+		//		if (clone.minX != null) {
+		//			clone.minX = null;
+		//			clone.minXProperty().set(getMinX());
+		//		}
+		//		if (clone.minY != null) {
+		//			clone.minY = null;
+		//			clone.minYProperty().set(getMinY());
+		//		}
+		//		if (clone.maxX != null) {
+		//			clone.maxX = null;
+		//			clone.maxXProperty().set(getMaxX());
+		//		}
+		//		if (clone.maxY != null) {
+		//			clone.maxY = null;
+		//			clone.maxYProperty().set(getMaxY());
+		//		}
+		//		clone.width = null;
+		//		clone.height = null;
 		return clone;
 	}
 
@@ -321,7 +321,7 @@ public class Rectangle2dfxOld extends AbstractShape2dfx<Rectangle2dfxOld>
 	}
 
 	@Override
-	public ObjectProperty<Rectangle2dfxOld> boundingBoxProperty() {
+	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() ->

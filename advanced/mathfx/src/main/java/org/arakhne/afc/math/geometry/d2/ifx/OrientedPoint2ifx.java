@@ -170,4 +170,11 @@ public class OrientedPoint2ifx
         return this.tangent.yProperty();
     }
 
+    public Vector2ifx getTangent() {
+        return this.tangent;
+    }
+
+    public Vector2ifx getNormal() {
+        return getGeomFactory().newVector(-this.tangent.iy(), this.tangent.ix());
+    }
 }

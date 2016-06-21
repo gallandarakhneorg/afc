@@ -48,13 +48,9 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 
 	private static final long serialVersionUID = -1393290109630714626L;
 
-	private DoubleProperty minX;
+	private Point2dfx min = new Point2dfx();
 
-	private DoubleProperty minY;
-
-	private DoubleProperty maxX;
-
-	private DoubleProperty maxY;
+	private Point2dfx max = new Point2dfx();
 
 	/** width property.
 	 */
@@ -75,9 +71,9 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	 * @param max is the max corner of the rectangle.
 	 */
 	public Rectangle2dfx(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert min != null : AssertMessages.notNullParameter(0);
-		assert max != null : AssertMessages.notNullParameter(1);
-		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
+	    assert min != null : AssertMessages.notNullParameter(0);
+	    assert max != null : AssertMessages.notNullParameter(1);
+	    setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 
 	/** Construct a rectangle.
@@ -102,21 +98,13 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	@Override
 	public Rectangle2dfx clone() {
 		final Rectangle2dfx clone = super.clone();
-		if (clone.minX != null) {
-			clone.minX = null;
-			clone.minXProperty().set(getMinX());
+		if (clone.min != null) {
+			clone.min = null;
+			clone.min = this.min.clone();
 		}
-		if (clone.minY != null) {
-			clone.minY = null;
-			clone.minYProperty().set(getMinY());
-		}
-		if (clone.maxX != null) {
-			clone.maxX = null;
-			clone.maxXProperty().set(getMaxX());
-		}
-		if (clone.maxY != null) {
-			clone.maxY = null;
-			clone.maxYProperty().set(getMaxY());
+		if (clone.max != null) {
+			clone.max = null;
+			clone.max = this.max.clone();
 		}
 		clone.width = null;
 		clone.height = null;
@@ -150,17 +138,53 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 			minYProperty().set(y2);
 			maxYProperty().set(y1);
 		}
+		addListeners();
+	}
+
+	private void addListeners() {
+	    this.min.x.addListener((observable, oldValue, nValue) -> {
+	        final double currentMin = nValue.doubleValue();
+	        final double currentMax = getMaxX();
+	        if (currentMax < currentMin) {
+	            // min-max constrain is broken
+	            maxXProperty().set(currentMin);
+	        }
+	    });
+	    this.min.y.addListener((observable, oValue, nValue) -> {
+	        final double currentMin = nValue.doubleValue();
+	        final double currentMax = getMaxY();
+	        if (currentMax < currentMin) {
+	            // min-max constrain is broken
+	            maxYProperty().set(currentMin);
+	        }
+	    });
+	    this.max.x.addListener((observable, oValue, nValue) -> {
+	        final double currentMax = nValue.doubleValue();
+	        final double currentMin = getMinX();
+	        if (currentMax < currentMin) {
+	            // min-max constrain is broken
+	            minXProperty().set(currentMax);
+	        }
+	    });
+	    this.max.y.addListener((observable, oValue, nValue) -> {
+	        final double currentMax = nValue.doubleValue();
+	        final double currentMin = getMinY();
+	        if (currentMax < currentMin) {
+	            // min-max constrain is broken
+	            minYProperty().set(currentMax);
+	        }
+	    });
 	}
 
 	@Pure
 	@Override
 	public double getMinX() {
-		return this.minX == null ? 0 : this.minX.get();
+	    return this.min.getX();
 	}
 
 	@Override
 	public void setMinX(double x) {
-		minXProperty().set(x);
+		this.min.setX(x);
 	}
 
 	/** Replies the property that is the minimum x coordinate of the box.
@@ -169,8 +193,8 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	 */
 	@Pure
 	public DoubleProperty minXProperty() {
-		if (this.minX == null) {
-			this.minX = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_X) {
+		if (this.min.x == null) {
+			this.min.x = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_X) {
 				@Override
 				protected void invalidated() {
 					final double currentMin = get();
@@ -182,18 +206,18 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 				}
 			};
 		}
-		return this.minX;
+		return this.min.x;
 	}
 
 	@Pure
 	@Override
 	public double getMaxX() {
-		return this.maxX == null ? 0 : this.maxX.get();
+		return this.max.getX();
 	}
 
 	@Override
 	public void setMaxX(double x) {
-		maxXProperty().set(x);
+		this.max.setX(x);
 	}
 
 	/** Replies the property that is the maximum x coordinate of the box.
@@ -202,8 +226,8 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	 */
 	@Pure
 	public DoubleProperty maxXProperty() {
-		if (this.maxX == null) {
-			this.maxX = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_X) {
+		if (this.max.x == null) {
+			this.max.x = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_X) {
 				@Override
 				protected void invalidated() {
 					final double currentMax = get();
@@ -215,18 +239,18 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 				}
 			};
 		}
-		return this.maxX;
+		return this.max.x;
 	}
 
 	@Pure
 	@Override
 	public double getMinY() {
-		return this.minY == null ? 0 : this.minY.get();
+		return this.min.getY();
 	}
 
 	@Override
 	public void setMinY(double y) {
-		minYProperty().set(y);
+		this.min.setY(y);
 	}
 
 	/** Replies the property that is the minimum y coordinate of the box.
@@ -235,8 +259,8 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	 */
 	@Pure
 	public DoubleProperty minYProperty() {
-		if (this.minY == null) {
-			this.minY = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_Y) {
+		if (this.min.y == null) {
+			this.min.y = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_Y) {
 				@Override
 				protected void invalidated() {
 					final double currentMin = get();
@@ -248,18 +272,18 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 				}
 			};
 		}
-		return this.minY;
+		return this.min.y;
 	}
 
 	@Pure
 	@Override
 	public double getMaxY() {
-		return this.maxY == null ? 0 : this.maxY.get();
+		return this.max.getY();
 	}
 
 	@Override
 	public void setMaxY(double y) {
-		maxYProperty().set(y);
+		this.max.setY(y);
 	}
 
 	/** Replies the property that is the maximum y coordinate of the box.
@@ -268,8 +292,8 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	 */
 	@Pure
 	public DoubleProperty maxYProperty() {
-		if (this.maxY == null) {
-			this.maxY = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
+		if (this.max.y == null) {
+			this.max.y = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
 				@Override
 				protected void invalidated() {
 					final double currentMax = get();
@@ -281,7 +305,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 				}
 			};
 		}
-		return this.maxY;
+		return this.max.y;
 	}
 
 	@Override

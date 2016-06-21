@@ -47,9 +47,7 @@ public class Circle2dfx
 
 	private static final long serialVersionUID = 837592010117981823L;
 
-	private DoubleProperty centerX;
-
-	private DoubleProperty centerY;
+	private Point2dfx center = new Point2dfx();
 
 	private DoubleProperty radius;
 
@@ -89,13 +87,9 @@ public class Circle2dfx
 	@Override
 	public Circle2dfx clone() {
 		final Circle2dfx clone = super.clone();
-		if (clone.centerX != null) {
-			clone.centerX = null;
-			clone.xProperty().set(getX());
-		}
-		if (clone.centerY != null) {
-			clone.centerY = null;
-			clone.yProperty().set(getY());
+		if (clone.center != null) {
+			clone.center = null;
+			clone.center = this.center.clone();
 		}
 		if (clone.radius != null) {
 			clone.radius = null;
@@ -117,29 +111,29 @@ public class Circle2dfx
 	@Pure
 	@Override
 	public double getX() {
-		return this.centerX == null ? 0 : this.centerX.get();
+		return this.center.getX();
 	}
 
 	@Pure
 	@Override
 	public double getY() {
-		return this.centerY == null ? 0 : this.centerY.get();
+		return this.center.getY();
 	}
 
 	@Pure
 	@Override
 	public Point2dfx getCenter() {
-		return getGeomFactory().newPoint(xProperty(), yProperty());
+		return this.center;
 	}
 
 	@Override
 	public void setX(double x) {
-		xProperty().set(x);
+		this.center.setX(x);
 	}
 
 	@Override
 	public void setY(double y) {
-		yProperty().set(y);
+		this.center.setY(y);
 	}
 
 	/** Replies the property that is the x coordinate of the circle center.
@@ -148,10 +142,7 @@ public class Circle2dfx
 	 */
 	@Pure
 	public DoubleProperty xProperty() {
-		if (this.centerX == null) {
-			this.centerX = new SimpleDoubleProperty(this, MathFXAttributeNames.X);
-		}
-		return this.centerX;
+		return this.center.xProperty();
 	}
 
 	/** Replies the property that is the y coordinate of the circle center.
@@ -160,10 +151,7 @@ public class Circle2dfx
 	 */
 	@Pure
 	public DoubleProperty yProperty() {
-		if (this.centerY == null) {
-			this.centerY = new SimpleDoubleProperty(this, MathFXAttributeNames.Y);
-		}
-		return this.centerY;
+		return this.center.yProperty();
 	}
 
 	@Pure
