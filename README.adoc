@@ -101,42 +101,42 @@ The table presents the modules, the version from which they are deprecated, and 
 | android-vector
 | Android implementation of the vectorial  primitives.
 | 13.0
-| 15.0
+| 16.0
 
 | Android Tools
 | org.arakhne.afc.ui
 | android
 | Extra Android widgets and activities.
 | 13.0
-| 15.0
+| 16.0
 
 | Atomic deployment of files
 | org.arakhne.afc.maven
 | atomicdeploy
 | Maven plugin for deploying a single file.
 | 13.0
-| 15.0
+| 16.0
 
 | AWT implementation of vector
 | org.arakhne.afc.ui
 | awt-vector
 | AWT implementation of the vectorial primitives.
 | 13.0
-| 15.0
+| 16.0
 
 | AWT Tools
 | org.arakhne.afc.ui
 | awt
 | Extra AWT widgets.
 | 13.0
-| 15.0
+| 16.0
 
 | Base UI Tools
 | org.arakhne.afc.ui
 | base
 | Base tools for user interfaces.
 | 13.0
-| 15.0
+| 16.0
 
 | Swing Widgets
 | org.arakhne.afc.ui
