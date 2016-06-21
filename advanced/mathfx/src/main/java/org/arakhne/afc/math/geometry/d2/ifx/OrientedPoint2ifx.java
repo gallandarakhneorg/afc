@@ -21,10 +21,8 @@
 package org.arakhne.afc.math.geometry.d2.ifx;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
@@ -43,9 +41,7 @@ public class OrientedPoint2ifx
 
     private static final long serialVersionUID = 1696624733007552173L;
 
-    private IntegerProperty dx;
-
-    private IntegerProperty dy;
+    private Vector2ifx tangent;
 
     /** Construct an empty oriented point.
      */
@@ -109,55 +105,51 @@ public class OrientedPoint2ifx
     @Override
     public OrientedPoint2ifx clone() {
         final OrientedPoint2ifx clone = (OrientedPoint2ifx) super.clone();
-        if (clone.dx != null) {
-            clone.dx = null;
-            clone.tanXProperty().set(itx());
-        }
-        if (clone.dy != null) {
-            clone.dy = null;
-            clone.tanYProperty().set(ity());
+        if (clone.tangent != null) {
+            clone.tangent = null;
+            clone.tangent = this.tangent.clone();
         }
         return clone;
     }
 
     @Override
     public double getTangentX() {
-        return this.dx == null ? 0 : this.dx.doubleValue();
+        return this.tangent.getX();
     }
 
     @Override
     public int itx() {
-        return this.dx == null ? 0 : this.dx.intValue();
+        return this.tangent.ix();
     }
 
     @Override
     public void setTangentX(int tanX) {
-        tanXProperty().set(tanX);
+        this.tangent.setX(tanX);
     }
 
     @Override
     public void setTangentX(double tanX) {
-        tanXProperty().set((int) Math.round(tanX));
+        this.tangent.setX(tanX);
     }
 
     @Override
     public double getTangentY() {
-        return this.dy == null ? 0 : this.dy.doubleValue();
+        return this.tangent.getY();
     }
 
     @Override
     public int ity() {
-        return this.dy == null ? 0 : this.dy.intValue();
+        return this.tangent.iy();
     }
 
     @Override
     public void setTangentY(int tanY) {
-        tanYProperty().set(tanY);
+        this.tangent.setY(tanY);
     }
 
     @Override
     public void setTangentY(double tanY) {
-        tanYProperty().set((int) Math.round(tanY));
+        this.tangent.setY(tanY);
     }
 
     /** Replies the property that is the x coordinate of the tangent vector.
@@ -166,10 +158,7 @@ public class OrientedPoint2ifx
      */
     @Pure
     public IntegerProperty tanXProperty() {
-        if (this.dx == null) {
-            this.dx = new SimpleIntegerProperty(this, MathFXAttributeNames.X1);
-        }
-        return this.dx;
+        return this.tangent.xProperty();
     }
 
     /** Replies the property that is the y coordinate of the tangent vector.
@@ -178,9 +167,7 @@ public class OrientedPoint2ifx
      */
     @Pure
     public IntegerProperty tanYProperty() {
-        if (this.dy == null) {
-            this.dy = new SimpleIntegerProperty(this, MathFXAttributeNames.Y1);
-        }
-        return this.dy;
+        return this.tangent.yProperty();
     }
+
 }
