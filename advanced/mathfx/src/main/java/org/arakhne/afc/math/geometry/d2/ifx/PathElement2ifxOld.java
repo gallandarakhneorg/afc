@@ -43,7 +43,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 @SuppressWarnings({"checkstyle:magicnumber", "static-method"})
-public abstract class PathElement2ifx implements PathElement2ai {
+public abstract class PathElement2ifxOld implements PathElement2ai {
 
 	private static final long serialVersionUID = -5532787413347691238L;
 
@@ -68,7 +68,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 * @param tox the x coordinate of the target point.
 	 * @param toy the x coordinate of the target point.
 	 */
-	PathElement2ifx(PathElementType type, IntegerProperty tox, IntegerProperty toy) {
+	PathElement2ifxOld(PathElementType type, IntegerProperty tox, IntegerProperty toy) {
 		assert type != null : AssertMessages.notNullParameter(0);
 		assert tox != null : AssertMessages.notNullParameter(1);
 		assert toy != null : AssertMessages.notNullParameter(2);
@@ -305,7 +305,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class MovePathElement2ifx extends PathElement2ifx {
+	static class MovePathElement2ifx extends PathElement2ifxOld {
 
 		private static final long serialVersionUID = 7240290153738547626L;
 
@@ -430,7 +430,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class LinePathElement2ifx extends PathElement2ifx {
+	static class LinePathElement2ifx extends PathElement2ifxOld {
 
 		private static final long serialVersionUID = 2010270547259311623L;
 
@@ -573,7 +573,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class QuadPathElement2ifx extends PathElement2ifx {
+	static class QuadPathElement2ifx extends PathElement2ifxOld {
 
 		private static final long serialVersionUID = -1243640360335101578L;
 
@@ -763,7 +763,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class CurvePathElement2ifx extends PathElement2ifx {
+	static class CurvePathElement2ifx extends PathElement2ifxOld {
 
 		private static final long serialVersionUID = 6354626635759607041L;
 
@@ -999,7 +999,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class ClosePathElement2ifx extends PathElement2ifx {
+	static class ClosePathElement2ifx extends PathElement2ifxOld {
 
 		private static final long serialVersionUID = 5424862699995343827L;
 
@@ -1143,7 +1143,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class ArcPathElement2ifx extends PathElement2ifx {
+	static class ArcPathElement2ifx extends PathElement2ifxOld {
 
 		private static final long serialVersionUID = 1191891479706357600L;
 

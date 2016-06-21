@@ -40,7 +40,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Circle2ifx
+public class Circle2ifxOld
 		extends AbstractShape2ifx<Circle2ifx>
 		implements Circle2ai<Shape2ifx<?>, Circle2ifx, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
 
@@ -54,7 +54,7 @@ public class Circle2ifx
 
 	/** Construct an empty circle.
 	 */
-	public Circle2ifx() {
+	public Circle2ifxOld() {
 		//
 	}
 
@@ -62,7 +62,7 @@ public class Circle2ifx
 	 * @param center the center of the circle.
 	 * @param radius the radius of the circle.
 	 */
-	public Circle2ifx(Point2D<?, ?> center, int radius) {
+	public Circle2ifxOld(Point2D<?, ?> center, int radius) {
 		set(center.ix(), center.iy(), radius);
 	}
 
@@ -71,14 +71,14 @@ public class Circle2ifx
 	 * @param y y coordinate of the center of the circle.
 	 * @param radius the radius of the circle.
 	 */
-	public Circle2ifx(int x, int y, int radius) {
+	public Circle2ifxOld(int x, int y, int radius) {
 		set(x, y, radius);
 	}
 
 	/** Construct a circle from a circle.
 	 * @param circle the circle to copy.
 	 */
-	public Circle2ifx(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
+	public Circle2ifxOld(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
 		assert circle != null : AssertMessages.notNullParameter();
 		set(circle.getX(), circle.getY(), circle.getRadius());
 	}
@@ -86,18 +86,18 @@ public class Circle2ifx
 	@Override
 	public Circle2ifx clone() {
 		final Circle2ifx clone = super.clone();
-		if (clone.centerX != null) {
-			clone.centerX = null;
-			clone.xProperty().set(getX());
-		}
-		if (clone.centerY != null) {
-			clone.centerY = null;
-			clone.yProperty().set(getY());
-		}
-		if (clone.radius != null) {
-			clone.radius = null;
-			clone.radiusProperty().set(getRadius());
-		}
+		//		if (clone.centerX != null) {
+		//			clone.centerX = null;
+		//			clone.xProperty().set(getX());
+		//		}
+		//		if (clone.centerY != null) {
+		//			clone.centerY = null;
+		//			clone.yProperty().set(getY());
+		//		}
+		//		if (clone.radius != null) {
+		//			clone.radius = null;
+		//			clone.radiusProperty().set(getRadius());
+		//		}
 		return clone;
 	}
 

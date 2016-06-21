@@ -58,8 +58,8 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Path2ifx extends AbstractShape2ifx<Path2ifx>
-		implements Path2ai<Shape2ifx<?>, Path2ifx, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
+public class Path2ifxOld extends AbstractShape2ifx<Path2ifxOld>
+		implements Path2ai<Shape2ifx<?>, Path2ifxOld, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
 
 	private static final long serialVersionUID = -5410743023218999966L;
 
@@ -106,21 +106,21 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	/** Construct an empty path.
 	 */
-	public Path2ifx() {
+	public Path2ifxOld() {
 		this(DEFAULT_WINDING_RULE);
 	}
 
 	/** Construct a path by copying the given elements.
 	 * @param iterator the iterator that provides the elements to copy.
 	 */
-	public Path2ifx(Iterator<PathElement2ifx> iterator) {
+	public Path2ifxOld(Iterator<PathElement2ifx> iterator) {
 		this(DEFAULT_WINDING_RULE, iterator);
 	}
 
 	/** Construct an empty path with the given path winding rule.
 	 * @param windingRule the path winding rule.
 	 */
-	public Path2ifx(PathWindingRule windingRule) {
+	public Path2ifxOld(PathWindingRule windingRule) {
 		assert windingRule != null : AssertMessages.notNullParameter();
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
@@ -131,7 +131,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 * @param windingRule the path winding rule.
 	 * @param iterator the iterator that provides the elements to copy.
 	 */
-	public Path2ifx(PathWindingRule windingRule, Iterator<PathElement2ifx> iterator) {
+	public Path2ifxOld(PathWindingRule windingRule, Iterator<PathElement2ifx> iterator) {
 		assert windingRule != null : AssertMessages.notNullParameter(0);
 		assert iterator != null : AssertMessages.notNullParameter(1);
 		if (windingRule != DEFAULT_WINDING_RULE) {
@@ -143,7 +143,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	/** Constructor by copy.
 	 * @param path the path to copy.
 	 */
-	public Path2ifx(Path2ai<?, ?, ?, ?, ?, ?> path) {
+	public Path2ifxOld(Path2ai<?, ?, ?, ?, ?, ?> path) {
 		set(path);
 	}
 
@@ -176,8 +176,8 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Pure
 	@Override
-	public Path2ifx clone() {
-		final Path2ifx clone = super.clone();
+	public Path2ifxOld clone() {
+		final Path2ifxOld clone = super.clone();
 		clone.coords = null;
 		if (this.coords != null && !this.coords.isEmpty()) {
 			clone.innerCoordinatesProperty().addAll(this.coords);
@@ -801,7 +801,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	}
 
 	@Override
-	public void set(Path2ifx path) {
+	public void set(Path2ifxOld path) {
 		assert path != null : AssertMessages.notNullParameter();
 		clear();
 		add(path.getPathIterator());

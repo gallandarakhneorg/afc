@@ -41,8 +41,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
-		implements Rectangle2ai<Shape2ifx<?>, Rectangle2ifx, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
+public class Rectangle2ifxOld extends AbstractShape2ifx<Rectangle2ifxOld>
+		implements Rectangle2ai<Shape2ifx<?>, Rectangle2ifxOld, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
 
 	private static final long serialVersionUID = -8092385681401129843L;
 
@@ -64,7 +64,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 
 	/** Construct an empty rectangle.
 	 */
-	public Rectangle2ifx() {
+	public Rectangle2ifxOld() {
 		super();
 	}
 
@@ -72,7 +72,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	public Rectangle2ifx(Point2D<?, ?> min, Point2D<?, ?> max) {
+	public Rectangle2ifxOld(Point2D<?, ?> min, Point2D<?, ?> max) {
 		assert min != null : AssertMessages.notNullParameter(0);
 		assert max != null : AssertMessages.notNullParameter(1);
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
@@ -84,7 +84,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 * @param width width of the rectangle.
 	 * @param height height of the rectangle.
 	 */
-	public Rectangle2ifx(int x, int y, int width, int height) {
+	public Rectangle2ifxOld(int x, int y, int width, int height) {
 		assert width >= 0 : AssertMessages.positiveOrZeroParameter(2);
 		assert height >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		setFromCorners(x, y, x + width, y + height);
@@ -93,13 +93,13 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	/** Constructor by copy.
 	 * @param rectangle the rectangle to copy.
 	 */
-	public Rectangle2ifx(Rectangle2ifx rectangle) {
+	public Rectangle2ifxOld(Rectangle2ifxOld rectangle) {
 		set(rectangle);
 	}
 
 	@Override
-	public Rectangle2ifx clone() {
-		final Rectangle2ifx clone = super.clone();
+	public Rectangle2ifxOld clone() {
+		final Rectangle2ifxOld clone = super.clone();
 		if (clone.minX != null) {
 			clone.minX = null;
 			clone.minXProperty().set(getMinX());
