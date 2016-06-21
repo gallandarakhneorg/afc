@@ -9,7 +9,7 @@ image:https://img.shields.io/badge/requires-Java%208-red.svg?style=flat-square[l
 image:https://travis-ci.org/gallandarakhneorg/afc.svg?branch=master[link=https://travis-ci.org/gallandarakhneorg/afc]
 image:https://ci.appveyor.com/api/projects/status/github/gallandarakhneorg/afc?branch=master&svg=true[link=https://ci.appveyor.com/project/gallandarakhneorg/afc]
 
-image:https://img.shields.io/badge/compliant-Maven-yellowgreen.svg?style=flat-square[link=http://maven.apache.com]
+image:https://img.shields.io/badge/compliant-Maven-yellowgreen.svg?style=flat-square[link=http://maven.apache.org]
 image:https://img.shields.io/badge/compliant-Java-yellowgreen.svg?style=flat-square[link=https://www.java.com]
 image:https://img.shields.io/badge/compliant-SARL-yellowgreen.svg?style=flat-square[link=http://sarl.io]
 image:https://img.shields.io/badge/compliant-Scala-yellowgreen.svg?style=flat-square[link=http://scala-lang.org]
