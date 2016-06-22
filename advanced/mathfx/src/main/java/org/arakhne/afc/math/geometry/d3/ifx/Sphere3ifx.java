@@ -30,6 +30,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.ai.Sphere3ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A sphere with 3 integer FX properties.
  *
@@ -61,7 +62,18 @@ public class Sphere3ifx
 	 * @param radius the radius of the sphere.
 	 */
 	public Sphere3ifx(Point3D<?, ?> center, int radius) {
+	    assert center != null : AssertMessages.notNullParameter();
 	    set(center.ix(), center.iy(), center.iz(), radius);
+	}
+
+	/** Construct a sphere by setting the given position and radius.
+	 * @param center the center of the sphere.
+	 * @param radius the radius of the sphere.
+	 */
+	public Sphere3ifx(Point3ifx center, int radius) {
+	    assert center != null;
+	    this.center = center;
+	    setRadius(radius);
 	}
 
 	/** Construct a sphere at the given position and with the given radius.
@@ -74,12 +86,21 @@ public class Sphere3ifx
 	    set(x, y, z, radius);
 	}
 
-	/** Construct a sphere from a sphere.
-     * @param sphere the sphere to copy.
-     */
+	/** Constructor by copy.
+	 * @param sphere the sphere to copy.
+	 */
 	public Sphere3ifx(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "sphere must be not null"; //$NON-NLS-1$
-		set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
+	    assert sphere != null : AssertMessages.notNullParameter();
+	    set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
+	}
+
+	/** Construct by setting.
+     * @param sphere the sphere to set.
+     */
+	public Sphere3ifx(Sphere3ifx sphere) {
+		assert sphere != null : AssertMessages.notNullParameter();
+		this.center = sphere.center;
+		setRadius(sphere.getRadius());
 	}
 
 	@Override

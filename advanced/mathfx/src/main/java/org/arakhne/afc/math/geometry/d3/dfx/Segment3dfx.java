@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A 3D segment/line with 3 double precision FX properties.
  *
@@ -62,14 +63,18 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	 * @param p2 second point.
 	 */
 	public Segment3dfx(Point3D<?, ?> p1, Point3D<?, ?> p2) {
-	    this(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ());
+	    assert p1 != null : AssertMessages.notNullParameter(0);
+	    assert p2 != null : AssertMessages.notNullParameter(1);
+	    set(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ());
 	}
 
 	/** Construct a segment with the two given points.
-     * @param p1 first point.
-     * @param p2 second point.
+     * @param p1 the point to set as the first point.
+     * @param p2 the point to set as the second point.
      */
 	public Segment3dfx(Point3dfx p1, Point3dfx p2) {
+	    assert p1 != null : AssertMessages.notNullParameter(0);
+	    assert p2 != null : AssertMessages.notNullParameter(1);
 	    this.p1 = p1;
 	    this.p2 = p2;
 	}
@@ -78,13 +83,15 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	 * @param segment the segment to copy.
 	 */
 	public Segment3dfx(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
-	    this(segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2());
+	    assert segment != null : AssertMessages.notNullParameter();
+	    set(segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2());
 	}
 
-	/** Constructor by copy.
-     * @param segment the segment to copy.
+	/** Constructor by setting.
+     * @param segment the segment to set.
      */
 	public Segment3dfx(Segment3dfx segment) {
+	    assert segment != null : AssertMessages.notNullParameter();
 	    this.p1 = segment.p1;
 	    this.p2 = segment.p2;
 	}

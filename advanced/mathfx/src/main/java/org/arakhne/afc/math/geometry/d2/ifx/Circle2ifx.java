@@ -61,7 +61,18 @@ public class Circle2ifx
 	 * @param radius the radius of the circle.
 	 */
 	public Circle2ifx(Point2D<?, ?> center, int radius) {
-		set(center.ix(), center.iy(), radius);
+	    assert center != null : AssertMessages.notNullParameter();
+	    set(center.ix(), center.iy(), radius);
+	}
+
+	/** Construct a circle by setting the given position and radius.
+	 * @param center the center of the circle.
+	 * @param radius the radius of the circle.
+	 */
+	public Circle2ifx(Point2ifx center, int radius) {
+	    assert center != null : AssertMessages.notNullParameter();
+	    this.center = center;
+		setRadius(radius);
 	}
 
 	/** Construct a circle at the given position and with the given radius.
@@ -73,12 +84,21 @@ public class Circle2ifx
 		set(x, y, radius);
 	}
 
-	/** Construct a circle from a circle.
+	/** Constructor by copy.
 	 * @param circle the circle to copy.
 	 */
 	public Circle2ifx(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
+	    assert circle != null : AssertMessages.notNullParameter();
+	    set(circle.getX(), circle.getY(), circle.getRadius());
+	}
+
+	/** Constructor by setting.
+	 * @param circle the circle to set.
+	 */
+	public Circle2ifx(Circle2ifx circle) {
 		assert circle != null : AssertMessages.notNullParameter();
-		set(circle.getX(), circle.getY(), circle.getRadius());
+		this.center = circle.center;
+		setRadius(circle.getRadius());
 	}
 
 	@Override

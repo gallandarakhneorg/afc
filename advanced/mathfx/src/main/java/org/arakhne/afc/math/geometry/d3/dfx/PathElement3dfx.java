@@ -75,9 +75,9 @@ public abstract class PathElement3dfx implements PathElement3afp {
 	    this.to.z = toz;
 	}
 
-	/**
+	/** Constructor by setting.
 	 * @param type is the type of the element.
-	 * @param toPoint the target point.
+	 * @param toPoint the point to set as the target point.
 	 */
 	PathElement3dfx(PathElementType type, Point3dfx toPoint) {
 		assert type != null : AssertMessages.notNullParameter(0);
@@ -266,8 +266,8 @@ public abstract class PathElement3dfx implements PathElement3afp {
 		    super(PathElementType.MOVE_TO, tox, toy, toz);
 		}
 
-		/**
-         * @param toPoint the target point.
+		/** Constructor by setting.
+         * @param toPoint the point to set as the target point.
          */
 		MovePathElement3dfx(Point3dfx toPoint) {
 			super(PathElementType.MOVE_TO, toPoint);
@@ -494,9 +494,9 @@ public abstract class PathElement3dfx implements PathElement3afp {
 		    this.from.z = fromz;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param toPoint the target point.
+		/** Constructor bt setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		LinePathElement3dfx(Point3dfx fromPoint, Point3dfx toPoint) {
 			super(PathElementType.LINE_TO, toPoint);
@@ -748,10 +748,10 @@ public abstract class PathElement3dfx implements PathElement3afp {
 		    this.ctrl.z = ctrlz;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param ctrlPoint the control point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param ctrlPoint the point to set as the control point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		@SuppressWarnings("checkstyle:magicnumber")
 		QuadPathElement3dfx(Point3dfx fromPoint, Point3dfx ctrlPoint, Point3dfx toPoint) {
@@ -1038,11 +1038,11 @@ public abstract class PathElement3dfx implements PathElement3afp {
 		    this.ctrl2.z = ctrlz2;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param ctrl1Point the first control point.
-		 * @param ctrl2Point the second control point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param ctrl1Point the point to set as the first control point.
+		 * @param ctrl2Point the point to set as the second control point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 		CurvePathElement3dfx(Point3dfx fromPoint, Point3dfx ctrl1Point, Point3dfx ctrl2Point,
@@ -1328,9 +1328,9 @@ public abstract class PathElement3dfx implements PathElement3afp {
 		    this.from.z = fromz;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param toPoint the target point.
+		/** Constructor by copy.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		ClosePathElement3dfx(Point3dfx fromPoint, Point3dfx toPoint) {
 			super(PathElementType.CLOSE, toPoint);

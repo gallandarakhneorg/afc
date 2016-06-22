@@ -29,6 +29,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A 2D segment/line encapsulating points with 2 integer FX properties.
  *
@@ -57,11 +58,13 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 		//
 	}
 
-	/** Construct a segment with the two given points.
-	 * @param p1 first point.
-	 * @param p2 second point.
+	/** Construct a segment by setting the two given points.
+	 * @param p1 the point to set as the first point.
+	 * @param p2 the point to set as the second point.
 	 */
 	public Segment2ifx(Point2ifx p1, Point2ifx p2) {
+	    assert p1 != null : AssertMessages.notNullParameter(0);
+	    assert p2 != null : AssertMessages.notNullParameter(1);
 	    this.p1 = p1;
 	    this.p2 = p2;
 	}
@@ -71,13 +74,16 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
      * @param p2 second point.
      */
 	public Segment2ifx(Point2D<?, ?> p1, Point2D<?, ?> p2) {
-		this(p1.ix(), p1.iy(), p2.ix(), p2.iy());
+	    assert p1 != null : AssertMessages.notNullParameter(0);
+	    assert p2 != null : AssertMessages.notNullParameter(1);
+		set(p1.ix(), p1.iy(), p2.ix(), p2.iy());
 	}
 
-	/** Constructor by copy.
-	 * @param segment the segment to copy.
+	/** Constructor by setting.
+	 * @param segment the segment to set.
 	 */
 	public Segment2ifx(Segment2ifx segment) {
+	    assert segment != null : AssertMessages.notNullParameter();
 	    this.p1 = segment.p1;
 	    this.p2 = segment.p2;
 	}
@@ -86,7 +92,8 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
      * @param segment the segment to copy.
      */
 	public Segment2ifx(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
-		this(segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2());
+	    assert segment != null : AssertMessages.notNullParameter();
+		set(segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2());
 	}
 
 	/** Construct a segment with the two given points.

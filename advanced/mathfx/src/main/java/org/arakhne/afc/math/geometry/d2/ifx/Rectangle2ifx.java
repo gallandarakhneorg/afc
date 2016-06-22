@@ -68,9 +68,20 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 * @param max is the max corner of the rectangle.
 	 */
 	public Rectangle2ifx(Point2D<?, ?> min, Point2D<?, ?> max) {
+	    assert min != null : AssertMessages.notNullParameter(0);
+	    assert max != null : AssertMessages.notNullParameter(1);
+	    setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
+	}
+
+	/** Construct a rectangle by setting the given minimum and maximum corners.
+	 * @param min is the min corner of the rectangle.
+	 * @param max is the max corner of the rectangle.
+	 */
+	public Rectangle2ifx(Point2ifx min, Point2ifx max) {
 		assert min != null : AssertMessages.notNullParameter(0);
 		assert max != null : AssertMessages.notNullParameter(1);
-		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
+		this.min = min;
+		this.max = max;
 	}
 
 	/** Construct a rectangle with the given minimum corner and sizes.
@@ -88,8 +99,18 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	/** Constructor by copy.
 	 * @param rectangle the rectangle to copy.
 	 */
+	public Rectangle2ifx(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
+	    assert rectangle != null : AssertMessages.notNullParameter();
+	    setFromCorners(rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY());
+	}
+
+	/** Constructor by setting.
+	 * @param rectangle the rectangle to set.
+	 */
 	public Rectangle2ifx(Rectangle2ifx rectangle) {
-		set(rectangle);
+		assert rectangle != null : AssertMessages.notNullParameter();
+		this.min = rectangle.min;
+		this.max = rectangle.max;
 	}
 
 	@Override

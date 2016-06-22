@@ -68,14 +68,25 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 		addListeners();
 	}
 
-	/** Construct a rectangle with the given minimum and maximum corners.
+	/** Construct a rectangular prism with the given minimum and maximum corners.
+	 * @param min is the min corner of the rectangle.
+	 * @param max is the max corner of the rectangle.
+	 */
+	public RectangularPrism3ifx(Point3D<?, ?> min, Point3D<?, ?> max) {
+	    assert min != null : AssertMessages.notNullParameter(0);
+	    assert max != null : AssertMessages.notNullParameter(1);
+	    setFromCorners(min.ix(), min.iy(), min.iz(), max.ix(), max.iy(), max.iz());
+	}
+
+	/** Construct a rectangular prism by setting the given minimum and maximum corners.
      * @param min is the min corner of the rectangle.
      * @param max is the max corner of the rectangle.
      */
-	public RectangularPrism3ifx(Point3D<?, ?> min, Point3D<?, ?> max) {
+	public RectangularPrism3ifx(Point3ifx min, Point3ifx max) {
 		assert min != null : AssertMessages.notNullParameter(0);
 		assert max != null : AssertMessages.notNullParameter(1);
-		setFromCorners(min.ix(), min.iy(), min.iz(), max.ix(), max.iy(), max.iz());
+		this.min = min;
+		this.max = max;
 	}
 
 	/** Construct a rectangle with the given minimum corner and sizes.
@@ -95,10 +106,21 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	}
 
 	/** Constructor by copy.
-     * @param rectangle the rectangle to copy.
+	 * @param rectangle the rectangle to copy.
+	 */
+	public RectangularPrism3ifx(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangle) {
+	    assert rectangle != null : AssertMessages.notNullParameter();
+        setFromCorners(rectangle.getMinX(), rectangle.getMinY(), rectangle.getMinZ(), rectangle.getMaxX(), rectangle.getMaxY(),
+                rectangle.getMaxZ());
+	}
+
+	/** Constructor by setting.
+     * @param rectangle the rectangle to set.
      */
 	public RectangularPrism3ifx(RectangularPrism3ifx rectangle) {
-		set(rectangle);
+		assert rectangle != null : AssertMessages.notNullParameter();
+		this.min = rectangle.min;
+		this.max = rectangle.max;
 	}
 
 	@Override
@@ -142,10 +164,10 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 	}
 
 	/**
-     * Add a listener to the point properties to observe correct min-max behavior.
-     */
-    private void addListeners() {
-        this.min.xProperty().addListener((observable, oldValue, nValue) -> {
+	 * Add a listener to the point properties to observe correct min-max behavior.
+	 */
+	private void addListeners() {
+	    this.min.xProperty().addListener((observable, oldValue, nValue) -> {
             final int currentMin = nValue.intValue();
             final int currentMax = getMaxX();
             if (currentMax < currentMin) {

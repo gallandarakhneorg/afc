@@ -62,8 +62,18 @@ public class Circle2dfx
 	 * @param radius the radius of the circle.
 	 */
 	public Circle2dfx(Point2D<?, ?> center, double radius) {
-		assert center != null : AssertMessages.notNullParameter(0);
-		set(center.getX(), center.getY(), radius);
+	    assert center != null : AssertMessages.notNullParameter(0);
+	    set(center.getX(), center.getY(), radius);
+	}
+
+	/** Construct a circle by setting the position and radius.
+	 * @param center the center of the circle.
+	 * @param radius the radius of the circle.
+	 */
+	public Circle2dfx(Point2dfx center, double radius) {
+	    assert center != null : AssertMessages.notNullParameter(0);
+		this.center = center;
+		setRadius(radius);
 	}
 
 	/** Construct a circle with the given position and radius.
@@ -75,12 +85,21 @@ public class Circle2dfx
 		set(x, y, radius);
 	}
 
-	/** Construct a circle from a circle.
+	/** Constructor by copy.
 	 * @param circle the circle to copy.
 	 */
 	public Circle2dfx(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
+	    assert circle != null : AssertMessages.notNullParameter();
+	    set(circle.getX(), circle.getY(), circle.getRadius());
+	}
+
+	/** Constructor by setting.
+	 * @param circle the circle to set.
+	 */
+	public Circle2dfx(Circle2dfx circle) {
 		assert circle != null : AssertMessages.notNullParameter();
-		set(circle.getX(), circle.getY(), circle.getRadius());
+		this.center = circle.center;
+		setRadius(circle.getRadius());
 	}
 
 	@Pure

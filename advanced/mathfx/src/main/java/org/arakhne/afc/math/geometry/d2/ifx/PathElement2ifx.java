@@ -73,9 +73,9 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	    this.to.y = toy;
 	}
 
-	/**
+	/** Constructor by setting.
 	 * @param type is the type of the element.
-	 * @param toPoint the target point.
+	 * @param toPoint the point to set as the target point.
 	 */
 	PathElement2ifx(PathElementType type, Point2ifx toPoint) {
 		assert type != null : AssertMessages.notNullParameter(0);
@@ -326,8 +326,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		    super(PathElementType.MOVE_TO, tox, toy);
 		}
 
-		/**
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param toPoint the point to set as the target point.
 		 */
 		MovePathElement2ifx(Point2ifx toPoint) {
 			super(PathElementType.MOVE_TO, toPoint);
@@ -466,9 +466,9 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		    this.from.y = fromy;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		LinePathElement2ifx(Point2ifx fromPoint, Point2ifx toPoint) {
 			super(PathElementType.LINE_TO, toPoint);
@@ -628,10 +628,10 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		    this.ctrl.y = ctrly;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param ctrlPoint the control point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param ctrlPoint the point to set as the control point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		QuadPathElement2ifx(Point2ifx fromPoint, Point2ifx ctrlPoint, Point2ifx toPoint) {
 			super(PathElementType.QUAD_TO, toPoint);
@@ -839,11 +839,11 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		    this.ctrl2.y = ctrly2;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param ctrl1Point the first control point.
-		 * @param ctrl2Point the second control point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param ctrl1Point the point to set as the first control point.
+		 * @param ctrl2Point the point to set as the second control point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		CurvePathElement2ifx(Point2ifx fromPoint, Point2ifx ctrl1Point,
 				Point2ifx ctrl2Point, Point2ifx toPoint) {
@@ -1075,9 +1075,9 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		    this.from.y = fromy;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		ClosePathElement2ifx(Point2ifx fromPoint, Point2ifx toPoint) {
 			super(PathElementType.CLOSE, toPoint);
@@ -1257,9 +1257,9 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		    this.sweepFlag = sweepFlag;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
 		 * @param xradius radius of the ellipse along its x axis.
 		 * @param yradius radius of the ellipse along its y axis.
 		 * @param xrotation rotation (in radians) of the ellipse's x axis.

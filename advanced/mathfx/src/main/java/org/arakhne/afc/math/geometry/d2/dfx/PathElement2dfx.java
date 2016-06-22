@@ -42,7 +42,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-// TODO : create new message and check property initialisation in constructor accepting points.
 @SuppressWarnings({"checkstyle:magicnumber", "static-method"})
 public abstract class PathElement2dfx implements PathElement2afp {
 	private static final long serialVersionUID = 1724746568685625149L;
@@ -73,9 +72,9 @@ public abstract class PathElement2dfx implements PathElement2afp {
 	    this.to.y = toy;
 	}
 
-	/**
+	/** Constructor by setting the destination point.
 	 * @param type is the type of the element.
-	 * @param toPoint the target point.
+	 * @param toPoint the point to set as the target point.
 	 */
 	PathElement2dfx(PathElementType type, Point2dfx toPoint) {
 		assert type != null : AssertMessages.notNullParameter(0);
@@ -324,8 +323,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		    super(PathElementType.MOVE_TO, tox, toy);
 		}
 
-		/**
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param toPoint the point to set as the target point.
 		 */
 		MovePathElement2dfx(Point2dfx toPoint) {
 			super(PathElementType.MOVE_TO, toPoint);
@@ -464,9 +463,9 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		    this.from.y = fromy;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param toPoint the target point.
+		/** Constructor bt setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		LinePathElement2dfx(Point2dfx fromPoint, Point2dfx toPoint) {
 			super(PathElementType.LINE_TO, toPoint);
@@ -625,10 +624,10 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		    this.ctrl.y = ctrly;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param ctrlPoint the control point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param ctrlPoint the point to set as the control point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		QuadPathElement2dfx(Point2dfx fromPoint, Point2dfx ctrlPoint, Point2dfx toPoint) {
 			super(PathElementType.QUAD_TO, toPoint);
@@ -835,11 +834,11 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		    this.ctrl2.y = ctrly2;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param ctrl1Point the first control point.
-		 * @param ctrl2Point the second control point.
-		 * @param toPoint the target point.
+		/** Constructor bt setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param ctrl1Point the point to set as the first control point.
+		 * @param ctrl2Point the point to set as the second control point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		@SuppressWarnings("checkstyle:magicnumber")
         CurvePathElement2dfx(Point2dfx fromPoint, Point2dfx ctrl1Point, Point2dfx ctrl2Point, Point2dfx toPoint) {
@@ -1067,9 +1066,9 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		    this.from.y = fromy;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		ClosePathElement2dfx(Point2dfx fromPoint, Point2dfx toPoint) {
 			super(PathElementType.CLOSE, toPoint);
@@ -1245,9 +1244,9 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		    this.sweepFlag = sweepFlag;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
 		 * @param xradius radius of the ellipse along its x axis.
 		 * @param yradius radius of the ellipse along its y axis.
 		 * @param xrotation rotation (in radians) of the ellipse's x axis.

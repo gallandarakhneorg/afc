@@ -65,7 +65,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 		addListeners();
 	}
 
-	/**
+	/** Construct a rectangle with the given minimum and maximum corners.
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
@@ -73,6 +73,17 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	    assert min != null : AssertMessages.notNullParameter(0);
 	    assert max != null : AssertMessages.notNullParameter(1);
 	    setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
+	}
+
+	/** Construct a rectangle by setting the given minimum and maximum corners.
+	 * @param min is the min corner of the rectangle.
+	 * @param max is the max corner of the rectangle.
+	 */
+	public Rectangle2dfx(Point2dfx min, Point2dfx max) {
+	    assert min != null : AssertMessages.notNullParameter(0);
+	    assert max != null : AssertMessages.notNullParameter(1);
+	    this.min = min;
+	    this.max = max;
 	}
 
 	/** Construct a rectangle.
@@ -90,8 +101,18 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	/** Constructor by copy.
 	 * @param rectangle the shape to copy.
 	 */
+	public Rectangle2dfx(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+	    assert rectangle != null : AssertMessages.notNullParameter();
+	    set(rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY());
+	}
+
+	/** Constructor by setting.
+	 * @param rectangle the shape to set.
+	 */
 	public Rectangle2dfx(Rectangle2dfx rectangle) {
-		set(rectangle);
+	    assert rectangle != null : AssertMessages.notNullParameter();
+		this.min = rectangle.min;
+		this.max = rectangle.max;
 	}
 
 	@Override

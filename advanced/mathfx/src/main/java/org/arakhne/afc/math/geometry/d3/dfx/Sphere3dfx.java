@@ -59,12 +59,22 @@ public class Sphere3dfx
 	}
 
 	/** Construct a sphere with the given position and radius.
+	 * @param center the center of the sphere.
+	 * @param radius the radius of the sphere.
+	 */
+	public Sphere3dfx(Point3D<?, ?> center, double radius) {
+	    assert center != null : AssertMessages.notNullParameter(0);
+	    set(center.getX(), center.getY(), center.getZ(), radius);
+	}
+
+	/** Construct a sphere by setting the given position and radius.
      * @param center the center of the sphere.
      * @param radius the radius of the sphere.
      */
-	public Sphere3dfx(Point3D<?, ?> center, double radius) {
+	public Sphere3dfx(Point3dfx center, double radius) {
 		assert center != null : AssertMessages.notNullParameter(0);
-		set(center.getX(), center.getY(), center.getZ(), radius);
+		this.center = center;
+		setRadius(radius);
 	}
 
 	/** Construct a sphere with the given position and radius.
@@ -77,12 +87,21 @@ public class Sphere3dfx
 		set(x, y, z, radius);
 	}
 
-	/** Construct a sphere from a circle.
-     * @param sphere the sphere to copy.
-     */
+	/** Constructor by copy.
+	 * @param sphere the sphere to copy.
+	 */
 	public Sphere3dfx(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+	    assert sphere != null : AssertMessages.notNullParameter();
+	    set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
+	}
+
+	/** Constructor by setting.
+     * @param sphere the sphere to set.
+     */
+	public Sphere3dfx(Sphere3dfx sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
-		set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
+		this.center = sphere.center;
+		setRadius(sphere.getRadius());
 	}
 
 	@Pure

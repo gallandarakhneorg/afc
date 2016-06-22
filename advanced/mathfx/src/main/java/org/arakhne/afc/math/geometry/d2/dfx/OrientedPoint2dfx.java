@@ -27,6 +27,7 @@ import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 2D oriented point with double precison floating point FX properties.
  *
@@ -56,6 +57,15 @@ public class OrientedPoint2dfx
         super(tuple);
     }
 
+    /** Constructor by setting.
+     * @param tuple the tuple to set.
+     */
+    public OrientedPoint2dfx(Tuple2dfx<?> tuple) {
+        assert tuple != null : AssertMessages.notNullParameter();
+        this.x = tuple.x;
+        this.y = tuple.y;
+    }
+
     /** Construct an oriented point from the two given coordinates.
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
@@ -74,10 +84,24 @@ public class OrientedPoint2dfx
 
     /** Construct an oriented point from a point and a tangent vector.
      * @param point the point.
-     * @param vector the tangent vector.
+     * @param tangent the tangent vector.
      */
-    public OrientedPoint2dfx(Point2D<?, ?> point, Vector2D<?, ?> vector) {
-        this(point.getX(), point.getY(), vector.getX(), vector.getY());
+    public OrientedPoint2dfx(Point2D<?, ?> point, Vector2D<?, ?> tangent) {
+        assert point != null : AssertMessages.notNullParameter(0);
+        assert tangent != null : AssertMessages.notNullParameter(1);
+        set(point.getX(), point.getY(), tangent.getX(), tangent.getY());
+    }
+
+    /** Constructor by setting from a point and a tangent vector.
+     * @param point the point.
+     * @param tangent the tangent vector.
+     */
+    public OrientedPoint2dfx(Point2dfx point, Vector2dfx tangent) {
+        assert point != null : AssertMessages.notNullParameter(0);
+        assert tangent != null : AssertMessages.notNullParameter(1);
+        this.x = point.x;
+        this.y = point.y;
+        this.tangent = tangent;
     }
 
     /** Construct an oriented point from the two given coordinates.

@@ -76,9 +76,9 @@ public abstract class PathElement3ifx implements PathElement3ai {
 	    this.to.z = toz;
 	}
 
-	/**
+	/** Constutor by setting.
 	 * @param type is the type of the element.
-	 * @param toPoint the target point.
+	 * @param toPoint the point to set as the target point.
 	 */
 	PathElement3ifx(PathElementType type, Point3ifx toPoint) {
 		assert type != null : AssertMessages.notNullParameter(0);
@@ -269,8 +269,8 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		    super(PathElementType.MOVE_TO, tox, toy, toz);
 		}
 
-		/**
-         * @param toPoint the target point.
+		/** Constructor by setting.
+         * @param toPoint the point to set as the target point.
          */
 		MovePathElement3ifx(Point3ifx toPoint) {
 			super(PathElementType.MOVE_TO, toPoint);
@@ -497,9 +497,9 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		    this.from.z = fromz;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		LinePathElement2ifx(Point3ifx fromPoint, Point3ifx toPoint) {
 		    super(PathElementType.LINE_TO, toPoint);
@@ -752,10 +752,10 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		    this.ctrl.z = ctrlz;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param ctrlPoint the control point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param ctrlPoint the point to set as the control point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		@SuppressWarnings("checkstyle:magicnumber")
 		QuadPathElement3ifx(Point3ifx fromPoint, Point3ifx ctrlPoint, Point3ifx toPoint) {
@@ -1042,11 +1042,11 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		    this.ctrl2.z = ctrlz2;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param ctrl1Point the first control point.
-		 * @param ctrl2Point the second control point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param ctrl1Point the point to set as the first control point.
+		 * @param ctrl2Point the point to set as the second control point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 		CurvePathElement3ifx(Point3ifx fromPoint, Point3ifx ctrl1Point, Point3ifx ctrl2Point, Point3ifx toPoint) {
@@ -1332,9 +1332,9 @@ public abstract class PathElement3ifx implements PathElement3ai {
 		    this.from.z = fromz;
 		}
 
-		/**
-		 * @param fromPoint the origin point.
-		 * @param toPoint the target point.
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
 		 */
 		ClosePathElement3ifx(Point3ifx fromPoint, Point3ifx toPoint) {
 		    super(PathElementType.CLOSE, toPoint);

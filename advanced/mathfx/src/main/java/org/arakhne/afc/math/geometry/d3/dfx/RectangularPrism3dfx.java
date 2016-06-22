@@ -70,14 +70,25 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 		addListeners();
 	}
 
-	/**
-	 * @param min is the min corner of the rectangle.
-	 * @param max is the max corner of the rectangle.
+	/** Construct a rectangular prism with the given minimum and maximum corners.
+	 * @param min is the min corner of the rectangular prism.
+	 * @param max is the max corner of the rectangular prism.
 	 */
 	public RectangularPrism3dfx(Point3D<?, ?> min, Point3D<?, ?> max) {
+	    assert min != null : AssertMessages.notNullParameter(0);
+	    assert max != null : AssertMessages.notNullParameter(1);
+	    setFromCorners(min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
+	}
+
+	/** Construct a recatngular prism by setting the minimum and maximum corners.
+	 * @param min is the point to set as the min corner of the rectangular prism.
+	 * @param max is the point to set as the max corner of the rectangular prism.
+	 */
+	public RectangularPrism3dfx(Point3dfx min, Point3dfx max) {
 		assert min != null : AssertMessages.notNullParameter(0);
 		assert max != null : AssertMessages.notNullParameter(1);
-		setFromCorners(min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
+		this.max = max;
+		this.min = min;
 	}
 
 	/** Construct a rectangle.
@@ -97,10 +108,21 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	}
 
 	/** Constructor by copy.
-     * @param rectangularPrism the shape to copy.
+	 * @param rectangularPrism the shape to copy.
+	 */
+	public RectangularPrism3dfx(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
+	    assert rectangularPrism != null : AssertMessages.notNullParameter();
+        setFromCorners(rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ(),
+                rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ());
+	}
+
+	/** Constructor by setting.
+     * @param rectangularPrism the shape to set.
      */
 	public RectangularPrism3dfx(RectangularPrism3dfx rectangularPrism) {
-		set(rectangularPrism);
+	    assert rectangularPrism != null : AssertMessages.notNullParameter();
+        this.min = rectangularPrism.min;
+        this.max = rectangularPrism.max;
 	}
 
 	@Override
@@ -160,11 +182,11 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	}
 
 	/**
-     * Add a listener to the point properties to observe correct min-max behavior.
-     */
-    private void addListeners() {
-        this.min.xProperty().addListener((observable, oldValue, nValue) -> {
-            final double currentMin = nValue.doubleValue();
+	 * Add a listener to the point properties to observe correct min-max behavior.
+	 */
+	private void addListeners() {
+	    this.min.xProperty().addListener((observable, oldValue, nValue) -> {
+	        final double currentMin = nValue.doubleValue();
             final double currentMax = getMaxX();
             if (currentMax < currentMin) {
                 // min-max constrain is broken

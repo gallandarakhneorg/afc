@@ -73,10 +73,10 @@ public class Triangle2dfx
 	    set(p1.getX(), p1.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY());
 	}
 
-	/** Construct a triangle with the three given points.
-	 * @param point1 first point.
-	 * @param point2 second point.
-	 * @param point3 third point.
+	/** Construct a triangle by setting the three given points.
+	 * @param point1 the point to set as first point.
+	 * @param point2 the point to set as second point.
+	 * @param point3 the point to set as third point.
 	 */
 	public Triangle2dfx(Point2dfx point1, Point2dfx point2, Point2dfx point3) {
 		assert point1 != null : AssertMessages.notNullParameter(0);
@@ -85,6 +85,24 @@ public class Triangle2dfx
 		this.p1 = point1;
 		this.p2 = point2;
 		this.p3 = point3;
+	}
+
+	/** Constructor by copy.
+	 * @param triangle the triangle to copy.
+	 */
+	public Triangle2dfx(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
+	    assert triangle != null : AssertMessages.notNullParameter();
+	    set(triangle.getX1(), triangle.getY1(), triangle.getX2(), triangle.getY2(), triangle.getX3(), triangle.getY3());
+	}
+
+	/** Constructor by setting.
+	 * @param triangle the triangle to set.
+	 */
+	public Triangle2dfx(Triangle2dfx triangle) {
+		assert triangle != null : AssertMessages.notNullParameter();
+		this.p1 = triangle.p1;
+		this.p2 = triangle.p2;
+		this.p3 = triangle.p3;
 	}
 
 	/** Construct a triangle with the three given points.
@@ -96,15 +114,7 @@ public class Triangle2dfx
 	 * @param y3 y coordinate of the third point.
 	 */
 	public Triangle2dfx(double x1, double y1, double x2, double y2, double x3, double y3) {
-		set(x1, y1, x2, y2, x3, y3);
-	}
-
-	/** Construct a triangle from a triangle.
-	 * @param triangle the triangle to copy.
-	 */
-	public Triangle2dfx(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : AssertMessages.notNullParameter();
-		set(triangle.getX1(), triangle.getY1(), triangle.getX2(), triangle.getY2(), triangle.getX3(), triangle.getY3());
+	    set(x1, y1, x2, y2, x3, y3);
 	}
 
 	@Override

@@ -59,7 +59,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 		//
 	}
 
-	/** Constructor by setting.
+	/** Constructor by setting the two given points.
 	 *
 	 * @param p1 the point to set as first point.
 	 * @param p2 the point to set as second point.
