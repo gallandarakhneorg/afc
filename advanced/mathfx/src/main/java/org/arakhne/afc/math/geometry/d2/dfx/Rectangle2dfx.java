@@ -140,6 +140,9 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 		addListeners();
 	}
 
+	/**
+     * Add a listener to the point properties to observe correct min-max behavior.
+     */
 	private void addListeners() {
 	    this.min.xProperty().addListener((observable, oldValue, nValue) -> {
 	        final double currentMin = nValue.doubleValue();

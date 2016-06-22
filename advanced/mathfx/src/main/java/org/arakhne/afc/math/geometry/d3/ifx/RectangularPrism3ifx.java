@@ -141,6 +141,9 @@ public class RectangularPrism3ifx extends AbstractShape3ifx<RectangularPrism3ifx
 		addListeners();
 	}
 
+	/**
+     * Add a listener to the point properties to observe correct min-max behavior.
+     */
     private void addListeners() {
         this.min.xProperty().addListener((observable, oldValue, nValue) -> {
             final int currentMin = nValue.intValue();

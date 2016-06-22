@@ -123,7 +123,9 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 		}
 	}
 
-	// TODO
+	/**
+	 * Add a listener to the point properties to observe correct min-max behavior.
+	 */
 	private void addListeners() {
 	    this.min.xProperty().addListener((observable, oldValue, nValue) -> {
 	        final int currentMin = nValue.intValue();
