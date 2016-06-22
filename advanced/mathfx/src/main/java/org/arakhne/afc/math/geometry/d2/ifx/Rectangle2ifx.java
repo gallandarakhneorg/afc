@@ -24,7 +24,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -126,7 +125,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 
 	// TODO
 	private void addListeners() {
-	    this.min.x.addListener((observable, oldValue, nValue) -> {
+	    this.min.xProperty().addListener((observable, oldValue, nValue) -> {
 	        final int currentMin = nValue.intValue();
             final int currentMax = getMaxX();
             if (currentMax < currentMin) {
@@ -134,7 +133,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
                 maxXProperty().set(currentMin);
             }
 	    });
-	    this.min.y.addListener((observable, oValue, nValue) -> {
+	    this.min.yProperty().addListener((observable, oValue, nValue) -> {
 	        final int currentMin = nValue.intValue();
             final int currentMax = getMaxY();
             if (currentMax < currentMin) {
@@ -142,7 +141,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
                 maxYProperty().set(currentMin);
             }
 	    });
-	    this.max.x.addListener((observable, oValue, nValue) -> {
+	    this.max.xProperty().addListener((observable, oValue, nValue) -> {
 	        final int currentMax = nValue.intValue();
             final int currentMin = getMinX();
             if (currentMax < currentMin) {
@@ -150,7 +149,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
                 minXProperty().set(currentMax);
             }
 	    });
-	    this.max.y.addListener((observable, oValue, nValue) -> {
+	    this.max.yProperty().addListener((observable, oValue, nValue) -> {
 	        final int currentMax = nValue.intValue();
             final int currentMin = getMinY();
             if (currentMax < currentMin) {
@@ -177,20 +176,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 */
 	@Pure
 	public IntegerProperty minXProperty() {
-		if (this.min.x == null) {
-			this.min.x = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_X) {
-				@Override
-				protected void invalidated() {
-					final int currentMin = get();
-					final int currentMax = getMaxX();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						maxXProperty().set(currentMin);
-					}
-				}
-			};
-		}
-		return this.min.x;
+		return this.min.xProperty();
 	}
 
 	@Pure
@@ -210,20 +196,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 */
 	@Pure
 	public IntegerProperty maxXProperty() {
-		if (this.max.x == null) {
-			this.max.x = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_X) {
-				@Override
-				protected void invalidated() {
-					final int currentMax = get();
-					final int currentMin = getMinX();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						minXProperty().set(currentMax);
-					}
-				}
-			};
-		}
-		return this.max.x;
+		return this.max.xProperty();
 	}
 
 	@Pure
@@ -243,20 +216,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 */
 	@Pure
 	public IntegerProperty minYProperty() {
-		if (this.min.y == null) {
-			this.min.y = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_Y) {
-				@Override
-				protected void invalidated() {
-					final int currentMin = get();
-					final int currentMax = getMaxY();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						maxYProperty().set(currentMin);
-					}
-				}
-			};
-		}
-		return this.min.y;
+		return this.min.yProperty();
 	}
 
 	@Pure
@@ -276,20 +236,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 */
 	@Pure
 	public IntegerProperty maxYProperty() {
-		if (this.max.y == null) {
-			this.max.y = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
-				@Override
-				protected void invalidated() {
-					final int currentMax = get();
-					final int currentMin = getMinY();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						minYProperty().set(currentMax);
-					}
-				}
-			};
-		}
-		return this.max.y;
+		return this.max.yProperty();
 	}
 
 	@Pure

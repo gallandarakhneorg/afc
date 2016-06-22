@@ -24,7 +24,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -63,7 +62,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	/** Construct an empty rectangle.
 	 */
 	public Rectangle2dfx() {
-		//
+		addListeners();
 	}
 
 	/**
@@ -142,7 +141,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	}
 
 	private void addListeners() {
-	    this.min.x.addListener((observable, oldValue, nValue) -> {
+	    this.min.xProperty().addListener((observable, oldValue, nValue) -> {
 	        final double currentMin = nValue.doubleValue();
 	        final double currentMax = getMaxX();
 	        if (currentMax < currentMin) {
@@ -150,7 +149,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	            maxXProperty().set(currentMin);
 	        }
 	    });
-	    this.min.y.addListener((observable, oValue, nValue) -> {
+	    this.min.yProperty().addListener((observable, oValue, nValue) -> {
 	        final double currentMin = nValue.doubleValue();
 	        final double currentMax = getMaxY();
 	        if (currentMax < currentMin) {
@@ -158,7 +157,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	            maxYProperty().set(currentMin);
 	        }
 	    });
-	    this.max.x.addListener((observable, oValue, nValue) -> {
+	    this.max.xProperty().addListener((observable, oValue, nValue) -> {
 	        final double currentMax = nValue.doubleValue();
 	        final double currentMin = getMinX();
 	        if (currentMax < currentMin) {
@@ -166,7 +165,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	            minXProperty().set(currentMax);
 	        }
 	    });
-	    this.max.y.addListener((observable, oValue, nValue) -> {
+	    this.max.yProperty().addListener((observable, oValue, nValue) -> {
 	        final double currentMax = nValue.doubleValue();
 	        final double currentMin = getMinY();
 	        if (currentMax < currentMin) {
@@ -193,20 +192,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	 */
 	@Pure
 	public DoubleProperty minXProperty() {
-		if (this.min.x == null) {
-			this.min.x = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_X) {
-				@Override
-				protected void invalidated() {
-					final double currentMin = get();
-					final double currentMax = getMaxX();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						maxXProperty().set(currentMin);
-					}
-				}
-			};
-		}
-		return this.min.x;
+		return this.min.xProperty();
 	}
 
 	@Pure
@@ -226,20 +212,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	 */
 	@Pure
 	public DoubleProperty maxXProperty() {
-		if (this.max.x == null) {
-			this.max.x = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_X) {
-				@Override
-				protected void invalidated() {
-					final double currentMax = get();
-					final double currentMin = getMinX();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						minXProperty().set(currentMax);
-					}
-				}
-			};
-		}
-		return this.max.x;
+		return this.max.xProperty();
 	}
 
 	@Pure
@@ -259,20 +232,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	 */
 	@Pure
 	public DoubleProperty minYProperty() {
-		if (this.min.y == null) {
-			this.min.y = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_Y) {
-				@Override
-				protected void invalidated() {
-					final double currentMin = get();
-					final double currentMax = getMaxY();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						maxYProperty().set(currentMin);
-					}
-				}
-			};
-		}
-		return this.min.y;
+		return this.min.yProperty();
 	}
 
 	@Pure
@@ -292,20 +252,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	 */
 	@Pure
 	public DoubleProperty maxYProperty() {
-		if (this.max.y == null) {
-			this.max.y = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
-				@Override
-				protected void invalidated() {
-					final double currentMax = get();
-					final double currentMin = getMinY();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						minYProperty().set(currentMax);
-					}
-				}
-			};
-		}
-		return this.max.y;
+		return this.max.yProperty();
 	}
 
 	@Override
