@@ -31,62 +31,54 @@ import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
-/** A 3D segment/line with 3 double precision FX properties.
+/** Segment with 3 double precision floating-point FX properties.
  *
- * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class SegmentPoint3dfx extends AbstractShape3dfx<SegmentPoint3dfx>
-	implements Segment3afp<Shape3dfx<?>, SegmentPoint3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
+public class Segment3dfxOld extends AbstractShape3dfx<Segment3dfx>
+	implements Segment3afp<Shape3dfx<?>, Segment3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
 
 	private static final long serialVersionUID = -5603953934276693947L;
 
-	private Point3dfx p1 = new Point3dfx();
+	private DoubleProperty ax;
 
-	private Point3dfx p2 = new Point3dfx();
+	private DoubleProperty ay;
+
+	private DoubleProperty az;
+
+	private DoubleProperty bx;
+
+	private DoubleProperty by;
+
+	private DoubleProperty bz;
 
 	/** Construct an empty segment.
      */
-	public SegmentPoint3dfx() {
+	public Segment3dfxOld() {
 		//
-	}
-
-	/** Construct a segment with the two given points.
-	 * @param p1 first point.
-	 * @param p2 second point.
-	 */
-	public SegmentPoint3dfx(Point3D<?, ?> p1, Point3D<?, ?> p2) {
-	    this(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ());
 	}
 
 	/** Construct a segment with the two given points.
      * @param p1 first point.
      * @param p2 second point.
      */
-	public SegmentPoint3dfx(Point3dfx p1, Point3dfx p2) {
-	    this.p1 = p1;
-	    this.p2 = p2;
-	}
-
-	/** Constructor by copy.
-	 * @param segment the segment to copy.
-	 */
-	public SegmentPoint3dfx(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
-	    this(segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2());
+	public Segment3dfxOld(Point3D<?, ?> p1, Point3D<?, ?> p2) {
+		this(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ());
 	}
 
 	/** Constructor by copy.
      * @param segment the segment to copy.
      */
-	public SegmentPoint3dfx(SegmentPoint3dfx segment) {
-	    this.p1 = segment.p1;
-	    this.p2 = segment.p2;
+	public Segment3dfxOld(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+		this(segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2());
 	}
 
 	/** Construct a segment with the two given points.
@@ -97,23 +89,37 @@ public class SegmentPoint3dfx extends AbstractShape3dfx<SegmentPoint3dfx>
      * @param y2 y coordinate of the second point.
      * @param z2 z coordinate of the second point.
      */
-	public SegmentPoint3dfx(double x1, double y1, double z1, double x2, double y2, double z2) {
+	public Segment3dfxOld(double x1, double y1, double z1, double x2, double y2, double z2) {
 		set(x1, y1, z1, x2, y2, z2);
 	}
 
 	@Override
-	public SegmentPoint3dfx clone() {
-		final SegmentPoint3dfx clone = super.clone();
-		if (clone.p1 != null) {
-			clone.x1Property().set(getX1());
-			clone.y1Property().set(getY1());
-			clone.z1Property().set(getZ1());
-		}
-		if (clone.p2 != null) {
-			clone.x2Property().set(getX2());
-			clone.y2Property().set(getY2());
-			clone.z2Property().set(getZ2());
-		}
+	public Segment3dfx clone() {
+		final Segment3dfx clone = super.clone();
+		//		if (clone.ax != null) {
+		//			clone.ax = null;
+		//			clone.x1Property().set(getX1());
+		//		}
+		//		if (clone.ay != null) {
+		//			clone.ay = null;
+		//			clone.y1Property().set(getY1());
+		//		}
+		//		if (clone.az != null) {
+		//			clone.az = null;
+		//			clone.z1Property().set(getZ1());
+		//		}
+		//		if (clone.bx != null) {
+		//			clone.bx = null;
+		//			clone.x2Property().set(getX2());
+		//		}
+		//		if (clone.by != null) {
+		//			clone.by = null;
+		//			clone.y2Property().set(getY2());
+		//		}
+		//		if (clone.bz != null) {
+		//			clone.bz = null;
+		//			clone.z2Property().set(getZ2());
+		//		}
 		return clone;
 	}
 
@@ -132,10 +138,8 @@ public class SegmentPoint3dfx extends AbstractShape3dfx<SegmentPoint3dfx>
 
 	@Pure
 	@Override
-	public SegmentPoint3dfx createTransformedShape(Transform3D transform) {
-        if (transform == null || transform.isIdentity()) {
-            return clone();
-        }
+	public Segment3dfx createTransformedShape(Transform3D transform) {
+		assert transform != null : AssertMessages.notNullParameter();
 		final Point3dfx point = getGeomFactory().newPoint(getX1(), getY1(), getZ1());
 		transform.transform(point);
 		final double x1 = point.getX();
@@ -143,7 +147,7 @@ public class SegmentPoint3dfx extends AbstractShape3dfx<SegmentPoint3dfx>
 		final double z1 = point.getZ();
 		point.set(getX2(), getY2(), getZ2());
 		transform.transform(point);
-		return new SegmentPoint3dfx(x1, y1, z1, point.getX(), point.getY(), point.getZ());
+		return getGeomFactory().newSegment(x1, y1, z1, point.getX(), point.getY(), point.getZ());
 	}
 
 	@Override
@@ -189,7 +193,7 @@ public class SegmentPoint3dfx extends AbstractShape3dfx<SegmentPoint3dfx>
 	@Pure
 	@Override
 	public double getX1() {
-		return this.p1.x == null ? 0 : this.p1.x.get();
+		return this.ax == null ? 0 : this.ax.get();
 	}
 
 	/** Replies the property that is the x coordinate of the first segment point.
@@ -198,16 +202,16 @@ public class SegmentPoint3dfx extends AbstractShape3dfx<SegmentPoint3dfx>
 	 */
 	@Pure
 	public DoubleProperty x1Property() {
-		if (this.p1.x == null) {
-			this.p1.x = new SimpleDoubleProperty(this, MathFXAttributeNames.X1);
+		if (this.ax == null) {
+			this.ax = new SimpleDoubleProperty(this, MathFXAttributeNames.X1);
 		}
-		return this.p1.x;
+		return this.ax;
 	}
 
 	@Pure
 	@Override
 	public double getY1() {
-		return this.p1.y == null ? 0 : this.p1.y.get();
+		return this.ay == null ? 0 : this.ay.get();
 	}
 
 	/** Replies the property that is the y coordinate of the first segment point.
@@ -216,16 +220,16 @@ public class SegmentPoint3dfx extends AbstractShape3dfx<SegmentPoint3dfx>
 	 */
 	@Pure
 	public DoubleProperty y1Property() {
-		if (this.p1.y == null) {
-			this.p1.y = new SimpleDoubleProperty(this, MathFXAttributeNames.Y1);
+		if (this.ay == null) {
+			this.ay = new SimpleDoubleProperty(this, MathFXAttributeNames.Y1);
 		}
-		return this.p1.y;
+		return this.ay;
 	}
 
 	@Pure
 	@Override
 	public double getZ1() {
-		return this.p1.z == null ? 0 : this.p1.z.get();
+		return this.az == null ? 0 : this.az.get();
 	}
 
 	/** Replies the property that is the z coordinate of the first segment point.
@@ -234,16 +238,16 @@ public class SegmentPoint3dfx extends AbstractShape3dfx<SegmentPoint3dfx>
 	 */
 	@Pure
 	public DoubleProperty z1Property() {
-		if (this.p1.z == null) {
-			this.p1.z = new SimpleDoubleProperty(this, MathFXAttributeNames.Z1);
+		if (this.az == null) {
+			this.az = new SimpleDoubleProperty(this, MathFXAttributeNames.Z1);
 		}
-		return this.p1.z;
+		return this.az;
 	}
 
 	@Pure
 	@Override
 	public double getX2() {
-		return this.p2.x == null ? 0 : this.p2.x.get();
+		return this.bx == null ? 0 : this.bx.get();
 	}
 
 	/** Replies the property that is the x coordinate of the second segment point.
@@ -252,16 +256,16 @@ public class SegmentPoint3dfx extends AbstractShape3dfx<SegmentPoint3dfx>
 	 */
 	@Pure
 	public DoubleProperty x2Property() {
-		if (this.p2.x == null) {
-			this.p2.x = new SimpleDoubleProperty(this, MathFXAttributeNames.X2);
+		if (this.bx == null) {
+			this.bx = new SimpleDoubleProperty(this, MathFXAttributeNames.X2);
 		}
-		return this.p2.x;
+		return this.bx;
 	}
 
 	@Pure
 	@Override
 	public double getY2() {
-		return this.p2.y == null ? 0 : this.p2.y.get();
+		return this.by == null ? 0 : this.by.get();
 	}
 
 	/** Replies the property that is the y coordinate of the second segment point.
@@ -270,16 +274,16 @@ public class SegmentPoint3dfx extends AbstractShape3dfx<SegmentPoint3dfx>
 	 */
 	@Pure
 	public DoubleProperty y2Property() {
-		if (this.p2.y == null) {
-			this.p2.y = new SimpleDoubleProperty(this, MathFXAttributeNames.Y2);
+		if (this.by == null) {
+			this.by = new SimpleDoubleProperty(this, MathFXAttributeNames.Y2);
 		}
-		return this.p2.y;
+		return this.by;
 	}
 
 	@Pure
 	@Override
 	public double getZ2() {
-		return this.p2.z == null ? 0 : this.p2.z.get();
+		return this.bz == null ? 0 : this.bz.get();
 	}
 
 	/** Replies the property that is the z coordinate of the second segment point.
@@ -288,61 +292,21 @@ public class SegmentPoint3dfx extends AbstractShape3dfx<SegmentPoint3dfx>
 	 */
 	@Pure
 	public DoubleProperty z2Property() {
-		if (this.p2.z == null) {
-			this.p2.z = new SimpleDoubleProperty(this, MathFXAttributeNames.Z2);
+		if (this.bz == null) {
+			this.bz = new SimpleDoubleProperty(this, MathFXAttributeNames.Z2);
 		}
-		return this.p2.z;
+		return this.bz;
 	}
 
 	@Override
 	public Point3dfx getP1() {
-		return this.p1;
+		return getGeomFactory().newPoint(this.ax, this.ay, this.az);
 	}
-
-    @Override
-    public void setP1(double x, double y, double z) {
-        this.p1.set(x, y, z);
-    }
-
-    @Override
-    public void setP1(Point3D<?, ?> point) {
-        this.p1.setX(point.getX());
-        this.p1.setY(point.getY());
-        this.p1.setZ(point.getZ());
-    }
-
-    /** Set the point as the first point of this segment.
-     *
-     * @param point the point to set.
-     */
-    public void setP1(Point3dfx point) {
-        this.p1 = point;
-    }
 
 	@Override
 	public Point3dfx getP2() {
-		return this.p2;
+		return getGeomFactory().newPoint(this.bx, this.by, this.bz);
 	}
-
-    @Override
-    public void setP2(double x, double y, double z) {
-        this.p2.set(x, y, z);
-    }
-
-    @Override
-    public void setP2(Point3D<?, ?> point) {
-        this.p2.setX(point.getX());
-        this.p2.setY(point.getY());
-        this.p2.setZ(point.getZ());
-    }
-
-    /** Set the point as the second point of this segment.
-     *
-     * @param point the point to set.
-     */
-    public void setP2(Point3dfx point) {
-        this.p2 = point;
-    }
 
 	@Override
 	public ObjectProperty<RectangularPrism3dfx> boundingBoxProperty() {

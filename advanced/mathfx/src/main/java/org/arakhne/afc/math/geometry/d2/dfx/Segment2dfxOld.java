@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -30,12 +31,10 @@ import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
-/** A 2D segment/line encapsulating points with 2 double precision FX properties.
+/** Segment with 2 double precision floating-point FX properties.
  *
- *  <p>This segment is defined by its two extremities. It should not differ from
- *  the original Segment2dfx except from storage type.
- * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
  * @version $FullVersion$
@@ -43,18 +42,22 @@ import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class SegmentPoint2dfx extends AbstractShape2dfx<SegmentPoint2dfx>
-	implements Segment2afp<Shape2dfx<?>, SegmentPoint2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
+public class Segment2dfxOld extends AbstractShape2dfx<Segment2dfx>
+		implements Segment2afp<Shape2dfx<?>, Segment2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
 
 	private static final long serialVersionUID = -5603953934276693947L;
 
-	private Point2dfx p1 = new Point2dfx();
+	private DoubleProperty ax;
 
-	private Point2dfx p2 = new Point2dfx();
+	private DoubleProperty ay;
+
+	private DoubleProperty bx;
+
+	private DoubleProperty by;
 
 	/** Construct an empty segment.
 	 */
-	public SegmentPoint2dfx() {
+	public Segment2dfxOld() {
 		//
 	}
 
@@ -62,99 +65,71 @@ public class SegmentPoint2dfx extends AbstractShape2dfx<SegmentPoint2dfx>
 	 * @param p1 first point.
 	 * @param p2 second point.
 	 */
-	public SegmentPoint2dfx(Point2dfx p1, Point2dfx p2) {
-	    this.p1 = p1;
-	    this.p2 = p2;
-	}
-
-	/** Construct a segment with the two given points.
-     * @param p1 first point.
-     * @param p2 second point.
-     */
-	public SegmentPoint2dfx(Point2D<?, ?> p1, Point2D<?, ?> p2) {
+	public Segment2dfxOld(Point2D<?, ?> p1, Point2D<?, ?> p2) {
 		this(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
 	/** Constructor by copy.
 	 * @param segment the segment to copy.
 	 */
-	public SegmentPoint2dfx(SegmentPoint2dfx segment) {
-	    this.p1 = segment.p1;
-	    this.p2 = segment.p2;
-	}
-
-	/** Constructor by copy.
-     * @param segment the segment to copy.
-     */
-	public SegmentPoint2dfx(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
+	public Segment2dfxOld(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
 		this(segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2());
 	}
 
 	/** Construct a segment with the two given points.
-     * @param x1 x coordinate of the first point.
-     * @param y1 y coordinate of the first point.
-     * @param x2 x coordinate of the second point.
-     * @param y2 y coordinate of the second point.
-     */
-	public SegmentPoint2dfx(double x1, double y1, double x2, double y2) {
+	 * @param x1 x coordinate of the first point.
+	 * @param y1 y coordinate of the first point.
+	 * @param x2 x coordinate of the second point.
+	 * @param y2 y coordinate of the second point.
+	 */
+	public Segment2dfxOld(double x1, double y1, double x2, double y2) {
 		set(x1, y1, x2, y2);
 	}
 
 	@Override
-	public SegmentPoint2dfx clone() {
-		final SegmentPoint2dfx clone = super.clone();
-		if (clone.p1 != null) {
-			clone.x1Property().set(getX1());
-			clone.y1Property().set(getY1());
-		}
-		if (clone.p2 != null) {
-			clone.x2Property().set(getX2());
-			clone.y2Property().set(getY2());
-		}
+	public Segment2dfx clone() {
+		final Segment2dfx clone = super.clone();
+		//		if (clone.ax != null) {
+		//			clone.ax = null;
+		//			clone.x1Property().set(getX1());
+		//		}
+		//		if (clone.ay != null) {
+		//			clone.ay = null;
+		//			clone.y1Property().set(getY1());
+		//		}
+		//		if (clone.bx != null) {
+		//			clone.bx = null;
+		//			clone.x2Property().set(getX2());
+		//		}
+		//		if (clone.by != null) {
+		//			clone.by = null;
+		//			clone.y2Property().set(getY2());
+		//		}
 		return clone;
 	}
 
 	@Pure
 	@Override
 	public int hashCode() {
-		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(getX1());
-		bits = 31 * bits + Double.doubleToLongBits(getY1());
-		bits = 31 * bits + Double.doubleToLongBits(getX2());
-		bits = 31 * bits + Double.doubleToLongBits(getY2());
-		final int b = (int) bits;
-		return b ^ (b >> 32);
+		int bits = 1;
+		bits = 31 * bits + Double.hashCode(getX1());
+		bits = 31 * bits + Double.hashCode(getY1());
+		bits = 31 * bits + Double.hashCode(getX2());
+		bits = 31 * bits + Double.hashCode(getY2());
+        return bits ^ (bits >> 31);
 	}
 
 	@Pure
 	@Override
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append("["); //$NON-NLS-1$
-		b.append(getX1());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getY1());
-		b.append("|"); //$NON-NLS-1$
-		b.append(getX2());
-		b.append(";"); //$NON-NLS-1$
-		b.append(getY2());
-		b.append("]"); //$NON-NLS-1$
-		return b.toString();
-	}
-
-	@Pure
-	@Override
-	public SegmentPoint2dfx createTransformedShape(Transform2D transform) {
-        if (transform == null || transform.isIdentity()) {
-            return clone();
-        }
+	public Segment2dfx createTransformedShape(Transform2D transform) {
+		assert transform != null : AssertMessages.notNullParameter();
 		final Point2dfx point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
 		final double x1 = point.getX();
 		final double y1 = point.getY();
 		point.set(getX2(), getY2());
 		transform.transform(point);
-		return new SegmentPoint2dfx(x1, y1, point.getX(), point.getY());
+		return getGeomFactory().newSegment(x1, y1, point.getX(), point.getY());
 	}
 
 	@Override
@@ -188,7 +163,7 @@ public class SegmentPoint2dfx extends AbstractShape2dfx<SegmentPoint2dfx>
 	@Pure
 	@Override
 	public double getX1() {
-		return this.p1.getX();
+		return this.ax == null ? 0 : this.ax.get();
 	}
 
 	/** Replies the property that is the x coordinate of the first segment point.
@@ -197,13 +172,16 @@ public class SegmentPoint2dfx extends AbstractShape2dfx<SegmentPoint2dfx>
 	 */
 	@Pure
 	public DoubleProperty x1Property() {
-		return this.p1.xProperty();
+		if (this.ax == null) {
+			this.ax = new SimpleDoubleProperty(this, MathFXAttributeNames.X1);
+		}
+		return this.ax;
 	}
 
 	@Pure
 	@Override
 	public double getY1() {
-		return this.p1.getY();
+		return this.ay == null ? 0 : this.ay.get();
 	}
 
 	/** Replies the property that is the y coordinate of the first segment point.
@@ -212,13 +190,16 @@ public class SegmentPoint2dfx extends AbstractShape2dfx<SegmentPoint2dfx>
 	 */
 	@Pure
 	public DoubleProperty y1Property() {
-		return this.p1.yProperty();
+		if (this.ay == null) {
+			this.ay = new SimpleDoubleProperty(this, MathFXAttributeNames.Y1);
+		}
+		return this.ay;
 	}
 
 	@Pure
 	@Override
 	public double getX2() {
-		return this.p2.getX();
+		return this.bx == null ? 0 : this.bx.get();
 	}
 
 	/** Replies the property that is the x coordinate of the second segment point.
@@ -227,13 +208,16 @@ public class SegmentPoint2dfx extends AbstractShape2dfx<SegmentPoint2dfx>
 	 */
 	@Pure
 	public DoubleProperty x2Property() {
-		return this.p2.xProperty();
+		if (this.bx == null) {
+			this.bx = new SimpleDoubleProperty(this, MathFXAttributeNames.X2);
+		}
+		return this.bx;
 	}
 
 	@Pure
 	@Override
 	public double getY2() {
-		return this.p2.getY();
+		return this.by == null ? 0 : this.by.get();
 	}
 
 	/** Replies the property that is the x coordinate of the second segment point.
@@ -242,63 +226,29 @@ public class SegmentPoint2dfx extends AbstractShape2dfx<SegmentPoint2dfx>
 	 */
 	@Pure
 	public DoubleProperty y2Property() {
-		return this.p2.yProperty();
+		if (this.by == null) {
+			this.by = new SimpleDoubleProperty(this, MathFXAttributeNames.Y2);
+		}
+		return this.by;
 	}
 
 	@Override
 	public Point2dfx getP1() {
-		return this.p1;
-	}
-
-	@Override
-	public void setP1(double x, double y) {
-	    this.p1.set(x, y);
-	}
-
-	@Override
-	public void setP1(Point2D<?, ?> pt) {
-	    this.p1.setX(pt.getX());
-	    this.p1.setY(pt.getY());
-	}
-
-	/** Set the oriented point as the first point of this SegmentPoint2dfx to preserve length.
-	 * @param pt the point.
-	 */
-	public void setP1(Point2dfx pt) {
-	    this.p1 = pt;
+		return getGeomFactory().newPoint(this.ax, this.ay);
 	}
 
 	@Override
 	public Point2dfx getP2() {
-		return this.p2;
-	}
-
-	@Override
-	public void setP2(double x, double y) {
-		this.p2.set(x, y);
-	}
-
-	@Override
-	public void setP2(Point2D<?, ?> pt) {
-		this.p2.setX(pt.getX());
-		this.p2.setY(pt.getY());
-	}
-
-	/** Set the oriented point as the second point of this SegmentPoint2dfx to preserve length.
-	 * @param pt the point.
-	 */
-	public void setP2(Point2dfx pt) {
-	    this.p2 = pt;
+		return getGeomFactory().newPoint(this.bx, this.by);
 	}
 
 	@Override
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
-			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-			    return toBoundingBox();
-			}, x1Property(), y1Property(),
-			   x2Property(), y2Property()));
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> toBoundingBox(),
+					x1Property(), y1Property(),
+					x2Property(), y2Property()));
 		}
 		return this.boundingBox;
 	}
