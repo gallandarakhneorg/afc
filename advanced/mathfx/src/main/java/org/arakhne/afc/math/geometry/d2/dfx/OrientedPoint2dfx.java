@@ -193,4 +193,14 @@ public class OrientedPoint2dfx
     public DoubleProperty tanYProperty() {
         return this.tangent.yProperty();
     }
+
+    @Override
+    public Vector2dfx getTangent() {
+        return this.tangent;
+    }
+
+    @Override
+    public Vector2dfx getNormal() {
+        return getGeomFactory().newVector(-this.tangent.getY(), this.tangent.getX());
+    }
 }

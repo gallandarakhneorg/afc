@@ -133,4 +133,14 @@ public class OrientedPoint2i
         this.dy = (int) Math.round(tanY);
     }
 
+    @Override
+    public Vector2i getTangent() {
+        return getGeomFactory().newVector(this.dx, this.dy);
+    }
+
+    @Override
+    public Vector2i getNormal() {
+        return getGeomFactory().newVector(-this.dy, this.dx);
+    }
+
 }

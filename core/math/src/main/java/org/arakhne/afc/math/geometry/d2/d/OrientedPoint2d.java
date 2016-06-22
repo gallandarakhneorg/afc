@@ -132,4 +132,14 @@ public class OrientedPoint2d
     public int ity() {
         return (int) this.dy;
     }
+
+    @Override
+    public Vector2d getTangent() {
+        return getGeomFactory().newVector(this.dx, this.dy);
+    }
+
+    @Override
+    public Vector2d getNormal() {
+        return getGeomFactory().newVector(-this.dy, this.dx);
+    }
 }

@@ -129,11 +129,24 @@ public interface OrientedPoint2D<RP extends Point2D<? super RP, ? super RV>, RV 
     }
 
     /** Replies this point.
+     *
      * @return this point
      */
     default RP getPoint() {
         return getGeomFactory().newPoint(getX(), getY());
     }
+
+    /** Replies the tangent vector at this point.
+     *
+     * @return the tangent vector.
+     */
+    @Pure RV getTangent();
+
+    /** Replies the normal vector at this point.
+     *
+     * @return the normal vector.
+     */
+    @Pure RV getNormal();
 
     /** Change the point and its tangent vector.
      *
