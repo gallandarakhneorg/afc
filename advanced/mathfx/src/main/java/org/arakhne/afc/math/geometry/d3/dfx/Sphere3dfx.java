@@ -48,11 +48,7 @@ public class Sphere3dfx
 
 	private static final long serialVersionUID = 837592010117981823L;
 
-	private DoubleProperty centerX;
-
-	private DoubleProperty centerY;
-
-	private DoubleProperty centerZ;
+	private Point3dfx center = new Point3dfx();
 
 	private DoubleProperty radius;
 
@@ -93,17 +89,9 @@ public class Sphere3dfx
 	@Override
 	public Sphere3dfx clone() {
 		final Sphere3dfx clone = super.clone();
-		if (clone.centerX != null) {
-			clone.centerX = null;
-			clone.xProperty().set(getX());
-		}
-		if (clone.centerY != null) {
-			clone.centerY = null;
-			clone.yProperty().set(getY());
-		}
-		if (clone.centerZ != null) {
-			clone.centerZ = null;
-			clone.zProperty().set(getZ());
+		if (clone.center != null) {
+			clone.center = null;
+			clone.center = this.center.clone();
 		}
 		if (clone.radius != null) {
 			clone.radius = null;
@@ -126,25 +114,25 @@ public class Sphere3dfx
 	@Pure
 	@Override
 	public double getX() {
-		return this.centerX == null ? 0 : this.centerX.get();
+		return this.center.getX();
 	}
 
 	@Pure
 	@Override
 	public double getY() {
-		return this.centerY == null ? 0 : this.centerY.get();
+		return this.center.getY();
 	}
 
 	@Pure
 	@Override
 	public double getZ() {
-		return this.centerZ == null ? 0 : this.centerZ.get();
+		return this.center.getZ();
 	}
 
 	@Pure
 	@Override
 	public Point3dfx getCenter() {
-		return getGeomFactory().newPoint(xProperty(), yProperty(), zProperty());
+		return this.center;
 	}
 
 	@Override
@@ -168,10 +156,7 @@ public class Sphere3dfx
 	 */
 	@Pure
 	public DoubleProperty xProperty() {
-		if (this.centerX == null) {
-			this.centerX = new SimpleDoubleProperty(this, MathFXAttributeNames.X);
-		}
-		return this.centerX;
+		return this.center.xProperty();
 	}
 
 	/** Replies the property that is the y coordinate of the circle center.
@@ -180,10 +165,7 @@ public class Sphere3dfx
 	 */
 	@Pure
 	public DoubleProperty yProperty() {
-		if (this.centerY == null) {
-			this.centerY = new SimpleDoubleProperty(this, MathFXAttributeNames.Y);
-		}
-		return this.centerY;
+		return this.center.yProperty();
 	}
 
 	/** Replies the property that is the z coordinate of the circle center.
@@ -192,10 +174,7 @@ public class Sphere3dfx
 	 */
 	@Pure
 	public DoubleProperty zProperty() {
-		if (this.centerZ == null) {
-			this.centerZ = new SimpleDoubleProperty(this, MathFXAttributeNames.Z);
-		}
-		return this.centerZ;
+		return this.center.zProperty();
 	}
 
 	@Pure

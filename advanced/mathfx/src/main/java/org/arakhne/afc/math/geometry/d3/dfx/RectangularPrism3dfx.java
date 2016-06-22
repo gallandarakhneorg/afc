@@ -24,7 +24,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -49,17 +48,9 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 
 	private static final long serialVersionUID = -1393290109630714626L;
 
-	private DoubleProperty minX;
+	private Point3dfx min = new Point3dfx();
 
-	private DoubleProperty minY;
-
-	private DoubleProperty minZ;
-
-	private DoubleProperty maxX;
-
-	private DoubleProperty maxY;
-
-	private DoubleProperty maxZ;
+	private Point3dfx max = new Point3dfx();
 
 	/** width property.
 	 */
@@ -76,7 +67,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	/** Construct an empty rectangular prism.
      */
 	public RectangularPrism3dfx() {
-		//
+		addListeners();
 	}
 
 	/**
@@ -115,32 +106,17 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	@Override
 	public RectangularPrism3dfx clone() {
 		final RectangularPrism3dfx clone = super.clone();
-		if (clone.minX != null) {
-			clone.minX = null;
-			clone.minXProperty().set(getMinX());
+		if (clone.min != null) {
+			clone.min = null;
+			clone.min = this.min.clone();
 		}
-		if (clone.minY != null) {
-			clone.minY = null;
-			clone.minYProperty().set(getMinY());
-		}
-		if (clone.minZ != null) {
-			clone.minZ = null;
-			clone.minZProperty().set(getMinZ());
-		}
-		if (clone.maxX != null) {
-			clone.maxX = null;
-			clone.maxXProperty().set(getMaxX());
-		}
-		if (clone.maxY != null) {
-			clone.maxY = null;
-			clone.maxYProperty().set(getMaxY());
-		}
-		if (clone.maxZ != null) {
-			clone.maxZ = null;
-			clone.maxZProperty().set(getMaxZ());
+		if (clone.max != null) {
+			clone.max = null;
+			clone.max = this.max.clone();
 		}
 		clone.width = null;
 		clone.height = null;
+		clone.depth = null;
 		return clone;
 	}
 
@@ -180,12 +156,64 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 			minZProperty().set(z2);
 			maxZProperty().set(z1);
 		}
+		addListeners();
 	}
+
+    private void addListeners() {
+        this.min.xProperty().addListener((observable, oldValue, nValue) -> {
+            final double currentMin = nValue.doubleValue();
+            final double currentMax = getMaxX();
+            if (currentMax < currentMin) {
+                // min-max constrain is broken
+                maxXProperty().set(currentMin);
+            }
+        });
+        this.min.yProperty().addListener((observable, oValue, nValue) -> {
+            final double currentMin = nValue.doubleValue();
+            final double currentMax = getMaxY();
+            if (currentMax < currentMin) {
+                // min-max constrain is broken
+                maxYProperty().set(currentMin);
+            }
+        });
+        this.min.zProperty().addListener((observable, oValue, nValue) -> {
+            final double currentMin = nValue.doubleValue();
+            final double currentMax = getMaxZ();
+            if (currentMax < currentMin) {
+                // min-max constrain is broken
+                maxZProperty().set(currentMin);
+            }
+        });
+        this.max.xProperty().addListener((observable, oValue, nValue) -> {
+            final double currentMax = nValue.doubleValue();
+            final double currentMin = getMinX();
+            if (currentMax < currentMin) {
+                // min-max constrain is broken
+                minXProperty().set(currentMax);
+            }
+        });
+        this.max.yProperty().addListener((observable, oValue, nValue) -> {
+            final double currentMax = nValue.doubleValue();
+            final double currentMin = getMinY();
+            if (currentMax < currentMin) {
+                // min-max constrain is broken
+                minYProperty().set(currentMax);
+            }
+        });
+        this.max.zProperty().addListener((observable, oValue, nValue) -> {
+            final double currentMax = nValue.doubleValue();
+            final double currentMin = getMinZ();
+            if (currentMax < currentMin) {
+                // min-max constrain is broken
+                minZProperty().set(currentMax);
+            }
+        });
+    }
 
 	@Pure
 	@Override
 	public double getMinX() {
-		return this.minX == null ? 0 : this.minX.get();
+		return this.min.getX();
 	}
 
 	@Override
@@ -199,26 +227,13 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	 */
 	@Pure
 	public DoubleProperty minXProperty() {
-		if (this.minX == null) {
-			this.minX = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_X) {
-				@Override
-				protected void invalidated() {
-					final double currentMin = get();
-					final double currentMax = getMaxX();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						maxXProperty().set(currentMin);
-					}
-				}
-			};
-		}
-		return this.minX;
+		return this.min.xProperty();
 	}
 
 	@Pure
 	@Override
 	public double getMaxX() {
-		return this.maxX == null ? 0 : this.maxX.get();
+		return this.max.getX();
 	}
 
 	@Override
@@ -232,26 +247,13 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	 */
 	@Pure
 	public DoubleProperty maxXProperty() {
-		if (this.maxX == null) {
-			this.maxX = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_X) {
-				@Override
-				protected void invalidated() {
-					final double currentMax = get();
-					final double currentMin = getMinX();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						minXProperty().set(currentMax);
-					}
-				}
-			};
-		}
-		return this.maxX;
+		return this.max.xProperty();
 	}
 
 	@Pure
 	@Override
 	public double getMinY() {
-		return this.minY == null ? 0 : this.minY.get();
+		return this.min.getY();
 	}
 
 	@Override
@@ -265,26 +267,13 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	 */
 	@Pure
 	public DoubleProperty minYProperty() {
-		if (this.minY == null) {
-			this.minY = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_Y) {
-				@Override
-				protected void invalidated() {
-					final double currentMin = get();
-					final double currentMax = getMaxY();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						maxYProperty().set(currentMin);
-					}
-				}
-			};
-		}
-		return this.minY;
+		return this.min.yProperty();
 	}
 
 	@Pure
 	@Override
 	public double getMaxY() {
-		return this.maxY == null ? 0 : this.maxY.get();
+		return this.max.getY();
 	}
 
 	@Override
@@ -298,26 +287,13 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	 */
 	@Pure
 	public DoubleProperty maxYProperty() {
-		if (this.maxY == null) {
-			this.maxY = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
-				@Override
-				protected void invalidated() {
-					final double currentMax = get();
-					final double currentMin = getMinY();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						minYProperty().set(currentMax);
-					}
-				}
-			};
-		}
-		return this.maxY;
+		return this.max.yProperty();
 	}
 
 	@Pure
 	@Override
 	public double getMinZ() {
-		return this.minZ == null ? 0 : this.minZ.get();
+		return this.min.getZ();
 	}
 
 	@Override
@@ -331,26 +307,13 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	 */
 	@Pure
 	public DoubleProperty minZProperty() {
-		if (this.minZ == null) {
-			this.minZ = new SimpleDoubleProperty(this, MathFXAttributeNames.MINIMUM_Z) {
-				@Override
-				protected void invalidated() {
-					final double currentMin = get();
-					final double currentMax = getMaxZ();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						maxZProperty().set(currentMin);
-					}
-				}
-			};
-		}
-		return this.minZ;
+		return this.min.zProperty();
 	}
 
 	@Pure
 	@Override
 	public double getMaxZ() {
-		return this.maxZ == null ? 0 : this.maxZ.get();
+		return this.max.getZ();
 	}
 
 	@Override
@@ -364,20 +327,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	 */
 	@Pure
 	public DoubleProperty maxZProperty() {
-		if (this.maxZ == null) {
-			this.maxZ = new SimpleDoubleProperty(this, MathFXAttributeNames.MAXIMUM_Z) {
-				@Override
-				protected void invalidated() {
-					final double currentMax = get();
-					final double currentMin = getMinZ();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						minZProperty().set(currentMax);
-					}
-				}
-			};
-		}
-		return this.maxZ;
+		return this.max.zProperty();
 	}
 
 	@Override
