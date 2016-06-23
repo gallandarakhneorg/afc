@@ -1503,7 +1503,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case STRING:
 				return parsePoint3D((String) this.value, false);
 			case OBJECT:
-				return caseObjectGetPoint3D();
+				return getPoint3DFromObject();
 			case BOOLEAN:
 			case IMAGE:
 			case POLYLINE:
@@ -1524,7 +1524,7 @@ public class AttributeValueImpl implements AttributeValue {
 		throw new InvalidAttributeTypeException();
 	}
 
-	private Point3D<?, ?> caseObjectGetPoint3D() {
+	private Point3D<?, ?> getPoint3DFromObject() {
 		if (this.value instanceof Tuple3D) {
 			final Tuple3D<?> t3 = (Tuple3D<?>) this.value;
 			return new Point3d(t3.getX(), t3.getY(), t3.getZ());
@@ -2175,7 +2175,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case STRING:
 				return parsePolyline3D((String) this.value, false);
 			case OBJECT:
-				return getPolyling3DFromObject();
+				return getPolyline3DFromObject();
 			case BOOLEAN:
 			case COLOR:
 			case DATE:
@@ -2209,7 +2209,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return tab;
 	}
 
-	private Point3D<?, ?>[] getPolyling3DFromObject() throws InvalidAttributeTypeException {
+	private Point3D<?, ?>[] getPolyline3DFromObject() throws InvalidAttributeTypeException {
 		if (this.value instanceof Tuple2D<?>) {
 			final Tuple2D<?> t2 = (Tuple2D<?>) this.value;
 			return new Point3D[] {new Point3d(t2.getX(), t2.getY(), 0),
@@ -2337,11 +2337,11 @@ public class AttributeValueImpl implements AttributeValue {
 			case POLYLINE:
 				return (Point2D[]) this.value;
 			case POLYLINE3D:
-				return casePolyline3DGetPolyline();
+				return getPolylineFromPolyline3D();
 			case STRING:
 				return parsePolyline((String) this.value, false);
 			case OBJECT:
-				return caseObjectGetPolyline();
+				return getPoint2DFromPolyline();
 			case BOOLEAN:
 			case COLOR:
 			case DATE:
@@ -2363,7 +2363,7 @@ public class AttributeValueImpl implements AttributeValue {
 		throw new InvalidAttributeTypeException();
 	}
 
-	private Point2D<?, ?>[]  casePolyline3DGetPolyline() {
+	private Point2D<?, ?>[]  getPolylineFromPolyline3D() {
 		final Point3D<?, ?>[] current = (Point3D[]) this.value;
 		final Point2D<?, ?>[] tab = new Point2D<?, ?>[current.length];
 		for (int i = 0; i < current.length; ++i) {
@@ -2372,7 +2372,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return tab;
 	}
 
-	private Point2D<?, ?>[]  caseObjectGetPolyline() {
+	private Point2D<?, ?>[]  getPoint2DFromPolyline() {
 		if (this.value instanceof Tuple2D) {
 			return new Point2D[] {new Point2d(((Tuple2D<?>) this.value).getX(), ((Tuple2D<?>) this.value).getY()), };
 		} else if (this.value instanceof Tuple3D) {
@@ -2609,7 +2609,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case ENUMERATION:
 				return type.cast(this.value);
 			case STRING:
-				return caseStringGetEnumeration(type);
+				return getEnumerationFromString(type);
 			case OBJECT:
 				if (this.value instanceof Enum<?>) {
 					return type.cast(this.value);
@@ -2640,18 +2640,6 @@ public class AttributeValueImpl implements AttributeValue {
 		throw new InvalidAttributeTypeException();
 	}
 
-	private <T extends Enum<T>> T caseStringGetEnumeration(Class<T> type) throws Exception {
-		final int index = ((String) this.value).lastIndexOf('.');
-		if (index >= 0) {
-			final String classname = ((String) this.value).substring(0, index);
-			final String enumName = ((String) this.value).substring(index + 1);
-			final Class<?> classType = Class.forName(classname);
-			assert type.equals(classType);
-			return Enum.valueOf(type, enumName);
-		}
-		return null;
-	}
-
 	@Override
 	public void setEnumeration(Enum<?> enumConstant) {
 		this.value = enumConstant;
@@ -2671,6 +2659,18 @@ public class AttributeValueImpl implements AttributeValue {
 			}
 		}
 		throw new InvalidAttributeTypeException();
+	}
+
+	private <T extends Enum<T>> T getEnumerationFromString(Class<T> type) throws Exception {
+		final int index = ((String) this.value).lastIndexOf('.');
+		if (index >= 0) {
+			final String classname = ((String) this.value).substring(0, index);
+			final String enumName = ((String) this.value).substring(index + 1);
+			final Class<?> classType = Class.forName(classname);
+			assert type.equals(classType);
+			return Enum.valueOf(type, enumName);
+		}
+		return null;
 	}
 
 	@Pure
