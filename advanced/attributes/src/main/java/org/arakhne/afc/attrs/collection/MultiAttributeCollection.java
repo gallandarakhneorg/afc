@@ -603,12 +603,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 					freeMemory();
 					break;
 				case RENAME:
-					MultiAttributeCollection.this.cache.remove(event.getOldName());
-					MultiAttributeCollection.this.cache.remove(event.getName());
-					if (MultiAttributeCollection.this.names != null) {
-						MultiAttributeCollection.this.names.remove(event.getOldName());
-						MultiAttributeCollection.this.names.remove(event.getName());
-					}
+					caseRenameAttributeChange(event);
 					break;
 				case VALUE_UPDATE:
 					MultiAttributeCollection.this.cache.remove(event.getName());
@@ -620,5 +615,13 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 
 	}
 
+	private void caseRenameAttributeChange(AttributeChangeEvent event) {
+		MultiAttributeCollection.this.cache.remove(event.getOldName());
+		MultiAttributeCollection.this.cache.remove(event.getName());
+		if (MultiAttributeCollection.this.names != null) {
+			MultiAttributeCollection.this.names.remove(event.getOldName());
+			MultiAttributeCollection.this.names.remove(event.getName());
+		}
+	}
 }
 

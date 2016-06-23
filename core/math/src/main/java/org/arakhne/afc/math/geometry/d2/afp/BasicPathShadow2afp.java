@@ -189,8 +189,6 @@ class BasicPathShadow2afp {
         if (element.getType() != PathElementType.MOVE_TO) {
             throw new IllegalArgumentException(Locale.getString(Path2afp.class, "E1")); //$NON-NLS-1$
         }
-
-        Path2afp<?, ?, ?, ?, ?, ?> localPath;
         double movx = element.getToX();
         double movy = element.getToY();
         double curx = movx;
@@ -209,13 +207,7 @@ class BasicPathShadow2afp {
             case LINE_TO:
                 endx = element.getToX();
                 endy = element.getToY();
-                crossSegmentTwoShadowLines(
-                        curx, cury,
-                        endx, endy,
-                        x1, y1, x2, y2);
-                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
-                    return;
-                }
+                setLineToFromDiscretizePathIterator(curx, cury, endx, endy, x1, y1, x2, y2);
                 curx = endx;
                 cury = endy;
                 break;
@@ -223,17 +215,7 @@ class BasicPathShadow2afp {
                 endx = element.getToX();
                 endy = element.getToY();
                 // only for local use.
-                localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-                localPath.moveTo(curx, cury);
-                localPath.quadTo(
-                        element.getCtrlX1(), element.getCtrlY1(),
-                        endx, endy);
-                discretizePathIterator(
-                        localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                        x1, y1, x2, y2);
-                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
-                    return;
-                }
+                setQuadToFromDiscretizePathIterator(element, pi, x1, y1, x2, y2, curx, cury, endx, endy);
                 curx = endx;
                 cury = endy;
                 break;
@@ -241,18 +223,7 @@ class BasicPathShadow2afp {
                 endx = element.getToX();
                 endy = element.getToY();
                 // only for local use.
-                localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-                localPath.moveTo(curx, cury);
-                localPath.curveTo(
-                        element.getCtrlX1(), element.getCtrlY1(),
-                        element.getCtrlX2(), element.getCtrlY2(),
-                        endx, endy);
-                discretizePathIterator(
-                        localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                        x1, y1, x2, y2);
-                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
-                    return;
-                }
+                setCurveToFromDiscretizePathIterator(element, pi, x1, y1, x2, y2, curx, cury, endx, endy);
                 curx = endx;
                 cury = endy;
                 break;
@@ -260,32 +231,12 @@ class BasicPathShadow2afp {
                 endx = element.getToX();
                 endy = element.getToY();
                 // only for local use.
-                localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-                localPath.moveTo(curx, cury);
-                localPath.arcTo(
-                        endx, endy,
-                        element.getRadiusX(), element.getRadiusY(),
-                        element.getRotationX(), element.getLargeArcFlag(),
-                        element.getSweepFlag());
-                discretizePathIterator(
-                        localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                        x1, y1, x2, y2);
-                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
-                    return;
-                }
+                setArcToFromDiscretizePathIterator(element, pi, x1, y1, x2, y2, curx, cury, endx, endy);
                 curx = endx;
                 cury = endy;
                 break;
             case CLOSE:
-                if (cury != movy || curx != movx) {
-                    crossSegmentTwoShadowLines(
-                            curx, cury,
-                            movx, movy,
-                            x1, y1, x2, y2);
-                }
-                if (this.crossings != 0) {
-                    return;
-                }
+                setCloseFromDiscretizePathIterator(x1, y1, x2, y2, curx, cury, movx, movy);
                 curx = movx;
                 cury = movy;
                 break;
@@ -301,6 +252,79 @@ class BasicPathShadow2afp {
             // Assume that when is the path is open, only
             // SHAPE_INTERSECTS may be return
             this.crossings = 0;
+        }
+    }
+
+    @SuppressWarnings({"checkstyle:linelength"})
+    private void setLineToFromDiscretizePathIterator(double curx, double cury, double endx, double endy, double x1,  double y1, double x2, double y2) {
+        crossSegmentTwoShadowLines(
+                curx, cury,
+                endx, endy,
+                x1, y1, x2, y2);
+        if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+            return;
+        }
+    }
+
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:linelength"})
+    private void setQuadToFromDiscretizePathIterator(PathElement2afp element, PathIterator2afp<?> pi, double x1, double y1, double x2, double y2, double curx, double cury, double endx, double endy) {
+        final Path2afp<?, ?, ?, ?, ?, ?> localPath;
+        localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+        localPath.moveTo(curx, cury);
+        localPath.quadTo(
+                element.getCtrlX1(), element.getCtrlY1(),
+                endx, endy);
+        discretizePathIterator(
+                localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                x1, y1, x2, y2);
+        if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+            return;
+        }
+    }
+
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:linelength"})
+    private void setCurveToFromDiscretizePathIterator(PathElement2afp element, PathIterator2afp<?> pi, double x1, double y1, double x2, double y2, double curx, double cury, double endx, double endy) {
+        final Path2afp<?, ?, ?, ?, ?, ?> localPath;
+        localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+        localPath.moveTo(curx, cury);
+        localPath.curveTo(
+                element.getCtrlX1(), element.getCtrlY1(),  element.getCtrlX2(), element.getCtrlY2(),
+                endx, endy);
+        discretizePathIterator(
+                localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                x1, y1, x2, y2);
+        if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+            return;
+        }
+    }
+
+    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:linelength"})
+    private void setArcToFromDiscretizePathIterator(PathElement2afp element, PathIterator2afp<?> pi, double x1, double y1, double x2, double y2, double curx, double cury, double endx, double endy) {
+        final Path2afp<?, ?, ?, ?, ?, ?> localPath;
+        localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+        localPath.moveTo(curx, cury);
+        localPath.arcTo(
+                endx, endy,
+                element.getRadiusX(), element.getRadiusY(),
+                element.getRotationX(), element.getLargeArcFlag(),
+                element.getSweepFlag());
+        discretizePathIterator(
+                localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                x1, y1, x2, y2);
+        if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+            return;
+        }
+    }
+
+    private void setCloseFromDiscretizePathIterator(double x1, double y1, double x2, double y2, double curx, double cury, double movx, double movy) {
+        if (cury != movy || curx != movx) {
+            crossSegmentTwoShadowLines(
+                    curx, cury,
+                    movx, movy,
+                    x1, y1, x2, y2);
+        }
+        if (this.crossings != 0) {
+            return;
         }
     }
 
