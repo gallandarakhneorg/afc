@@ -1503,15 +1503,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case STRING:
 				return parsePoint3D((String) this.value, false);
 			case OBJECT:
-				if (this.value instanceof Tuple3D) {
-					final Tuple3D<?> t3 = (Tuple3D<?>) this.value;
-					return new Point3d(t3.getX(), t3.getY(), t3.getZ());
-				}
-				if (this.value instanceof Tuple2D) {
-					final Tuple2D<?> t2 = (Tuple2D<?>) this.value;
-					return new Point3d(t2.getX(), t2.getY(), 0);
-				}
-				break;
+				return caseObjectGetPoint3D();
 			case BOOLEAN:
 			case IMAGE:
 			case POLYLINE:
@@ -1530,6 +1522,18 @@ public class AttributeValueImpl implements AttributeValue {
 			//
 		}
 		throw new InvalidAttributeTypeException();
+	}
+
+	private Point3D<?, ?> caseObjectGetPoint3D() {
+		if (this.value instanceof Tuple3D) {
+			final Tuple3D<?> t3 = (Tuple3D<?>) this.value;
+			return new Point3d(t3.getX(), t3.getY(), t3.getZ());
+		}
+		if (this.value instanceof Tuple2D) {
+			final Tuple2D<?> t2 = (Tuple2D<?>) this.value;
+			return new Point3d(t2.getX(), t2.getY(), 0);
+		}
+		return null;
 	}
 
 	@Override
@@ -2333,42 +2337,11 @@ public class AttributeValueImpl implements AttributeValue {
 			case POLYLINE:
 				return (Point2D[]) this.value;
 			case POLYLINE3D:
-				final Point3D<?, ?>[] current = (Point3D[]) this.value;
-				final Point2D<?, ?>[] tab = new Point2D<?, ?>[current.length];
-				for (int i = 0; i < current.length; ++i) {
-					tab[i] = new Point2d(
-							current[i].getX(),
-							current[i].getY());
-				}
-				return tab;
+				return casePolyline3DGetPolyline();
 			case STRING:
 				return parsePolyline((String) this.value, false);
 			case OBJECT:
-				if (this.value instanceof Tuple2D) {
-					return new Point2D[] {
-						new Point2d(((Tuple2D<?>) this.value).getX(), ((Tuple2D<?>) this.value).getY()),
-					};
-				} else if (this.value instanceof Tuple3D) {
-					final Tuple3D<?> t3 = (Tuple3D<?>) this.value;
-					return new Point2D[] {
-						new Point2d(t3.getX(), t3.getY()),
-					};
-				} else if (this.value instanceof Point2D[]) {
-					return (Point2D[]) this.value;
-				} else if (this.value instanceof Tuple2D[]) {
-					final Tuple2D<?>[] ta2 = (Tuple2D[]) this.value;
-					final Point2D<?, ?>[] pa2 = new Point2D[ta2.length];
-					for (int i = 0; i < pa2.length; ++i) {
-						pa2[i] = new Point2d(ta2[i]);
-					}
-				} else if (this.value instanceof Tuple3D[]) {
-					final Tuple3D<?>[] ta3 = (Tuple3D[]) this.value;
-					final Point2D<?, ?>[] pa2 = new Point2D<?, ?>[ta3.length];
-					for (int i = 0; i < pa2.length; ++i) {
-						pa2[i] = new Point2d(ta3[i].getX(), ta3[i].getY());
-					}
-				}
-				break;
+				return caseObjectGetPolyline();
 			case BOOLEAN:
 			case COLOR:
 			case DATE:
@@ -2388,6 +2361,40 @@ public class AttributeValueImpl implements AttributeValue {
 			//
 		}
 		throw new InvalidAttributeTypeException();
+	}
+
+	private Point2D<?, ?>[]  casePolyline3DGetPolyline() {
+		final Point3D<?, ?>[] current = (Point3D[]) this.value;
+		final Point2D<?, ?>[] tab = new Point2D<?, ?>[current.length];
+		for (int i = 0; i < current.length; ++i) {
+			tab[i] = new Point2d(current[i].getX(), current[i].getY());
+		}
+		return tab;
+	}
+
+	private Point2D<?, ?>[]  caseObjectGetPolyline() {
+		if (this.value instanceof Tuple2D) {
+			return new Point2D[] {new Point2d(((Tuple2D<?>) this.value).getX(), ((Tuple2D<?>) this.value).getY()), };
+		} else if (this.value instanceof Tuple3D) {
+			final Tuple3D<?> t3 = (Tuple3D<?>) this.value;
+			return new Point2D[] {new Point2d(t3.getX(), t3.getY()),
+			};
+		} else if (this.value instanceof Point2D[]) {
+			return (Point2D[]) this.value;
+		} else if (this.value instanceof Tuple2D[]) {
+			final Tuple2D<?>[] ta2 = (Tuple2D[]) this.value;
+			final Point2D<?, ?>[] pa2 = new Point2D[ta2.length];
+			for (int i = 0; i < pa2.length; ++i) {
+				pa2[i] = new Point2d(ta2[i]);
+			}
+		} else if (this.value instanceof Tuple3D[]) {
+			final Tuple3D<?>[] ta3 = (Tuple3D[]) this.value;
+			final Point2D<?, ?>[] pa2 = new Point2D<?, ?>[ta3.length];
+			for (int i = 0; i < pa2.length; ++i) {
+				pa2[i] = new Point2d(ta3[i].getX(), ta3[i].getY());
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -2602,15 +2609,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case ENUMERATION:
 				return type.cast(this.value);
 			case STRING:
-				final int index = ((String) this.value).lastIndexOf('.');
-				if (index >= 0) {
-					final String classname = ((String) this.value).substring(0, index);
-					final String enumName = ((String) this.value).substring(index + 1);
-					final Class<?> classType = Class.forName(classname);
-					assert type.equals(classType);
-					return Enum.valueOf(type, enumName);
-				}
-				break;
+				return caseStringGetEnumeration(type);
 			case OBJECT:
 				if (this.value instanceof Enum<?>) {
 					return type.cast(this.value);
@@ -2639,6 +2638,18 @@ public class AttributeValueImpl implements AttributeValue {
 			//
 		}
 		throw new InvalidAttributeTypeException();
+	}
+
+	private <T extends Enum<T>> T caseStringGetEnumeration(Class<T> type) throws Exception {
+		final int index = ((String) this.value).lastIndexOf('.');
+		if (index >= 0) {
+			final String classname = ((String) this.value).substring(0, index);
+			final String enumName = ((String) this.value).substring(index + 1);
+			final Class<?> classType = Class.forName(classname);
+			assert type.equals(classType);
+			return Enum.valueOf(type, enumName);
+		}
+		return null;
 	}
 
 	@Override
