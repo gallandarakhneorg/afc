@@ -42,7 +42,10 @@ public class OrientedPoint2ifx
 
     private static final long serialVersionUID = 1696624733007552173L;
 
-    private Vector2ifx tangent;
+    /**
+     * Tangent vector to this point.
+     */
+    protected Vector2ifx tangent;
 
     /** Construct an empty oriented point.
      */
@@ -197,6 +200,11 @@ public class OrientedPoint2ifx
     @Override
     public Vector2ifx getTangent() {
         return this.tangent;
+    }
+
+    @Override
+    public void setTangent(Vector2ifx tangent) {
+        this.tangent = tangent;
     }
 
     @Override

@@ -142,6 +142,16 @@ public interface OrientedPoint2D<RP extends Point2D<? super RP, ? super RV>, RV 
      */
     @Pure RV getTangent();
 
+    /** Sets the given vector as the new tangent to this point.
+     *  The normal vector is automatically recomputed.
+     *
+     * @param tangent the vector to set.
+     */
+    default void setTangent(RV tangent) {
+        setTangentX(tangent.getX());
+        setTangentY(tangent.getY());
+    }
+
     /** Replies the normal vector at this point.
      *
      * @return the normal vector.

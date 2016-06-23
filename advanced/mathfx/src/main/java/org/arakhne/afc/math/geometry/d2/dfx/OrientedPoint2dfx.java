@@ -42,7 +42,10 @@ public class OrientedPoint2dfx
 
     private static final long serialVersionUID = 1696624733007552173L;
 
-    private Vector2dfx tangent = new Vector2dfx();
+    /**
+     * Tangent vector to this point.
+     */
+    protected Vector2dfx tangent = new Vector2dfx();
 
     /** Construct an empty oriented point.
      */
@@ -197,6 +200,11 @@ public class OrientedPoint2dfx
     @Override
     public Vector2dfx getTangent() {
         return this.tangent;
+    }
+
+    @Override
+    public void setTangent(Vector2dfx tangent) {
+        this.tangent = tangent;
     }
 
     @Override
