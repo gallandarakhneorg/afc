@@ -2735,14 +2735,9 @@ public class Matrix3d implements Serializable, Cloneable {
 
                 double mm = m * m;
                 double tt = t * t;
-                double s = Math.sqrt(tt + mm);
+                final double s;
 
-                double r;
-                if (l == 0.) {
-                    r = Math.abs(m);
-                } else {
-                    r = Math.sqrt(l * l + mm);
-                }
+                final double r;
 
                 final double a;
 
