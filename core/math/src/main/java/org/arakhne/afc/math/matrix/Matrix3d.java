@@ -1011,7 +1011,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * @return true if the matrix is nonsingular, or false otherwise.
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-    private static boolean luDecomposition(double[] matrix0, int[] row_perm) {
+    private static boolean luDecomposition(double[] matrix0, int[] rowPerm) {
         //
         // Reference: Press, Flannery, Teukolsky, Vetterling,
         // _Numerical_Recipes_in_C_, Cambridge University Press,
@@ -1114,7 +1114,7 @@ public class Matrix3d implements Serializable, Cloneable {
             }
 
             // Record row permutation
-            row_perm[j] = imax;
+            rowPerm[j] = imax;
 
             // Is the matrix singular
             if (matrix0[mtx + 3 * j + j] == 0.) {
@@ -1150,7 +1150,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * derived.
      */
     @Pure
-    private static void luBacksubstitution(double[] matrix1, int[] row_perm,
+    private static void luBacksubstitution(double[] matrix1, int[] rowPerm,
             double[] matrix2) {
         //
         // Reference: Press, Flannery, Teukolsky, Vetterling,
@@ -1169,7 +1169,7 @@ public class Matrix3d implements Serializable, Cloneable {
 
             // Forward substitution
             for (int i = 0; i < 3; ++i) {
-                final int ip = row_perm[rp + i];
+                final int ip = rowPerm[rp + i];
                 double sum = matrix2[cv + 3 * ip];
                 matrix2[cv + 3 * ip] = matrix2[cv + 3 * i];
                 if (ii >= 0) {
@@ -2655,14 +2655,14 @@ public class Matrix3d implements Serializable, Cloneable {
         "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
         "checkstyle:nestedifdepth", "checkstyle:localvariablename"})
     private static int compute2X2(double f, double g, double h,
-            double[] single_values, double[] snl, double[] csl, double[] snr,
+            double[] singleValues, double[] snl, double[] csl, double[] snr,
             double[] csr, int index) {
 
         final double cb3 = 2.;
         final double cb4 = 1.;
 
-        double ssmax = single_values[0];
-        double ssmin = single_values[1];
+        double ssmax = singleValues[0];
+        double ssmin = singleValues[1];
         double clt = 0.;
         double crt = 0.;
         double slt = 0.;
@@ -2696,8 +2696,8 @@ public class Matrix3d implements Serializable, Cloneable {
         final double ga = Math.abs(gt);
         if (ga == 0.) {
 
-            single_values[1] = ha;
-            single_values[0] = fa;
+            singleValues[1] = ha;
+            singleValues[0] = fa;
         } else {
             boolean gasmal = true;
 
@@ -2832,9 +2832,9 @@ public class Matrix3d implements Serializable, Cloneable {
                 tsign = dSign(cb4, snr[0]) * dSign(cb4, snl[0])
                         * dSign(cb4, h);
             }
-            single_values[index] = dSign(ssmax, tsign);
+            singleValues[index] = dSign(ssmax, tsign);
             final double d1 = tsign * dSign(cb4, f) * dSign(cb4, h);
-            single_values[index + 1] = dSign(ssmin, d1);
+            singleValues[index + 1] = dSign(ssmin, d1);
 
         }
         return 0;

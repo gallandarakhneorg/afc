@@ -70,8 +70,8 @@ public interface Graph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT
 	/** Replies an iterator that permits to move along the road segment's graph
 	 * starting from this road segment and from the specified starting point.
 	 *
-	 * @param starting_segment is the first segment to iterate.
-	 * @param starting_point is the starting point of the iterations.
+	 * @param startingSegment is the first segment to iterate.
+	 * @param startingPoint is the starting point of the iterations.
 	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the same
 	 *     segment, otherwhise <code>false</code>.
 	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
@@ -81,7 +81,7 @@ public interface Graph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT
 	 * @return the iterator.
 	 */
 	@Pure
-	GraphIterator<ST, PT> iterator(ST starting_segment, PT starting_point, boolean allowManyReplies,
+	GraphIterator<ST, PT> iterator(ST startingSegment, PT startingPoint, boolean allowManyReplies,
 			boolean assumeOrientedSegments);
 
 	/** Replies an iterator that permits to move along the segment's graph
@@ -94,7 +94,7 @@ public interface Graph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT
 	 *
 	 * @param startingSegment is the first segment to iterate.
 	 * @param depth is the maximal depth to reach.
-	 * @param position_from_starting_point is the starting position from
+	 * @param positionFromStartingPoint is the starting position from
 	 *     the {@code startingPoint}.
 	 * @param startingPoint is the starting point of the iterations.
 	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the same
@@ -106,7 +106,7 @@ public interface Graph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT
 	 * @return the iterator.
 	 */
 	@Pure
-	GraphIterator<ST, PT> depthIterator(ST startingSegment, double depth, double position_from_starting_point,
+	GraphIterator<ST, PT> depthIterator(ST startingSegment, double depth, double positionFromStartingPoint,
 			PT startingPoint, boolean allowManyReplies, boolean assumeOrientedSegments);
 
 }
