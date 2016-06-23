@@ -272,13 +272,13 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 	@Override
 	public GraphIterator<ST, PT> depthIterator(
 			ST startingSegment,
-			double depth, double position_from_starting_point,
+			double depth, double positionFromStartingPoint,
 			PT startingPoint, boolean allowManyReplies,
 			boolean assumeOrientedSegments) {
 		return new DepthSubGraphIterator(
 				filterSegment(startingSegment),
 				depth,
-				position_from_starting_point,
+				positionFromStartingPoint,
 				startingPoint,
 				allowManyReplies, assumeOrientedSegments);
 	}
@@ -291,12 +291,12 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 
 	@Pure
 	@Override
-	public GraphIterator<ST, PT> iterator(ST starting_segment,
-			PT starting_point, boolean allowManyReplies,
+	public GraphIterator<ST, PT> iterator(ST startingSegment,
+			PT startingPoint, boolean allowManyReplies,
 			boolean assumeOrientedSegments) {
 		return new SubGraphIterator(
-				filterSegment(starting_segment),
-				starting_point,
+				filterSegment(startingSegment),
+				startingPoint,
 				allowManyReplies, assumeOrientedSegments);
 	}
 
@@ -314,29 +314,29 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 		 *
 		 * @param startingSegment the starting segment.
 		 * @param depth the exploration depth.
-		 * @param position_from_starting_point the position from the starting point.
+		 * @param positionFromStartingPoint the position from the starting point.
 		 * @param startingPoint the starting point, attached to the starting segment.
 		 * @param allowManyReplies indicates if a segment could be reply many times.
 		 * @param assumedOrientedSegments indicates if the segments are assumed to be oriented,
 		 *     i.e. that are from their starting point to their ending points.
 		 */
 		DepthSubGraphIterator(ST startingSegment,
-				double depth, double position_from_starting_point, PT startingPoint,
+				double depth, double positionFromStartingPoint, PT startingPoint,
 				boolean allowManyReplies,
 				boolean assumedOrientedSegments) {
-			super(SubGraph.this, depth, position_from_starting_point,
+			super(SubGraph.this, depth, positionFromStartingPoint,
 					startingSegment, startingPoint,
 					allowManyReplies, assumedOrientedSegments);
 		}
 
 		@Override
 		protected GraphIterationElement<ST, PT> newIterationElement(
-				ST previous_segment, ST segment,
+				ST previousSegment, ST segment,
 				PT point,
 				double distanceToReach,
 				double distanceToConsume) {
 			return new SubGraphIterationElement(
-					previous_segment, segment,
+					previousSegment, segment,
 					point,
 					distanceToReach,
 					distanceToConsume);
@@ -393,12 +393,12 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 
 		@Override
 		protected GraphIterationElement<ST, PT> newIterationElement(
-				ST previous_segment, ST segment,
+				ST previousSegment, ST segment,
 				PT point,
 				double distanceToReach,
 				double distanceToConsume) {
 			return new SubGraphIterationElement(
-					previous_segment, segment,
+					previousSegment, segment,
 					point,
 					distanceToReach,
 					distanceToConsume);
@@ -423,14 +423,14 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 		private PT wrappedPoint;
 
 		/**
-		 * @param previous_segment is the previous element that permits to reach this object during an iteration
+		 * @param previousSegment is the previous element that permits to reach this object during an iteration
 		 * @param segment is the current segment
 		 * @param point is the point on which the iteration arrived on the current segment.
 		 * @param distanceToReach1 is the distance that is already consumed.
 		 * @param distanceToConsume1 is the distance to consume including the segment.
 		 */
-		SubGraphIterationElement(ST previous_segment, ST segment, PT point, double distanceToReach1, double distanceToConsume1) {
-			super(previous_segment, segment, point, distanceToReach1, distanceToConsume1);
+		SubGraphIterationElement(ST previousSegment, ST segment, PT point, double distanceToReach1, double distanceToConsume1) {
+			super(previousSegment, segment, point, distanceToReach1, distanceToConsume1);
 		}
 
 		@Override

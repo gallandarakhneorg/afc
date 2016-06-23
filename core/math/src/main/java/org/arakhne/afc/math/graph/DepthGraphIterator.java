@@ -48,10 +48,10 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	/**
 	 * @param graph is the graph associated to this iterator.
 	 * @param depth is the maximal depth to reach (in the metric coordiante system).
-	 * @param position_from_starting_point is the starting position from
+	 * @param positionFromStartingPoint is the starting position from
 	 *     the {@code starting_point} (in meters).
 	 * @param segment is the segment from which to start.
-	 * @param starting_point is the segment's point indicating the direction.
+	 * @param startingPoint is the segment's point indicating the direction.
 	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the same
 	 *     segment, otherwhise <code>false</code>.
 	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
@@ -62,23 +62,23 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	public DepthGraphIterator(
 			Graph<ST, PT> graph,
 			double depth,
-			double position_from_starting_point,
+			double positionFromStartingPoint,
 			ST segment,
-			PT starting_point,
+			PT startingPoint,
 			boolean allowManyReplies,
 			boolean assumeOrientedSegments) {
-		this(graph, depth, segment, starting_point, allowManyReplies,
+		this(graph, depth, segment, startingPoint, allowManyReplies,
 				assumeOrientedSegments,
-				-getStartingDistance(position_from_starting_point, segment));
+				-getStartingDistance(positionFromStartingPoint, segment));
 	}
 
 	/**
 	 * @param graph is the graph associated to this iterator.
 	 * @param depth is the maximal depth to reach (in the metric coordiante system).
-	 * @param position_from_starting_point is the starting position from
+	 * @param positionFromStartingPoint is the starting position from
 	 *     the {@code starting_point} (in meters).
 	 * @param segment is the segment from which to start.
-	 * @param starting_point is the segment's point indicating the direction.
+	 * @param startingPoint is the segment's point indicating the direction.
 	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the same
 	 *     segment, otherwhise <code>false</code>.
 	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
@@ -92,13 +92,13 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 			Graph<ST, PT> graph,
 			double depth,
 			ST segment,
-			PT starting_point,
+			PT startingPoint,
 			boolean allowManyReplies,
 			boolean assumeOrientedSegments,
 			double distanceToReachStartingPoint) {
 		super(graph,
 				new BreadthFirstGraphCourseModel<ST, PT>(),
-				segment, starting_point,
+				segment, startingPoint,
 				allowManyReplies,
 				assumeOrientedSegments,
 				distanceToReachStartingPoint,
@@ -109,7 +109,7 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	 * @param graph is the graph associated to this iterator.
 	 * @param depth is the maximal depth to reach (in the metric coordiante system).
 	 * @param segment is the segment from which to start.
-	 * @param starting_point is the segment's point indicating the direction.
+	 * @param startingPoint is the segment's point indicating the direction.
 	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the same
 	 *     segment, otherwhise <code>false</code>.
 	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
@@ -121,11 +121,11 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 			Graph<ST, PT> graph,
 			double depth,
 			ST segment,
-			PT starting_point,
+			PT startingPoint,
 			boolean allowManyReplies,
 			boolean assumeOrientedSegments) {
 		this(graph, depth, 0.f, segment,
-				starting_point, allowManyReplies,
+				startingPoint, allowManyReplies,
 				assumeOrientedSegments);
 	}
 

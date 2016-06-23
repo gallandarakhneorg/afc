@@ -61,16 +61,16 @@ public class SGraph implements Graph<SGraphSegment, SGraphPoint> {
 	@Pure
 	@Override
 	public GraphIterator<SGraphSegment, SGraphPoint> iterator(
-			SGraphSegment starting_segment, SGraphPoint starting_point,
+			SGraphSegment startingSegment, SGraphPoint startingPoint,
 			boolean allowManyReplies, boolean assumeOrientedSegments) {
-		if (starting_segment.getGraph() != this
-				|| starting_point.getGraph() != this) {
+		if (startingSegment.getGraph() != this
+				|| startingPoint.getGraph() != this) {
 			throw new IllegalArgumentException();
 		}
 		return new GraphIterator<>(
 				this,
-				starting_segment,
-				starting_point,
+				startingSegment,
+				startingPoint,
 				allowManyReplies,
 				assumeOrientedSegments,
 				0);
@@ -104,7 +104,7 @@ public class SGraph implements Graph<SGraphSegment, SGraphPoint> {
 	@Override
 	public GraphIterator<SGraphSegment, SGraphPoint> depthIterator(
 			SGraphSegment startingSegment, double depth,
-			double position_from_starting_point, SGraphPoint startingPoint,
+			double positionFromStartingPoint, SGraphPoint startingPoint,
 			boolean allowManyReplies, boolean assumeOrientedSegments) {
 		if (startingSegment.getGraph() != this
 				|| startingPoint.getGraph() != this) {

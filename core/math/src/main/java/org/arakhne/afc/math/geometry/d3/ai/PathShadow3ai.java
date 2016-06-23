@@ -276,19 +276,19 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	private static void computeCrossings2(
-			int shadow_x0, int shadow_y0, int shadow_z0,
-			int shadow_x1, int shadow_y1, int shadow_z1,
+			int shadowX0, int shadowY0, int shadowZ0,
+			int shadowX1, int shadowY1, int shadowZ1,
 			int sx0, int sy0, int sz0,
 			int sx1, int sy1, int sz1,
 			PathShadowData data) {
-		final int shadowXmin = Math.min(shadow_x0, shadow_x1);
-		final int shadowXmax = Math.max(shadow_x0, shadow_x1);
-		final int shadowYmin = Math.min(shadow_y0, shadow_y1);
-		final int shadowYmax = Math.max(shadow_y0, shadow_y1);
+		final int shadowXmin = Math.min(shadowX0, shadowX1);
+		final int shadowXmax = Math.max(shadowX0, shadowX1);
+		final int shadowYmin = Math.min(shadowY0, shadowY1);
+		final int shadowYmax = Math.max(shadowY0, shadowY1);
 		//TODO final int shadowZmin = Math.min(shadow_z0, shadow_z1);
 		//TODO final int shadowZmax = Math.max(shadow_z0, shadow_z1);
 
-		data.updateShadowLimits(shadow_x0, shadow_y0, shadow_z0, shadow_x1, shadow_y1, shadow_z1);
+		data.updateShadowLimits(shadowX0, shadowY0, shadowZ0, shadowX1, shadowY1, shadowZ1);
 
         if (sy0 < shadowYmin && sy1 < shadowYmin) {
             return;
@@ -328,39 +328,39 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 				}
 			}
 		} else if (Segment3ai.intersectsSegmentSegment(
-				shadow_x0, shadow_y0, shadow_z0, shadow_x1, shadow_y1, shadow_z1,
+				shadowX0, shadowY0, shadowZ0, shadowX1, shadowY1, shadowZ1,
 				sx0, sy0, sz0, sx1, sy1, sz1)) {
 			data.setCrossings(MathConstants.SHAPE_INTERSECTS);
 		} else {
 			final int side1;
 			final int side2;
-            final boolean isUp = shadow_y0 <= shadow_y1;
+            final boolean isUp = shadowY0 <= shadowY1;
 			if (isUp) {
 				side1 = Segment3ai.computeSideLinePoint(
-						shadow_x0, shadow_y0, shadow_z0,
-						shadow_x1, shadow_y1, shadow_z1,
+						shadowX0, shadowY0, shadowZ0,
+						shadowX1, shadowY1, shadowZ1,
 						sx0, sy0, sz0);
 				side2 = Segment3ai.computeSideLinePoint(
-						shadow_x0, shadow_y0, shadow_z0,
-						shadow_x1, shadow_y1, shadow_z1,
+						shadowX0, shadowY0, shadowZ0,
+						shadowX1, shadowY1, shadowZ1,
 						sx1, sy1, sz1);
 			} else {
 				side1 = Segment3ai.computeSideLinePoint(
-						shadow_x1, shadow_y1, shadow_z1,
-						shadow_x0, shadow_y0, shadow_z0,
+						shadowX1, shadowY1, shadowZ1,
+						shadowX0, shadowY0, shadowZ0,
 						sx0, sy0, sz0);
 				side2 = Segment3ai.computeSideLinePoint(
-						shadow_x1, shadow_y1, shadow_z1,
-						shadow_x0, shadow_y0, shadow_z0,
+						shadowX1, shadowY1, shadowZ1,
+						shadowX0, shadowY0, shadowZ0,
 						sx1, sy1, sz1);
 			}
             if (side1 > 0 || side2 > 0) {
 				computeCrossings3(
-						shadow_x0, shadow_y0, shadow_z0,
+						shadowX0, shadowY0, shadowZ0,
 						sx0, sy0, sz0, sx1, sy1, sz1,
 						data, isUp);
 				computeCrossings3(
-						shadow_x1, shadow_y1, shadow_z1,
+						shadowX1, shadowY1, shadowZ1,
 						sx0, sy0, sz0, sx1, sy1, sz1,
 						data, !isUp);
 			}
@@ -448,25 +448,25 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 			}
 		}
 
-		public void updateShadowLimits(int shadow_x0, int shadow_y0, int shadow_z0, int shadow_x1, int shadow_y1, int shadow_z1) {
+		public void updateShadowLimits(int shadowX0, int shadowY0, int shadowZ0, int shadowX1, int shadowY1, int shadowZ1) {
 			final int xl;
 			final int yl;
 			final int xh;
 			final int yh;
-            if (shadow_y0 < shadow_y1) {
-				xl = shadow_x0;
-				yl = shadow_y0;
-				xh = shadow_x1;
-				yh = shadow_y1;
-            } else if (shadow_y1 < shadow_y0) {
-				xl = shadow_x1;
-				yl = shadow_y1;
-				xh = shadow_x0;
-				yh = shadow_y0;
+            if (shadowY0 < shadowY1) {
+				xl = shadowX0;
+				yl = shadowY0;
+				xh = shadowX1;
+				yh = shadowY1;
+            } else if (shadowY1 < shadowY0) {
+				xl = shadowX1;
+				yl = shadowY1;
+				xh = shadowX0;
+				yh = shadowY0;
 			} else {
-				xl = Math.min(shadow_x0, shadow_x1);
+				xl = Math.min(shadowX0, shadowX1);
 				xh = xl;
-				yl = shadow_y0;
+				yl = shadowY0;
 				yh = yl;
 			}
 
