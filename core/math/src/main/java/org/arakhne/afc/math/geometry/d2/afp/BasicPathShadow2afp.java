@@ -40,6 +40,8 @@ class BasicPathShadow2afp {
 
     private final PathIterator2afp<?> pathIterator;
 
+    private CoordinatesParam coordinateParam;
+
     private final double boundingMinX;
 
     private final double boundingMinY;
@@ -59,6 +61,8 @@ class BasicPathShadow2afp {
     private double x4ymin;
 
     private double x4ymax;
+
+
 
     /** Construct new path shadow.
      * @param path the path that is constituting the shadow.
@@ -192,7 +196,7 @@ class BasicPathShadow2afp {
         double movy = element.getToY();
         double curx = movx;
         double cury = movy;
-        final CoordinatesParam coordinateParam = new CoordinatesParam(x1, y1, x2, y2, curx, cury);
+        coordinateParam = new CoordinatesParam(x1, y1, x2, y2, curx, cury);
         while (pi.hasNext()) {
             element = pi.next();
             switch (element.getType()) {
@@ -503,22 +507,28 @@ class BasicPathShadow2afp {
      * @mavengroupid $GroupId$
      * @mavenartifactid $ArtifactId$
      */
-    public  final  class CoordinatesParam {
-        private double x1;
+    private    final  class CoordinatesParam {
+        private  double x1;
 
         private double y1;
 
-        private double x2;
+        private  double x2;
 
-        private double y2;
+        private  double y2;
 
-        private double curx;
+        private  double curx;
 
-        private double cury;
+        private  double cury;
 
-        /*Constructor.
-        *Constructor.
-        */
+        /** Determine where the segment is crossing the shadow line.
+         *
+         * @param x1 x   coordinate.
+         * @param y1 y coordinate .
+         * @param x2 x coordinate of the end  point .
+         * @param y2 y coordinate of the end point .
+         * @param curx  current xcoordinate .
+         * @param cury current y coordinate .
+         */
         CoordinatesParam(double x1, double y1, double x2, double y2, double curx, double cury) {
             this.x1 = x1;
             this.y1 = y1;
@@ -529,7 +539,7 @@ class BasicPathShadow2afp {
         }
 
         public double getX1() {
-            return x1;
+            return this.x1;
         }
 
         public void setX1(double x1) {
@@ -537,7 +547,7 @@ class BasicPathShadow2afp {
         }
 
         public double getY1() {
-            return y1;
+            return this.y1;
         }
 
         public void setY1(double y1) {
@@ -545,7 +555,7 @@ class BasicPathShadow2afp {
         }
 
         public double getX2() {
-            return x2;
+            return this.x2;
         }
 
         public void setX2(double x2) {
@@ -553,7 +563,7 @@ class BasicPathShadow2afp {
         }
 
         public double getY2() {
-            return y2;
+            return this.y2;
         }
 
         public void setY2(double y2) {
@@ -561,7 +571,7 @@ class BasicPathShadow2afp {
         }
 
         public double getCurx() {
-            return curx;
+            return this.curx;
         }
 
         public void setCurx(double curx) {
@@ -569,7 +579,7 @@ class BasicPathShadow2afp {
         }
 
         public double getCury() {
-            return cury;
+            return this.cury;
         }
 
         public void setCury(double cury) {
