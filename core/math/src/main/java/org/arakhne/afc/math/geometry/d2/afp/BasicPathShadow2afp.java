@@ -207,7 +207,7 @@ class BasicPathShadow2afp {
                 cury = movy;
                 break;
             case LINE_TO:
-                setLineToFromDiscretizePathIterator(element, coordinateParam);
+                setLineToFromDiscretizePathIterator(element, this.coordinateParam);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -216,7 +216,7 @@ class BasicPathShadow2afp {
                 break;
             case QUAD_TO:
                 // only for local use.
-                setQuadToFromDiscretizePathIterator(element, pi, coordinateParam);
+                setQuadToFromDiscretizePathIterator(element, pi, this.coordinateParam);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -225,7 +225,7 @@ class BasicPathShadow2afp {
                 break;
             case CURVE_TO:
                 // only for local use.
-                setCurveToFromDiscretizePathIterator(element, pi, coordinateParam);
+                setCurveToFromDiscretizePathIterator(element, pi, this.coordinateParam);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -234,7 +234,7 @@ class BasicPathShadow2afp {
                 break;
             case ARC_TO:
                 // only for local use.
-                setArcToFromDiscretizePathIterator(element, pi, coordinateParam);
+                setArcToFromDiscretizePathIterator(element, pi, this.coordinateParam);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -242,7 +242,7 @@ class BasicPathShadow2afp {
                 cury = element.getToY();
                 break;
             case CLOSE:
-                setCloseFromDiscretizePathIterator(coordinateParam, movx, movy);
+                setCloseFromDiscretizePathIterator(this.coordinateParam, movx, movy);
                 if (this.crossings != 0) {
                     return;
                 }
@@ -550,40 +550,21 @@ class BasicPathShadow2afp {
             return this.y1;
         }
 
-        public void setY1(double y1) {
-            this.y1 = y1;
-        }
 
         public double getX2() {
             return this.x2;
-        }
-
-        public void setX2(double x2) {
-            this.x2 = x2;
         }
 
         public double getY2() {
             return this.y2;
         }
 
-        public void setY2(double y2) {
-            this.y2 = y2;
-        }
-
         public double getCurx() {
             return this.curx;
         }
 
-        public void setCurx(double curx) {
-            this.curx = curx;
-        }
-
         public double getCury() {
             return this.cury;
-        }
-
-        public void setCury(double cury) {
-            this.cury = cury;
         }
     }
 }
