@@ -40,6 +40,8 @@ class BasicPathShadow2afp {
 
     private final PathIterator2afp<?> pathIterator;
 
+    private CoordinatesParam coordinateParam;
+
     private final double boundingMinX;
 
     private final double boundingMinY;
@@ -59,6 +61,8 @@ class BasicPathShadow2afp {
     private double x4ymin;
 
     private double x4ymax;
+
+
 
     /** Construct new path shadow.
      * @param path the path that is constituting the shadow.
@@ -184,20 +188,16 @@ class BasicPathShadow2afp {
             return;
         }
         PathElement2afp element;
-
         element = pi.next();
         if (element.getType() != PathElementType.MOVE_TO) {
             throw new IllegalArgumentException(Locale.getString(Path2afp.class, "E1")); //$NON-NLS-1$
         }
-
-        Path2afp<?, ?, ?, ?, ?, ?> localPath;
         double movx = element.getToX();
         double movy = element.getToY();
         double curx = movx;
         double cury = movy;
-        double endx;
-        double endy;
         while (pi.hasNext()) {
+            this.coordinateParam = new BasicPathShadow2afp.CoordinatesParam(x1, y1, x2, y2, curx, cury);
             element = pi.next();
             switch (element.getType()) {
             case MOVE_TO:
@@ -207,82 +207,42 @@ class BasicPathShadow2afp {
                 cury = movy;
                 break;
             case LINE_TO:
-                endx = element.getToX();
-                endy = element.getToY();
-                crossSegmentTwoShadowLines(
-                        curx, cury,
-                        endx, endy,
-                        x1, y1, x2, y2);
+                setLineToFromDiscretizePathIterator(element, this.coordinateParam);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
-                curx = endx;
-                cury = endy;
+                curx = element.getToX();
+                cury = element.getToY();
                 break;
             case QUAD_TO:
-                endx = element.getToX();
-                endy = element.getToY();
                 // only for local use.
-                localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-                localPath.moveTo(curx, cury);
-                localPath.quadTo(
-                        element.getCtrlX1(), element.getCtrlY1(),
-                        endx, endy);
-                discretizePathIterator(
-                        localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                        x1, y1, x2, y2);
+                setQuadToFromDiscretizePathIterator(element, pi, this.coordinateParam);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
-                curx = endx;
-                cury = endy;
+                curx = element.getToX();
+                cury = element.getToY();
                 break;
             case CURVE_TO:
-                endx = element.getToX();
-                endy = element.getToY();
                 // only for local use.
-                localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-                localPath.moveTo(curx, cury);
-                localPath.curveTo(
-                        element.getCtrlX1(), element.getCtrlY1(),
-                        element.getCtrlX2(), element.getCtrlY2(),
-                        endx, endy);
-                discretizePathIterator(
-                        localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                        x1, y1, x2, y2);
+                setCurveToFromDiscretizePathIterator(element, pi, this.coordinateParam);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
-                curx = endx;
-                cury = endy;
+                curx = element.getToX();
+                cury = element.getToY();
                 break;
             case ARC_TO:
-                endx = element.getToX();
-                endy = element.getToY();
                 // only for local use.
-                localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-                localPath.moveTo(curx, cury);
-                localPath.arcTo(
-                        endx, endy,
-                        element.getRadiusX(), element.getRadiusY(),
-                        element.getRotationX(), element.getLargeArcFlag(),
-                        element.getSweepFlag());
-                discretizePathIterator(
-                        localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                        x1, y1, x2, y2);
+                setArcToFromDiscretizePathIterator(element, pi, this.coordinateParam);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
-                curx = endx;
-                cury = endy;
+                curx = element.getToX();
+                cury = element.getToY();
                 break;
             case CLOSE:
-                if (cury != movy || curx != movx) {
-                    crossSegmentTwoShadowLines(
-                            curx, cury,
-                            movx, movy,
-                            x1, y1, x2, y2);
-                }
+                setCloseFromDiscretizePathIterator(this.coordinateParam, movx, movy);
                 if (this.crossings != 0) {
                     return;
                 }
@@ -301,6 +261,68 @@ class BasicPathShadow2afp {
             // Assume that when is the path is open, only
             // SHAPE_INTERSECTS may be return
             this.crossings = 0;
+        }
+    }
+
+    private void setLineToFromDiscretizePathIterator(PathElement2afp elm, CoordinatesParam param) {
+        final double endx = elm.getToX();
+        final double endy = elm.getToY();
+        crossSegmentTwoShadowLines(
+                param.getCurx(), param.getCury(),
+                endx, endy,
+                param.getX1(), param.getY1(), param.getX2(), param.getY2());
+    }
+
+    private void setQuadToFromDiscretizePathIterator(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam param) {
+        final Path2afp<?, ?, ?, ?, ?, ?> localPath;
+        final double endx = elm.getToX();
+        final double endy = elm.getToY();
+        localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+        localPath.moveTo(param.getCurx(), param.getCury());
+        localPath.quadTo(
+                elm.getCtrlX1(), elm.getCtrlY1(),
+                endx, endy);
+        discretizePathIterator(
+                localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                param.getX1(), param.getY1(), param.getX2(), param.getY2());
+    }
+
+    private void setCurveToFromDiscretizePathIterator(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam prm) {
+        final Path2afp<?, ?, ?, ?, ?, ?> localPath;
+        final double endx = elm.getToX();
+        final double endy = elm.getToY();
+        localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+        localPath.moveTo(prm.getCurx(), prm.getCury());
+        localPath.curveTo(
+                elm.getCtrlX1(), elm.getCtrlY1(),  elm.getCtrlX2(), elm.getCtrlY2(),
+                endx, endy);
+        discretizePathIterator(
+                localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                prm.getX1(), prm.getY1(), prm.getX2(), prm.getY2());
+    }
+
+    private void setArcToFromDiscretizePathIterator(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam param) {
+        final Path2afp<?, ?, ?, ?, ?, ?> localPath;
+        final double endx = elm.getToX();
+        final double endy = elm.getToY();
+        localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+        localPath.moveTo(param.getCurx(), param.getCury());
+        localPath.arcTo(
+                endx, endy,
+                elm.getRadiusX(), elm.getRadiusY(),
+                elm.getRotationX(), elm.getLargeArcFlag(),
+                elm.getSweepFlag());
+        discretizePathIterator(
+                localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                param.getX1(), param.getY1(), param.getX2(), param.getY2());
+    }
+
+    private void setCloseFromDiscretizePathIterator(CoordinatesParam param, double movx, double movy) {
+        if (param.getCury() != movy || param.getCurx() != movx) {
+            crossSegmentTwoShadowLines(
+                    param.getCurx(), param.getCury(),
+                    movx, movy,
+                    param.getX1(), param.getY1(), param.getX2(), param.getY2());
         }
     }
 
@@ -479,4 +501,66 @@ class BasicPathShadow2afp {
         }
     }
 
+    /** Passing params to methods via this class in order to reduce the line length.
+     * @author $Author: fevzi ozgul$
+     * @version $FullVersion$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     */
+    private  static  final  class CoordinatesParam {
+        private  double x1;
+
+        private double y1;
+
+        private  double x2;
+
+        private  double y2;
+
+        private  double curx;
+
+        private  double cury;
+
+        /** Determine where the segment is crossing the shadow line.
+         *
+         * @param x1 x   coordinate.
+         * @param y1 y coordinate .
+         * @param x2 x coordinate of the end  point .
+         * @param y2 y coordinate of the end point .
+         * @param curx  current xcoordinate .
+         * @param cury current y coordinate .
+         */
+        CoordinatesParam(double x1, double y1, double x2, double y2, double curx, double cury) {
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+            this.curx = curx;
+            this.cury = cury;
+        }
+
+        public double getX1() {
+            return this.x1;
+        }
+
+        public double getY1() {
+            return this.y1;
+        }
+
+        public double getX2() {
+            return this.x2;
+        }
+
+        public double getY2() {
+            return this.y2;
+        }
+
+        public double getCurx() {
+            return this.curx;
+        }
+
+        public double getCury() {
+            return this.cury;
+        }
+    }
 }
+
