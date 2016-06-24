@@ -193,8 +193,7 @@ class BasicPathShadow2afp {
         double movy = element.getToY();
         double curx = movx;
         double cury = movy;
-        double endx;
-        double endy;
+        double[] endxy = new double[2];
         while (pi.hasNext()) {
             element = pi.next();
             switch (element.getType()) {
@@ -205,38 +204,45 @@ class BasicPathShadow2afp {
                 cury = movy;
                 break;
             case LINE_TO:
-                endx = element.getToX();
-                endy = element.getToY();
-                setLineToFromDiscretizePathIterator(curx, cury, endx, endy, x1, y1, x2, y2);
-                curx = endx;
-                cury = endy;
+                endxy = setLineToFromDiscretizePathIterator(element, curx, cury, x1, y1, x2, y2);
+                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+                    return;
+                }
+                curx = endxy[0];
+                cury = endxy[1];
                 break;
             case QUAD_TO:
-                endx = element.getToX();
-                endy = element.getToY();
                 // only for local use.
-                setQuadToFromDiscretizePathIterator(element, pi, x1, y1, x2, y2, curx, cury, endx, endy);
-                curx = endx;
-                cury = endy;
+                endxy = setQuadToFromDiscretizePathIterator(element, pi, x1, y1, x2, y2, curx, cury);
+                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+                    return;
+                }
+                curx = endxy[0];
+                cury = endxy[1];
                 break;
             case CURVE_TO:
-                endx = element.getToX();
-                endy = element.getToY();
                 // only for local use.
-                setCurveToFromDiscretizePathIterator(element, pi, x1, y1, x2, y2, curx, cury, endx, endy);
-                curx = endx;
-                cury = endy;
+                endxy = setCurveToFromDiscretizePathIterator(element, pi, x1, y1, x2, y2, curx, cury);
+                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+                    return;
+                }
+                curx = endxy[0];
+                cury = endxy[1];
                 break;
             case ARC_TO:
-                endx = element.getToX();
-                endy = element.getToY();
                 // only for local use.
-                setArcToFromDiscretizePathIterator(element, pi, x1, y1, x2, y2, curx, cury, endx, endy);
-                curx = endx;
-                cury = endy;
+                endxy = setArcToFromDiscretizePathIterator(element, pi, x1, y1, x2, y2, curx, cury);
+                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+                    return;
+                }
+                curx = endxy[0];
+                cury = endxy[1];
                 break;
             case CLOSE:
                 setCloseFromDiscretizePathIterator(x1, y1, x2, y2, curx, cury, movx, movy);
+                if (this.crossings != 0) {
+                    return;
+                }
                 curx = movx;
                 cury = movy;
                 break;
@@ -256,64 +262,68 @@ class BasicPathShadow2afp {
     }
 
     @SuppressWarnings({"checkstyle:linelength"})
-    private void setLineToFromDiscretizePathIterator(double curx, double cury, double endx, double endy, double x1,  double y1, double x2, double y2) {
+    private double[] setLineToFromDiscretizePathIterator(PathElement2afp element, double curx, double cury, double x1,  double y1, double x2, double y2) {
+        final double[] ends = new double[2];
+        ends[0] = element.getToX();
+        ends[1] = element.getToY();
         crossSegmentTwoShadowLines(
                 curx, cury,
-                endx, endy,
+                ends[0], ends[1],
                 x1, y1, x2, y2);
-        if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
-            return;
-        }
+        return ends;
     }
 
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:linelength"})
-    private void setQuadToFromDiscretizePathIterator(PathElement2afp element, PathIterator2afp<?> pi, double x1, double y1, double x2, double y2, double curx, double cury, double endx, double endy) {
+    private double[] setQuadToFromDiscretizePathIterator(PathElement2afp element, PathIterator2afp<?> pi, double x1, double y1, double x2, double y2, double curx, double cury) {
         final Path2afp<?, ?, ?, ?, ?, ?> localPath;
+        final double[] endxy = new double[2];
+        endxy[0] = element.getToX();
+        endxy[1] = element.getToY();
         localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
         localPath.moveTo(curx, cury);
         localPath.quadTo(
                 element.getCtrlX1(), element.getCtrlY1(),
-                endx, endy);
+                endxy[0], endxy[1]);
         discretizePathIterator(
                 localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                 x1, y1, x2, y2);
-        if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
-            return;
-        }
+        return endxy;
     }
 
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:linelength"})
-    private void setCurveToFromDiscretizePathIterator(PathElement2afp element, PathIterator2afp<?> pi, double x1, double y1, double x2, double y2, double curx, double cury, double endx, double endy) {
+    private double[] setCurveToFromDiscretizePathIterator(PathElement2afp element, PathIterator2afp<?> pi, double x1, double y1, double x2, double y2, double curx, double cury) {
         final Path2afp<?, ?, ?, ?, ?, ?> localPath;
+        final double[] endxy = new double[2];
+        endxy[0] = element.getToX();
+        endxy[1] = element.getToY();
         localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
         localPath.moveTo(curx, cury);
         localPath.curveTo(
                 element.getCtrlX1(), element.getCtrlY1(),  element.getCtrlX2(), element.getCtrlY2(),
-                endx, endy);
+                endxy[0], endxy[1]);
         discretizePathIterator(
                 localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                 x1, y1, x2, y2);
-        if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
-            return;
-        }
+        return endxy;
     }
 
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:linelength"})
-    private void setArcToFromDiscretizePathIterator(PathElement2afp element, PathIterator2afp<?> pi, double x1, double y1, double x2, double y2, double curx, double cury, double endx, double endy) {
+    private double[] setArcToFromDiscretizePathIterator(PathElement2afp element, PathIterator2afp<?> pi, double x1, double y1, double x2, double y2, double curx, double cury) {
         final Path2afp<?, ?, ?, ?, ?, ?> localPath;
+        final double[] endxy = new double[2];
+        endxy[0] = element.getToX();
+        endxy[1] = element.getToY();
         localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
         localPath.moveTo(curx, cury);
         localPath.arcTo(
-                endx, endy,
+                endxy[0], endxy[1],
                 element.getRadiusX(), element.getRadiusY(),
                 element.getRotationX(), element.getLargeArcFlag(),
                 element.getSweepFlag());
         discretizePathIterator(
                 localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
                 x1, y1, x2, y2);
-        if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
-            return;
-        }
+        return endxy;
     }
 
     private void setCloseFromDiscretizePathIterator(double x1, double y1, double x2, double y2, double curx, double cury, double movx, double movy) {
@@ -322,9 +332,6 @@ class BasicPathShadow2afp {
                     curx, cury,
                     movx, movy,
                     x1, y1, x2, y2);
-        }
-        if (this.crossings != 0) {
-            return;
         }
     }
 
