@@ -262,13 +262,13 @@ class BasicPathShadow2afp {
         }
     }
 
-    private void setLineToFromDPathIter(PathElement2afp elm, CoordinatesParam param, double[] exy) {
-        exy[0] = elm.getToX();
-        exy[1] = elm.getToY();
+    private void setLineToFromDPathIter(PathElement2afp elm, CoordinatesParam param, double[] endxy) {
+        endxy[0] = elm.getToX();
+        endxy[1] = elm.getToY();
         crossSegmentTwoShadowLines(
-                param.curx, param.cury,
-                exy[0], exy[1],
-                param.x1, param.y1, param.x2, param.y2);
+                param.getCurx(), param.getCury(),
+                endxy[0], endxy[1],
+                param.getX1(), param.getY1(), param.getX2(), param.getY2());
     }
 
     private void setQuadToFromDPathIter(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam param, double[] endxy) {
@@ -276,36 +276,35 @@ class BasicPathShadow2afp {
         endxy[0] = elm.getToX();
         endxy[1] = elm.getToY();
         localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-        localPath.moveTo(param.curx, param.cury);
+        localPath.moveTo(param.getCurx(), param.getCury());
         localPath.quadTo(
                 elm.getCtrlX1(), elm.getCtrlY1(),
                 endxy[0], endxy[1]);
         discretizePathIterator(
                 localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                param.x1, param.y1, param.x2, param.y2);
+                param.getX1(), param.getY1(), param.getX2(), param.getY2());
     }
 
-    private double[] setCurveToFromDPathIter(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam prm, double[] endxy) {
+    private void setCurveToFromDPathIter(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam prm, double[] endxy) {
         final Path2afp<?, ?, ?, ?, ?, ?> localPath;
         endxy[0] = elm.getToX();
         endxy[1] = elm.getToY();
         localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-        localPath.moveTo(prm.curx, prm.cury);
+        localPath.moveTo(prm.getCurx(), prm.getCury());
         localPath.curveTo(
                 elm.getCtrlX1(), elm.getCtrlY1(),  elm.getCtrlX2(), elm.getCtrlY2(),
                 endxy[0], endxy[1]);
         discretizePathIterator(
                 localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                prm.x1, prm.y1, prm.x2, prm.y2);
-        return endxy;
+                prm.getX1(), prm.getY1(), prm.getX2(), prm.getY2());
     }
 
-    private double[] setArcToFromDPathIter(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam param, double[] endxy) {
+    private void setArcToFromDPathIter(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam param, double[] endxy) {
         final Path2afp<?, ?, ?, ?, ?, ?> localPath;
         endxy[0] = elm.getToX();
         endxy[1] = elm.getToY();
         localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-        localPath.moveTo(param.curx, param.cury);
+        localPath.moveTo(param.getCurx(), param.getCury());
         localPath.arcTo(
                 endxy[0], endxy[1],
                 elm.getRadiusX(), elm.getRadiusY(),
@@ -313,16 +312,15 @@ class BasicPathShadow2afp {
                 elm.getSweepFlag());
         discretizePathIterator(
                 localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                param.x1, param.y1, param.x2, param.y2);
-        return endxy;
+                param.getX1(), param.getY1(), param.getX2(), param.getY2());
     }
 
     private void setCloseFromDiscretizePathIterator(CoordinatesParam param, double movx, double movy) {
         if (param.cury != movy || param.curx != movx) {
             crossSegmentTwoShadowLines(
-                    param.curx, param.cury,
+                    param.getCurx(), param.getCury(),
                     movx, movy,
-                    param.x1, param.y1, param.x2, param.y2);
+                    param.getX1(), param.getY1(), param.getX2(), param.getY2());
         }
     }
 
@@ -520,7 +518,7 @@ class BasicPathShadow2afp {
 
         private double cury;
 
-        private CoordinatesParam(double x1, double y1, double x2, double y2, double curx, double cury) {
+        CoordinatesParam(double x1, double y1, double x2, double y2, double curx, double cury) {
             this.x1 = x1;
             this.y1 = y1;
             this.x2 = x2;
@@ -529,5 +527,52 @@ class BasicPathShadow2afp {
             this.cury = cury;
         }
 
+        public double getX1() {
+            return x1;
+        }
+
+        public void setX1(double x1) {
+            this.x1 = x1;
+        }
+
+        public double getY1() {
+            return y1;
+        }
+
+        public void setY1(double y1) {
+            this.y1 = y1;
+        }
+
+        public double getX2() {
+            return x2;
+        }
+
+        public void setX2(double x2) {
+            this.x2 = x2;
+        }
+
+        public double getY2() {
+            return y2;
+        }
+
+        public void setY2(double y2) {
+            this.y2 = y2;
+        }
+
+        public double getCurx() {
+            return curx;
+        }
+
+        public void setCurx(double curx) {
+            this.curx = curx;
+        }
+
+        public double getCury() {
+            return cury;
+        }
+
+        public void setCury(double cury) {
+            this.cury = cury;
+        }
     }
 }
