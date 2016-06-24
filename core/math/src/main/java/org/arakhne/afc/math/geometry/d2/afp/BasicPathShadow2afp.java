@@ -503,7 +503,7 @@ class BasicPathShadow2afp {
      * @mavengroupid $GroupId$
      * @mavenartifactid $ArtifactId$
      */
-    private final  class CoordinatesParam {
+    public  final  class CoordinatesParam {
         private double x1;
 
         private double y1;
@@ -516,6 +516,9 @@ class BasicPathShadow2afp {
 
         private double cury;
 
+        /*Constructor.
+        *Constructor.
+        */
         CoordinatesParam(double x1, double y1, double x2, double y2, double curx, double cury) {
             this.x1 = x1;
             this.y1 = y1;
