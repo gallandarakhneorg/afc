@@ -193,7 +193,8 @@ class BasicPathShadow2afp {
         double movy = element.getToY();
         double curx = movx;
         double cury = movy;
-        double[] endxy = new double[2];
+        final CoordinatesParam coordinateParam = new CoordinatesParam(x1, y1, x2, y2, curx, cury);
+        final double[] endxy = new double[2];
         while (pi.hasNext()) {
             element = pi.next();
             switch (element.getType()) {
@@ -204,7 +205,7 @@ class BasicPathShadow2afp {
                 cury = movy;
                 break;
             case LINE_TO:
-                endxy = setLineToFromDiscretizePathIterator(element, curx, cury, x1, y1, x2, y2);
+                setLineToFromDPathIter(element, coordinateParam, endxy);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -213,7 +214,7 @@ class BasicPathShadow2afp {
                 break;
             case QUAD_TO:
                 // only for local use.
-                endxy = setQuadToFromDiscretizePathIterator(element, pi, x1, y1, x2, y2, curx, cury);
+                setQuadToFromDPathIter(element, pi, coordinateParam, endxy);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -222,7 +223,7 @@ class BasicPathShadow2afp {
                 break;
             case CURVE_TO:
                 // only for local use.
-                endxy = setCurveToFromDiscretizePathIterator(element, pi, x1, y1, x2, y2, curx, cury);
+                setCurveToFromDPathIter(element, pi, coordinateParam, endxy);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -231,7 +232,7 @@ class BasicPathShadow2afp {
                 break;
             case ARC_TO:
                 // only for local use.
-                endxy = setArcToFromDiscretizePathIterator(element, pi, x1, y1, x2, y2, curx, cury);
+                setArcToFromDPathIter(element, pi, coordinateParam, endxy);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -239,7 +240,7 @@ class BasicPathShadow2afp {
                 cury = endxy[1];
                 break;
             case CLOSE:
-                setCloseFromDiscretizePathIterator(x1, y1, x2, y2, curx, cury, movx, movy);
+                setCloseFromDiscretizePathIterator(coordinateParam, movx, movy);
                 if (this.crossings != 0) {
                     return;
                 }
@@ -261,77 +262,67 @@ class BasicPathShadow2afp {
         }
     }
 
-    @SuppressWarnings({"checkstyle:linelength"})
-    private double[] setLineToFromDiscretizePathIterator(PathElement2afp element, double curx, double cury, double x1,  double y1, double x2, double y2) {
-        final double[] ends = new double[2];
-        ends[0] = element.getToX();
-        ends[1] = element.getToY();
+    private void setLineToFromDPathIter(PathElement2afp elm, CoordinatesParam param, double[] exy) {
+        exy[0] = elm.getToX();
+        exy[1] = elm.getToY();
         crossSegmentTwoShadowLines(
-                curx, cury,
-                ends[0], ends[1],
-                x1, y1, x2, y2);
-        return ends;
+                param.curx, param.cury,
+                exy[0], exy[1],
+                param.x1, param.y1, param.x2, param.y2);
     }
 
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:linelength"})
-    private double[] setQuadToFromDiscretizePathIterator(PathElement2afp element, PathIterator2afp<?> pi, double x1, double y1, double x2, double y2, double curx, double cury) {
+    private void setQuadToFromDPathIter(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam param, double[] endxy) {
         final Path2afp<?, ?, ?, ?, ?, ?> localPath;
-        final double[] endxy = new double[2];
-        endxy[0] = element.getToX();
-        endxy[1] = element.getToY();
+        endxy[0] = elm.getToX();
+        endxy[1] = elm.getToY();
         localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-        localPath.moveTo(curx, cury);
+        localPath.moveTo(param.curx, param.cury);
         localPath.quadTo(
-                element.getCtrlX1(), element.getCtrlY1(),
+                elm.getCtrlX1(), elm.getCtrlY1(),
                 endxy[0], endxy[1]);
         discretizePathIterator(
                 localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                x1, y1, x2, y2);
-        return endxy;
+                param.x1, param.y1, param.x2, param.y2);
     }
 
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:linelength"})
-    private double[] setCurveToFromDiscretizePathIterator(PathElement2afp element, PathIterator2afp<?> pi, double x1, double y1, double x2, double y2, double curx, double cury) {
+    private double[] setCurveToFromDPathIter(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam prm, double[] endxy) {
         final Path2afp<?, ?, ?, ?, ?, ?> localPath;
-        final double[] endxy = new double[2];
-        endxy[0] = element.getToX();
-        endxy[1] = element.getToY();
+        endxy[0] = elm.getToX();
+        endxy[1] = elm.getToY();
         localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-        localPath.moveTo(curx, cury);
+        localPath.moveTo(prm.curx, prm.cury);
         localPath.curveTo(
-                element.getCtrlX1(), element.getCtrlY1(),  element.getCtrlX2(), element.getCtrlY2(),
+                elm.getCtrlX1(), elm.getCtrlY1(),  elm.getCtrlX2(), elm.getCtrlY2(),
                 endxy[0], endxy[1]);
         discretizePathIterator(
                 localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                x1, y1, x2, y2);
+                prm.x1, prm.y1, prm.x2, prm.y2);
         return endxy;
     }
 
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:linelength"})
-    private double[] setArcToFromDiscretizePathIterator(PathElement2afp element, PathIterator2afp<?> pi, double x1, double y1, double x2, double y2, double curx, double cury) {
+    private double[] setArcToFromDPathIter(PathElement2afp elm, PathIterator2afp<?> pi, CoordinatesParam param, double[] endxy) {
         final Path2afp<?, ?, ?, ?, ?, ?> localPath;
-        final double[] endxy = new double[2];
-        endxy[0] = element.getToX();
-        endxy[1] = element.getToY();
+        endxy[0] = elm.getToX();
+        endxy[1] = elm.getToY();
         localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-        localPath.moveTo(curx, cury);
+        localPath.moveTo(param.curx, param.cury);
         localPath.arcTo(
                 endxy[0], endxy[1],
-                element.getRadiusX(), element.getRadiusY(),
-                element.getRotationX(), element.getLargeArcFlag(),
-                element.getSweepFlag());
+                elm.getRadiusX(), elm.getRadiusY(),
+                elm.getRotationX(), elm.getLargeArcFlag(),
+                elm.getSweepFlag());
         discretizePathIterator(
                 localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-                x1, y1, x2, y2);
+                param.x1, param.y1, param.x2, param.y2);
         return endxy;
     }
 
-    private void setCloseFromDiscretizePathIterator(double x1, double y1, double x2, double y2, double curx, double cury, double movx, double movy) {
-        if (cury != movy || curx != movx) {
+    private void setCloseFromDiscretizePathIterator(CoordinatesParam param, double movx, double movy) {
+        if (param.cury != movy || param.curx != movx) {
             crossSegmentTwoShadowLines(
-                    curx, cury,
+                    param.curx, param.cury,
                     movx, movy,
-                    x1, y1, x2, y2);
+                    param.x1, param.y1, param.x2, param.y2);
         }
     }
 
@@ -510,4 +501,33 @@ class BasicPathShadow2afp {
         }
     }
 
+    /** Passing params to methods via this class in order to reduce the line length.
+     * @author $Author: fevzi ozgul$
+     * @version $FullVersion$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     */
+    private final  class CoordinatesParam {
+        private double x1;
+
+        private double y1;
+
+        private double x2;
+
+        private double y2;
+
+        private double curx;
+
+        private double cury;
+
+        private CoordinatesParam(double x1, double y1, double x2, double y2, double curx, double cury) {
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+            this.curx = curx;
+            this.cury = cury;
+        }
+
+    }
 }
