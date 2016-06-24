@@ -507,7 +507,7 @@ class BasicPathShadow2afp {
      * @mavengroupid $GroupId$
      * @mavenartifactid $ArtifactId$
      */
-    private    final  class CoordinatesParam {
+    private  static  final  class CoordinatesParam {
         private  double x1;
 
         private double y1;
