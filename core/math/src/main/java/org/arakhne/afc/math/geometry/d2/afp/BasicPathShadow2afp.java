@@ -196,8 +196,8 @@ class BasicPathShadow2afp {
         double movy = element.getToY();
         double curx = movx;
         double cury = movy;
-        this.coordinateParam = new BasicPathShadow2afp.CoordinatesParam(x1, y1, x2, y2, curx, cury);
         while (pi.hasNext()) {
+            this.coordinateParam = new BasicPathShadow2afp.CoordinatesParam(x1, y1, x2, y2, curx, cury);
             element = pi.next();
             switch (element.getType()) {
             case MOVE_TO:
