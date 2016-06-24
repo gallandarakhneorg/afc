@@ -40,9 +40,9 @@ public class OrientedPoint2i
 
     private static final long serialVersionUID = 6296312122530686621L;
 
-    private int dx;
+    private int tx;
 
-    private int dy;
+    private int ty;
 
     /** Construct an empty oriented point.
      */
@@ -88,59 +88,59 @@ public class OrientedPoint2i
     public int hashCode() {
         int bits = 1;
         bits = 31 * bits + super.hashCode();
-        bits = 31 * bits + Integer.hashCode(this.dx);
-        bits = 31 * bits + Integer.hashCode(this.dy);
+        bits = 31 * bits + Integer.hashCode(this.tx);
+        bits = 31 * bits + Integer.hashCode(this.ty);
         return bits ^ (bits >> 31);
     }
 
     @Override
     public double getTangentX() {
-        return this.dx;
+        return this.tx;
     }
 
     @Override
     public int itx() {
-        return this.dx;
+        return this.tx;
     }
 
     @Override
     public void setTangentX(int tanX) {
-        this.dx = tanX;
+        this.tx = tanX;
     }
 
     @Override
     public void setTangentX(double tanX) {
-        this.dx = (int) Math.round(tanX);
+        this.tx = (int) Math.round(tanX);
     }
 
     @Override
     public double getTangentY() {
-        return this.dy;
+        return this.ty;
     }
 
     @Override
     public int ity() {
-        return this.dy;
+        return this.ty;
     }
 
     @Override
     public void setTangentY(int tanY) {
-        this.dy = tanY;
+        this.ty = tanY;
     }
 
     @Override
     public void setTangentY(double tanY) {
-        this.dy = (int) Math.round(tanY);
+        this.ty = (int) Math.round(tanY);
     }
 
     @Override
     public Vector2i getTangent() {
-        return getGeomFactory().newVector(this.dx, this.dy);
+        return getGeomFactory().newVector(this.tx, this.ty);
     }
 
     @Override
     public Vector2i getNormal() {
-        return getGeomFactory().newVector(-this.dy, this.dx);
+        return getGeomFactory().newVector(-this.ty, this.tx);
     }
 
 }

@@ -152,6 +152,28 @@ public interface OrientedPoint2D<RP extends Point2D<? super RP, ? super RV>, RV 
         setTangentY(tangent.getY());
     }
 
+    /** Change the tangent vector.
+     *  The normal vector is automatically recomputed.
+     *
+     * @param x x coordinate of the vector.
+     * @param y y coordinate of the vector.
+     */
+    default void setTangent(double x, double y) {
+        setTangentX(x);
+        setTangentY(y);
+    }
+
+    /** Change the tangent vector.
+     *  The normal vector is automatically recomputed.
+     *
+     * @param x x coordinate of the vector.
+     * @param y y coordinate of the vector.
+     */
+    default void setTangent(int x, int y) {
+        setTangentX(x);
+        setTangentY(y);
+    }
+
     /** Replies the normal vector at this point.
      *
      * @return the normal vector.
@@ -175,12 +197,12 @@ public interface OrientedPoint2D<RP extends Point2D<? super RP, ? super RV>, RV 
      *
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
+     * @param tanX x coordinate of the vector.
+     * @param tanY y coordinate of the vector.
      */
-    default void set(double x, double y, double dirX, double dirY) {
+    default void set(double x, double y, double tanX, double tanY) {
         Point2D.super.set(x, y);
-        setTangentX(dirX);
-        setTangentY(dirY);
+        setTangentX(tanX);
+        setTangentY(tanY);
     }
 }

@@ -20,9 +20,14 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
@@ -46,6 +51,11 @@ public class OrientedPoint2ifx
      * Tangent vector to this point.
      */
     protected Vector2ifx tangent;
+
+    /**
+     * Normal vector to the point.
+     */
+    private ObjectProperty<Vector2ifx> normalProperty;
 
     /** Construct an empty oriented point.
      */
@@ -209,6 +219,47 @@ public class OrientedPoint2ifx
 
     @Override
     public Vector2ifx getNormal() {
-        return getGeomFactory().newVector(-this.tangent.iy(), this.tangent.ix());
+        if (this.normalProperty == null) {
+            this.normalProperty = new SimpleObjectProperty<>(this, MathFXAttributeNames.NORMAL);
+            this.normalProperty.bind(Bindings.createObjectBinding(() -> this.tangent.toOrthogonalVector(),
+                    this.tangent.xProperty(), this.tangent.yProperty()));
+        }
+        return this.normalProperty.get();
+    }
+
+    /** Replies the property that is the x coordinate of the normal vector.
+     *
+     * @return the normal vector x property.
+     */
+    @Pure ReadOnlyIntegerProperty norXProperty() {
+        return getNormal().xProperty();
+    }
+
+    /** Replies the property that is the y coordinate of the normal vector.
+     *
+     * @return the normal vector y property.
+     */
+    @Pure ReadOnlyIntegerProperty norYProperty() {
+        return getNormal().yProperty();
+    }
+
+    @Override
+    public double getNormalX() {
+        return getNormal().getX();
+    }
+
+    @Override
+    public int inx() {
+        return getNormal().ix();
+    }
+
+    @Override
+    public double getNormalY() {
+        return getNormal().getY();
+    }
+
+    @Override
+    public int iny() {
+        return getNormal().iy();
     }
 }
