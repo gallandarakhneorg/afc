@@ -196,7 +196,7 @@ class BasicPathShadow2afp {
         double movy = element.getToY();
         double curx = movx;
         double cury = movy;
-        coordinateParam = new CoordinatesParam(x1, y1, x2, y2, curx, cury);
+        this.coordinateParam = new BasicPathShadow2afp.CoordinatesParam(x1, y1, x2, y2, curx, cury);
         while (pi.hasNext()) {
             element = pi.next();
             switch (element.getType()) {
@@ -540,10 +540,6 @@ class BasicPathShadow2afp {
 
         public double getX1() {
             return this.x1;
-        }
-
-        public void setX1(double x1) {
-            this.x1 = x1;
         }
 
         public double getY1() {
