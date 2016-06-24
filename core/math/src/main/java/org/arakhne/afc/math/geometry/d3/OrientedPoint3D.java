@@ -22,11 +22,11 @@ package org.arakhne.afc.math.geometry.d3;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** A 3D point with three orientation vectors relative to the polyline: the direction, the normal and the sway to the point.
+/** A 3D point with three orientation vectors relative to the polyline: the tangent, the normal and the sway to the point.
+ * They have no physical existence.
  *
- * <p>The orientation vectors have no physical existence, i.e. they exist only to represent the direction of the
- * point, its normal and its sway when the point is part of a polyline. The normal vector is always perpendicular to the
- * direction vector. The point stores its length on the polyline to avoid rounding errors at discretization.
+ * <p>Note: the normal is defined as the orthogonal vector to the tangent's plane,
+ * and the sway is the cross product of the tangent and the normal.
  *
  * @param <RP> is the type of point that can be returned by this tuple.
  * @param <RV> is the type of vector that can be returned by this tuple.
@@ -40,83 +40,100 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public interface OrientedPoint3D<RP extends Point3D<? super RP, ? super RV>, RV extends Vector3D<? super RV, ? super RP>>
         extends Point3D<RP, RV> {
 
-    /** Replies the X coordinate of the direction vector.
-     * If this point is not part of a polyline, the direction vector is null.
+    /** Replies the X coordinate of the tangent vector.
+     * If this point is not part of a polyline, the tangent vector is null.
      *
-     * @return the x coordinate of the direction vector.
+     * @return the x coordinate of the tangent vector.
      */
-    @Pure double getDirectionX();
+    @Pure double getTangentX();
 
-    /** Replies the X coordinate of the direction vector.
-     * If this point is not part of a polyline, the direction vector is null.
+    /** Replies the X coordinate of the tangent vector.
+     * If this point is not part of a polyline, the tangent vector is null.
      *
-     * @return the x coordinate of the direction vector.
+     * @return the x coordinate of the tangent vector.
      */
-    @Pure int idx();
+    @Pure int itx();
 
-    /** Sets a new value in the X direction of the point.
+    /** Sets a new value in the X tangent of the point.
      *
-     * @param dirX the new value double x.
+     * @param tanX the new value double x.
      */
-    void setDirectionX(int dirX);
+    void setTangentX(int tanX);
 
-    /** Sets a new value in the X direction of the point.
+    /** Sets a new value in the X tangent of the point.
      *
-     * @param dirX the new value double x.
+     * @param tanX the new value double x.
      */
-    void setDirectionX(double dirX);
+    void setTangentX(double tanX);
 
-    /** Replies the Y coordinate of the direction vector.
-     * If this point is not part of a polyline, the direction vector is null.
+    /** Replies the Y coordinate of the tangent vector.
+     * If this point is not part of a polyline, the tangent vector is null.
      *
-     * @return the y coordinate of the direction vector.
+     * @return the y coordinate of the tangent vector.
      */
-    @Pure double getDirectionY();
+    @Pure double getTangentY();
 
-    /** Replies the Y coordinate of the direction vector.
-     * If this point is not part of a polyline, the direction vector is null.
+    /** Replies the Y coordinate of the tangent vector.
+     * If this point is not part of a polyline, the tangent vector is null.
      *
-     * @return the y coordinate of the direction vector.
+     * @return the y coordinate of the tangent vector.
      */
-    @Pure int idy();
+    @Pure int ity();
 
-    /**  Sets a new value in the Y direction of the point.
+    /** Sets a new value in the Y tangent of the point.
      *
-     * @param dirY the new value double y.
+     * @param tanY the new value double y.
      */
-    void setDirectionY(int dirY);
+    void setTangentY(int tanY);
 
-    /**  Sets a new value in the Y direction of the point.
+    /**  Sets a new value in the Y tangent of the point.
      *
-     * @param dirY the new value double y.
+     * @param tanY the new value double y.
      */
-    void setDirectionY(double dirY);
+    void setTangentY(double tanY);
 
-    /** Replies the Z coordinate of the direction vector.
-     * If this point is not part of a polyline, the direction vector is null.
+    /** Replies the Z coordinate of the tangent vector.
+     * If this point is not part of a polyline, the tangent vector is null.
      *
-     * @return the z coordinate of the direction vector.
+     * @return the z coordinate of the tangent vector.
      */
-    @Pure double getDirectionZ();
+    @Pure double getTangentZ();
 
-    /** Replies the Z coordinate of the direction vector.
-     * If this point is not part of a polyline, the direction vector is null.
+    /** Replies the Z coordinate of the tangent vector.
+     * If this point is not part of a polyline, the tangent vector is null.
      *
-     * @return the z coordinate of the direction vector.
+     * @return the z coordinate of the tangent vector.
      */
-    @Pure int idz();
+    @Pure int itz();
 
-    /**  Sets a new value in the Z direction of the point.
+    /** Sets a new value in the Z tangent of the point.
      *
-     * @param dirZ the new value double z.
+     * @param tanZ the new value double z.
      */
-    void setDirectionZ(int dirZ);
+    void setTangentZ(int tanZ);
 
-    /**  Sets a new value in the Z direction of the point.
+    /** Sets a new value in the Z tangent of the point.
      *
-     * @param dirZ the new value double z.
+     * @param tanZ the new value double z.
      */
-    void setDirectionZ(double dirZ);
+    void setTangentZ(double tanZ);
+
+    /** Replies the tangent vector
+     *.
+     * @return the tangent vector to this point.
+     */
+    @Pure RV getTangent();
+
+    /** Sets the given vector as the new tangent to this point.
+     *  The sway vector is automatically recomputed.
+     *
+     * @param tangent the vector to set.
+     */
+    default void setTangent(RV tangent) {
+        setTangentX(tangent.getX());
+        setTangentY(tangent.getY());
+        setTangentZ(tangent.getZ());
+    }
 
     /** Replies the X coordinate of the normal vector.
      *  If this point is not part of a polyline, the normal vector is null.
@@ -132,6 +149,18 @@ public interface OrientedPoint3D<RP extends Point3D<? super RP, ? super RV>, RV 
      */
     @Pure int inx();
 
+    /** Sets a new value in the X normal of the point.
+     *
+     * @param norX the new value double x.
+     */
+    void setNormalX(int norX);
+
+    /**  Sets a new value in the X normal of the point.
+     *
+     * @param norX the new value double x.
+     */
+    void setNormalX(double norX);
+
     /** Replies the Y coordinate of the normal vector.
      *  If this point is not part of a polyline, the normal vector is null.
      *
@@ -145,6 +174,18 @@ public interface OrientedPoint3D<RP extends Point3D<? super RP, ? super RV>, RV 
      * @return the y coordinate of the normal vector.
      */
     @Pure int iny();
+
+    /** Sets a new value in the Y normal of the point.
+     *
+     * @param norY the new value double y.
+     */
+    void setNormalY(int norY);
+
+    /**  Sets a new value in the Y normal of the point.
+     *
+     * @param norY the new value double y.
+     */
+    void setNormalY(double norY);
 
     /** Replies the Z coordinate of the normal vector.
      *  If this point is not part of a polyline, the normal vector is null.
@@ -160,73 +201,93 @@ public interface OrientedPoint3D<RP extends Point3D<? super RP, ? super RV>, RV 
      */
     @Pure int inz();
 
-    /** Replies the X coordinate of the sway vector.
-     *  If this point is not part of a polyline, the normal vector is null.
+    /**  Sets a new value in the Z normal of the point.
      *
-     * @return the x coordinate of the sway vector.
+     * @param norZ the new value double z.
      */
-    @Pure double getSwayX();
+    void setNormalZ(int norZ);
+
+    /**  Sets a new value in the Z normal of the point.
+     *
+     * @param norZ the new value double z.
+     */
+    void setNormalZ(double norZ);
+
+    /** Replies the normal vector.
+     * @return the normal vector to the point.
+     */
+    @Pure RV getNormal();
+
+    /** Sets the given vector as the new normal to this point.
+     *  The sway vector is automatically recomputed.
+     *
+     * @param normal the vector to set.
+     */
+    default void setNormal(RV normal) {
+        setNormalX(normal.getX());
+        setNormalY(normal.getY());
+        setNormalZ(normal.getZ());
+    }
 
     /** Replies the X coordinate of the sway vector.
      *  If this point is not part of a polyline, the normal vector is null.
      *
      * @return the x coordinate of the sway vector.
      */
-    @Pure int isx();
+    @Pure default double getSwayX() {
+        return getTangent().cross(getNormal()).getX();
+    }
+
+    /** Replies the X coordinate of the sway vector.
+     *  If this point is not part of a polyline, the normal vector is null.
+     *
+     * @return the x coordinate of the sway vector.
+     */
+    @Pure default int isx() {
+        return getTangent().cross(getNormal()).ix();
+    }
 
     /** Replies the Y coordinate of the sway vector.
      *  If this point is not part of a polyline, the normal vector is null.
      *
      * @return the y coordinate of the sway vector.
      */
-    @Pure double getSwayY();
+    @Pure default double getSwayY() {
+        return getTangent().cross(getNormal()).getY();
+    }
 
     /** Replies the Y coordinate of the sway vector.
      *  If this point is not part of a polyline, the normal vector is null.
      *
      * @return the y coordinate of the sway vector.
      */
-    @Pure int isy();
+    @Pure default int isy() {
+        return getTangent().cross(getNormal()).iy();
+    }
 
     /** Replies the Z coordinate of the sway vector.
      *  If this point is not part of a polyline, the normal vector is null.
      *
      * @return the z coordinate of the sway vector.
      */
-    @Pure double getSwayZ();
+    @Pure default double getSwayZ() {
+        return getTangent().cross(getNormal()).getZ();
+    }
 
     /** Replies the Z coordinate of the sway vector.
      *  If this point is not part of a polyline, the normal vector is null.
      *
      * @return the z coordinate of the sway vector.
      */
-    @Pure int isz();
+    @Pure default int isz() {
+        return getTangent().cross(getNormal()).iz();
+    }
 
-    /** Replies the geometrical length of this point on
-     * the polyline.
+    /** Replies the sway vector.
      *
-     * @return the length of the point on the polyline
+     * @return the sway vector to this point.
      */
-    @Pure double getLength();
-
-    /** Replies the geometrical length of this point on
-     * the polyline.
-     *
-     * @return the length of the point on the polyline
-     */
-    @Pure int ilen();
-
-    /** Sets a new value for the length of the point.
-     *
-     * @param length the length of the point on the polyline.
-     */
-    void setLength(int length);
-
-    /** Sets a new value for the length of the point.
-     *
-     * @param length the length of the point on the polyline.
-     */
-    void setLength(double length);
+    @Pure RV getSway();
 
     /** Replies this point.
      * @return this point
@@ -235,97 +296,59 @@ public interface OrientedPoint3D<RP extends Point3D<? super RP, ? super RV>, RV 
         return getGeomFactory().newPoint(getX(), getY(), getZ());
     }
 
-    /** Change the point.
+    /** Change the point and its tangent vector.
      *
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
      * @param z z coordinate of the point.
-     * @param length the length of the point on the polyline.
+     * @param tanX x coordinate of the tangent vector.
+     * @param tanY y coordinate of the tangent vector.
+     * @param tanZ z coordinate of the tangent vector.
      */
-    default void set(int x, int y, int z, int length) {
+    default void set(int x, int y, int z, int tanX, int tanY, int tanZ) {
         Point3D.super.set(x, y, z);
-        setLength(length);
+        setTangentX(tanX);
+        setTangentY(tanY);
+        setTangentZ(tanZ);
     }
 
-    /** Change the point and its orientation vector.
+    /** Change the point and its tangent vector.
      *
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
      * @param z z coordinate of the point.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     * @param dirZ z coordinate of the vector.
+     * @param tanX x coordinate of the tangent vector.
+     * @param tanY y coordinate of the tangent vector.
+     * @param tanZ z coordinate of the tangent vector.
      */
-    default void set(int x, int y, int z, int dirX, int dirY, int dirZ) {
+    default void set(double x, double y, double z, double tanX, double tanY, double tanZ) {
         Point3D.super.set(x, y, z);
-        setDirectionX(dirX);
-        setDirectionY(dirY);
-        setDirectionZ(dirZ);
+        setTangentX(tanX);
+        setTangentY(tanY);
+        setTangentZ(tanZ);
     }
 
-    /** Change the point and its orientation vector.
+    /** Change the point its tangent and normal vectors.
      *
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
      * @param z z coordinate of the point.
-     * @param length the length of the point on the polyline.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     * @param dirZ z coordinate of the vector.
+     * @param tanX x coordinate of the tangent vector.
+     * @param tanY y coordinate of the tangent vector.
+     * @param tanZ z coordinate of the tangent vector.
+     * @param norX x coordinate of the normal vector.
+     * @param norY y coordinate of the normal vector.
+     * @param norZ z coordinate of the normal vector.
      */
-    default void set(int x, int y, int z, int length, int dirX, int dirY, int dirZ) {
+    @SuppressWarnings("checkstyle:parameternumber")
+    default void set(double x, double y, double z, double tanX, double tanY, double tanZ,
+            double norX, double norY, double norZ) {
         Point3D.super.set(x, y, z);
-        setLength(length);
-        setDirectionX(dirX);
-        setDirectionY(dirY);
-        setDirectionZ(dirZ);
+        setTangentX(tanX);
+        setTangentY(tanY);
+        setTangentZ(tanZ);
+        setNormalX(norX);
+        setNormalY(norY);
+        setNormalZ(norZ);
     }
-
-    /** Change the point.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param z z coordinate of the point.
-     * @param length the length of the point on the polyline.
-     */
-    default void set(double x, double y, double z, double length) {
-        Point3D.super.set(x, y, z);
-        setLength(length);
-    }
-
-    /** Change the point and its orientation vector.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param z z coordinate of the point.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     * @param dirZ z coordinate of the vector.
-     */
-    default void set(double x, double y, double z, double dirX, double dirY, double dirZ) {
-        Point3D.super.set(x, y, z);
-        setDirectionX(dirX);
-        setDirectionY(dirY);
-        setDirectionZ(dirZ);
-    }
-
-    /** Change the point and its orientation vector.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param z z coordinate of the point.
-     * @param length the length of the point on the polyline.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     * @param dirZ z coordinate of the vector.
-     */
-    default void set(double x, double y, double z, double length, double dirX, double dirY, double dirZ) {
-        Point3D.super.set(x, y, z);
-        setLength(length);
-        setDirectionX(dirX);
-        setDirectionY(dirY);
-    }
-
-    // TODO : make set(x, y, z dirX, dirY, dirZ, normX, normY, normZ) ? w/o length ? {int,double} ?
-
 }
