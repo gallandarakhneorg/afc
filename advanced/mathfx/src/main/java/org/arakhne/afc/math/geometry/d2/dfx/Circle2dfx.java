@@ -47,9 +47,7 @@ public class Circle2dfx
 
 	private static final long serialVersionUID = 837592010117981823L;
 
-	private DoubleProperty centerX;
-
-	private DoubleProperty centerY;
+	private Point2dfx center = new Point2dfx();
 
 	private DoubleProperty radius;
 
@@ -64,8 +62,18 @@ public class Circle2dfx
 	 * @param radius the radius of the circle.
 	 */
 	public Circle2dfx(Point2D<?, ?> center, double radius) {
-		assert center != null : AssertMessages.notNullParameter(0);
-		set(center.getX(), center.getY(), radius);
+	    assert center != null : AssertMessages.notNullParameter(0);
+	    set(center.getX(), center.getY(), radius);
+	}
+
+	/** Construct a circle by setting the position and radius.
+	 * @param center the center of the circle.
+	 * @param radius the radius of the circle.
+	 */
+	public Circle2dfx(Point2dfx center, double radius) {
+	    assert center != null : AssertMessages.notNullParameter(0);
+		this.center = center;
+		setRadius(radius);
 	}
 
 	/** Construct a circle with the given position and radius.
@@ -77,25 +85,30 @@ public class Circle2dfx
 		set(x, y, radius);
 	}
 
-	/** Construct a circle from a circle.
+	/** Constructor by copy.
 	 * @param circle the circle to copy.
 	 */
 	public Circle2dfx(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
+	    assert circle != null : AssertMessages.notNullParameter();
+	    set(circle.getX(), circle.getY(), circle.getRadius());
+	}
+
+	/** Constructor by setting.
+	 * @param circle the circle to set.
+	 */
+	public Circle2dfx(Circle2dfx circle) {
 		assert circle != null : AssertMessages.notNullParameter();
-		set(circle.getX(), circle.getY(), circle.getRadius());
+		this.center = circle.center;
+		setRadius(circle.getRadius());
 	}
 
 	@Pure
 	@Override
 	public Circle2dfx clone() {
 		final Circle2dfx clone = super.clone();
-		if (clone.centerX != null) {
-			clone.centerX = null;
-			clone.xProperty().set(getX());
-		}
-		if (clone.centerY != null) {
-			clone.centerY = null;
-			clone.yProperty().set(getY());
+		if (clone.center != null) {
+			clone.center = null;
+			clone.center = this.center.clone();
 		}
 		if (clone.radius != null) {
 			clone.radius = null;
@@ -117,29 +130,29 @@ public class Circle2dfx
 	@Pure
 	@Override
 	public double getX() {
-		return this.centerX == null ? 0 : this.centerX.get();
+		return this.center.getX();
 	}
 
 	@Pure
 	@Override
 	public double getY() {
-		return this.centerY == null ? 0 : this.centerY.get();
+		return this.center.getY();
 	}
 
 	@Pure
 	@Override
 	public Point2dfx getCenter() {
-		return getGeomFactory().newPoint(xProperty(), yProperty());
+		return this.center;
 	}
 
 	@Override
 	public void setX(double x) {
-		xProperty().set(x);
+		this.center.setX(x);
 	}
 
 	@Override
 	public void setY(double y) {
-		yProperty().set(y);
+		this.center.setY(y);
 	}
 
 	/** Replies the property that is the x coordinate of the circle center.
@@ -148,10 +161,7 @@ public class Circle2dfx
 	 */
 	@Pure
 	public DoubleProperty xProperty() {
-		if (this.centerX == null) {
-			this.centerX = new SimpleDoubleProperty(this, MathFXAttributeNames.X);
-		}
-		return this.centerX;
+		return this.center.xProperty();
 	}
 
 	/** Replies the property that is the y coordinate of the circle center.
@@ -160,10 +170,7 @@ public class Circle2dfx
 	 */
 	@Pure
 	public DoubleProperty yProperty() {
-		if (this.centerY == null) {
-			this.centerY = new SimpleDoubleProperty(this, MathFXAttributeNames.Y);
-		}
-		return this.centerY;
+		return this.center.yProperty();
 	}
 
 	@Pure

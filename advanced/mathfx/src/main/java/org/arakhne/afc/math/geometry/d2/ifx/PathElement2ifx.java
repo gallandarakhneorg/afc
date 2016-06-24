@@ -53,11 +53,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 	/** Target point.
 	 */
-	protected final IntegerProperty toX;
-
-	/** Target point.
-	 */
-	protected final IntegerProperty toY;
+	protected final Point2ifx to = new Point2ifx();
 
 	/** Is Empty property.
 	 */
@@ -69,12 +65,25 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 * @param toy the x coordinate of the target point.
 	 */
 	PathElement2ifx(PathElementType type, IntegerProperty tox, IntegerProperty toy) {
+	    assert type != null : AssertMessages.notNullParameter(0);
+	    assert tox != null : AssertMessages.notNullParameter(1);
+	    assert toy != null : AssertMessages.notNullParameter(2);
+	    this.type = type;
+	    this.to.x = tox;
+	    this.to.y = toy;
+	}
+
+	/** Constructor by setting.
+	 * @param type is the type of the element.
+	 * @param toPoint the point to set as the target point.
+	 */
+	PathElement2ifx(PathElementType type, Point2ifx toPoint) {
 		assert type != null : AssertMessages.notNullParameter(0);
-		assert tox != null : AssertMessages.notNullParameter(1);
-		assert toy != null : AssertMessages.notNullParameter(2);
+		assert toPoint.x != null : AssertMessages.notNullParameter(1);
+		assert toPoint.y != null : AssertMessages.notNullParameter(1);
 		this.type = type;
-		this.toX = tox;
-		this.toY = toy;
+		this.to.x = toPoint.x;
+		this.to.y = toPoint.y;
 	}
 
 	@Pure
@@ -108,7 +117,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 */
 	@Pure
 	public IntegerProperty toXProperty() {
-		return this.toX;
+		return this.to.x;
 	}
 
 	/** Replies the y coordinate of the target point property.
@@ -117,19 +126,19 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 */
 	@Pure
 	public IntegerProperty toYProperty() {
-		return this.toY;
+		return this.to.y;
 	}
 
 	@Override
 	@Pure
 	public final int getToX() {
-		return this.toX.get();
+		return this.to.ix();
 	}
 
 	@Override
 	@Pure
 	public final int getToY() {
-		return this.toY.get();
+		return this.to.iy();
 	}
 
 	@Pure
@@ -314,7 +323,14 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		 * @param toy y coordinate of the target point.
 		 */
 		MovePathElement2ifx(IntegerProperty tox, IntegerProperty toy) {
-			super(PathElementType.MOVE_TO, tox, toy);
+		    super(PathElementType.MOVE_TO, tox, toy);
+		}
+
+		/** Constructor by setting.
+		 * @param toPoint the point to set as the target point.
+		 */
+		MovePathElement2ifx(Point2ifx toPoint) {
+			super(PathElementType.MOVE_TO, toPoint);
 		}
 
 		@Pure
@@ -368,8 +384,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(int[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
-			array[0] = this.toX.get();
-			array[1] = this.toY.get();
+			array[0] = this.to.ix();
+			array[1] = this.to.iy();
 		}
 
 		@Pure
@@ -377,8 +393,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(double[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
-			array[0] = this.toX.get();
-			array[1] = this.toY.get();
+			array[0] = this.to.ix();
+			array[1] = this.to.iy();
 		}
 
 		@Pure
@@ -386,14 +402,14 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(IntegerProperty[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
-			array[0] = this.toX;
-			array[1] = this.toY;
+			array[0] = this.to.x;
+			array[1] = this.to.y;
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty[] toArray() {
-			return new IntegerProperty[] {this.toX, this.toY};
+			return new IntegerProperty[] {this.to.x, this.to.y};
 		}
 
 		@Pure
@@ -434,9 +450,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		private static final long serialVersionUID = 2010270547259311623L;
 
-		private final IntegerProperty fromX;
-
-		private final IntegerProperty fromY;
+		private final Point2ifx from = new Point2ifx();
 
 		/**
 		 * @param fromx x coordinate of the origin point.
@@ -445,11 +459,23 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		 * @param toy y coordinate of the target point.
 		 */
 		LinePathElement2ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty tox, IntegerProperty toy) {
-			super(PathElementType.LINE_TO, tox, toy);
-			assert fromx != null : AssertMessages.notNullParameter(0);
-			assert fromy != null : AssertMessages.notNullParameter(1);
-			this.fromX = fromx;
-			this.fromY = fromy;
+		    super(PathElementType.LINE_TO, tox, toy);
+		    assert fromx != null : AssertMessages.notNullParameter(0);
+		    assert fromy != null : AssertMessages.notNullParameter(1);
+		    this.from.x = fromx;
+		    this.from.y = fromy;
+		}
+
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
+		 */
+		LinePathElement2ifx(Point2ifx fromPoint, Point2ifx toPoint) {
+			super(PathElementType.LINE_TO, toPoint);
+			assert fromPoint.x != null : AssertMessages.notNullParameter(0);
+			assert fromPoint.y != null : AssertMessages.notNullParameter(0);
+			this.from.x = fromPoint.x;
+			this.from.y = fromPoint.y;
 		}
 
 		@Pure
@@ -511,8 +537,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(int[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
-			array[0] = this.toX.get();
-			array[1] = this.toY.get();
+			array[0] = this.to.ix();
+			array[1] = this.to.iy();
 		}
 
 		@Pure
@@ -520,14 +546,14 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(double[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
-			array[0] = this.toX.get();
-			array[1] = this.toY.get();
+			array[0] = this.to.ix();
+			array[1] = this.to.iy();
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty[] toArray() {
-			return new IntegerProperty[] {this.toX, this.toY};
+			return new IntegerProperty[] {this.to.xProperty(), this.to.yProperty()};
 		}
 
 		@Pure
@@ -535,32 +561,32 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(IntegerProperty[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
-			array[0] = this.toX;
-			array[1] = this.toY;
+			array[0] = this.to.xProperty();
+			array[1] = this.to.yProperty();
 		}
 
 		@Pure
 		@Override
 		public int getFromX() {
-			return this.fromX.get();
+			return this.from.ix();
 		}
 
 		@Pure
 		@Override
 		public int getFromY() {
-			return this.fromY.get();
+			return this.from.iy();
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty fromXProperty() {
-			return this.fromX;
+			return this.from.xProperty();
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty fromYProperty() {
-			return this.fromY;
+			return this.from.yProperty();
 		}
 
 	}
@@ -577,13 +603,9 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		private static final long serialVersionUID = -1243640360335101578L;
 
-		private final IntegerProperty fromX;
+		private final Point2ifx from = new Point2ifx();
 
-		private final IntegerProperty fromY;
-
-		private final IntegerProperty ctrlX;
-
-		private final IntegerProperty ctrlY;
+		private final Point2ifx ctrl = new Point2ifx();
 
 		/**
 		 * @param fromx x coordinate of the origin point.
@@ -594,16 +616,33 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		 * @param toy y coordinate of the target point.
 		 */
 		QuadPathElement2ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty ctrlx,
-				IntegerProperty ctrly, IntegerProperty tox, IntegerProperty toy) {
-			super(PathElementType.QUAD_TO, tox, toy);
-			assert fromx != null : AssertMessages.notNullParameter(0);
-			assert fromy != null : AssertMessages.notNullParameter(1);
-			assert ctrlx != null : AssertMessages.notNullParameter(2);
-			assert ctrly != null : AssertMessages.notNullParameter(3);
-			this.fromX = fromx;
-			this.fromY = fromy;
-			this.ctrlX = ctrlx;
-			this.ctrlY = ctrly;
+		        IntegerProperty ctrly, IntegerProperty tox, IntegerProperty toy) {
+		    super(PathElementType.QUAD_TO, tox, toy);
+		    assert fromx != null : AssertMessages.notNullParameter(0);
+		    assert fromy != null : AssertMessages.notNullParameter(1);
+		    assert ctrlx != null : AssertMessages.notNullParameter(2);
+		    assert ctrly != null : AssertMessages.notNullParameter(3);
+		    this.from.x = fromx;
+		    this.from.y = fromy;
+		    this.ctrl.x = ctrlx;
+		    this.ctrl.y = ctrly;
+		}
+
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param ctrlPoint the point to set as the control point.
+		 * @param toPoint the point to set as the target point.
+		 */
+		QuadPathElement2ifx(Point2ifx fromPoint, Point2ifx ctrlPoint, Point2ifx toPoint) {
+			super(PathElementType.QUAD_TO, toPoint);
+			assert fromPoint.x != null : AssertMessages.notNullParameter(0);
+			assert fromPoint.y != null : AssertMessages.notNullParameter(0);
+			assert ctrlPoint.x != null : AssertMessages.notNullParameter(1);
+			assert ctrlPoint.y != null : AssertMessages.notNullParameter(1);
+			this.from.x = fromPoint.x;
+			this.from.y = fromPoint.y;
+			this.ctrl.x = ctrlPoint.x;
+			this.ctrl.y = ctrlPoint.y;
 		}
 
 		@Pure
@@ -671,10 +710,10 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(int[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 4 : AssertMessages.tooSmallArrayParameter(array.length, 4);
-			array[0] = this.ctrlX.get();
-			array[1] = this.ctrlY.get();
-			array[2] = this.toX.get();
-			array[3] = this.toY.get();
+			array[0] = this.ctrl.ix();
+			array[1] = this.ctrl.iy();
+			array[2] = this.to.ix();
+			array[3] = this.to.iy();
 		}
 
 		@Pure
@@ -682,16 +721,16 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(double[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 4 : AssertMessages.tooSmallArrayParameter(array.length, 4);
-			array[0] = this.ctrlX.get();
-			array[1] = this.ctrlY.get();
-			array[2] = this.toX.get();
-			array[3] = this.toY.get();
+			array[0] = this.ctrl.ix();
+			array[1] = this.ctrl.iy();
+			array[2] = this.to.ix();
+			array[3] = this.to.iy();
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty[] toArray() {
-			return new IntegerProperty[] {this.ctrlX, this.ctrlY, this.toX, this.toY};
+			return new IntegerProperty[] {this.ctrl.x, this.ctrl.y, this.to.x, this.to.y};
 		}
 
 		@Pure
@@ -699,58 +738,58 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(IntegerProperty[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 4 : AssertMessages.tooSmallArrayParameter(array.length, 4);
-			array[0] = this.ctrlX;
-			array[1] = this.ctrlY;
-			array[2] = this.toX;
-			array[3] = this.toY;
+			array[0] = this.ctrl.x;
+			array[1] = this.ctrl.y;
+			array[2] = this.to.x;
+			array[3] = this.to.y;
 		}
 
 		@Pure
 		@Override
 		public int getFromX() {
-			return this.fromX.get();
+			return this.from.ix();
 		}
 
 		@Pure
 		@Override
 		public int getFromY() {
-			return this.fromY.get();
+			return this.from.iy();
 		}
 
 		@Pure
 		@Override
 		public int getCtrlX1() {
-			return this.ctrlX.get();
+			return this.ctrl.ix();
 		}
 
 		@Pure
 		@Override
 		public int getCtrlY1() {
-			return this.ctrlY.get();
+			return this.ctrl.iy();
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty fromXProperty() {
-			return this.fromX;
+			return this.from.x;
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty fromYProperty() {
-			return this.fromY;
+			return this.from.y;
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty ctrlX1Property() {
-			return this.ctrlX;
+			return this.ctrl.x;
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty ctrlY1Property() {
-			return this.ctrlY;
+			return this.ctrl.y;
 		}
 
 	}
@@ -767,17 +806,11 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		private static final long serialVersionUID = 6354626635759607041L;
 
-		private final IntegerProperty fromX;
+		private final Point2ifx from = new Point2ifx();
 
-		private final IntegerProperty fromY;
+		private final Point2ifx ctrl1 = new Point2ifx();
 
-		private final IntegerProperty ctrlX1;
-
-		private final IntegerProperty ctrlY1;
-
-		private final IntegerProperty ctrlX2;
-
-		private final IntegerProperty ctrlY2;
+		private final Point2ifx ctrl2 = new Point2ifx();
 
 		/**
 		 * @param fromx x coordinate of the origin point.
@@ -790,20 +823,43 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		 * @param toy y coordinate of the target point.
 		 */
 		CurvePathElement2ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty ctrlx1, IntegerProperty ctrly1,
-				IntegerProperty ctrlx2, IntegerProperty ctrly2, IntegerProperty tox, IntegerProperty toy) {
-			super(PathElementType.CURVE_TO, tox, toy);
-			assert fromx != null : AssertMessages.notNullParameter(0);
-			assert fromy != null : AssertMessages.notNullParameter(1);
-			assert ctrlx1 != null : AssertMessages.notNullParameter(2);
-			assert ctrly1 != null : AssertMessages.notNullParameter(3);
-			assert ctrlx2 != null : AssertMessages.notNullParameter(4);
-			assert ctrly2 != null : AssertMessages.notNullParameter(5);
-			this.fromX = fromx;
-			this.fromY = fromy;
-			this.ctrlX1 = ctrlx1;
-			this.ctrlY1 = ctrly1;
-			this.ctrlX2 = ctrlx2;
-			this.ctrlY2 = ctrly2;
+		        IntegerProperty ctrlx2, IntegerProperty ctrly2, IntegerProperty tox, IntegerProperty toy) {
+		    super(PathElementType.CURVE_TO, tox, toy);
+		    assert fromx != null : AssertMessages.notNullParameter(0);
+		    assert fromy != null : AssertMessages.notNullParameter(1);
+		    assert ctrlx1 != null : AssertMessages.notNullParameter(2);
+		    assert ctrly1 != null : AssertMessages.notNullParameter(3);
+		    assert ctrlx2 != null : AssertMessages.notNullParameter(4);
+		    assert ctrly2 != null : AssertMessages.notNullParameter(5);
+		    this.from.x = fromx;
+		    this.from.y = fromy;
+		    this.ctrl1.x = ctrlx1;
+		    this.ctrl1.y = ctrly1;
+		    this.ctrl2.x = ctrlx2;
+		    this.ctrl2.y = ctrly2;
+		}
+
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param ctrl1Point the point to set as the first control point.
+		 * @param ctrl2Point the point to set as the second control point.
+		 * @param toPoint the point to set as the target point.
+		 */
+		CurvePathElement2ifx(Point2ifx fromPoint, Point2ifx ctrl1Point,
+				Point2ifx ctrl2Point, Point2ifx toPoint) {
+			super(PathElementType.CURVE_TO, toPoint);
+			assert fromPoint.x != null : AssertMessages.notNullParameter(0);
+			assert fromPoint.y != null : AssertMessages.notNullParameter(0);
+			assert ctrl1Point.x != null : AssertMessages.notNullParameter(1);
+			assert ctrl1Point.y != null : AssertMessages.notNullParameter(1);
+			assert ctrl2Point.x != null : AssertMessages.notNullParameter(2);
+			assert ctrl2Point.y != null : AssertMessages.notNullParameter(2);
+			this.from.x = fromPoint.x;
+			this.from.y = fromPoint.y;
+			this.ctrl1.x = ctrl1Point.x;
+			this.ctrl1.y = ctrl1Point.y;
+			this.ctrl2.x = ctrl2Point.x;
+			this.ctrl2.y = ctrl2Point.y;
 		}
 
 		@Pure
@@ -877,12 +933,12 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(int[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 6 : AssertMessages.tooSmallArrayParameter(array.length, 6);
-			array[0] = this.ctrlX1.get();
-			array[1] = this.ctrlY1.get();
-			array[2] = this.ctrlX2.get();
-			array[3] = this.ctrlY2.get();
-			array[4] = this.toX.get();
-			array[5] = this.toY.get();
+			array[0] = this.ctrl1.ix();
+			array[1] = this.ctrl1.iy();
+			array[2] = this.ctrl2.ix();
+			array[3] = this.ctrl2.iy();
+			array[4] = this.to.ix();
+			array[5] = this.to.iy();
 		}
 
 		@Pure
@@ -890,18 +946,18 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(double[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 6 : AssertMessages.tooSmallArrayParameter(array.length, 6);
-			array[0] = this.ctrlX1.get();
-			array[1] = this.ctrlY1.get();
-			array[2] = this.ctrlX2.get();
-			array[3] = this.ctrlY2.get();
-			array[4] = this.toX.get();
-			array[5] = this.toY.get();
+			array[0] = this.ctrl1.ix();
+			array[1] = this.ctrl1.iy();
+			array[2] = this.ctrl2.ix();
+			array[3] = this.ctrl2.iy();
+			array[4] = this.to.ix();
+			array[5] = this.to.iy();
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty[] toArray() {
-			return new IntegerProperty[] {this.ctrlX1, this.ctrlY1, this.ctrlX2, this.ctrlY2, this.toX, this.toY};
+			return new IntegerProperty[] {this.ctrl1.x, this.ctrl1.y, this.ctrl2.x, this.ctrl2.y, this.to.x, this.to.y};
 		}
 
 		@Pure
@@ -909,84 +965,84 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(IntegerProperty[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 6 : AssertMessages.tooSmallArrayParameter(array.length, 6);
-			array[0] = this.ctrlX1;
-			array[1] = this.ctrlY1;
-			array[2] = this.ctrlX2;
-			array[3] = this.ctrlY2;
-			array[4] = this.toX;
-			array[5] = this.toY;
+			array[0] = this.ctrl1.x;
+			array[1] = this.ctrl1.y;
+			array[2] = this.ctrl2.x;
+			array[3] = this.ctrl2.y;
+			array[4] = this.to.x;
+			array[5] = this.to.y;
 		}
 
 		@Pure
 		@Override
 		public int getFromX() {
-			return this.fromX.get();
+			return this.from.ix();
 		}
 
 		@Pure
 		@Override
 		public int getFromY() {
-			return this.fromY.get();
+			return this.from.iy();
 		}
 
 		@Pure
 		@Override
 		public int getCtrlX1() {
-			return this.ctrlX1.get();
+			return this.ctrl1.ix();
 		}
 
 		@Pure
 		@Override
 		public int getCtrlY1() {
-			return this.ctrlY1.get();
+			return this.ctrl1.iy();
 		}
 
 		@Pure
 		@Override
 		public int getCtrlX2() {
-			return this.ctrlX2.get();
+			return this.ctrl2.ix();
 		}
 
 		@Pure
 		@Override
 		public int getCtrlY2() {
-			return this.ctrlY2.get();
+			return this.ctrl2.iy();
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty fromXProperty() {
-			return this.fromX;
+			return this.from.x;
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty fromYProperty() {
-			return this.fromY;
+			return this.from.y;
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty ctrlX1Property() {
-			return this.ctrlX1;
+			return this.ctrl1.x;
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty ctrlY1Property() {
-			return this.ctrlY1;
+			return this.ctrl1.y;
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty ctrlX2Property() {
-			return this.ctrlX2;
+			return this.ctrl2.x;
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty ctrlY2Property() {
-			return this.ctrlY2;
+			return this.ctrl2.y;
 		}
 
 	}
@@ -1003,9 +1059,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		private static final long serialVersionUID = 5424862699995343827L;
 
-		private final IntegerProperty fromX;
-
-		private final IntegerProperty fromY;
+		private final Point2ifx from = new Point2ifx();
 
 		/**
 		 * @param fromx x coordinate of the origin point.
@@ -1014,11 +1068,23 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		 * @param toy y coordinate of the target point.
 		 */
 		ClosePathElement2ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty tox, IntegerProperty toy) {
-			super(PathElementType.CLOSE, tox, toy);
-			assert fromx != null : AssertMessages.notNullParameter(0);
-			assert fromy != null : AssertMessages.notNullParameter(1);
-			this.fromX = fromx;
-			this.fromY = fromy;
+		    super(PathElementType.CLOSE, tox, toy);
+		    assert fromx != null : AssertMessages.notNullParameter(0);
+		    assert fromy != null : AssertMessages.notNullParameter(1);
+		    this.from.x = fromx;
+		    this.from.y = fromy;
+		}
+
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
+		 */
+		ClosePathElement2ifx(Point2ifx fromPoint, Point2ifx toPoint) {
+			super(PathElementType.CLOSE, toPoint);
+			assert fromPoint.x != null : AssertMessages.notNullParameter(0);
+			assert fromPoint.y != null : AssertMessages.notNullParameter(0);
+			this.from.x = fromPoint.x;
+			this.from.y = fromPoint.y;
 
 		}
 
@@ -1081,8 +1147,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(int[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
-			array[0] = this.toX.get();
-			array[1] = this.toY.get();
+			array[0] = this.to.ix();
+			array[1] = this.to.iy();
 		}
 
 		@Pure
@@ -1090,14 +1156,14 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(double[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
-			array[0] = this.toX.get();
-			array[1] = this.toY.get();
+			array[0] = this.to.ix();
+			array[1] = this.to.iy();
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty[] toArray() {
-			return new IntegerProperty[] {this.toX, this.toY};
+			return new IntegerProperty[] {this.to.x, this.to.y};
 		}
 
 		@Pure
@@ -1105,32 +1171,32 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(IntegerProperty[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
-			array[0] = this.toX;
-			array[1] = this.toY;
+			array[0] = this.to.x;
+			array[1] = this.to.y;
 		}
 
 		@Pure
 		@Override
 		public int getFromX() {
-			return this.fromX.get();
+			return this.from.ix();
 		}
 
 		@Pure
 		@Override
 		public int getFromY() {
-			return this.fromY.get();
+			return this.from.iy();
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty fromXProperty() {
-			return this.fromX;
+			return this.from.x;
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty fromYProperty() {
-			return this.fromY;
+			return this.from.y;
 		}
 
 	}
@@ -1147,9 +1213,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		private static final long serialVersionUID = 1191891479706357600L;
 
-		private final IntegerProperty fromX;
-
-		private final IntegerProperty fromY;
+		private final Point2ifx from = new Point2ifx();
 
 		private final IntegerProperty radiusX;
 
@@ -1174,18 +1238,48 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		 */
 		@SuppressWarnings("checkstyle:magicnumber")
 		ArcPathElement2ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty tox, IntegerProperty toy,
+		        IntegerProperty xradius, IntegerProperty yradius, DoubleProperty xrotation,
+		        BooleanProperty largeArcFlag, BooleanProperty sweepFlag) {
+		    super(PathElementType.ARC_TO, tox, toy);
+		    assert fromx != null : AssertMessages.notNullParameter(0);
+		    assert fromy != null : AssertMessages.notNullParameter(1);
+		    assert xradius != null : AssertMessages.notNullParameter(4);
+		    assert yradius != null : AssertMessages.notNullParameter(5);
+		    assert xrotation != null : AssertMessages.notNullParameter(6);
+		    assert largeArcFlag != null : AssertMessages.notNullParameter(7);
+		    assert sweepFlag != null : AssertMessages.notNullParameter(8);
+		    this.from.x = fromx;
+		    this.from.y = fromy;
+		    this.radiusX = xradius;
+		    this.radiusY = yradius;
+		    this.rotationX = xrotation;
+		    this.largeArcFlag = largeArcFlag;
+		    this.sweepFlag = sweepFlag;
+		}
+
+		/** Constructor by setting.
+		 * @param fromPoint the point to set as the origin point.
+		 * @param toPoint the point to set as the target point.
+		 * @param xradius radius of the ellipse along its x axis.
+		 * @param yradius radius of the ellipse along its y axis.
+		 * @param xrotation rotation (in radians) of the ellipse's x axis.
+		 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
+		 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+		 */
+		@SuppressWarnings("checkstyle:magicnumber")
+		ArcPathElement2ifx(Point2ifx fromPoint, Point2ifx toPoint,
 				IntegerProperty xradius, IntegerProperty yradius, DoubleProperty xrotation,
 				BooleanProperty largeArcFlag, BooleanProperty sweepFlag) {
-			super(PathElementType.ARC_TO, tox, toy);
-			assert fromx != null : AssertMessages.notNullParameter(0);
-			assert fromy != null : AssertMessages.notNullParameter(1);
-			assert xradius != null : AssertMessages.notNullParameter(4);
-			assert yradius != null : AssertMessages.notNullParameter(5);
-			assert xrotation != null : AssertMessages.notNullParameter(6);
-			assert largeArcFlag != null : AssertMessages.notNullParameter(7);
-			assert sweepFlag != null : AssertMessages.notNullParameter(8);
-			this.fromX = fromx;
-			this.fromY = fromy;
+			super(PathElementType.ARC_TO, toPoint);
+			assert fromPoint.x != null : AssertMessages.notNullParameter(0);
+			assert fromPoint.y != null : AssertMessages.notNullParameter(0);
+			assert xradius != null : AssertMessages.notNullParameter(2);
+			assert yradius != null : AssertMessages.notNullParameter(3);
+			assert xrotation != null : AssertMessages.notNullParameter(4);
+			assert largeArcFlag != null : AssertMessages.notNullParameter(5);
+			assert sweepFlag != null : AssertMessages.notNullParameter(6);
+			this.from.x = fromPoint.x;
+			this.from.y = fromPoint.y;
 			this.radiusX = xradius;
 			this.radiusY = yradius;
 			this.rotationX = xrotation;
@@ -1258,8 +1352,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(int[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
-			array[0] = this.toX.intValue();
-			array[1] = this.toY.intValue();
+			array[0] = this.to.ix();
+			array[1] = this.to.iy();
 		}
 
 		@Pure
@@ -1267,8 +1361,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(IntegerProperty[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
-			array[0] = this.toX;
-			array[1] = this.toY;
+			array[0] = this.to.x;
+			array[1] = this.to.y;
 		}
 
 		@Pure
@@ -1276,38 +1370,38 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public void toArray(double[] array) {
 			assert array != null : AssertMessages.notNullParameter();
 			assert array.length >= 2 : AssertMessages.tooSmallArrayParameter(array.length, 2);
-			array[0] = this.toX.doubleValue();
-			array[1] = this.toY.doubleValue();
+			array[0] = this.to.getX();
+			array[1] = this.to.getY();
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty[] toArray() {
-			return new IntegerProperty[] {this.toX, this.toY};
+			return new IntegerProperty[] {this.to.x, this.to.y};
 		}
 
 		@Pure
 		@Override
 		public int getFromX() {
-			return this.fromX.get();
+			return this.from.ix();
 		}
 
 		@Pure
 		@Override
 		public int getFromY() {
-			return this.fromY.get();
+			return this.from.iy();
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty fromXProperty() {
-			return this.fromX;
+			return this.from.x;
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty fromYProperty() {
-			return this.fromY;
+			return this.from.y;
 		}
 
 		@Override

@@ -82,23 +82,23 @@ public class Path2ifxTest extends AbstractPath2aiTest<Path2ifx, Rectangle2ifx> {
 	
 	@Test
 	public void coordinatesProperty() {
-		ReadOnlyListProperty<Integer> property = this.shape.coordinatesProperty();
+		ReadOnlyListProperty<Point2ifx> property = this.shape.coordinatesProperty();
 		assertNotNull(property);
-		assertEquals(14, property.size());
-		assertEquals(0, property.get(0).intValue());
-		assertEquals(0, property.get(1).intValue());
-		assertEquals(2, property.get(2).intValue());
-		assertEquals(2, property.get(3).intValue());
-		assertEquals(3, property.get(4).intValue());
-		assertEquals(0, property.get(5).intValue());
-		assertEquals(4, property.get(6).intValue());
-		assertEquals(3, property.get(7).intValue());
-		assertEquals(5, property.get(8).intValue());
-		assertEquals(-1, property.get(9).intValue());
-		assertEquals(6, property.get(10).intValue());
-		assertEquals(5, property.get(11).intValue());
-		assertEquals(7, property.get(12).intValue());
-		assertEquals(-5, property.get(13).intValue());
+		assertEquals(7, property.size());
+		assertEquals(0, property.get(0).ix());
+		assertEquals(0, property.get(0).iy());
+		assertEquals(2, property.get(1).ix());
+		assertEquals(2, property.get(1).iy());
+		assertEquals(3, property.get(2).ix());
+		assertEquals(0, property.get(2).iy());
+		assertEquals(4, property.get(3).ix());
+		assertEquals(3, property.get(3).iy());
+		assertEquals(5, property.get(4).ix());
+		assertEquals(-1, property.get(4).iy());
+		assertEquals(6, property.get(5).ix());
+		assertEquals(5, property.get(5).iy());
+		assertEquals(7, property.get(6).ix());
+		assertEquals(-5, property.get(6).iy());
 	}
 	
 	@Test

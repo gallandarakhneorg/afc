@@ -51,12 +51,7 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	/**
 	 * Center of the parallelogram.
 	 */
-	private DoubleProperty cx;
-
-	/**
-	 * Center of the parallelogram.
-	 */
-	private DoubleProperty cy;
+	private Point2dfx center = new Point2dfx();
 
 	/**
 	 * The first axis of the parallelogram.
@@ -151,13 +146,9 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	@Override
 	public Parallelogram2dfx clone() {
 		final Parallelogram2dfx clone = super.clone();
-		if (clone.cx != null) {
-			clone.cx = null;
-			clone.centerXProperty().set(getCenterX());
-		}
-		if (clone.cy != null) {
-			clone.cy = null;
-			clone.centerYProperty().set(getCenterY());
+		if (clone.center != null) {
+			clone.center = null;
+			clone.center = this.center.clone();
 		}
 		if (clone.raxis != null) {
 			clone.raxis = null;
@@ -198,10 +189,7 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	 * @return the property.
 	 */
 	public DoubleProperty centerXProperty() {
-		if (this.cx == null) {
-			this.cx = new SimpleDoubleProperty(this, MathFXAttributeNames.CENTER_X);
-		}
-		return this.cx;
+		return this.center.xProperty();
 	}
 
 	/** Replies the property for the y coordinate of the center.
@@ -209,44 +197,50 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	 * @return the property.
 	 */
 	public DoubleProperty centerYProperty() {
-		if (this.cy == null) {
-			this.cy = new SimpleDoubleProperty(this, MathFXAttributeNames.CENTER_Y);
-		}
-		return this.cy;
+		return this.center.yProperty();
 	}
 
 	@Pure
 	@Override
 	public Point2dfx getCenter() {
-		return getGeomFactory().newPoint(this.cx, this.cy);
+		return this.center;
 	}
 
 	@Pure
 	@Override
 	public double getCenterX() {
-		return this.cx == null ? 0 : this.cx.get();
+		return this.center.getX();
 	}
 
 	@Override
 	public void setCenterX(double cx) {
-		centerXProperty().set(cx);
+		this.center.setX(cx);
 	}
 
 	@Override
 	public void setCenterY(double cy) {
-		centerYProperty().set(cy);
+		this.center.setY(cy);
 	}
 
 	@Pure
 	@Override
 	public double getCenterY() {
-		return this.cy == null ? 0 : this.cy.get();
+		return this.center.getY();
 	}
 
 	@Override
 	public void setCenter(double cx, double cy) {
-		centerXProperty().set(cx);
-		centerYProperty().set(cy);
+	    this.center.setX(cx);
+	    this.center.setY(cy);
+	}
+
+	/** Set the center.
+	 *
+	 * @param point the new center
+	 */
+	public void setCenter(Point2dfx point) {
+	    assert point != null : AssertMessages.notNullParameter(0);
+		this.center = point;
 	}
 
 	/** Replies the property for the first axis.

@@ -25,7 +25,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -48,17 +47,11 @@ public class Triangle2dfx
 		implements Triangle2afp<Shape2dfx<?>, Triangle2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
 	private static final long serialVersionUID = -1872758222696617883L;
 
-	private DoubleProperty x1;
+	private Point2dfx p1 = new Point2dfx();
 
-	private DoubleProperty y1;
+	private Point2dfx p2 = new Point2dfx();
 
-	private DoubleProperty x2;
-
-	private DoubleProperty y2;
-
-	private DoubleProperty x3;
-
-	private DoubleProperty y3;
+	private Point2dfx p3 = new Point2dfx();
 
 	private ReadOnlyBooleanWrapper ccw;
 
@@ -74,10 +67,42 @@ public class Triangle2dfx
 	 * @param p3 third point.
 	 */
 	public Triangle2dfx(Point2D<?, ?> p1, Point2D<?, ?> p2, Point2D<?, ?> p3) {
-		assert p1 != null : AssertMessages.notNullParameter(0);
-		assert p2 != null : AssertMessages.notNullParameter(1);
-		assert p3 != null : AssertMessages.notNullParameter(2);
-		set(p1.getX(), p1.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY());
+	    assert p1 != null : AssertMessages.notNullParameter(0);
+	    assert p2 != null : AssertMessages.notNullParameter(1);
+	    assert p3 != null : AssertMessages.notNullParameter(2);
+	    set(p1.getX(), p1.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY());
+	}
+
+	/** Construct a triangle by setting the three given points.
+	 * @param point1 the point to set as first point.
+	 * @param point2 the point to set as second point.
+	 * @param point3 the point to set as third point.
+	 */
+	public Triangle2dfx(Point2dfx point1, Point2dfx point2, Point2dfx point3) {
+		assert point1 != null : AssertMessages.notNullParameter(0);
+		assert point2 != null : AssertMessages.notNullParameter(1);
+		assert point3 != null : AssertMessages.notNullParameter(2);
+		this.p1 = point1;
+		this.p2 = point2;
+		this.p3 = point3;
+	}
+
+	/** Constructor by copy.
+	 * @param triangle the triangle to copy.
+	 */
+	public Triangle2dfx(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
+	    assert triangle != null : AssertMessages.notNullParameter();
+	    set(triangle.getX1(), triangle.getY1(), triangle.getX2(), triangle.getY2(), triangle.getX3(), triangle.getY3());
+	}
+
+	/** Constructor by setting.
+	 * @param triangle the triangle to set.
+	 */
+	public Triangle2dfx(Triangle2dfx triangle) {
+		assert triangle != null : AssertMessages.notNullParameter();
+		this.p1 = triangle.p1;
+		this.p2 = triangle.p2;
+		this.p3 = triangle.p3;
 	}
 
 	/** Construct a triangle with the three given points.
@@ -89,43 +114,23 @@ public class Triangle2dfx
 	 * @param y3 y coordinate of the third point.
 	 */
 	public Triangle2dfx(double x1, double y1, double x2, double y2, double x3, double y3) {
-		set(x1, y1, x2, y2, x3, y3);
-	}
-
-	/** Construct a triangle from a triangle.
-	 * @param triangle the triangle to copy.
-	 */
-	public Triangle2dfx(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
-		assert triangle != null : AssertMessages.notNullParameter();
-		set(triangle.getX1(), triangle.getY1(), triangle.getX2(), triangle.getY2(), triangle.getX3(), triangle.getY3());
+	    set(x1, y1, x2, y2, x3, y3);
 	}
 
 	@Override
 	public Triangle2dfx clone() {
 		final Triangle2dfx clone = super.clone();
-		if (clone.x1 != null) {
-			clone.x1 = null;
-			clone.x1Property().set(getX1());
+		if (clone.p1 != null) {
+			clone.p1 = null;
+			clone.p1 = this.p1.clone();
 		}
-		if (clone.y1 != null) {
-			clone.y1 = null;
-			clone.y1Property().set(getY1());
+		if (clone.p2 != null) {
+			clone.p2 = null;
+			clone.p2 = this.p2.clone();
 		}
-		if (clone.x2 != null) {
-			clone.x2 = null;
-			clone.x2Property().set(getX2());
-		}
-		if (clone.y2 != null) {
-			clone.y2 = null;
-			clone.y2Property().set(getY2());
-		}
-		if (clone.x3 != null) {
-			clone.x3 = null;
-			clone.x3Property().set(getX3());
-		}
-		if (clone.y3 != null) {
-			clone.y3 = null;
-			clone.y3Property().set(getY3());
+		if (clone.p3 != null) {
+			clone.p3 = null;
+			clone.p3 = this.p3.clone();
 		}
 		clone.ccw = null;
 		return clone;
@@ -165,7 +170,7 @@ public class Triangle2dfx
 
 	@Override
 	public double getX1() {
-		return this.x1 == null ? 0 : this.x1.get();
+		return this.p1.getX();
 	}
 
 	/** Replies the property that is the x coordinate of the first triangle point.
@@ -174,15 +179,12 @@ public class Triangle2dfx
 	 */
 	@Pure
 	public DoubleProperty x1Property() {
-		if (this.x1 == null) {
-			this.x1 = new SimpleDoubleProperty(this, MathFXAttributeNames.X1);
-		}
-		return this.x1;
+		return this.p1.xProperty();
 	}
 
 	@Override
 	public double getY1() {
-		return this.y1 == null ? 0 : this.y1.get();
+		return this.p1.getY();
 	}
 
 	/** Replies the property that is the y coordinate of the first triangle point.
@@ -191,15 +193,12 @@ public class Triangle2dfx
 	 */
 	@Pure
 	public DoubleProperty y1Property() {
-		if (this.y1 == null) {
-			this.y1 = new SimpleDoubleProperty(this, MathFXAttributeNames.Y1);
-		}
-		return this.y1;
+		return this.p1.yProperty();
 	}
 
 	@Override
 	public double getX2() {
-		return this.x2 == null ? 0 : this.x2.get();
+		return this.p2.getX();
 	}
 
 	/** Replies the property that is the x coordinate of the second triangle point.
@@ -208,15 +207,12 @@ public class Triangle2dfx
 	 */
 	@Pure
 	public DoubleProperty x2Property() {
-		if (this.x2 == null) {
-			this.x2 = new SimpleDoubleProperty(this, MathFXAttributeNames.X2);
-		}
-		return this.x2;
+		return this.p2.xProperty();
 	}
 
 	@Override
 	public double getY2() {
-		return this.y2 == null ? 0 : this.y2.get();
+		return this.p2.getY();
 	}
 
 	/** Replies the property that is the y coordinate of the second triangle point.
@@ -225,15 +221,12 @@ public class Triangle2dfx
 	 */
 	@Pure
 	public DoubleProperty y2Property() {
-		if (this.y2 == null) {
-			this.y2 = new SimpleDoubleProperty(this, MathFXAttributeNames.Y2);
-		}
-		return this.y2;
+		return this.p2.yProperty();
 	}
 
 	@Override
 	public double getX3() {
-		return this.x3 == null ? 0 : this.x3.get();
+		return this.p3.getX();
 	}
 
 	/** Replies the property that is the x coordinate of the third triangle point.
@@ -242,15 +235,12 @@ public class Triangle2dfx
 	 */
 	@Pure
 	public DoubleProperty x3Property() {
-		if (this.x3 == null) {
-			this.x3 = new SimpleDoubleProperty(this, MathFXAttributeNames.X3);
-		}
-		return this.x3;
+		return this.p3.xProperty();
 	}
 
 	@Override
 	public double getY3() {
-		return this.y3 == null ? 0 : this.y3.get();
+		return this.p3.getY();
 	}
 
 	/** Replies the property that is the y coordinate of the third triangle point.
@@ -259,10 +249,7 @@ public class Triangle2dfx
 	 */
 	@Pure
 	public DoubleProperty y3Property() {
-		if (this.y3 == null) {
-			this.y3 = new SimpleDoubleProperty(this, MathFXAttributeNames.Y3);
-		}
-		return this.y3;
+		return this.p3.yProperty();
 	}
 
 	@Override

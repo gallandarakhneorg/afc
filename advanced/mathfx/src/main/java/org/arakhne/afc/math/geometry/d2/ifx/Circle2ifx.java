@@ -46,9 +46,7 @@ public class Circle2ifx
 
 	private static final long serialVersionUID = 3750916959512063017L;
 
-	private IntegerProperty centerX;
-
-	private IntegerProperty centerY;
+	private Point2ifx center = new Point2ifx();
 
 	private IntegerProperty radius;
 
@@ -63,7 +61,18 @@ public class Circle2ifx
 	 * @param radius the radius of the circle.
 	 */
 	public Circle2ifx(Point2D<?, ?> center, int radius) {
-		set(center.ix(), center.iy(), radius);
+	    assert center != null : AssertMessages.notNullParameter();
+	    set(center.ix(), center.iy(), radius);
+	}
+
+	/** Construct a circle by setting the given position and radius.
+	 * @param center the center of the circle.
+	 * @param radius the radius of the circle.
+	 */
+	public Circle2ifx(Point2ifx center, int radius) {
+	    assert center != null : AssertMessages.notNullParameter();
+	    this.center = center;
+		setRadius(radius);
 	}
 
 	/** Construct a circle at the given position and with the given radius.
@@ -75,24 +84,28 @@ public class Circle2ifx
 		set(x, y, radius);
 	}
 
-	/** Construct a circle from a circle.
+	/** Constructor by copy.
 	 * @param circle the circle to copy.
 	 */
 	public Circle2ifx(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
+	    assert circle != null : AssertMessages.notNullParameter();
+	    set(circle.getX(), circle.getY(), circle.getRadius());
+	}
+
+	/** Constructor by setting.
+	 * @param circle the circle to set.
+	 */
+	public Circle2ifx(Circle2ifx circle) {
 		assert circle != null : AssertMessages.notNullParameter();
-		set(circle.getX(), circle.getY(), circle.getRadius());
+		this.center = circle.center;
+		setRadius(circle.getRadius());
 	}
 
 	@Override
 	public Circle2ifx clone() {
 		final Circle2ifx clone = super.clone();
-		if (clone.centerX != null) {
-			clone.centerX = null;
-			clone.xProperty().set(getX());
-		}
-		if (clone.centerY != null) {
-			clone.centerY = null;
-			clone.yProperty().set(getY());
+		if (clone.center != null) {
+			clone.center = this.center.clone();
 		}
 		if (clone.radius != null) {
 			clone.radius = null;
@@ -114,7 +127,7 @@ public class Circle2ifx
 	@Pure
 	@Override
 	public int getX() {
-		return this.centerX == null ? 0 : this.centerX.get();
+		return this.center.ix();
 	}
 
 	/** Replies the property that is the x coordinate of the circle center.
@@ -123,16 +136,13 @@ public class Circle2ifx
 	 */
 	@Pure
 	public IntegerProperty xProperty() {
-		if (this.centerX == null) {
-			this.centerX = new SimpleIntegerProperty(this, MathFXAttributeNames.X);
-		}
-		return this.centerX;
+		return this.center.xProperty();
 	}
 
 	@Pure
 	@Override
 	public int getY() {
-		return this.centerY == null ? 0 : this.centerY.get();
+		return this.center.iy();
 	}
 
 	/** Replies the property that is the y coordinate of the circle center.
@@ -141,20 +151,32 @@ public class Circle2ifx
 	 */
 	@Pure
 	public IntegerProperty yProperty() {
-		if (this.centerY == null) {
-			this.centerY = new SimpleIntegerProperty(this, MathFXAttributeNames.Y);
-		}
-		return this.centerY;
+		return this.center.yProperty();
 	}
 
 	@Override
 	public void setX(int x) {
-		xProperty().set(x);
+		this.center.setX(x);
 	}
 
 	@Override
 	public void setY(int y) {
-		yProperty().set(y);
+		this.center.setY(y);
+	}
+
+	@Override
+	public Point2ifx getCenter() {
+	    return this.center;
+	}
+
+	@Override
+	public void setCenter(int x, int y) {
+	    this.center.set(x, y);
+	}
+
+	@Override
+	public void setCenter(Point2D<?, ?> center) {
+	    this.center = getGeomFactory().convertToPoint(center);
 	}
 
 	@Pure

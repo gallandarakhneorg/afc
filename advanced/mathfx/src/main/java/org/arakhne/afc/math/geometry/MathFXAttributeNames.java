@@ -210,6 +210,18 @@ public final class MathFXAttributeNames {
 	 */
 	public static final String CCW = "ccw"; //$NON-NLS-1$
 
+    /** {@code normal}.
+     */
+    public static final String NORMAL = "normal"; //$NON-NLS-1$
+
+    /** {@code tangent}.
+     */
+    public static final String TANGENT = "tangent"; //$NON-NLS-1$
+
+    /** {@code sway}.
+     */
+    public static final String SWAY = "sway"; //$NON-NLS-1$
+
 	private MathFXAttributeNames() {
 		//
 	}

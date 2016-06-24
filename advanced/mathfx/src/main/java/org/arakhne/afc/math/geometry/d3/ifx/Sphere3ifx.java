@@ -30,6 +30,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.ai.Sphere3ai;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A sphere with 3 integer FX properties.
  *
@@ -46,11 +47,7 @@ public class Sphere3ifx
 
 	private static final long serialVersionUID = 3750916959512063017L;
 
-	private IntegerProperty centerX;
-
-	private IntegerProperty centerY;
-
-	private IntegerProperty centerZ;
+	private Point3ifx center = new Point3ifx();
 
 	private IntegerProperty radius;
 
@@ -65,7 +62,18 @@ public class Sphere3ifx
 	 * @param radius the radius of the sphere.
 	 */
 	public Sphere3ifx(Point3D<?, ?> center, int radius) {
+	    assert center != null : AssertMessages.notNullParameter();
 	    set(center.ix(), center.iy(), center.iz(), radius);
+	}
+
+	/** Construct a sphere by setting the given position and radius.
+	 * @param center the center of the sphere.
+	 * @param radius the radius of the sphere.
+	 */
+	public Sphere3ifx(Point3ifx center, int radius) {
+	    assert center != null;
+	    this.center = center;
+	    setRadius(radius);
 	}
 
 	/** Construct a sphere at the given position and with the given radius.
@@ -78,28 +86,29 @@ public class Sphere3ifx
 	    set(x, y, z, radius);
 	}
 
-	/** Construct a sphere from a sphere.
-     * @param sphere the sphere to copy.
-     */
+	/** Constructor by copy.
+	 * @param sphere the sphere to copy.
+	 */
 	public Sphere3ifx(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
-		assert sphere != null : "sphere must be not null"; //$NON-NLS-1$
-		set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
+	    assert sphere != null : AssertMessages.notNullParameter();
+	    set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
+	}
+
+	/** Construct by setting.
+     * @param sphere the sphere to set.
+     */
+	public Sphere3ifx(Sphere3ifx sphere) {
+		assert sphere != null : AssertMessages.notNullParameter();
+		this.center = sphere.center;
+		setRadius(sphere.getRadius());
 	}
 
 	@Override
 	public Sphere3ifx clone() {
 		final Sphere3ifx clone = super.clone();
-		if (clone.centerX != null) {
-			clone.centerX = null;
-			clone.xProperty().set(getX());
-		}
-		if (clone.centerY != null) {
-			clone.centerY = null;
-			clone.yProperty().set(getY());
-		}
-		if (clone.centerZ != null) {
-			clone.centerZ = null;
-			clone.zProperty().set(getZ());
+		if (clone.center != null) {
+			clone.center = null;
+			clone.center = this.center.clone();
 		}
 		if (clone.radius != null) {
 			clone.radius = null;
@@ -122,7 +131,7 @@ public class Sphere3ifx
 	@Pure
 	@Override
 	public int getX() {
-		return this.centerX == null ? 0 : this.centerX.get();
+		return this.center.ix();
 	}
 
 	/** Replies the property that is the x coordinate of the sphere center.
@@ -131,16 +140,13 @@ public class Sphere3ifx
 	 */
 	@Pure
 	public IntegerProperty xProperty() {
-		if (this.centerX == null) {
-			this.centerX = new SimpleIntegerProperty(this, MathFXAttributeNames.X);
-		}
-		return this.centerX;
+		return this.center.xProperty();
 	}
 
 	@Pure
 	@Override
 	public int getY() {
-		return this.centerY == null ? 0 : this.centerY.get();
+		return this.center.iy();
 	}
 
 	/** Replies the property that is the y coordinate of the sphere center.
@@ -149,16 +155,13 @@ public class Sphere3ifx
 	 */
 	@Pure
 	public IntegerProperty yProperty() {
-		if (this.centerY == null) {
-			this.centerY = new SimpleIntegerProperty(this, MathFXAttributeNames.Y);
-		}
-		return this.centerY;
+		return this.center.yProperty();
 	}
 
 	@Pure
 	@Override
 	public int getZ() {
-		return this.centerZ == null ? 0 : this.centerZ.get();
+		return this.center.iz();
 	}
 
 	/** Replies the property that is the z coordinate of the sphere center.
@@ -167,10 +170,7 @@ public class Sphere3ifx
 	 */
 	@Pure
 	public IntegerProperty zProperty() {
-		if (this.centerZ == null) {
-			this.centerZ = new SimpleIntegerProperty(this, MathFXAttributeNames.Z);
-		}
-		return this.centerZ;
+		return this.center.zProperty();
 	}
 
 	@Override

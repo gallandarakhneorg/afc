@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 2D tuple with 2 double precision floating-point FX properties.
  *
@@ -68,7 +69,8 @@ public class Tuple2dfx<RT extends Tuple2dfx<? super RT>> implements Tuple2D<RT> 
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2dfx(Tuple2D<?> tuple) {
-		this(tuple.getX(), tuple.getY());
+	    assert tuple != null : AssertMessages.notNullParameter();
+		set(tuple.getX(), tuple.getY());
 	}
 
 	/** Constructor by copy.

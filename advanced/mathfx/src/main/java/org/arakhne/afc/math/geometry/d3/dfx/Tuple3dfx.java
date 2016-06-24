@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 3D tuple with 3 double precision floating-point FX properties.
  *
@@ -74,7 +75,8 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
      * @param tuple is the tuple to copy.
      */
 	public Tuple3dfx(Tuple3D<?> tuple) {
-		this(tuple.getX(), tuple.getY(), tuple.getZ());
+	    assert tuple != null : AssertMessages.notNullParameter();
+		set(tuple.getX(), tuple.getY(), tuple.getZ());
 	}
 
 	/** Constructor by copy.

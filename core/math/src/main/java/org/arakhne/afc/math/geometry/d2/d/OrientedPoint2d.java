@@ -40,11 +40,9 @@ public class OrientedPoint2d
 
     private static final long serialVersionUID = 6296312122530686621L;
 
-    private double dx;
+    private double tx;
 
-    private double dy;
-
-    private double len;
+    private double ty;
 
     /** Construct an empty oriented point.
      */
@@ -59,14 +57,6 @@ public class OrientedPoint2d
         super(tuple);
     }
 
-    /** Construct an oriented point from a point and its length on a polyline.
-     * @param point the point.
-     * @param length the length.
-     */
-    public OrientedPoint2d(Point2D<?, ?> point, double length) {
-        this(point.getX(), point.getY(), length);
-    }
-
     /** Construct an oriented point from the two given coordinates.
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
@@ -75,51 +65,22 @@ public class OrientedPoint2d
         super(x, y);
     }
 
-    /** Construct an oriented point from the two given coordinates and the length of the point on a polyline.
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length
-     */
-    public OrientedPoint2d(double x, double y, double length) {
-        set(x, y, length);
-    }
-
-    /** Construct an oriented point from a point and a direction vector.
+    /** Construct an oriented point from a point and a tangent vector.
      * @param point the point.
-     * @param vector the direction vector.
+     * @param vector the tangent vector.
      */
     public OrientedPoint2d(Point2D<?, ?> point, Vector2D<?, ?> vector) {
         this(point.getX(), point.getY(), vector.getX(), vector.getY());
     }
 
-    /** Construct an oriented point from a point, its length, and a direction vector.
-     * @param point the point.
-     * @param length the length of the point
-     * @param vector the direction vector.
-     */
-    public OrientedPoint2d(Point2D<?, ?> point, double length, Vector2D<?, ?> vector) {
-        this(point.getX(), point.getY(), length, vector.getX(), vector.getY());
-    }
-
     /** Construct an oriented point from the two given coordinates.
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
+     * @param tanX x coordinate of the vector.
+     * @param tanY y coordinate of the vector.
      */
-    public OrientedPoint2d(double x, double y, double dirX, double dirY) {
-        set(x, y, dirX, dirY);
-    }
-
-    /** Construct an oriented point from the given coordinates.
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length of the point on the polyline.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     */
-    public OrientedPoint2d(double x, double y, double length, double dirX, double dirY) {
-        set(x, y, length, dirX, dirY);
+    public OrientedPoint2d(double x, double y, double tanX, double tanY) {
+        set(x, y, tanX, tanY);
     }
 
     @Pure
@@ -127,69 +88,58 @@ public class OrientedPoint2d
     public int hashCode() {
         int bits = 1;
         bits = 31 * bits + super.hashCode();
-        bits = 31 * bits + Double.hashCode(this.dx);
-        bits = 31 * bits + Double.hashCode(this.dy);
-        bits = 31 * bits + Double.hashCode(this.len);
+        bits = 31 * bits + Double.hashCode(this.tx);
+        bits = 31 * bits + Double.hashCode(this.ty);
         return bits ^ (bits >> 31);
     }
 
     @Override
-    public void setDirectionX(int dirX) {
-        this.dx = dirX;
+    public void setTangentX(int tanX) {
+        this.tx = tanX;
     }
 
     @Override
-    public void setDirectionX(double dirX) {
-        this.dx = dirX;
+    public void setTangentX(double tanX) {
+        this.tx = tanX;
     }
 
     @Override
-    public void setDirectionY(int dirY) {
-        this.dy = dirY;
+    public void setTangentY(int tanY) {
+        this.ty = tanY;
     }
 
     @Override
-    public void setDirectionY(double dirY) {
-        this.dy = dirY;
+    public void setTangentY(double tanY) {
+        this.ty = tanY;
     }
 
     @Override
-    public void setLength(int length) {
-        this.len = length;
+    public double getTangentX() {
+        return this.tx;
     }
 
     @Override
-    public void setLength(double length) {
-        this.len = length;
+    public int itx() {
+        return (int) this.tx;
     }
 
     @Override
-    public double getDirectionX() {
-        return this.dx;
+    public double getTangentY() {
+        return this.ty;
     }
 
     @Override
-    public int idx() {
-        return (int) this.dx;
+    public int ity() {
+        return (int) this.ty;
     }
 
     @Override
-    public double getDirectionY() {
-        return this.dy;
+    public Vector2d getTangent() {
+        return getGeomFactory().newVector(this.tx, this.ty);
     }
 
     @Override
-    public int idy() {
-        return (int) this.dy;
-    }
-
-    @Override
-    public double getLength() {
-        return this.len;
-    }
-
-    @Override
-    public int ilen() {
-        return (int) this.len;
+    public Vector2d getNormal() {
+        return getGeomFactory().newVector(-this.ty, this.tx);
     }
 }

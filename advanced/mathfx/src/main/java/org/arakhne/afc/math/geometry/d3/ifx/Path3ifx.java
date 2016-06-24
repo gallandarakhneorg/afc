@@ -22,7 +22,6 @@ package org.arakhne.afc.math.geometry.d3.ifx;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.ListIterator;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -42,8 +41,6 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
-import org.arakhne.afc.math.geometry.d3.afp.InnerComputationPoint3afp;
-import org.arakhne.afc.math.geometry.d3.ai.InnerComputationPoint3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
 import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -70,7 +67,7 @@ public class Path3ifx
 
 	/** Array of coords.
 	 */
-	private ReadOnlyListWrapper<Integer> coords;
+	private ReadOnlyListWrapper<Point3ifx> coords;
 
 	/** Winding rule for the path.
 	 */
@@ -154,10 +151,8 @@ public class Path3ifx
 		assert pt != null : AssertMessages.notNullParameter();
 		if (this.coords != null && !this.coords.isEmpty()) {
             for (int i = 0; i < this.coords.size(); i++) {
-                final double x = this.coords.get(i);
-                final double y = this.coords.get(i + 1);
-                final double z = this.coords.get(i + 2);
-                if (x == pt.ix() && y == pt.iy() && z == pt.iz()) {
+                final Point3ifx point = this.coords.get(i);
+                if (point.ix() == pt.ix() && point.iy() == pt.iy() && point.iz() == pt.iz()) {
 					return true;
 				}
 			}
@@ -214,31 +209,17 @@ public class Path3ifx
 
 	@Override
 	public void translate(int dx, int dy, int dz) {
-		if (this.coords != null && !this.coords.isEmpty()) {
-			final ListIterator<Integer> li = this.coords.listIterator();
-	        while (li.hasNext()) {
-	            li.set(li.next() + dx);
-	            li.set(li.next() + dy);
-	            li.set(li.next() + dz);
-	        }
+		for (final Point3ifx point : this.coords) {
+		    point.add(dx, dy, dz);
 		}
 	}
 
 	@Override
 	public void transform(Transform3D transform) {
 		assert transform != null : AssertMessages.notNullParameter();
-		final Point3D<?, ?> p = new InnerComputationPoint3ai();
-		if (this.coords != null && !this.coords.isEmpty()) {
-			final ListIterator<Integer> li = this.coords.listIterator();
-			int i = 0;
-	        while (li.hasNext()) {
-	        	p.set(li.next(), li.next(), li.next());
-				transform.transform(p);
-				this.coords.set(i++, p.ix());
-				this.coords.set(i++, p.iy());
-				this.coords.set(i++, p.iz());
-	        }
-		}
+		for (final Point3ifx point : this.coords) {
+            transform.transform(point);
+        }
 	}
 
 	/** Replies the isEmpty property.
@@ -488,25 +469,20 @@ public class Path3ifx
 
 	@Override
 	public int[] toIntArray(Transform3D transform) {
-		final int n = (this.coords != null) ? this.coords.size() : 0;
+		final int n = (this.coords != null) ? this.coords.size() * 3 : 0;
 		final int[] clone = new int[n];
 		if (n > 0) {
-			if (transform == null || transform.isIdentity()) {
-				final Iterator<Integer> iterator = this.coords.iterator();
-                for (int i = 0; i < n; ++i) {
-					clone[i] = iterator.next().intValue();
-				}
-			} else {
-				final Point3D<?, ?> p = new InnerComputationPoint3ai();
-				final Iterator<Integer> iterator = this.coords.iterator();
-                for (int i = 0; i < n; i += 3) {
-					p.set(iterator.next(), iterator.next(), iterator.next());
-					transform.transform(p);
-					clone[i] = p.ix();
-                    clone[i + 1] = p.iy();
-                    clone[i + 2] = p.iz();
-				}
-			}
+		    final Iterator<Point3ifx> iterator = this.coords.iterator();
+		    int i = 0;
+		    while (iterator.hasNext()) {
+		        final Point3ifx point = iterator.next();
+		        if (!(transform == null || transform.isIdentity())) {
+		            transform.transform(point);
+		        }
+		        clone[i++] = point.ix();
+		        clone[i++] = point.iy();
+		        clone[i++] = point.iz();
+		    }
 		}
 		return clone;
 	}
@@ -515,74 +491,57 @@ public class Path3ifx
 	public float[] toFloatArray(Transform3D transform) {
 		final int n = (this.coords != null) ? this.coords.size() : 0;
 		final float[] clone = new float[n];
-		if (n > 0) {
-			if (transform == null || transform.isIdentity()) {
-				final Iterator<Integer> iterator = this.coords.iterator();
-                for (int i = 0; i < n; ++i) {
-					clone[i] = iterator.next().floatValue();
-				}
-			} else {
-				final Point3D<?, ?> p = new InnerComputationPoint3afp(0, 0, 0);
-				final Iterator<Integer> iterator = this.coords.iterator();
-                for (int i = 0; i < n; i += 3) {
-					p.set(iterator.next(), iterator.next(), iterator.next());
-					transform.transform(p);
-					clone[i] = (float) p.getX();
-                    clone[i + 1] = (float) p.getY();
-                    clone[i + 2] = (float) p.getY();
-				}
-			}
-		}
+        if (n > 0) {
+            final Iterator<Point3ifx> iterator = this.coords.iterator();
+            int i = 0;
+            while (iterator.hasNext()) {
+                final Point3ifx point = iterator.next();
+                if (!(transform == null || transform.isIdentity())) {
+                    transform.transform(point);
+                }
+                clone[i++] = (float) point.getX();
+                clone[i++] = (float) point.getY();
+                clone[i++] = (float) point.getZ();
+            }
+        }
 		return clone;
 	}
 
 	@Override
 	public double[] toDoubleArray(Transform3D transform) {
-		final int n = (this.coords != null) ? this.coords.size() : 0;
+		final int n = (this.coords != null) ? this.coords.size() * 3 : 0;
 		final double[] clone = new double[n];
-		if (n > 0) {
-			if (transform == null || transform.isIdentity()) {
-				final Iterator<Integer> iterator = this.coords.iterator();
-                for (int i = 0; i < n; ++i) {
-					clone[i] = iterator.next().doubleValue();
-				}
-			} else {
-				final Point3D<?, ?> p = new InnerComputationPoint3afp(0, 0, 0);
-				final Iterator<Integer> iterator = this.coords.iterator();
-                for (int i = 0; i < n; i += 3) {
-					p.set(iterator.next(), iterator.next(), iterator.next());
-					transform.transform(p);
-					clone[i] = p.getX();
-                    clone[i + 1] = p.getY();
-                    clone[i + 2] = p.getZ();
-				}
-			}
-		}
+        if (n > 0) {
+            final Iterator<Point3ifx> iterator = this.coords.iterator();
+            int i = 0;
+            while (iterator.hasNext()) {
+                final Point3ifx point = iterator.next();
+                if (!(transform == null || transform.isIdentity())) {
+                    transform.transform(point);
+                }
+                clone[i++] = point.getX();
+                clone[i++] = point.getY();
+                clone[i++] = point.getZ();
+            }
+        }
 		return clone;
 	}
 
 	@Override
 	public Point3ifx[] toPointArray(Transform3D transform) {
-		final int n = (this.coords != null) ? this.coords.size() / 3 : 0;
+		final int n = (this.coords != null) ? this.coords.size() : 0;
 		final Point3ifx[] clone = new Point3ifx[n];
 		if (n > 0) {
-			if (transform == null || transform.isIdentity()) {
-				final Iterator<Integer> iterator = this.coords.iterator();
-                for (int i = 0; i < n; ++i) {
-					clone[i] = getGeomFactory().newPoint(
-							iterator.next().intValue(),
-							iterator.next().intValue(),
-							iterator.next().intValue());
-				}
-			} else {
-				final Iterator<Integer> iterator = this.coords.iterator();
-                for (int i = 0; i < n; ++i) {
-					final Point3ifx p = getGeomFactory().newPoint(iterator.next(), iterator.next(), iterator.next());
-					transform.transform(p);
-					clone[i] = p;
-				}
-			}
-		}
+            final Iterator<Point3ifx> iterator = this.coords.iterator();
+            Point3ifx point = iterator.next();
+            for (int i = 0; i < n; ++i) {
+                if (!(transform == null || transform.isIdentity())) {
+                    transform.transform(point);
+                }
+                clone[i] = point;
+                point = iterator.next();
+            }
+        }
 		return clone;
 	}
 
@@ -591,11 +550,7 @@ public class Path3ifx
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		final int baseIdx = index * 3;
-		return getGeomFactory().newPoint(
-				this.coords.get(baseIdx),
-				this.coords.get(baseIdx + 1),
-				this.coords.get(baseIdx + 2));
+		return this.coords.get(index);
 	}
 
 	@Override
@@ -604,8 +559,8 @@ public class Path3ifx
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		final int index = this.coords.size() - 3;
-		return this.coords.get(index);
+		final int index = this.coords.size() - 1;
+		return this.coords.get(index).ix();
 	}
 
 	@Override
@@ -614,8 +569,8 @@ public class Path3ifx
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		final int index = this.coords.size() - 3;
-		return this.coords.get(index);
+		final int index = this.coords.size() - 1;
+		return this.coords.get(index).iy();
 	}
 
 	@Override
@@ -625,7 +580,7 @@ public class Path3ifx
 			throw new IndexOutOfBoundsException();
 		}
 		final int index = this.coords.size() - 1;
-		return this.coords.get(index);
+		return this.coords.get(index).iz();
 	}
 
 	@Override
@@ -635,15 +590,12 @@ public class Path3ifx
 			throw new IndexOutOfBoundsException();
 		}
 		final int baseIdx = this.coords.size() - 1;
-		return getGeomFactory().newPoint(
-				this.coords.get(baseIdx - 2),
-				this.coords.get(baseIdx - 1),
-				this.coords.get(baseIdx));
+		return this.coords.get(baseIdx);
 	}
 
 	@Override
 	public int size() {
-		return (this.coords == null) ? 0 : this.coords.size() / 3;
+		return (this.coords == null) ? 0 : this.coords.size();
 	}
 
 	@Override
@@ -658,16 +610,16 @@ public class Path3ifx
 				// no coord to remove
 				break;
 			case MOVE_TO:
-				coordIndex = coordSize - 3;
+				coordIndex = coordSize - 1;
 				break;
 			case LINE_TO:
-				coordIndex = coordSize - 3;
+				coordIndex = coordSize - 1;
 				break;
 			case CURVE_TO:
-				coordIndex = coordSize - 9;
+				coordIndex = coordSize - 3;
 				break;
 			case QUAD_TO:
-				coordIndex = coordSize - 6;
+				coordIndex = coordSize - 2;
 				break;
             case ARC_TO:
 			default:
@@ -682,19 +634,30 @@ public class Path3ifx
 
 	@Override
 	public void moveTo(int x, int y, int z) {
+	    if (this.types != null && !this.types.isEmpty()
+	            && this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
+	        assert this.coords != null && this.coords.size() >= 1;
+	        final int idx = this.coords.size() - 1;
+	        this.coords.set(idx, getGeomFactory().newPoint(x, y, z));
+	    } else {
+	        innerTypesProperty().add(PathElementType.MOVE_TO);
+	        final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
+	        coords.add(getGeomFactory().newPoint(x, y, z));
+	    }
+	}
+
+	@Override
+	public void moveTo(Point3D<?, ?> position) {
+	    assert position != null : AssertMessages.notNullParameter();
 		if (this.types != null && !this.types.isEmpty()
 				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
-			assert this.coords != null && this.coords.size() >= 2;
+			assert this.coords != null && this.coords.size() >= 1;
 			final int idx = this.coords.size() - 1;
-			this.coords.set(idx - 2, x);
-			this.coords.set(idx - 1, y);
-			this.coords.set(idx, z);
+			this.coords.set(idx, getGeomFactory().convertToPoint(position));
 		} else {
 			innerTypesProperty().add(PathElementType.MOVE_TO);
-			final ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
-			coords.add(x);
-			coords.add(y);
-			coords.add(z);
+			final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
+			coords.add(getGeomFactory().convertToPoint(position));
 		}
 	}
 
@@ -706,49 +669,71 @@ public class Path3ifx
 
 	@Override
 	public void lineTo(int x, int y, int z) {
+	    ensureMoveTo();
+	    innerTypesProperty().add(PathElementType.LINE_TO);
+	    final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
+	    coords.add(getGeomFactory().newPoint(x, y, z));
+	}
+
+	@Override
+	public void lineTo(Point3D<?, ?> to) {
+	    assert to != null : AssertMessages.notNullParameter();
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.LINE_TO);
-		final ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
-		coords.add(x);
-		coords.add(y);
-		coords.add(z);
+		final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
+		coords.add(getGeomFactory().convertToPoint(to));
 	}
 
 	@Override
 	public void quadTo(int x1, int y1, int z1, int x2, int y2, int z2) {
+	    ensureMoveTo();
+	    innerTypesProperty().add(PathElementType.QUAD_TO);
+	    final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
+	    coords.add(getGeomFactory().newPoint(x1, y1, z1));
+	    coords.add(getGeomFactory().newPoint(x2, y2, z2));
+	}
+
+	@Override
+	public void quadTo(Point3D<?, ?> ctrl, Point3D<?, ?> to) {
+	    assert ctrl != null : AssertMessages.notNullParameter(0);
+	    assert to != null : AssertMessages.notNullParameter(1);
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.QUAD_TO);
-		final ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
-		coords.add(x1);
-		coords.add(y1);
-		coords.add(z1);
-		coords.add(x2);
-		coords.add(y2);
-		coords.add(z2);
+		final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
+		coords.add(getGeomFactory().convertToPoint(ctrl));
+		coords.add(getGeomFactory().convertToPoint(to));
 	}
 
 	@Override
 	@SuppressWarnings("checkstyle:parameternumber")
 	public void curveTo(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3) {
+	    ensureMoveTo();
+	    innerTypesProperty().add(PathElementType.CURVE_TO);
+	    final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
+	    coords.add(getGeomFactory().newPoint(x1, y1, z1));
+	    coords.add(getGeomFactory().newPoint(x2, y2, z2));
+	    coords.add(getGeomFactory().newPoint(x3, y3, z3));
+	}
+
+	@Override
+	@SuppressWarnings("checkstyle:parameternumber")
+	public void curveTo(Point3D<?, ?> ctrl1, Point3D<?, ?> ctrl2, Point3D<?, ?> to) {
+	    assert ctrl1 != null : AssertMessages.notNullParameter(0);
+	    assert ctrl2 != null : AssertMessages.notNullParameter(1);
+	    assert to != null : AssertMessages.notNullParameter(2);
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.CURVE_TO);
-		final ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
-		coords.add(x1);
-		coords.add(y1);
-		coords.add(z1);
-		coords.add(x2);
-		coords.add(y2);
-		coords.add(z2);
-		coords.add(x3);
-		coords.add(y3);
-		coords.add(z3);
+		final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
+		coords.add(getGeomFactory().convertToPoint(ctrl1));
+		coords.add(getGeomFactory().convertToPoint(ctrl2));
+		coords.add(getGeomFactory().convertToPoint(to));
 	}
 
 	/** Replies the private coordinates property.
 	 *
 	 * @return the private coordinates property.
 	 */
-	protected ReadOnlyListWrapper<Integer> innerCoordinatesProperty() {
+	protected ReadOnlyListWrapper<Point3ifx> innerCoordinatesProperty() {
 		if (this.coords == null) {
 			this.coords = new ReadOnlyListWrapper<>(this, MathFXAttributeNames.COORDINATES,
 					FXCollections.observableList(new ArrayList<>()));
@@ -760,7 +745,7 @@ public class Path3ifx
 	 *
 	 * @return the coordinates property.
 	 */
-	public ReadOnlyListProperty<Integer> coordinatesProperty() {
+	public ReadOnlyListProperty<Point3ifx> coordinatesProperty() {
 		return innerCoordinatesProperty().getReadOnlyProperty();
 	}
 
@@ -769,16 +754,18 @@ public class Path3ifx
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		return this.coords.get(index);
+		final Point3ifx point = this.coords.get(index / 3);
+        return index % 3 == 0 ? point.ix() : index % 3 == 1 ? point.iy() : point.iz();
 	}
 
 	@Override
 	public void setLastPoint(int x, int y, int z) {
-		if (this.coords != null && this.coords.size() >= 3) {
+		if (this.coords != null && this.coords.size() >= 1) {
 			final int idx = this.coords.size() - 1;
-			this.coords.set(idx - 2, x);
-			this.coords.set(idx - 1, y);
-			this.coords.set(idx, z);
+			final Point3ifx point = this.coords.get(idx);
+			point.setX(x);
+			point.setY(y);
+			point.setZ(z);
 		} else {
 			throw new IllegalStateException();
 		}
@@ -788,42 +775,42 @@ public class Path3ifx
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:booleanexpressioncomplexity", "checkstyle:magicnumber"})
 	public boolean remove(int x, int y, int z) {
 		if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
-            for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size();) {
+            for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size(); ++j) {
+                final Point3ifx point = this.coords.get(i);
                 switch (this.types.get(j)) {
 				case MOVE_TO:
 					//$FALL-THROUGH$
 				case LINE_TO:
-                    if (x == this.coords.get(i) && y == this.coords.get(i + 1) && z == this.coords.get(i + 2)) {
-						this.coords.remove(i, i + 3);
+                    if (x == point.ix() && y == point.iy() && z == point.iz()) {
+						this.coords.remove(i);
+						this.types.remove(j);
+						return true;
+					}
+					i++;
+					break;
+				case CURVE_TO:
+				    final Point3ifx p2 = this.coords.get(i + 1);
+				    final Point3ifx p3 = this.coords.get(i + 2);
+                    if ((x == point.ix() && y == point.iy() && z == point.iz())
+                            || (x == p2.ix() && y == p2.iy() && z == p2.iz())
+                            || (x == p3.ix() && y == p3.iy() && z == p3.iz())) {
+                        this.coords.remove(i, i + 3);
 						this.types.remove(j);
 						return true;
 					}
 					i += 3;
-					++j;
-					break;
-				case CURVE_TO:
-                    if ((x == this.coords.get(i) && y == this.coords.get(i + 1) && z == this.coords.get(i + 2))
-                            || (x == this.coords.get(i + 3) && y == this.coords.get(i + 4) && z == this.coords.get(i + 5))
-                            || (x == this.coords.get(i + 6) && y == this.coords.get(i + 7) && z == this.coords.get(i + 8))) {
-                        this.coords.remove(i, i + 9);
-						this.types.remove(j);
-						return true;
-					}
-					i += 9;
-					++j;
 					break;
 				case QUAD_TO:
-                    if ((x == this.coords.get(i) && y == this.coords.get(i + 1) && z == this.coords.get(i + 2))
-                            || (x == this.coords.get(i + 3) && y == this.coords.get(i + 4) && z == this.coords.get(i + 5))) {
-                        this.coords.remove(i, i + 6);
+				    final Point3ifx pt = this.coords.get(i + 1);
+                    if ((x == point.ix() && y == point.iy() && z == point.iz())
+                            || (x == pt.ix() && y == pt.iy() && z == pt.iz())) {
+                        this.coords.remove(i, i + 2);
                         this.types.remove(j);
                         return true;
                     }
-					i += 6;
-					++j;
+					i += 2;
 					break;
 				case CLOSE:
-					++j;
 					break;
                 case ARC_TO:
 				default:
@@ -833,6 +820,63 @@ public class Path3ifx
 		}
 		return false;
 	}
+
+    /** Remove the point from this path.
+     *
+     * <p>If the given point do not match exactly a point in the path, nothing is removed.
+     *
+     * @param point the point to remove.
+     * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
+     */
+    @SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity"})
+    public boolean remove(Point3D<?, ?> point) {
+        if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
+            for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size(); j++) {
+                final Point3ifx currentPoint = this.coords.get(i);
+                switch (this.types.get(j)) {
+                case MOVE_TO:
+                    //$FALL-THROUGH$
+                case LINE_TO:
+                    if (point.equals(currentPoint)) {
+                        this.coords.remove(i);
+                        this.types.remove(j);
+                        return true;
+                    }
+                    i++;
+                    break;
+                case CURVE_TO:
+                    final Point3ifx p2 = this.coords.get(i + 1);
+                    final Point3ifx p3 = this.coords.get(i + 2);
+                    if ((point.equals(currentPoint))
+                            || (point.equals(p2))
+                            || (point.equals(p3))) {
+                        this.coords.remove(i, i + 3);
+                        this.types.remove(j);
+                        return true;
+                    }
+                    i += 3;
+                    break;
+                case QUAD_TO:
+                    final Point3ifx pt = this.coords.get(i + 1);
+                    if ((point.equals(currentPoint))
+                            || (point.equals(pt))) {
+                        this.coords.remove(i, i + 2);
+                        this.types.remove(j);
+                        return true;
+                    }
+                    i += 2;
+                    break;
+                case CLOSE:
+                    break;
+                case ARC_TO:
+                    throw new IllegalStateException();
+                default:
+                    break;
+                }
+            }
+        }
+        return false;
+    }
 
 	@Override
 	public void set(Path3ifx path) {

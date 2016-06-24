@@ -24,7 +24,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -46,13 +45,9 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 
 	private static final long serialVersionUID = -8092385681401129843L;
 
-	private IntegerProperty minX;
+	private Point2ifx min = new Point2ifx();
 
-	private IntegerProperty minY;
-
-	private IntegerProperty maxX;
-
-	private IntegerProperty maxY;
+	private Point2ifx max = new Point2ifx();
 
 	/** width property.
 	 */
@@ -65,7 +60,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	/** Construct an empty rectangle.
 	 */
 	public Rectangle2ifx() {
-		super();
+		addListeners();
 	}
 
 	/** Construct a rectangle with the given minimum and maximum corners.
@@ -73,9 +68,20 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 * @param max is the max corner of the rectangle.
 	 */
 	public Rectangle2ifx(Point2D<?, ?> min, Point2D<?, ?> max) {
+	    assert min != null : AssertMessages.notNullParameter(0);
+	    assert max != null : AssertMessages.notNullParameter(1);
+	    setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
+	}
+
+	/** Construct a rectangle by setting the given minimum and maximum corners.
+	 * @param min is the min corner of the rectangle.
+	 * @param max is the max corner of the rectangle.
+	 */
+	public Rectangle2ifx(Point2ifx min, Point2ifx max) {
 		assert min != null : AssertMessages.notNullParameter(0);
 		assert max != null : AssertMessages.notNullParameter(1);
-		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
+		this.min = min;
+		this.max = max;
 	}
 
 	/** Construct a rectangle with the given minimum corner and sizes.
@@ -93,59 +99,98 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	/** Constructor by copy.
 	 * @param rectangle the rectangle to copy.
 	 */
+	public Rectangle2ifx(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
+	    assert rectangle != null : AssertMessages.notNullParameter();
+	    setFromCorners(rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY());
+	}
+
+	/** Constructor by setting.
+	 * @param rectangle the rectangle to set.
+	 */
 	public Rectangle2ifx(Rectangle2ifx rectangle) {
-		set(rectangle);
+		assert rectangle != null : AssertMessages.notNullParameter();
+		this.min = rectangle.min;
+		this.max = rectangle.max;
 	}
 
 	@Override
 	public Rectangle2ifx clone() {
 		final Rectangle2ifx clone = super.clone();
-		if (clone.minX != null) {
-			clone.minX = null;
-			clone.minXProperty().set(getMinX());
+		if (clone.min != null) {
+			clone.min = this.min.clone();
 		}
-		if (clone.minY != null) {
-			clone.minY = null;
-			clone.minYProperty().set(getMinY());
-		}
-		if (clone.maxX != null) {
-			clone.maxX = null;
-			clone.maxXProperty().set(getMaxX());
-		}
-		if (clone.maxY != null) {
-			clone.maxY = null;
-			clone.maxYProperty().set(getMaxY());
+		if (clone.max != null) {
+			clone.max = this.max.clone();
 		}
 		return clone;
 	}
 
 	@Override
 	public void setFromCorners(int x1, int y1, int x2, int y2) {
+	    addListeners();
 		if (x1 <= x2) {
-			minXProperty().set(x1);
-			maxXProperty().set(x2);
+			this.min.setX(x1);
+			this.max.setX(x2);
 		} else {
-			minXProperty().set(x2);
-			maxXProperty().set(x1);
+		    this.min.setX(x2);
+            this.max.setX(x1);
 		}
 		if (y1 <= y2) {
-			minYProperty().set(y1);
-			maxYProperty().set(y2);
-		} else {
-			minYProperty().set(y2);
-			maxYProperty().set(y1);
+		    this.min.setY(y1);
+            this.max.setY(y2);
+        } else {
+            this.min.setY(y2);
+            this.max.setY(y1);
 		}
 	}
+
+	/**
+	 * Add a listener to the point properties to observe correct min-max behavior.
+	 */
+	private void addListeners() {
+	    this.min.xProperty().addListener((observable, oldValue, nValue) -> {
+	        final int currentMin = nValue.intValue();
+            final int currentMax = getMaxX();
+            if (currentMax < currentMin) {
+                // min-max constrain is broken
+                maxXProperty().set(currentMin);
+            }
+	    });
+	    this.min.yProperty().addListener((observable, oValue, nValue) -> {
+	        final int currentMin = nValue.intValue();
+            final int currentMax = getMaxY();
+            if (currentMax < currentMin) {
+                // min-max constrain is broken
+                maxYProperty().set(currentMin);
+            }
+	    });
+	    this.max.xProperty().addListener((observable, oValue, nValue) -> {
+	        final int currentMax = nValue.intValue();
+            final int currentMin = getMinX();
+            if (currentMax < currentMin) {
+                // min-max constrain is broken
+                minXProperty().set(currentMax);
+            }
+	    });
+	    this.max.yProperty().addListener((observable, oValue, nValue) -> {
+	        final int currentMax = nValue.intValue();
+            final int currentMin = getMinY();
+            if (currentMax < currentMin) {
+                // min-max constrain is broken
+                minYProperty().set(currentMax);
+            }
+	    });
+    }
 
 	@Pure
 	@Override
 	public int getMinX() {
-		return this.minX == null ? 0 : this.minX.get();
+	    return this.min.ix();
 	}
 
 	@Override
 	public void setMinX(int x) {
-		minXProperty().set(x);
+		this.min.setX(x);
 	}
 
 	/** Replies the property that is the minimum x coordinate of the box.
@@ -154,119 +199,67 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 */
 	@Pure
 	public IntegerProperty minXProperty() {
-		if (this.minX == null) {
-			this.minX = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_X) {
-				@Override
-				protected void invalidated() {
-					final int currentMin = get();
-					final int currentMax = getMaxX();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						maxXProperty().set(currentMin);
-					}
-				}
-			};
-		}
-		return this.minX;
+		return this.min.xProperty();
 	}
 
 	@Pure
 	@Override
 	public int getMaxX() {
-		return this.maxX == null ? 0 : this.maxX.get();
+		return this.max.ix();
 	}
 
 	@Override
 	public void setMaxX(int x) {
-		maxXProperty().set(x);
+		this.max.setX(x);
 	}
 
 	/** Replies the property that is the maximum x coordinate of the box.
 	 *
-	 * @return the maxX property.
+	 * @return the max.x property.
 	 */
 	@Pure
 	public IntegerProperty maxXProperty() {
-		if (this.maxX == null) {
-			this.maxX = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_X) {
-				@Override
-				protected void invalidated() {
-					final int currentMax = get();
-					final int currentMin = getMinX();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						minXProperty().set(currentMax);
-					}
-				}
-			};
-		}
-		return this.maxX;
+		return this.max.xProperty();
 	}
 
 	@Pure
 	@Override
 	public int getMinY() {
-		return this.minY == null ? 0 : this.minY.get();
+		return this.min.iy();
 	}
 
 	@Override
 	public void setMinY(int y) {
-		minYProperty().set(y);
+		this.min.setY(y);
 	}
 
 	/** Replies the property that is the minimum y coordinate of the box.
 	 *
-	 * @return the minY property.
+	 * @return the min.y property.
 	 */
 	@Pure
 	public IntegerProperty minYProperty() {
-		if (this.minY == null) {
-			this.minY = new SimpleIntegerProperty(this, MathFXAttributeNames.MINIMUM_Y) {
-				@Override
-				protected void invalidated() {
-					final int currentMin = get();
-					final int currentMax = getMaxY();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						maxYProperty().set(currentMin);
-					}
-				}
-			};
-		}
-		return this.minY;
+		return this.min.yProperty();
 	}
 
 	@Pure
 	@Override
 	public int getMaxY() {
-		return this.maxY == null ? 0 : this.maxY.get();
+		return this.max.iy();
 	}
 
 	@Override
 	public void setMaxY(int y) {
-		maxYProperty().set(y);
+		this.max.setY(y);
 	}
 
 	/** Replies the property that is the maximum y coordinate of the box.
 	 *
-	 * @return the maxY property.
+	 * @return the max.y property.
 	 */
 	@Pure
 	public IntegerProperty maxYProperty() {
-		if (this.maxY == null) {
-			this.maxY = new SimpleIntegerProperty(this, MathFXAttributeNames.MAXIMUM_Y) {
-				@Override
-				protected void invalidated() {
-					final int currentMax = get();
-					final int currentMin = getMinY();
-					if (currentMax < currentMin) {
-						// min-max constrain is broken
-						minYProperty().set(currentMax);
-					}
-				}
-			};
-		}
-		return this.maxY;
+		return this.max.yProperty();
 	}
 
 	@Pure

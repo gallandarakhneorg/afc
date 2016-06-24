@@ -70,23 +70,23 @@ public class Path2dfxTest extends AbstractPath2afpTest<Path2dfx, Rectangle2dfx> 
 	
 	@Test
 	public void coordinatesProperty() {
-		ReadOnlyListProperty<Double> property = this.shape.coordinatesProperty();
+		ReadOnlyListProperty<Point2dfx> property = this.shape.coordinatesProperty();
 		assertNotNull(property);
-		assertEquals(14, property.size());
-		assertEpsilonEquals(0, property.get(0));
-		assertEpsilonEquals(0, property.get(1));
-		assertEpsilonEquals(1, property.get(2));
-		assertEpsilonEquals(1, property.get(3));
-		assertEpsilonEquals(3, property.get(4));
-		assertEpsilonEquals(0, property.get(5));
-		assertEpsilonEquals(4, property.get(6));
-		assertEpsilonEquals(3, property.get(7));
-		assertEpsilonEquals(5, property.get(8));
-		assertEpsilonEquals(-1, property.get(9));
-		assertEpsilonEquals(6, property.get(10));
-		assertEpsilonEquals(5, property.get(11));
-		assertEpsilonEquals(7, property.get(12));
-		assertEpsilonEquals(-5, property.get(13));
+		assertEquals(7, property.size());
+		assertEpsilonEquals(0, property.get(0).getX());
+		assertEpsilonEquals(0, property.get(0).getY());
+		assertEpsilonEquals(1, property.get(1).getX());
+		assertEpsilonEquals(1, property.get(1).getY());
+		assertEpsilonEquals(3, property.get(2).getX());
+		assertEpsilonEquals(0, property.get(2).getY());
+		assertEpsilonEquals(4, property.get(3).getX());
+		assertEpsilonEquals(3, property.get(3).getY());
+		assertEpsilonEquals(5, property.get(4).getX());
+		assertEpsilonEquals(-1, property.get(4).getY());
+		assertEpsilonEquals(6, property.get(5).getX());
+		assertEpsilonEquals(5, property.get(5).getY());
+		assertEpsilonEquals(7, property.get(6).getX());
+		assertEpsilonEquals(-5, property.get(6).getY());
 	}
 	
 	@Test

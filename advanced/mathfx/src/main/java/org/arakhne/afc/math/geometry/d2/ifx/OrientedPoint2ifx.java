@@ -20,14 +20,19 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.OrientedPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 2D oriented point with integer FX properties.
  *
@@ -42,11 +47,15 @@ public class OrientedPoint2ifx
 
     private static final long serialVersionUID = 1696624733007552173L;
 
-    private IntegerProperty dx;
+    /**
+     * Tangent vector to this point.
+     */
+    protected Vector2ifx tangent;
 
-    private IntegerProperty dy;
-
-    private IntegerProperty len;
+    /**
+     * Normal vector to the point.
+     */
+    private ObjectProperty<Vector2ifx> normalProperty;
 
     /** Construct an empty oriented point.
      */
@@ -57,16 +66,17 @@ public class OrientedPoint2ifx
     /** Constructor by copy.
      * @param tuple the tuple to copy.
      */
-    public OrientedPoint2ifx(Point2D<?, ?> tuple) {
+    public OrientedPoint2ifx(Tuple2D<?> tuple) {
         super(tuple);
     }
 
-    /** Construct an oriented point from a point and its length on a polyline.
-     * @param point the point.
-     * @param length the length.
+    /** Constructor by setting.
+     * @param tuple the tuple to set.
      */
-    public OrientedPoint2ifx(Point2D<?, ?> point, int length) {
-        this(point.ix(), point.iy(), length);
+    public OrientedPoint2ifx(Tuple2ifx<?> tuple) {
+        assert tuple != null : AssertMessages.notNullParameter();
+        this.x = tuple.x;
+        this.y = tuple.y;
     }
 
     /** Construct an oriented point from the two given coordinates.
@@ -85,67 +95,38 @@ public class OrientedPoint2ifx
         super(x, y);
     }
 
-    /** Construct an oriented point from the two given coordinates and the length of the point on a polyline.
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length
-     */
-    public OrientedPoint2ifx(int x, int y, int length) {
-        super(x, y);
-        lengthProperty().set(length);
-    }
-
-    /** Construct an oriented point from the two given coordinates and the length of the point on a polyline.
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length
-     */
-    public OrientedPoint2ifx(IntegerProperty x, IntegerProperty y, IntegerProperty length) {
-        super(x, y);
-        this.len = length;
-    }
-
-    /** Construct an oriented point from a point and a direction vector.
+    /** Construct an oriented point from a point and a tangent vector.
      * @param point the point.
-     * @param vector the direction vector.
+     * @param tangent the tangent vector.
      */
-    public OrientedPoint2ifx(Point2D<?, ?> point, Vector2D<?, ?> vector) {
-        this(point.ix(), point.iy(), vector.ix(), vector.iy());
+    public OrientedPoint2ifx(Point2D<?, ?> point, Vector2D<?, ?> tangent) {
+        assert point != null : AssertMessages.notNullParameter(0);
+        assert tangent != null : AssertMessages.notNullParameter(1);
+        set(point.ix(), point.iy(), tangent.ix(), tangent.iy());
     }
 
-    /** Construct an oriented point from a point, its length, and a direction vector.
-     * @param point the point.
-     * @param length the length of the point
-     * @param vector the direction vector.
+    /** Constructor by setting from a point and a tangent vector.
+     * @param point the point to set.
+     * @param tangent the tangent vector to set.
      */
-    public OrientedPoint2ifx(Point2D<?, ?> point, int length, Vector2D<?, ?> vector) {
-        this(point.ix(), point.iy(), length, vector.ix(), vector.iy());
+    public OrientedPoint2ifx(Point2ifx point, Vector2ifx tangent) {
+        assert point != null : AssertMessages.notNullParameter(0);
+        assert tangent != null : AssertMessages.notNullParameter(1);
+        this.x = point.x;
+        this.y = point.y;
+        this.tangent = tangent;
     }
 
     /** Construct an oriented point from the two given coordinates.
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
+     * @param tanX x coordinate of the vector.
+     * @param tanY y coordinate of the vector.
      */
-    public OrientedPoint2ifx(int x, int y, int dirX, int dirY) {
+    public OrientedPoint2ifx(int x, int y, int tanX, int tanY) {
         super(x, y);
-        dirXProperty().set(dirX);
-        dirYProperty().set(dirY);
-    }
-
-    /** Construct an oriented point from the given coordinates.
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length of the point on the polyline.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     */
-    public OrientedPoint2ifx(int x, int y, int length, int dirX, int dirY) {
-        super(x, y);
-        lengthProperty().set(length);
-        dirXProperty().set(dirX);
-        dirYProperty().set(dirY);
+        tanXProperty().set(tanX);
+        tanYProperty().set(tanY);
     }
 
     @Pure
@@ -153,123 +134,132 @@ public class OrientedPoint2ifx
     public int hashCode() {
         int bits = 1;
         bits = 31 * bits + super.hashCode();
-        bits = 31 * bits + Integer.hashCode(idx());
-        bits = 31 * bits + Integer.hashCode(idy());
-        bits = 31 * bits + Integer.hashCode(ilen());
+        bits = 31 * bits + Integer.hashCode(itx());
+        bits = 31 * bits + Integer.hashCode(ity());
         return bits ^ (bits >> 31);
     }
 
     @Override
     public OrientedPoint2ifx clone() {
         final OrientedPoint2ifx clone = (OrientedPoint2ifx) super.clone();
-        if (clone.dx != null) {
-            clone.dx = null;
-            clone.dirXProperty().set(idx());
-        }
-        if (clone.dy != null) {
-            clone.dy = null;
-            clone.dirYProperty().set(idy());
-        }
-        if (clone.len != null) {
-            clone.len = null;
-            clone.lengthProperty().set(ilen());
+        if (clone.tangent != null) {
+            clone.tangent = null;
+            clone.tangent = this.tangent.clone();
         }
         return clone;
     }
 
     @Override
-    public double getDirectionX() {
-        return this.dx == null ? 0 : this.dx.doubleValue();
+    public double getTangentX() {
+        return this.tangent.getX();
     }
 
     @Override
-    public int idx() {
-        return this.dx == null ? 0 : this.dx.intValue();
+    public int itx() {
+        return this.tangent.ix();
     }
 
     @Override
-    public void setDirectionX(int dirX) {
-        dirXProperty().set(dirX);
+    public void setTangentX(int tanX) {
+        this.tangent.setX(tanX);
     }
 
     @Override
-    public void setDirectionX(double dirX) {
-        dirXProperty().set((int) Math.round(dirX));
+    public void setTangentX(double tanX) {
+        this.tangent.setX(tanX);
     }
 
     @Override
-    public double getDirectionY() {
-        return this.dy == null ? 0 : this.dy.doubleValue();
+    public double getTangentY() {
+        return this.tangent.getY();
     }
 
     @Override
-    public int idy() {
-        return this.dy == null ? 0 : this.dy.intValue();
+    public int ity() {
+        return this.tangent.iy();
     }
 
     @Override
-    public void setDirectionY(int dirY) {
-        dirYProperty().set(dirY);
+    public void setTangentY(int tanY) {
+        this.tangent.setY(tanY);
     }
 
     @Override
-    public void setDirectionY(double dirY) {
-        dirYProperty().set((int) Math.round(dirY));
+    public void setTangentY(double tanY) {
+        this.tangent.setY(tanY);
     }
 
-    @Override
-    public double getLength() {
-        return this.len == null ? 0 : this.len.doubleValue();
-    }
-
-    @Override
-    public int ilen() {
-        return this.len == null ? 0 : this.len.intValue();
-    }
-
-    @Override
-    public void setLength(double length) {
-        lengthProperty().set((int) Math.round(length));
-    }
-
-    @Override
-    public void setLength(int length) {
-        lengthProperty().set(length);
-    }
-
-    /** Replies the property that is the x coordinate of the direction vector.
+    /** Replies the property that is the x coordinate of the tangent vector.
      *
-     * @return the direction vector x property.
+     * @return the tangent vector x property.
      */
     @Pure
-    public IntegerProperty dirXProperty() {
-        if (this.dx == null) {
-            this.dx = new SimpleIntegerProperty(this, MathFXAttributeNames.X1);
-        }
-        return this.dx;
+    public IntegerProperty tanXProperty() {
+        return this.tangent.xProperty();
     }
 
-    /** Replies the property that is the y coordinate of the direction vector.
+    /** Replies the property that is the y coordinate of the tangent vector.
      *
-     * @return the direction vector y property.
+     * @return the tangent vector y property.
      */
     @Pure
-    public IntegerProperty dirYProperty() {
-        if (this.dy == null) {
-            this.dy = new SimpleIntegerProperty(this, MathFXAttributeNames.Y1);
-        }
-        return this.dy;
+    public IntegerProperty tanYProperty() {
+        return this.tangent.yProperty();
     }
 
-    /** Replies the length property of the point.
-     *
-     * @return the length property.
-     */
-    @Pure
-    public IntegerProperty lengthProperty() {
-        if (this.len == null) {
-            this.len = new SimpleIntegerProperty(this, MathFXAttributeNames.LENGTH);
+    @Override
+    public Vector2ifx getTangent() {
+        return this.tangent;
+    }
+
+    @Override
+    public void setTangent(Vector2ifx tangent) {
+        this.tangent = tangent;
+    }
+
+    @Override
+    public Vector2ifx getNormal() {
+        if (this.normalProperty == null) {
+            this.normalProperty = new SimpleObjectProperty<>(this, MathFXAttributeNames.NORMAL);
+            this.normalProperty.bind(Bindings.createObjectBinding(() -> this.tangent.toOrthogonalVector(),
+                    this.tangent.xProperty(), this.tangent.yProperty()));
         }
-        return this.len;
+        return this.normalProperty.get();
+    }
+
+    /** Replies the property that is the x coordinate of the normal vector.
+     *
+     * @return the normal vector x property.
+     */
+    @Pure ReadOnlyIntegerProperty norXProperty() {
+        return getNormal().xProperty();
+    }
+
+    /** Replies the property that is the y coordinate of the normal vector.
+     *
+     * @return the normal vector y property.
+     */
+    @Pure ReadOnlyIntegerProperty norYProperty() {
+        return getNormal().yProperty();
+    }
+
+    @Override
+    public double getNormalX() {
+        return getNormal().getX();
+    }
+
+    @Override
+    public int inx() {
+        return getNormal().ix();
+    }
+
+    @Override
+    public double getNormalY() {
+        return getNormal().getY();
+    }
+
+    @Override
+    public int iny() {
+        return getNormal().iy();
     }
 }

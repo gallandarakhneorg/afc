@@ -45,52 +45,52 @@ public interface OrientedPoint2D<RP extends Point2D<? super RP, ? super RV>, RV 
      *
      * @return the x coordinate of the direction vector.
      */
-    @Pure double getDirectionX();
+    @Pure double getTangentX();
 
     /** Replies the X coordinate of the direction vector.
      * If this point is not part of a polyline, the direction vector is null.
      *
      * @return the x coordinate of the direction vector.
      */
-    @Pure int idx();
+    @Pure int itx();
 
     /** Sets a new value in the X direction of the point.
      *
-     * @param dirX the new value double x.
+     * @param tanX the new value double x.
      */
-    void setDirectionX(int dirX);
+    void setTangentX(int tanX);
 
     /** Sets a new value in the X direction of the point.
      *
-     * @param dirX the new value double x.
+     * @param tanX the new value double x.
      */
-    void setDirectionX(double dirX);
+    void setTangentX(double tanX);
 
     /** Replies the Y coordinate of the direction vector.
      * If this point is not part of a polyline, the direction vector is null.
      *
      * @return the y coordinate of the direction vector.
      */
-    @Pure double getDirectionY();
+    @Pure double getTangentY();
 
     /** Replies the Y coordinate of the direction vector.
      * If this point is not part of a polyline, the direction vector is null.
      *
      * @return the y coordinate of the direction vector.
      */
-    @Pure int idy();
+    @Pure int ity();
 
     /**  Sets a new value in the Y direction of the point.
      *
-     * @param dirY the new value double y.
+     * @param tanY the new value double y.
      */
-    void setDirectionY(int dirY);
+    void setTangentY(int tanY);
 
     /**  Sets a new value in the Y direction of the point.
      *
-     * @param dirY the new value double y.
+     * @param tanY the new value double y.
      */
-    void setDirectionY(double dirY);
+    void setTangentY(double tanY);
 
     /** Replies the X coordinate of the normal vector.
      *  If this point is not part of a polyline, the normal vector is null.
@@ -98,7 +98,7 @@ public interface OrientedPoint2D<RP extends Point2D<? super RP, ? super RV>, RV 
      * @return the x coordinate of the normal vector.
      */
     @Pure default double getNormalX() {
-        return -getDirectionY();
+        return -getTangentY();
     }
 
     /** Replies the X coordinate of the normal vector.
@@ -107,7 +107,7 @@ public interface OrientedPoint2D<RP extends Point2D<? super RP, ? super RV>, RV 
      * @return the x coordinate of the normal vector.
      */
     @Pure default int inx() {
-        return -idy();
+        return -ity();
     }
 
     /** Replies the Y coordinate of the normal vector.
@@ -116,7 +116,7 @@ public interface OrientedPoint2D<RP extends Point2D<? super RP, ? super RV>, RV 
      * @return the y coordinate of the normal vector.
      */
     @Pure default double getNormalY() {
-        return getDirectionX();
+        return getTangentX();
     }
 
     /** Replies the Y coordinate of the normal vector.
@@ -125,117 +125,84 @@ public interface OrientedPoint2D<RP extends Point2D<? super RP, ? super RV>, RV 
      * @return the y coordinate of the normal vector.
      */
     @Pure default int iny() {
-        return idx();
+        return itx();
     }
 
-    /** Replies the geometrical length of this point on
-     * the polyline.
-     *
-     * @return the length of the point on the polyline
-     */
-    @Pure double getLength();
-
-    /** Replies the geometrical length of this point on
-     * the polyline.
-     *
-     * @return the length of the point on the polyline
-     */
-    @Pure int ilen();
-
-    /** Sets a new value for the length of the point.
-     *
-     * @param length the length of the point on the polyline.
-     */
-    void setLength(int length);
-
-    /** Sets a new value for the length of the point.
-     *
-     * @param length the length of the point on the polyline.
-     */
-    void setLength(double length);
-
     /** Replies this point.
+     *
      * @return this point
      */
     default RP getPoint() {
         return getGeomFactory().newPoint(getX(), getY());
     }
 
-    /** Change the point.
+    /** Replies the tangent vector at this point.
+     *
+     * @return the tangent vector.
+     */
+    @Pure RV getTangent();
+
+    /** Sets the given vector as the new tangent to this point.
+     *  The normal vector is automatically recomputed.
+     *
+     * @param tangent the vector to set.
+     */
+    default void setTangent(RV tangent) {
+        setTangentX(tangent.getX());
+        setTangentY(tangent.getY());
+    }
+
+    /** Change the tangent vector.
+     *  The normal vector is automatically recomputed.
+     *
+     * @param x x coordinate of the vector.
+     * @param y y coordinate of the vector.
+     */
+    default void setTangent(double x, double y) {
+        setTangentX(x);
+        setTangentY(y);
+    }
+
+    /** Change the tangent vector.
+     *  The normal vector is automatically recomputed.
+     *
+     * @param x x coordinate of the vector.
+     * @param y y coordinate of the vector.
+     */
+    default void setTangent(int x, int y) {
+        setTangentX(x);
+        setTangentY(y);
+    }
+
+    /** Replies the normal vector at this point.
+     *
+     * @return the normal vector.
+     */
+    @Pure RV getNormal();
+
+    /** Change the point and its tangent vector.
      *
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
-     * @param length the length of the point on the polyline.
+     * @param tanX x coordinate of the vector.
+     * @param tanY y coordinate of the vector.
      */
-    default void set(int x, int y, int length) {
+    default void set(int x, int y, int tanX, int tanY) {
         Point2D.super.set(x, y);
-        setLength(length);
+        setTangentX(tanX);
+        setTangentY(tanY);
     }
 
     /** Change the point and its orientation vector.
      *
      * @param x x coordinate of the point.
      * @param y y coordinate of the point.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
+     * @param tanX x coordinate of the vector.
+     * @param tanY y coordinate of the vector.
      */
-    default void set(int x, int y, int dirX, int dirY) {
+    default void set(double x, double y, double tanX, double tanY) {
         Point2D.super.set(x, y);
-        setDirectionX(dirX);
-        setDirectionY(dirY);
-    }
-
-    /** Change the point and its orientation vector.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length of the point on the polyline.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     */
-    default void set(int x, int y, int length, int dirX, int dirY) {
-        Point2D.super.set(x, y);
-        setLength(length);
-        setDirectionX(dirX);
-        setDirectionY(dirY);
-    }
-
-    /** Change the point.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length of the point on the polyline.
-     */
-    default void set(double x, double y, double length) {
-        Point2D.super.set(x, y);
-        setLength(length);
-    }
-
-    /** Change the point and its orientation vector.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     */
-    default void set(double x, double y, double dirX, double dirY) {
-        Point2D.super.set(x, y);
-        setDirectionX(dirX);
-        setDirectionY(dirY);
-    }
-
-    /** Change the point and its orientation vector.
-     *
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param length the length of the point on the polyline.
-     * @param dirX x coordinate of the vector.
-     * @param dirY y coordinate of the vector.
-     */
-    default void set(double x, double y, double length, double dirX, double dirY) {
-        Point2D.super.set(x, y);
-        setLength(length);
-        setDirectionX(dirX);
-        setDirectionY(dirY);
+        setTangentX(tanX);
+        setTangentY(tanY);
     }
 }
