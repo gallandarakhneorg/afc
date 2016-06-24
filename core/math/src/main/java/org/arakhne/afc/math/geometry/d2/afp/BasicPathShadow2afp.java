@@ -207,7 +207,7 @@ class BasicPathShadow2afp {
                 cury = movy;
                 break;
             case LINE_TO:
-                setLineToFromDiscretizePathIterator(element, this.coordinateParam);
+                setLineToFromDiscretizePathIterator(element, coordinateParam);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -216,7 +216,7 @@ class BasicPathShadow2afp {
                 break;
             case QUAD_TO:
                 // only for local use.
-                setQuadToFromDiscretizePathIterator(element, pi, this.coordinateParam);
+                setQuadToFromDiscretizePathIterator(element, pi, coordinateParam);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -225,7 +225,7 @@ class BasicPathShadow2afp {
                 break;
             case CURVE_TO:
                 // only for local use.
-                setCurveToFromDiscretizePathIterator(element, pi, this.coordinateParam);
+                setCurveToFromDiscretizePathIterator(element, pi, coordinateParam);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -234,7 +234,7 @@ class BasicPathShadow2afp {
                 break;
             case ARC_TO:
                 // only for local use.
-                setArcToFromDiscretizePathIterator(element, pi, this.coordinateParam);
+                setArcToFromDiscretizePathIterator(element, pi, coordinateParam);
                 if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
                     return;
                 }
@@ -242,7 +242,7 @@ class BasicPathShadow2afp {
                 cury = element.getToY();
                 break;
             case CLOSE:
-                setCloseFromDiscretizePathIterator(this.coordinateParam, movx, movy);
+                setCloseFromDiscretizePathIterator(coordinateParam, movx, movy);
                 if (this.crossings != 0) {
                     return;
                 }
@@ -318,7 +318,7 @@ class BasicPathShadow2afp {
     }
 
     private void setCloseFromDiscretizePathIterator(CoordinatesParam param, double movx, double movy) {
-        if (param.cury != movy || param.curx != movx) {
+        if (param.getCury() != movy || param.getCurx() != movx) {
             crossSegmentTwoShadowLines(
                     param.getCurx(), param.getCury(),
                     movx, movy,
