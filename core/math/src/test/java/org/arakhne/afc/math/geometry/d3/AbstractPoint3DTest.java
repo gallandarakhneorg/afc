@@ -29,7 +29,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Assume;
-import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
@@ -71,7 +70,6 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	@Ignore
 	public final void staticGetDistanceLinfPointPoint() {
 		assertEpsilonEquals(2, Point3D.getDistanceLinfPointPoint(1.0, 2.0, 0, 3.0, 0, 0));
 		assertEpsilonEquals(0, Point3D.getDistanceLinfPointPoint(1.0, 2.0, 0, 1, 2, 0));

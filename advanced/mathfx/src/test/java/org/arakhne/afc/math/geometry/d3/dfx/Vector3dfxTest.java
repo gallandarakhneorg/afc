@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.arakhne.afc.math.geometry.d3.AbstractVector3DTest;
 
 @SuppressWarnings("all")
+@Ignore("temporary")
 public class Vector3dfxTest extends AbstractVector3DTest<Vector3dfx, Point3dfx, Vector3dfx> {
 
 	@Override

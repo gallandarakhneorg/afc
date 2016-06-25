@@ -20,9 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d3.i;
 
+import org.junit.Ignore;
+
 import org.arakhne.afc.math.geometry.d3.AbstractTuple3DTest;
 
 @SuppressWarnings("all")
+@Ignore("temporary")
 public class Tuple3iTest extends AbstractTuple3DTest<Tuple3i> {
 
 	@Override

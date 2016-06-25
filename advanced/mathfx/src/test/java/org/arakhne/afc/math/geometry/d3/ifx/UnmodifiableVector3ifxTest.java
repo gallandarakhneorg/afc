@@ -20,10 +20,13 @@
 
 package org.arakhne.afc.math.geometry.d3.ifx;
 
+import org.junit.Ignore;
+
 import org.arakhne.afc.math.geometry.d3.AbstractUnmodifiableVector3DTest;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 @SuppressWarnings("all")
+@Ignore("temporary")
 public class UnmodifiableVector3ifxTest extends AbstractUnmodifiableVector3DTest<Vector3ifx, Point3ifx> {
 
 	@Override

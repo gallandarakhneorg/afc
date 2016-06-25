@@ -29,7 +29,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -163,7 +162,6 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 	}
 
 	@Test
-	@Ignore
 	public void addDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().add(6.5, 7.5, 5.5);

@@ -20,12 +20,14 @@
 
 package org.arakhne.afc.math.geometry.d3.d;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.math.geometry.d3.AbstractVector3DTest;
 
 @SuppressWarnings("all")
+@Ignore("temporary")
 public class Vector3dTest extends AbstractVector3DTest<Vector3d, Point3d, Vector3d> {
 
 	@Override

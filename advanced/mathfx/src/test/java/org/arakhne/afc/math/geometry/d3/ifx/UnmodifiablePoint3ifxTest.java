@@ -23,11 +23,14 @@ package org.arakhne.afc.math.geometry.d3.ifx;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
+
 import org.arakhne.afc.math.geometry.d3.AbstractUnmodifiablePoint3DTest;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
 
 @SuppressWarnings("all")
+@Ignore("temporary")
 public class UnmodifiablePoint3ifxTest extends AbstractUnmodifiablePoint3DTest<Point3ifx, Vector3ifx> {
 
 	@Override

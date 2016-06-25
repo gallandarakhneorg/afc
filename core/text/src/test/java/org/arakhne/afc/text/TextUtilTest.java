@@ -20,7 +20,9 @@
 
 package org.arakhne.afc.text;
 
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -34,8 +36,6 @@ import org.junit.Test;
 
 import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.vmutil.locale.Locale;
-
-import static org.arakhne.afc.testtools.XbaseInlineTestUtil.*;
 
 @SuppressWarnings("all")
 public class TextUtilTest extends AbstractTestCase {
@@ -460,4 +460,13 @@ public class TextUtilTest extends AbstractTestCase {
 		assertInlineParameterUsage(TextUtil.class, "splitBracketsAsUUIDs", String.class); //$NON-NLS-1$
 	}
 
+	@Test
+	public void getLevenshteinDistance() {
+		assertEquals(0, TextUtil.getLevenshteinDistance(null, null));
+		assertEquals(0, TextUtil.getLevenshteinDistance(null, "")); //$NON-NLS-1$
+		assertEquals(0, TextUtil.getLevenshteinDistance("", null)); //$NON-NLS-1$
+		assertEquals(0, TextUtil.getLevenshteinDistance("", "")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(1, TextUtil.getLevenshteinDistance("", "a")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(3, TextUtil.getLevenshteinDistance("a", "abcd")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }

@@ -545,7 +545,8 @@
 
 		<!-- Limit the maximal number of returns in a method. -->
 		<module name="ReturnCount">
-			<property name="max" value="7" />
+			<property name="max" value="10" />
+			<property name="maxForVoid" value="10" />
 		</module>
 
 		<!-- Limit the maximal number of nested if statements in a method. -->

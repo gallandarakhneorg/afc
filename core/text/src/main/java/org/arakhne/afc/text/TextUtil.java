@@ -1662,6 +1662,62 @@ public final class TextUtil {
 		return fmt.format(amount);
 	}
 
+	/** Compute the Levenshstein distance between two strings.
+	 *
+	 * <p>Null string is assimilated to the empty string.
+	 *
+	 * @param firstString first string.
+	 * @param secondString second string.
+	 * @return the Levenshstein distance.
+	 * @see "https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance"
+	 */
+	public static int getLevenshteinDistance(String firstString, String secondString) {
+		final String s0 = firstString == null ? "" : firstString; //$NON-NLS-1$
+		final String s1 = secondString == null ? "" : secondString; //$NON-NLS-1$
+
+		final int len0 = s0.length() + 1;
+		final int len1 = s1.length() + 1;
+
+		// the array of distances
+		int[] cost = new int[len0];
+		int[] newcost = new int[len0];
+
+		// initial cost of skipping prefix in String s0
+		for (int i = 0; i < len0; ++i) {
+			cost[i] = i;
+		}
+
+		// dynamically computing the array of distances
+
+		// transformation cost for each letter in s1
+		for (int j = 1; j < len1; ++j) {
+			// initial cost of skipping prefix in String s1
+			newcost[0] = j;
+
+			// transformation cost for each letter in s0
+			for (int i = 1; i < len0; ++i) {
+				// matching current letters in both strings
+				final int match = (s0.charAt(i - 1) == s1.charAt(j - 1)) ? 0 : 1;
+
+				// computing cost for each transformation
+				final int costReplace = cost[i - 1] + match;
+				final int costInsert  = cost[i] + 1;
+				final int costDelete  = newcost[i - 1] + 1;
+
+				// keep minimum cost
+				newcost[i] = Math.min(Math.min(costInsert, costDelete), costReplace);
+			}
+
+			// swap cost/newcost arrays
+			final int[] swap = cost;
+			cost = newcost;
+			newcost = swap;
+		}
+
+		// the distance is the cost for transforming all letters in both strings
+		return cost[len0 - 1];
+	}
+
 	/**
 	 * Algorithm interface used by cut string functions to provide
 	 * a buffer filler.
@@ -1671,6 +1727,7 @@ public final class TextUtil {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@FunctionalInterface
 	private interface CutStringAlgorithm {
 
 		/** Add a line to the output buffer.
@@ -1690,6 +1747,7 @@ public final class TextUtil {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@FunctionalInterface
 	private interface SplitSeparatorAlgorithm {
 
 		/** Add a token to the output buffer.

@@ -32,7 +32,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Assume;
 import org.junit.ComparisonFailure;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import org.arakhne.afc.math.MathConstants;
@@ -92,7 +91,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public final void staticAngleOfVectorDoubleDoubleDoubleDouble() {
 		double v1x = getRandom().nextDouble();
 		double v1y = getRandom().nextDouble();
@@ -196,7 +194,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public final void signedAngleVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		Vector3D v1 = createVector(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
@@ -228,7 +225,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public final void signedAngleVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D v1 = createVector(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
@@ -447,7 +443,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 	
 	@Test
-	@Ignore
 	public final void operator_greaterThanDoubleDotVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		Vector3D v1 = createVector(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
@@ -479,7 +474,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public final void operator_greaterThanDoubleDotVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D v1 = createVector(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
@@ -511,7 +505,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public final void operator_operator_doubleDotLessThanVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		Vector3D v1 = createVector(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
@@ -543,7 +536,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public final void operator_operator_doubleDotLessThanVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D v1 = createVector(getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2, getRandom().nextInt(48) + 2);
@@ -654,7 +646,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public final void operator_minusVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D vect = createVector(0, 0, 0);
@@ -686,7 +677,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public final void operator_plusVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D vector = createVector(0,0, 0);
@@ -795,7 +785,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public void addVector3DVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D vector = createVector(0, 0, 0);
@@ -827,7 +816,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public void addVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D vector = createVector(0,0, 0);
@@ -903,7 +891,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public void scaleAddDoubleVector3DVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D vect = createVector(1,0, 0);
@@ -987,7 +974,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public void subVector3DVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D vect = createVector(0, 0, 0);
@@ -1020,7 +1006,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public void subPoint3DPoint3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Point3D point = createPoint(0, 0, 0);
@@ -1052,7 +1037,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public void subVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D vect = createVector(0, 0, 0);
@@ -1085,7 +1069,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public void normalize_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D vector = createVector(1,2, 0);
@@ -1122,7 +1105,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public void normalizeVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D vector = createVector(0,0, 0);
@@ -1142,7 +1124,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public void setLength_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		Vector3D vector = createVector(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
@@ -1160,7 +1141,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public void setLength_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D vector = createVector(0, 2, 0);
@@ -1191,7 +1171,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public void operator_addVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D vector = createVector(0,0, 0);
@@ -1222,7 +1201,6 @@ public abstract class AbstractVector3DTest<V extends Vector3D<? super V, ? super
 	}
 
 	@Test
-	@Ignore
 	public void operator_removeVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		Vector3D vect = createVector(0, 0, 0);
