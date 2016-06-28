@@ -345,7 +345,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		final AttributeValue oldValue = copyValue(name);
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null) {
 			return null;
 		}
 
@@ -391,7 +391,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		final AttributeValue oldValue = copyValue(name);
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null) {
 			return null;
 		}
 
@@ -421,7 +421,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 			oldValue = null;
 		}
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null) {
 			return null;
 		}
 
@@ -444,7 +444,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		final AttributeValue oldValue = copyValue(name);
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null) {
 			return null;
 		}
 
@@ -467,7 +467,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		final AttributeValue oldValue = copyValue(name);
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null) {
 			return null;
 		}
 
@@ -491,7 +491,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		final AttributeValue oldValue = copyValue(name);
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null) {
 			return null;
 		}
 
@@ -515,7 +515,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		final AttributeValue oldValue = copyValue(name);
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null) {
 			return null;
 		}
 
@@ -538,7 +538,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		final AttributeValue oldValue = copyValue(name);
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null) {
 			return null;
 		}
 
@@ -714,7 +714,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 		final AttributeValue oldValue = copyValue(name);
 
-		if (oldValue != null && oldValue.equals(value)) {
+		if (oldValue != null) {
 			return null;
 		}
 
