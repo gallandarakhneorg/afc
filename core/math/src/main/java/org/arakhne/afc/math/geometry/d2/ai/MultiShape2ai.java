@@ -408,7 +408,7 @@ public interface MultiShape2ai<
 			this.isPolyline = list.size() == 1
 					&& this.shapeIterator != null
 					&& this.shapeIterator.isPolyline();
-			this.isCurved = list.size() > 0
+			this.isCurved = !list.isEmpty()
 					&& this.shapeIterator != null
 					&& this.shapeIterator.isCurved();
 		}

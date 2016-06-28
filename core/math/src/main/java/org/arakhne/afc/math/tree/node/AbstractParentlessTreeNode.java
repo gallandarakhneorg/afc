@@ -271,7 +271,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 	@Override
 	@Pure
 	public D getUserData() {
-		if ((this.data == null) || (this.data.size() == 0)) {
+		if ((this.data == null) || (this.data.isEmpty())) {
 			return null;
 		}
 		return this.data.get(0);
@@ -294,7 +294,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 
 	@Override
 	public boolean addUserData(Collection<? extends D> data) {
-		if ((data == null) || (data.size() == 0)) {
+		if ((data == null) || (data.isEmpty())) {
 			return false;
 		}
 
@@ -315,7 +315,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 
 	@Override
 	public final boolean addUserData(int index, Collection<? extends D> data) {
-		if ((data == null) || (data.size() == 0)) {
+		if ((data == null) || (data.isEmpty())) {
 			return false;
 		}
 
@@ -346,11 +346,11 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 
 	@Override
 	public boolean removeUserData(Collection<D> data) {
-		if ((data == null) || (data.size() == 0) || (this.data == null)) {
+		if ((data == null) || (data.isEmpty()) || (this.data == null)) {
 			return false;
 		}
 		if (this.data.removeAll(data)) {
-			if (this.data.size() == 0) {
+			if (this.data.isEmpty()) {
 				this.data = null;
 			}
 			firePropertyDataChanged(data, null);
@@ -366,7 +366,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 		}
 		final D removedElement = this.data.remove(index);
 		if (removedElement != null) {
-			if (this.data.size() == 0) {
+			if (this.data.isEmpty()) {
 				this.data = null;
 			}
 			firePropertyDataChanged(Collections.singleton(removedElement), null);
@@ -396,7 +396,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 
 		final List<D> oldData = this.data;
 
-		if ((data == null) || (data.size() == 0)) {
+		if ((data == null) || (data.isEmpty())) {
 			this.data = null;
 		} else {
 			this.data = new ArrayList<>(data);
