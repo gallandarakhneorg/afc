@@ -88,7 +88,7 @@ public class PrefixDepthFirstTreeIterator<N extends TreeNode<?, N>>
 	@Override
 	@Pure
 	protected N toTraversableChild(N parent, N child) {
-		assert child != null & parent != null;
+		assert child != null && parent != null;
 		if (this.selector == null || this.selector.nodeCouldBeTreatedByIterator(child)) {
 			return child;
 		}

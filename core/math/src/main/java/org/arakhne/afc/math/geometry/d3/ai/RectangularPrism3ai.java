@@ -497,7 +497,7 @@ public interface RectangularPrism3ai<
 				iterator,
 				getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == MathConstants.SHAPE_INTERSECTS | (crossings & mask) != 0;
+        return crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
 
 	}
 

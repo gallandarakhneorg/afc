@@ -185,7 +185,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 			boolean changed = false;
 			for (final AttributeProvider c : containers()) {
 				if (c instanceof AttributeCollection) {
-					changed = ((AttributeCollection) c).removeAllAttributes() | changed;
+					changed = ((AttributeCollection) c).removeAllAttributes() || changed;
 				}
 			}
 			if (changed) {
@@ -208,7 +208,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 			for (final AttributeProvider c : containers()) {
 				assign(oldValue, c.getAttribute(name));
 				if (c instanceof AttributeCollection) {
-					changed = ((AttributeCollection) c).removeAttribute(name) | changed;
+					changed = ((AttributeCollection) c).removeAttribute(name) || changed;
 				}
 			}
 			if (changed) {
@@ -237,7 +237,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 			for (final AttributeProvider c : containers()) {
 				assign(currentValue, c.getAttribute(oldname));
 				if (c instanceof AttributeCollection) {
-					changed = ((AttributeCollection) c).renameAttribute(oldname, newname) | changed;
+					changed = ((AttributeCollection) c).renameAttribute(oldname, newname) || changed;
 				}
 			}
 			if (changed) {
@@ -265,7 +265,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 			for (final AttributeProvider c : containers()) {
 				assign(currentValue, c.getAttribute(oldname));
 				if (c instanceof AttributeCollection) {
-					changed = ((AttributeCollection) c).renameAttribute(oldname, newname, overwrite) | changed;
+					changed = ((AttributeCollection) c).renameAttribute(oldname, newname, overwrite) || changed;
 				}
 			}
 			if (changed) {
