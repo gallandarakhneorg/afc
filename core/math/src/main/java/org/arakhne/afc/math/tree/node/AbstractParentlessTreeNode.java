@@ -746,7 +746,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 		public boolean removeAll(Collection<?> collection) {
 			boolean changed = false;
 			for (final Object o : collection) {
-				changed = remove(o) | changed;
+				changed = remove(o) || changed;
 			}
 			return changed;
 		}

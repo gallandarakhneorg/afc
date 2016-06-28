@@ -335,7 +335,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 		public final boolean addAll(Collection<? extends java.util.Map.Entry<K, V>> collection) {
 			boolean changed = true;
 			for (final java.util.Map.Entry<K, V> entry : collection) {
-				changed = add(entry) | changed;
+				changed = add(entry) || changed;
 			}
 			return changed;
 		}
