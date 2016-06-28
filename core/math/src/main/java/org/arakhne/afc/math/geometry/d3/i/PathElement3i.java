@@ -173,7 +173,7 @@ public abstract class PathElement3i implements PathElement3ai {
             bits = 31 * bits + getToX();
             bits = 31 * bits + getToY();
             bits = 31 * bits + getToZ();
-            return bits;
+            return bits ^ (bits >> 31);
         }
 
         @Pure
@@ -481,7 +481,7 @@ public abstract class PathElement3i implements PathElement3ai {
             bits = 31 * bits + getFromX();
             bits = 31 * bits + getFromY();
             bits = 31 * bits + getFromZ();
-            return bits;
+            return bits ^ (bits >> 31);
         }
 
         @Pure
@@ -668,7 +668,7 @@ public abstract class PathElement3i implements PathElement3ai {
             bits = 31 * bits + getFromX();
             bits = 31 * bits + getFromY();
             bits = 31 * bits + getFromZ();
-            return bits ^ bits >> 32;
+            return bits ^ bits >> 31;
         }
 
         @Pure
@@ -831,7 +831,7 @@ public abstract class PathElement3i implements PathElement3ai {
             bits = 31 * bits + getFromX();
             bits = 31 * bits + getFromY();
             bits = 31 * bits + getFromZ();
-            return bits;
+            return bits ^ (bits >> 31);
         }
 
         @Pure
