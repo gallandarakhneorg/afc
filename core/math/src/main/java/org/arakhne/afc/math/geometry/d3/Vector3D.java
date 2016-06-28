@@ -1198,7 +1198,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 			bits = 31 * bits + Double.doubleToLongBits(this.scalar);
 			bits = 31 * bits + ((this.vector == null) ? 0 : this.vector.hashCode());
 			final int b = (int) bits;
-			return b;
+			return b ^ (b >> 31);
 		}
 
 		/** Replies the scalar result.
