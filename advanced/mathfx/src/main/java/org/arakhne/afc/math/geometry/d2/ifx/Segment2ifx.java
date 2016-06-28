@@ -129,7 +129,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 		bits = 31 * bits + Double.doubleToLongBits(getX2());
 		bits = 31 * bits + Double.doubleToLongBits(getY2());
 		final int b = (int) bits;
-		return b;
+		return b ^ (b >> 31);
 	}
 
 	@Pure

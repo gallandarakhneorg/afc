@@ -85,7 +85,7 @@ final class ImmutablePoint3D implements UnmodifiablePoint3D<ImmutablePoint3D, Im
 		bits = 31 * bits + Double.doubleToLongBits(this.y);
 		bits = 31 * bits + Double.doubleToLongBits(this.z);
 		final int b = (int) bits;
-		return b;
+		return b ^ (b >> 31);
 	}
 
 	@Pure
