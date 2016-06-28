@@ -90,7 +90,7 @@ final class ImmutableVector3D implements
 		bits = 31 * bits + Double.doubleToLongBits(this.y);
 		bits = 31 * bits + Double.doubleToLongBits(this.z);
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Pure

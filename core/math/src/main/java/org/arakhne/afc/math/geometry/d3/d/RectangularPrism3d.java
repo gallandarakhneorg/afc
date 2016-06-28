@@ -239,7 +239,7 @@ public class RectangularPrism3d extends AbstractShape3d<RectangularPrism3d>
 		bits = 31 * bits + Double.doubleToLongBits(this.maxy);
 		bits = 31 * bits + Double.doubleToLongBits(this.maxz);
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 }

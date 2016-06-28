@@ -131,7 +131,7 @@ public class Segment2dfx extends AbstractShape2dfx<Segment2dfx>
 		bits = 31 * bits + Double.doubleToLongBits(getX2());
 		bits = 31 * bits + Double.doubleToLongBits(getY2());
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return  b ^ (b >> 31);
 	}
 
 	@Pure
