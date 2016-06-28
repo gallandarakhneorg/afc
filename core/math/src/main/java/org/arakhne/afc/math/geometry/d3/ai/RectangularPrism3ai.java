@@ -601,7 +601,7 @@ public interface RectangularPrism3ai<
 		} else {
 			dz = 0;
 		}
-        return dx * dx + dy * dy + dz * dz;
+        return (double) dx * dx + dy * dy + dz * dz;
 	}
 
 	@Pure
@@ -632,7 +632,7 @@ public interface RectangularPrism3ai<
 		} else {
 			dz = 0;
 		}
-		return dx + dy + dz;
+		return (double) dx + dy + dz;
 	}
 
 	@Pure

@@ -122,13 +122,13 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 	@Pure
 	@Override
 	public double getLength() {
-		return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+		return Math.sqrt(this.x * this.x + this.y * this.y + (double) this.z * this.z);
 	}
 
 	@Pure
 	@Override
 	public double getLengthSquared() {
-		return this.x * this.x + this.y * this.y + this.z * this.z;
+		return (double) this.x * this.x + this.y * this.y + this.z * this.z;
 	}
 
 	@Override

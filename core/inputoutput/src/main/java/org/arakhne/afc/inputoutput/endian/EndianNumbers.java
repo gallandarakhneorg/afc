@@ -107,7 +107,7 @@ public final class EndianNumbers {
 	@Pure
 	public static long toLELong(int b1, int b2, int b3, int b4, int b5, int b6, int b7, int b8) {
 	    return ((b8 & 0xFF) << 56) + ((b7 & 0xFF) << 48) + ((b6 & 0xFF) << 40) + ((b5 & 0xFF) << 32)
-                + ((b4 & 0xFF) << 24) + ((b3 & 0xFF) << 16) + ((b2 & 0xFF) << 8) + (b1 & 0xFF);
+                + ((b4 & 0xFF) << 24) + ((b3 & 0xFF) << 16) + ((b2 & 0xFF) << 8) + (long) (b1 & 0xFF);
     }
 
 	/**
@@ -126,7 +126,7 @@ public final class EndianNumbers {
 	@Pure
 	public static long toBELong(int b1, int b2, int b3, int b4, int b5, int b6, int b7, int b8) {
         return ((b1 & 0xFF) << 56) + ((b2 & 0xFF) << 48) + ((b3 & 0xFF) << 40) + ((b4 & 0xFF) << 32)
-                + ((b5 & 0xFF) << 24) + ((b6 & 0xFF) << 16) + ((b7 & 0xFF) << 8) + (b8 & 0xFF);
+                + ((b5 & 0xFF) << 24) + ((b6 & 0xFF) << 16) + ((b7 & 0xFF) << 8) + (long) (b8 & 0xFF);
     }
 
 	/**
