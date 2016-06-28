@@ -2953,10 +2953,8 @@ public final class FileSystem {
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static void zipFile(File input, OutputStream output) throws IOException {
-		ZipOutputStream zos = null;
-		try {
-			zos = new ZipOutputStream(output);
 
+		try (ZipOutputStream zos = new ZipOutputStream(output)) {
 			if (input == null) {
 				return;
 			}
@@ -3002,10 +3000,6 @@ public final class FileSystem {
 					}
 				}
 			}
-		} finally {
-			if (zos != null) {
-				zos.close();
-			}
 		}
 	}
 
@@ -3027,12 +3021,10 @@ public final class FileSystem {
 		if (!output.isDirectory()) {
 			throw new IOException(Locale.getString("E3", output)); //$NON-NLS-1$
 		}
-		ZipInputStream zis = null;
-		try {
+
+		try (ZipInputStream zis = new ZipInputStream(input)) {
 			final byte[] buffer = new byte[BUFFER_SIZE];
 			int len;
-
-			zis = new ZipInputStream(input);
 			ZipEntry zipEntry = zis.getNextEntry();
 			while (zipEntry != null) {
 				final String name = zipEntry.getName();
@@ -3048,10 +3040,6 @@ public final class FileSystem {
 					}
 				}
 				zipEntry = zis.getNextEntry();
-			}
-		} finally {
-			if (zis != null) {
-				zis.close();
 			}
 		}
 	}
