@@ -1831,7 +1831,7 @@ public interface OrientedRectangle2afp<
             case LINE_TO:
                 return getLineToFromNext(elem);
             case MOVE_TO:
-                return getLineToFromNext(elem);
+                return getMoveToFromNext(elem);
             case QUAD_TO:
                 return getQuadToFromNext(elem);
             case CLOSE:
