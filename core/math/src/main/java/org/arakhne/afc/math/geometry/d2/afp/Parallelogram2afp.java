@@ -2359,7 +2359,6 @@ public interface Parallelogram2afp<
 
         private T getCurvToFromNext(PathElement2afp elem) {
             return getGeomFactory().newCurvePathElement(
-                    getGeomFactory().newCurvePathElement(
                             findsVectorProjectionRAxisPoint(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
                                     elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
                             findsVectorProjectionSAxisVector(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
