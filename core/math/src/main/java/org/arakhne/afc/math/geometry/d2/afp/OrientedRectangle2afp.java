@@ -1825,80 +1825,103 @@ public interface OrientedRectangle2afp<
             final PathElement2afp elem = this.iterator.next();
             switch (elem.getType()) {
             case CURVE_TO:
-                return getGeomFactory().newCurvePathElement(
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getCtrlX2() - this.centerX, elem.getCtrlY2() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getCtrlX2() - this.centerX, elem.getCtrlY2() - this.centerY),
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getToX() - this.centerX, elem.getToY() - this.centerY));
+                return getCurvToFromNext(elem);
             case ARC_TO:
-                return getGeomFactory().newArcPathElement(
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        elem.getRadiusX(), elem.getRadiusY(), elem.getRotationX(),
-                        elem.getLargeArcFlag(), elem.getSweepFlag());
+                return getArcToFromNext(elem);
             case LINE_TO:
-                return getGeomFactory().newLinePathElement(
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getToX() - this.centerX, elem.getToY() - this.centerY));
+                return getLineToFromNext(elem);
             case MOVE_TO:
-                return getGeomFactory().newMovePathElement(
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getToX() - this.centerX, elem.getToY() - this.centerY));
+                return getLineToFromNext(elem);
             case QUAD_TO:
-                return getGeomFactory().newCurvePathElement(
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getToX() - this.centerX, elem.getToY() - this.centerY));
+                return getQuadToFromNext(elem);
             case CLOSE:
-                return getGeomFactory().newClosePathElement(
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
-                        findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
-                                elem.getToX() - this.centerX, elem.getToY() - this.centerY),
-                        findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
-                                elem.getToX() - this.centerX, elem.getToY() - this.centerY));
+                return getCloseFromNext(elem);
             default:
                 break;
-
             }
             return null;
+        }
+
+        private T getMoveToFromNext(PathElement2afp elem) {
+            return getGeomFactory().newMovePathElement(
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getToX() - this.centerX, elem.getToY() - this.centerY));
+        }
+
+        private T getCurvToFromNext(PathElement2afp elem) {
+            return getGeomFactory().newCurvePathElement(
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getCtrlX2() - this.centerX, elem.getCtrlY2() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getCtrlX2() - this.centerX, elem.getCtrlY2() - this.centerY),
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getToX() - this.centerX, elem.getToY() - this.centerY));
+        }
+
+        private T getArcToFromNext(PathElement2afp elem) {
+            return getGeomFactory().newArcPathElement(
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+                    elem.getRadiusX(), elem.getRadiusY(), elem.getRotationX(),
+                    elem.getLargeArcFlag(), elem.getSweepFlag());
+        }
+
+        private T getLineToFromNext(PathElement2afp elem) {
+            return getGeomFactory().newLinePathElement(
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getToX() - this.centerX, elem.getToY() - this.centerY));
+        }
+
+        private T getQuadToFromNext(PathElement2afp elem) {
+            return getGeomFactory().newCurvePathElement(
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getToX() - this.centerX, elem.getToY() - this.centerY));
+        }
+
+        private T getCloseFromNext(PathElement2afp elem) {
+            return getGeomFactory().newClosePathElement(
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+                    findsVectorProjectionRAxisVector(this.axisX1, this.axisY1,
+                            elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+                    findsVectorProjectionSAxisVector(this.axisX1, this.axisY1,
+                            elem.getToX() - this.centerX, elem.getToY() - this.centerY));
         }
 
         @Override
