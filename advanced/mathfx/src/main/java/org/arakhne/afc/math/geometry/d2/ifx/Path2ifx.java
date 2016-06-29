@@ -616,7 +616,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	public void moveTo(int x, int y) {
 	    if (this.types != null && !this.types.isEmpty()
 	            && this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
-	        assert this.coords != null && this.coords.size() >= 1;
+	        assert this.coords != null && !this.coords.isEmpty();
 	        final int idx = this.coords.size() - 1;
 	        this.coords.set(idx, getGeomFactory().newPoint(x, y));
 	    } else {
@@ -631,7 +631,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	    assert position != null : AssertMessages.notNullParameter();
 		if (this.types != null && !this.types.isEmpty()
 				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
-			assert this.coords != null && this.coords.size() >= 1;
+			assert this.coords != null && !this.coords.isEmpty();
 			final int idx = this.coords.size() - 1;
 			this.coords.set(idx, getGeomFactory().convertToPoint(position));
 		} else {
@@ -738,7 +738,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void setLastPoint(int x, int y) {
-	    if (this.coords != null && this.coords.size() >= 1) {
+	    if (this.coords != null && !this.coords.isEmpty()) {
 	        final int idx = this.coords.size() - 1;
 	        final Point2ifx point = this.coords.get(idx);
 	        point.setX(x);
@@ -750,7 +750,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void setLastPoint(Point2D<?, ?> point) {
-		if (this.coords != null && this.coords.size() >= 1) {
+		if (this.coords != null && !this.coords.isEmpty()) {
 			final int idx = this.coords.size() - 1;
 			this.coords.get(idx).set(point.ix(), point.iy());
 		} else {

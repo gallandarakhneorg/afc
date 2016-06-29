@@ -615,7 +615,7 @@ public class Path3dfx
 	public void moveTo(double x, double y, double z) {
 	    if (this.types != null && !this.types.isEmpty()
 	            && this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
-	        assert this.coords != null && this.coords.size() >= 1;
+	        assert this.coords != null && !this.coords.isEmpty();
 	        final int idx = this.coords.size() - 1;
 	        this.coords.set(idx, getGeomFactory().newPoint(x, y, z));
 	    } else {
@@ -630,7 +630,7 @@ public class Path3dfx
 	    assert position != null : AssertMessages.notNullParameter();
 		if (this.types != null && !this.types.isEmpty()
 				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
-			assert this.coords != null && this.coords.size() >= 1;
+			assert this.coords != null && !this.coords.isEmpty();
 			final int idx = this.coords.size() - 1;
 			this.coords.set(idx, getGeomFactory().convertToPoint(position));
 		} else {

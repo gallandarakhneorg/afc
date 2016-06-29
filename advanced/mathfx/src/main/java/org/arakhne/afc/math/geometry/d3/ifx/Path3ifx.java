@@ -636,7 +636,7 @@ public class Path3ifx
 	public void moveTo(int x, int y, int z) {
 	    if (this.types != null && !this.types.isEmpty()
 	            && this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
-	        assert this.coords != null && this.coords.size() >= 1;
+	        assert this.coords != null && !this.coords.isEmpty();
 	        final int idx = this.coords.size() - 1;
 	        this.coords.set(idx, getGeomFactory().newPoint(x, y, z));
 	    } else {
@@ -651,7 +651,7 @@ public class Path3ifx
 	    assert position != null : AssertMessages.notNullParameter();
 		if (this.types != null && !this.types.isEmpty()
 				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
-			assert this.coords != null && this.coords.size() >= 1;
+			assert this.coords != null && !this.coords.isEmpty();
 			final int idx = this.coords.size() - 1;
 			this.coords.set(idx, getGeomFactory().convertToPoint(position));
 		} else {
@@ -760,7 +760,7 @@ public class Path3ifx
 
 	@Override
 	public void setLastPoint(int x, int y, int z) {
-		if (this.coords != null && this.coords.size() >= 1) {
+		if (this.coords != null && !this.coords.isEmpty()) {
 			final int idx = this.coords.size() - 1;
 			final Point3ifx point = this.coords.get(idx);
 			point.setX(x);
