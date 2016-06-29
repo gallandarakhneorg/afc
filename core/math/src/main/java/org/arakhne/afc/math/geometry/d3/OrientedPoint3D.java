@@ -351,4 +351,15 @@ public interface OrientedPoint3D<RP extends Point3D<? super RP, ? super RV>, RV 
         setNormalY(norY);
         setNormalZ(norZ);
     }
+
+    /**
+     * Returns true if all of the data members of OrientedPoint3D p1 are
+     * equal to the corresponding data members in this OrientedPoint3D.
+     * @param p1 the vector with which the comparison is made
+     * @return true or false
+     */
+    @Pure
+    default boolean equals(OrientedPoint3D<?, ?> p1) {
+        return Point3D.super.equals(p1) && getTangent().equals(p1.getTangent()) && getNormal().equals(p1.getNormal());
+    }
 }
