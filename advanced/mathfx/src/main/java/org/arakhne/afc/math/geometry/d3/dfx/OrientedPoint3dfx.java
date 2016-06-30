@@ -46,19 +46,19 @@ public class OrientedPoint3dfx extends Point3dfx implements OrientedPoint3D<Poin
     private static final long serialVersionUID = 1696624733007552173L;
 
     /**
+     * Sway vector to the point.
+     */
+    protected ObjectProperty<Vector3dfx> swayProperty;
+
+    /**
      * Tangent vector to this point.
      */
-    protected Vector3dfx tangent = new Vector3dfx();
+    private Vector3dfx tangent = new Vector3dfx(1, 0, 0);
 
     /**
      * Normal vector to the point.
      */
-    private Vector3dfx normal = new Vector3dfx();
-
-    /**
-     * Normal vector to the point.
-     */
-    private ObjectProperty<Vector3dfx> swayProperty;
+    private Vector3dfx normal = new Vector3dfx(0, 0, 1);
 
     /** Construct an empty oriented point.
      */

@@ -205,4 +205,16 @@ public interface OrientedPoint2D<RP extends Point2D<? super RP, ? super RV>, RV 
         setTangentX(tanX);
         setTangentY(tanY);
     }
+
+    /**
+     * Returns true if all of the data members of OrientedPoint2D p1 are
+     * equal to the corresponding data members in this OrientedPoint2D.
+     *
+     * @param p1 the point with which the comparison is made
+     * @return true or false
+     */
+    @Pure
+    default boolean equals(OrientedPoint2D<?, ?> p1) {
+        return Point2D.super.equals(p1) && getTangent().equals(p1.getTangent());
+    }
 }

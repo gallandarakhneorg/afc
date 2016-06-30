@@ -50,7 +50,7 @@ public class OrientedPoint2dfx
     /**
      * Tangent vector to this point.
      */
-    protected Vector2dfx tangent = new Vector2dfx();
+    private Vector2dfx tangent = new Vector2dfx(1, 0);
 
     /**
      * Normal vector to the point.
