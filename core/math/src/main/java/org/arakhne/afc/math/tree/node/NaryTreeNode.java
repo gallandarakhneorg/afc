@@ -239,7 +239,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 			throw new IndexOutOfBoundsException();
 		}
 
-		final N oldChild = (index < count) ? this.children.get(index) : null;
+		final N oldChild = this.children.get(index);
 		if (oldChild == newChild) {
 			return false;
 		}
@@ -257,19 +257,11 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 			}
 		}
 
-		if (index < count) {
-			// set the element
-			if (newChild != null) {
-				this.children.set(index, newChild);
-			} else {
-				this.children.remove(index);
-			}
-		} else if (newChild != null) {
-			// Resize the array
-			if (this.children == null) {
-				this.children = newInternalList(index + 1);
-			}
-			this.children.add(newChild);
+		// set the element
+		if (newChild != null) {
+			this.children.set(index, newChild);
+		} else {
+			this.children.remove(index);
 		}
 
 		if (newChild != null) {
