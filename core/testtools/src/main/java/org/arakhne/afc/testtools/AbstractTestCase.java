@@ -168,16 +168,14 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		if (v1 == v2) {
 			return true;
 		}
-		if (v1 == null && v2 != null) {
+		if (v1 == null || v2 == null) {
 			return false;
 		}
-		if (v1 != null && v2 == null) {
-			return false;
-		}
-		assert v1 != null && v2 != null;
+
 		if (v1.length != v2.length) {
 			return false;
 		}
+		assert v1 != null && v2 != null;
 		for (int i = 0; i < v1.length; ++i) {
 			if (!isEpsilonEquals(v1[i], v2[i])) {
 				return false;
@@ -1192,16 +1190,12 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		if (expected == actual) {
 			return;
 		}
-		if (expected == null && actual != null) {
+		if (expected == null || actual == null) {
 			throw new ComparisonFailure(formatFailMessage("not same", expected, actual), //$NON-NLS-1$
 					null,
 					actual.toString());
 		}
-		if (expected != null && actual == null) {
-			throw new ComparisonFailure(formatFailMessage("not same", expected, actual), //$NON-NLS-1$
-					expected.toString(),
-					null);
-		}
+
 		assert expected != null && actual != null;
 		final DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 		final String expectedStr = fmt.format(expected);
