@@ -1190,10 +1190,16 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		if (expected == actual) {
 			return;
 		}
-		if (expected == null || actual == null) {
+		if (expected == null) {
 			throw new ComparisonFailure(formatFailMessage("not same", expected, actual), //$NON-NLS-1$
 					null,
 					actual.toString());
+		}
+
+		if (actual == null) {
+			throw new ComparisonFailure(formatFailMessage("not same", expected, actual), //$NON-NLS-1$
+					null,
+					expected.toString());
 		}
 
 		assert expected != null && actual != null;
