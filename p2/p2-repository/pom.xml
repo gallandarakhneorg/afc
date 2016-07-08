@@ -26,6 +26,34 @@
 						<configuration>
 							<artifacts>
 								<artifact>
+									<id>org.arakhne.afc.core:vmutils:${afc.version}</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:util:${afc.version}</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:text:${afc.version}</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:references:${afc.version}</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:inputoutput:${afc.version}</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:math:${afc.version}</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.advanced:agentmotion:${afc.version}</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
 									<id>org.mockito:mockito-core:${mockito.version}</id>
 									<override>true</override>
 									<instructions>
