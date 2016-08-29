@@ -77,6 +77,27 @@
 								</artifact>
 								<!-- OLD VERSIONS -->
 								<artifact>
+									<id>org.mockito:mockito-core:2.0.73-beta</id>
+									<override>true</override>
+									<instructions>
+										<Bundle-SymbolicName>org.mockito.mockito-core</Bundle-SymbolicName>
+										<Embed-Dependency>mockito-core</Embed-Dependency>
+										<Export-Package>
+											!mockito-core-2.0.73.beta.jar,
+											!asm-license.txt,
+											!cglib-license.txt,
+											!LICENSE,
+											!NOTICE,
+											*
+										</Export-Package>
+										<Import-Package>
+											org.hamcrest;core=split,
+											!org.apache.tools.ant.*,
+											*
+										</Import-Package>
+									</instructions>
+								</artifact>
+								<artifact>
 									<id>org.mockito:mockito-core:2.0.64-beta</id>
 									<override>true</override>
 									<instructions>
@@ -90,7 +111,6 @@
 											!NOTICE,
 											*
 										</Export-Package>
-										<!-- Getting rid of Ant. See https://code.google.com/p/mockito/issues/detail?id=67#c13 -->
 										<Import-Package>
 											org.hamcrest;core=split,
 											!org.apache.tools.ant.*,
