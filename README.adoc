@@ -319,18 +319,18 @@ If one point is failing, please follows the steps:
 
 == 7. Authors
 
-* Marc BAUMGARTNER, author of copied source code.
-* Christophe BOHRHAUER, link:http://www.utbm.fr/[UTBM] student developer, math module.
-* link:http://www.arakhne.org/homes/galland.html[Stéphane GALLAND], founder, original and active author.
-* Nicolas GAUD, senior developer, math module.
-* Maxime GROLLEAU, link:http://www.utbm.fr/[UTBM] student developer, math module.
-* Mahdi HANNOUN, founder, original and former author.
-* Hamza JAFFALI, link:http://www.utbm.fr/[UTBM] student developer, math module.
-* Olivier LAMOTTE, senior developer, vmutil and math modules.
-* Fevzi OZGUL, senior developer, cleaning and optimization.
-* Thomas PIOTROWSKI, link:http://www.utbm.fr/[UTBM] student developer, math module.
-* Yuku SUGIANTO, author of copied source code.
-* Alexandre WILLAUME, link:http://www.utbm.fr/[UTBM] junior developer, vmutil module.
+* image:https://avatars.githubusercontent.com/anonymous[width="50px"] Marc BAUMGARTNER, author of copied source code.
+* image:https://avatars.githubusercontent.com/anonymous[width="50px"] Christophe BOHRHAUER, link:http://www.utbm.fr/[UTBM] student developer, math module.
+* image:https://avatars.githubusercontent.com/gallandarakhneorg[width="50px",link=https://github.com/gallandarakhneorg] link:http://www.arakhne.org/homes/galland.html[Stéphane GALLAND], founder, original and active author.
+* image:https://avatars.githubusercontent.com/ngaud[width="50px",link=https://github.com/ngaud] link:http://www.multiagent.fr/People:Gaud_nicolas[Nicolas GAUD], senior developer, math module.
+* image:https://avatars.githubusercontent.com/MaximeGrolleau[width="50px",link=https://github.com/MaximeGrolleau] Maxime GROLLEAU, link:http://www.utbm.fr/[UTBM] student developer, math module.
+* image:https://avatars.githubusercontent.com/anonymous[width="50px"] Mahdi HANNOUN, founder, original and former author.
+* image:https://avatars.githubusercontent.com/cheikh35[width="50px",link=https://github.com/cheikh35] Hamza JAFFALI, link:http://www.utbm.fr/[UTBM] student developer, math module.
+* image:https://avatars.githubusercontent.com/olivierlamotte[width="50px",link=https://github.com/olivierlamotte] link:http://www.multiagent.fr/People:Lamotte_olivier[Olivier LAMOTTE], senior developer, vmutil and math modules.
+* image:https://avatars.githubusercontent.com/devFozgul[width="50px",link=https://github.com/devFozgul] Fevzi OZGUL, senior developer, cleaning and optimization.
+* image:https://avatars.githubusercontent.com/tpiotrow[width="50px",link=https://github.com/tpiotrow] Thomas PIOTROWSKI, link:http://www.utbm.fr/[UTBM] student developer, math module.
+* image:https://avatars.githubusercontent.com/anonymous[width="50px"] Yuku SUGIANTO, author of copied source code.
+* image:https://avatars.githubusercontent.com/anonymous[width="50px"] Alexandre WILLAUME, link:http://www.utbm.fr/[UTBM] junior developer, vmutil module.
 
 == 8. License of AFC
 
