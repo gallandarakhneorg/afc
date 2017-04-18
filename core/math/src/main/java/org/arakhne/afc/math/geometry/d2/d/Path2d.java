@@ -700,6 +700,7 @@ public class Path2d
 			switch (this.types[j]) {
 			case MOVE_TO:
 				this.isMultipart = null;
+				break;
 				//$FALL-THROUGH$
 			case LINE_TO:
 				if (x == this.coords[i] && y == this.coords[i + 1]) {
