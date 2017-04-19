@@ -130,13 +130,13 @@ public class Vector2i extends Tuple2i<Vector2i> implements Vector2D<Vector2i, Po
 	@Pure
 	@Override
 	public double getLength() {
-		return Math.sqrt(this.x * this.x + this.y * this.y);
+		return Math.sqrt(this.x * this.x + (double) this.y * this.y);
 	}
 
 	@Pure
 	@Override
 	public double getLengthSquared() {
-		return this.x * this.x + this.y * this.y;
+		return this.x * this.x + (double) this.y * this.y;
 	}
 
 	@Override

@@ -361,7 +361,7 @@ class BasicPathShadow2ai {
         if (sx0 > shadowXmax && sx1 > shadowXmax) {
             // The line is entirely at the right of the shadow
             if (sy1 != sy0) {
-                final double alpha = (sx1 - sx0) / (sy1 - sy0);
+                final double alpha = (double) (sx1 - sx0) / (sy1 - sy0);
                 if (sy0 < sy1) {
                     if (sy0 <= shadowYmin) {
                         final int xintercept = (int) Math.round(sx0 + (shadowYmin - sy0) * alpha);

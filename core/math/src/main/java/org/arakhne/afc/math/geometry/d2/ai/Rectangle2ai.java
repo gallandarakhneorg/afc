@@ -742,7 +742,7 @@ public interface Rectangle2ai<
         } else {
             dy = 0;
         }
-        return dx * dx + dy * dy;
+        return (double) dx * dx + dy * dy;
     }
 
     @Pure
@@ -765,7 +765,7 @@ public interface Rectangle2ai<
         } else {
             dy = 0;
         }
-        return dx + dy;
+        return (double) dx + dy;
     }
 
     @Pure
