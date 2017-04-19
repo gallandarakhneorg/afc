@@ -1494,9 +1494,9 @@ public final class TextUtil {
 
 		final StringBuilder text = new StringBuilder();
 
-		String centuries = ""; //$NON-NLS-1$
-		String years = ""; //$NON-NLS-1$
-		String days = ""; //$NON-NLS-1$
+		final String centuries; //$NON-NLS-1$
+		final String years; //$NON-NLS-1$
+		final String days; //$NON-NLS-1$
 		String hours = ""; //$NON-NLS-1$
 		String minutes = ""; //$NON-NLS-1$
 		String seconds = ""; //$NON-NLS-1$
