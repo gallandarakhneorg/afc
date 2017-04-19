@@ -42,13 +42,13 @@ public class Quadruplet<A, B, C, D> implements Serializable {
 
 	private static final long serialVersionUID = -1357391439043190025L;
 
-	private A avalue;
+	private transient A avalue;
 
-	private B bvalue;
+	private transient B bvalue;
 
-	private C cvalue;
+	private transient C cvalue;
 
-	private D dvalue;
+	private transient D dvalue;
 
 	/** Construct the quadruplet.
 	 */
