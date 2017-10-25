@@ -146,6 +146,10 @@ public final class MathFXAttributeNames {
 	 */
 	public static final String SECOND_AXIS_EXTENT = "secondAxisExtent"; //$NON-NLS-1$
 
+	/** {@code segment}.
+	 */
+	public static final String SEGMENT = "segment"; //$NON-NLS-1$
+
 	/** {@code types}.
 	 */
 	public static final String TYPES = "types"; //$NON-NLS-1$

@@ -330,25 +330,6 @@ public interface Segment2afp<
      * @param px is the x coordinate of the point.
      * @param py is the y coordinate of the point.
      * @param result the is point on the shape.
-     * @deprecated since 13.0, see {@link #findsClosestPointSegmentPoint(double, double, double, double,
-     *     double, double, Point2D)}
-     */
-    @Deprecated
-    static void computeClosestPointToPoint(
-            double ax, double ay, double bx, double by, double px, double py,
-            Point2D<?, ?> result) {
-        findsClosestPointSegmentPoint(ax, ay, bx, by, px, py, result);
-    }
-
-    /** Replies the point on the segment that is closest to the given point.
-     *
-     * @param ax is the x coordinate of the first point of the segment.
-     * @param ay is the y coordinate of the first point of the segment.
-     * @param bx is the x coordinate of the second point of the segment.
-     * @param by is the y coordinate of the second point of the segment.
-     * @param px is the x coordinate of the point.
-     * @param py is the y coordinate of the point.
-     * @param result the is point on the shape.
      */
     @SuppressWarnings("checkstyle:magicnumber")
     static void findsClosestPointSegmentPoint(
@@ -365,27 +346,6 @@ public interface Segment2afp<
                     ax + (bx - ax) * ratio,
                     ay + (by - ay) * ratio);
         }
-    }
-
-    /** Replies the point on the segment that is closest to the rectangle.
-     *
-     * @param sx1 is the x coordinate of the first point of the segment.
-     * @param sy1 is the y coordinate of the first point of the segment.
-     * @param sx2 is the x coordinate of the second point of the segment.
-     * @param sy2 is the y coordinate of the second point of the segment.
-     * @param rx is the x coordinate of the rectangle.
-     * @param ry is the y coordinate of the rectangle.
-     * @param rwidth is the width of the rectangle.
-     * @param rheight is the height of the rectangle.
-     * @param result the is point on the segment.
-     * @deprecated since 13.0, see {@link #findsClosestPointSegmentRectangle(double, double, double,
-     *     double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static void computeClosestPointToRectangle(double sx1, double sy1, double sx2, double sy2,
-            double rx, double ry, double rwidth, double rheight, Point2D<?, ?> result) {
-        findsClosestPointSegmentRectangle(sx1, sy1, sx2, sy2, rx, ry, rwidth, rheight, result);
     }
 
     /** Replies the point on the segment that is closest to the rectangle.
@@ -437,57 +397,6 @@ public interface Segment2afp<
                     tmp1.getX(), tmp1.getY(), tmp2.getX(), tmp2.getY(),
                     (rx + rmaxx) / 2., (ry + rmaxy) / 2., result);
         }
-    }
-
-    /** Replies the point on the first segment that is closest to the second segment.
-     *
-     * @param s1x1 is the x coordinate of the first point of the first segment.
-     * @param s1y1 is the y coordinate of the first point of the first segment.
-     * @param s1x2 is the x coordinate of the second point of the first segment.
-     * @param s1y2 is the y coordinate of the second point of the first segment.
-     * @param s2x1 is the x coordinate of the first point of the second segment.
-     * @param s2y1 is the y coordinate of the first point of the second segment.
-     * @param s2x2 is the x coordinate of the second point of the second segment.
-     * @param s2y2 is the y coordinate of the second point of the second segment.
-     * @param result the is point on the shape.
-     * @return the square distance between the segments.
-     * @deprecated since 13.0, see {@link #findsClosestPointSegmentSegment(double, double, double,
-     *     double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static double computeClosestPointToSegment(
-            double s1x1, double s1y1, double s1x2, double s1y2,
-            double s2x1, double s2y1, double s2x2, double s2y2,
-            Point2D<?, ?> result) {
-        return findsClosestPointSegmentSegment(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1, s2x2, s2y2, result);
-    }
-
-
-    /** Replies the point on the first segment that is closest to the second segment.
-     *
-     * @param s1x1 is the x coordinate of the first point of the first segment.
-     * @param s1y1 is the y coordinate of the first point of the first segment.
-     * @param s1x2 is the x coordinate of the second point of the first segment.
-     * @param s1y2 is the y coordinate of the second point of the first segment.
-     * @param s2x1 is the x coordinate of the first point of the second segment.
-     * @param s2y1 is the y coordinate of the first point of the second segment.
-     * @param s2x2 is the x coordinate of the second point of the second segment.
-     * @param s2y2 is the y coordinate of the second point of the second segment.
-     * @param resultOnFirstSegment the point on the first segment.
-     * @param resultOnSecondSegment the point on the second segment.
-     * @return the square distance between the segments.
-     * @deprecated since 13.0, see {@link #findsClosestPointSegmentSegment(double, double, double,
-     *     double, double, double, double, double, Point2D, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static double computeClosestPointToSegment(
-            double s1x1, double s1y1, double s1x2, double s1y2,
-            double s2x1, double s2y1, double s2x2, double s2y2,
-            Point2D<?, ?> resultOnFirstSegment, Point2D<?, ?> resultOnSecondSegment) {
-        return findsClosestPointSegmentSegment(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1, s2x2, s2y2,
-                resultOnFirstSegment, resultOnSecondSegment);
     }
 
     /** Replies the point on the first segment that is closest to the second segment.
@@ -633,33 +542,6 @@ public interface Segment2afp<
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
      * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
-     * @deprecated since 13.0, see {@link #calculatesCrossingsCircleShadowSegment(int, double,
-     *     double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static int computeCrossingsFromCircle(
-            int crossings,
-            double cx, double cy,
-            double radius,
-            double x0, double y0,
-            double x1, double y1) {
-        return calculatesCrossingsCircleShadowSegment(crossings, cx, cy, radius, x0, y0, x1, y1);
-    }
-
-    /**
-     * Calculates the number of times the line from (x0, y0) to (x1, y1)
-     * crosses the circle (cx, cy) with radius extending to the right.
-     *
-     * @param crossings is the initial value for the number of crossings.
-     * @param cx is the center of the circle to extend.
-     * @param cy is the center of the circle to extend.
-     * @param radius is the radius of the circle to extend.
-     * @param x0 is the first point of the line.
-     * @param y0 is the first point of the line.
-     * @param x1 is the second point of the line.
-     * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
      */
     @Pure
     static int calculatesCrossingsCircleShadowSegment(
@@ -712,35 +594,6 @@ public interface Segment2afp<
         }
 
         return numCrosses;
-    }
-
-    /**
-     * Calculates the number of times the line from (x0, y0) to (x1, y1)
-     * crosses the ellipse (ex0, ey0) to (ex1, ey1) extending to the right.
-     *
-     * @param crossings is the initial value for the number of crossings.
-     * @param ex is the first corner of the ellipse to extend.
-     * @param ey is the first corner of the ellipse to extend.
-     * @param ew is the width of the ellipse to extend.
-     * @param eh is the height of the ellipse  to extend.
-     * @param x0 is the first point of the line.
-     * @param y0 is the first point of the line.
-     * @param x1 is the second point of the line.
-     * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
-     * @deprecated since 13.0, see {@link #calculatesCrossingsEllipseShadowSegment(int, double, double,
-     *     double, double, double, double, double, double)}
-     */
-    @Pure
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static int computeCrossingsFromEllipse(
-            int crossings,
-            double ex, double ey,
-            double ew, double eh,
-            double x0, double y0,
-            double x1, double y1) {
-        return calculatesCrossingsEllipseShadowSegment(crossings, ex, ey, ew, eh, x0, y0, x1, y1);
     }
 
     /**
@@ -833,35 +686,6 @@ public interface Segment2afp<
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
      * @return the crossing.
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPointShadowSegment(double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static int computeCrossingsFromPoint(
-            double px, double py,
-            double x0, double y0,
-            double x1, double y1) {
-        return calculatesCrossingsPointShadowSegment(px, py, x0, y0, x1, y1);
-    }
-
-    /**
-     * Calculates the number of times the line from (x0, y0) to (x1, y1)
-     * crosses the ray extending to the right from (px, py).
-     * If the point lies on the line, then no crossings are recorded.
-     * +1 is returned for a crossing where the Y coordinate is increasing
-     * -1 is returned for a crossing where the Y coordinate is decreasing
-     *
-     * <p>This function differs from {@link #calculatesCrossingsPointShadowSegmentWithoutEquality(double,
-     * double, double, double, double, double)}.
-     * The equality test is used in this function.
-     *
-     * @param px is the reference point to test.
-     * @param py is the reference point to test.
-     * @param x0 is the first point of the line.
-     * @param y0 is the first point of the line.
-     * @param x1 is the second point of the line.
-     * @param y1 is the secondpoint of the line.
-     * @return the crossing.
      */
     @Pure
     @SuppressWarnings("checkstyle:npathcomplexity")
@@ -908,36 +732,6 @@ public interface Segment2afp<
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
      * @return the crossing.
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPointShadowSegmentWithoutEquality(double, double,
-     *     double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static int computeCrossingsFromPointWithoutEquality(
-            double px, double py,
-            double x0, double y0,
-            double x1, double y1) {
-        return calculatesCrossingsPointShadowSegmentWithoutEquality(px, py, x0, y0, x1, y1);
-    }
-
-    /**
-     * Calculates the number of times the line from (x0, y0) to (x1, y1)
-     * crosses the ray extending to the right from (px, py).
-     * If the point lies on the line, then no crossings are recorded.
-     * +1 is returned for a crossing where the Y coordinate is increasing
-     * -1 is returned for a crossing where the Y coordinate is decreasing
-     *
-     * <p>This function differs from {@link #calculatesCrossingsPointShadowSegment(double,
-     * double, double, double, double, double)}.
-     * The equality test is not used in this function.
-     *
-     * @param px is the reference point to test.
-     * @param py is the reference point to test.
-     * @param x0 is the first point of the line.
-     * @param y0 is the first point of the line.
-     * @param x1 is the second point of the line.
-     * @param y1 is the secondpoint of the line.
-     * @return the crossing.
      */
     @Pure
     @SuppressWarnings("checkstyle:npathcomplexity")
@@ -964,36 +758,6 @@ public interface Segment2afp<
             return 0;
         }
         return (y0 < y1) ? 1 : -1;
-    }
-
-    /**
-     * Accumulate the number of times the line crosses the shadow
-     * extending to the right of the rectangle.  See the comment
-     * for the {@link MathConstants#SHAPE_INTERSECTS} constant for more complete details.
-     *
-     * @param crossings is the initial value for the number of crossings.
-     * @param rxmin is the first corner of the rectangle.
-     * @param rymin is the first corner of the rectangle.
-     * @param rxmax is the second corner of the rectangle.
-     * @param rymax is the second corner of the rectangle.
-     * @param x0 is the first point of the line.
-     * @param y0 is the first point of the line.
-     * @param x1 is the second point of the line.
-     * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
-     * @deprecated since 13.0, see {@link #calculatesCrossingsRectangleShadowSegment(int, double, double,
-     * double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
-    static int computeCrossingsFromRect(
-            int crossings,
-            double rxmin, double rymin,
-            double rxmax, double rymax,
-            double x0, double y0,
-            double x1, double y1) {
-        return calculatesCrossingsRectangleShadowSegment(crossings, rxmin, rymin, rxmax, rymax, x0, y0, x1, y1);
     }
 
     /**
@@ -1129,40 +893,6 @@ public interface Segment2afp<
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
      * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
-     * @deprecated since 13.0, see {@link #calculatesCrossingsRoundRectangleShadowSegment(int, double,
-     *     double, double, double, double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
-    static int computeCrossingsFromRoundRect(
-            int crossings,
-            double rxmin, double rymin,
-            double rxmax, double rymax,
-            double arcWidth, double arcHeight,
-            double x0, double y0,
-            double x1, double y1) {
-        return calculatesCrossingsRoundRectangleShadowSegment(crossings, rxmin, rymin, rxmax, rymax,
-                arcWidth, arcHeight, x0, y0, x1, y1);
-    }
-
-    /**
-     * Accumulate the number of times the line crosses the shadow
-     * extending to the right of the round rectangle.  See the comment
-     * for the {@link MathConstants#SHAPE_INTERSECTS} constant for more complete details.
-     *
-     * @param crossings is the initial value for the number of crossings.
-     * @param rxmin is the first corner of the rectangle.
-     * @param rymin is the first corner of the rectangle.
-     * @param rxmax is the second corner of the rectangle.
-     * @param rymax is the second corner of the rectangle.
-     * @param arcWidth is the width of the rectangle arcs.
-     * @param arcHeight is the height of the rectangle arcs.
-     * @param x0 is the first point of the line.
-     * @param y0 is the first point of the line.
-     * @param x1 is the second point of the line.
-     * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
      */
     @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
@@ -1248,35 +978,6 @@ public interface Segment2afp<
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
      * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
-     * @deprecated since 13.0, see {@link #calculatesCrossingsSegmentShadowSegment(int,
-     *     double, double, double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
-    static int computeCrossingsFromSegment(
-            int crossings,
-            double sx1, double sy1,
-            double sx2, double sy2,
-            double x0, double y0,
-            double x1, double y1) {
-        return calculatesCrossingsSegmentShadowSegment(crossings, sx1, sy1, sx2, sy2, x0, y0, x1, y1);
-    }
-
-    /**
-     * Calculates the number of times the line from (x0, y0) to (x1, y1)
-     * crosses the segment (sx0, sy0) to (sx1, sy1) extending to the right.
-     *
-     * @param crossings is the initial value for the number of crossings.
-     * @param sx1 is the first point of the segment to extend.
-     * @param sy1 is the first point of the segment to extend.
-     * @param sx2 is the second point of the segment to extend.
-     * @param sy2 is the second point of the segment to extend.
-     * @param x0 is the first point of the line.
-     * @param y0 is the first point of the line.
-     * @param x1 is the second point of the line.
-     * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
      */
     @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
@@ -1346,39 +1047,6 @@ public interface Segment2afp<
         }
 
         return numCrosses;
-    }
-
-    /**
-     * Accumulate the number of times the line crosses the shadow
-     * extending to the right of the triangle.  See the comment
-     * for the {@link MathConstants#SHAPE_INTERSECTS} constant for more complete details.
-     *
-     * @param crossings is the initial value for the number of crossings.
-     * @param tx1 is the first point of the triangle.
-     * @param ty1 is the first point of the triangle.
-     * @param tx2 is the second point of the triangle.
-     * @param ty2 is the second point of the triangle.
-     * @param tx3 is the third point of the triangle.
-     * @param ty3 is the third point of the triangle.
-     * @param x0 is the first point of the line.
-     * @param y0 is the first point of the line.
-     * @param x1 is the second point of the line.
-     * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
-     * @deprecated since 13.0, see {@link #calculatesCrossingsTriangleShadowSegment(int,
-     *      double, double, double, double, double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
-    static int computeCrossingsFromTriangle(
-            int crossings,
-            double tx1, double ty1,
-            double tx2, double ty2,
-            double tx3, double ty3,
-            double x0, double y0,
-            double x1, double y1) {
-        return calculatesCrossingsTriangleShadowSegment(crossings, tx1, ty1, tx2, ty2, tx3, ty3, x0, y0, x1, y1);
     }
 
     /**
@@ -1506,25 +1174,6 @@ public interface Segment2afp<
      * @return the distance beetween the point and the line.
      * @see #calculatesDistanceSquaredLinePoint(double, double, double, double, double, double)
      * @see #calculatesRelativeDistanceLinePoint(double, double, double, double, double, double)
-     * @deprecated since 13.0, see {@link #calculatesDistanceLinePoint(double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double computeDistanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
-        return calculatesDistanceLinePoint(x1, y1, x2, y2, px, py);
-    }
-
-    /** Compute the distance between a point and a line.
-     *
-     * @param x1 horizontal position of the first point of the line.
-     * @param y1 vertical position of the first point of the line.
-     * @param x2 horizontal position of the second point of the line.
-     * @param y2 vertical position of the second point of the line.
-     * @param px horizontal position of the point.
-     * @param py vertical position of the point.
-     * @return the distance beetween the point and the line.
-     * @see #calculatesDistanceSquaredLinePoint(double, double, double, double, double, double)
-     * @see #calculatesRelativeDistanceLinePoint(double, double, double, double, double, double)
      */
     @Pure
     static double calculatesDistanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
@@ -1536,23 +1185,6 @@ public interface Segment2afp<
         }
         final double factor = ((y1 - py) * x21 - (x1 - px) * y21) / denomenator;
         return Math.abs(factor) * Math.sqrt(denomenator);
-    }
-
-    /** Compute the distance between a point and a segment.
-     *
-     * @param x1 horizontal position of the first point of the segment.
-     * @param y1 vertical position of the first point of the segment.
-     * @param x2 horizontal position of the second point of the segment.
-     * @param y2 vertical position of the second point of the segment.
-     * @param px horizontal position of the point.
-     * @param py vertical position of the point.
-     * @return the distance beetween the point and the segment.
-     * @deprecated since 13.0, see {@link #calculatesDistanceSegmentPoint(double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double computeDistanceSegmentPoint(double x1, double y1, double x2, double y2, double px, double py) {
-        return calculatesDistanceSegmentPoint(x1, y1, x2, y2, px, py);
     }
 
     /** Compute the distance between a point and a segment.
@@ -1604,25 +1236,6 @@ public interface Segment2afp<
      * @param py vertical position of the point.
      * @return the distance beetween the point and the line.
      * @see #calculatesDistanceLinePoint(double, double, double, double, double, double)
-     * @deprecated since 13.0, see {@link #calculatesDistanceSquaredLinePoint(double, double, double,
-     *      double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double computeDistanceSquaredLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
-        return calculatesDistanceSquaredLinePoint(x1, y1, x2, y2, px, py);
-    }
-
-    /** Compute the distance between a point and a line.
-     *
-     * @param x1 horizontal position of the first point of the line.
-     * @param y1 vertical position of the first point of the line.
-     * @param x2 horizontal position of the second point of the line.
-     * @param y2 vertical position of the second point of the line.
-     * @param px horizontal position of the point.
-     * @param py vertical position of the point.
-     * @return the distance beetween the point and the line.
-     * @see #calculatesDistanceLinePoint(double, double, double, double, double, double)
      */
     @Pure
     static double calculatesDistanceSquaredLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
@@ -1634,24 +1247,6 @@ public interface Segment2afp<
         }
         final double s = ((y1 - py) * x21 - (x1 - px) * y21) / denomenator;
         return (s * s) * Math.abs(denomenator);
-    }
-
-    /** Compute the square distance between a point and a segment.
-     *
-     * @param x1 horizontal position of the first point of the segment.
-     * @param y1 vertical position of the first point of the segment.
-     * @param x2 horizontal position of the second point of the segment.
-     * @param y2 vertical position of the second point of the segment.
-     * @param px horizontal position of the point.
-     * @param py vertical position of the point.
-     * @return the distance beetween the point and the segment.
-     * @deprecated since 13.0, see {@link #calculatesDistanceSquaredSegmentPoint(double,
-     *     double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double computeDistanceSquaredSegmentPoint(double x1, double y1, double x2, double y2, double px, double py) {
-        return calculatesDistanceSquaredSegmentPoint(x1, y1, x2, y2, px, py);
     }
 
     /** Compute the square distance between a point and a segment.
@@ -1703,29 +1298,6 @@ public interface Segment2afp<
      * @param s2x2 x coordinate of the second point of the second triangle.
      * @param s2y2 y coordinate of the second point of the second triangle.
      * @return the distance between the two segments.
-     * @deprecated since 13.0, see {@link #calculatesDistanceSquaredSegmentSegment(double,
-     *     double, double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    @Inline(value = "Segment2afp.computeClosestPointToSegment(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), null)",
-            imported = {Segment2afp.class})
-    static double computeDistanceSquaredSegmentSegment(double s1x1, double s1y1, double s1x2, double s1y2,
-            double s2x1, double s2y1, double s2x2, double s2y2) {
-        return calculatesDistanceSquaredSegmentSegment(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1, s2x2, s2y2);
-    }
-
-    /** Replies the distance between the two segments.
-     *
-     * @param s1x1 x coordinate of the first point of the first triangle.
-     * @param s1y1 y coordinate of the first point of the first triangle.
-     * @param s1x2 x coordinate of the second point of the first triangle.
-     * @param s1y2 y coordinate of the second point of the first triangle.
-     * @param s2x1 x coordinate of the first point of the second triangle.
-     * @param s2y1 y coordinate of the first point of the second triangle.
-     * @param s2x2 x coordinate of the second point of the second triangle.
-     * @param s2y2 y coordinate of the second point of the second triangle.
-     * @return the distance between the two segments.
      */
     @Pure
     @Inline(value = "Segment2afp.computeClosestPointToSegment(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), null)",
@@ -1733,25 +1305,6 @@ public interface Segment2afp<
     static double calculatesDistanceSquaredSegmentSegment(double s1x1, double s1y1, double s1x2, double s1y2,
             double s2x1, double s2y1, double s2x2, double s2y2) {
         return findsClosestPointSegmentSegment(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1, s2x2, s2y2, null);
-    }
-
-    /** Replies the point on the segment that is farthest to the given point.
-     *
-     * @param ax is the x coordinate of the first point of the segment.
-     * @param ay is the y coordinate of the first point of the segment.
-     * @param bx is the x coordinate of the second point of the segment.
-     * @param by is the y coordinate of the second point of the segment.
-     * @param px is the x coordinate of the point.
-     * @param py is the y coordinate of the point.
-     * @param result the farthest point on the shape.
-     * @deprecated since 13.0, see {@link #findsFarthestPointSegmentPoint(double,
-     *     double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:magicnumber")
-    static void computeFarthestPointToPoint(
-            double ax, double ay, double bx, double by, double px, double py, Point2D<?, ?> result) {
-        findsFarthestPointSegmentPoint(ax, ay, bx, by, px, py, result);
     }
 
     /** Replies the point on the segment that is farthest to the given point.
@@ -1777,27 +1330,6 @@ public interface Segment2afp<
         } else {
             result.set(bx, by);
         }
-    }
-
-    /** Replies the point on the segment that is farthest to the rectangle.
-     *
-     * @param sx1 is the x coordinate of the first point of the segment.
-     * @param sy1 is the y coordinate of the first point of the segment.
-     * @param sx2 is the x coordinate of the second point of the segment.
-     * @param sy2 is the y coordinate of the second point of the segment.
-     * @param rx is the x coordinate of the rectangle.
-     * @param ry is the y coordinate of the rectangle.
-     * @param rwidth is the width of the rectangle.
-     * @param rheight is the height of the rectangle.
-     * @param result the is point on the segment.
-     * @deprecated since 13.0, see {@link #findsFarthestPointSegmentRectangle(double,
-     *     double, double, double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static void computeFarthestPointToRectangle(double sx1, double sy1, double sx2, double sy2,
-            double rx, double ry, double rwidth, double rheight, Point2D<?, ?> result) {
-        findsFarthestPointSegmentRectangle(sx1, sy1, sx2, sy2, rx, ry, rwidth, rheight, result);
     }
 
     /** Replies the point on the segment that is farthest to the rectangle.
@@ -1858,30 +1390,6 @@ public interface Segment2afp<
                 result.set(sx2, sy2);
             }
         }
-    }
-
-    /** Replies the point on the first segment that is farthest to the second segment.
-     *
-     * @param s1x1 is the x coordinate of the first point of the first segment.
-     * @param s1y1 is the y coordinate of the first point of the first segment.
-     * @param s1x2 is the x coordinate of the second point of the first segment.
-     * @param s1y2 is the y coordinate of the second point of the first segment.
-     * @param s2x1 is the x coordinate of the first point of the second segment.
-     * @param s2y1 is the y coordinate of the first point of the second segment.
-     * @param s2x2 is the x coordinate of the second point of the second segment.
-     * @param s2y2 is the y coordinate of the second point of the second segment.
-     * @param result the is point on the shape.
-     * @return the minimal square distance between the point on the first segment and any point on the second segment.
-     * @deprecated since 13.0, see {@link #findsFarthestPointSegmentSegment(double,
-     *     double, double, double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static double computeFarthestPointToSegment(
-            double s1x1, double s1y1, double s1x2, double s1y2,
-            double s2x1, double s2y1, double s2x2, double s2y2,
-            Point2D<?, ?> result) {
-        return findsFarthestPointSegmentSegment(s1x1, s1y1, s1x2, s1y2, s2x1, s2y1, s2x2, s2y2, result);
     }
 
     /** Replies the point on the first segment that is farthest to the second segment.
@@ -2001,30 +1509,6 @@ public interface Segment2afp<
      * @param y4 vertical position of the second point of the line.
      * @param result the intersection point.
      * @return <code>true</code> if there is an intersection.
-     * @deprecated since 13.0, see {@link #findsLineLineIntersection(double,
-     *     double, double, double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static boolean computeLineLineIntersection(double x1, double y1, double x2, double y2,
-            double x3, double y3, double x4, double y4,
-            Point2D<?, ?> result) {
-        return findsLineLineIntersection(x1, y1, x2, y2, x3, y3, x4, y4, result);
-    }
-
-    /** Compute the intersection of two lines specified
-     * by the specified points and vectors.
-     *
-     * @param x1 horizontal position of the first point of the line.
-     * @param y1 vertical position of the first point of the line.
-     * @param x2 horizontal position of the second point of the line.
-     * @param y2 vertical position of the second point of the line.
-     * @param x3 horizontal position of the first point of the line.
-     * @param y3 vertical position of the first point of the line.
-     * @param x4 horizontal position of the second point of the line.
-     * @param y4 vertical position of the second point of the line.
-     * @param result the intersection point.
-     * @return <code>true</code> if there is an intersection.
      */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean findsLineLineIntersection(double x1, double y1, double x2, double y2,
@@ -2052,44 +1536,6 @@ public interface Segment2afp<
                 x1 + intersectionFactor1 * x21,
                 y1 + intersectionFactor1 * y21);
         return true;
-    }
-
-    /**
-     * Replies the position factory for the intersection point between two lines.
-     *
-     * <p>Let line equations for L1 and L2:<br>
-     * <code>L1: P1 + factor1 * (P2-P1)</code><br>
-     * <code>L2: P3 + factor2 * (P4-P3)</code><br>
-     * If lines are intersecting, then<br>
-     * <code>P1 + factor1 * (P2-P1) = P3 + factor2 * (P4-P3)</code>
-     *
-     * <p>This function computes and replies <code>factor1</code>.
-     *
-     * @param x1
-     *            is the X coordinate of the first point of the first line.
-     * @param y1
-     *            is the Y coordinate of the first point of the first line.
-     * @param x2
-     *            is the X coordinate of the second point of the first line.
-     * @param y2
-     *            is the Y coordinate of the second point of the first line.
-     * @param x3
-     *            is the X coordinate of the first point of the second line.
-     * @param y3
-     *            is the Y coordinate of the first point of the second line.
-     * @param x4
-     *            is the X coordinate of the second point of the second line.
-     * @param y4
-     *            is the Y coordinate of the second point of the second line.
-     * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
-     * @deprecated since 13.0, see {@link #calculatesLineLineIntersectionFactor(double,
-     *     double, double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double computeLineLineIntersectionFactor(double x1, double y1, double x2, double y2,
-            double x3, double y3, double x4, double y4) {
-        return calculatesLineLineIntersectionFactor(x1, y1, x2, y2, x3, y3, x4, y4);
     }
 
     /**
@@ -2168,36 +1614,6 @@ public interface Segment2afp<
      *     If inside {@code ]-inf;0[}, the projection is outside on the side of the
      *     first segment point. If inside {@code ]1;+inf[}, the projection is
      *     outside on the side of the second segment point.
-     * @deprecated since 13.0, see {@link #findsProjectedPointPointLine(double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double computeProjectedPointOnLine(double px, double py, double s1x, double s1y, double s2x, double s2y) {
-        return findsProjectedPointPointLine(px, py, s1x, s1y, s2x, s2y);
-    }
-
-    /**
-     * Replies the projection a point on a segment.
-     *
-     * @param px
-     *            is the coordiante of the point to project
-     * @param py
-     *            is the coordiante of the point to project
-     * @param s1x
-     *            is the x-coordinate of the first line point.
-     * @param s1y
-     *            is the y-coordinate of the first line point.
-     * @param s2x
-     *            is the x-coordinate of the second line point.
-     * @param s2y
-     *            is the y-coordinate of the second line point.
-     * @return the projection of the specified point on the line. If
-     *     equal to {@code 0}, the projection is equal to the first segment point.
-     *     If equal to {@code 1}, the projection is equal to the second segment point.
-     *     If inside {@code ]0;1[}, the projection is between the two segment points.
-     *     If inside {@code ]-inf;0[}, the projection is outside on the side of the
-     *     first segment point. If inside {@code ]1;+inf[}, the projection is
-     *     outside on the side of the second segment point.
      */
     @Pure
     static double findsProjectedPointPointLine(double px, double py, double s1x, double s1y, double s2x, double s2y) {
@@ -2206,35 +1622,6 @@ public interface Segment2afp<
         final double numerator = (px - s1x) * vx + (py - s1y) * vy;
         final double denomenator = vx * vx + vy * vy;
         return numerator / denomenator;
-    }
-
-    /**
-     * Replies the relative distance from the given point to the given line.
-     * The replied distance may be negative, depending on which side of
-     * the line the point is.
-     *
-     * @param x1
-     *            the X coordinate of the start point of the specified line segment
-     * @param y1
-     *            the Y coordinate of the start point of the specified line segment
-     * @param x2
-     *            the X coordinate of the end point of the specified line segment
-     * @param y2
-     *            the Y coordinate of the end point of the specified line segment
-     * @param px
-     *            the X coordinate of the specified point to be compared with the specified line segment
-     * @param py
-     *            the Y coordinate of the specified point to be compared with the specified line segment
-     * @return the positive or negative distance from the point to the line
-     * @see #ccw(double, double, double, double, double, double, double)
-     * @see #findsSideLinePoint(double, double, double, double, double, double, double)
-     * @deprecated since 13.0, see {@link #calculatesRelativeDistanceLinePoint(double, double, double,
-     *     double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double computeRelativeDistanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
-        return calculatesRelativeDistanceLinePoint(x1, y1, x2, y2, px, py);
     }
 
     /**
@@ -2268,38 +1655,6 @@ public interface Segment2afp<
         }
         final double factor = ((y1 - py) * x21 - (x1 - px) * y21) / denomenator;
         return factor * Math.sqrt(denomenator);
-    }
-
-    /**
-     * Replies the intersection point between two segments.
-     *
-     * @param x1
-     *            is the X coordinate of the first point of the first segment.
-     * @param y1
-     *            is the Y coordinate of the first point of the first segment.
-     * @param x2
-     *            is the X coordinate of the second point of the first segment.
-     * @param y2
-     *            is the Y coordinate of the second point of the first segment.
-     * @param x3
-     *            is the X coordinate of the first point of the second segment.
-     * @param y3
-     *            is the Y coordinate of the first point of the second segment.
-     * @param x4
-     *            is the X coordinate of the second point of the second segment.
-     * @param y4
-     *            is the Y coordinate of the second point of the second segment.
-     * @param result the intersection point.
-     * @return <code>true</code> if an intersection exists.
-     * @deprecated since 13.0, se {@link #findsSegmentSegmentIntersection(double,
-     *     double, double, double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static boolean computeSegmentSegmentIntersection(double x1, double y1, double x2, double y2,
-            double x3, double y3, double x4, double y4,
-            Point2D<?, ?> result) {
-        return findsSegmentSegmentIntersection(x1, y1, x2, y2, x3, y3, x4, y4, result);
     }
 
     /**
@@ -2365,44 +1720,6 @@ public interface Segment2afp<
      * @param y4
      *            is the Y coordinate of the second point of the second segment.
      * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
-     * @deprecated since 13.0, see {@link #calculatesSegmentSegmentIntersectionFactor(double,
-     *     double, double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double computeSegmentSegmentIntersectionFactor(double x1, double y1, double x2, double y2,
-            double x3, double y3, double x4, double y4) {
-        return calculatesSegmentSegmentIntersectionFactor(x1, y1, x2, y2, x3, y3, x4, y4);
-    }
-
-    /**
-     * Replies one position factor for the intersection point between two lines.
-     *
-     * <p>Let line equations for L1 and L2:<br>
-     * <code>L1: P1 + factor1 * (P2-P1)</code><br>
-     * <code>L2: P3 + factor2 * (P4-P3)</code><br>
-     * If lines are intersecting, then<br>
-     * <code>P1 + factor1 * (P2-P1) = P3 + factor2 * (P4-P3)</code>
-     *
-     * <p>This function computes and replies <code>factor1</code>.
-     *
-     * @param x1
-     *            is the X coordinate of the first point of the first segment.
-     * @param y1
-     *            is the Y coordinate of the first point of the first segment.
-     * @param x2
-     *            is the X coordinate of the second point of the first segment.
-     * @param y2
-     *            is the Y coordinate of the second point of the first segment.
-     * @param x3
-     *            is the X coordinate of the first point of the second segment.
-     * @param y3
-     *            is the Y coordinate of the first point of the second segment.
-     * @param x4
-     *            is the X coordinate of the second point of the second segment.
-     * @param y4
-     *            is the Y coordinate of the second point of the second segment.
-     * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
      */
     @Pure
     static double calculatesSegmentSegmentIntersectionFactor(double x1, double y1, double x2, double y2,
@@ -2434,53 +1751,6 @@ public interface Segment2afp<
         }
         intersectionFactor = Vector2D.perpProduct(vx2, vy2, vx3, vy3) / det;
         return (intersectionFactor < 0. || intersectionFactor > 1.) ? Double.NaN : intersectionFactor;
-    }
-
-    /**
-     * Replies on which side of a line the given point is located.
-     *
-     * <p>A return value of 1 indicates that the line segment must turn in the direction
-     * that takes the positive X axis towards the negative Y axis. In the default
-     * coordinate system used by Java 2D, this direction is counterclockwise.
-     *
-     * <p>A return value of -1 indicates that the line segment must turn in the direction that
-     * takes the positive X axis towards the positive Y axis. In the default coordinate system,
-     * this direction is clockwise.
-     *
-     * <p>A return value of 0 indicates that the point lies exactly on the line segment. Note that
-     * an indicator value of 0 is rare and not useful for determining colinearity because of
-     * floating point rounding issues.
-     *
-     * <p>This function uses the equal-to-zero test with the error {@link Math#ulp(double)}.
-     *
-     * <p>In opposite of {@link #ccw(double, double, double, double, double, double, double)},
-     * this function does not try to classify the point if it is colinear
-     * to the segment. If the point is colinear, O is always returns.
-     *
-     * @param x1
-     *            the X coordinate of the start point of the specified line segment
-     * @param y1
-     *            the Y coordinate of the start point of the specified line segment
-     * @param x2
-     *            the X coordinate of the end point of the specified line segment
-     * @param y2
-     *            the Y coordinate of the end point of the specified line segment
-     * @param px
-     *            the X coordinate of the specified point to be compared with the specified line segment
-     * @param py
-     *            the Y coordinate of the specified point to be compared with the specified line segment
-     * @param epsilon approximate epsilon.
-     * @return an integer that indicates the position of the third specified coordinates with
-     *     respect to the line segment formed by the first two specified coordinates.
-     * @see #calculatesRelativeDistanceLinePoint(double, double, double, double, double, double)
-     * @see MathUtil#isEpsilonZero(double)
-     * @see #ccw(double, double, double, double, double, double, double)
-     * @deprecated since 13.0, see {@link #findsSideLinePoint(double, double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static int computeSideLinePoint(double x1, double y1, double x2, double y2, double px, double py, double epsilon) {
-        return findsSideLinePoint(x1, y1, x2, y2, px, py, epsilon);
     }
 
     /**
@@ -2535,34 +1805,6 @@ public interface Segment2afp<
             side = 0.;
         }
         return (side < 0) ? -1 : ((side > 0) ? 1 : 0);
-    }
-
-    /** Do an intersection test of two segments for ensuring that the answer of "no intersect" is safe.
-     *
-     * <p>If the function replies {@link UncertainIntersection#NO}, we are sure that the two given segments are not
-     * intersecting. If the function replies {@link UncertainIntersection#PERHAPS}, the two segments may intersects
-     * (uncertain answer).
-     *
-     * <p>This function considers that the ends of the segments are intersecting.
-     *
-     * @param x1 is the first point of the first segment.
-     * @param y1 is the first point of the first segment.
-     * @param x2 is the second point of the first segment.
-     * @param y2 is the second point of the first segment.
-     * @param x3 is the first point of the second segment.
-     * @param y3 is the first point of the second segment.
-     * @param x4 is the second point of the second segment.
-     * @param y4 is the second point of the second segment.
-     * @return the type of intersection.
-     * @see #intersectsSegmentSegmentWithEnds(double, double, double, double, double, double, double, double)
-     * @deprecated since 13.0, see {@link #findsUncertainIntersectionSegmentSegmentWithEnds(double,
-     *     double, double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static UncertainIntersection getNoSegmentSegmentWithEndsIntersection(double x1, double y1, double x2, double y2,
-            double x3, double y3, double x4, double y4) {
-        return findsUncertainIntersectionSegmentSegmentWithEnds(x1, y1, x2, y2, x3, y3, x4, y4);
     }
 
     /** Do an intersection test of two segments for ensuring that the answer of "no intersect" is safe.
@@ -2687,31 +1929,6 @@ public interface Segment2afp<
      * @param y4 is the second point of the second segment.
      * @return the type of intersection.
      * @see #intersectsSegmentSegmentWithoutEnds(double, double, double, double, double, double, double, double)
-     * @deprecated since 13.0, see {@link #findsUncertainIntersectionSegmentSegmentWithoutEnds(double,
-     *      double, double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static UncertainIntersection getNoSegmentSegmentWithoutEndsIntersection(double x1, double y1, double x2, double y2,
-            double x3, double y3, double x4, double y4) {
-        return findsUncertainIntersectionSegmentSegmentWithoutEnds(x1, y1, x2, y2, x3, y3, x4, y4);
-    }
-
-    /** Do an intersection test of two segments for ensuring that the answer of "no intersect" is safe.
-     * If the function replies <code>true</code>, it may
-     * This function does not consider that the ends of
-     * the segments are intersecting.
-     *
-     * @param x1 is the first point of the first segment.
-     * @param y1 is the first point of the first segment.
-     * @param x2 is the second point of the first segment.
-     * @param y2 is the second point of the first segment.
-     * @param x3 is the first point of the second segment.
-     * @param y3 is the first point of the second segment.
-     * @param x4 is the second point of the second segment.
-     * @param y4 is the second point of the second segment.
-     * @return the type of intersection.
-     * @see #intersectsSegmentSegmentWithoutEnds(double, double, double, double, double, double, double, double)
      */
     @Pure
     static UncertainIntersection findsUncertainIntersectionSegmentSegmentWithoutEnds(double x1, double y1, double x2, double y2,
@@ -2768,21 +1985,6 @@ public interface Segment2afp<
         }
 
         return UncertainIntersection.NO;
-    }
-
-    /** Compute the interpolate point between the two points.
-     *
-     * @param p1x x coordinate of the first point.
-     * @param p1y y coordinate of the first point.
-     * @param p2x x coordinate of the second point.
-     * @param p2y y coordinate of the second point.
-     * @param factor is between 0 and 1; 0 for p1, and 1 for p2.
-     * @param result the interpolate point.
-     * @deprecated since 13.0, see {@link #interpolates(double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    static void interpolate(double p1x, double p1y, double p2x, double p2y, double factor, Point2D<?, ?> result) {
-        interpolates(p1x, p1y, p2x, p2y, factor, result);
     }
 
     /** Compute the interpolate point between the two points.

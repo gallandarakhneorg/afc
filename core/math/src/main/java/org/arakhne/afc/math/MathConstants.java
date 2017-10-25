@@ -102,22 +102,6 @@ public final class MathConstants {
 	 */
 	public static final double JACOBI_EPSILON = 1.110223024E-16;
 
-	/**
-	 * Max sweeps in the Ellipse's algorithms.
-	 *
-	 * @deprecated since 13.0
-	 */
-	@Deprecated
-	public static final int ELLIPSE_MAX_SWEEPS = 32;
-
-	/** This is the maximale distance that
-	 * permits to detect hits.
-	 *
-	 * @deprecated since 13.0
-	 */
-	@Deprecated
-	public static final double HIT_DISTANCE = 5;
-
 	/** The maximum distance that the line
 	 *  segments used to approximate the
 	 *  curved segments are allowed to

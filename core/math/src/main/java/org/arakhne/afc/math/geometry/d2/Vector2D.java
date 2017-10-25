@@ -64,7 +64,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #isUnitVector(double, double, double)
 	 */
 	@Pure
-	@Inline(value = "Vector2D.isUnitVector(($1), ($2), MathConstants.UNIT_VECTOR_EPSILON)",
+	@Inline(value = "$3.isUnitVector(($1), ($2), $4.UNIT_VECTOR_EPSILON)",
 			imported = {Vector2D.class, MathConstants.class})
 	static boolean isUnitVector(double x, double y) {
 		return isUnitVector(x, y, MathConstants.UNIT_VECTOR_EPSILON);
@@ -87,7 +87,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #isUnitVector(double, double)
 	 */
 	@Pure
-	@Inline(value = "MathUtil.isEpsilonEqual(($1) * ($1) + ($2) * ($2), 1., ($3))",
+	@Inline(value = "$4.isEpsilonEqual(($1) * ($1) + ($2) * ($2), 1., ($3))",
 			imported = {MathUtil.class})
 	static boolean isUnitVector(double x, double y, double epsilon) {
 		return MathUtil.isEpsilonEqual(x * x + y * y, 1., epsilon);
@@ -121,7 +121,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #isUnitVector(double, double, double)
 	 */
 	@Pure
-	@Inline(value = "Vector2D.isOrthogonal(($1), ($2), ($3), ($4), MathConstants.ORTHOGONAL_VECTOR_EPSILON)",
+	@Inline(value = "$5.isOrthogonal(($1), ($2), ($3), ($4), $6.ORTHOGONAL_VECTOR_EPSILON)",
 			imported = {Vector2D.class, MathConstants.class})
 	static boolean isOrthogonal(double x1, double y1, double x2, double y2) {
 		return isOrthogonal(x1, y1, x2, y2, MathConstants.ORTHOGONAL_VECTOR_EPSILON);
@@ -140,7 +140,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #isOrthogonal(double, double, double,  double)
 	 */
 	@Pure
-	@Inline(value = "MathUtil.isEpsilonZero(Vector2D.dotProduct(($1), ($2), ($3), ($4)), ($5))",
+	@Inline(value = "$7.isEpsilonZero($6.dotProduct(($1), ($2), ($3), ($4)), ($5))",
 			imported = {Vector2D.class, MathUtil.class})
 	static boolean isOrthogonal(double x1, double y1, double x2, double y2, double epsilon) {
 		return MathUtil.isEpsilonZero(dotProduct(x1, y1, x2, y2), epsilon);
@@ -551,8 +551,23 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	/** Change the coordinates of this vector to make it an orthogonal
 	 * vector to the original coordinates.
 	 */
+	@Inline(value = "makeOrthogonal($1.getDefaultCoordinateSystem())", imported = {CoordinateSystem2D.class})
 	default void makeOrthogonal() {
-		set(-getY(), getX());
+		makeOrthogonal(CoordinateSystem2D.getDefaultCoordinateSystem());
+	}
+
+	/** Change the coordinates of this vector to make it an orthogonal
+	 * vector to the original coordinates.
+	 *
+	 * @param system the coordinate system.
+	 * @since 14.0
+	 */
+	default void makeOrthogonal(CoordinateSystem2D system) {
+		if (system.isLeftHanded()) {
+			set(getY(), -getX());
+		} else {
+			set(-getY(), getX());
+		}
 	}
 
 	/** Replies the orthogonal vector to this vector.
@@ -560,7 +575,22 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @return the orthogonal vector.
 	 */
 	@Pure
+	@Inline(value = "toOrthogonalVector($1.getDefaultCoordinateSystem())", imported = {CoordinateSystem2D.class})
 	default RV toOrthogonalVector() {
+		return toOrthogonalVector(CoordinateSystem2D.getDefaultCoordinateSystem());
+	}
+
+	/** Replies the orthogonal vector to this vector.
+	 *
+	 * @param system the coordinate system.
+	 * @return the orthogonal vector.
+	 * @since 14.0
+	 */
+	@Pure
+	default RV toOrthogonalVector(CoordinateSystem2D system) {
+		if (system.isLeftHanded()) {
+			return getGeomFactory().newVector(getY(), -getX());
+		}
 		return getGeomFactory().newVector(-getY(), getX());
 	}
 
@@ -670,20 +700,6 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * according to the current {@link CoordinateSystem2D}.
 	 *
 	 * @param angle is the rotation angle in radians.
-	 * @deprecated since 13.0, {@link #turn(double)}
-	 */
-	@Deprecated
-	default void turnVector(double angle) {
-		turn(angle);
-	}
-
-	/** Turn this vector about the given rotation angle.
-	 *
-	 * <p>The rotation is done according to the trigonometric coordinate.
-	 * A positive rotation angle corresponds to a left or right rotation
-	 * according to the current {@link CoordinateSystem2D}.
-	 *
-	 * @param angle is the rotation angle in radians.
 	 * @see #turn(double, Vector2D)
 	 * @see #turnLeft(double)
 	 * @see #turnRight(double)
@@ -705,12 +721,39 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #turnLeft(double)
 	 * @see #turnRight(double)
 	 */
+	@Inline(value = "turn($1, $2, $3.getDefaultCoordinateSystem())", imported = {CoordinateSystem2D.class})
 	default void turn(double angle, Vector2D<?, ?> vectorToTurn) {
+		turn(angle, vectorToTurn, CoordinateSystem2D.getDefaultCoordinateSystem());
+	}
+
+	/** Turn the given vector about the given rotation angle, and set this
+	 * vector with the result.
+	 *
+	 * <p>The rotation is done according to the trigonometric coordinate.
+	 * A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @param vectorToTurn the vector to turn.
+	 * @param system the coordinate system.
+	 * @since 14.0
+	 * @see #turn(double)
+	 * @see #turnLeft(double)
+	 * @see #turnRight(double)
+	 */
+	default void turn(double angle, Vector2D<?, ?> vectorToTurn, CoordinateSystem2D system) {
 		assert vectorToTurn != null : AssertMessages.notNullParameter(1);
 		final double sin = Math.sin(angle);
 		final double cos = Math.cos(angle);
-		final double x =  cos * vectorToTurn.getX() - sin * vectorToTurn.getY();
-		final double y =  sin * vectorToTurn.getX() + cos * vectorToTurn.getY();
+		final double x;
+		final double y;
+		if (system.isLeftHanded()) {
+			x =  cos * vectorToTurn.getX() + sin * vectorToTurn.getY();
+			y =  -sin * vectorToTurn.getX() + cos * vectorToTurn.getY();
+		} else {
+			x =  cos * vectorToTurn.getX() - sin * vectorToTurn.getY();
+			y =  sin * vectorToTurn.getX() + cos * vectorToTurn.getY();
+		}
 		set(x, y);
 	}
 
@@ -742,12 +785,32 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #turn(double)
 	 * @see #turnRight(double)
 	 */
+	@Inline(value = "turnLeft($1, $2, $3.getDefaultCoordinateSystem())", imported = {CoordinateSystem2D.class})
 	default void turnLeft(double angle, Vector2D<?, ?> vectorToTurn) {
+		turnLeft(angle, vectorToTurn, CoordinateSystem2D.getDefaultCoordinateSystem());
+	}
+
+	/** Turn the given vector on the left, and set this
+	 * vector with the result.
+	 *
+	 * <p>A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @param vectorToTurn the vector to turn.
+	 * @param system the coordinate system.
+	 * @since 14.0
+	 * @see CoordinateSystem2D
+	 * @see #turnLeft(double, Vector2D)
+	 * @see #turn(double)
+	 * @see #turnRight(double)
+	 */
+	default void turnLeft(double angle, Vector2D<?, ?> vectorToTurn, CoordinateSystem2D system) {
 		final double sin = Math.sin(angle);
 		final double cos = Math.cos(angle);
 		final double x;
 		final double y;
-		if (CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded()) {
+		if (system.isRightHanded()) {
 			x =  cos * vectorToTurn.getX() - sin * vectorToTurn.getY();
 			y =  sin * vectorToTurn.getX() + cos * vectorToTurn.getY();
 		} else {
@@ -767,6 +830,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #turn(double)
 	 * @see #turnLeft(double)
 	 */
+	@Inline(value = "turnLeft(-($1))")
 	default void turnRight(double angle) {
 		turnLeft(-angle, this);
 	}
@@ -782,6 +846,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #turn(double)
 	 * @see #turnLeft(double)
 	 */
+	@Inline(value = "turnLeft(-($1), $2)")
 	default void turnRight(double angle, Vector2D<?, ?> vectorToTurn) {
 		turnLeft(-angle, vectorToTurn);
 	}

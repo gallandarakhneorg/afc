@@ -75,20 +75,6 @@ public interface Path2afp<
     PathWindingRule DEFAULT_WINDING_RULE = PathWindingRule.NON_ZERO;
 
     /**
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorPathShadow(int,
-     *     PathIterator2afp, BasicPathShadow2afp, CrossingComputationType)}
-     */
-    @SuppressWarnings("all")
-    @Deprecated
-    static int computeCrossingsFromPath(
-            int crossings,
-            PathIterator2afp<?> iterator,
-            BasicPathShadow2afp shadow,
-            CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorPathShadow(crossings, iterator, shadow, type);
-    }
-
-    /**
      * Accumulate the number of times the path crosses the shadow extending to the right of the second path.  See the comment
      * for the SHAPE_INTERSECTS constant for more complete details. The return value is the sum of all crossings for both the
      * top and bottom of the shadow for every segment in the path, or the special value SHAPE_INTERSECTS if the path ever enters
@@ -395,26 +381,6 @@ public interface Path2afp<
         return true;
     }
 
-    /**
-     * @deprecated since 13.0, see {@link #findsClosestPointPathIteratorPoint(PathIterator2afp, double, double, Point2D)}
-     */
-    @SuppressWarnings("all")
-    @Deprecated
-    static void getClosestPointTo(PathIterator2afp<? extends PathElement2afp> pi, double x, double y, Point2D<?, ?> result) {
-        findsClosestPointPathIteratorPoint(pi, x, y, result);
-    }
-
-    /**
-     * @deprecated since 13.0, see {@link #findsClosestPointPathIteratorPathIterator(PathIterator2afp,
-     *      PathIterator2afp, Point2D)}
-     */
-    @SuppressWarnings("all")
-    @Deprecated
-    static boolean getClosestPointTo(PathIterator2afp<? extends PathElement2afp> pi,
-            PathIterator2afp<? extends PathElement2afp> shape, Point2D<?, ?> result) {
-        return findsClosestPointPathIteratorPathIterator(pi, shape, result);
-    }
-
     @Pure
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
@@ -553,15 +519,6 @@ public interface Path2afp<
         return result;
     }
 
-    /**
-     * @deprecated since 13.0, see {@link #findsFarthestPointPathIteratorPoint(PathIterator2afp, double, double, Point2D)}
-     */
-    @SuppressWarnings("all")
-    @Deprecated
-    static void getFarthestPointTo(PathIterator2afp<? extends PathElement2afp> pi, double x, double y, Point2D<?, ?> result) {
-        findsFarthestPointPathIteratorPoint(pi, x, y, result);
-    }
-
     @Pure
     @Override
     default P getFarthestPointTo(Point2D<?, ?> pt) {
@@ -689,20 +646,6 @@ public interface Path2afp<
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
         return crossings == MathConstants.SHAPE_INTERSECTS
                 || (crossings & mask) != 0;
-    }
-
-    /**
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorPointShadow(int,
-     *     PathIterator2afp, double, double, CrossingComputationType)}
-     */
-    @Deprecated
-    @SuppressWarnings("all")
-    static int computeCrossingsFromPoint(
-            int crossings,
-            PathIterator2afp<? extends PathElement2afp> iterator,
-            double px, double py,
-            CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorPointShadow(crossings, iterator, px, py, type);
     }
 
     /** Calculates the number of times the given path crosses the ray extending to the right from (px, py).
@@ -874,20 +817,6 @@ public interface Path2afp<
         return numCrossings;
     }
 
-    /**
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorEllipseShadow(int,
-     *     PathIterator2afp, double, double, double, double, CrossingComputationType)}
-     */
-    @Deprecated
-    @SuppressWarnings("all")
-    static int computeCrossingsFromEllipse(
-            int crossings,
-            PathIterator2afp<? extends PathElement2afp> iterator,
-            double ex, double ey, double ew, double eh,
-            CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorEllipseShadow(crossings, iterator, ex, ey, ew, eh, type);
-    }
-
     /** Calculates the number of times the given path crosses the given ellipse extending to the right.
      * @param crossings is the initial value for crossing.
      * @param iterator is the description of the path.
@@ -1053,22 +982,6 @@ public interface Path2afp<
         }
 
         return numCrosses;
-    }
-
-    /**
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorRoundRectangleShadow(int,
-     *      PathIterator2afp, double, double, double, double, double, double, CrossingComputationType)}
-     */
-    @Deprecated
-    @SuppressWarnings("all")
-    static int computeCrossingsFromRoundRect(
-            int crossings,
-            PathIterator2afp<? extends PathElement2afp> iterator,
-            double x1, double y1, double x2, double y2,
-            double arcWidth, double arcHeight,
-            CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorRoundRectangleShadow(crossings, iterator, x1, y1, x2, y2,
-                arcWidth, arcHeight, type);
     }
 
     /** Calculates the number of times the given path crosses the given round rectangle extending to the right.
@@ -1237,20 +1150,6 @@ public interface Path2afp<
         return numCrossings;
     }
 
-    /**
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorCircleShadow(int,
-     *      PathIterator2afp, double, double, double, CrossingComputationType)}
-     */
-    @SuppressWarnings("all")
-    @Deprecated
-    static int computeCrossingsFromCircle(
-            int crossings,
-            PathIterator2afp<? extends PathElement2afp> iterator,
-            double cx, double cy, double radius,
-            CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorCircleShadow(crossings, iterator, cx, cy, radius, type);
-    }
-
     /** Calculates the number of times the given path crosses the given circle extending to the right.
      * @param crossings is the initial value for crossing.
      * @param iterator is the description of the path.
@@ -1414,17 +1313,6 @@ public interface Path2afp<
         return numCrosses;
     }
 
-    /**
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorSegmentShadow(int,
-     *      PathIterator2afp, double, double, double, double, CrossingComputationType)}
-     */
-    @SuppressWarnings("all")
-    @Deprecated
-    static int computeCrossingsFromSegment(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
-            double x1, double y1, double x2, double y2, CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorSegmentShadow(crossings, iterator, x1, y1, x2, y2, type);
-    }
-
     /** Calculates the number of times the given path crosses the given segment extending to the right.
      * @param crossings is the initial value for crossing.
      * @param iterator is the description of the path.
@@ -1583,21 +1471,6 @@ public interface Path2afp<
         }
 
         return numCrosses;
-    }
-
-    /**
-     * @deprecated since 13..0, see {@link #calculatesCrossingsPathIteratorRectangleShadow(int,
-     *     PathIterator2afp, double, double, double, double, CrossingComputationType)}
-     */
-    @SuppressWarnings("all")
-    @Deprecated
-    static int computeCrossingsFromRect(
-            int crossings,
-            PathIterator2afp<? extends PathElement2afp> iterator,
-            double rxmin, double rymin,
-            double rxmax, double rymax,
-            CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorRectangleShadow(crossings, iterator, rxmin, rymin, rxmax, rymax, type);
     }
 
     /** Accumulate the number of times the path crosses the shadow extending to the right of the rectangle.  See the comment
@@ -1776,22 +1649,6 @@ public interface Path2afp<
         return numCrossings;
     }
 
-    /**
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorTriangleShadow(int,
-     *     PathIterator2afp, double, double, double, double, double, double, CrossingComputationType)}
-     */
-    @Deprecated
-    @SuppressWarnings("all")
-    static int computeCrossingsFromTriangle(
-            int crossings,
-            PathIterator2afp<? extends PathElement2afp> iterator,
-            double x1, double y1,
-            double x2, double y2,
-            double x3, double y3,
-            CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorTriangleShadow(crossings, iterator, x1, y1, x2, y2, x3, y3, type);
-    }
-
     /** Accumulate the number of times the path crosses the shadow extending to the right of the triangle.  See the comment
      * for the SHAPE_INTERSECTS constant for more complete details. The return value is the sum of all crossings for both the
      * top and bottom of the shadow for every segment in the path, or the special value SHAPE_INTERSECTS if the path ever enters
@@ -1962,20 +1819,12 @@ public interface Path2afp<
         return numCrossings;
     }
 
-    /**
-     * @deprecated since 13.0, see {@link #calculatesDrawableElementBoundingBox(PathIterator2afp, Rectangle2afp)}
-     */
-    @SuppressWarnings("all")
-    @Deprecated
-    static boolean computeDrawableElementBoundingBox(PathIterator2afp<?> iterator,
-            Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
-        return calculatesDrawableElementBoundingBox(iterator, box);
-    }
-
     /** Compute the box that corresponds to the drawable elements of the path.
+     *
      * <p>An element is drawable if it is a line, a curve, or a closing path element. The box fits the drawn lines and the
      * drawn curves. The control points of the curves may be outside the output box. For obtaining the bounding box
      * of the path's points, use {@link #calculatesControlPointBoundingBox(PathIterator2afp, Rectangle2afp)}.
+     *
      * @param iterator the iterator on the path elements.
      * @param box the box to set.
      * @return <code>true</code> if a drawable element was found.
@@ -2113,16 +1962,6 @@ public interface Path2afp<
             box.clear();
         }
         return foundOneLine;
-    }
-
-    /**
-     * @deprecated since 13.0, see {@link #calculatesControlPointBoundingBox(PathIterator2afp, Rectangle2afp)}
-     */
-    @SuppressWarnings("all")
-    @Deprecated
-    static boolean computeControlPointBoundingBox(PathIterator2afp<?> iterator,
-            Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
-        return calculatesControlPointBoundingBox(iterator, box);
     }
 
     /** Compute the box that corresponds to the control points of the path.
@@ -2303,15 +2142,6 @@ public interface Path2afp<
             box.clear();
         }
         return foundOneControlPoint;
-    }
-
-    /**
-     * @deprecated since 13.0, see {@link #calculatesPathLength(PathIterator2afp)}
-     */
-    @SuppressWarnings("all")
-    @Deprecated
-    static double computeLength(PathIterator2afp<?> iterator) {
-        return calculatesPathLength(iterator);
     }
 
     /** Compute the total squared length of the path.

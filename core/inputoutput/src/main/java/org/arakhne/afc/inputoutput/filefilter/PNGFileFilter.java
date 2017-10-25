@@ -40,13 +40,6 @@ public class PNGFileFilter extends AbstractFileFilter {
 	 */
 	public static final String EXTENSION_PNG = "png"; //$NON-NLS-1$
 
-	/** Default extension for the PNG pictures.
-	 *
-	 * @deprecated since 13.0, see {@link #EXTENSION_PNG}
-	 */
-	@Deprecated
-	public static final String EXTENSION = EXTENSION_PNG;
-
 	/** Construct.
 	 */
 	public PNGFileFilter() {

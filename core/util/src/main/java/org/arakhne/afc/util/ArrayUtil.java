@@ -167,61 +167,6 @@ public final class ArrayUtil {
 	 * @param clazz is the type of the elements.
 	 * @param arrays are the arrays to merge.
 	 * @return the array.
-	 * @deprecated see {@link #mergeWithoutNull(Class, Object[]...)}
-	 */
-	@Pure
-	@Inline(value = "ArrayUtil.mergeWithoutNull($1, $2)", imported = {ArrayUtil.class})
-	@SuppressWarnings("all")
-	@Deprecated
-	public static <T> T[] merge_without_null(Class<T> clazz, T[]... arrays) {
-		return mergeWithoutNull(clazz, arrays);
-	}
-
-	/** Merge the elements to make an array.
-	 *
-	 * <p>This function removes the <code>null</code> values.
-	 *
-	 * @param <T> is the type of the elements.
-	 * @param clazz is the type of the elements.
-	 * @param elements are the elements to merge.
-	 * @return the array.
-	 * @deprecated see {@link #mergeWithoutNull(Class, Object...)}
-	 */
-	@Pure
-	@Inline(value = "ArrayUtil.mergeWithoutNull($1, $2)", imported = {ArrayUtil.class})
-	@SuppressWarnings("all")
-	@Deprecated
-	public static <T> T[] merge_without_null(Class<T> clazz, T... elements) {
-		return mergeWithoutNull(clazz, elements);
-	}
-
-	/** Merge the elements to make an array.
-	 *
-	 * <p>This function removes the <code>null</code> values.
-	 *
-	 * @param <T> is the type of the elements.
-	 * @param source is the first array to merge.
-	 * @param clazz is the type of the elements.
-	 * @param elements are the elements to merge.
-	 * @return the array.
-	 * @deprecated see {@link #mergeWithoutNull(Class, Object[], Object...)}
-	 */
-	@Pure
-	@Inline(value = "ArrayUtil.mergeWithoutNull($1, $2, $3)", imported = {ArrayUtil.class})
-	@SuppressWarnings("all")
-	@Deprecated
-	public static <T> T[] merge_without_null(Class<T> clazz, T[] source, T... elements) {
-		return mergeWithoutNull(clazz, source, elements);
-	}
-
-	/** Merge the arrays.
-	 *
-	 * <p>This function removes the <code>null</code> values.
-	 *
-	 * @param <T> is the type of the elements.
-	 * @param clazz is the type of the elements.
-	 * @param arrays are the arrays to merge.
-	 * @return the array.
 	 */
 	@Pure
 	public static <T> T[] mergeWithoutNull(Class<T> clazz, @SuppressWarnings("unchecked") T[]... arrays) {

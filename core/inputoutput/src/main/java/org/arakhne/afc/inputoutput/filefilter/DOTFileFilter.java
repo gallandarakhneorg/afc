@@ -35,13 +35,6 @@ public class DOTFileFilter extends AbstractFileFilter {
 	 */
 	public static final String EXTENSION_DOT = "dot"; //$NON-NLS-1$
 
-	/** Default extension for the Graphviz DOT files.
-	 *
-	 * @deprecated since 13.0, see {@link #EXTENSION_DOT}
-	 */
-	@Deprecated
-	public static final String EXTENSION = EXTENSION_DOT;
-
 	/** Construct.
 	 */
 	public DOTFileFilter() {

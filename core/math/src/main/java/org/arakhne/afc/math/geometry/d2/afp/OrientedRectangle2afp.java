@@ -70,25 +70,6 @@ public interface OrientedRectangle2afp<
      * @param y the y coordinate of the vector.
      * @return the coordinate of the projection of the vector on R
      * @see Parallelogram2afp#findsVectorProjectionRAxisPoint(double, double, double, double, double, double)
-     * @deprecated since 13.0, see {@link #findsVectorProjectionRAxisVector(double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double projectVectorOnOrientedRectangleRAxis(double rx, double ry, double x,  double y) {
-        return findsVectorProjectionRAxisVector(rx, ry, x, y);
-    }
-
-    /** Project the given vector on the R axis, assuming S axis is orthogonal.
-     *
-     * <p>This function assumes that axes are orthogonal. For a general projection on the R axis,
-     * see {@link Parallelogram2afp#findsVectorProjectionRAxisPoint(double, double, double, double, double, double)}.
-     *
-     * @param rx the x coordinate of the R axis.
-     * @param ry the y coordinate of the R axis.
-     * @param x the x coordinate of the vector.
-     * @param y the y coordinate of the vector.
-     * @return the coordinate of the projection of the vector on R
-     * @see Parallelogram2afp#findsVectorProjectionRAxisPoint(double, double, double, double, double, double)
      */
     @Pure
     static double findsVectorProjectionRAxisVector(double rx, double ry, double x,  double y) {
@@ -107,54 +88,11 @@ public interface OrientedRectangle2afp<
      * @param y the y coordinate of the vector.
      * @return the coordinate of the projection of the vector on S
      * @see Parallelogram2afp#findsVectorProjectionSAxisVector(double, double, double, double, double, double)
-     * @deprecated since 13.0, see {@link #findsVectorProjectionSAxisVector(double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double projectVectorOnOrientedRectangleSAxis(double rx, double ry, double x,  double y) {
-        return findsVectorProjectionSAxisVector(rx, ry, x, y);
-    }
-
-    /** Project the given vector on the S axis, assuming R axis is orthogonal.
-     *
-     * <p>This function assumes that axes are orthogonal. For a general projection on the S axis,
-     * see {@link Parallelogram2afp#findsVectorProjectionSAxisVector(double, double, double, double, double, double)}.
-     *
-     * @param rx the x coordinate of the R axis (NOT the S axis).
-     * @param ry the y coordinate of the R axis (NOT the S axis).
-     * @param x the x coordinate of the vector.
-     * @param y the y coordinate of the vector.
-     * @return the coordinate of the projection of the vector on S
-     * @see Parallelogram2afp#findsVectorProjectionSAxisVector(double, double, double, double, double, double)
      */
     @Pure
     static double findsVectorProjectionSAxisVector(double rx, double ry, double x,  double y) {
         assert Vector2D.isUnitVector(rx, ry) : AssertMessages.normalizedParameters(0, 1);
         return Vector2D.dotProduct(x, y, -ry, rx);
-    }
-
-    /**
-     * Compute the center point and axis extents of an oriented rectangle from a set of points and
-     * the oriented rectangle axes.
-     *
-     * <p>This function assumes orthogonal axes, in opposite to
-     * {@link Parallelogram2afp#calculatesCenterPointAxisExtents(Iterable, Vector2D, Vector2D, Point2D, Tuple2D)}, which
-     * assumes not constraint on the axes.
-     *
-     * @param points is the list of the points enclosed by the oriented rectangle.
-     * @param raxis is the R axis of the oriented rectangle.
-     * @param center is the point which is set with the parallogram's center coordinates.
-     * @param extents are the extents of the parallogram for the R and S axis.
-     * @see "MGPCG pages 222-223 (oriented bounding box)"
-     * @see Parallelogram2afp#calculatesCenterPointAxisExtents(Iterable, Vector2D, Vector2D, Point2D, Tuple2D)
-     * @deprecated since 13.0, see {@link #calculatesCenterPointAxisExtents(Iterable, Vector2D, Point2D, Tuple2D)}
-     */
-    @Deprecated
-    static void computeCenterPointAxisExtents(
-            Iterable<? extends Point2D<?, ?>> points,
-                    Vector2D<?, ?> raxis,
-                    Point2D<?, ?> center, Tuple2D<?> extents) {
-        calculatesCenterPointAxisExtents(points, raxis, center, extents);
     }
 
     /**
@@ -353,46 +291,6 @@ public interface OrientedRectangle2afp<
         }
         coordinate = findsVectorProjectionSAxisVector(axis1X, axis1Y, x, y);
         return coordinate >= -axis2Extent && coordinate <= axis2Extent;
-    }
-
-    /**
-     * Given a point p, this function computes the point q1 on (or in) this oriented rectangle,
-     * closest to p; and the point q2 on the oriented rectangle, farthest to p. If there are several
-     * points, the function will return one of those. Remember this function may
-     * return an approximate result when points remain on oriented rectangle plane of symmetry.
-     *
-     * @param px
-     *            is the X coordinate of the point to test.
-     * @param py
-     *            is the Y coordinate of the point to test.
-     * @param centerX
-     *            is the X coordinate of the oriented rectangle center.
-     * @param centerY
-     *            is the Y coordinate of the oriented rectangle center.
-     * @param axis1X
-     *            is the X coordinate of the axis 1 vector.
-     * @param axis1Y
-     *            is the Y coordinate of the axis 1 vector.
-     * @param axis1Extent
-     *            is the extent of the axis 1 of the oriented rectangle.
-     * @param axis2Extent
-     *            is the extent of the axis 2 of the oriented rectangle.
-     * @param closest the closest point. If <code>null</code>, the closest point is not computed.
-     * @param farthest the farthest point. If <code>null</code>, the farthest point is not computed.
-     * @deprecated since 13.0, see {@link #findsClosestFarthestPointsPointOrientedRectangle(double,
-     *     double, double, double, double, double, double, double, Point2D, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static void computeClosestFarthestPoints(
-            double px, double py,
-            double centerX, double centerY,
-            double axis1X, double axis1Y,
-            double axis1Extent,
-            double axis2Extent,
-            Point2D<?, ?> closest, Point2D<?, ?> farthest) {
-        findsClosestFarthestPointsPointOrientedRectangle(px, py,
-                centerX, centerY, axis1X, axis1Y, axis1Extent, axis2Extent, closest, farthest);
     }
 
     /**

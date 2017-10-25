@@ -26,7 +26,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Iterator;
 
-import org.arakhne.afc.inputoutput.filefilter.DOTFileFilter;
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.math.tree.TreeNode;
 
@@ -43,13 +42,6 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @since 13.0
  */
 public class DotDotWriter {
-
-    /** Common extension used for <code>.dot</code> files.
-     *
-     * @deprecated see {@link DOTFileFilter#EXTENSION}.
-     */
-    @Deprecated
-    public static final String EXTENSION = DOTFileFilter.EXTENSION;
 
     private final Writer writer;
 

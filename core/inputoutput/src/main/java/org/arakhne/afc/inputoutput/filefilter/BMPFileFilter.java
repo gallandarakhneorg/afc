@@ -41,13 +41,6 @@ public class BMPFileFilter extends AbstractFileFilter {
 	 */
 	public static final String EXTENSION_BMP = "bmp"; //$NON-NLS-1$
 
-	/** Default extension for the BMP pictures.
-	 *
-	 * @deprecated since 13.0, see {@link #EXTENSION_BMP}
-	 */
-	@Deprecated
-	public static final String EXTENSION = EXTENSION_BMP;
-
 	/** Construct.
 	 */
 	public BMPFileFilter() {

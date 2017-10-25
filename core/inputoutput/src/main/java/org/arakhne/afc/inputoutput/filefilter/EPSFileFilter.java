@@ -35,13 +35,6 @@ public class EPSFileFilter extends AbstractFileFilter {
 	 */
 	public static final String EXTENSION_EPS = "eps"; //$NON-NLS-1$
 
-	/** Default extension for the Encapsuled Postscript document.
-	 *
-	 * @deprecated since 13.0, see {@link #EXTENSION_EPS}
-	 */
-	@Deprecated
-	public static final String EXTENSION = EXTENSION_EPS;
-
 	/** Construct.
 	 */
 	public EPSFileFilter() {

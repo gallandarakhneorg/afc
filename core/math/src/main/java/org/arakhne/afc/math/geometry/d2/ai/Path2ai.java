@@ -85,21 +85,6 @@ public interface Path2ai<
      * @param iterator the iterator on the path elements.
      * @param box the box to set.
      * @return <code>true</code> if a drawable element was found.
-     * @deprecated since 13.0, see {@link #calculatesDrawableElementBoundingBox(PathIterator2ai, Rectangle2ai)}
-     */
-    @Deprecated
-    static boolean computeDrawableElementBoundingBox(PathIterator2ai<?> iterator,
-            Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
-        return calculatesDrawableElementBoundingBox(iterator, box);
-    }
-
-    /** Compute the box that corresponds to the drawable elements of the path.
-     *
-     * <p>An element is drawable if it is a line, a curve, or a closing path element.
-     *
-     * @param iterator the iterator on the path elements.
-     * @param box the box to set.
-     * @return <code>true</code> if a drawable element was found.
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
     static boolean calculatesDrawableElementBoundingBox(PathIterator2ai<?> iterator,
@@ -230,26 +215,6 @@ public interface Path2ai<
             box.clear();
         }
         return foundOneLine;
-    }
-
-    /** Compute the box that corresponds to the control points of the path.
-     *
-     * <p>An element is drawable if it is a line, a curve, or a closing path element.
-     * The box fits the drawn lines and the drawn curves. The control points of the
-     * curves may be outside the output box. For obtaining the bounding box
-     * of the drawn lines and cruves, use
-     * {@link #calculatesDrawableElementBoundingBox(PathIterator2ai, Rectangle2ai)}.
-     *
-     * @param iterator the iterator on the path elements.
-     * @param box the box to set.
-     * @return <code>true</code> if a control point was found.
-     * @see #calculatesDrawableElementBoundingBox(PathIterator2ai, Rectangle2ai)
-     * @deprecated since 13.0, see {@link #calculatesControlPointBoundingBox(PathIterator2ai, Rectangle2ai)}
-     */
-    @Deprecated
-    static boolean computeControlPointBoundingBox(PathIterator2ai<?> iterator,
-            Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
-        return calculatesControlPointBoundingBox(iterator, box);
     }
 
     /** Compute the box that corresponds to the control points of the path.
@@ -449,28 +414,6 @@ public interface Path2ai<
      * @param type is the type of special computation to apply. If <code>null</code>, it
      *     is equivalent to {@link CrossingComputationType#STANDARD}.
      * @return the crossing
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorSegmentShadow(int,
-     *      PathIterator2ai, int, int, int, int, CrossingComputationType)}
-     */
-    @Deprecated
-    static int computeCrossingsFromSegment(int crossings, PathIterator2ai<?> pi, int x1, int y1, int x2, int y2,
-            CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorSegmentShadow(crossings, pi, x1, y1, x2, y2, type);
-    }
-
-    /**
-     * Calculates the number of times the given path
-     * crosses the given circle extending to the right.
-     *
-     * @param crossings is the initial value for crossing.
-     * @param pi is the description of the path.
-     * @param x1 is the first point of the segment.
-     * @param y1 is the first point of the segment.
-     * @param x2 is the first point of the segment.
-     * @param y2 is the first point of the segment.
-     * @param type is the type of special computation to apply. If <code>null</code>, it
-     *     is equivalent to {@link CrossingComputationType#STANDARD}.
-     * @return the crossing
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
     static int calculatesCrossingsPathIteratorSegmentShadow(int crossings, PathIterator2ai<?> pi, int x1, int y1, int x2, int y2,
@@ -620,27 +563,6 @@ public interface Path2ai<
         }
 
         return numCrosses;
-    }
-
-    /**
-     * Calculates the number of times the given path
-     * crosses the given circle extending to the right.
-     *
-     * @param crossings is the initial value for crossing.
-     * @param pi is the description of the path.
-     * @param cx is the center of the circle.
-     * @param cy is the center of the circle.
-     * @param radius is the radius of the circle.
-     * @param type is the type of special computation to apply. If <code>null</code>, it
-     *     is equivalent to {@link CrossingComputationType#STANDARD}.
-     * @return the crossing
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorCircleShadow(int,
-     *      PathIterator2ai, int, int, int, CrossingComputationType)}
-     */
-    @Deprecated
-    static int computeCrossingsFromCircle(int crossings, PathIterator2ai<?> pi, int cx, int cy, int radius,
-            CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorCircleShadow(crossings, pi, cx, cy, radius, type);
     }
 
     /**
@@ -829,33 +751,6 @@ public interface Path2ai<
      * @param type is the type of special computation to apply. If <code>null</code>, it
      *     is equivalent to {@link CrossingComputationType#STANDARD}.
      * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorPointShadow(int,
-     *      PathIterator2ai, int, int, CrossingComputationType)}
-     */
-    @Deprecated
-    static int computeCrossingsFromPoint(int crossings, PathIterator2ai<?> pi, int px, int py, CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorPointShadow(crossings, pi, px, py, type);
-    }
-
-    /**
-     * Calculates the number of times the given path
-     * crosses the ray extending to the right from (px, py).
-     * If the point lies on a part of the path,
-     * then no crossings are counted for that intersection.
-     * +1 is added for each crossing where the Y coordinate is increasing
-     * -1 is added for each crossing where the Y coordinate is decreasing
-     * The return value is the sum of all crossings for every segment in
-     * the path.
-     * The path must start with a MOVE_TO, otherwise an exception is
-     * thrown.
-     *
-     * @param crossings the initial crossing.
-     * @param pi is the description of the path.
-     * @param px is the reference point to test.
-     * @param py is the reference point to test.
-     * @param type is the type of special computation to apply. If <code>null</code>, it
-     *     is equivalent to {@link CrossingComputationType#STANDARD}.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
      */
     @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
             "checkstyle:returncount"})
@@ -1007,37 +902,6 @@ public interface Path2ai<
         }
 
         return numCrossings;
-    }
-
-    /**
-     * Accumulate the number of times the path crosses the shadow
-     * extending to the right of the second path.  See the comment
-     * for the SHAPE_INTERSECTS constant for more complete details.
-     * The return value is the sum of all crossings for both the
-     * top and bottom of the shadow for every segment in the path,
-     * or the special value SHAPE_INTERSECTS if the path ever enters
-     * the interior of the rectangle.
-     * The path must start with a SEG_MOVETO, otherwise an exception is
-     * thrown.
-     * The caller must check r[xy]{min, max} for NaN values.
-     *
-     * @param crossings the initial crossing.
-     * @param iterator is the iterator on the path elements.
-     * @param shadow is the description of the shape to project to the right.
-     * @param type is the type of special computation to apply. If <code>null</code>, it
-     *     is equivalent to {@link CrossingComputationType#STANDARD}.
-     * @return the crossings.
-     * @see "Weiler–Atherton clipping algorithm"
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorPathShadow(int,
-     *      PathIterator2ai, BasicPathShadow2ai, CrossingComputationType)}
-     */
-    @Deprecated
-    static int computeCrossingsFromPath(
-            int crossings,
-            PathIterator2ai<?> iterator,
-            BasicPathShadow2ai shadow,
-            CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorPathShadow(crossings, iterator, shadow, type);
     }
 
     /**
@@ -1274,48 +1138,6 @@ public interface Path2ai<
                 && (crossings & mask) != 0;
     }
 
-    /**
-     * Tests if the specified coordinates are inside the closed
-     * boundary of the specified {@link PathIterator2ai}.
-     *
-     * <p>This method provides a basic facility for implementors of
-     * the {@link Shape2ai} interface to implement support for the
-     * {@link Shape2ai#contains(int, int)} method.
-     *
-     * @param pi the specified {@code PathIterator2f}
-     * @param x the specified X coordinate
-     * @param y the specified Y coordinate
-     * @return {@code true} if the specified coordinates are inside the
-     *         specified {@code PathIterator2f}; {@code false} otherwise
-     * @deprecated since 13.0, see {@link #containsPoint(PathIterator2ai, int, int)}
-     */
-    @Deprecated
-    static boolean contains(PathIterator2ai<?> pi, int x, int y) {
-        return containsPoint(pi, x, y);
-    }
-
-    /**
-     * Tests if the specified rectangle is inside the closed
-     * boundary of the specified {@link PathIterator2ai}.
-     *
-     * <p>The points on the path are assumed to be outside the path area.
-     * It means that is the rectangle is intersecting the path, this
-     * function replies <code>false</code>.
-     *
-     * @param pi the specified {@code PathIterator2ai}
-     * @param rx the lowest corner of the rectangle.
-     * @param ry the lowest corner of the rectangle.
-     * @param rwidth is the width of the rectangle.
-     * @param rheight is the width of the rectangle.
-     * @return {@code true} if the specified rectangle is inside the
-     *         specified {@code PathIterator2f}; {@code false} otherwise.
-     * @deprecated since 13.0, see {@link #containsRectangle(PathIterator2ai, int, int, int, int)}
-     */
-    @Deprecated
-    static boolean contains(PathIterator2ai<?> pi, int rx, int ry, int rwidth, int rheight) {
-        return containsRectangle(pi, rx, ry, rwidth, rheight);
-    }
-
     @Pure
     @Override
     default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
@@ -1327,40 +1149,6 @@ public interface Path2ai<
     @Override
     default boolean contains(int x, int y) {
         return containsPoint(getPathIterator(), x, y);
-    }
-
-    /**
-     * Accumulate the number of times the path crosses the shadow
-     * extending to the right of the rectangle.  See the comment
-     * for the SHAPE_INTERSECTS constant for more complete details.
-     * The return value is the sum of all crossings for both the
-     * top and bottom of the shadow for every segment in the path,
-     * or the special value SHAPE_INTERSECTS if the path ever enters
-     * the interior of the rectangle.
-     * The path must start with a SEG_MOVETO, otherwise an exception is
-     * thrown.
-     * The caller must check r[xy]{min, max} for NaN values.
-     *
-     * @param crossings the initial crossing.
-     * @param pi is the iterator on the path elements.
-     * @param rxmin is the first corner of the rectangle.
-     * @param rymin is the first corner of the rectangle.
-     * @param rxmax is the second corner of the rectangle.
-     * @param rymax is the second corner of the rectangle.
-     * @param type is the type of special computation to apply. If <code>null</code>, it
-     *     is equivalent to {@link CrossingComputationType#STANDARD}.
-     * @return the crossings.
-     * @deprecated since 13.0, see {@link #calculatesCrossingsPathIteratorRectangleShadow(int,
-     *      PathIterator2ai, int, int, int, int, CrossingComputationType)}
-     */
-    @Deprecated
-    static int computeCrossingsFromRect(
-            int crossings,
-            PathIterator2ai<?> pi,
-            int rxmin, int rymin,
-            int rxmax, int rymax,
-            CrossingComputationType type) {
-        return calculatesCrossingsPathIteratorRectangleShadow(crossings, pi, rxmin, rymin, rxmax, rymax, type);
     }
 
     /**
@@ -1587,43 +1375,6 @@ public interface Path2ai<
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
         return crossings == MathConstants.SHAPE_INTERSECTS
                 || (crossings & mask) != 0;
-    }
-
-    /**
-     * Tests if the interior of the specified {@link PathIterator2ai}
-     * intersects the interior of a specified set of rectangular
-     * coordinates.
-     *
-     * <p>This method provides a basic facility for implementors of
-     * the {@link Shape2ai} interface to implement support for the
-     * {@code intersects()} method.
-     *
-     * <p>This method object may conservatively return true in
-     * cases where the specified rectangular area intersects a
-     * segment of the path, but that segment does not represent a
-     * boundary between the interior and exterior of the path.
-     * Such a case may occur if some set of segments of the
-     * path are retraced in the reverse direction such that the
-     * two sets of segments cancel each other out without any
-     * interior area between them.
-     * To determine whether segments represent true boundaries of
-     * the interior of the path would require extensive calculations
-     * involving all of the segments of the path and the winding
-     * rule and are thus beyond the scope of this implementation.
-     *
-     * @param pi the specified {@code PathIterator}
-     * @param x the specified X coordinate
-     * @param y the specified Y coordinate
-     * @param width the width of the specified rectangular coordinates
-     * @param height the height of the specified rectangular coordinates
-     * @return {@code true} if the specified {@code PathIterator} and
-     *         the interior of the specified set of rectangular
-     *         coordinates intersect each other; {@code false} otherwise.
-     * @deprecated since 13.0, see {@link #intersectsRectangle(PathIterator2ai, int, int, int, int)}
-     */
-    @Deprecated
-    static boolean intersects(PathIterator2ai<?> pi, int x, int y, int width, int height) {
-        return intersectsRectangle(pi, x, y, width, height);
     }
 
     @Pure
@@ -1883,45 +1634,6 @@ public interface Path2ai<
         return true;
     }
 
-    /** Replies the point on the path that is closest to the given point.
-     *
-     * <p><strong>CAUTION:</strong> This function works only on path iterators
-     * that are replying polyline primitives, ie. if the
-     * {@link PathIterator2D#isPolyline()} of {@code pi} is replying
-     * <code>true</code>.
-     * {@link #getClosestPointTo(Point2D)} avoids this restriction.
-     *
-     * @param pi is the iterator on the elements of the path.
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param result the closest point on the shape; or the point itself
-     *     if it is inside the shape.
-     * @deprecated since 13.0, see {@link #findsClosestPointPathIteratorPoint(PathIterator2ai, int, int, Point2D)}
-     */
-    @Deprecated
-    static void getClosestPointTo(PathIterator2ai<? extends PathElement2ai> pi, int x, int y, Point2D<?, ?> result) {
-        findsClosestPointPathIteratorPoint(pi, x, y, result);
-    }
-
-    /** Replies the point on the path of pi that is closest to the given shape.
-     *
-     * <p><strong>CAUTION:</strong> This function works only on path iterators
-     * that are replying not-curved primitives, ie. if the
-     * {@link PathIterator2D#isCurved()} of {@code pi} is replying
-     * <code>false</code>.
-     *
-     * @param pi is the iterator of path elements, on one of which the closest point is located.
-     * @param shape the shape to which the closest point must be computed.
-     * @param result the closest point on pi.
-     * @return <code>true</code> if a point was found. Otherwise <code>false</code>.
-     * @deprecated since 13.0, see {@link #findsClosestPointPathIteratorPoint(PathIterator2ai, int, int, Point2D)}
-     */
-    @Deprecated
-    static boolean getClosestPointTo(PathIterator2ai<? extends PathElement2ai> pi,
-            PathIterator2ai<? extends PathElement2ai> shape, Point2D<?, ?> result) {
-        return findsClosestPointPathIteratorPathIterator(pi, shape, result);
-    }
-
     @Override
     default P getClosestPointTo(Point2D<?, ?> pt) {
         assert pt != null : AssertMessages.notNullParameter();
@@ -2047,25 +1759,6 @@ public interface Path2ai<
         }
 
         result.set(bestX, bestY);
-    }
-
-    /** Replies the point on the path that is farthest to the given point.
-     *
-     * <p><strong>CAUTION:</strong> This function works only on path iterators
-     * that are replying polyline primitives, ie. if the
-     * {@link PathIterator2D#isPolyline()} of {@code pi} is replying
-     * <code>true</code>.
-     * {@link #getFarthestPointTo(Point2D)} avoids this restriction.
-     *
-     * @param pi is the iterator on the elements of the path.
-     * @param x x coordinate of the point.
-     * @param y y coordinate of the point.
-     * @param result the farthest point on the shape.
-     * @deprecated since 13.0, see {@link #findsFarthestPointPathIteratorPoint(PathIterator2ai, int, int, Point2D)}
-     */
-    @Deprecated
-    static void getFarthestPointTo(PathIterator2ai<? extends PathElement2ai> pi, int x, int y, Point2D<?, ?> result) {
-        findsFarthestPointPathIteratorPoint(pi, x, y, result);
     }
 
     @Override

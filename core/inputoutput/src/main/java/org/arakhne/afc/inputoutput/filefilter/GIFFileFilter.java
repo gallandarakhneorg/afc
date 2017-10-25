@@ -40,13 +40,6 @@ public class GIFFileFilter extends AbstractFileFilter {
 	 */
 	public static final String EXTENSION_GIF = "gif"; //$NON-NLS-1$
 
-	/** Default extension for the GIF pictures.
-	 *
-	 * @deprecated since 13.0, see {@link #EXTENSION_GIF}
-	 */
-	@Deprecated
-	public static final String EXTENSION = EXTENSION_GIF;
-
 	/** Construct.
 	 */
 	public GIFFileFilter() {

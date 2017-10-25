@@ -64,7 +64,7 @@ public final class ImmutableVector2D implements UnmodifiableVector2D<ImmutableVe
 		if (object == this) {
 			return true;
 		}
-		if (getClass().isInstance(object)) {
+		if (object instanceof Tuple2D<?>) {
 			final Tuple2D<?> tuple = (Tuple2D<?>) object;
 			return tuple.getX() == getX() && tuple.getY() == getY();
 		}

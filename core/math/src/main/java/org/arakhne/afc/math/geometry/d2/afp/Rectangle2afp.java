@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
@@ -68,31 +69,11 @@ public interface Rectangle2afp<
      * @param px the x coordinate of the point.
      * @param py the y coordinate of the point.
      * @param closest is set with the closest point on the rectangle.
-     * @deprecated since 13.0, see {@link #findsClosestPointRectanglePoint(double,
-     *     double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    static void computeClosestPointRectanglePoint(
-            double rx, double ry, double rmaxx, double rmaxy,
-            double px, double py,
-            Point2D<?, ?> closest) {
-        findsClosestPointRectanglePoint(rx, ry, rmaxx, rmaxy, px, py, closest);
-    }
-
-    /** Compute the point on the rectangle that is the closest to the given point.
-     *
-     * @param rx the minimum x coordinate of the rectangle.
-     * @param ry the minimum y coordinate of the rectangle.
-     * @param rmaxx the maximum x coordinate of the rectangle.
-     * @param rmaxy the maximum y coordinate of the rectangle.
-     * @param px the x coordinate of the point.
-     * @param py the y coordinate of the point.
-     * @param closest is set with the closest point on the rectangle.
      */
     static void findsClosestPointRectanglePoint(
             double rx, double ry, double rmaxx, double rmaxy,
             double px, double py,
-            Point2D<?, ?> closest) {
+            Tuple2D<?> closest) {
         assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, rx, 2, rmaxx);
         assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, ry, 3, rmaxy);
         final double x;
@@ -125,35 +106,12 @@ public interface Rectangle2afp<
      * @param rmaxx2 the maximum x coordinate of the second rectangle.
      * @param rmaxy2 the maximum y coordinate of the second rectangle.
      * @param closest is set with the closest point on the first rectangle.
-     * @deprecated since 13.0, see {@link #findsClosestPointRectangleRectangle(double,
-     *     double, double, double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static void computeClosestPointRectangleRectangle(
-            double rx1, double ry1, double rmaxx1, double rmaxy1,
-            double rx2, double ry2, double rmaxx2, double rmaxy2,
-            Point2D<?, ?> closest) {
-        findsClosestPointRectangleRectangle(rx1, ry1, rmaxx1, rmaxy1, rx2, ry2, rmaxx2, rmaxy2, closest);
-    }
-
-    /** Compute the point on the first rectangle that is the closest to the second rectangle.
-     *
-     * @param rx1 the minimum x coordinate of the first rectangle.
-     * @param ry1 the minimum y coordinate of the first rectangle.
-     * @param rmaxx1 the maximum x coordinate of the first rectangle.
-     * @param rmaxy1 the maximum y coordinate of the first rectangle.
-     * @param rx2 the minimum x coordinate of the second rectangle.
-     * @param ry2 the minimum y coordinate of the second rectangle.
-     * @param rmaxx2 the maximum x coordinate of the second rectangle.
-     * @param rmaxy2 the maximum y coordinate of the second rectangle.
-     * @param closest is set with the closest point on the first rectangle.
      */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void findsClosestPointRectangleRectangle(
             double rx1, double ry1, double rmaxx1, double rmaxy1,
             double rx2, double ry2, double rmaxx2, double rmaxy2,
-            Point2D<?, ?> closest) {
+            Tuple2D<?> closest) {
         assert rmaxx1 >= rx1 : AssertMessages.lowerEqualParameters(0, rx1, 2, rmaxx1);
         assert rmaxy1 >= ry1 : AssertMessages.lowerEqualParameters(1, ry1, 3, rmaxy1);
         assert rmaxx2 >= rx2 : AssertMessages.lowerEqualParameters(4, rx2, 6, rmaxx2);
@@ -190,35 +148,12 @@ public interface Rectangle2afp<
      * @param sx2 the x coordinate of the second point of the segment.
      * @param sy2 the y coordinate of the second point of the segment.
      * @param closest is set with the closest point on the rectangle.
-     * @deprecated since 13.0, see {@link #findsClosestPointRectangleSegment(double,
-     *     double, double, double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static void computeClosestPointRectangleSegment(
-            double rx, double ry, double rmaxx, double rmaxy,
-            double sx1, double sy1, double sx2, double sy2,
-            Point2D<?, ?> closest) {
-        findsClosestPointRectangleSegment(rx, ry, rmaxx, rmaxy, sx1, sy1, sx2, sy2, closest);
-    }
-
-    /** Compute the point on the rectangle that is the closest to the segment.
-     *
-     * @param rx the minimum x coordinate of the rectangle.
-     * @param ry the minimum y coordinate of the rectangle.
-     * @param rmaxx the maximum x coordinate of the rectangle.
-     * @param rmaxy the maximum y coordinate of the rectangle.
-     * @param sx1 the x coordinate of the first point of the segment.
-     * @param sy1 the y coordinate of the first point of the segment.
-     * @param sx2 the x coordinate of the second point of the segment.
-     * @param sy2 the y coordinate of the second point of the segment.
-     * @param closest is set with the closest point on the rectangle.
      */
     @SuppressWarnings("checkstyle:parameternumber")
     static void findsClosestPointRectangleSegment(
             double rx, double ry, double rmaxx, double rmaxy,
             double sx1, double sy1, double sx2, double sy2,
-            Point2D<?, ?> closest) {
+            Tuple2D<?> closest) {
         assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, rx, 2, rmaxx);
         assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, ry, 3, rmaxy);
         final int code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
@@ -281,43 +216,13 @@ public interface Rectangle2afp<
      * @param axis2Y the y coordinate of the secondaxis of the parallelogram.
      * @param axis2Extent the size of the parallelogram along its second axis.
      * @param closest is set with the closest point on the first rectangle.
-     * @deprecated since 13.0, see {@link #findsClosestPointRectangleParallelogram(double,
-     *     double, double, double, double, double, double, double, double, double, double,
-     *     double, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static void computeClosestPointRectangleParallelogram(
-            double rx, double ry, double rmaxx, double rmaxy,
-            double centerX, double centerY, double axis1X, double axis1Y, double axis1Extent,
-            double axis2X, double axis2Y, double axis2Extent,
-            Point2D<?, ?> closest) {
-        findsClosestPointRectangleParallelogram(rx, ry, rmaxx, rmaxy, centerX, centerY,
-                axis1X, axis1Y, axis1Extent, axis2X, axis2Y, axis2Extent, closest);
-    }
-
-    /** Compute the point on the rectangle that is the closest to the parallelogram.
-     *
-     * @param rx the minimum x coordinate of the rectangle.
-     * @param ry the minimum y coordinate of the rectangle.
-     * @param rmaxx the maximum x coordinate of the rectangle.
-     * @param rmaxy the maximum y coordinate of the rectangle.
-     * @param centerX the x coordinate of the center of the parallelogram.
-     * @param centerY the y coordinate of the center of the parallelogram.
-     * @param axis1X the x coordinate of the first axis of the parallelogram.
-     * @param axis1Y the y coordinate of the first axis of the parallelogram.
-     * @param axis1Extent the size of the parallelogram along its first axis.
-     * @param axis2X the x coordinate of the second axis of the parallelogram.
-     * @param axis2Y the y coordinate of the secondaxis of the parallelogram.
-     * @param axis2Extent the size of the parallelogram along its second axis.
-     * @param closest is set with the closest point on the first rectangle.
      */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void findsClosestPointRectangleParallelogram(
             double rx, double ry, double rmaxx, double rmaxy,
             double centerX, double centerY, double axis1X, double axis1Y, double axis1Extent,
             double axis2X, double axis2Y, double axis2Extent,
-            Point2D<?, ?> closest) {
+            Tuple2D<?> closest) {
         assert rmaxx >= rx : AssertMessages.lowerEqualParameters(0, rx, 2, rmaxx);
         assert rmaxy >= ry : AssertMessages.lowerEqualParameters(1, ry, 3, rmaxy);
         assert Vector2D.isUnitVector(axis1X,  axis1Y) : AssertMessages.normalizedParameters(6, 7);
@@ -386,49 +291,11 @@ public interface Rectangle2afp<
      * @param newSegmentP2 is set with the new coordinates of the segment second point. If <code>null</code>,
      *     this parameter is ignored.
      * @return the rectricted Cohen-Sutherland zone.
-     * @deprecated since 13.0, see {@link #reducesCohenSutherlandZoneRectangleSegment(double, double, double,
-     *     double, double, double, double, double, int, int, Point2D, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static int reduceCohenSutherlandZoneRectangleSegment(double rx1, double ry1, double rx2, double ry2,
-            double sx1, double sy1, double sx2, double sy2, int codePoint1, int codePoint2,
-            Point2D<?, ?> newSegmentP1, Point2D<?, ?> newSegmentP2) {
-        return reducesCohenSutherlandZoneRectangleSegment(rx1, ry1, rx2, ry2, sx1, sy1, sx2, sy2,
-                codePoint1, codePoint2, newSegmentP1, newSegmentP2);
-    }
-
-    /** Update the given Cohen-Sutherland code that corresponds to the given segment in order
-     * to obtain a segment restricted to a single Cohen-Sutherland zone.
-     * This function is at the heart of the
-     * <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
-     *
-     * <p>The result of this function may be: <ul>
-     * <li>the code for a single zone, or</li>
-     * <li>the code that corresponds to a single column, or </li>
-     * <li>the code that corresponds to a single row.</li>
-     * </ul>
-     *
-     * @param rx1 is the first corner of the rectangle.
-     * @param ry1 is the first corner of the rectangle.
-     * @param rx2 is the second corner of the rectangle.
-     * @param ry2 is the second corner of the rectangle.
-     * @param sx1 is the first point of the segment.
-     * @param sy1 is the first point of the segment.
-     * @param sx2 is the second point of the segment.
-     * @param sy2 is the second point of the segment.
-     * @param codePoint1 the Cohen-Sutherland code for the first point of the segment.
-     * @param codePoint2 the Cohen-Sutherland code for the second point of the segment.
-     * @param newSegmentP1 is set with the new coordinates of the segment first point. If <code>null</code>,
-     *     this parameter is ignored.
-     * @param newSegmentP2 is set with the new coordinates of the segment second point. If <code>null</code>,
-     *     this parameter is ignored.
-     * @return the rectricted Cohen-Sutherland zone.
      */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
     static int reducesCohenSutherlandZoneRectangleSegment(double rx1, double ry1, double rx2, double ry2,
             double sx1, double sy1, double sx2, double sy2, int codePoint1, int codePoint2,
-            Point2D<?, ?> newSegmentP1, Point2D<?, ?> newSegmentP2) {
+            Tuple2D<?> newSegmentP1, Tuple2D<?> newSegmentP2) {
         assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
         assert ry1 <= ry2 : AssertMessages.lowerEqualParameters(1, ry1, 3, ry2);
         assert codePoint1 == MathUtil.getCohenSutherlandCode(sx1, sy1, rx1, ry1, rx2, ry2) : AssertMessages.invalidValue(8);
@@ -507,25 +374,6 @@ public interface Rectangle2afp<
                 }
             }
         }
-    }
-
-    /** Compute the square distance between a rectangle and a point.
-     *
-     * @param rx the minimum x coordinate of the rectangle.
-     * @param ry the minimum y coordinate of the rectangle.
-     * @param rmaxx the maximum x coordinate of the rectangle.
-     * @param rmaxy the maximum y coordinate of the rectangle.
-     * @param px the x coordinate of the point.
-     * @param py the y coordinate of the point.
-     * @return the square distance.
-     * @deprecated since 13.0, see {@link #calculatesDistanceSquaredRectanglePoint(double,
-     *     double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double computeDistanceSquaredRectanglePoint(double rx, double ry, double rmaxx, double rmaxy,
-            double px, double py) {
-        return calculatesDistanceSquaredRectanglePoint(rx, ry, rmaxx, rmaxy, px, py);
     }
 
     /** Compute the square distance between a rectangle and a point.

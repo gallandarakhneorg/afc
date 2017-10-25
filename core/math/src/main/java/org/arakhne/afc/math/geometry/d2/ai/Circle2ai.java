@@ -207,51 +207,6 @@ public interface Circle2ai<
         return false;
     }
 
-    /** Replies if the given point is inside the circle.
-     *
-     * @param cx is the x-coordinate of the circle center
-     * @param cy is the y-coordinate of the circle center
-     * @param cr is the radius of the circle center
-     * @param x is the x-coordinate of the point
-     * @param y is the y-coordinate of the point
-     * @return <code>true</code> if the point is inside the circle.
-     * @deprecated since 13.0, see {@link #containsCirclePoint(int, int, int, int, int)}
-     */
-    @Pure
-    @Deprecated
-    static boolean contains(int cx, int cy, int cr, int x, int y) {
-        return containsCirclePoint(cx, cy, cr, x, y);
-    }
-
-    /** Replies if the given point is inside the quadrant of the given circle.
-     *
-     * <table border="1" width="100%" summary="definition of the quadrant values">
-     * <thead>
-     * <tr><td>quadrant</td><td>x</td><td>y</td></tr>
-     * </thead>
-     * <tbody>
-     * <tr><td>0</td><td>&ge;cx</td><td>&ge;cy</td></tr>
-     * <tr><td>1</td><td>&ge;cx</td><td>&lt;cy</td></tr>
-     * <tr><td>2</td><td>&lt;cx</td><td>&ge;cy</td></tr>
-     * <tr><td>3</td><td>&lt;cx</td><td>&lt;cy</td></tr>
-     * </tbody>
-     * </table>
-     *
-     * @param cx is the x-coordinate of the circle center
-     * @param cy is the y-coordinate of the circle center
-     * @param cr is the radius of the circle center
-     * @param quadrant is the quadrant, see table in the method description.
-     * @param x is the x-coordinate of the point
-     * @param y is the y-coordinate of the point
-     * @return <code>true</code> if the point is inside the circle.
-     * @deprecated since 13.0, see {@link #containsCircleQuadrantPoint(int, int, int, int, int, int)}
-     */
-    @Pure
-    @Deprecated
-    static boolean contains(int cx, int cy, int cr, int quadrant, int x, int y) {
-        return containsCircleQuadrantPoint(cx, cy, cr, quadrant, x, y);
-    }
-
     @Pure
     @Override
     default boolean contains(int x, int y) {
@@ -337,24 +292,6 @@ public interface Circle2ai<
      * @param x is the point
      * @param y is the point
      * @param result the closest point in the circle to the point.
-     * @deprecated since 13.0, see {@link #findsClosestPointCirclePoint(int, int, int, int, int, Point2D)}
-     */
-    @Deprecated
-    static void computeClosestPointTo(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
-        findsClosestPointCirclePoint(cx, cy, cr, x, y, result);
-    }
-
-    /** Replies the closest point in a circle to a point.
-     *
-     * <p>The closest point is the point on the perimeter or inside the circle's disk that
-     * has the lowest Manhatan distance to the given origin point.
-     *
-     * @param cx is the center of the circle
-     * @param cy is the center of the circle
-     * @param cr is the radius of the circle
-     * @param x is the point
-     * @param y is the point
-     * @param result the closest point in the circle to the point.
      */
     @SuppressWarnings("checkstyle:magicnumber")
     static void findsClosestPointCirclePoint(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
@@ -411,24 +348,6 @@ public interface Circle2ai<
         if (isInside) {
             result.set(x, y);
         }
-    }
-
-    /** Replies the farthest point in a circle to a point.
-     *
-     * <p>The farthest point is the point on the perimeter of the circle that has the highest Manhatan distance
-     * to the given origin point.
-     *
-     * @param cx is the center of the circle
-     * @param cy is the center of the circle
-     * @param cr is the radius of the circle
-     * @param x is the point
-     * @param y is the point
-     * @param result the farthest point in the circle to the point.
-     * @deprecated since 13.0, see {@link #findsFarthestPointCirclePoint(int, int, int, int, int, Point2D)}
-     */
-    @Deprecated
-    static void computeFarthestPointTo(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
-        findsFarthestPointCirclePoint(cx, cy, cr, x, y, result);
     }
 
     /** Replies the farthest point in a circle to a point.
@@ -581,27 +500,6 @@ public interface Circle2ai<
                 factory,
                 cx, cy, radius,
                 firstOctantIndex, maxOctant, true);
-    }
-
-    /** Replies the points of the circle perimeters starting by the first octant.
-     *
-     * @param <P> the type of the points.
-     * @param <V> the type of the vectors.
-     * @param cx is the center of the radius.
-     * @param cy is the center of the radius.
-     * @param radius is the radius of the radius.
-     * @param firstOctantIndex is the index of the first octant to treat (value in [0;7].
-     * @param nbOctants is the number of octants to traverse (value in [0; 7 - firstOctantIndex].
-     * @param factory the factory to use for creating the points.
-     * @return the points on the perimeters.
-     * @deprecated since 13.0, see {@link #newPointIterator(int, int, int, int, int, GeomFactory2ai)}
-     */
-    @Pure
-    @Deprecated
-    static <P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>>
-            Iterator<P> getPointIterator(int cx, int cy,  int radius, int firstOctantIndex, int nbOctants,
-            GeomFactory2ai<?, P, V, ?> factory) {
-        return newPointIterator(cx, cy, radius, firstOctantIndex, nbOctants, factory);
     }
 
     /** Replies the points of the circle perimeters starting by the first octant.

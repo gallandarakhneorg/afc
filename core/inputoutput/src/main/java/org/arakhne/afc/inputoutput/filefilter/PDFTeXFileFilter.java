@@ -36,23 +36,9 @@ public class PDFTeXFileFilter extends AbstractFileFilter {
 	 */
 	public static final String EXTENSION_PDFTEX_T = "pdftex_t"; //$NON-NLS-1$
 
-	/** Historical extension for TeX part of the PDF documents combined with TeX macros.
-	 *
-	 * @deprecated since 13.0, see {@link #EXTENSION_PDFTEX_T}
-	 */
-	@Deprecated
-	public static final String EXTENSION1 = EXTENSION_PDFTEX_T;
-
 	/** Modern extension for TeX part of the PDF documents combined with TeX macros.
 	 */
 	public static final String EXTENSION_PDF_TEX = "pdf_tex"; //$NON-NLS-1$
-
-	/** Modern extension for TeX part of the PDF documents combined with TeX macros.
-	 *
-	 * @deprecated since 13.0, see {@link #EXTENSION_PDF_TEX}
-	 */
-	@Deprecated
-	public static final String EXTENSION2 = EXTENSION_PDF_TEX;
 
 	/** Construct.
 	 */

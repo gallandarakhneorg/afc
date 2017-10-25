@@ -35,13 +35,6 @@ public class PDFFileFilter extends AbstractFileFilter {
 	 */
 	public static final String EXTENSION_PDF = "pdf"; //$NON-NLS-1$
 
-	/** Default extension for the PDF documents.
-	 *
-	 * @deprecated since 13.0, see {@link #EXTENSION_PDF}
-	 */
-	@Deprecated
-	public static final String EXTENSION = EXTENSION_PDF;
-
 	/** Construct.
 	 */
 	public PDFFileFilter() {

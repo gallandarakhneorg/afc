@@ -18,28 +18,21 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.progress;
+package org.arakhne.afc.math.geometry.d1.d;
 
-/**
- * Adapter on a task progression.
+import org.arakhne.afc.math.geometry.d1.Segment1D;
+import org.arakhne.afc.math.geometry.d1.afp.Shape1afp;
+
+/** 1.5D shape with 2 integer numbers.
  *
+ * @param <IT> is the type of the implementation of this shape.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated See the functional interface of {@link ProgressionListener}
+ * @since 14.0
  */
-@Deprecated
-public class ProgressionAdapter implements ProgressionListener {
-
-	@Override
-	public void onProgressionStateChanged(ProgressionEvent event) {
-		//
-	}
-
-	@Override
-	public void onProgressionValueChanged(ProgressionEvent event) {
-		//
-	}
-
+public interface Shape1d<IT extends Shape1d<?>>
+		extends Shape1afp<Shape1d<?>, IT, Point1d, Vector1d, Segment1D<?, ?>, Rectangle1d> {
+	//
 }

@@ -35,13 +35,6 @@ public class JAVAFileFilter extends AbstractFileFilter {
 	 */
 	public static final String EXTENSION_JAVA = "java"; //$NON-NLS-1$
 
-	/** Default extension for the Java source files.
-	 *
-	 * @deprecated since 13.0, see {@link #EXTENSION_JAVA}
-	 */
-	@Deprecated
-	public static final String EXTENSION = EXTENSION_JAVA;
-
 	/** Construct.
 	 */
 	public JAVAFileFilter() {

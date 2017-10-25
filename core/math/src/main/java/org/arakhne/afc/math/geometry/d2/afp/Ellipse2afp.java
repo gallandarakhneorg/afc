@@ -97,28 +97,6 @@ public interface Ellipse2afp<
      * @param eh is the height of the ellipse
      * @param result the closest point in the ellipse.
      * @see #findsClosestPointShallowEllipsePoint(double, double, double, double, double, double, Point2D)
-     * @deprecated since 13.0, see {@link #findsClosestPointSolidEllipsePoint(double,
-     *     double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    @Unefficient
-    static void computeClosestPointToSolidEllipse(
-            double px, double py, double ex, double ey, double ew, double eh,
-            Point2D<?, ?> result) {
-        findsClosestPointSolidEllipsePoint(px, py, ex, ey, ew, eh, result);
-    }
-
-    /** Replies the closest point from the given point in the solid ellipse.
-     * A solid ellipse is an ellipse with a border and an interior area.
-     *
-     * @param px is the coordinate of the point.
-     * @param py is the coordinate of the point.
-     * @param ex is the coordinate of the min corner of the ellipse
-     * @param ey is the coordinate of the min corner of the ellipse
-     * @param ew is the width of the ellipse
-     * @param eh is the height of the ellipse
-     * @param result the closest point in the ellipse.
-     * @see #findsClosestPointShallowEllipsePoint(double, double, double, double, double, double, Point2D)
      */
     @Unefficient
     @SuppressWarnings("checkstyle:magicnumber")
@@ -203,26 +181,6 @@ public interface Ellipse2afp<
      * @param eh is the height of the ellipse
      * @param result the closest point in the ellipse.
      * @see #findsClosestPointSolidEllipsePoint(double, double, double, double, double, double, Point2D)
-     * @deprecated since 13.0, see {@link #findsClosestPointShallowEllipsePoint(double,
-     *     double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    static void computeClosestPointToShallowEllipse(double px, double py, double ex, double ey, double ew, double eh,
-            Point2D<?, ?> result) {
-        findsClosestPointShallowEllipsePoint(px, py, ex, ey, ew, eh, result);
-    }
-
-    /** Replies the closest point from the given point in the shallow ellipse.
-     * A shallow ellipse is an ellipse with a border and not an interior area.
-     *
-     * @param px is the coordinate of the point.
-     * @param py is the coordinate of the point.
-     * @param ex is the coordinate of the min corner of the ellipse
-     * @param ey is the coordinate of the min corner of the ellipse
-     * @param ew is the width of the ellipse
-     * @param eh is the height of the ellipse
-     * @param result the closest point in the ellipse.
-     * @see #findsClosestPointSolidEllipsePoint(double, double, double, double, double, double, Point2D)
      */
     @Unefficient
     @SuppressWarnings("checkstyle:magicnumber")
@@ -293,25 +251,6 @@ public interface Ellipse2afp<
         } else {
             result.set(pointY + translateX, pointX + translateY);
         }
-    }
-
-    /** Replies the farthest point from the given point in the shallow ellipse.
-     * A shallow ellipse is an ellipse with a border and not an interior area.
-     *
-     * @param px is the coordinate of the point.
-     * @param py is the coordinate of the point.
-     * @param ex is the coordinate of the min corner of the ellipse
-     * @param ey is the coordinate of the min corner of the ellipse
-     * @param ew is the width of the ellipse
-     * @param eh is the height of the ellipse
-     * @param result the farthest point in the ellipse.
-     * @deprecated since 13.0, see {@link #findsFarthestPointShallowEllipsePoint(double,
-     *     double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    static void computeFarthestPointToShallowEllipse(double px, double py, double ex, double ey,
-            double ew, double eh, Point2D<?, ?> result) {
-        findsFarthestPointShallowEllipsePoint(px, py, ex, ey, ew, eh, result);
     }
 
     /** Replies the farthest point from the given point in the shallow ellipse.

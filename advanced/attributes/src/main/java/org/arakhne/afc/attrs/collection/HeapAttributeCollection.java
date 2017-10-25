@@ -336,6 +336,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return attr;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, boolean value) {
 		assert name != null;
@@ -359,6 +360,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return attr;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, int value) {
 		assert name != null;
@@ -382,6 +384,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return attr;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, long value) {
 		assert name != null;
@@ -405,6 +408,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return attr;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, float value) {
 		assert name != null;
@@ -435,6 +439,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return attr;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, double value) {
 		assert name != null;
@@ -458,6 +463,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return attr;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, String value) {
 		assert name != null;
@@ -482,6 +488,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return attr;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, UUID value) {
 		assert name != null;
@@ -506,6 +513,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return attr;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, URL value) {
 		assert name != null;
@@ -529,6 +537,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return attr;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, URI value) {
 		assert name != null;
@@ -552,6 +561,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return attr;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, Date value) {
 		assert name != null;
@@ -597,6 +607,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return value;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, InetAddress value) {
 		assert name != null;
@@ -625,6 +636,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return setAttribute(name, (value == null) ? null : value.getAddress());
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, Enum<?> value) {
 		assert name != null;
@@ -648,6 +660,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return attr;
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Attribute setAttribute(String name, Class<?> value) {
 		assert name != null;

@@ -40,13 +40,6 @@ public class XMLFileFilter extends AbstractFileFilter {
 	 */
 	public static final String EXTENSION_XML = "xml"; //$NON-NLS-1$
 
-	/** Default extension for the XML files.
-	 *
-	 * @deprecated since 13.0, see {@link #EXTENSION_XML}.
-	 */
-	@Deprecated
-	public static final String EXTENSION = EXTENSION_XML;
-
 	/** Construct.
 	 */
 	public XMLFileFilter() {

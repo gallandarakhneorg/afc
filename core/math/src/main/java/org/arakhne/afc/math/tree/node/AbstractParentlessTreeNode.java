@@ -33,7 +33,6 @@ import java.util.Objects;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.tree.TreeDataEvent;
 import org.arakhne.afc.math.tree.TreeNode;
 import org.arakhne.afc.math.tree.TreeNodeListener;
@@ -169,40 +168,6 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 				this.data = new ArrayList<>();
 			}
 		}
-	}
-
-	/** Replies the minimal value from the integer array.
-	 *
-	 * @param array the array.
-	 * @return the minimum value.
-	 * @deprecated see {@link MathUtil#min(int...)}
-	 */
-	@Deprecated
-	protected static int minInteger(int... array) {
-		int min = array[0];
-		for (int i = 0; i < array.length; ++i) {
-			if (min > array[i]) {
-				min = array[i];
-			}
-		}
-		return min;
-	}
-
-	/** Replies the maximal value from the integer array.
-	 *
-	 * @param array the array.
-	 * @return the maximum value.
-	 * @deprecated see {@link MathUtil#max(int...)}
-	 */
-	@Deprecated
-	protected static int maxInteger(int... array) {
-		int max = array[0];
-		for (int i = 0; i < array.length; ++i) {
-			if (max < array[i]) {
-				max = array[i];
-			}
-		}
-		return max;
 	}
 
 	/** Cast this node to N.

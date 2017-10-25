@@ -69,26 +69,6 @@ public interface Triangle2afp<
      * @param px x coordinate of the reference point.
      * @param py y coordinate of the reference point.
      * @return the closest triangle feature to the reference point.
-     * @deprecated since 13.0, see {@link #findsClosestFeatureTrianglePoint(double, double,
-     *     double, double, double, double, double, double)}
-     */
-    @Deprecated
-    static TriangleFeature getClosestFeatureTrianglePoint(double tx1, double ty1, double tx2, double ty2,
-            double tx3, double ty3, double px, double py) {
-        return findsClosestFeatureTrianglePoint(tx1, ty1, tx2, ty2, tx3, ty3, px, py);
-    }
-
-    /** Replies the closest feature of the triangle to the given point.
-     *
-     * @param tx1 x coordinate of the first point of the triangle.
-     * @param ty1 y coordinate of the first point of the triangle.
-     * @param tx2 x coordinate of the second point of the triangle.
-     * @param ty2 y coordinate of the second point of the triangle.
-     * @param tx3 x coordinate of the third point of the triangle.
-     * @param ty3 y coordinate of the third point of the triangle.
-     * @param px x coordinate of the reference point.
-     * @param py y coordinate of the reference point.
-     * @return the closest triangle feature to the reference point.
      */
     @SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
     static TriangleFeature findsClosestFeatureTrianglePoint(double tx1, double ty1, double tx2, double ty2,
@@ -149,30 +129,6 @@ public interface Triangle2afp<
         }
 
         return TriangleFeature.INSIDE;
-    }
-
-    /**
-     * Replies if three points of a triangle are defined in a counter-clockwise order.
-     *
-     * @param x1
-     *            is the X coordinate of the first point
-     * @param y1
-     *            is the Y coordinate of the first point
-     * @param x2
-     *            is the X coordinate of the second point
-     * @param y2
-     *            is the Y coordinate of the second point
-     * @param x3
-     *            is the X coordinate of the third point
-     * @param y3
-     *            is the Y coordinate of the third point
-     * @return <code>true</code> if the three given points are defined in a counter-clockwise order.
-     * @deprecated since 13.0, see {@link #isCCW(double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static boolean isCCWOrderDefinition(double x1, double y1, double x2, double y2, double x3, double y3) {
-        return isCCW(x1, y1, x2, y2, x3, y3);
     }
 
     /**
@@ -278,29 +234,6 @@ public interface Triangle2afp<
      * @param py is the point to test.
      * @param closest the closest point.
      * @param farthest the farthest point.
-     * @deprecated since 13.0, {@link #findsClosestFarthestPointsTrianglePoint(double, double, double, double,
-     *     double, double, double, double, Point2D, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static void computeClosestFarthestPoints(double tx1, double ty1, double tx2, double ty2,
-            double tx3, double ty3, double px, double py, Point2D<?, ?> closest, Point2D<?, ?> farthest) {
-        findsClosestFarthestPointsTrianglePoint(tx1, ty1, tx2, ty2, tx3, ty3, px, py, closest, farthest);
-    }
-
-    /**
-     * Replies the closest point to the given point inside the given triangle.
-     *
-     * @param tx1 x coordinate of the first point of the triangle.
-     * @param ty1 y coordinate of the first point of the triangle.
-     * @param tx2 x coordinate of the second point of the triangle.
-     * @param ty2 y coordinate of the second point of the triangle.
-     * @param tx3 x coordinate of the third point of the triangle.
-     * @param ty3 y coordinate of the third point of the triangle.
-     * @param px is the point to test.
-     * @param py is the point to test.
-     * @param closest the closest point.
-     * @param farthest the farthest point.
      */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void findsClosestFarthestPointsTrianglePoint(double tx1, double ty1, double tx2, double ty2,
@@ -349,32 +282,6 @@ public interface Triangle2afp<
             }
             farthest.set(x, y);
         }
-    }
-
-    /**
-     * Replies the squared distance from the given triangle to the given point.
-     *
-     * <p>Caution: The points of the triangle must be defined in a CCW order.
-     *
-     * @param tx1 x coordinate of the first point of the triangle.
-     * @param ty1 y coordinate of the first point of the triangle.
-     * @param tx2 x coordinate of the second point of the triangle.
-     * @param ty2 y coordinate of the second point of the triangle.
-     * @param tx3 x coordinate of the third point of the triangle.
-     * @param ty3 y coordinate of the third point of the triangle.
-     * @param px is the point.
-     * @param py is the point.
-     * @return the squared distance from the triangle to the point.
-     * @see #isCCW(double, double, double, double, double, double)
-     * @deprecated since 13.0, see {@link #calculatesSquaredDistanceTrianglePoint(double, double,
-     *     double, double, double, double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
-    static double getSquaredDistanceTrianglePoint(double tx1, double ty1, double tx2, double ty2,
-            double tx3, double ty3, double px, double py) {
-        return calculatesSquaredDistanceTrianglePoint(tx1, ty1, tx2, ty2, tx3, ty3, px, py);
     }
 
     /**

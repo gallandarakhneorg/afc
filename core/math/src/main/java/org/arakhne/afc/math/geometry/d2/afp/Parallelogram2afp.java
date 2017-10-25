@@ -67,21 +67,6 @@ public interface Parallelogram2afp<
      * @param raxis is the vector where the R axis of the OBR is put. If <code>null</code>, S must be not <code>null</code>.
      * @param saxis is the vector where the S axis of the OBR is put. If <code>null</code>, R must be not <code>null</code>.
      * @see "MGPCG pages 219-221"
-     * @deprecated since 13.0, see {@link #calculatesOrthogonalAxes(Iterable, Vector2D, Vector2D)}
-     */
-    @Deprecated
-    static void computeOrthogonalAxes(Iterable<? extends Point2D<?, ?>> points,
-            Vector2D<?, ?> raxis, Vector2D<?, ?> saxis) {
-        calculatesOrthogonalAxes(points, raxis, saxis);
-    }
-
-    /**
-     * Compute the axes of an oriented bounding rectangle that is enclosing the set of points.
-     *
-     * @param points is the list of the points enclosed by the OBR.
-     * @param raxis is the vector where the R axis of the OBR is put. If <code>null</code>, S must be not <code>null</code>.
-     * @param saxis is the vector where the S axis of the OBR is put. If <code>null</code>, R must be not <code>null</code>.
-     * @see "MGPCG pages 219-221"
      */
     static void calculatesOrthogonalAxes(Iterable<? extends Point2D<?, ?>> points,
             Vector2D<?, ?> raxis, Vector2D<?, ?> saxis) {
@@ -101,29 +86,6 @@ public interface Parallelogram2afp<
         if (saxis != null) {
             rs.getColumn(1, saxis);
         }
-    }
-
-    /** Project the given vector on the R (first) axis, according to the direction of the S (second) axis.
-     *
-     * <p>This function assumes nothing on the axes' orientations. For an efficient implementation for
-     * orthogonal axes, see
-     * {@link OrientedRectangle2afp#findsVectorProjectionRAxisVector(double, double, double, double)}.
-     *
-     * @param rx the x coordinate of the R axis.
-     * @param ry the y coordinate of the R axis.
-     * @param sx the x coordinate of the S axis.
-     * @param sy the y coordinate of the S axis.
-     * @param x the x coordinate of the vector.
-     * @param y the y coordinate of the vector.
-     * @return the coordinate of the projection of the vector on R
-     * @see OrientedRectangle2afp#findsVectorProjectionRAxisVector(double, double, double, double)
-     * @deprecated since 13.0, see {@link #findsVectorProjectionRAxisPoint(double, double, double,
-     *     double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double projectVectorOnParallelogramRAxis(double rx, double ry, double sx, double sy, double x,  double y) {
-        return findsVectorProjectionRAxisPoint(rx, ry, sx, sy, x, y);
     }
 
     /** Project the given vector on the R (first) axis, according to the direction of the S (second) axis.
@@ -166,29 +128,6 @@ public interface Parallelogram2afp<
      * @param y the y coordinate of the vector.
      * @return the coordinate of the projection of the vector on S.
      * @see OrientedRectangle2afp#findsVectorProjectionSAxisVector(double, double, double, double)
-     * @deprecated since 13.0, see {@link #findsVectorProjectionSAxisVector(double, double, double,
-     *     double, double, double)}
-     */
-    @Deprecated
-    @Pure
-    static double projectVectorOnParallelogramSAxis(double rx, double ry, double sx, double sy, double x,  double y) {
-        return findsVectorProjectionSAxisVector(rx, ry, sx, sy, x, y);
-    }
-
-    /** Project the given vector on the S (second) axis, according to the direction of the R (first) axis.
-     *
-     * <p>This function assumes nothing on the axes' orientations. For an efficient implementation for
-     * orthogonal axes, see
-     * {@link OrientedRectangle2afp#findsVectorProjectionSAxisVector(double, double, double, double)}.
-     *
-     * @param rx the x coordinate of the R axis.
-     * @param ry the y coordinate of the R axis.
-     * @param sx the x coordinate of the S axis.
-     * @param sy the y coordinate of the S axis.
-     * @param x the x coordinate of the vector.
-     * @param y the y coordinate of the vector.
-     * @return the coordinate of the projection of the vector on S.
-     * @see OrientedRectangle2afp#findsVectorProjectionSAxisVector(double, double, double, double)
      */
     @Pure
     static double findsVectorProjectionSAxisVector(double rx, double ry, double sx, double sy, double x,  double y) {
@@ -199,31 +138,6 @@ public interface Parallelogram2afp<
             return Double.NaN;
         }
         return Vector2D.perpProduct(rx, ry, -x, -y) / det;
-    }
-
-    /**
-     * Compute the center and extents of a parallelogram from a set of points and the parallelogram axes.
-     *
-     * <p>This function assumes no constraint on the axes' orientations, in opposite to
-     * {@link OrientedRectangle2afp#calculatesCenterPointAxisExtents(Iterable, Vector2D, Point2D, Tuple2D)}, which
-     * assumes orthogonal axes.
-     *
-     * @param points is the list of the points enclosed by the parallogram
-     * @param raxis is the R axis of the parallogram
-     * @param saxis is the S axis of the parallogram
-     * @param center is the point which is set with the parallogram's center coordinates.
-     * @param extents are the extents of the parallogram for the R and S axis.
-     * @see "MGPCG pages 222-223 (oriented bounding box)"
-     * @see OrientedRectangle2afp#calculatesCenterPointAxisExtents(Iterable, Vector2D, Point2D, Tuple2D)
-     * @deprecated since 13.0, see {@link #calculatesCenterPointAxisExtents(Iterable, Vector2D,
-     *     Vector2D, Point2D, Tuple2D)}
-     */
-    @Deprecated
-    static void computeCenterExtents(
-            Iterable<? extends Point2D<?, ?>> points,
-                    Vector2D<?, ?> raxis, Vector2D<?, ?> saxis,
-                    Point2D<?, ?> center, Tuple2D<?> extents) {
-        calculatesCenterPointAxisExtents(points, raxis, saxis, center, extents);
     }
 
     /**
@@ -295,50 +209,6 @@ public interface Parallelogram2afp<
         extents.set(
                 (maxR - minR) / 2.,
                 (maxS - minS) / 2.);
-    }
-
-    /**
-     * Given a point p, this function computes the point q1 on (or in) this parallelogram,
-     * closest to p; and the point q2 on the parallelogram, farthest to p. If there are several
-     * points, the function will return one of those. Remember this function may
-     * return an approximate result when points remain on parallelogram plane of symmetry.
-     *
-     * @param px
-     *            is the X coordinate of the point to test.
-     * @param py
-     *            is the Y coordinate of the point to test.
-     * @param centerX
-     *            is the X coordinate of the parallelogram center.
-     * @param centerY
-     *            is the Y coordinate of the parallelogram center.
-     * @param axis1X
-     *            is the X coordinate of the axis 1 vector.
-     * @param axis1Y
-     *            is the Y coordinate of the axis 1 vector.
-     * @param axis1Extent
-     *            is the extent of the axis 1 of the parallelogram.
-     * @param axis2X
-     *            is the X coordinate of the axis 2 vector.
-     * @param axis2Y
-     *            is the Y coordinate of the axis 2 vector.
-     * @param axis2Extent
-     *            is the extent of the axis 2 of the parallelogram.
-     * @param closest the closest point.
-     * @deprecated since 13.0, see {@link #findsClosestPointPointParallelogram(double,
-     *     double, double, double, double, double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static void computeClosestPoint(
-            double px, double py,
-            double centerX, double centerY,
-            double axis1X, double axis1Y,
-            double axis1Extent,
-            double axis2X, double axis2Y,
-            double axis2Extent,
-            Point2D<?, ?> closest) {
-        findsClosestPointPointParallelogram(px, py, centerX, centerY, axis1X, axis1Y,
-                axis1Extent, axis2X, axis2Y, axis2Extent, closest);
     }
 
     /**
@@ -484,50 +354,6 @@ public interface Parallelogram2afp<
         } else {
             closest.set(centerX - closest.getX(), centerY - closest.getY());
         }
-    }
-
-    /**
-     * Given a point p, this function computes the point q2 on the parallelogram, farthest to p.
-     * If there are several
-     * points, the function will return one of those. Remember this function may
-     * return an approximate result when points remain on parallelogram plane of symmetry.
-     *
-     * @param px
-     *            is the X coordinate of the point to test.
-     * @param py
-     *            is the Y coordinate of the point to test.
-     * @param centerX
-     *            is the X coordinate of the parallelogram center.
-     * @param centerY
-     *            is the Y coordinate of the parallelogram center.
-     * @param axis1X
-     *            is the X coordinate of the axis 1 vector.
-     * @param axis1Y
-     *            is the Y coordinate of the axis 1 vector.
-     * @param axis1Extent
-     *            is the extent of the axis 1 of the parallelogram.
-     * @param axis2X
-     *            is the X coordinate of the axis 2 vector.
-     * @param axis2Y
-     *            is the Y coordinate of the axis 2 vector.
-     * @param axis2Extent
-     *            is the extent of the axis 2 of the parallelogram.
-     * @param farthest the farthest point.
-     * @deprecated since 13.0, se {@link #findsFarthestPointPointParallelogram(double,
-     *     double, double, double, double, double, double, double, double, double, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static void computeFarthestPoint(
-            double px, double py,
-            double centerX, double centerY,
-            double axis1X, double axis1Y,
-            double axis1Extent,
-            double axis2X, double axis2Y,
-            double axis2Extent,
-            Point2D<?, ?> farthest) {
-        findsFarthestPointPointParallelogram(px, py, centerX, centerY, axis1X, axis1Y,
-                axis1Extent, axis2X, axis2Y, axis2Extent, farthest);
     }
 
     /**

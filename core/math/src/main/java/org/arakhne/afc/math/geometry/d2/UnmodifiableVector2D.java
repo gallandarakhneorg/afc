@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 
 /** Unmodifiable 2D Vector.
@@ -86,6 +87,11 @@ public interface UnmodifiableVector2D<RV extends Vector2D<? super RV, ? super RP
     }
 
     @Override
+    default void makeOrthogonal(CoordinateSystem2D system) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     default void normalize(Vector2D<?, ?> vector) {
         throw new UnsupportedOperationException();
     }
@@ -133,15 +139,6 @@ public interface UnmodifiableVector2D<RV extends Vector2D<? super RV, ? super RP
     @Override
     default UnmodifiableVector2D<RV, RP> toUnmodifiable() {
         return this;
-    }
-
-    /**
-     * @deprecated since 13.0
-     */
-    @Override
-    @Deprecated
-    default void turnVector(double angle) {
-        throw new UnsupportedOperationException();
     }
 
     @Override

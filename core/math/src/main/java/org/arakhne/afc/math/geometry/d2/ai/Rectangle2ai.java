@@ -188,28 +188,6 @@ public interface Rectangle2ai<
      * @param rmaxx2 the maximum x coordinate of the second rectangle.
      * @param rmaxy2 the maximum y coordinate of the second rectangle.
      * @param closest is set with the closest point on the first rectangle.
-     * @deprecated since 13.0, see {@link #findsClosestPointRectangleRectangle(int, int, int, int, int, int, int, int, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static void computeClosestPointRectangleRectangle(
-            int rx1, int ry1, int rmaxx1, int rmaxy1,
-            int rx2, int ry2, int rmaxx2, int rmaxy2,
-            Point2D<?, ?> closest) {
-        findsClosestPointRectangleRectangle(rx1, ry1, rmaxx1, rmaxy1, rx2, ry2, rmaxx2, rmaxy2, closest);
-    }
-
-    /** Compute the point on the first rectangle that is the closest to the second rectangle.
-     *
-     * @param rx1 the minimum x coordinate of the first rectangle.
-     * @param ry1 the minimum y coordinate of the first rectangle.
-     * @param rmaxx1 the maximum x coordinate of the first rectangle.
-     * @param rmaxy1 the maximum y coordinate of the first rectangle.
-     * @param rx2 the minimum x coordinate of the second rectangle.
-     * @param ry2 the minimum y coordinate of the second rectangle.
-     * @param rmaxx2 the maximum x coordinate of the second rectangle.
-     * @param rmaxy2 the maximum y coordinate of the second rectangle.
-     * @param closest is set with the closest point on the first rectangle.
      */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void findsClosestPointRectangleRectangle(
@@ -239,28 +217,6 @@ public interface Rectangle2ai<
             py = cy;
         }
         closest.set(px, py);
-    }
-
-    /** Compute the point on the rectangle that is the closest to the segment.
-     *
-     * @param rx the minimum x coordinate of the rectangle.
-     * @param ry the minimum y coordinate of the rectangle.
-     * @param rmaxx the maximum x coordinate of the rectangle.
-     * @param rmaxy the maximum y coordinate of the rectangle.
-     * @param sx1 the x coordinate of the first point of the segment.
-     * @param sy1 the y coordinate of the first point of the segment.
-     * @param sx2 the x coordinate of the second point of the segment.
-     * @param sy2 the y coordinate of the second point of the segment.
-     * @param closest is set with the closest point on the rectangle.
-     * @deprecated since 13.0, see {@link #findsClosestPointRectangleSegment(int, int, int, int, int, int, int, int, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static void computeClosestPointRectangleSegment(
-            int rx, int ry, int rmaxx, int rmaxy,
-            int sx1, int sy1, int sx2, int sy2,
-            Point2D<?, ?> closest) {
-        findsClosestPointRectangleSegment(rx, ry, rmaxx, rmaxy, sx1, sy1, sx2, sy2, closest);
     }
 
     /** Compute the point on the rectangle that is the closest to the segment.
@@ -336,22 +292,6 @@ public interface Rectangle2ai<
      * @param px is the x-coordinate of the point.
      * @param py is the y-coordinate of the point.
      * @param result the closest point.
-     * @deprecated since 13.0, see {@link #findsClosestPointRectanglePoint(int, int, int, int, int, int, Point2D)}
-     */
-    @Deprecated
-    static void computeClosestPointRectanglePoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
-        findsClosestPointRectanglePoint(minx, miny, maxx, maxy, px, py, result);
-    }
-
-    /** Compute the closest point on the rectangle from the given point.
-     *
-     * @param minx is the x-coordinate of the lowest coordinate of the rectangle.
-     * @param miny is the y-coordinate of the lowest coordinate of the rectangle.
-     * @param maxx is the x-coordinate of the highest coordinate of the rectangle.
-     * @param maxy is the y-coordinate of the highest coordinate of the rectangle.
-     * @param px is the x-coordinate of the point.
-     * @param py is the y-coordinate of the point.
-     * @param result the closest point.
      */
     @SuppressWarnings("checkstyle:magicnumber")
     static void findsClosestPointRectanglePoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
@@ -394,22 +334,6 @@ public interface Rectangle2ai<
      * @param px is the x-coordinate of the point.
      * @param py is the y-coordinate of the point.
      * @param result the farthest point.
-     * @deprecated since 13.0, see {@link #findsFarthestPointRectanglePoint(int, int, int, int, int, int, Point2D)}
-     */
-    @Deprecated
-    static void computeFarthestPoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
-        findsFarthestPointRectanglePoint(minx, miny, maxx, maxy, px, py, result);
-    }
-
-    /** Compute the farthest point on the rectangle from the given point.
-     *
-     * @param minx is the x-coordinate of the lowest coordinate of the rectangle.
-     * @param miny is the y-coordinate of the lowest coordinate of the rectangle.
-     * @param maxx is the x-coordinate of the highest coordinate of the rectangle.
-     * @param maxy is the y-coordinate of the highest coordinate of the rectangle.
-     * @param px is the x-coordinate of the point.
-     * @param py is the y-coordinate of the point.
-     * @param result the farthest point.
      */
     @SuppressWarnings("checkstyle:magicnumber")
     static void findsFarthestPointRectanglePoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
@@ -430,44 +354,6 @@ public interface Rectangle2ai<
             y = miny;
         }
         result.set(x, y);
-    }
-
-    /** Update the given Cohen-Sutherland code that corresponds to the given segment in order
-     * to obtain a segment restricted to a single Cohen-Sutherland zone.
-     * This function is at the heart of the
-     * <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
-     *
-     * <p>The result of this function may be: <ul>
-     * <li>the code for a single zone, or</li>
-     * <li>the code that corresponds to a single column, or </li>
-     * <li>the code that corresponds to a single row.</li>
-     * </ul>
-     *
-     * @param rx1 is the first corner of the rectangle.
-     * @param ry1 is the first corner of the rectangle.
-     * @param rx2 is the second corner of the rectangle.
-     * @param ry2 is the second corner of the rectangle.
-     * @param sx1 is the first point of the segment.
-     * @param sy1 is the first point of the segment.
-     * @param sx2 is the second point of the segment.
-     * @param sy2 is the second point of the segment.
-     * @param codePoint1 the Cohen-Sutherland code for the first point of the segment.
-     * @param codePoint2 the Cohen-Sutherland code for the second point of the segment.
-     * @param newSegmentP1 is set with the new coordinates of the segment first point. If <code>null</code>,
-     *     this parameter is ignored.
-     * @param newSegmentP2 is set with the new coordinates of the segment second point. If <code>null</code>,
-     *     this parameter is ignored.
-     * @return the rectricted Cohen-Sutherland zone.
-     * @deprecated since 13.0, see {@link #reducesCohenSutherlandZoneRectangleSegment(int, int, int, int,
-     *      int, int, int, int, int, int, Point2D, Point2D)}
-     */
-    @Deprecated
-    @SuppressWarnings("checkstyle:parameternumber")
-    static int reduceCohenSutherlandZoneRectangleSegment(int rx1, int ry1, int rx2, int ry2,
-            int sx1, int sy1, int sx2, int sy2, int codePoint1, int codePoint2,
-            Point2D<?, ?> newSegmentP1, Point2D<?, ?> newSegmentP2) {
-        return reducesCohenSutherlandZoneRectangleSegment(rx1, ry1, rx2, ry2, sx1, sy1, sx2, sy2,
-                codePoint1, codePoint2, newSegmentP1, newSegmentP2);
     }
 
     /** Update the given Cohen-Sutherland code that corresponds to the given segment in order
