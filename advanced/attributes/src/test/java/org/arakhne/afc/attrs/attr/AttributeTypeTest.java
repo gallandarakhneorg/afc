@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,10 +47,6 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.testtools.AbstractTestCase;
-import org.arakhne.afc.ui.vector.Color;
-import org.arakhne.afc.ui.vector.Colors;
-import org.arakhne.afc.ui.vector.Image;
-import org.arakhne.afc.ui.vector.VectorToolkit;
 
 @SuppressWarnings("all")
 public class AttributeTypeTest extends AbstractTestCase {
@@ -115,14 +111,12 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(AttributeType.STRING, AttributeType.fromValue(new StringBuilder()));
 		assertEquals(AttributeType.DATE, AttributeType.fromValue(Calendar.getInstance()));
 		assertEquals(AttributeType.DATE, AttributeType.fromValue(new Date()));
-		assertEquals(AttributeType.COLOR, AttributeType.fromValue(Colors.RED));
 		assertEquals(AttributeType.UUID, AttributeType.fromValue(UUID.randomUUID()));
 		assertEquals(AttributeType.POINT, AttributeType.fromValue(new Point2d(0,0)));
 		assertEquals(AttributeType.POINT, AttributeType.fromValue(new Point2i(0,0)));
 		assertEquals(AttributeType.POINT3D, AttributeType.fromValue(new Point3d(0,0,0)));
 		assertEquals(AttributeType.POLYLINE, AttributeType.fromValue(new Point2D[0]));
 		assertEquals(AttributeType.POLYLINE3D, AttributeType.fromValue(new Point3D[0]));
-		assertEquals(AttributeType.IMAGE, AttributeType.fromValue(VectorToolkit.image(1,1,false)));
 		assertEquals(AttributeType.UUID, AttributeType.fromValue(UUID.randomUUID()));
 		assertEquals(AttributeType.URL, AttributeType.fromValue(new URL("http://set.utbm.fr")));  //$NON-NLS-1$
 		assertEquals(AttributeType.URI, AttributeType.fromValue(new URI("http://set.utbm.fr")));  //$NON-NLS-1$
@@ -159,7 +153,6 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(AttributeType.STRING, AttributeType.fromClass(StringBuilder.class));
 		assertEquals(AttributeType.DATE, AttributeType.fromClass(Calendar.class));
 		assertEquals(AttributeType.DATE, AttributeType.fromClass(Date.class));
-		assertEquals(AttributeType.COLOR, AttributeType.fromClass(Color.class));
 		assertEquals(AttributeType.UUID, AttributeType.fromClass(UUID.class));
 		assertEquals(AttributeType.POINT, AttributeType.fromClass(Point2D.class));
 		assertEquals(AttributeType.POINT, AttributeType.fromClass(Point2D.class));
@@ -168,7 +161,6 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(AttributeType.POLYLINE, AttributeType.fromClass(Point2D[].class));
 		assertEquals(AttributeType.OBJECT, AttributeType.fromClass(Tuple3D[].class));
 		assertEquals(AttributeType.POLYLINE3D, AttributeType.fromClass(Point3D[].class));
-		assertEquals(AttributeType.IMAGE, AttributeType.fromClass(Image.class));
 		assertEquals(AttributeType.UUID, AttributeType.fromClass(UUID.class));
 		assertEquals(AttributeType.URL, AttributeType.fromClass(URL.class));
 		assertEquals(AttributeType.URI, AttributeType.fromClass(URI.class));
@@ -187,9 +179,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertTrue(AttributeType.STRING.isBaseType());
 		assertTrue(AttributeType.TIMESTAMP.isBaseType());
 		
-		assertFalse(AttributeType.COLOR.isBaseType());
 		assertFalse(AttributeType.DATE.isBaseType());
-		assertFalse(AttributeType.IMAGE.isBaseType());
 		assertFalse(AttributeType.OBJECT.isBaseType());
 		assertFalse(AttributeType.POINT.isBaseType());
 		assertFalse(AttributeType.POINT3D.isBaseType());
@@ -211,9 +201,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertFalse(AttributeType.STRING.isNullAllowed());
 		assertFalse(AttributeType.TIMESTAMP.isNullAllowed());
 		
-		assertFalse(AttributeType.COLOR.isNullAllowed());
 		assertFalse(AttributeType.DATE.isNullAllowed());
-		assertTrue(AttributeType.IMAGE.isNullAllowed());
 		assertTrue(AttributeType.OBJECT.isNullAllowed());
 		assertFalse(AttributeType.POINT.isNullAllowed());
 		assertFalse(AttributeType.POINT3D.isNullAllowed());
@@ -235,9 +223,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(new String(), AttributeType.STRING.getDefaultValue());
 		assertNotNull(AttributeType.TIMESTAMP.getDefaultValue());
 		
-		assertEquals(VectorToolkit.color(0,0,0), AttributeType.COLOR.getDefaultValue());
 		assertNotNull(AttributeType.DATE.getDefaultValue());
-		assertNull(AttributeType.IMAGE.getDefaultValue());
 		assertNull(AttributeType.OBJECT.getDefaultValue());
 		assertEquals(new Point2d(), AttributeType.POINT.getDefaultValue());
 		assertEquals(new Point3d(), AttributeType.POINT3D.getDefaultValue());
@@ -266,8 +252,6 @@ public class AttributeTypeTest extends AbstractTestCase {
 		Calendar cal = Calendar.getInstance();
 		Date dt = new Date();
 		Point2d pt2d1 = new Point2d(0,0);
-		Image img = VectorToolkit.image(1,1,false);
-		Color col = Colors.RED;
 		UUID uuid = UUID.nameUUIDFromBytes("abcd".getBytes());  //$NON-NLS-1$
 		Point3D pt3d = new Point3d(0,0,0);
 		Point2D[] tabpt2d1 = new Point2D[0];
@@ -298,43 +282,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertCastException(type,cal);
 		assertCastException(type,dt);
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
 		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
-		assertCastException(type,tabint);
-		assertCastException(type,obj);
-		assertCastException(type,url);
-		assertCastException(type,uri);
-		assertCastException(type,ipAddress);
-		assertCastException(type,enumeration);
-
-		// COLOR
-		type = AttributeType.COLOR;
-		assertNullException(type,null);
-		assertCastException(type,true);
-		assertCastException(type,false);
-		assertCastException(type,vChar);
-		assertEquals(VectorToolkit.color(vByte), type.cast(vByte));
-		assertEquals(VectorToolkit.color(vShort), type.cast(vShort));
-		assertEquals(VectorToolkit.color(vInt), type.cast(vInt));
-		assertEquals(VectorToolkit.color((int)vLong), type.cast(vLong));
-		assertEquals(VectorToolkit.color((int)vFloat), type.cast(vFloat));
-		assertEquals(VectorToolkit.color((int)vDouble), type.cast(vDouble));
-		assertCastException(type,vStr);
-		assertCastException(type,vStrB);
-		assertCastException(type,cal);
-		assertCastException(type,dt);
-		assertSame(col,type.cast(col));
-		assertCastException(type,uuid);
-		assertCastException(type,pt2d1);
-		assertCastException(type,pt3d);
-		assertCastException(type,tabpt2d1);
-		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertCastException(type,url);
@@ -358,13 +310,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertCastException(type,cal);
 		assertCastException(type,dt);
-		assertCastException(type,col);
 		assertSame(uuid,type.cast(uuid));
 		assertCastException(type,pt2d1);
 		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertCastException(type,url);
@@ -388,43 +338,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertEquals(cal.getTime(),type.cast(cal));
 		assertSame(dt,type.cast(dt));
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
 		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
-		assertCastException(type,tabint);
-		assertCastException(type,obj);
-		assertCastException(type,url);
-		assertCastException(type,uri);
-		assertCastException(type,ipAddress);
-		assertCastException(type,enumeration);
-
-		// ICON
-		type = AttributeType.IMAGE;
-		assertEquals(new NullAttribute(type),type.cast(null));
-		assertCastException(type,true);
-		assertCastException(type,false);
-		assertCastException(type,vChar);
-		assertCastException(type,vByte);
-		assertCastException(type,vShort);
-		assertCastException(type,vInt);
-		assertCastException(type,vLong);
-		assertCastException(type,vFloat);
-		assertCastException(type,vDouble);
-		assertCastException(type,vStr);
-		assertCastException(type,vStrB);
-		assertCastException(type,cal);
-		assertCastException(type,dt);
-		assertCastException(type,col);
-		assertCastException(type,uuid);
-		assertCastException(type,pt2d1);
-		assertCastException(type,pt3d);
-		assertCastException(type,tabpt2d1);
-		assertCastException(type,tabpt3d);
-		assertNotNull(type.cast(img));
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertCastException(type,url);
@@ -448,13 +366,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertCastException(type,cal);
 		assertCastException(type,dt);
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
 		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertCastException(type,url);
@@ -478,13 +394,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(vStrB,type.cast(vStrB));
 		assertSame(cal,type.cast(cal));
 		assertSame(dt,type.cast(dt));
-		assertSame(col,type.cast(col));
 		assertSame(uuid,type.cast(uuid));
 		assertSame(pt2d1,type.cast(pt2d1));
 		assertSame(pt3d,type.cast(pt3d));
 		assertSame(tabpt2d1,type.cast(tabpt2d1));
 		assertSame(tabpt3d,type.cast(tabpt3d));
-		assertSame(img,type.cast(img));
 		assertSame(tabint,type.cast(tabint));
 		assertSame(obj,type.cast(obj));
 		assertSame(url,type.cast(url));
@@ -508,13 +422,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertCastException(type,cal);
 		assertCastException(type,dt);
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertSame(pt2d1,type.cast(pt2d1));
 		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertCastException(type,url);
@@ -538,13 +450,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertCastException(type,cal);
 		assertCastException(type,dt);
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
 		assertSame(pt3d,type.cast(pt3d));
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertCastException(type,url);
@@ -568,13 +478,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertCastException(type,cal);
 		assertCastException(type,dt);
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
 		assertCastException(type,pt3d);
 		assertSame(tabpt2d1,type.cast(tabpt2d1));
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertCastException(type,url);
@@ -598,13 +506,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertCastException(type,cal);
 		assertCastException(type,dt);
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
 		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertSame(tabpt3d,type.cast(tabpt3d));
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertCastException(type,url);
@@ -628,13 +534,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertCastException(type,cal);
 		assertCastException(type,dt);
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
 		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertCastException(type,url);
@@ -658,13 +562,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(vStrB.toString(),type.cast(vStrB));
 		assertEquals(cal.toString(),type.cast(cal));
 		assertEquals(dt.toString(),type.cast(dt));
-		assertEquals(col.toString(),type.cast(col));
 		assertEquals(uuid.toString(),type.cast(uuid));
 		assertEquals(pt2d1.toString(),type.cast(pt2d1));
 		assertEquals(pt3d.toString(),type.cast(pt3d));
 		assertEquals(tabpt2d1.toString(),type.cast(tabpt2d1));
 		assertEquals(tabpt3d.toString(),type.cast(tabpt3d));
-		assertEquals(img.toString(),type.cast(img));
 		assertEquals(tabint.toString(),type.cast(tabint));
 		assertEquals(obj.toString(),type.cast(obj));
 		assertEquals(url.toString(), type.cast(url));
@@ -688,13 +590,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertEquals(cal.getTimeInMillis(),type.cast(cal));
 		assertEquals(dt.getTime(),type.cast(dt));
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
 		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertCastException(type,url);
@@ -718,13 +618,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertCastException(type,cal);
 		assertCastException(type,dt);
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
 		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertEquals(url.toURI(), type.cast(url));
@@ -748,13 +646,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertCastException(type,cal);
 		assertCastException(type,dt);
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
 		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertSame(url, type.cast(url));
@@ -779,13 +675,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertEquals(worldAddress, type.cast(vStrB));
 		assertCastException(type,cal);
 		assertCastException(type,dt);
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
 		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertEquals(InetAddress.getByName("set.utbm.fr"), type.cast(url));  //$NON-NLS-1$
@@ -810,13 +704,11 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertCastException(type,vStrB);
 		assertCastException(type,cal);
 		assertCastException(type,dt);
-		assertCastException(type,col);
 		assertCastException(type,uuid);
 		assertCastException(type,pt2d1);
 		assertCastException(type,pt3d);
 		assertCastException(type,tabpt2d1);
 		assertCastException(type,tabpt3d);
-		assertCastException(type,img);
 		assertCastException(type,tabint);
 		assertCastException(type,obj);
 		assertCastException(type,url);
@@ -828,9 +720,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 	@Test
 	public void isAssignableFrom() {
 		assertTrue(AttributeType.BOOLEAN.isAssignableFrom(AttributeType.BOOLEAN));
-		assertFalse(AttributeType.BOOLEAN.isAssignableFrom(AttributeType.COLOR));
 		assertFalse(AttributeType.BOOLEAN.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.BOOLEAN.isAssignableFrom(AttributeType.IMAGE));
 		assertTrue(AttributeType.BOOLEAN.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.BOOLEAN.isAssignableFrom(AttributeType.OBJECT));
 		assertFalse(AttributeType.BOOLEAN.isAssignableFrom(AttributeType.POINT));
@@ -846,29 +736,8 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertFalse(AttributeType.BOOLEAN.isAssignableFrom(AttributeType.INET_ADDRESS));
 		assertFalse(AttributeType.BOOLEAN.isAssignableFrom(AttributeType.ENUMERATION));
 
-		assertFalse(AttributeType.COLOR.isAssignableFrom(AttributeType.BOOLEAN));
-		assertTrue(AttributeType.COLOR.isAssignableFrom(AttributeType.COLOR));
-		assertTrue(AttributeType.COLOR.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.COLOR.isAssignableFrom(AttributeType.IMAGE));
-		assertTrue(AttributeType.COLOR.isAssignableFrom(AttributeType.INTEGER));
-		assertTrue(AttributeType.COLOR.isAssignableFrom(AttributeType.OBJECT));
-		assertTrue(AttributeType.COLOR.isAssignableFrom(AttributeType.POINT));
-		assertTrue(AttributeType.COLOR.isAssignableFrom(AttributeType.POINT3D));
-		assertFalse(AttributeType.COLOR.isAssignableFrom(AttributeType.POLYLINE));
-		assertFalse(AttributeType.COLOR.isAssignableFrom(AttributeType.POLYLINE3D));
-		assertTrue(AttributeType.COLOR.isAssignableFrom(AttributeType.REAL));
-		assertTrue(AttributeType.COLOR.isAssignableFrom(AttributeType.STRING));
-		assertTrue(AttributeType.COLOR.isAssignableFrom(AttributeType.TIMESTAMP));
-		assertFalse(AttributeType.COLOR.isAssignableFrom(AttributeType.URI));
-		assertFalse(AttributeType.COLOR.isAssignableFrom(AttributeType.URL));
-		assertFalse(AttributeType.COLOR.isAssignableFrom(AttributeType.UUID));
-		assertFalse(AttributeType.COLOR.isAssignableFrom(AttributeType.INET_ADDRESS));
-		assertFalse(AttributeType.COLOR.isAssignableFrom(AttributeType.ENUMERATION));
-
 		assertFalse(AttributeType.DATE.isAssignableFrom(AttributeType.BOOLEAN));
-		assertFalse(AttributeType.DATE.isAssignableFrom(AttributeType.COLOR));
 		assertTrue(AttributeType.DATE.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.DATE.isAssignableFrom(AttributeType.IMAGE));
 		assertTrue(AttributeType.DATE.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.DATE.isAssignableFrom(AttributeType.OBJECT));
 		assertFalse(AttributeType.DATE.isAssignableFrom(AttributeType.POINT));
@@ -884,29 +753,8 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertFalse(AttributeType.DATE.isAssignableFrom(AttributeType.INET_ADDRESS));
 		assertFalse(AttributeType.DATE.isAssignableFrom(AttributeType.ENUMERATION));
 
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.BOOLEAN));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.COLOR));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.DATE));
-		assertTrue(AttributeType.IMAGE.isAssignableFrom(AttributeType.IMAGE));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.INTEGER));
-		assertTrue(AttributeType.IMAGE.isAssignableFrom(AttributeType.OBJECT));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.POINT));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.POINT3D));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.POLYLINE));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.POLYLINE3D));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.REAL));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.STRING));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.TIMESTAMP));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.URI));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.URL));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.UUID));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.INET_ADDRESS));
-		assertFalse(AttributeType.IMAGE.isAssignableFrom(AttributeType.ENUMERATION));
-
 		assertTrue(AttributeType.INTEGER.isAssignableFrom(AttributeType.INTEGER));
-		assertTrue(AttributeType.INTEGER.isAssignableFrom(AttributeType.COLOR));
 		assertTrue(AttributeType.INTEGER.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.INTEGER.isAssignableFrom(AttributeType.IMAGE));
 		assertTrue(AttributeType.INTEGER.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.INTEGER.isAssignableFrom(AttributeType.OBJECT));
 		assertFalse(AttributeType.INTEGER.isAssignableFrom(AttributeType.POINT));
@@ -923,9 +771,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertTrue(AttributeType.INTEGER.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertTrue(AttributeType.OBJECT.isAssignableFrom(AttributeType.BOOLEAN));
-		assertTrue(AttributeType.OBJECT.isAssignableFrom(AttributeType.COLOR));
 		assertTrue(AttributeType.OBJECT.isAssignableFrom(AttributeType.DATE));
-		assertTrue(AttributeType.OBJECT.isAssignableFrom(AttributeType.IMAGE));
 		assertTrue(AttributeType.OBJECT.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.OBJECT.isAssignableFrom(AttributeType.OBJECT));
 		assertTrue(AttributeType.OBJECT.isAssignableFrom(AttributeType.POINT));
@@ -942,9 +788,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertTrue(AttributeType.OBJECT.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertFalse(AttributeType.POINT.isAssignableFrom(AttributeType.BOOLEAN));
-		assertTrue(AttributeType.POINT.isAssignableFrom(AttributeType.COLOR));
 		assertTrue(AttributeType.POINT.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.POINT.isAssignableFrom(AttributeType.IMAGE));
 		assertTrue(AttributeType.POINT.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.POINT.isAssignableFrom(AttributeType.OBJECT));
 		assertTrue(AttributeType.POINT.isAssignableFrom(AttributeType.POINT));
@@ -961,9 +805,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertFalse(AttributeType.POINT.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertFalse(AttributeType.POINT3D.isAssignableFrom(AttributeType.BOOLEAN));
-		assertTrue(AttributeType.POINT3D.isAssignableFrom(AttributeType.COLOR));
 		assertTrue(AttributeType.POINT3D.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.POINT3D.isAssignableFrom(AttributeType.IMAGE));
 		assertTrue(AttributeType.POINT3D.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.POINT3D.isAssignableFrom(AttributeType.OBJECT));
 		assertTrue(AttributeType.POINT3D.isAssignableFrom(AttributeType.POINT));
@@ -980,9 +822,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertFalse(AttributeType.POINT3D.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertFalse(AttributeType.POLYLINE.isAssignableFrom(AttributeType.BOOLEAN));
-		assertFalse(AttributeType.POLYLINE.isAssignableFrom(AttributeType.COLOR));
 		assertFalse(AttributeType.POLYLINE.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.POLYLINE.isAssignableFrom(AttributeType.IMAGE));
 		assertFalse(AttributeType.POLYLINE.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.POLYLINE.isAssignableFrom(AttributeType.OBJECT));
 		assertTrue(AttributeType.POLYLINE.isAssignableFrom(AttributeType.POINT));
@@ -999,9 +839,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertFalse(AttributeType.POLYLINE.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertFalse(AttributeType.POLYLINE3D.isAssignableFrom(AttributeType.BOOLEAN));
-		assertFalse(AttributeType.POLYLINE3D.isAssignableFrom(AttributeType.COLOR));
 		assertFalse(AttributeType.POLYLINE3D.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.POLYLINE3D.isAssignableFrom(AttributeType.IMAGE));
 		assertFalse(AttributeType.POLYLINE3D.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.POLYLINE3D.isAssignableFrom(AttributeType.OBJECT));
 		assertTrue(AttributeType.POLYLINE3D.isAssignableFrom(AttributeType.POINT));
@@ -1018,9 +856,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertFalse(AttributeType.POLYLINE3D.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertTrue(AttributeType.REAL.isAssignableFrom(AttributeType.BOOLEAN));
-		assertTrue(AttributeType.REAL.isAssignableFrom(AttributeType.COLOR));
 		assertTrue(AttributeType.REAL.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.REAL.isAssignableFrom(AttributeType.IMAGE));
 		assertTrue(AttributeType.REAL.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.REAL.isAssignableFrom(AttributeType.OBJECT));
 		assertFalse(AttributeType.REAL.isAssignableFrom(AttributeType.POINT));
@@ -1037,9 +873,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertTrue(AttributeType.REAL.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertTrue(AttributeType.STRING.isAssignableFrom(AttributeType.BOOLEAN));
-		assertTrue(AttributeType.STRING.isAssignableFrom(AttributeType.COLOR));
 		assertTrue(AttributeType.STRING.isAssignableFrom(AttributeType.DATE));
-		assertTrue(AttributeType.STRING.isAssignableFrom(AttributeType.IMAGE));
 		assertTrue(AttributeType.STRING.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.STRING.isAssignableFrom(AttributeType.OBJECT));
 		assertTrue(AttributeType.STRING.isAssignableFrom(AttributeType.POINT));
@@ -1056,9 +890,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertTrue(AttributeType.STRING.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertTrue(AttributeType.TIMESTAMP.isAssignableFrom(AttributeType.BOOLEAN));
-		assertTrue(AttributeType.TIMESTAMP.isAssignableFrom(AttributeType.COLOR));
 		assertTrue(AttributeType.TIMESTAMP.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.TIMESTAMP.isAssignableFrom(AttributeType.IMAGE));
 		assertTrue(AttributeType.TIMESTAMP.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.TIMESTAMP.isAssignableFrom(AttributeType.OBJECT));
 		assertFalse(AttributeType.TIMESTAMP.isAssignableFrom(AttributeType.POINT));
@@ -1075,9 +907,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertFalse(AttributeType.TIMESTAMP.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertFalse(AttributeType.URI.isAssignableFrom(AttributeType.BOOLEAN));
-		assertFalse(AttributeType.URI.isAssignableFrom(AttributeType.COLOR));
 		assertFalse(AttributeType.URI.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.URI.isAssignableFrom(AttributeType.IMAGE));
 		assertFalse(AttributeType.URI.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.URI.isAssignableFrom(AttributeType.OBJECT));
 		assertFalse(AttributeType.URI.isAssignableFrom(AttributeType.POINT));
@@ -1094,9 +924,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertFalse(AttributeType.URI.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertFalse(AttributeType.URL.isAssignableFrom(AttributeType.BOOLEAN));
-		assertFalse(AttributeType.URL.isAssignableFrom(AttributeType.COLOR));
 		assertFalse(AttributeType.URL.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.URL.isAssignableFrom(AttributeType.IMAGE));
 		assertFalse(AttributeType.URL.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.URL.isAssignableFrom(AttributeType.OBJECT));
 		assertFalse(AttributeType.URL.isAssignableFrom(AttributeType.POINT));
@@ -1113,9 +941,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertFalse(AttributeType.URL.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertTrue(AttributeType.UUID.isAssignableFrom(AttributeType.BOOLEAN));
-		assertTrue(AttributeType.UUID.isAssignableFrom(AttributeType.COLOR));
 		assertTrue(AttributeType.UUID.isAssignableFrom(AttributeType.DATE));
-		assertTrue(AttributeType.UUID.isAssignableFrom(AttributeType.IMAGE));
 		assertTrue(AttributeType.UUID.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.UUID.isAssignableFrom(AttributeType.OBJECT));
 		assertTrue(AttributeType.UUID.isAssignableFrom(AttributeType.POINT));
@@ -1132,9 +958,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertTrue(AttributeType.UUID.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertFalse(AttributeType.INET_ADDRESS.isAssignableFrom(AttributeType.BOOLEAN));
-		assertFalse(AttributeType.INET_ADDRESS.isAssignableFrom(AttributeType.COLOR));
 		assertFalse(AttributeType.INET_ADDRESS.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.INET_ADDRESS.isAssignableFrom(AttributeType.IMAGE));
 		assertFalse(AttributeType.INET_ADDRESS.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.INET_ADDRESS.isAssignableFrom(AttributeType.OBJECT));
 		assertFalse(AttributeType.INET_ADDRESS.isAssignableFrom(AttributeType.POINT));
@@ -1150,9 +974,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 		assertFalse(AttributeType.INET_ADDRESS.isAssignableFrom(AttributeType.ENUMERATION));
 
 		assertFalse(AttributeType.ENUMERATION.isAssignableFrom(AttributeType.BOOLEAN));
-		assertFalse(AttributeType.ENUMERATION.isAssignableFrom(AttributeType.COLOR));
 		assertFalse(AttributeType.ENUMERATION.isAssignableFrom(AttributeType.DATE));
-		assertFalse(AttributeType.ENUMERATION.isAssignableFrom(AttributeType.IMAGE));
 		assertFalse(AttributeType.ENUMERATION.isAssignableFrom(AttributeType.INTEGER));
 		assertTrue(AttributeType.ENUMERATION.isAssignableFrom(AttributeType.OBJECT));
 		assertFalse(AttributeType.ENUMERATION.isAssignableFrom(AttributeType.POINT));

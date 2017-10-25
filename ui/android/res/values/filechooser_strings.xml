@@ -1,6 +1,0 @@
-<resources>
-    <string name="empty_directory">Empty directory</string>
-    <string name="enter_filename">File name:</string>
-    <string name="save">Save</string>
-    <string name="up_directory">Parent directory</string>
-</resources>

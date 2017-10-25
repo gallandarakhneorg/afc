@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,10 +44,6 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
-import org.arakhne.afc.ui.vector.Color;
-import org.arakhne.afc.ui.vector.Colors;
-import org.arakhne.afc.ui.vector.Image;
-import org.arakhne.afc.ui.vector.VectorToolkit;
 
 @SuppressWarnings("all")
 public class AttributeValueTest extends AbstractMathTestCase {
@@ -70,24 +66,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		}
 
 		try {
-			attr.getColor();
-			fail("getColor: the exception InvalidAttributeTypeException was not thrown for "+type);  //$NON-NLS-1$
-		}
-		catch(AttributeException exception) {
-			// expected case
-		}
-
-		try {
 			attr.getDate();
 			fail("getDate: the exception InvalidAttributeTypeException was not thrown for "+type);  //$NON-NLS-1$
-		}
-		catch(AttributeException exception) {
-			// expected case
-		}
-
-		try {
-			attr.getImage();
-			fail("getImage: the exception AttributeNotInitializedException was not thrown for "+type);  //$NON-NLS-1$
 		}
 		catch(AttributeException exception) {
 			// expected case
@@ -316,33 +296,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	public void attributeValueImplColor() throws Exception {
-		String txt = "255;0;0;255";  //$NON-NLS-1$
-		AttributeValue attr = new AttributeValueImpl(Colors.RED);
-		
-		assertEquals(AttributeType.COLOR, attr.getType());
-
-		assertTrue(attr.isAssigned());
-		assertFalse(attr.isBaseType());
-		assertTrue(attr.isObjectValue());
-		
-		assertEquals(Colors.RED,attr.getValue());
-		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertEquals(Colors.RED,attr.getColor());
-		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
-		assertEquals(Colors.RED.getRGB(), attr.getInteger());
-		assertEpsilonEquals(Colors.RED.getRGB(), attr.getReal());
-		assertEquals(Colors.RED.getRGB(), attr.getTimestamp());
-		assertEquals(txt,attr.getString());
-		assertEquals(Colors.RED, attr.getJavaObject());
-		assertEquals(new Point2d(255,0),attr.getPoint());
-		assertEquals(new Point3d(255,0,0),attr.getPoint3D());
-		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
-		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
-	}
-
-	@Test
 	public void attributeValueImplDate() throws Exception {
 		Date currentDate = new Date();
 		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");  //$NON-NLS-1$
@@ -357,7 +310,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		
 		assertEquals(currentDate,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertEquals(VectorToolkit.color((int)currentDate.getTime()), attr.getColor());
 		assertEquals(currentDate,attr.getDate());
 		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(currentDate.getTime(),attr.getInteger());
@@ -385,7 +337,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		
 		assertEpsilonEquals(nb,((Number)attr.getValue()).floatValue());
 		assertEquals(nb!=0f, attr.getBoolean());
-		assertEquals(VectorToolkit.color((int)nb), attr.getColor());
 		assertEquals(new Date((long)nb),attr.getDate());
 		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals((long)nb,attr.getInteger());
@@ -413,7 +364,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		
 		assertEpsilonEquals(nb,((Number)attr.getValue()).doubleValue());
 		assertEquals(nb!=0., attr.getBoolean());
-		assertEquals(VectorToolkit.color((int)nb), attr.getColor());
 		assertEquals(new Date((long)nb),attr.getDate());
 		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals((long)nb,attr.getInteger());
@@ -423,33 +373,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
 		assertEquals(new Point2d(nb,0),attr.getPoint());
 		assertEquals(new Point3d(nb,0,0),attr.getPoint3D());
-		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
-		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
-	}
-
-	@Test
-	public void attributeValueImplIcon() throws Exception {
-		Image ic = VectorToolkit.image(1,1,false);
-		AttributeValue attr = new AttributeValueImpl(ic);
-		
-		assertEquals(AttributeType.IMAGE, attr.getType());
-
-		assertTrue(attr.isAssigned());
-		assertFalse(attr.isBaseType());
-		assertTrue(attr.isObjectValue());
-		
-		assertEquals(ic,attr.getValue());
-		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
-		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertEquals(ic,attr.getImage());
-		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
-		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
-		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
-		assertEquals(ic.toString(), attr.getString());
-		assertEquals(ic,attr.getJavaObject());
-		assertAttributeException(attr,"getPoint");  //$NON-NLS-1$
-		assertAttributeException(attr,"getPoint3D");  //$NON-NLS-1$
 		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
 		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
 	}
@@ -468,7 +391,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		
 		assertEquals(nb,((Number)attr.getValue()).intValue());
 		assertEquals(nb!=0, attr.getBoolean());
-		assertEquals(VectorToolkit.color(nb), attr.getColor());
 		assertEquals(new Date(nb),attr.getDate());
 		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(nb,attr.getInteger());
@@ -496,7 +418,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		
 		assertEquals(nb,((Number)attr.getValue()).longValue());
 		assertEquals(nb!=0, attr.getBoolean());
-		assertEquals(VectorToolkit.color((int)nb), attr.getColor());
 		assertEquals(new Date(nb),attr.getDate());
 		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(nb,attr.getInteger());
@@ -525,7 +446,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		
 		assertEquals(pt,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertEquals(VectorToolkit.color((float) pt.getX(), (float) pt.getY(), 0), attr.getColor());
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
 		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
@@ -556,7 +476,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		
 		assertEquals(pt,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertEquals(VectorToolkit.color((float) pt.getX(),(float) pt.getY(),0),attr.getColor());
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
 		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
@@ -588,7 +507,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		
 		assertEquals(pt,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertEquals(VectorToolkit.color((float) pt.getX(),(float) pt.getY(),(float) pt.getZ()),attr.getColor());
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
 		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
@@ -620,7 +538,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		
 		assertEquals(pt,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertEquals(VectorToolkit.color((float) pt.getX(), (float)pt.getY(), (float)pt.getZ()),attr.getColor());
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
 		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
@@ -690,37 +607,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertAttributeException(attr,"getPoint3D");  //$NON-NLS-1$
 		assertAttributeException(attr,"getPolyline");  //$NON-NLS-1$
 		assertAttributeException(attr,"getPolyline3D");  //$NON-NLS-1$
-	}
-
-	@Test
-	public void attributeValueImplString_Color() throws Exception {
-		Color c = Colors.RED;
-		Point2D pt2d = new Point2d(c.getRed(),c.getGreen());
-		Point2D pt2d2 = new Point2d(c.getBlue(),0);
-		Point3D pt3d = new Point3d(c.getRed(),c.getGreen(),c.getBlue());
-		String str = c.getRed()+";"+c.getGreen()+";"+c.getBlue();   //$NON-NLS-1$ //$NON-NLS-2$
-		AttributeValue attr = new AttributeValueImpl(str);
-		
-		assertEquals(AttributeType.STRING, attr.getType());
-
-		assertTrue(attr.isAssigned());
-		assertTrue(attr.isBaseType());
-		assertFalse(attr.isObjectValue());
-		
-		assertEquals(str,attr.getValue());
-		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertEquals(c,attr.getColor());
-		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
-		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
-		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
-		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
-		assertEquals(str,attr.getString());
-		assertAttributeException(attr,"getJavaObject");  //$NON-NLS-1$
-		assertEquals(pt2d,attr.getPoint());
-		assertEquals(pt3d,attr.getPoint3D());
-		assertArrayEquals(new Point2D[]{pt2d,pt2d2},attr.getPolyline());
-		assertArrayEquals(new Point3D[]{pt3d},attr.getPolyline3D());
 	}
 
 	@Test
@@ -1020,7 +906,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		String msg, str;
 		AttributeType source, target;
 		long time;
-		Color col;
 		Date dt;
 		DateFormat format;
 		Point2D pt2d;
@@ -1044,19 +929,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertEquals(msg,target.getDefaultValue(), attr2.getBoolean());
 
 		source = AttributeType.BOOLEAN;
-		target = AttributeType.COLOR;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getColor());
-
-		source = AttributeType.BOOLEAN;
 		target = AttributeType.DATE;
 		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		attr1 = new AttributeValueImpl(source);
@@ -1069,19 +941,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		time = System.currentTimeMillis();
 		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
 		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.BOOLEAN;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
 
 		source = AttributeType.BOOLEAN;
 		target = AttributeType.INTEGER;
@@ -1203,184 +1062,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertTrue(msg,attr2.getTimestamp()<=time);
 
 		//
-		// SOURCE: COLOR
-		//
-		
-		source = AttributeType.COLOR;
-		target = AttributeType.BOOLEAN;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getBoolean());
-
-		source = AttributeType.COLOR;
-		target = AttributeType.COLOR;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getColor());
-
-		source = AttributeType.COLOR;
-		target = AttributeType.DATE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		time = System.currentTimeMillis();
-		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
-		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.COLOR;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
-
-		source = AttributeType.COLOR;
-		target = AttributeType.INTEGER;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,((Color)source.getDefaultValue()).getRGB(), ((Long)attr2.getValue()).intValue());
-		assertEquals(msg,((Color)source.getDefaultValue()).getRGB(), (int)attr2.getInteger());
-
-		source = AttributeType.COLOR;
-		target = AttributeType.OBJECT;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,VectorToolkit.color(0,0,0), attr2.getValue());
-		assertEquals(msg,VectorToolkit.color(0,0,0), attr2.getJavaObject());
-
-		source = AttributeType.COLOR;
-		target = AttributeType.POINT;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getPoint());
-
-		source = AttributeType.COLOR;
-		target = AttributeType.POINT3D;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getPoint3D());
-
-		source = AttributeType.COLOR;
-		target = AttributeType.POLYLINE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
-
-		source = AttributeType.COLOR;
-		target = AttributeType.POLYLINE3D;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
-
-		source = AttributeType.COLOR;
-		target = AttributeType.REAL;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,((Color)source.getDefaultValue()).getRGB(), ((Number)attr2.getValue()).intValue());
-		assertEquals(msg,((Color)source.getDefaultValue()).getRGB(), (int)attr2.getReal());
-
-		source = AttributeType.COLOR;
-		target = AttributeType.STRING;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		col = (Color)source.getDefaultValue();
-		str = col.getRed()+";"+col.getGreen()+";"+col.getBlue()+";"+col.getAlpha();    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertEquals(msg,str, attr2.getValue());
-		assertEquals(msg,str, attr2.getString());
-
-		source = AttributeType.COLOR;
-		target = AttributeType.TIMESTAMP;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertTrue(msg,attr2.getValue() instanceof Timestamp);
-		time = System.currentTimeMillis();
-		assertTrue(msg,((Number)attr2.getValue()).longValue()<=time);
-		assertTrue(msg,attr2.getTimestamp()<=time);
-
-		//
 		// SOURCE: DATE
 		//
 		
@@ -1410,19 +1091,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		time = System.currentTimeMillis();
 		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
 		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.DATE;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
 
 		source = AttributeType.DATE;
 		target = AttributeType.INTEGER;
@@ -1551,182 +1219,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertTrue(msg,attr2.getTimestamp()<=time);
 
 		//
-		// SOURCE: ICON
-		//
-		
-		source = AttributeType.IMAGE;
-		target = AttributeType.BOOLEAN;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getBoolean());
-
-		source = AttributeType.IMAGE;
-		target = AttributeType.COLOR;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getColor());
-
-		source = AttributeType.IMAGE;
-		target = AttributeType.DATE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		time = System.currentTimeMillis();
-		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
-		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.IMAGE;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
-
-		source = AttributeType.IMAGE;
-		target = AttributeType.INTEGER;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(),attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(),attr2.getInteger());
-
-		source = AttributeType.IMAGE;
-		target = AttributeType.OBJECT;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertNull(msg,attr2.getValue());
-		assertNull(msg,attr2.getJavaObject());
-
-		source = AttributeType.IMAGE;
-		target = AttributeType.POINT;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getPoint());
-
-		source = AttributeType.IMAGE;
-		target = AttributeType.POINT3D;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getPoint3D());
-
-		source = AttributeType.IMAGE;
-		target = AttributeType.POLYLINE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
-
-		source = AttributeType.IMAGE;
-		target = AttributeType.POLYLINE3D;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
-
-		source = AttributeType.IMAGE;
-		target = AttributeType.REAL;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getReal());
-
-		source = AttributeType.IMAGE;
-		target = AttributeType.STRING;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue().toString(), attr2.getString());
-
-		source = AttributeType.IMAGE;
-		target = AttributeType.TIMESTAMP;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertTrue(msg,attr2.getValue() instanceof Timestamp);
-		time = System.currentTimeMillis();
-		assertTrue(msg,((Number)attr2.getValue()).longValue()<=time);
-		assertTrue(msg,attr2.getTimestamp()<=time);
-
-		//
 		// SOURCE: INTEGER
 		//
 		
@@ -1744,19 +1236,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertEquals(msg,target.getDefaultValue(), attr2.getBoolean());
 
 		source = AttributeType.INTEGER;
-		target = AttributeType.COLOR;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getColor());
-
-		source = AttributeType.INTEGER;
 		target = AttributeType.DATE;
 		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		attr1 = new AttributeValueImpl(source);
@@ -1769,19 +1248,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		time = System.currentTimeMillis();
 		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
 		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.INTEGER;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
 
 		source = AttributeType.INTEGER;
 		target = AttributeType.INTEGER;
@@ -1920,19 +1386,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertEquals(msg,target.getDefaultValue(), attr2.getBoolean());
 
 		source = AttributeType.OBJECT;
-		target = AttributeType.COLOR;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getColor());
-
-		source = AttributeType.OBJECT;
 		target = AttributeType.DATE;
 		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		attr1 = new AttributeValueImpl(source);
@@ -1945,19 +1398,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		time = System.currentTimeMillis();
 		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
 		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.OBJECT;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
 
 		source = AttributeType.OBJECT;
 		target = AttributeType.INTEGER;
@@ -2096,19 +1536,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertEquals(msg,target.getDefaultValue(), attr2.getBoolean());
 
 		source = AttributeType.POINT;
-		target = AttributeType.COLOR;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getColor());
-
-		source = AttributeType.POINT;
 		target = AttributeType.DATE;
 		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		attr1 = new AttributeValueImpl(source);
@@ -2121,19 +1548,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		time = System.currentTimeMillis();
 		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
 		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.POINT;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
 
 		source = AttributeType.POINT;
 		target = AttributeType.INTEGER;
@@ -2274,19 +1688,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertEquals(msg,target.getDefaultValue(), attr2.getBoolean());
 
 		source = AttributeType.POINT3D;
-		target = AttributeType.COLOR;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getColor());
-
-		source = AttributeType.POINT3D;
 		target = AttributeType.DATE;
 		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		attr1 = new AttributeValueImpl(source);
@@ -2299,19 +1700,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		time = System.currentTimeMillis();
 		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
 		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.POINT3D;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
 
 		source = AttributeType.POINT3D;
 		target = AttributeType.INTEGER;
@@ -2452,19 +1840,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertEquals(msg,target.getDefaultValue(), attr2.getBoolean());
 
 		source = AttributeType.POLYLINE;
-		target = AttributeType.COLOR;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getColor());
-
-		source = AttributeType.POLYLINE;
 		target = AttributeType.DATE;
 		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		attr1 = new AttributeValueImpl(source);
@@ -2477,19 +1852,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		time = System.currentTimeMillis();
 		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
 		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.POLYLINE;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
 
 		source = AttributeType.POLYLINE;
 		target = AttributeType.INTEGER;
@@ -2629,19 +1991,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertEquals(msg,target.getDefaultValue(), attr2.getBoolean());
 
 		source = AttributeType.POLYLINE3D;
-		target = AttributeType.COLOR;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getColor());
-
-		source = AttributeType.POLYLINE3D;
 		target = AttributeType.DATE;
 		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		attr1 = new AttributeValueImpl(source);
@@ -2654,19 +2003,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		time = System.currentTimeMillis();
 		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
 		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.POLYLINE3D;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
 
 		source = AttributeType.POLYLINE3D;
 		target = AttributeType.INTEGER;
@@ -2806,19 +2142,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertEquals(msg,target.getDefaultValue(), attr2.getBoolean());
 
 		source = AttributeType.REAL;
-		target = AttributeType.COLOR;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getColor());
-
-		source = AttributeType.REAL;
 		target = AttributeType.DATE;
 		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		attr1 = new AttributeValueImpl(source);
@@ -2831,19 +2154,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		time = System.currentTimeMillis();
 		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
 		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.REAL;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
 
 		source = AttributeType.REAL;
 		target = AttributeType.INTEGER;
@@ -2982,19 +2292,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertEquals(msg,target.getDefaultValue(), attr2.getBoolean());
 
 		source = AttributeType.STRING;
-		target = AttributeType.COLOR;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertEquals(msg,target.getDefaultValue(), attr2.getColor());
-
-		source = AttributeType.STRING;
 		target = AttributeType.DATE;
 		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		attr1 = new AttributeValueImpl(source);
@@ -3007,19 +2304,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		time = System.currentTimeMillis();
 		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
 		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.STRING;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
 
 		source = AttributeType.STRING;
 		target = AttributeType.INTEGER;
@@ -3171,19 +2455,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		time = System.currentTimeMillis();
 		assertTrue(msg,((Date)attr2.getValue()).getTime()<=time);
 		assertTrue(msg,attr2.getDate().getTime()<=time);
-
-		source = AttributeType.TIMESTAMP;
-		target = AttributeType.IMAGE;
-		msg = "from '"+source.toString()+"' to '"+target.toString()+"'";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		attr1 = new AttributeValueImpl(source);
-		attr2 = new AttributeValueImpl(source);
-		attr2.setToDefault();		
-		attr1.cast(target);
-		assertFalse(msg,attr1.isAssigned());
-		attr2.cast(target);
-		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,target.getDefaultValue(), attr2.getValue());
-		assertException(msg, AttributeNotInitializedException.class, attr2, "getImage");  //$NON-NLS-1$
 
 		source = AttributeType.TIMESTAMP;
 		target = AttributeType.INTEGER;
@@ -3406,12 +2677,6 @@ public class AttributeValueTest extends AbstractMathTestCase {
 
 		v = AttributeValueImpl.parse("1;2;3;4;5;6;7;8");  //$NON-NLS-1$
 		assertSame(AttributeType.POLYLINE, v.getType());
-
-		v = AttributeValueImpl.parse("1;2;3;4");  //$NON-NLS-1$
-		assertSame(AttributeType.COLOR, v.getType());
-
-		v = AttributeValueImpl.parse("1;2;3");  //$NON-NLS-1$
-		assertSame(AttributeType.COLOR, v.getType());
 
 		v = AttributeValueImpl.parse("1;2;300");  //$NON-NLS-1$
 		assertSame(AttributeType.POINT3D, v.getType());

@@ -1,6 +1,0 @@
-<resources>
-
-    <string name="reset_view_done">View is reset to its defaults</string>
-    <string name="fit_view_done">Document is fitting the view</string>
-
-</resources>

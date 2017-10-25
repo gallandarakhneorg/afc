@@ -640,7 +640,7 @@
 
 		<!-- Number of paths in a code. 200 is a standard from AT&T. -->
 		<module name="NPathComplexity">
-			<property name="max" value="100" />
+			<property name="max" value="400" />
 		</module>
 
 		<!-- Array notation must follow the Java style (not the C style). -->

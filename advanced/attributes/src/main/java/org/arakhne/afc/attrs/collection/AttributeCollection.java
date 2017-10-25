@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,6 @@ import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
-import org.arakhne.afc.ui.vector.Color;
-import org.arakhne.afc.ui.vector.Image;
 
 /**
  * This interface representes an object that owns a
@@ -47,7 +45,6 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("deprecation")
 public interface AttributeCollection extends AttributeProvider {
 
 	/** Make a deep copy of this object and replies the copy.
@@ -196,28 +193,8 @@ public interface AttributeCollection extends AttributeProvider {
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
 	 * @return the changed attribute or <code>null</code>
-	 * @deprecated since 13.0
-	 */
-	@Deprecated
-	Attribute setAttribute(String name, Image value);
-
-	/** Set the value for the given attribute.
-	 *
-	 * @param name is the name of the attribute to set.
-	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
 	 */
 	Attribute setAttribute(String name, Date value);
-
-	/** Set the value for the given attribute.
-	 *
-	 * @param name is the name of the attribute to set.
-	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
-	 * @deprecated since 13.0
-	 */
-	@Deprecated
-	Attribute setAttribute(String name, Color value);
 
 	/** Set the value for the given attribute.
 	 *

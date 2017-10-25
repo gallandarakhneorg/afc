@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ package org.arakhne.afc.math.geometry.coordinatesystem;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * Represents the different kind of 3D referencials and provides the convertion utilities.
+ * Represents the different kind of 3D referencials and provides the conversion utilities.
  *
  * <p>A referencial axis is expressed by the front, left and top directions. For example <code>XYZ_LEFT_HAND</code> is for the
  * coordinate system with front direction along <code>+/-X</code> axis, left direction along the <code>+/-Y</code> axis and top

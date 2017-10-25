@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="empty_directory">Répertoire vide</string>
-    <string name="enter_filename">Nom du fichier :</string>
-    <string name="save">Enregistrer</string>
-    <string name="up_directory">Répertoire parent</string>
-</resources>

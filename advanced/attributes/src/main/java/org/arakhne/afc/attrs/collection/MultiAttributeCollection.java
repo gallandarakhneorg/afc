@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,8 +42,6 @@ import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.attrs.collection.AttributeChangeEvent.Type;
-import org.arakhne.afc.ui.vector.Color;
-import org.arakhne.afc.ui.vector.Image;
 
 /**
  * This class contains a collection of attribute providers and
@@ -74,7 +72,6 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavenartifactid $ArtifactId$
  * @since 4.0
  */
-@SuppressWarnings("deprecation")
 public class MultiAttributeCollection extends MultiAttributeProvider implements AttributeCollection {
 
 	private static final long serialVersionUID = 6542692326662357040L;
@@ -491,36 +488,8 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		}
 	}
 
-	/** {@inheritDoc}
-	 *
-	 * @deprecated since 13.0
-	 */
-	@Override
-	@Deprecated
-	public Attribute setAttribute(String name, Image value) {
-		try {
-			return setAttribute(name, new AttributeValueImpl(value));
-		} catch (AttributeException exception) {
-			return null;
-		}
-	}
-
 	@Override
 	public Attribute setAttribute(String name, Date value) {
-		try {
-			return setAttribute(name, new AttributeValueImpl(value));
-		} catch (AttributeException exception) {
-			return null;
-		}
-	}
-
-	/** {@inheritDoc}
-	 *
-	 * @deprecated since 13.0
-	 */
-	@Override
-	@Deprecated
-	public Attribute setAttribute(String name, Color value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		} catch (AttributeException exception) {
@@ -583,6 +552,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 			//
 		}
 
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void onAttributeChangeEvent(AttributeChangeEvent event) {
 			if (MultiAttributeCollection.this.runProviderEvents.get()) {

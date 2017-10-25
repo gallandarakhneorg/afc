@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,8 +36,6 @@ import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
-import org.arakhne.afc.ui.vector.Color;
-import org.arakhne.afc.ui.vector.Image;
 
 /**
  * This interface representes a provider of attributes
@@ -48,7 +46,6 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("deprecation")
 public interface AttributeProvider  extends Cloneable, Serializable {
 
 	/** Make a deep copy of this object and replies the copy.
@@ -210,33 +207,9 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @param defaultValue is the default value replied if the attribute
 	 *     has no value.
 	 * @return the value
-	 * @deprecated since 13.0
-	 */
-	@Pure
-	@Deprecated
-	Image getAttribute(String name, Image defaultValue);
-
-	/** Replies the value for the given attribute.
-	 *
-	 * @param name the name.
-	 * @param defaultValue is the default value replied if the attribute
-	 *     has no value.
-	 * @return the value
 	 */
 	@Pure
 	Date getAttribute(String name, Date defaultValue);
-
-	/** Replies the value for the given attribute.
-	 *
-	 * @param name the name.
-	 * @param defaultValue is the default value replied if the attribute
-	 *     has no value.
-	 * @return the value
-	 * @deprecated since 13.0
-	 */
-	@Pure
-	@Deprecated
-	Color getAttribute(String name, Color defaultValue);
 
 	/** Replies the value for the given attribute.
 	 *
@@ -383,31 +356,9 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @param name the name.
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
-	 * @deprecated since 13.0
-	 */
-	@Pure
-	@Deprecated
-	Image getAttributeAsImage(String name) throws AttributeException;
-
-	/** Replies the value for the given attribute.
-	 *
-	 * @param name the name.
-	 * @return the value
-	 * @throws AttributeException if the attribute was never set.
 	 */
 	@Pure
 	Date getAttributeAsDate(String name) throws AttributeException;
-
-	/** Replies the value for the given attribute.
-	 *
-	 * @param name the name.
-	 * @return the value
-	 * @throws AttributeException if the attribute was never set.
-	 * @deprecated since 13.0
-	 */
-	@Pure
-	@Deprecated
-	Color getAttributeAsColor(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
 	 *

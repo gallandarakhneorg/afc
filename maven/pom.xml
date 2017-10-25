@@ -14,7 +14,6 @@
 
 	<modules>
 		<module>maventools</module>
-		<module>atomicdeploy</module>
 		<module>tag-replacer</module>
 	</modules>
 

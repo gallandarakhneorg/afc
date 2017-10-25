@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.ui.vector.Color;
-import org.arakhne.afc.ui.vector.Image;
 
 /**
  * This class contains a metadata value.
@@ -44,7 +42,7 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"deprecation", "checkstyle:methodcount"})
+@SuppressWarnings({"checkstyle:methodcount"})
 public interface AttributeValue extends Cloneable, Serializable {
 
 	/**
@@ -351,86 +349,6 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @param y y coordinate.
 	 */
 	void setPoint(float x, float y);
-
-	/**
-	 * Replies the value of this metadata.
-	 *
-	 * @return a color
-	 * @throws InvalidAttributeTypeException when type is invalid.
-	 * @throws AttributeNotInitializedException when attribute is not initialized.
-	 * @deprecated since 13.0
-	 */
-	@Pure
-	@Deprecated
-	Color getColor() throws InvalidAttributeTypeException, AttributeNotInitializedException;
-
-	/**
-	 * Set the value of this metadata.
-	 *
-	 * @param color th ecolor.
-	 * @deprecated since 13.0
-	 */
-	@Deprecated
-	void setColor(Color color);
-
-	/**
-	 * Set the value of this metadata.
-	 *
-	 * @param red red component.
-	 * @param green green component.
-	 * @param blue blue component.
-	 */
-	void setColor(float red, float green, float blue);
-
-	/**
-	 * Set the value of this metadata.
-	 *
-	 * @param red red component.
-	 * @param green green component.
-	 * @param blue blue component.
-	 * @param alpha alpha component.
-	 */
-	void setColor(float red, float green, float blue, float alpha);
-
-	/**
-	 * Set the value of this metadata.
-	 *
-	 * @param red red component.
-	 * @param green green component.
-	 * @param blue blue component.
-	 */
-	void setColor(int red, int green, int blue);
-
-	/**
-	 * Set the value of this metadata.
-	 *
-	 * @param red red component.
-	 * @param green green component.
-	 * @param blue blue component.
-	 * @param alpha alpha component.
-	 */
-	void setColor(int red, int green, int blue, int alpha);
-
-	/**
-	 * Replies the value of this metadata.
-	 *
-	 * @return an icon
-	 * @throws InvalidAttributeTypeException when type is invalid.
-	 * @throws AttributeNotInitializedException when attribute is not initialized.
-	 * @deprecated since 13.0
-	 */
-	@Pure
-	@Deprecated
-	Image getImage() throws InvalidAttributeTypeException, AttributeNotInitializedException;
-
-	/**
-	 * Set the value of this metadata.
-	 *
-	 * @param image the image.
-	 * @deprecated since 13.0
-	 */
-	@Deprecated
-	void setImage(Image image);
 
 	/**
 	 * Replies the value of this metadata.

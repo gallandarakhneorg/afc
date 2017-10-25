@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,10 +43,6 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
-import org.arakhne.afc.ui.vector.Color;
-import org.arakhne.afc.ui.vector.Colors;
-import org.arakhne.afc.ui.vector.Image;
-import org.arakhne.afc.ui.vector.VectorToolkit;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
@@ -57,7 +53,6 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("deprecation")
 public enum AttributeType {
 
 	/** Represents an enumeration.
@@ -249,7 +244,7 @@ public enum AttributeType {
 		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
 		public boolean isAssignableFrom(AttributeType type) {
 			return type == INTEGER || type == REAL || type == TIMESTAMP || type == STRING
-					|| type == DATE || type == BOOLEAN || type == COLOR || type == ENUMERATION ||  type == OBJECT;
+					|| type == DATE || type == BOOLEAN || 	type == ENUMERATION ||  type == OBJECT;
 		}
 	},
 
@@ -297,7 +292,7 @@ public enum AttributeType {
 		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
 		public boolean isAssignableFrom(AttributeType type) {
 			return type == INTEGER || type == REAL || type == TIMESTAMP || type == STRING
-					|| type == DATE || type == BOOLEAN || type == COLOR || type == ENUMERATION ||  type == OBJECT;
+					|| type == DATE || type == BOOLEAN || type == ENUMERATION ||  type == OBJECT;
 		}
 	},
 
@@ -464,53 +459,6 @@ public enum AttributeType {
 		@Override
 		public boolean isAssignableFrom(AttributeType type) {
 			return type == INET_ADDRESS || type == STRING || type == URL || type == URI  || type == OBJECT;
-		}
-	},
-
-	/** Represents a color value.
-	 * @deprecated No replacement
-	 */
-	@Deprecated
-	COLOR {
-		@Override
-		public Object getDefaultValue() {
-			return Colors.BLACK;
-		}
-
-		@Override
-		public Object cast(Object obj) {
-			if (obj == null) {
-				throw new NullPointerException();
-			}
-			if (obj instanceof NullAttribute) {
-				return null;
-			}
-			if (obj instanceof Number) {
-				return VectorToolkit.color(((Number) obj).intValue());
-			}
-			return Color.class.cast(obj);
-		}
-
-		@Override
-		public boolean isNumberType() {
-			return false;
-		}
-
-		@Override
-		public boolean isNullAllowed() {
-			return false;
-		}
-
-		@Override
-		public boolean isBaseType() {
-			return false;
-		}
-
-		@Override
-		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
-		public boolean isAssignableFrom(AttributeType type) {
-			return type == COLOR || type == POINT || type == POINT3D || type == STRING || type == INTEGER
-					|| type == REAL || type == TIMESTAMP || type == DATE || type == OBJECT;
 		}
 	},
 
@@ -683,7 +631,7 @@ public enum AttributeType {
 		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
 		public boolean isAssignableFrom(AttributeType type) {
 			return type == INTEGER || type == REAL || type == TIMESTAMP || type == STRING || type == DATE
-					|| type == BOOLEAN || type == COLOR || type == OBJECT;
+					|| type == BOOLEAN || type == OBJECT;
 		}
 	},
 
@@ -727,7 +675,7 @@ public enum AttributeType {
 		@Override
 		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
 		public boolean isAssignableFrom(AttributeType type) {
-			return type == POINT || type == POINT3D || type == COLOR || type == REAL || type == INTEGER
+			return type == POINT || type == POINT3D || type == REAL || type == INTEGER
 					|| type == TIMESTAMP || type == DATE || type == STRING || type == OBJECT;
 		}
 	},
@@ -772,7 +720,7 @@ public enum AttributeType {
 		@Override
 		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
 		public boolean isAssignableFrom(AttributeType type) {
-			return type == POINT || type == POINT3D || type == COLOR || type == REAL || type == INTEGER
+			return type == POINT || type == POINT3D || type == REAL || type == INTEGER
 					|| type == TIMESTAMP || type == DATE || type == STRING || type == OBJECT;
 		}
 	},
@@ -878,45 +826,6 @@ public enum AttributeType {
 		@Override
 		public boolean isAssignableFrom(AttributeType type) {
 			return type == POLYLINE || type == POLYLINE3D || type == POINT || type == POINT3D || type == STRING || type == OBJECT;
-		}
-	},
-
-	/** Represents an image value.
-	 * @deprecated No replacement
-	 */
-	@Deprecated
-	IMAGE {
-		@Override
-		public Object getDefaultValue() {
-			return null;
-		}
-
-		@Override
-		public Object cast(Object obj) {
-			if (obj == null || obj instanceof NullAttribute) {
-				return null;
-			}
-			return Image.class.cast(obj);
-		}
-
-		@Override
-		public boolean isNumberType() {
-			return false;
-		}
-
-		@Override
-		public boolean isNullAllowed() {
-			return true;
-		}
-
-		@Override
-		public boolean isBaseType() {
-			return false;
-		}
-
-		@Override
-		public boolean isAssignableFrom(AttributeType type) {
-			return type == IMAGE || type == OBJECT;
 		}
 	},
 
@@ -1161,19 +1070,9 @@ public enum AttributeType {
 			if (Tuple3D.class.isAssignableFrom(type)) {
 				return POINT3D;
 			}
-			if (org.arakhne.afc.math.generic.Tuple3D.class.isAssignableFrom(type)) {
-				return POINT3D;
-			}
 
 			if (Tuple2D.class.isAssignableFrom(type)) {
 				return POINT;
-			}
-			if (org.arakhne.afc.math.generic.Tuple2D.class.isAssignableFrom(type)) {
-				return POINT;
-			}
-
-			if (Color.class.isAssignableFrom(type)) {
-				return COLOR;
 			}
 
 			if (UUID.class.isAssignableFrom(type)) {
@@ -1188,10 +1087,6 @@ public enum AttributeType {
 				return URI;
 			}
 
-			if (Image.class.isAssignableFrom(type)) {
-				return IMAGE;
-			}
-
 			if (InetAddress.class.isAssignableFrom(type)) {
 				return INET_ADDRESS;
 			}
@@ -1204,13 +1099,7 @@ public enum AttributeType {
 				if (Point2D.class.isAssignableFrom(elementType)) {
 					return POLYLINE;
 				}
-				if (org.arakhne.afc.math.generic.Point2D.class.isAssignableFrom(elementType)) {
-					return POLYLINE;
-				}
 				if (Point3D.class.isAssignableFrom(elementType)) {
-					return POLYLINE3D;
-				}
-				if (org.arakhne.afc.math.generic.Point3D.class.isAssignableFrom(elementType)) {
 					return POLYLINE3D;
 				}
 			}

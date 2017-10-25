@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +37,6 @@ import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.NullAttribute;
-import org.arakhne.afc.ui.vector.Color;
-import org.arakhne.afc.ui.vector.Image;
 
 /**
  * This class implements an abstract attribute provider.
@@ -48,7 +46,6 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("deprecation")
 public abstract class AbstractAttributeProvider implements AttributeProvider, Iterable<Attribute> {
 
 	private static final long serialVersionUID = 1219373996718945571L;
@@ -215,20 +212,6 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getURI();
 	}
 
-	/** {@inheritDoc}
-	 * @deprecated since 13.0
-	 */
-	@Pure
-	@Deprecated
-	@Override
-	public Image getAttributeAsImage(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
-		if (value == null) {
-			throw new NoAttributeFoundException(name);
-		}
-		return value.getImage();
-	}
-
 	@Pure
 	@Override
 	public Date getAttributeAsDate(String name) throws AttributeException {
@@ -237,20 +220,6 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			throw new NoAttributeFoundException(name);
 		}
 		return value.getDate();
-	}
-
-	/** {@inheritDoc}
-	 * @deprecated 13.0
-	 */
-	@Pure
-	@Deprecated
-	@Override
-	public Color getAttributeAsColor(String name) throws AttributeException {
-		final AttributeValue value = getAttribute(name);
-		if (value == null) {
-			throw new NoAttributeFoundException(name);
-		}
-		return value.getColor();
 	}
 
 	@Pure
@@ -419,24 +388,6 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
-	/** {@inheritDoc}
-	 * @deprecated 13.0
-	 */
-	@Pure
-	@Deprecated
-	@Override
-	public Image getAttribute(String name, Image defaultValue) {
-		final AttributeValue value = getAttribute(name);
-		if (value != null) {
-			try {
-				return value.getImage();
-			} catch (AttributeException exception) {
-				//
-			}
-		}
-		return defaultValue;
-	}
-
 	@Pure
 	@Override
 	public Date getAttribute(String name, Date defaultValue) {
@@ -444,24 +395,6 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		if (value != null) {
 			try {
 				return value.getDate();
-			} catch (AttributeException exception) {
-				//
-			}
-		}
-		return defaultValue;
-	}
-
-	/** {@inheritDoc}
-	 * @deprecated 13.0
-	 */
-	@Pure
-	@Deprecated
-	@Override
-	public Color getAttribute(String name, Color defaultValue) {
-		final AttributeValue value = getAttribute(name);
-		if (value != null) {
-			try {
-				return value.getColor();
 			} catch (AttributeException exception) {
 				//
 			}

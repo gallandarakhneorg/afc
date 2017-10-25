@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.ui.vector.Color;
-import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /**
@@ -45,7 +43,6 @@ import org.arakhne.afc.vmutil.ReflectionUtil;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("deprecation")
 public class AttributeImpl extends AttributeValueImpl implements Attribute {
 
 	private static final long serialVersionUID = -3805997544158892016L;
@@ -134,17 +131,6 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	/**
 	 * @param name is the name of the attribute
 	 * @param value is the vaule of this new attribute.
-	 * @deprecated No replacement
-	 */
-	@Deprecated
-	public AttributeImpl(String name, Color value) {
-		super(value);
-		this.name = name;
-	}
-
-	/**
-	 * @param name is the name of the attribute
-	 * @param value is the vaule of this new attribute.
 	 */
 	public AttributeImpl(String name, Date value) {
 		super(value);
@@ -165,17 +151,6 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * @param value is the vaule of this new attribute.
 	 */
 	public AttributeImpl(String name, double value) {
-		super(value);
-		this.name = name;
-	}
-
-	/**
-	 * @param name is the name of the attribute
-	 * @param value is the vaule of this new attribute.
-	 * @deprecated No replacement
-	 */
-	@Deprecated
-	public AttributeImpl(String name, Image value) {
 		super(value);
 		this.name = name;
 	}

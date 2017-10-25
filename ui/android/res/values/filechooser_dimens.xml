@@ -1,4 +1,0 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-	<dimen name="fileChooserListPadding">0dp</dimen>
-	<dimen name="fileChooserListItemPadding">6dp</dimen>
-</resources>

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -237,14 +237,8 @@ public class MultiAttributeProviderTest extends AbstractTestCase {
 		assertEpsilonEquals(Arrays.asList(
 				makeUninitialized("A", AttributeType.BOOLEAN)  //$NON-NLS-1$
 		), attrs);
-		
-		attrs = attrsbytype.get(AttributeType.COLOR);
-		assertNull(attrs);
 
 		attrs = attrsbytype.get(AttributeType.DATE);
-		assertNull(attrs);
-
-		attrs = attrsbytype.get(AttributeType.IMAGE);
 		assertNull(attrs);
 
 		attrs = attrsbytype.get(AttributeType.INTEGER);

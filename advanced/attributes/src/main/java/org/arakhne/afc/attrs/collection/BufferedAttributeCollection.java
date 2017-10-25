@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,8 +40,6 @@ import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.references.SoftValueTreeMap;
-import org.arakhne.afc.ui.vector.Color;
-import org.arakhne.afc.ui.vector.Image;
 
 /**
  * This class implements an abstract attribute provider that use
@@ -52,7 +50,6 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("deprecation")
 public abstract class BufferedAttributeCollection extends AbstractAttributeCollection {
 
 	private static final long serialVersionUID = 1865614675044905721L;
@@ -372,38 +369,10 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @deprecated since 13.0
-	 */
-	@Override
-	@Deprecated
-	public Attribute setAttribute(String name, Image value) {
-		try {
-			return setAttributeFromRawValue(name, AttributeType.IMAGE, value);
-		} catch (AttributeException exception) {
-			return null;
-		}
-	}
-
 	@Override
 	public Attribute setAttribute(String name, Date value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.DATE, value);
-		} catch (AttributeException exception) {
-			return null;
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @deprecated since 13.0
-	 */
-	@Override
-	@Deprecated
-	public Attribute setAttribute(String name, Color value) {
-		try {
-			return setAttributeFromRawValue(name, AttributeType.COLOR, value);
 		} catch (AttributeException exception) {
 			return null;
 		}

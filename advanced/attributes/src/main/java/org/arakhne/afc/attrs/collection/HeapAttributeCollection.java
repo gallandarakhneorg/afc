@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,8 +45,6 @@ import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.attrs.attr.InvalidAttributeTypeException;
-import org.arakhne.afc.ui.vector.Color;
-import org.arakhne.afc.ui.vector.Image;
 
 /**
  * This class implements an attribute provider which
@@ -57,7 +55,6 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("deprecation")
 public class HeapAttributeCollection extends AbstractAttributeCollection {
 
 	private static final long serialVersionUID = 4362736589775617590L;
@@ -555,34 +552,6 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return attr;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * @deprecated since 13.0
-	 */
-	@Override
-	@Deprecated
-	public Attribute setAttribute(String name, Image value) {
-		assert name != null;
-
-		final AttributeValue oldValue = copyValue(name);
-
-		if (oldValue != null && oldValue.equals(value)) {
-			return null;
-		}
-
-		this.heap.put(name, protectNull(value, AttributeType.IMAGE));
-
-		final Attribute attr = new AttributeImpl(name, value);
-
-		if (oldValue != null) {
-			fireAttributeChangedEvent(name, oldValue, attr);
-		} else {
-			fireAttributeAddedEvent(name, attr);
-		}
-
-		return attr;
-	}
-
 	@Override
 	public Attribute setAttribute(String name, Date value) {
 		assert name != null;
@@ -594,35 +563,6 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		}
 
 		final Object rv = (value == null) ? AttributeType.DATE.getDefaultValue() : value;
-		this.heap.put(name, rv);
-
-		final Attribute attr = new AttributeImpl(name, rv);
-
-		if (oldValue != null) {
-			fireAttributeChangedEvent(name, oldValue, attr);
-		} else {
-			fireAttributeAddedEvent(name, attr);
-		}
-
-		return attr;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @deprecated since 13.0
-	 */
-	@Override
-	@Deprecated
-	public Attribute setAttribute(String name, Color value) {
-		assert name != null;
-
-		final AttributeValue oldValue = copyValue(name);
-
-		if (oldValue != null && oldValue.equals(value)) {
-			return null;
-		}
-
-		final Object rv = (value == null) ? AttributeType.COLOR.getDefaultValue() : value;
 		this.heap.put(name, rv);
 
 		final Attribute attr = new AttributeImpl(name, rv);

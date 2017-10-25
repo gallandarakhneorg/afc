@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -71,7 +72,6 @@ import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import org.arakhne.afc.text.Base64Coder;
 import org.arakhne.afc.vmutil.ClassLoaderFinder;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -1651,7 +1651,7 @@ public final class XMLUtil {
 	@Pure
 	public static Object parseObject(String xmlSerializedObject) throws IOException, ClassNotFoundException {
 		assert xmlSerializedObject != null : AssertMessages.notNullParameter(0);
-		try (ByteArrayInputStream bais = new ByteArrayInputStream(Base64Coder.decode(xmlSerializedObject))) {
+		try (ByteArrayInputStream bais = new ByteArrayInputStream(Base64.getDecoder().decode(xmlSerializedObject))) {
 			final ObjectInputStream ois = new ObjectInputStream(bais);
 			return ois.readObject();
 		}
@@ -1665,7 +1665,7 @@ public final class XMLUtil {
 	 */
 	@Pure
 	public static byte[] parseString(String text) {
-		return Base64Coder.decode(text);
+		return Base64.getDecoder().decode(text);
 	}
 
 	/** Parse a string representation of an XML document.
@@ -1964,7 +1964,7 @@ public final class XMLUtil {
 	@Pure
 	public static String toString(byte[] array) {
 		assert array != null : AssertMessages.notNullParameter(0);
-		return new String(Base64Coder.encode(array));
+		return new String(Base64.getEncoder().encode(array));
 	}
 
 	/**
@@ -2012,7 +2012,7 @@ public final class XMLUtil {
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 			final ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(object);
-			return new String(Base64Coder.encode(baos.toByteArray()));
+			return new String(Base64.getEncoder().encode(baos.toByteArray()));
 		}
 	}
 

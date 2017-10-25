@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2016 The original authors, and other authors.
+ * Copyright (c) 2013-2018 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,9 +60,6 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
-import org.arakhne.afc.ui.vector.Color;
-import org.arakhne.afc.ui.vector.Image;
-import org.arakhne.afc.ui.vector.VectorToolkit;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /**
@@ -73,7 +70,7 @@ import org.arakhne.afc.vmutil.ReflectionUtil;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"deprecation", "checkstyle:methodcount"})
+@SuppressWarnings({"checkstyle:methodcount"})
 public class AttributeValueImpl implements AttributeValue {
 
 	private static final long serialVersionUID = 4014368008512085546L;
@@ -158,18 +155,6 @@ public class AttributeValueImpl implements AttributeValue {
 		this.type = AttributeType.BOOLEAN;
 		this.value = new Boolean(value);
 		this.assigned = true;
-	}
-
-	/**
-	 * @param value is the value.
-	 * @deprecated No replacement
-	 */
-	@Deprecated
-	public AttributeValueImpl(Color value) {
-		this.type = AttributeType.COLOR;
-		this.value = (value != null) ? VectorToolkit.color(value.getRed(), value.getGreen(),
-				value.getBlue(), value.getAlpha()) : null;
-		this.assigned = this.value != null;
 	}
 
 	/**
@@ -268,17 +253,6 @@ public class AttributeValueImpl implements AttributeValue {
 	public AttributeValueImpl(double value) {
 		this.type = AttributeType.REAL;
 		this.value = new Double(value);
-		this.assigned = true;
-	}
-
-	/**
-	 * @param value is the value.
-	 * @deprecated no replacement.
-	 */
-	@Deprecated
-	public AttributeValueImpl(Image value) {
-		this.type = AttributeType.IMAGE;
-		this.value = value;
 		this.assigned = true;
 	}
 
@@ -416,17 +390,11 @@ public class AttributeValueImpl implements AttributeValue {
 					case BOOLEAN:
 						binValue = value.getBoolean();
 						break;
-					case COLOR:
-						binValue = parseColor((String) value.value, true);
-						break;
 					case DATE:
 						binValue = value.getDate();
 						break;
 					case ENUMERATION:
 						binValue = value.getEnumeration();
-						break;
-					case IMAGE:
-						binValue = value.getImage();
 						break;
 					case INET_ADDRESS:
 						binValue = value.getInetAddress();
@@ -695,14 +663,8 @@ public class AttributeValueImpl implements AttributeValue {
 			case POINT3D:
 				this.value = getPoint3D();
 				break;
-			case COLOR:
-				this.value = getColor();
-				break;
 			case UUID:
 				this.value = getUUID();
-				break;
-			case IMAGE:
-				this.value = getImage();
 				break;
 			case POLYLINE:
 				this.value = getPolyline();
@@ -792,14 +754,10 @@ public class AttributeValueImpl implements AttributeValue {
 		switch (this.type) {
 		case BOOLEAN:
 			return Boolean.class;
-		case COLOR:
-			return Color.class;
 		case DATE:
 			return Date.class;
 		case ENUMERATION:
 			return Enum.class;
-		case IMAGE:
-			return Image.class;
 		case INET_ADDRESS:
 			return InetAddress.class;
 		case INTEGER:
@@ -914,8 +872,6 @@ public class AttributeValueImpl implements AttributeValue {
 				return ((Date) this.value).getTime();
 			case BOOLEAN:
 				return ((Boolean) this.value).booleanValue() ? 1 : 0;
-			case COLOR:
-				return ((Color) this.value).getRGB();
 			case OBJECT:
 				if (this.value instanceof Number) {
 					return ((Number) this.value).longValue();
@@ -926,7 +882,6 @@ public class AttributeValueImpl implements AttributeValue {
 					return ((Enum<?>) this.value).ordinal();
 				}
 				break;
-			case IMAGE:
 			case POINT:
 			case POINT3D:
 			case POLYLINE:
@@ -979,8 +934,6 @@ public class AttributeValueImpl implements AttributeValue {
 				return ((Date) this.value).getTime();
 			case BOOLEAN:
 				return ((Boolean) this.value).booleanValue() ? 1. : 0.;
-			case COLOR:
-				return ((Color) this.value).getRGB();
 			case OBJECT:
 				if (this.value instanceof Number) {
 					return ((Number) this.value).doubleValue();
@@ -991,7 +944,6 @@ public class AttributeValueImpl implements AttributeValue {
 					return ((Enum<?>) this.value).ordinal();
 				}
 				break;
-			case IMAGE:
 			case POINT:
 			case POINT3D:
 			case POLYLINE:
@@ -1028,12 +980,6 @@ public class AttributeValueImpl implements AttributeValue {
 				return (String) this.value;
 			case BOOLEAN:
 				return ((Boolean) this.value).toString();
-			case COLOR:
-				final Color col = (Color) this.value;
-				return Integer.toString(col.getRed())
-						+ ';' + col.getGreen()
-						+ ';' + col.getBlue()
-						+ ';' + col.getAlpha();
 			case UUID:
 				final UUID uuid = (UUID) this.value;
 				return uuid.toString();
@@ -1067,8 +1013,6 @@ public class AttributeValueImpl implements AttributeValue {
 				return ((Class<?>) this.value).getCanonicalName();
 			case INET_ADDRESS:
 			case OBJECT:
-			case IMAGE:
-				return this.value.toString();
 			default:
 				throw new InvalidAttributeTypeException();
 			}
@@ -1202,8 +1146,6 @@ public class AttributeValueImpl implements AttributeValue {
 			case OBJECT:
 				return getDateFromObject();
 			case BOOLEAN:
-			case COLOR:
-			case IMAGE:
 			case POINT:
 			case POINT3D:
 			case POLYLINE:
@@ -1294,9 +1236,7 @@ public class AttributeValueImpl implements AttributeValue {
 					return ((Boolean) this.value).booleanValue();
 				}
 				break;
-			case COLOR:
 			case DATE:
-			case IMAGE:
 			case POINT:
 			case POINT3D:
 			case POLYLINE:
@@ -1412,11 +1352,8 @@ public class AttributeValueImpl implements AttributeValue {
 				return ((Date) this.value).getTime();
 			case BOOLEAN:
 				return ((Boolean) this.value).booleanValue() ? 1 : 0;
-			case COLOR:
-				return ((Color) this.value).getRGB();
 			case OBJECT:
 				return getTimestampFromObject();
-			case IMAGE:
 			case POINT:
 			case POINT3D:
 			case POLYLINE:
@@ -1480,9 +1417,6 @@ public class AttributeValueImpl implements AttributeValue {
 		try {
 			assertAssignedAndNotNull();
 			switch (this.type) {
-			case COLOR:
-				final Color col = (Color) this.value;
-				return new Point3d(col.getRed(), col.getGreen(), col.getBlue());
 			case REAL:
 				final Double flt = (Double) this.value;
 				return new Point3d(flt.doubleValue(), 0, 0);
@@ -1505,7 +1439,6 @@ public class AttributeValueImpl implements AttributeValue {
 			case OBJECT:
 				return getPoint3DFromObject();
 			case BOOLEAN:
-			case IMAGE:
 			case POLYLINE:
 			case POLYLINE3D:
 			case URI:
@@ -1578,9 +1511,6 @@ public class AttributeValueImpl implements AttributeValue {
 		try {
 			assertAssignedAndNotNull();
 			switch (this.type) {
-			case COLOR:
-				final Color col = (Color) this.value;
-				return new Point2d(col.getRed(), col.getGreen());
 			case REAL:
 				final Double flt = (Double) this.value;
 				return new Point2d(flt.doubleValue(), 0);
@@ -1604,7 +1534,6 @@ public class AttributeValueImpl implements AttributeValue {
 			case OBJECT:
 				return getPointFromObject();
 			case BOOLEAN:
-			case IMAGE:
 			case POLYLINE:
 			case POLYLINE3D:
 			case URI:
@@ -1644,138 +1573,6 @@ public class AttributeValueImpl implements AttributeValue {
 	public void setPoint(float x, float y) {
 		this.value = new Point2d(x, y);
 		this.type = AttributeType.POINT;
-		this.assigned = true;
-	}
-
-	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity",
-			"checkstyle:booleanexpressioncomplexity"})
-	private static Color parseColor(String text, boolean isStrict) {
-		final String[] comp = text.split(";"); //$NON-NLS-1$
-		if (isStrict && comp.length != 3 && comp.length != 4) {
-			return null;
-		}
-		int red = 0;
-		int green = 0;
-		int blue = 0;
-		int alpha = 255;
-		if (comp.length > 0) {
-			red = Integer.parseInt(comp[0]);
-		}
-		if (comp.length > 1) {
-			green = Integer.parseInt(comp[1]);
-		}
-		if (comp.length > 2) {
-			blue = Integer.parseInt(comp[2]);
-		}
-		if (comp.length > 3) {
-			alpha = Integer.parseInt(comp[3]);
-		}
-		if ((red < 256) && (red >= 0) && (green < 256) && (green >= 0) && (blue < 256) && (blue >= 0)
-				&& (alpha < 256) && (alpha >= 0)) {
-			return VectorToolkit.color(red, green, blue, alpha);
-		}
-		return null;
-	}
-
-	@Pure
-	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
-	public Color getColor() throws InvalidAttributeTypeException, AttributeNotInitializedException {
-		try {
-			assertAssignedAndNotNull();
-			switch (this.type) {
-			case COLOR:
-				final Color col = (Color) this.value;
-				return VectorToolkit.color(col.getRed(), col.getGreen(), col.getBlue(), col.getAlpha());
-			case POINT:
-				final Point2D<?, ?> pt2 = (Point2D<?, ?>) this.value;
-				return VectorToolkit.color((float) pt2.getX(), (float) pt2.getY(), 0, 1);
-			case POINT3D:
-				final Point3D<?, ?> pt3 = (Point3D<?, ?>) this.value;
-				return VectorToolkit.color((float) pt3.getX(), (float) pt3.getY(), (float) pt3.getZ(), 1);
-			case STRING:
-				final Color color = parseColor((String) this.value, false);
-				if (color != null) {
-					return color;
-				}
-				break;
-			case INTEGER:
-				return VectorToolkit.color(((Long) this.value).intValue());
-			case TIMESTAMP:
-				return VectorToolkit.color(((Timestamp) this.value).intValue());
-			case REAL:
-				return VectorToolkit.color(((Double) this.value).intValue());
-			case DATE:
-				return VectorToolkit.color((int) ((Date) this.value).getTime());
-			case OBJECT:
-				return getColorFromObject();
-			case BOOLEAN:
-			case IMAGE:
-			case POLYLINE:
-			case POLYLINE3D:
-			case URI:
-			case URL:
-			case UUID:
-			case INET_ADDRESS:
-			case ENUMERATION:
-			case TYPE:
-			default:
-			}
-		} catch (ClassCastException | NumberFormatException exception) {
-			//
-		}
-		throw new InvalidAttributeTypeException();
-	}
-
-	private Color getColorFromObject() throws InvalidAttributeTypeException {
-		if (this.value instanceof Color) {
-			return (Color) this.value;
-		}
-		if (this.value instanceof Number) {
-			return VectorToolkit.color(((Number) this.value).intValue());
-		}
-		if (this.value instanceof Date) {
-			return VectorToolkit.color((int) ((Date) this.value).getTime());
-		}
-		if (this.value instanceof Calendar) {
-			return VectorToolkit.color((int) ((Calendar) this.value).getTimeInMillis());
-		}
-		throw new InvalidAttributeTypeException();
-	}
-
-	@Override
-	public void setColor(Color color) {
-		this.value = color;
-		this.type = AttributeType.COLOR;
-		this.assigned = this.value != null;
-	}
-
-	@Override
-	public void setColor(float red, float green, float blue) {
-		this.value = VectorToolkit.color(red, green, blue, 1);
-		this.type = AttributeType.COLOR;
-		this.assigned = true;
-	}
-
-	@Override
-	public void setColor(float red, float green, float blue, float alpha) {
-		this.value = VectorToolkit.color(red, green, blue, alpha);
-		this.type = AttributeType.COLOR;
-		this.assigned = true;
-	}
-
-	@Override
-	@SuppressWarnings("checkstyle:magicnumber")
-	public void setColor(int red, int green, int blue) {
-		this.value = VectorToolkit.color(red, green, blue, 255);
-		this.type = AttributeType.COLOR;
-		this.assigned = true;
-	}
-
-	@Override
-	public void setColor(int red, int green, int blue, int alpha) {
-		this.value = VectorToolkit.color(red, green, blue, alpha);
-		this.type = AttributeType.COLOR;
 		this.assigned = true;
 	}
 
@@ -1827,9 +1624,7 @@ public class AttributeValueImpl implements AttributeValue {
 				return getUUIDFromObject();
 			case STRING:
 			case BOOLEAN:
-			case COLOR:
 			case DATE:
-			case IMAGE:
 			case INTEGER:
 			case POINT:
 			case POINT3D:
@@ -1895,9 +1690,7 @@ public class AttributeValueImpl implements AttributeValue {
 				return new URL(DEFAULT_SCHEME.name(), ((InetAddress) this.value).getHostAddress(), ""); //$NON-NLS-1$
 			case UUID:
 			case BOOLEAN:
-			case COLOR:
 			case DATE:
-			case IMAGE:
 			case INTEGER:
 			case POINT:
 			case POINT3D:
@@ -1969,9 +1762,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case INET_ADDRESS:
 				return new URI(DEFAULT_SCHEME.name(), ((InetAddress) this.value).getHostAddress(), ""); //$NON-NLS-1$
 			case BOOLEAN:
-			case COLOR:
 			case DATE:
-			case IMAGE:
 			case INTEGER:
 			case POINT:
 			case POINT3D:
@@ -2080,54 +1871,6 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	@Pure
-	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
-			"checkstyle:npathcomplexity"})
-	public Image getImage() throws InvalidAttributeTypeException, AttributeNotInitializedException {
-		try {
-			assertAssigned();
-			switch (this.type) {
-			case IMAGE:
-				assertAssignedAndNotNull();
-				return (Image) this.value;
-			case OBJECT:
-				if ((this.value == null) || (this.value instanceof Image)) {
-					return (Image) this.value;
-				}
-				break;
-			case BOOLEAN:
-			case COLOR:
-			case DATE:
-			case INTEGER:
-			case POINT:
-			case POINT3D:
-			case POLYLINE:
-			case POLYLINE3D:
-			case REAL:
-			case STRING:
-			case TIMESTAMP:
-			case URI:
-			case URL:
-			case UUID:
-			case INET_ADDRESS:
-			case ENUMERATION:
-			case TYPE:
-			default:
-			}
-		} catch (ClassCastException exception) {
-			//
-		}
-		throw new InvalidAttributeTypeException();
-	}
-
-	@Override
-	public void setImage(Image image) {
-		this.value = image;
-		this.type = AttributeType.IMAGE;
-		this.assigned = true;
-	}
-
 	private static Point3D<?, ?>[] parsePolyline3D(String text, boolean isStrict) {
 		final String[] comp = text.split(";"); //$NON-NLS-1$
 		if (isStrict && (comp.length % 3) != 0) {
@@ -2177,9 +1920,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case OBJECT:
 				return getPolyline3DFromObject();
 			case BOOLEAN:
-			case COLOR:
 			case DATE:
-			case IMAGE:
 			case INTEGER:
 			case REAL:
 			case TIMESTAMP:
@@ -2343,9 +2084,7 @@ public class AttributeValueImpl implements AttributeValue {
 			case OBJECT:
 				return getPoint2DFromPolyline();
 			case BOOLEAN:
-			case COLOR:
 			case DATE:
-			case IMAGE:
 			case INTEGER:
 			case REAL:
 			case TIMESTAMP:
@@ -2483,7 +2222,6 @@ public class AttributeValueImpl implements AttributeValue {
 			case URL:
 				final URL url = (URL) this.value;
 				return InetAddress.getByName(url.getHost());
-			case COLOR:
 			case POINT:
 			case POINT3D:
 			case INTEGER:
@@ -2491,7 +2229,6 @@ public class AttributeValueImpl implements AttributeValue {
 			case REAL:
 			case DATE:
 			case BOOLEAN:
-			case IMAGE:
 			case POLYLINE:
 			case POLYLINE3D:
 			case UUID:
@@ -2574,13 +2311,11 @@ public class AttributeValueImpl implements AttributeValue {
 			case INTEGER:
 				break;
 			case INET_ADDRESS:
-			case COLOR:
 			case POINT:
 			case POINT3D:
 			case TIMESTAMP:
 			case DATE:
 			case BOOLEAN:
-			case IMAGE:
 			case POLYLINE:
 			case POLYLINE3D:
 			case URI:
@@ -2619,13 +2354,11 @@ public class AttributeValueImpl implements AttributeValue {
 			case INTEGER:
 				break;
 			case INET_ADDRESS:
-			case COLOR:
 			case POINT:
 			case POINT3D:
 			case TIMESTAMP:
 			case DATE:
 			case BOOLEAN:
-			case IMAGE:
 			case POLYLINE:
 			case POLYLINE3D:
 			case URI:
@@ -2689,13 +2422,11 @@ public class AttributeValueImpl implements AttributeValue {
 			case REAL:
 			case INTEGER:
 			case INET_ADDRESS:
-			case COLOR:
 			case POINT:
 			case POINT3D:
 			case TIMESTAMP:
 			case DATE:
 			case BOOLEAN:
-			case IMAGE:
 			case POLYLINE:
 			case POLYLINE3D:
 			case URI:

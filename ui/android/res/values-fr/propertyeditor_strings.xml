@@ -1,9 +1,0 @@
-<resources>
-
-    <string name="property_dialog_title">Propriétés</string>
-    <string name="undo_property_edition">l\'édition de propriétés</string>
-    
-    <string name="property_label_name">Nom</string>
-    <string name="property_label_text">Texte</string>
-
-</resources>
