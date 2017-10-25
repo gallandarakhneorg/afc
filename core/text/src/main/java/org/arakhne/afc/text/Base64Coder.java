@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.text;
 
+import java.util.Base64;
+
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -32,7 +34,9 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated {@link Base64}
  */
+@Deprecated
 public final class Base64Coder {
 
 	// Mapping table from 6-bit nibbles to Base64 characters.
