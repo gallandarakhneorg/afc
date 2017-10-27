@@ -108,6 +108,21 @@ public class Point2dfx extends Tuple2dfx<Point2dfx> implements Point2D<Point2dfx
 		super(x, y);
 	}
 
+	/** Convert the given tuple to a real Point2dfx.
+	 *
+	 * <p>If the given tuple is already a Point2dfx, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Point2dfx.
+	 * @since 14.0
+	 */
+	public static Point2dfx convert(Tuple2D<?> tuple) {
+		if (tuple instanceof Point2dfx) {
+			return (Point2dfx) tuple;
+		}
+		return new Point2dfx(tuple.getX(), tuple.getY());
+	}
+
 	@Override
 	public GeomFactory2dfx getGeomFactory() {
 		return GeomFactory2dfx.SINGLETON;

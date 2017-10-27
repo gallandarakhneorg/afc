@@ -137,6 +137,14 @@ public interface Path2D<
 	void moveTo(Point2D<?, ?> position);
 
 	/**
+	 * Adds a point to the path by moving to the specified
+	 * coordinates specified in double precision.
+	 *
+	 * @param position the new position.
+	 */
+	void moveToIfFar(Point2D<?, ?> position);
+
+	/**
 	 * Adds a point to the path by drawing a straight line from the
 	 * current coordinates to the new specified coordinates
 	 * specified in double precision.

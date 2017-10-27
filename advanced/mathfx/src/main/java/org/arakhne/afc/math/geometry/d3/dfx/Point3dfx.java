@@ -114,6 +114,21 @@ public class Point3dfx extends Tuple3dfx<Point3dfx> implements Point3D<Point3dfx
 		super(x, y, z);
 	}
 
+	/** Convert the given tuple to a real Point3dfx.
+	 *
+	 * <p>If the given tuple is already a Point3dfx, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Point3dfx.
+	 * @since 14.0
+	 */
+	public static Point3dfx convert(Tuple3D<?> tuple) {
+		if (tuple instanceof Point3dfx) {
+			return (Point3dfx) tuple;
+		}
+		return new Point3dfx(tuple.getX(), tuple.getY(), tuple.getZ());
+	}
+
 	@Override
 	public GeomFactory3dfx getGeomFactory() {
 		return GeomFactory3dfx.SINGLETON;

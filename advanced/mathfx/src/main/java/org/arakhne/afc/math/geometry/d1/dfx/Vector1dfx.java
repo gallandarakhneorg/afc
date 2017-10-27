@@ -145,6 +145,21 @@ public class Vector1dfx extends Tuple1dfx<Vector1dfx> implements Vector1D<Vector
 		super(segment, x, y);
 	}
 
+	/** Convert the given tuple to a real Vector1dfx.
+	 *
+	 * <p>If the given tuple is already a Vector1dfx, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Vector1dfx.
+	 * @since 14.0
+	 */
+	public static Vector1dfx convert(Tuple1dfx<?> tuple) {
+		if (tuple instanceof Vector1dfx) {
+			return (Vector1dfx) tuple;
+		}
+		return new Vector1dfx(tuple.getSegment(), tuple.getX(), tuple.getY());
+	}
+
 	@Override
 	public UnmodifiableVector1D<Vector1dfx, Point1dfx, Segment1D<?, ?>> toUnmodifiable() {
 		return new UnmodifiableVector1D<Vector1dfx, Point1dfx, Segment1D<?, ?>>() {

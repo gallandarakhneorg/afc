@@ -106,6 +106,21 @@ public class Point3i extends Tuple3i<Point3i> implements Point3D<Point3i, Vector
 		super(x, y, z);
 	}
 
+	/** Convert the given tuple to a real Point2i.
+	 *
+	 * <p>If the given tuple is already a Point2i, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Point2i.
+	 * @since 14.0
+	 */
+	public static Point3i convert(Tuple3D<?> tuple) {
+		if (tuple instanceof Point3i) {
+			return (Point3i) tuple;
+		}
+		return new Point3i(tuple.getX(), tuple.getY(), tuple.getZ());
+	}
+
 	@Pure
 	@Override
 	public double getDistanceSquared(Point3D<?, ?> point) {

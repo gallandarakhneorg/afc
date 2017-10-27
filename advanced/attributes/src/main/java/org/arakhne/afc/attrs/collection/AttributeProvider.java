@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -414,7 +415,11 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the map, never <code>null</code>.
 	 */
 	@Pure
-	Map<String, Object> toMap();
+	default Map<String, Object> toMap() {
+		final Map<String, Object> map = new TreeMap<>();
+		toMap(map);
+		return map;
+	}
 
 	/** Fill the given map with the values stored in this attribute provider.
 	 *

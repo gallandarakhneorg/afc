@@ -120,6 +120,21 @@ public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector
 		super(x, y);
 	}
 
+	/** Convert the given tuple to a real Vector2ifx.
+	 *
+	 * <p>If the given tuple is already a Vector2ifx, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Vector2ifx.
+	 * @since 14.0
+	 */
+	public static Vector2ifx convert(Tuple2D<?> tuple) {
+		if (tuple instanceof Vector2ifx) {
+			return (Vector2ifx) tuple;
+		}
+		return new Vector2ifx(tuple.getX(), tuple.getY());
+	}
+
 	/** Replies the orientation vector, which is corresponding
 	 * to the given angle on a trigonometric circle.
 	 *

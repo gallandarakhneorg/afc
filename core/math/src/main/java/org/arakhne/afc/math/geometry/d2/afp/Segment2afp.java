@@ -1300,7 +1300,7 @@ public interface Segment2afp<
      * @return the distance between the two segments.
      */
     @Pure
-    @Inline(value = "Segment2afp.computeClosestPointToSegment(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), null)",
+    @Inline(value = "$9.findsClosestPointSegmentSegment(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), null)",
             imported = {Segment2afp.class})
     static double calculatesDistanceSquaredSegmentSegment(double s1x1, double s1y1, double s1x2, double s1y2,
             double s2x1, double s2y1, double s2x2, double s2y2) {

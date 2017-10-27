@@ -350,7 +350,7 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 */
 	@Pure
 	@Inline(value = "getY()")
-	default double getJuttingDistance() {
+	default double getShiftDistance() {
 		return getY();
 	}
 
@@ -359,7 +359,7 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	 * @param shift is the shift distance.
 	 */
 	@Inline(value = "setY($1)")
-	default void setJuttingDistance(double shift) {
+	default void setShiftDistance(double shift) {
 		setY(shift);
 	}
 

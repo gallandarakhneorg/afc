@@ -20,12 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -36,7 +31,6 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp.UncertainIntersection;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractSegment2afpTest<T extends Segment2afp<?, T, ?, ?, ?, B>,

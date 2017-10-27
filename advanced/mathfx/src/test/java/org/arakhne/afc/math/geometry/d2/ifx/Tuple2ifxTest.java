@@ -20,10 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-
 import javafx.beans.property.IntegerProperty;
 import org.junit.Test;
 

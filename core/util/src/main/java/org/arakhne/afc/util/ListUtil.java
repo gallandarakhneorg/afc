@@ -21,8 +21,10 @@
 package org.arakhne.afc.util;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NavigableSet;
+import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -520,6 +522,40 @@ public final class ListUtil {
 		} catch (Throwable exception) {
 			return -1;
 		}
+	}
+
+	/** Replies an iterator that goes from end to start of the given list.
+	 *
+	 * <p>The replied iterator dos not support removals.
+	 *
+	 * @param <T> the type of the list elements.
+	 * @param list the list.
+	 * @return the reverse iterator.
+	 * @since 14.0
+	 */
+	public static <T> Iterator<T> reverseIterator(final List<T> list) {
+		return new Iterator<T>() {
+
+			private int next = list.size() - 1;
+
+			@Override
+			@Pure
+			public boolean hasNext() {
+				return this.next >= 0;
+			}
+
+			@Override
+			public T next() {
+				final int n = this.next;
+				--this.next;
+				try {
+					return list.get(n);
+				} catch (IndexOutOfBoundsException exception) {
+					throw new NoSuchElementException();
+				}
+			}
+
+		};
 	}
 
 }

@@ -80,6 +80,43 @@
 				<artifactId>text</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.advanced</groupId>
+				<artifactId>attributes</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.advanced</groupId>
+				<artifactId>dbasefile</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.advanced</groupId>
+				<artifactId>shapefile</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			
+
+			<dependency>
+				<groupId>org.arakhne.afc.gis</groupId>
+				<artifactId>giscore</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.gis</groupId>
+				<artifactId>gisinputoutput</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.gis</groupId>
+				<artifactId>gisroad</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.gis</groupId>
+				<artifactId>gisroadinputoutput</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.arakhne.afc.maven</groupId>

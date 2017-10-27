@@ -125,6 +125,21 @@ public class Vector3ifx extends Tuple3ifx<Vector3ifx> implements Vector3D<Vector
 		super(x, y, z);
 	}
 
+	/** Convert the given tuple to a real Vector3ifx.
+	 *
+	 * <p>If the given tuple is already a Vector3ifx, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Vector3ifx.
+	 * @since 14.0
+	 */
+	public static Vector3ifx convert(Tuple3D<?> tuple) {
+		if (tuple instanceof Vector3ifx) {
+			return (Vector3ifx) tuple;
+		}
+		return new Vector3ifx(tuple.getX(), tuple.getY(), tuple.getZ());
+	}
+
 	@Override
 	public Vector3ifx clone() {
 		final Vector3ifx clone = super.clone();

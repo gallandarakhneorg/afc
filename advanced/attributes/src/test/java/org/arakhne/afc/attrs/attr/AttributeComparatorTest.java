@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.attrs.attr;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
 import org.arakhne.afc.testtools.AbstractTestCase;

@@ -20,24 +20,19 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractPointCollectionTest<P extends Point2D<? super P, ? super V>,

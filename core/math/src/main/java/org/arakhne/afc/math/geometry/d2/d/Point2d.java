@@ -100,6 +100,21 @@ public class Point2d extends Tuple2d<Point2d> implements Point2D<Point2d, Vector
 		super(x, y);
 	}
 
+	/** Convert the given tuple to a real Point2d.
+	 *
+	 * <p>If the given tuple is already a Point2d, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Point2d.
+	 * @since 14.0
+	 */
+	public static Point2d convert(Tuple2D<?> tuple) {
+		if (tuple instanceof Point2d) {
+			return (Point2d) tuple;
+		}
+		return new Point2d(tuple.getX(), tuple.getY());
+	}
+
 	@Override
 	public GeomFactory2d getGeomFactory() {
 		return GeomFactory2d.SINGLETON;

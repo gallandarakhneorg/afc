@@ -61,7 +61,7 @@ public interface UnmodifiablePoint1D<
 	}
 
 	@Override
-	default void setJuttingDistance(double shift) {
+	default void setShiftDistance(double shift) {
 		throw new UnsupportedOperationException();
 	}
 

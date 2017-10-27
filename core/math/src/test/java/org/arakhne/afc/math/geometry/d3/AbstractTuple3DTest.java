@@ -20,12 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d3;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;

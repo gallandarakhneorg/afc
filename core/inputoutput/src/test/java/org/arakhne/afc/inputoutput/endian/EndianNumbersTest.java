@@ -20,9 +20,7 @@
 
 package org.arakhne.afc.inputoutput.endian;
 
-import static org.junit.Assert.*;
-
-import static org.arakhne.afc.testtools.XbaseInlineTestUtil.*;
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
 import org.junit.Test;
 

@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.inputoutput.xml;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.net.URL;
 
 import org.junit.After;

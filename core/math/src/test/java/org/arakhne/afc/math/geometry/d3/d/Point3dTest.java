@@ -20,9 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d3.d;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Ignore;
 
 import org.arakhne.afc.math.geometry.d3.AbstractPoint3DTest;

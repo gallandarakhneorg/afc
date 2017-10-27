@@ -28,6 +28,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
+import org.arakhne.afc.math.geometry.IntersectionType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
@@ -1374,6 +1375,93 @@ public interface Rectangle2afp<
     @Override
     default boolean isEmpty() {
         return RectangularShape2afp.super.isEmpty();
+    }
+
+    /**
+     * Classifies two 2D axis-aligned rectangles.
+     *
+     * <p>This function is assuming that <var>lx1</var> is lower
+     * or equal to <var>ux1</var>, <var>ly1</var> is lower
+     * or equal to <var>uy1</var>, and so on.
+     *
+     * @param lx1 the X coordinate of the lowest point of the first rectangle.
+     * @param ly1 the Y coordinate of the lowest point of the first rectangle.
+     * @param ux1 the X coordinate of the uppest point of the first rectangle.
+     * @param uy1 the Y coordinate of the uppest point of the first rectangle.
+     * @param lx2 the X coordinate of the lowest point of the second rectangle.
+     * @param ly2 the Y coordinate of the lowest point of the second rectangle.
+     * @param ux2 the X coordinate of the uppest point of the second rectangle.
+     * @param uy2 the Y coordinate of the uppest point of the second rectangle.
+	 * @return the value {@link IntersectionType#INSIDE} if the first rectangle is inside
+	 *     the second rectangle; {@link IntersectionType#OUTSIDE} if the first rectangle is
+	 *     outside the second rectangle; {@link IntersectionType#ENCLOSING} if the
+	 *     first rectangle is enclosing the second rectangle;
+	 *     {@link IntersectionType#ENCLOSING} if the first rectangle is the same as the second rectangle;
+	 *     {@link IntersectionType#SPANNING} otherwise.
+	 * @since 14.0
+     */
+    @SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity", "checkstyle:returncount"})
+    static IntersectionType classifiesRectangleRectangle(double lx1, double ly1, double ux1, double uy1,
+    		double lx2, double ly2, double ux2, double uy2) {
+    	assert lx1 <= ux1 : AssertMessages.lowerEqualParameters(0, lx1, 2, ux1);
+    	assert ly1 <= uy1 : AssertMessages.lowerEqualParameters(1, ly1, 3, uy1);
+    	assert lx2 <= ux2 : AssertMessages.lowerEqualParameters(4, lx2, 6, ux2);
+    	assert ly2 <= uy2 : AssertMessages.lowerEqualParameters(5, ly2, 7, uy2);
+
+    	final IntersectionType inter;
+    	if (lx1 < lx2) {
+    		if (ux1 <= lx2) {
+    			return IntersectionType.OUTSIDE;
+    		}
+    		if (ux1 < ux2) {
+    			inter = IntersectionType.SPANNING;
+    		} else {
+    			inter = IntersectionType.ENCLOSING;
+    		}
+    	} else if (lx1 > lx2) {
+			if (ux2 <= lx1) {
+				return IntersectionType.OUTSIDE;
+			}
+			if (ux1 <= ux2) {
+				inter = IntersectionType.INSIDE;
+			} else {
+				inter = IntersectionType.SPANNING;
+			}
+    	} else {
+    		if (ux1 == ux2) {
+    			inter = IntersectionType.SAME;
+    		} else if (ux1 < ux2) {
+    			inter = IntersectionType.INSIDE;
+    		} else {
+    			inter = IntersectionType.ENCLOSING;
+    		}
+    	}
+
+    	if (ly1 < ly2) {
+    		if (uy1 <= ly2) {
+    			return IntersectionType.OUTSIDE;
+    		}
+    		if (uy1 < uy2) {
+    			return inter.and(IntersectionType.SPANNING);
+    		}
+    		return inter.and(IntersectionType.ENCLOSING);
+    	} else if (ly1 > ly2) {
+			if (uy2 <= ly1) {
+				return IntersectionType.OUTSIDE;
+			}
+			if (uy1 <= uy2) {
+				return inter.and(IntersectionType.INSIDE);
+			}
+			return inter.and(IntersectionType.SPANNING);
+    	} else {
+    		if (uy1 == uy2) {
+    			return inter.and(IntersectionType.SAME);
+    		}
+    		if (uy1 < uy2) {
+    			return inter.and(IntersectionType.INSIDE);
+    		}
+    		return inter.and(IntersectionType.ENCLOSING);
+    	}
     }
 
     /** Iterator on the path elements of the rectangle.

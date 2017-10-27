@@ -20,15 +20,6 @@
 
 package org.arakhne.afc.attrs.attr;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
@@ -1004,8 +995,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
 
 		source = AttributeType.BOOLEAN;
 		target = AttributeType.POLYLINE3D;
@@ -1017,8 +1008,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
 
 		source = AttributeType.BOOLEAN;
 		target = AttributeType.REAL;
@@ -1157,8 +1148,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
 
 		source = AttributeType.DATE;
 		target = AttributeType.POLYLINE3D;
@@ -1170,8 +1161,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
 
 		source = AttributeType.DATE;
 		target = AttributeType.REAL;
@@ -1311,8 +1302,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
 
 		source = AttributeType.INTEGER;
 		target = AttributeType.POLYLINE3D;
@@ -1324,8 +1315,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
 
 		source = AttributeType.INTEGER;
 		target = AttributeType.REAL;
@@ -1461,8 +1452,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
 
 		source = AttributeType.OBJECT;
 		target = AttributeType.POLYLINE3D;
@@ -1474,8 +1465,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
 
 		source = AttributeType.OBJECT;
 		target = AttributeType.REAL;
@@ -1611,8 +1602,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,new Point2D[] {(Point2D)source.getDefaultValue()}, (Point2D[])attr2.getValue());
-		assertEquals(msg,new Point2D[] {(Point2D)source.getDefaultValue()}, attr2.getPolyline());
+		assertEpsilonEquals(msg,new Point2D[] {(Point2D)source.getDefaultValue()}, (Point2D[])attr2.getValue());
+		assertEpsilonEquals(msg,new Point2D[] {(Point2D)source.getDefaultValue()}, attr2.getPolyline());
 
 		source = AttributeType.POINT;
 		target = AttributeType.POLYLINE3D;
@@ -1915,8 +1906,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point2D[])source.getDefaultValue(), (Point2D[])attr2.getValue());
-		assertEquals(msg,(Point2D[])source.getDefaultValue(), attr2.getPolyline());
+		assertEpsilonEquals(msg,(Point2D[])source.getDefaultValue(), (Point2D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point2D[])source.getDefaultValue(), attr2.getPolyline());
 		
 		source = AttributeType.POLYLINE;
 		target = AttributeType.POLYLINE3D;
@@ -1928,8 +1919,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point3D[])AttributeType.POLYLINE3D.getDefaultValue(), (Point3D[])attr2.getValue());
-		assertEquals(msg,(Point3D[])AttributeType.POLYLINE3D.getDefaultValue(), attr2.getPolyline3D());
+		assertEpsilonEquals(msg,(Point3D[])AttributeType.POLYLINE3D.getDefaultValue(), (Point3D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point3D[])AttributeType.POLYLINE3D.getDefaultValue(), attr2.getPolyline3D());
 
 		source = AttributeType.POLYLINE;
 		target = AttributeType.REAL;
@@ -2066,8 +2057,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point2D[])AttributeType.POLYLINE.getDefaultValue(), (Point2D[])attr2.getValue());
-		assertEquals(msg,(Point2D[])AttributeType.POLYLINE.getDefaultValue(), attr2.getPolyline());
+		assertEpsilonEquals(msg,(Point2D[])AttributeType.POLYLINE.getDefaultValue(), (Point2D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point2D[])AttributeType.POLYLINE.getDefaultValue(), attr2.getPolyline());
 		
 		source = AttributeType.POLYLINE3D;
 		target = AttributeType.POLYLINE3D;
@@ -2079,8 +2070,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point3D[])AttributeType.POLYLINE3D.getDefaultValue(), (Point3D[])attr2.getValue());
-		assertEquals(msg,(Point3D[])AttributeType.POLYLINE3D.getDefaultValue(), attr2.getPolyline3D());
+		assertEpsilonEquals(msg,(Point3D[])AttributeType.POLYLINE3D.getDefaultValue(), (Point3D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point3D[])AttributeType.POLYLINE3D.getDefaultValue(), attr2.getPolyline3D());
 
 		source = AttributeType.POLYLINE3D;
 		target = AttributeType.REAL;
@@ -2217,8 +2208,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
 
 		source = AttributeType.REAL;
 		target = AttributeType.POLYLINE3D;
@@ -2230,8 +2221,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
 
 		source = AttributeType.REAL;
 		target = AttributeType.REAL;
@@ -2367,8 +2358,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
 
 		source = AttributeType.STRING;
 		target = AttributeType.POLYLINE3D;
@@ -2380,8 +2371,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
 
 		source = AttributeType.STRING;
 		target = AttributeType.REAL;
@@ -2521,8 +2512,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
-		assertEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), (Point2D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point2D[])target.getDefaultValue(), attr2.getPolyline());
 
 		source = AttributeType.TIMESTAMP;
 		target = AttributeType.POLYLINE3D;
@@ -2534,8 +2525,8 @@ public class AttributeValueTest extends AbstractMathTestCase {
 		assertFalse(msg,attr1.isAssigned());
 		attr2.cast(target);
 		assertTrue(msg,attr2.isAssigned());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
-		assertEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), (Point3D[])attr2.getValue());
+		assertEpsilonEquals(msg,(Point3D[])target.getDefaultValue(), attr2.getPolyline3D());
 
 		source = AttributeType.TIMESTAMP;
 		target = AttributeType.REAL;

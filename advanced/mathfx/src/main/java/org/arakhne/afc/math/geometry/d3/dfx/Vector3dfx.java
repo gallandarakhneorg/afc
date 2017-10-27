@@ -134,6 +134,21 @@ public class Vector3dfx extends Tuple3dfx<Vector3dfx> implements Vector3D<Vector
 		return clone;
 	}
 
+	/** Convert the given tuple to a real Vector3dfx.
+	 *
+	 * <p>If the given tuple is already a Vector3dfx, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Vector3dfx.
+	 * @since 14.0
+	 */
+	public static Vector3dfx convert(Tuple3D<?> tuple) {
+		if (tuple instanceof Vector3dfx) {
+			return (Vector3dfx) tuple;
+		}
+		return new Vector3dfx(tuple.getX(), tuple.getY(), tuple.getZ());
+	}
+
 	@Override
 	public double getLength() {
 		return lengthProperty().get();

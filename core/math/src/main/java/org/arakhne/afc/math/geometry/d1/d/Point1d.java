@@ -130,6 +130,21 @@ public class Point1d extends Tuple1d<Point1d> implements Point1D<Point1d, Vector
 		super(segment, x, y);
 	}
 
+	/** Convert the given tuple to a real Point1d.
+	 *
+	 * <p>If the given tuple is already a Point1d, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Point1d.
+	 * @since 14.0
+	 */
+	public static Point1d convert(Tuple1d<?> tuple) {
+		if (tuple instanceof Point1d) {
+			return (Point1d) tuple;
+		}
+		return new Point1d(tuple.getSegment(), tuple.getX(), tuple.getY());
+	}
+
 	@Override
 	public UnmodifiablePoint1D<Point1d, Vector1d, Segment1D<?, ?>> toUnmodifiable() {
 		return new UnmodifiablePoint1D<Point1d, Vector1d, Segment1D<?, ?>>() {

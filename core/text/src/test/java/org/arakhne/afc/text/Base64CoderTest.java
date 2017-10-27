@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.arakhne.afc.testtools.AbstractTestCase;
 
 @SuppressWarnings("all")
+@Deprecated
 public class Base64CoderTest extends AbstractTestCase {
 
 	@Test

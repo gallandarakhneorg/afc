@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.testtools;
 
-import static org.junit.Assert.fail;
-
 import java.awt.geom.Point2D;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;

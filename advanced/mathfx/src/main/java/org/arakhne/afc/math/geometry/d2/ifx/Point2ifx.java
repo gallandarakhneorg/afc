@@ -107,6 +107,21 @@ public class Point2ifx extends Tuple2ifx<Point2ifx> implements Point2D<Point2ifx
 		super(x, y);
 	}
 
+	/** Convert the given tuple to a real Point2ifx.
+	 *
+	 * <p>If the given tuple is already a Point2ifx, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Point2ifx.
+	 * @since 14.0
+	 */
+	public static Point2ifx convert(Tuple2D<?> tuple) {
+		if (tuple instanceof Point2ifx) {
+			return (Point2ifx) tuple;
+		}
+		return new Point2ifx(tuple.getX(), tuple.getY());
+	}
+
 	@Override
 	public GeomFactory2ifx getGeomFactory() {
 		return GeomFactory2ifx.SINGLETON;

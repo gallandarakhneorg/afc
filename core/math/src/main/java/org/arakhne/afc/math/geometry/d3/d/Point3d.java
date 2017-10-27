@@ -106,6 +106,21 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 		super(x, y, z);
 	}
 
+	/** Convert the given tuple to a real Point3d.
+	 *
+	 * <p>If the given tuple is already a Point3d, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Point3d.
+	 * @since 14.0
+	 */
+	public static Point3d convert(Tuple3D<?> tuple) {
+		if (tuple instanceof Point3d) {
+			return (Point3d) tuple;
+		}
+		return new Point3d(tuple.getX(), tuple.getY(), tuple.getZ());
+	}
+
 	@Override
 	public GeomFactory3d getGeomFactory() {
 		return GeomFactory3d.SINGLETON;

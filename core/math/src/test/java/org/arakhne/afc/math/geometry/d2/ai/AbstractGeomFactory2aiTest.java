@@ -20,25 +20,19 @@
 
 package org.arakhne.afc.math.geometry.d2.ai;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d2.Point2DStub;
-import org.arakhne.afc.math.geometry.d2.Vector2DStub;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Point2DStub;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.arakhne.afc.math.geometry.d2.Vector2DStub;
 
 @SuppressWarnings("all")
 public abstract class AbstractGeomFactory2aiTest extends AbstractMathTestCase {

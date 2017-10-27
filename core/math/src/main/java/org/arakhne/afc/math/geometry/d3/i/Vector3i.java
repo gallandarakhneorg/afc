@@ -104,6 +104,21 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 		super(x, y, z);
 	}
 
+	/** Convert the given tuple to a real Vector3i.
+	 *
+	 * <p>If the given tuple is already a Vector3i, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Vector3i.
+	 * @since 14.0
+	 */
+	public static Vector3i convert(Tuple3D<?> tuple) {
+		if (tuple instanceof Vector3i) {
+			return (Vector3i) tuple;
+		}
+		return new Vector3i(tuple.getX(), tuple.getY(), tuple.getZ());
+	}
+
 	@Pure
 	@Override
 	public double dot(Vector3D<?, ?> vector) {

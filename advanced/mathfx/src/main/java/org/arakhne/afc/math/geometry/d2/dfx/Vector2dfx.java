@@ -122,6 +122,21 @@ public class Vector2dfx extends Tuple2dfx<Vector2dfx> implements Vector2D<Vector
 		super(x, y);
 	}
 
+	/** Convert the given tuple to a real Vector2dfx.
+	 *
+	 * <p>If the given tuple is already a Vector2dfx, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Vector2dfx.
+	 * @since 14.0
+	 */
+	public static Vector2dfx convert(Tuple2D<?> tuple) {
+		if (tuple instanceof Vector2dfx) {
+			return (Vector2dfx) tuple;
+		}
+		return new Vector2dfx(tuple.getX(), tuple.getY());
+	}
+
 	/** Replies the orientation vector, which is corresponding
 	 * to the given angle on a trigonometric circle.
 	 *

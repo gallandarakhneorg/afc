@@ -26,8 +26,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -82,14 +80,6 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			return null;
 		}
 		return rawAttributeValue;
-	}
-
-	@Pure
-	@Override
-	public final Map<String, Object> toMap() {
-		final Map<String, Object> map = new TreeMap<>();
-		toMap(map);
-		return map;
 	}
 
 	/** Replies an iterator on the attributes.

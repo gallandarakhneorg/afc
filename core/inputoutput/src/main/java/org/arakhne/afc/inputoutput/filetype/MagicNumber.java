@@ -24,6 +24,8 @@ import java.io.IOException;
 
 import javax.activation.MimeType;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.inputoutput.mime.MimeName;
 
 /** This clas defines a set of informations that could distinguish
@@ -95,6 +97,7 @@ public abstract class MagicNumber implements Comparable<MagicNumber> {
 	 *
 	 * @return the low-level MIME type.
 	 */
+	@Pure
 	MimeType[] getHostMimeTypes() {
 		return this.hostMimeTypes;
 	}
@@ -103,6 +106,7 @@ public abstract class MagicNumber implements Comparable<MagicNumber> {
 	 *
 	 * @return the MIME type.
 	 */
+	@Pure
 	public MimeType getMimeType() {
 		return this.mimeType;
 	}
@@ -111,6 +115,7 @@ public abstract class MagicNumber implements Comparable<MagicNumber> {
 	 *
 	 * @return the format version or <code>null</code>.
 	 */
+	@Pure
 	public String getFormatVersion() {
 		return this.formatVersion;
 	}
@@ -141,8 +146,10 @@ public abstract class MagicNumber implements Comparable<MagicNumber> {
 	 * @param stream is the stream to analyse.
 	 * @return <code>true</code> if the stream is containing this magic number, otherwise <code>false</code>
 	 */
+	@Pure
 	protected abstract boolean isContentType(MagicNumberStream stream);
 
+	@Pure
 	@Override
     public int compareTo(MagicNumber number) {
     	return System.identityHashCode(this) - System.identityHashCode(number);

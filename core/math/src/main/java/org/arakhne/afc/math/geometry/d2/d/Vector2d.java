@@ -101,6 +101,21 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 		super(x, y);
 	}
 
+	/** Convert the given tuple to a real Vector2d.
+	 *
+	 * <p>If the given tuple is already a Vector2d, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Vector2d.
+	 * @since 14.0
+	 */
+	public static Vector2d convert(Tuple2D<?> tuple) {
+		if (tuple instanceof Vector2d) {
+			return (Vector2d) tuple;
+		}
+		return new Vector2d(tuple.getX(), tuple.getY());
+	}
+
 	/** Replies the orientation vector, which is corresponding
 	 * to the given angle on a trigonometric circle.
 	 *

@@ -1841,6 +1841,24 @@ public interface Path2ai<
         moveTo(position.ix(), position.iy());
     }
 
+    /** Adds a point to the path by moving to the specified coordinates specified in double precision
+     * if and only if the current position does not corresponds to the given position.
+     * @param x the specified X coordinate
+     * @param y the specified Y coordinate
+     * @since 14.0
+     */
+    default void moveToIfFar(int x, int y) {
+    	if (isEmpty() || x != getCurrentX() || y != getCurrentY()) {
+    		moveTo(x, y);
+    	}
+    }
+
+    @Override
+    default void moveToIfFar(Point2D<?, ?> position) {
+        assert position != null : AssertMessages.notNullParameter();
+        moveToIfFar(position.ix(), position.iy());
+    }
+
     /**
      * Adds a point to the path by drawing a straight line from the
      * current coordinates to the new specified coordinates

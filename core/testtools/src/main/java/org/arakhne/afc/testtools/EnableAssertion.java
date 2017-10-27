@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.testtools;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /** Class that is testing if the assertions are enabled.
@@ -30,7 +31,7 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("static-method")
-public class EnableAssertion {
+public class EnableAssertion extends Assert {
 
 	/** Test if assertions are enabled.
 	 */

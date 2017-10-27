@@ -100,6 +100,21 @@ public class Point2i extends Tuple2i<Point2i> implements Point2D<Point2i, Vector
 		super(x, y);
 	}
 
+	/** Convert the given tuple to a real Point2i.
+	 *
+	 * <p>If the given tuple is already a Point2i, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Point2i.
+	 * @since 14.0
+	 */
+	public static Point2i convert(Tuple2D<?> tuple) {
+		if (tuple instanceof Point2i) {
+			return (Point2i) tuple;
+		}
+		return new Point2i(tuple.getX(), tuple.getY());
+	}
+
 	@Pure
 	@Override
 	public double getDistanceSquared(Point2D<?, ?> point) {

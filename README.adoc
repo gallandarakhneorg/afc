@@ -6,7 +6,7 @@
 The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may be used to build applications. The Arakhnê Foundation Classes provide tools that are not directly available in the standard Java API.
 
 image:https://img.shields.io/badge/requires-Java%208-red.svg?style=flat-square[link=https://www.java.com]
-image:https://img.shields.io/maven-central/v/org.arakhne.afc/afc.svg?label=Maven%20Central)[link=http://search.maven.org/#search%7Cga%7C1%7Corg.arakhne.afc]
+image:https://img.shields.io/maven-central/v/org.arakhne.afc/afc.svg?label=Maven%20Central[link=http://search.maven.org/#search%7Cga%7C1%7Corg.arakhne.afc]
 image:https://travis-ci.org/gallandarakhneorg/afc.svg?branch=master[link=https://travis-ci.org/gallandarakhneorg/afc]
 image:https://ci.appveyor.com/api/projects/status/github/gallandarakhneorg/afc?branch=master&svg=true[link=https://ci.appveyor.com/project/gallandarakhneorg/afc]
 
@@ -41,6 +41,11 @@ AFC library contains the following alive modules:
 | agentmotion
 | Collection of algorithms for calculating the motion of mobile agents.
 
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/dbase/package-summary.html[DBase Reader and Writer]
+| org.arakhne.afc.advanced
+| dbasefile
+| Reader and Writer of the DBase database files.
+
 | link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/util/package-summary.html[General Utilities]
 | org.arakhne.afc.core
 | util
@@ -50,6 +55,26 @@ AFC library contains the following alive modules:
 | org.arakhne.afc.advanced
 | attributes
 | Library for creating generic attributes, aka. Variant attributes.
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[Geographical Information System API]
+| org.arakhne.afc.gis
+| giscore
+| Base elements for building data structures for Geographical Information Systems.
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[GIS Bus Network]
+| org.arakhne.afc.gis
+| gisbus
+| Base elements for creating data structures that represent a bus network, or any public transport network.
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[GIS Input-Output API]
+| org.arakhne.afc.gis
+| gisinputoutput
+| Readers and writers for Geographical Information System.
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[GIS Road Network]
+| org.arakhne.afc.gis
+| gisroad
+| Base elements for creating data structures that represent a road network.
 
 | link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/filefilter/package-summary.html[Input-Output Utilities]
 | org.arakhne.afc.core
@@ -65,6 +90,11 @@ AFC library contains the following alive modules:
 | org.arakhne.afc.core
 | math
 | Mathematic and Geometry tools and primitives
+
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/shape/package-summary.html[Shape File Reader and Writer]
+| org.arakhne.afc.advanced
+| shapefile
+| Reader and Writer of the ESRi Shape files.
 
 | link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/text/package-summary.html[Text Utilities]
 | org.arakhne.afc.core

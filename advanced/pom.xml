@@ -16,6 +16,9 @@
 		<module>mathfx</module>
 		<module>attributes</module>
 		<module>agentmotion</module>
+		<module>dbasefile</module>
+		<module>shapefile</module>
+		<module>gis</module>
 	</modules>
 
 	<build>

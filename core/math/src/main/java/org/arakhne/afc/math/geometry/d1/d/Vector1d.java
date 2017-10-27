@@ -133,6 +133,21 @@ public class Vector1d extends Tuple1d<Vector1d> implements Vector1D<Vector1d, Po
 		super(segment, x, y);
 	}
 
+	/** Convert the given tuple to a real Vector1d.
+	 *
+	 * <p>If the given tuple is already a Vector1d, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Vector1d.
+	 * @since 14.0
+	 */
+	public static Vector1d convert(Tuple1d<?> tuple) {
+		if (tuple instanceof Vector1d) {
+			return (Vector1d) tuple;
+		}
+		return new Vector1d(tuple.getSegment(), tuple.getX(), tuple.getY());
+	}
+
 	@Pure
 	@Override
 	public double getLength() {

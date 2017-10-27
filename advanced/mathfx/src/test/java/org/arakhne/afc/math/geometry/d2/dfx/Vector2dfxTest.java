@@ -21,7 +21,6 @@
 package org.arakhne.afc.math.geometry.d2.dfx;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
-import static org.junit.Assert.assertNotNull;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import org.junit.Test;

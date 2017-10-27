@@ -20,19 +20,17 @@
 
 package org.arakhne.afc.math.geometry.d2.ai;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.After;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.PathWindingRuleTestRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.junit.After;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractPathWindingRule2aiTest<P extends Point2D<? super P, ? super V>,

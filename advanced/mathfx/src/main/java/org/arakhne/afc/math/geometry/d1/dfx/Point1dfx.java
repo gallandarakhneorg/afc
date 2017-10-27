@@ -145,6 +145,21 @@ public class Point1dfx extends Tuple1dfx<Point1dfx> implements Point1D<Point1dfx
 		super(segment, x, y);
 	}
 
+	/** Convert the given tuple to a real Point1dfx.
+	 *
+	 * <p>If the given tuple is already a Point1dfx, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Point1dfx.
+	 * @since 14.0
+	 */
+	public static Point1dfx convert(Tuple1dfx<?> tuple) {
+		if (tuple instanceof Point1dfx) {
+			return (Point1dfx) tuple;
+		}
+		return new Point1dfx(tuple.getSegment(), tuple.getX(), tuple.getY());
+	}
+
 	@Override
 	public UnmodifiablePoint1D<Point1dfx, Vector1dfx, Segment1D<?, ?>> toUnmodifiable() {
 		return new UnmodifiablePoint1D<Point1dfx, Vector1dfx, Segment1D<?, ?>>() {

@@ -110,6 +110,10 @@ public final class XMLUtil {
 	 */
 	public static final String ATTR_NAME = "name"; //$NON-NLS-1$
 
+	/** <code>color=""</code>.
+	 */
+	public static final String ATTR_COLOR = "color"; //$NON-NLS-1$
+
 	/** List of XML colors and there corresponding Java colors.
 	 */
 	public static final Map<String, Integer> COLOR_MATCHES;

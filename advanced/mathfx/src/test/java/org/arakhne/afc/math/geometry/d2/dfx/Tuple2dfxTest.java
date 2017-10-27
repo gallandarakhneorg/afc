@@ -20,9 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-
 import javafx.beans.property.DoubleProperty;
 import org.junit.Test;
 

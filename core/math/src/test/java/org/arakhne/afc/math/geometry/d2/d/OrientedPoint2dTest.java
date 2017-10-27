@@ -19,9 +19,6 @@
  */
 package org.arakhne.afc.math.geometry.d2.d;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.arakhne.afc.math.geometry.d2.AbstractOrientedPoint2DTest;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 

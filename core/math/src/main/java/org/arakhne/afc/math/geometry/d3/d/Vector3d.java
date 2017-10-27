@@ -105,6 +105,21 @@ public class Vector3d extends Tuple3d<Vector3d> implements Vector3D<Vector3d, Po
 		super(x, y, z);
 	}
 
+	/** Convert the given tuple to a real Vector3d.
+	 *
+	 * <p>If the given tuple is already a Vector3d, it is replied.
+	 *
+	 * @param tuple the tuple.
+	 * @return the Vector3d.
+	 * @since 14.0
+	 */
+	public static Vector3d convert(Tuple3D<?> tuple) {
+		if (tuple instanceof Vector3d) {
+			return (Vector3d) tuple;
+		}
+		return new Vector3d(tuple.getX(), tuple.getY(), tuple.getZ());
+	}
+
 	@Override
 	public GeomFactory3d getGeomFactory() {
 		return GeomFactory3d.SINGLETON;
