@@ -53,7 +53,7 @@ class BudgetIterator<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P,
 
 	private final BudgetDataIterator<P, N> it;
 
-	/**
+	/** Constructor.
 	 * @param tree is the tree to iterator on.
 	 * @param clipBounds is the bounds outside which the elements will not be replied
 	 * @param budget is the maximal size of the replied list. If this value is negative, all the elements will be replied.
@@ -78,7 +78,7 @@ class BudgetIterator<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P,
 		this.it.remove();
 	}
 
-	/**
+	/** Frustum selection with budget.
 	 * @param <P> is the type of the data inside the tree.
 	 * @param <N> the type of the nodes.
 	 * @author $Author: sgalland$
@@ -111,7 +111,7 @@ class BudgetIterator<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P,
 
 	} // class BudgetFrustumSelector
 
-	/**
+	/** Data iterator with budget.
 	 * @param <P> is the type of the data inside the tree.
 	 * @param <N> the type of the nodes.
 	 * @author $Author: sgalland$
@@ -126,7 +126,7 @@ class BudgetIterator<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P,
 
 		private int unconsumedBudget;
 
-		/**
+		/** Constructor.
 		 * @param tree is the tree to iterator on.
 		 * @param clipBounds is the bounds outside which the elements will not be replied
 		 * @param budget is the maximal size of the replied list. If this value is negative, all the elements will be replied.
@@ -165,7 +165,7 @@ class BudgetIterator<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P,
 
 	} // class BudgetDataIterator
 
-	/**
+	/** Budget node iterator.
 	 * @param <P> is the type of the data inside the tree.
 	 * @param <N> the type of the nodes.
 	 * @author $Author: sgalland$
@@ -228,7 +228,7 @@ class BudgetIterator<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P,
 
 	} // class BudgetNodeIterator
 
-	/**
+	/** Budget node.
 	 * @param <P> is the type of the data inside the tree.
 	 * @param <N> the type of the nodes.
 	 * @author $Author: sgalland$

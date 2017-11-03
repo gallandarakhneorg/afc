@@ -37,15 +37,13 @@ public class XMLIdentifierConstraint implements XMLConstraint {
 
 	private final UUID value;
 
-	/**
+	/** Constructor.
 	 * @param value is the value to match.
 	 */
 	public XMLIdentifierConstraint(UUID value) {
 		this.value = value;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean isValidElement(Element element) {
 		final UUID v = XMLUtil.getAttributeUUIDWithDefault(element, null, XMLUtil.ATTR_ID);

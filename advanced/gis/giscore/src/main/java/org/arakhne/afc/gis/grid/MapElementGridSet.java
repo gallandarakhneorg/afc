@@ -44,7 +44,7 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
  */
 public class MapElementGridSet<P extends MapElement> extends AbstractGISGridSet<P> implements GISElementSet<P> {
 
-	/**
+	/** Constructor.
 	 * @param nRows numbers of rows in the grid
 	 * @param nColumns numbers of columns in the grid
 	 * @param boundsX is the bounds of the scene.
@@ -56,7 +56,7 @@ public class MapElementGridSet<P extends MapElement> extends AbstractGISGridSet<
 		super(nRows, nColumns, boundsX, boundsY, boundsWidth, boundsHeight);
 	}
 
-	/**
+	/** Constructor.
 	 * @param nRows numbers of rows in the grid
 	 * @param nColumns numbers of columns in the grid
 	 * @param bounds are the bounds of the scene stored inside this tree.

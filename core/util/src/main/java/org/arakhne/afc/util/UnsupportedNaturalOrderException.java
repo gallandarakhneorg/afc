@@ -36,7 +36,7 @@ public class UnsupportedNaturalOrderException extends RuntimeException {
 
 	private final Object element;
 
-	/**
+	/** Constructor.
 	 * @param element is the element which does not provide a natural order.
 	 */
 	public UnsupportedNaturalOrderException(Object element) {

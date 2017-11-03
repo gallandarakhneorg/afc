@@ -68,7 +68,7 @@ public class OutputParameter<T> {
 
 	private T object;
 
-	/**
+	/** Constructor.
 	 * @param initialValue is the initial value of the output parameter.
 	 */
 	public OutputParameter(T initialValue) {

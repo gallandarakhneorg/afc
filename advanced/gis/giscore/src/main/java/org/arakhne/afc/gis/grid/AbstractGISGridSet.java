@@ -57,7 +57,7 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 
 	private boolean updateWhenRemove;
 
-	/**
+	/** Constructor.
 	 * @param nRows numbers of rows in the grid
 	 * @param nColumns numbers of columns in the grid
 	 * @param bounds are the bounds of the grid cell.
@@ -66,7 +66,7 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 		this(nRows, nColumns, bounds.getMinX(), bounds.getMinY(), bounds.getWidth(), bounds.getHeight());
 	}
 
-	/**
+	/** Constructor.
 	 * @param nRows numbers of rows in the grid
 	 * @param nColumns numbers of columns in the grid
 	 * @param boundsX is the bounds of the scene.
@@ -428,7 +428,7 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 	// Subclasses
 	//----------------------------------------------------------------
 
-	/**
+	/** Internal collection.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -527,7 +527,7 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 			return false;
 		}
 
-		/**
+		/** Internal iterator.
 		 * @author $Author: sgalland$
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$

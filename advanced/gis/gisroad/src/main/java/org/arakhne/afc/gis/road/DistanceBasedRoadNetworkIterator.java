@@ -39,7 +39,7 @@ import org.arakhne.afc.math.graph.GraphIterationElementComparator;
  */
 final class DistanceBasedRoadNetworkIterator extends DepthGraphIterator<RoadSegment, RoadConnection> {
 
-	/**
+	/** Constructor.
 	 * @param network is the road network to iterator on.
 	 * @param depth is the maximal depth to reach (in the metric coordiante system).
 	 * @param position_from_starting_point is the starting position from

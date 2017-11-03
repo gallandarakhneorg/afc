@@ -90,7 +90,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	// Constructors
 	//------------------------------------------------------------------
 
-	/**
+	/** Constructor.
 	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
 	 * @param attributeProvider is the provider of attributes used by this bus stop.
 	 * @since 2.0
@@ -597,7 +597,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 
 		private final WeakReference<AbstractBusPrimitive<?>> object;
 
-		/**
+		/** Constructor.
 		 * @param object is the object associated to the listener.
 		 */
 		AttributeListener(AbstractBusPrimitive<?> object) {

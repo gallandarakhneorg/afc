@@ -44,7 +44,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 
 	private Set<RoadSegment> excludes;
 
-	/**
+	/** Constructor.
 	 * @param con is the wrapped connection.
 	 * @param excludedSegments are the segments excluded from the collection
 	 *     of the connected segments.
@@ -437,7 +437,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 						system));
 	}
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -450,6 +450,10 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 
 		private RoadSegment next;
 
+		/** Constructor.
+		 *
+		 * @param iterator the original iterator.
+		 */
 		ExclusionIterator(Iterator<RoadSegment> iterator) {
 			this.iterator = iterator;
 			searchNext();
@@ -483,7 +487,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 
 	}
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -496,6 +500,10 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 
 		private GraphPointConnection<RoadConnection, RoadSegment> next;
 
+		/** Constructor.
+		 *
+		 * @param iterator the original iterator.
+		 */
 		ExclusionIterator2(Iterator<? extends GraphPointConnection<RoadConnection, RoadSegment>> iterator) {
 			this.iterator = iterator;
 			searchNext();

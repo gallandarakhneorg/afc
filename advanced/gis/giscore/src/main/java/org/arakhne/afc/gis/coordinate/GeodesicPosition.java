@@ -110,7 +110,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 					* (longAxis == SexagesimalLongitudeAxis.EAST ? 1. : -1.);
 	}
 
-	/**
+	/** Construct a GSC position.
 	 * @param lambda is the longitude in degrees.
 	 * @param phi is the latitude in degrees.
 	 */
@@ -119,7 +119,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 		this.phi = phi;
 	}
 
-	/**
+	/** Construct a GSC position.
 	 * @param position in degrees.
 	 */
 	public GeodesicPosition(GeodesicPosition position) {
@@ -132,7 +132,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 		}
 	}
 
-	/**
+	/** Construct a GSC position.
 	 * @param position in degrees.
 	 */
 	public GeodesicPosition(Tuple2D<?> position) {

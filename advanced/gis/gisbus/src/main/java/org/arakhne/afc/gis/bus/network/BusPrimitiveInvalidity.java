@@ -48,7 +48,7 @@ public class BusPrimitiveInvalidity implements Cloneable, Serializable {
 
 	private final String additionalInformation;
 
-	/**
+	/** Constructor.
 	 * @param type is the type of the invalidity.
 	 * @param additionalInformation describes some additional information on the invalidity.
 	 */

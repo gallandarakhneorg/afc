@@ -37,7 +37,7 @@ class OperatingSystemNativeWrapper implements OperatingSystemWrapper {
 
 	private final OperatingSystemIdentificationType type;
 
-	/**
+	/** Constructor.
 	 * @param type is the type of identification supported by the wrapper.
 	 */
 	OperatingSystemNativeWrapper(OperatingSystemIdentificationType type) {

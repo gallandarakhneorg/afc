@@ -1505,7 +1505,7 @@ public abstract class MapComposedElement extends MapElement {
 			return new PointIterator();
 		}
 
-		/**
+		/** Replies the points that are composing this element.
 		 * @return the points of this group.
 		 */
 		@Pure
@@ -1583,6 +1583,8 @@ public abstract class MapComposedElement extends MapElement {
 
 		private int nextGroupIndex;
 
+		/** Constructor.
+		 */
 		GroupIterator() {
 			//
 		}
@@ -1635,6 +1637,8 @@ public abstract class MapComposedElement extends MapElement {
 
 		private int nextPointIndex;
 
+		/** Constructor.
+		 */
 		PointIterator() {
 			//
 		}
@@ -1668,7 +1672,7 @@ public abstract class MapComposedElement extends MapElement {
 
 	} /* class PointIterator */
 
-	/**
+	/** Internal point fusion validator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -1677,6 +1681,8 @@ public abstract class MapComposedElement extends MapElement {
 	 */
 	private static class Validator implements PointFusionValidator {
 
+		/** Constructor.
+		 */
 		Validator() {
 			//
 		}

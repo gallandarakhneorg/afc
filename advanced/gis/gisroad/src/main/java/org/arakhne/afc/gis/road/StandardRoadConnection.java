@@ -877,7 +877,7 @@ class StandardRoadConnection implements RoadConnection {
 
 		private final WeakReference<RoadPolyline> segment;
 
-		/**
+		/** Constructor.
 		 * @param segment the connected segment
 		 * @param connectedWithStartPoint indicates if the segment is connected by its start point, or not.
 		 */
@@ -886,7 +886,7 @@ class StandardRoadConnection implements RoadConnection {
 			this.connectedWithStartPoint = connectedWithStartPoint;
 		}
 
-		/**
+		/** Replies the linked road polyline.
 		 * @return the connected segment.
 		 */
 		@Pure
@@ -991,6 +991,13 @@ class StandardRoadConnection implements RoadConnection {
 
 		private Connection removableSegment;
 
+		/** Constructor.
+		 * @param startSegment start segment.
+		 * @param startConnection start connection.
+		 * @param endSegment end segment.
+		 * @param endConnection end connection.
+		 * @param boundType type of bounds.
+		 */
 		@SuppressWarnings({"checkstyle:methodlength", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 		CounterclockwiseIterator(RoadSegment startSegment, Boolean startConnection, RoadSegment endSegment,
 				Boolean endConnection, ClockwiseBoundType boundType) {
@@ -1173,6 +1180,14 @@ class StandardRoadConnection implements RoadConnection {
 
 		private Connection removableSegment;
 
+		/** Constructor.
+		 *
+		 * @param startSegment the start segment.
+		 * @param startConnection the start connection.
+		 * @param endSegment the end segment.
+		 * @param endConnection the end connection.
+		 * @param boundType the type of bounds.
+		 */
 		@SuppressWarnings({"checkstyle:methodlength", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 		ClockwiseIterator(RoadSegment startSegment, Boolean startConnection, RoadSegment endSegment,
 				Boolean endConnection, ClockwiseBoundType boundType) {
@@ -1352,6 +1367,9 @@ class StandardRoadConnection implements RoadConnection {
 
 		private final Iterator<Connection> iterator;
 
+		/** Constructor.
+		 * @param iter the original iterator.
+		 */
 		ConnectionListWrappingIterator(Iterator<Connection> iter) {
 			this.iterator = iter;
 		}
@@ -1391,6 +1409,9 @@ class StandardRoadConnection implements RoadConnection {
 
 		private final Iterable<Connection> list;
 
+		/** Constructor.
+		 * @param list the wrapped list.
+		 */
 		ConnectionListWrapper(Iterable<Connection> list) {
 			this.list = list;
 		}
@@ -1416,6 +1437,10 @@ class StandardRoadConnection implements RoadConnection {
 
 		private final RoadSegment startingSegment;
 
+		/** Constructor.
+		 *
+		 * @param startingSegment the wrapped element.
+		 */
 		ConnectionBoundedListWrapper(RoadSegment startingSegment) {
 			this.startingSegment = startingSegment;
 		}
@@ -1446,6 +1471,10 @@ class StandardRoadConnection implements RoadConnection {
 
 		private final RoadSegment startingSegment;
 
+		/** Constructor.
+		 *
+		 * @param startingSegment the wrapped element.
+		 */
 		ConnectionBoundedListIterable(RoadSegment startingSegment) {
 			this.startingSegment = startingSegment;
 		}

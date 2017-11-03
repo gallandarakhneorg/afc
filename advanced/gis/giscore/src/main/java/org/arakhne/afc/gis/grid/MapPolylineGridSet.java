@@ -44,7 +44,7 @@ import org.arakhne.afc.util.OutputParameter;
  */
 public class MapPolylineGridSet<P extends MapPolyline> extends MapElementGridSet<P> implements GISPolylineSet<P> {
 
-	/**
+	/** Constructor.
 	 * @param nRows numbers of rows in the grid
 	 * @param nColumns numbers of columns in the grid
 	 * @param boundsX is the bounds of the scene.
@@ -56,7 +56,7 @@ public class MapPolylineGridSet<P extends MapPolyline> extends MapElementGridSet
 		super(nRows, nColumns, boundsX, boundsY, boundsWidth, boundsHeight);
 	}
 
-	/**
+	/** Constructor.
 	 * @param nRows numbers of rows in the grid
 	 * @param nColumns numbers of columns in the grid
 	 * @param bounds are the bounds of the scene stored inside this tree.

@@ -42,7 +42,7 @@ public abstract class AbstractBusContainer<CONTAINER extends BusContainer<?>, EL
 
 	private static final long serialVersionUID = -1555006589205326227L;
 
-	/**
+	/** Constructor.
 	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
 	 * @param attributeProvider is the provider of attributes used by this bus stop.
 	 * @since 2.0

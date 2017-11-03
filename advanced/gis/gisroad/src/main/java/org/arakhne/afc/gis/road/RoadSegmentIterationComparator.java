@@ -50,7 +50,7 @@ final class RoadSegmentIterationComparator extends GraphIterationElementComparat
 	 */
 	public static final RoadSegmentIterationComparator NOT_ORIENTED_SEGMENT_SINGLETON = new RoadSegmentIterationComparator(false);
 
-	/**
+	/** Constructor.
 	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that

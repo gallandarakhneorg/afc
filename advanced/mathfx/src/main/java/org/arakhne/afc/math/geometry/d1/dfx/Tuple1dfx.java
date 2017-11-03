@@ -89,7 +89,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 		segmentProperty().set(new WeakReference<>(segment));
 	}
 
-	/**
+	/** Constructor.
 	 * @param segment the segment.
 	 * @param tuple is the tuple to copy.
 	 */
@@ -101,7 +101,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 		yProperty().set(tuple.getY());
 	}
 
-	/**
+	/** Constructor.
 	 * @param segment the segment.
 	 * @param tuple is the tuple to copy.
 	 */
@@ -114,7 +114,7 @@ public class Tuple1dfx<RT extends Tuple1dfx<? super RT>> implements Tuple2D<RT> 
 		yProperty().set(tuple[1]);
 	}
 
-	/**
+	/** Constructor.
 	 * @param segment the segment.
 	 * @param tuple is the tuple to copy.
 	 */

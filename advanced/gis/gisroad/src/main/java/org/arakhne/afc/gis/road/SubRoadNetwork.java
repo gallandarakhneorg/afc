@@ -236,7 +236,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		return getParentRoadNetwork().isRightSidedTrafficDirection();
 	}
 
-	/**
+	/** Internal connection.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -251,6 +251,11 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 		private final boolean connectedToStart;
 
+		/** Constructor.
+		 * @param connection the wrapped connection.
+		 * @param segment the segment.
+		 * @param connectedToStart indicates if the segment is connected to its start.
+		 */
 		TerminalConnection(RoadConnection connection, RoadSegment segment, boolean connectedToStart) {
 			assert connection != null;
 			assert segment != null;
@@ -720,7 +725,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 	}
 
-	/**
+	/** Internal segment wrapper.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -738,6 +743,11 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 		private final TerminalConnection terminalEnd;
 
+		/** Constructor.
+		 * @param segment the wrapped segment.
+		 * @param terminalStart start point.
+		 * @param terminalEnd end point.
+		 */
 		WrapSegment(RoadSegment segment, TerminalConnection terminalStart, TerminalConnection terminalEnd) {
 			assert segment != null;
 			final RoadSegment sgmt = unwrap(segment);
@@ -1747,7 +1757,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 	} // class WrapSegment
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -1758,6 +1768,9 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 		private final Iterator<RoadSegment> iterator;
 
+		/** Constructor.
+		 * @param iter the original iterator.
+		 */
 		WrapSegmentIterator(Iterator<RoadSegment> iter) {
 			this.iterator = iter;
 		}
@@ -1780,7 +1793,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 	}
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -1791,6 +1804,9 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 		private final Iterable<RoadSegment> iterable;
 
+		/** Constructor.
+		 * @param iter the original iterator.
+		 */
 		WrapSegmentIterable(Iterable<RoadSegment> iter) {
 			this.iterable = iter;
 		}

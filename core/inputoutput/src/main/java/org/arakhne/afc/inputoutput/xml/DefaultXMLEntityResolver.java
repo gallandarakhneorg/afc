@@ -79,7 +79,7 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 		this.emptyExternalResource = false;
 	}
 
-	/**
+	/** Constructor.
 	 * @param searchPath is the directory which corresponds to a search path.
 	 * @throws MalformedURLException if the file cannot be converted to an URL.
 	 */
@@ -87,7 +87,7 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 		this(searchPath.toURI().toURL());
 	}
 
-	/**
+	/** Constructor.
 	 * @param searchPath is the directory which corresponds to a search path.
 	 */
 	public DefaultXMLEntityResolver(URL searchPath) {
@@ -95,7 +95,7 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 		this.emptyExternalResource = false;
 	}
 
-	/**
+	/** Constructor.
 	 * @param assumeEmptyExternalResource if <code>true</code> this entity resolver
 	 *     replies an empty input source when it can't find an external resource. If <code>false</code>
 	 *     this resolver will ask to the default XML resolver to find the external resource.
@@ -105,7 +105,7 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 		this.emptyExternalResource = assumeEmptyExternalResource;
 	}
 
-	/**
+	/** Constructor.
 	 * @param searchPath is the directory which corresponds to a search path.
 	 * @param assumeEmptyExternalResource if <code>true</code> this entity resolver
 	 *     replies an empty input source when it can't find an external resource. If <code>false</code>
@@ -116,7 +116,7 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 		this(searchPath.toURI().toURL(), assumeEmptyExternalResource);
 	}
 
-	/**
+	/** Constructor.
 	 * @param searchPath is the directory which corresponds to a search path.
 	 * @param assumeEmptyExternalResource if <code>true</code> this entity resolver
 	 *     replies an empty input source when it can't find an external resource. If <code>false</code>

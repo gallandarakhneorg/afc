@@ -26,8 +26,8 @@ import java.net.URL;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * This interface provides the standard JRE implementation to load resources according to
- * several heuristics:<ul>
+ * This interface provides the standard JRE implementation to load resources.
+ * The following heuristics are applied:<ul>
  * <li>search the resource in class paths;</li>
  * <li>search the resource in ./resources subdirectory in class paths.</li>
  * </ul>

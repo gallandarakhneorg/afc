@@ -83,7 +83,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 
 	private boolean isEventFirable = true;
 
-	/**
+	/** Constructor.
 	 * @param accessor is the object that permits to access to the dBase resource.
 	 */
 	DBaseFileAttributeCollection(DBaseFileAttributeAccessor accessor) {

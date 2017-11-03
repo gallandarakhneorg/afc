@@ -42,7 +42,7 @@ public class DTDBasedZippedXMLMagicNumber extends ZippedXMLMagicNumber {
 
 	private final String publicId;
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param systemId is the DTD system ID associated to this magic number.
 	 * @param publicId is the DTD system ID associated to this magic number.
@@ -53,7 +53,7 @@ public class DTDBasedZippedXMLMagicNumber extends ZippedXMLMagicNumber {
 		this.publicId = publicId;
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param formatVersion is the version of the supported format.
 	 * @param systemId is the DTD system ID associated to this magic number.

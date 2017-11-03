@@ -56,7 +56,7 @@ public class DBaseFileAttributeProvider extends AbstractAttributeProvider {
 
 	private DBaseFileAttributeAccessor accessor;
 
-	/**
+	/** Constructor.
 	 * @param accessor is the accessor that permits to obtain attributes from a dBase file.
 	 */
 	DBaseFileAttributeProvider(DBaseFileAttributeAccessor accessor) {

@@ -331,6 +331,10 @@ public class GridMapElementLayer<E extends MapElement> extends MapElementLayer<E
 
 		private E next;
 
+		/** Constructor.
+		 * @param bounds the clipping bounds.
+		 * @param iIterator the original iterator.
+		 */
 		BoundedElementIterator(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds, Iterator<E> iIterator) {
 			this.bounds = bounds;
 			this.iterator = iIterator;
@@ -365,7 +369,8 @@ public class GridMapElementLayer<E extends MapElement> extends MapElementLayer<E
 
 	} /* class BoundedElementIterator */
 
-	/**
+	/** Internal iterator.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -378,6 +383,9 @@ public class GridMapElementLayer<E extends MapElement> extends MapElementLayer<E
 
 		private E lastReplied;
 
+		/** Constructor.
+		 * @param iterator the iterator.
+		 */
 		IteratorWrapper(Iterator<E> iterator) {
 			this.iterator = iterator;
 		}

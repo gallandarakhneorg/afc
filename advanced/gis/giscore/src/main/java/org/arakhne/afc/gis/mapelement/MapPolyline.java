@@ -749,6 +749,8 @@ public class MapPolyline extends MapComposedElement {
 	@SuppressWarnings("rawtypes")
 	private class SegmentRepresentation implements Segment1D {
 
+		/** Constructor.
+		 */
 		SegmentRepresentation() {
 			//
 		}

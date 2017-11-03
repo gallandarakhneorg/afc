@@ -309,7 +309,7 @@ public final class ESRIFileUtil {
 		return shxFile.toURI().toURL();
 	}
 
-	/**
+	/** A factory that creates nothing.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$

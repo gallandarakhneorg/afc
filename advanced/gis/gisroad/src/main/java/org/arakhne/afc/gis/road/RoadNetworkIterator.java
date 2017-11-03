@@ -43,7 +43,7 @@ import org.arakhne.afc.math.graph.GraphIterator;
  */
 final class RoadNetworkIterator extends GraphIterator<RoadSegment, RoadConnection> {
 
-	/**
+	/** Constructor.
 	 * @param network is the road network to iterator on.
 	 * @param segment is the segment from which to start.
 	 * @param starting_point is the segment's point indicating the direction.

@@ -58,7 +58,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 	 */
 	protected ReadOnlyBooleanWrapper isEmpty;
 
-	/**
+	/** Constructor.
 	 * @param type is the type of the element.
 	 * @param tox the x coordinate of the target point.
 	 * @param toy the x coordinate of the target point.
@@ -315,7 +315,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 		private static final long serialVersionUID = 4465791748559255427L;
 
-		/**
+		/** Constructor.
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 */
@@ -449,7 +449,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 		private Point2dfx from = new Point2dfx();
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param tox x coordinate of the target point.
@@ -603,7 +603,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 		private Point2dfx ctrl = new Point2dfx();
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param ctrlx x coordinate of the control point.
@@ -805,7 +805,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 		private Point2dfx ctrl2 = new Point2dfx();
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param ctrlx1 x coordinate of the first control point.
@@ -1052,7 +1052,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 		private Point2dfx from = new Point2dfx();
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param tox x coordinate of the target point.
@@ -1213,7 +1213,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 		private final BooleanProperty sweepFlag;
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param tox x coordinate of the target point.

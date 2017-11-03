@@ -44,7 +44,7 @@ public class XSLBasedXMLMagicNumber extends XMLMagicNumber {
 
 	private final Pattern regEx;
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param rootNode is the name of the XML root node from which XLS information may be extracted.
 	 * @param schema is the XSL Schema ID associated to this magic number.
@@ -53,7 +53,7 @@ public class XSLBasedXMLMagicNumber extends XMLMagicNumber {
 		this(mimeType, rootNode, schema, false);
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param rootNode is the name of the XML root node from which XLS information may be extracted.
 	 * @param schema is the XSL Schema ID associated to this magic number.
@@ -65,7 +65,7 @@ public class XSLBasedXMLMagicNumber extends XMLMagicNumber {
 		this.regEx = useRegEx ? Pattern.compile(normalizeRegEx(schema)) : null;
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param rootNode is the name of the XML root node from which XLS information may be extracted.
 	 * @param formatVersion is the version of the supported format.
@@ -75,7 +75,7 @@ public class XSLBasedXMLMagicNumber extends XMLMagicNumber {
 		this(mimeType, rootNode, formatVersion, schema, false);
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param rootNode is the name of the XML root node from which XLS information may be extracted.
 	 * @param formatVersion is the version of the supported format.

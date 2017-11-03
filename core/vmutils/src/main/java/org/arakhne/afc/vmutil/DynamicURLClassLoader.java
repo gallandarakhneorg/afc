@@ -558,7 +558,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
      */
     protected static final class FactoryDynamicURLClassLoader extends DynamicURLClassLoader {
 
-    	/**
+    	/** Constructor.
     	 * @param parent is the parent class loader.
     	 * @param acc is the accessible context.
     	 * @param urls is the list of urls to insert inside the class loading path.

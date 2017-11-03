@@ -539,7 +539,8 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		}
 	}
 
-	/**
+	/** Internal implementation of a event handler.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -548,6 +549,8 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	 */
 	private class Handler implements AttributeChangeListener {
 
+		/** Constructor.
+		 */
 		Handler() {
 			//
 		}

@@ -392,7 +392,7 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 		return new IteratorWrapper(this.roadNetwork.iterator());
 	}
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -405,6 +405,10 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 
 		private RoadPolyline lastReplied;
 
+		/** Constructor.
+		 *
+		 * @param iterator the original iterator.
+		 */
 		IteratorWrapper(Iterator<RoadSegment> iterator) {
 			this.iterator = iterator;
 		}

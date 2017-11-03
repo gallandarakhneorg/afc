@@ -35,7 +35,7 @@ public class XMLNameConstraint implements XMLConstraint {
 
 	private final String value;
 
-	/**
+	/** Constructor.
 	 * @param value is the value to match.
 	 */
 	public XMLNameConstraint(String value) {

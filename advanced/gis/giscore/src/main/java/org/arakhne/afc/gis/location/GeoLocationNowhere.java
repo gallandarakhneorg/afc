@@ -39,7 +39,7 @@ public final class GeoLocationNowhere extends AbstractGeoLocation {
 
 	private final UUID uid;
 
-	/**
+	/** Constructor.
 	 * @param objectID is the identifier of the associated object.
 	 */
 	public GeoLocationNowhere(UUID objectID) {

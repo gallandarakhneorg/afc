@@ -2522,7 +2522,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		resetBoundingBox();
 	}
 
-	/**
+	/** Internal comparator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -2533,6 +2533,10 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 		private final boolean isValid;
 
+		/** Constructor.
+		 *
+		 * @param isValid validity flag.
+		 */
 		BusItineraryHaltComparator(boolean isValid) {
 			this.isValid = isValid;
 		}

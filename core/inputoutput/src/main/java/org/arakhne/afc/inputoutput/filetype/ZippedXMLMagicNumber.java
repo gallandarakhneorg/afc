@@ -46,7 +46,7 @@ public abstract class ZippedXMLMagicNumber extends ZipMagicNumber {
 
 	private final String rootNode;
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param rootNode is the name of the XML root node from which XLS information may be extracted.
 	 */
@@ -55,7 +55,7 @@ public abstract class ZippedXMLMagicNumber extends ZipMagicNumber {
 		this.rootNode = rootNode;
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param rootNode is the name of the XML root node from which XLS information may be extracted.
 	 * @param formatVersion is the version of the supported format.
@@ -65,8 +65,6 @@ public abstract class ZippedXMLMagicNumber extends ZipMagicNumber {
 		this.rootNode = rootNode;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	protected final boolean isContentType(MagicNumberStream stream) {
 		try {

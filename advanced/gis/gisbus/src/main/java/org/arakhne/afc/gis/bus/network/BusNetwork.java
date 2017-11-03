@@ -1409,7 +1409,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 		super.onBusPrimitiveChanged(event);
 	}
 
-	/**
+	/** Internal comparator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -1418,6 +1418,8 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 */
 	private static class BusStopComparator implements Comparator<BusStop> {
 
+		/** Constructor.
+		 */
 		BusStopComparator() {
 			//
 		}
@@ -1439,7 +1441,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 
 	} // class BusStopComparator
 
-	/**
+	/** Internal comparator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -1448,6 +1450,8 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 */
 	private static class BusHubComparator implements Comparator<BusHub> {
 
+		/** Constructor.
+		 */
 		BusHubComparator() {
 			//
 		}

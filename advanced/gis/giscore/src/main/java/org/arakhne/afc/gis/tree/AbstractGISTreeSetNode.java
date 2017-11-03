@@ -72,7 +72,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 	 */
 	private Rectangle2afp<?, ?, ?, ?, ?, ?> dataBounds;
 
-	/**
+	/** Constructor.
 	 * @param zone is the zone enclosed by this node.
 	 * @param boundsX is the bounds of the node.
 	 * @param boundsY is the bounds of the node.
@@ -88,7 +88,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 		this.horizontalSplit = boundsY + this.nodeHeight / 2.;
 	}
 
-	/**
+	/** Constructor.
 	 * @param zone is the zone enclosed by this node.
 	 * @param elements is the list of elements inside this node. The given list instance is directly used by the node.
 	 * @param boundsX is the bounds of the node.

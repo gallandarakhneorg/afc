@@ -70,7 +70,7 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 		super(segment, starting_point);
 	}
 
-	/**
+	/** Constructor.
 	 * @param path is the path to copy.
 	 * @since 4.0
 	 */
@@ -359,7 +359,7 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 		return new CrossRoadIterator();
 	}
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -386,6 +386,8 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 
 		private int index;
 
+		/** Constructor.
+		 */
 		CrossRoadIterator() {
 			this.iterator = RoadPath.this.iterator();
 			this.index = -1;

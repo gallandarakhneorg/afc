@@ -58,7 +58,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 	private int cellCount;
 
-	/**
+	/** Constructor.
 	 * @param nRows numbers of rows in the grid
 	 * @param nColumns numbers of columns in the grid
 	 * @param bounds are the bounds of the grid cell.
@@ -456,7 +456,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 		throw new IndexOutOfBoundsException(Integer.toString(index));
 	}
 
-	/**
+	/** Internal iterable.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -475,7 +475,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 		private final int maxCol;
 
-		/**
+		/** Constructor.
 		 * @param minRow the minimal row index.
 		 * @param minCol the minimal column index.
 		 * @param maxRow the maximal row index
@@ -498,7 +498,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 	}
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -523,7 +523,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 		private boolean searched;
 
-		/**
+		/** Constructor.
 		 * @param minRow the minimal row index.
 		 * @param minCol the minimal column index.
 		 * @param maxRow the maximal row index
@@ -602,7 +602,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 	}
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -696,7 +696,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 	}
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -802,7 +802,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 	}
 
-	/**
+	/** Internal iterable.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -819,6 +819,12 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 		private final Point2D<?, ?> referencePoint;
 
+		/** Constructor.
+		 * @param row the row.
+		 * @param column the column.
+		 * @param referencePoint the reference point.
+		 * @param maximalDistance the maximal distance to follow.
+		 */
 		AroundIterable(int row, int column, Point2D<?, ?> referencePoint, double maximalDistance) {
 			this.row = row;
 			this.column = column;
@@ -840,7 +846,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 	}
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -869,6 +875,12 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 		private boolean foundInCircle;
 
+		/** Constructor.
+		 * @param row the row.
+		 * @param column the column.
+		 * @param referencePoint the reference point.
+		 * @param maximalDistance the maximal distance to follow.
+		 */
 		AroundIterator(int row, int column, Point2D<?, ?> referencePoint, double maximalDistance) {
 			this.referencePoint = referencePoint;
 			this.row = row;
@@ -1059,7 +1071,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 	}
 
-	/**
+	/** Side of a cell.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$

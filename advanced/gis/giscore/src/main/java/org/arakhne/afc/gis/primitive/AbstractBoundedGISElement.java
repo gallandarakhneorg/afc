@@ -44,7 +44,7 @@ public abstract class AbstractBoundedGISElement<C extends GISContainer<?>, T ext
 
 	private Rectangle2d bounds;
 
-	/**
+	/** Constructor.
 	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
 	 * @param attributeSource is the source of the attributes for this map element.
 	 * @since 4.0

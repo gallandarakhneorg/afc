@@ -1347,7 +1347,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 		private final DBaseFileRecord record;
 
-		/**
+		/** Constructor.
 		 * @param record is the record from which data could be extracted.
 		 */
 		RecordAttributeProvider(DBaseFileRecord record) {

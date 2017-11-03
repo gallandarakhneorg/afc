@@ -110,7 +110,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = false;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value to initialize this new instance.
 	 */
 	public AttributeValueImpl(AttributeValue value) {
@@ -129,7 +129,7 @@ public class AttributeValueImpl implements AttributeValue {
 		}
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param type is the type of this value.
 	 * @param rawValue is the value.
 	 */
@@ -148,7 +148,7 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(boolean value) {
@@ -157,7 +157,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(UUID value) {
@@ -167,7 +167,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(URL value) {
@@ -180,7 +180,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(URI value) {
@@ -193,7 +193,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(InetAddress value) {
@@ -202,7 +202,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(InetSocketAddress value) {
@@ -211,7 +211,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(Enum<?> value) {
@@ -220,7 +220,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(Class<?> value) {
@@ -229,7 +229,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(Date value) {
@@ -238,7 +238,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(float value) {
@@ -247,7 +247,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(double value) {
@@ -256,7 +256,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(int value) {
@@ -265,7 +265,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(long value) {
@@ -274,7 +274,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(Point2D<?, ?> value) {
@@ -283,7 +283,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param x is the value.
 	 * @param y is the value.
 	 */
@@ -293,7 +293,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param x is the value.
 	 * @param y is the value.
 	 */
@@ -303,7 +303,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(Point3D<?, ?> value) {
@@ -312,7 +312,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param x is the value.
 	 * @param y is the value.
 	 * @param z is the value.
@@ -323,7 +323,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param x is the value.
 	 * @param y is the value.
 	 * @param z is the value.
@@ -334,7 +334,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(String value) {
@@ -343,7 +343,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(Point2D<?, ?>[] value) {
@@ -352,7 +352,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(Point3D<?, ?>[] value) {
@@ -361,7 +361,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(Object value) {
@@ -491,7 +491,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return compareRawValues(v0, v1);
 	}
 
-	/** Compare the internal objects of two specified values
+	/** Compare the internal objects of two specified values.
 	 *
 	 * @param arg0 first value.
 	 * @param arg1 second value.

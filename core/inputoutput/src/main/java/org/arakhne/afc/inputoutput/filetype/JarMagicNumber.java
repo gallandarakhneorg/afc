@@ -48,14 +48,14 @@ public class JarMagicNumber extends MagicNumber {
 
 	private static final String METAINF_PATH = "META-INF/MANIFEST.MF"; //$NON-NLS-1$
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 */
 	public JarMagicNumber(MimeType mimeType) {
 		super(mimeType, MimeName.MIME_ZIP.toMimeType());
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param formatVersion is the version of the supported format.
 	 */
@@ -63,8 +63,6 @@ public class JarMagicNumber extends MagicNumber {
 		super(mimeType, formatVersion, MimeName.MIME_ZIP.toMimeType());
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	protected final boolean isContentType(MagicNumberStream stream) {
 		try {

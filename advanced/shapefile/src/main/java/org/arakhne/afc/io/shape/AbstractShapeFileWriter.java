@@ -71,7 +71,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 
 	private AttributeProvider[] attrContainers;
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param dbfWriter is the writer used to export the attributes
@@ -85,7 +85,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		this.shxWriter = shxWriter;
 	}
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param dbfWriter is the writer used to export the attributes
@@ -99,7 +99,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		this.shxWriter = shxWriter;
 	}
 
-	/**
+	/** Constructor.
 	 * @param stream is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param dbfWriter is the writer used to export the attributes
@@ -113,7 +113,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		this.shxWriter = shxWriter;
 	}
 
-	/**
+	/** Constructor.
 	 * @param channel is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param dbfWriter is the writer used to export the attributes

@@ -48,7 +48,7 @@ public class ShapeFileIndexWriter extends AbstractCommonShapeFileWriter<ShapeFil
 
 	private int lastOffsetToWrite = HEADER_BYTES;
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param bounds are the bounds to put in the header.
@@ -59,7 +59,7 @@ public class ShapeFileIndexWriter extends AbstractCommonShapeFileWriter<ShapeFil
 		this.hbounds = bounds;
 	}
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param bounds are the bounds to put in the header.
@@ -70,7 +70,7 @@ public class ShapeFileIndexWriter extends AbstractCommonShapeFileWriter<ShapeFil
 		this.hbounds = bounds;
 	}
 
-	/**
+	/** Constructor.
 	 * @param stream is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param bounds are the bounds to put in the header.
@@ -81,7 +81,7 @@ public class ShapeFileIndexWriter extends AbstractCommonShapeFileWriter<ShapeFil
 		this.hbounds = bounds;
 	}
 
-	/**
+	/** Constructor.
 	 * @param channel is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param bounds are the bounds to put in the header.

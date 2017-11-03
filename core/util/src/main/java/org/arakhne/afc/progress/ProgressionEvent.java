@@ -48,7 +48,7 @@ public class ProgressionEvent extends EventObject {
 
 	private final boolean isIndeterminate;
 
-	/**
+	/** Constructor.
 	 * @param source is the model that was thrown the event.
 	 * @param isRoot indicates if this event was fired by a root task progression source.
 	 */

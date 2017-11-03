@@ -55,7 +55,7 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 
 	private int referenceElementCount;
 
-	/**
+	/** Constructor.
 	 * @param row is the row index of the cell.
 	 * @param column is the column index of the cell.
 	 * @param bounds are the bounds of the grid cell.
@@ -307,7 +307,7 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 
 	} /* class BoundsIterator */
 
-	/**
+	/** Internal iterator.
 	 * @param <P> is the type of the user data inside the node.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -324,7 +324,7 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 
 		private boolean searched;
 
-		/** Contructor.
+		/** Constructor.
 		 * @param iterator the iterator.
 		 */
 		DereferenceIterator(Iterator<GridCellElement<P>> iterator) {

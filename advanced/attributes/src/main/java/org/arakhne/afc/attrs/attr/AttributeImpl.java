@@ -102,96 +102,96 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
-	 * @param value is the vaule of this new attribute.
+	 * @param value is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, AttributeValue value) {
 		super(value);
 		this.name = name;
 	}
 
-	/**
-	 * @param value is the vaule of this new attribute.
+	/** Constructor from the given value.
+	 * @param value is the value of this new attribute.
 	 */
 	public AttributeImpl(Attribute value) {
 		super(value);
 		this.name = value.getName();
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
-	 * @param value is the vaule of this new attribute.
+	 * @param value is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, boolean value) {
 		super(value);
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
-	 * @param value is the vaule of this new attribute.
+	 * @param value is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, Date value) {
 		super(value);
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
-	 * @param value is the vaule of this new attribute.
+	 * @param value is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, float value) {
 		super(value);
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
-	 * @param value is the vaule of this new attribute.
+	 * @param value is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, double value) {
 		super(value);
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
-	 * @param value is the vaule of this new attribute.
+	 * @param value is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, int value) {
 		super(value);
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
-	 * @param value is the vaule of this new attribute.
+	 * @param value is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, long value) {
 		super(value);
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
-	 * @param value is the vaule of this new attribute.
+	 * @param value is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, Object value) {
 		super(value);
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
-	 * @param value is the vaule of this new attribute.
+	 * @param value is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, Point2D<?, ?> value) {
 		super(value);
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param x is the value of this new attribute.
 	 * @param y is the value of this new attribute.
@@ -201,7 +201,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param x is the value of this new attribute.
 	 * @param y is the value of this new attribute.
@@ -211,16 +211,16 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
-	 * @param value is the vaule of this new attribute.
+	 * @param value is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, Point3D<?, ?> value) {
 		super(value);
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param x is the value of this new attribute.
 	 * @param y is the value of this new attribute.
@@ -231,7 +231,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param x is the value of this new attribute.
 	 * @param y is the value of this new attribute.
@@ -242,7 +242,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
@@ -251,7 +251,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
@@ -260,7 +260,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
@@ -269,7 +269,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
@@ -278,7 +278,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
@@ -287,7 +287,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
@@ -296,7 +296,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
@@ -305,7 +305,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
@@ -314,7 +314,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
@@ -323,7 +323,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
+	/** Constructor from the given value.
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */

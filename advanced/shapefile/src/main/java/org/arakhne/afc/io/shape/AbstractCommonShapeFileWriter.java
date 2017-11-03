@@ -99,7 +99,7 @@ public abstract class AbstractCommonShapeFileWriter<E> implements AutoCloseable 
 
 	private int recordIndex;
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @throws IOException in case of error.
@@ -109,7 +109,7 @@ public abstract class AbstractCommonShapeFileWriter<E> implements AutoCloseable 
 		this(new FileOutputStream(shapeName), elementType);
 	}
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @throws IOException in case of error.
@@ -118,7 +118,7 @@ public abstract class AbstractCommonShapeFileWriter<E> implements AutoCloseable 
 		this(shapeName.openConnection().getOutputStream(), elementType);
 	}
 
-	/**
+	/** Constructor.
 	 * @param stream is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @throws IOException in case of error.
@@ -127,7 +127,7 @@ public abstract class AbstractCommonShapeFileWriter<E> implements AutoCloseable 
 		this(Channels.newChannel(stream), elementType);
 	}
 
-	/**
+	/** Constructor.
 	 * @param channel is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @throws IOException in case of error.
@@ -345,8 +345,7 @@ public abstract class AbstractCommonShapeFileWriter<E> implements AutoCloseable 
 			// Copy the channels
 			if (this.buffer != null && this.tempFile != null) {
 				try {
-					try (
-					ReadableByteChannel in = Channels.newChannel(new FileInputStream(this.tempFile))) {
+					try (ReadableByteChannel in = Channels.newChannel(new FileInputStream(this.tempFile))) {
 						final ByteBuffer hbuffer = ByteBuffer.allocate(100);
 						in.read(hbuffer);
 

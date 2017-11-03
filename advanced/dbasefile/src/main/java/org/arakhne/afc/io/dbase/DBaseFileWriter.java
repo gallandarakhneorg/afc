@@ -112,7 +112,7 @@ public class DBaseFileWriter implements AutoCloseable {
 
 	private DBaseCodePage language = DBaseCodePage.WINDOWS_STANDARD;
 
-	/**
+	/** Constructor.
 	 * @param stream is the file to write.
 	 * @throws IOException in case of error.
 	 */
@@ -121,7 +121,7 @@ public class DBaseFileWriter implements AutoCloseable {
 		this(new FileOutputStream(stream));
 	}
 
-	/**
+	/** Constructor.
 	 * @param stream is the file to write.
 	 * @throws IOException in case of error.
 	 */
@@ -129,14 +129,14 @@ public class DBaseFileWriter implements AutoCloseable {
 		this(stream.openConnection().getOutputStream());
 	}
 
-	/**
+	/** Constructor.
 	 * @param channel is the channel to write in.
 	 */
 	public DBaseFileWriter(WritableByteChannel channel) {
 		this(Channels.newOutputStream(channel));
 	}
 
-	/** Constuctor.
+	/** Constructor.
 	 * @param dbfStream is the output stream to use
 	 */
 	public DBaseFileWriter(OutputStream dbfStream) {

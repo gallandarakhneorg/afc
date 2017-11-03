@@ -94,7 +94,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	 */
 	private Collection<RoadNetworkListener> listeners;
 
-	/**
+	/** Constructor.
 	 * @param originalBounds are the bounds of the road network.
 	 * @param attributeProvider is the attribute collection associated to this network.
 	 */
@@ -102,14 +102,14 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 		this(null, originalBounds, attributeProvider);
 	}
 
-	/**
+	/** Constructor.
 	 * @param originalBounds are the bounds of the road network.
 	 */
 	public StandardRoadNetwork(Rectangle2afp<?, ?, ?, ?, ?, ?> originalBounds) {
 		this(null, originalBounds);
 	}
 
-	/**
+	/** Constructor.
 	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
 	 * @param originalBounds are the bounds of the road network.
 	 * @param attributeProvider is the attribute collection associated to this network.
@@ -121,7 +121,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 		initAttributes();
 	}
 
-	/**
+	/** Constructor.
 	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
 	 * @param originalBounds are the bounds of the road network.
 	 * @since 4.0

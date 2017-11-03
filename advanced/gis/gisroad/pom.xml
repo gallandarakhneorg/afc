@@ -20,6 +20,10 @@
 			<groupId>org.arakhne.afc.gis</groupId>
 			<artifactId>giscore</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>mathgraph</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>

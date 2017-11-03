@@ -463,6 +463,10 @@ final class RoadConnectionWithArrivalSegment implements RoadConnection, Iterable
 
     	private final RoadSegment startingSegment;
 
+    	/** Constructor.
+    	 *
+    	 * @param startingSegment the start segment.
+    	 */
     	ConnectionBoundedListIterable(RoadSegment startingSegment) {
     		this.startingSegment = startingSegment;
     	}

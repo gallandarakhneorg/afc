@@ -59,7 +59,7 @@ public class MapPolylineTreeSet<P extends MapPolyline> extends MapElementTreeSet
 		super();
 	}
 
-	/**
+	/** Constructor.
 	 * @param boundsX is the bounds of the scene.
 	 * @param boundsY is the bounds of the scene.
 	 * @param boundsWidth is the bounds of the scene.
@@ -69,7 +69,7 @@ public class MapPolylineTreeSet<P extends MapPolyline> extends MapElementTreeSet
 		super(boundsX, boundsY, boundsWidth, boundsHeight);
 	}
 
-	/**
+	/** Constructor.
 	 * @param bounds are the bounds of the scene stored inside this tree.
 	 */
 	public MapPolylineTreeSet(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds) {
@@ -173,7 +173,7 @@ public class MapPolylineTreeSet<P extends MapPolyline> extends MapElementTreeSet
 
 		private P bestResult;
 
-		/**
+		/** Constructor.
 		 * @param x x coordinate.
 		 * @param y y coordinate.
 		 */
@@ -273,8 +273,8 @@ public class MapPolylineTreeSet<P extends MapPolyline> extends MapElementTreeSet
 			this.insertionCover.set(ix, iy, ax, ay);
 		}
 
-		/** compute the possible insertion of the specified polyline inside the tree and replies the two nearest
-		 * polylines that are already inside the tree
+		/** Compute the possible insertion of the specified polyline inside the tree and replies the two nearest
+		 * polylines that are already inside the tree.
 		 *
 		 * @param <P> is the type of the user data.
 		 * @param tree is the tree inside which the polyline must be inserted

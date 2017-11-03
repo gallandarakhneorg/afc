@@ -38,7 +38,7 @@ public abstract class XMLValueConstraint<E> implements XMLConstraint {
 
 	private final E value;
 
-	/**
+	/** Constructor.
 	 * @param name is the name of the attribute to test with the given value.
 	 * @param value is the value to match.
 	 */

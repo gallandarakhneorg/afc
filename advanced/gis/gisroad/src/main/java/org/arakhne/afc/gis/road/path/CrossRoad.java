@@ -67,7 +67,7 @@ public class CrossRoad implements Comparable<CrossRoad> {
 	 */
 	public final int exitingSegmentIndex;
 
-	/**
+	/** Constructor.
 	 * @param connectionPoint is the connection of the cross road
 	 * @param enteringSegment is the enter segment on the cross road
 	 * @param enteringIndex is the position of the entering segment in the path.

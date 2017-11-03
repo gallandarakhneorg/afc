@@ -20,7 +20,7 @@
 		<module>util</module>
 		<module>inputoutput</module>
 		<module>text</module>
-		<module>math</module>
+		<module>maths</module>
 	</modules>
 
 	<build>

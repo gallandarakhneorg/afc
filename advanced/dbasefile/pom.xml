@@ -18,17 +18,14 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>inputoutput</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.arakhne.afc.advanced</groupId>
 			<artifactId>attributes</artifactId>
 		</dependency>
 
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-			<optional>true</optional>
-		</dependency>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>testtools</artifactId>

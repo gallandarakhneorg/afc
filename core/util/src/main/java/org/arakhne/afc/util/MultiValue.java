@@ -46,7 +46,7 @@ public class MultiValue<T> implements Serializable {
 
 	private T object;
 
-	/**
+	/** Constructor.
 	 * @param initialValue is the initial value of the output parameter.
 	 */
 	public MultiValue(T initialValue) {

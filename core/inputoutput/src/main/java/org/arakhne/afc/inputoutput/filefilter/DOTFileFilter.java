@@ -41,7 +41,7 @@ public class DOTFileFilter extends AbstractFileFilter {
 		this(true);
 	}
 
-	/**
+	/** Constructor.
 	 * @param acceptDirectories is <code>true</code> to
 	 *     permit to this file filter to accept directories;
 	 *     <code>false</code> if the directories should not

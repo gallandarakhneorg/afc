@@ -45,14 +45,14 @@ import org.arakhne.afc.inputoutput.mime.MimeName;
  */
 public abstract class ZipMagicNumber extends MagicNumber {
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 */
 	public ZipMagicNumber(MimeType mimeType) {
 		super(mimeType, MimeName.MIME_ZIP.toMimeType());
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param formatVersion is the version of the supported format.
 	 */

@@ -80,14 +80,14 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 		this.worldBounds = null;
 	}
 
-	/**
+	/** Constructor.
 	 * @param bounds are the bounds of the scene stored inside this tree.
 	 */
 	AbstractGISTreeSet(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds) {
 		this.worldBounds = bounds;
 	}
 
-	/**
+	/** Constructor.
 	 * @param boundsX is the bounds of the scene.
 	 * @param boundsY is the bounds of the scene.
 	 * @param boundsWidth is the bounds of the scene.
@@ -565,7 +565,7 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	// Subclasses
 	//----------------------------------------------------------------
 
-	/**
+	/** Internal collection.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -578,6 +578,9 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 
 		private final Collection<?> collection;
 
+		/** Constructor.
+		 * @param col the original collection.
+		 */
 		CheckedCollection(Collection<?> col) {
 			assert col != null;
 			this.collection = col;
@@ -661,7 +664,7 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 			return false;
 		}
 
-		/**
+		/** Internal iterator.
 		 * @author $Author: sgalland$
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
@@ -674,6 +677,8 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 
 			private final Iterator<?> it;
 
+			/** Constructor.
+			 */
 			@SuppressWarnings({ "unchecked", "synthetic-access" })
 			CheckedIterator() {
 				this.it = CheckedCollection.this.collection.iterator();
@@ -737,7 +742,7 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 
 		private final Rectangle2afp<?, ?, ?, ?, ?, ?> bounds;
 
-		/**
+		/** Constructor.
 		 * @param location the location.
 		 */
 		GeoLocationSelector(GeoLocation location) {
@@ -819,6 +824,9 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 
 		private final Iterator<? extends AbstractGISTreeSetNode<?, ?>> iterator;
 
+		/** Constructor.
+		 * @param iterator the iterator.
+		 */
 		BoundsIterator(Iterator<? extends AbstractGISTreeSetNode<?, ?>> iterator) {
 			this.iterator = iterator;
 		}
@@ -854,6 +862,11 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 
 		private final Point2d point;
 
+		/** Constructor.
+		 *
+		 * @param x x coordinate.
+		 * @param y y coordinate.
+		 */
 		PointSelector(double x, double y) {
 			this.point = new Point2d(x, y);
 		}

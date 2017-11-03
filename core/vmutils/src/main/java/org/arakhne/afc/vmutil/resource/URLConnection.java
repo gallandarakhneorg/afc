@@ -55,7 +55,7 @@ class URLConnection extends java.net.URLConnection {
 
 	private java.net.URLConnection connection;
 
-	/**
+	/** Constructor.
 	 * @param url is the "file"-protocol url to use.
 	 */
 	protected URLConnection(URL url) {

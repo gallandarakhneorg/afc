@@ -30,8 +30,8 @@ import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * This utility class provides to load resources according to
- * several heuristics:<ul>
+ * This utility class provides to load resources.
+ * The following heuristics are applied:<ul>
  * <li>search the resource in class paths;</li>
  * <li>search the resource in ./resources subdirectory in class paths.</li>
  * </ul>

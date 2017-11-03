@@ -44,7 +44,7 @@ class WeakGISTreeSetNode<P extends GISPrimitive> extends AbstractGISTreeSetNode<
 
 	private static final long serialVersionUID = 6752729239913440515L;
 
-	/**
+	/** Constructor.
 	 * @param zone is the zone enclosed by this node.
 	 * @param boundsX is the bounds of the scene.
 	 * @param boundsY is the bounds of the scene.
@@ -56,7 +56,7 @@ class WeakGISTreeSetNode<P extends GISPrimitive> extends AbstractGISTreeSetNode<
 		addTreeNodeListener(this);
 	}
 
-	/**
+	/** Constructor.
 	 * @param zone is the zone enclosed by this node.
 	 * @param elements is the list used to store the elements in this node.
 	 * @param boundsX is the bounds of the scene.

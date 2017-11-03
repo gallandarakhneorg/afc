@@ -90,7 +90,7 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		this(null, null);
 	}
 
-	/**
+	/** Constructor.
 	 * @param heuristic is the heuristic that must be use by the A* algorithm.
 	 */
 	public RoadAStar(AStarHeuristic<? super RoadConnection> heuristic) {
@@ -107,7 +107,7 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		this(null, pathFactory);
 	}
 
-	/**
+	/** Constructor.
 	 * @param heuristic is the heuristic that must be use by the A* algorithm.
 	 * @param pathFactory is the factory to use to create a road path.
 	 */

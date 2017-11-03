@@ -59,7 +59,7 @@ public abstract class PathElement3dfx implements PathElement3afp {
 	 */
 	protected ReadOnlyBooleanWrapper isEmpty;
 
-	/**
+	/** Constructor.
 	 * @param type is the type of the element.
 	 * @param tox the x coordinate of the target point.
 	 * @param toy the x coordinate of the target point.
@@ -257,7 +257,7 @@ public abstract class PathElement3dfx implements PathElement3afp {
 	static class MovePathElement3dfx extends PathElement3dfx {
 		private static final long serialVersionUID = 4465791748559255427L;
 
-		/**
+		/** Constructor.
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 * @param toz z coordinate of the target point.
@@ -475,7 +475,7 @@ public abstract class PathElement3dfx implements PathElement3afp {
 
 		private Point3dfx from = new Point3dfx();
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param fromz z coordinate of the origin point.
@@ -720,7 +720,7 @@ public abstract class PathElement3dfx implements PathElement3afp {
 
 		private Point3dfx ctrl = new Point3dfx();
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param fromz z coordinate of the origin point.
@@ -999,7 +999,7 @@ public abstract class PathElement3dfx implements PathElement3afp {
 
 		private Point3dfx ctrl2 = new Point3dfx();
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param fromz z coordinate of the origin point.
@@ -1309,7 +1309,7 @@ public abstract class PathElement3dfx implements PathElement3afp {
 
 		private Point3dfx from = new Point3dfx();
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param fromz z coordinate of the origin point.

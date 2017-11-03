@@ -40,7 +40,7 @@ public class ProgressionInputStream extends FilterInputStream {
 
 	private int read;
 
-	/**
+	/** Constructor.
 	 * @param in is the input to read
 	 * @param progression is the progression model used to notify on the reading progression.
 	 */
@@ -57,7 +57,7 @@ public class ProgressionInputStream extends FilterInputStream {
 		this.monitor.setProperties(0, 0, this.totalSize, false);
 	}
 
-	/**
+	/** Constructor.
 	 * @param in is the input to read
 	 * @param totalSize is the total number of bytes to read from the stream.
 	 * @param progression is the progression model used to notify on the reading progression.

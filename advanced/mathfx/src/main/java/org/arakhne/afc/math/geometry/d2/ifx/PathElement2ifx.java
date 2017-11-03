@@ -59,7 +59,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 */
 	protected ReadOnlyBooleanWrapper isEmpty;
 
-	/**
+	/** Constructor.
 	 * @param type is the type of the element.
 	 * @param tox the x coordinate of the target point.
 	 * @param toy the x coordinate of the target point.
@@ -318,7 +318,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		private static final long serialVersionUID = 7240290153738547626L;
 
-		/**
+		/** Constructor.
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 */
@@ -452,7 +452,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		private final Point2ifx from = new Point2ifx();
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param tox x coordinate of the target point.
@@ -607,7 +607,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		private final Point2ifx ctrl = new Point2ifx();
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param ctrlx x coordinate of the control point.
@@ -812,7 +812,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		private final Point2ifx ctrl2 = new Point2ifx();
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param ctrlx1 x coordinate of the first control point.
@@ -1061,7 +1061,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		private final Point2ifx from = new Point2ifx();
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param tox x coordinate of the target point.
@@ -1225,7 +1225,7 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		private final BooleanProperty sweepFlag;
 
-		/**
+		/** Constructor.
 		 * @param fromx x coordinate of the origin point.
 		 * @param fromy y coordinate of the origin point.
 		 * @param tox x coordinate of the target point.

@@ -40,14 +40,14 @@ public class GISEditableChangeAttributeChangeAdapter implements AttributeChangeL
 
 	private final GISEditable wrapper;
 
-	/**
+	/** Constructor.
 	 * @param listener is the listener to notify about any attribute change.
 	 */
 	public GISEditableChangeAttributeChangeAdapter(GISEditableChangeListener listener) {
 		this(listener, null);
 	}
 
-	/**
+	/** Constructor.
 	 * @param listener is the listener to notify about any attribute change.
 	 * @param wrapper is the GISEditable to give to the listener when an attribute has changed,
 	 *     if <code>null</code> only the attribute change events with a GISEditable source will

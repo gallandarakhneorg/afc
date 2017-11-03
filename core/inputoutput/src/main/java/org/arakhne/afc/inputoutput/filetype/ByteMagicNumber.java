@@ -43,7 +43,7 @@ public class ByteMagicNumber extends MagicNumber {
 
 	private final int offset;
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param formatVersion is the version of the supported format.
 	 * @param content is the magic string inside the file.
@@ -55,7 +55,7 @@ public class ByteMagicNumber extends MagicNumber {
 		this.offset = offset;
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param content is the magic string inside the file.
 	 * @param offset is the position of the magic string inside the file.

@@ -40,7 +40,7 @@ public class InvalidAttributeTypeException extends AttributeException {
 		//
 	}
 
-	/**
+	/** Constructor with the failing attribute's name.
 	 * @param name is the name of the attribute for which the type was invalid.
 	 */
 	public InvalidAttributeTypeException(String name) {

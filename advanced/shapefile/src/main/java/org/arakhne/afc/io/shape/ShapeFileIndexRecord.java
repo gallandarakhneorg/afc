@@ -65,7 +65,7 @@ public class ShapeFileIndexRecord implements Comparable<ShapeFileIndexRecord> {
 	 */
 	private final int index;
 
-	/**
+	/** Constructor.
 	 * @param recordOffset is the offset of the record, including the file header.
 	 * @param length the length of the record.
 	 * @param recordContentSize if <code>true</code> indicates that the given length is

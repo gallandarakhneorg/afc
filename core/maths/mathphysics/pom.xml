@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>maths</artifactId>
+		<groupId>org.arakhne.afc.core</groupId>
+		<version>14.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>mathphysics</artifactId>
+	<name>Physics Tools</name>
+	<inceptionYear>2013</inceptionYear>
+
+	<properties>
+		<manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>mathgeom</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>testtools</artifactId>
+			<scope>test</scope>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<compilerArguments>
+						<properties>${jdtcompilerconfpath}</properties>
+					</compilerArguments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<sourceDirectory>src/main/java</sourceDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<archive>
+						<manifestFile>${manifest.file}</manifestFile>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+					</archive>
+
+					<instructions>
+						<Export-Package>org.arakhne.afc.math.physics.*</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

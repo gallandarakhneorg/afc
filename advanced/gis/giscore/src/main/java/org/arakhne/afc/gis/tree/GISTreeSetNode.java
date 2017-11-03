@@ -36,7 +36,7 @@ class GISTreeSetNode<P extends GISPrimitive> extends AbstractGISTreeSetNode<P, G
 
 	private static final long serialVersionUID = 3580442985591151463L;
 
-	/**
+	/** Constructor.
 	 * @param zone is the zone enclosed by this node.
 	 * @param boundsX is the bounds of the scene.
 	 * @param boundsY is the bounds of the scene.

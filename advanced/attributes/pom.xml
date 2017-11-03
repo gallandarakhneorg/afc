@@ -18,7 +18,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>math</artifactId>
+			<artifactId>mathgeom</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
@@ -27,13 +27,6 @@
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>testtools</artifactId>
-			<scope>test</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>math</artifactId>
-			<type>test-jar</type>
 			<scope>test</scope>
 			<optional>true</optional>
 		</dependency>

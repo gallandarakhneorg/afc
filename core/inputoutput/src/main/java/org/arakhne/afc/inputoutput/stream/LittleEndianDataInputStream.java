@@ -40,7 +40,7 @@ import org.arakhne.afc.inputoutput.endian.EndianNumbers;
 @SuppressWarnings("checkstyle:magicnumber")
 public class LittleEndianDataInputStream extends DataInputStream {
 
-	/**
+	/** Constructor.
 	 * @param inputStream is the input stream to read from.
 	 */
 	public LittleEndianDataInputStream(InputStream inputStream) {

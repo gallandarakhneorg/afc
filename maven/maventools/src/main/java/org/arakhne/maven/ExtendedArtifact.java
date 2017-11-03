@@ -79,7 +79,7 @@ public final class ExtendedArtifact implements Artifact {
 
 	private Map<Object, ArtifactMetadata> metadataMap;
 
-	/**
+	/** Constructor.
 	 * @param artifact the artifact.
 	 * @param name name of the artifact.
 	 * @param website website.

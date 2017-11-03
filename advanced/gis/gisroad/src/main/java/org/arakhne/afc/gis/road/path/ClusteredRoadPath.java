@@ -617,7 +617,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 		return new ClusteredSegmentIterator();
 	}
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -636,6 +636,8 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 
 		private RoadSegment next;
 
+		/** Constructor.
+		 */
 		ClusteredSegmentIterator() {
 			this.pathIterator = new PathIterator();
 		}
@@ -692,7 +694,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 
 	} // class ClusteredSegmentIterator
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -709,6 +711,11 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 
 		private RoadSegment repliedSegment;
 
+		/** Constructor.
+		 *
+		 * @param pathIterator the path iterator to use.
+		 * @param path the path.
+		 */
 		SegmentIterator(PathIterator pathIterator, RoadPath path) {
 			this.pathIterator = pathIterator;
 			this.path = path;
@@ -749,7 +756,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 
 	} // class SegmentIterator
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -760,6 +767,8 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 
 		private Iterator<RoadPath> iterator;
 
+		/** Constructor.
+		 */
 		@SuppressWarnings("synthetic-access")
 		PathIterator() {
 			this.iterator = ClusteredRoadPath.this.paths.iterator();

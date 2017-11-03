@@ -53,7 +53,7 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 		super();
 	}
 
-	/**
+	/** Constructor.
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 * @param arcWidth the width of the arcs.

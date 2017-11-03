@@ -57,7 +57,7 @@ public class MapElementTreeSet<P extends MapElement> extends StandardGISTreeSet<
 		super();
 	}
 
-	/**
+	/** Constructor.
 	 * @param boundsX is the bounds of the scene.
 	 * @param boundsY is the bounds of the scene.
 	 * @param boundsWidth is the bounds of the scene.
@@ -67,7 +67,7 @@ public class MapElementTreeSet<P extends MapElement> extends StandardGISTreeSet<
 		super(boundsX, boundsY, boundsWidth, boundsHeight);
 	}
 
-	/**
+	/** Constructor.
 	 * @param bounds are the bounds of the scene stored inside this tree.
 	 */
 	public MapElementTreeSet(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds) {
@@ -129,7 +129,7 @@ public class MapElementTreeSet<P extends MapElement> extends StandardGISTreeSet<
 
 		private P bestResult;
 
-		/**
+		/** Constructor.
 		 * @param x x coordinate.
 		 * @param y y coordinate.
 		 */

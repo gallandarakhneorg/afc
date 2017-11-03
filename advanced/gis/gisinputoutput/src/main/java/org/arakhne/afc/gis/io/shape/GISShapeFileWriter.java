@@ -509,7 +509,7 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 		return this.mapProjection;
 	}
 
-	/**
+	/** Internal provider.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -528,6 +528,10 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 
 		private final boolean addedUuid;
 
+		/** Constructor.
+		 * @param wrappedContainer the wrapped container.
+		 * @param element the associated element.
+		 */
 		AttributeProviderWrapper(AttributeProvider wrappedContainer, MapElement element) {
 			this.wrappedContainer = wrappedContainer;
 			this.element = element;

@@ -1301,7 +1301,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 
 		private MavenProject next;
 
-		/**
+		/** Constuctor.
 		 * @param project is the project for which the dependencies must
 		 *     be replied.
 		 * @param isTransitive indicates if the dependencies of dependencies must also be replied
@@ -1395,7 +1395,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 
 		private Plugin next;
 
-		/**
+		/** Constructor.
 		 * @param project the project.
 		 * @param isTransitive indicates if the dependency is transitive.
 		 */

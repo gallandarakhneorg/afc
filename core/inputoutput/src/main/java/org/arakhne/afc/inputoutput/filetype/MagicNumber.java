@@ -46,7 +46,7 @@ public abstract class MagicNumber implements Comparable<MagicNumber> {
 
 	private final String formatVersion;
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param hostMimeTypes are the MIME types given by the low-level analyzer and associated to this number.
 	 */
@@ -54,7 +54,7 @@ public abstract class MagicNumber implements Comparable<MagicNumber> {
 		this(mimeType, null, hostMimeTypes);
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param formatVersion is a string representing the format version supported by this magic number.
 	 * @param hostMimeTypes are the MIME types given by the low-level analyzer and associated to this number.
@@ -65,7 +65,7 @@ public abstract class MagicNumber implements Comparable<MagicNumber> {
 		this.formatVersion = formatVersion;
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param hostMimeTypes are the MIME types given by the low-level analyzer and associated to this number.
 	 * @throws IllegalArgumentException if one of the MIME types cannot be parsed.
@@ -74,7 +74,7 @@ public abstract class MagicNumber implements Comparable<MagicNumber> {
 		this(mimeType, null, hostMimeTypes);
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param formatVersion is a string representing the format version supported by this magic number.
 	 * @param hostMimeTypes are the MIME types given by the low-level analyzer and associated to this number.

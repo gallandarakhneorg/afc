@@ -60,7 +60,7 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 
 	private final Set<R> theSet;
 
-	/**
+	/** Constructor.
 	 * @param theSet is the internal data structure to use.
 	 * @param referenceType is the type of the references.
 	 */

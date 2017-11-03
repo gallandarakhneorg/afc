@@ -48,7 +48,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 
 	private final ElementExporter<E> exporter;
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -58,7 +58,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this(shapeName, elementType, exporter, null, null);
 	}
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -68,7 +68,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this(shapeName, elementType, exporter, null, null);
 	}
 
-	/**
+	/** Constructor.
 	 * @param stream is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -78,7 +78,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this(stream, elementType, exporter, null, null);
 	}
 
-	/**
+	/** Constructor.
 	 * @param channel is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -89,7 +89,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this(channel, elementType, exporter, null, null);
 	}
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -101,7 +101,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this(shapeName, elementType, exporter, null, shxWriter);
 	}
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -113,7 +113,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this(shapeName, elementType, exporter, null, shxWriter);
 	}
 
-	/**
+	/** Constructor.
 	 * @param stream is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -125,7 +125,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this(stream, elementType, exporter, null, shxWriter);
 	}
 
-	/**
+	/** Constructor.
 	 * @param channel is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -137,7 +137,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this(channel, elementType, exporter, null, shxWriter);
 	}
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -149,7 +149,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this(shapeName, elementType, exporter, dbfWriter, null);
 	}
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -161,7 +161,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this(shapeName, elementType, exporter, dbfWriter, null);
 	}
 
-	/**
+	/** Constructor.
 	 * @param stream is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -173,7 +173,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this(stream, elementType, exporter, dbfWriter, null);
 	}
 
-	/**
+	/** Constructor.
 	 * @param channel is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -185,7 +185,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this(channel, elementType, exporter, dbfWriter, null);
 	}
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -200,7 +200,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this.exporter = exporter;
 	}
 
-	/**
+	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -215,7 +215,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this.exporter = exporter;
 	}
 
-	/**
+	/** Constructor.
 	 * @param stream is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.
@@ -231,7 +231,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 		this.exporter = exporter;
 	}
 
-	/**
+	/** Constructor.
 	 * @param channel is the file to write
 	 * @param elementType is the type of the elements to write.
 	 * @param exporter is the exporter object which will invoked to retreive element data.

@@ -52,14 +52,14 @@ public class WeakGISTreeSet<P extends GISPrimitive>
 		super();
 	}
 
-	/**
+	/** Constructor.
 	 * @param bounds are the bounds of the scene stored inside this tree.
 	 */
 	public WeakGISTreeSet(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds) {
 		super(bounds);
 	}
 
-	/**
+	/** Constructor.
 	 * @param boundsX is the bounds of the scene.
 	 * @param boundsY is the bounds of the scene.
 	 * @param boundsWidth is the bounds of the scene.

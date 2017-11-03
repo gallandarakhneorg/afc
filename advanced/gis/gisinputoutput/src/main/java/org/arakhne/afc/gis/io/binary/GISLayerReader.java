@@ -219,7 +219,7 @@ public class GISLayerReader implements AutoCloseable, Iterable<MapLayer> {
 		this.restToRead = this.input.read();
 	}
 
-	/**
+	/** Internal iterator.
 	 * @param <T> is the type of the expected layers.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -233,7 +233,7 @@ public class GISLayerReader implements AutoCloseable, Iterable<MapLayer> {
 
 		private T next;
 
-		/**
+		/** Constructor.
 		 * @param type is the expected type of the layers.
 		 */
 		LayerReaderIterator(Class<T> type) {

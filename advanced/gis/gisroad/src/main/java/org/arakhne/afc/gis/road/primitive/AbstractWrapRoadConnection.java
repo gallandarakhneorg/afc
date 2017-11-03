@@ -44,7 +44,7 @@ public abstract class AbstractWrapRoadConnection implements RoadConnection {
 	 */
 	protected RoadConnection connection;
 
-	/**
+	/** Constructor.
 	 * @param con is the wrapped connection.
 	 */
 	public AbstractWrapRoadConnection(RoadConnection con) {

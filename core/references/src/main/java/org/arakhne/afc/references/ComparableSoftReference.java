@@ -39,14 +39,14 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class ComparableSoftReference<T> extends SoftReference<T> implements Comparable<Object> {
 
-	/**
+	/** Constructor.
 	 * @param referent is the referenced object.
 	 */
 	public ComparableSoftReference(T referent) {
 		super(referent);
 	}
 
-	/**
+	/** Constructor.
 	 * @param referent is the referenced object.
 	 * @param queue is the object that will be notified of the memory released for the referenced object.
 	 */

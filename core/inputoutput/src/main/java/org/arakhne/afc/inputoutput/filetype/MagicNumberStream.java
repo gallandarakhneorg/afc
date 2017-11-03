@@ -42,7 +42,7 @@ public final class MagicNumberStream extends InputStream {
 
 	private BufferedMagicNumberStream overridingStream;
 
-	/**
+	/** Constructor.
 	 * @param url is the url of the input stream to read.
 	 * @param is is the input stream.
 	 */

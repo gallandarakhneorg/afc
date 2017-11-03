@@ -50,14 +50,14 @@ public abstract class ZipArchiveMagicNumber extends MagicNumber {
 
 	private final File innerFile;
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 */
 	public ZipArchiveMagicNumber(MimeType mimeType) {
 		this(mimeType, (File) null);
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param formatVersion is the version of the supported format.
 	 * @param innerFile is the file to open from the inside of the Zip archive
@@ -71,7 +71,7 @@ public abstract class ZipArchiveMagicNumber extends MagicNumber {
 		this.innerFile = innerFile;
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param innerFile is the file to open from the inside of the Zip archive
 	 *     to test the type. The filename is relative to the root of the zip file
@@ -84,7 +84,7 @@ public abstract class ZipArchiveMagicNumber extends MagicNumber {
 		this.innerFile = innerFile;
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param formatVersion is the version of the supported format.
 	 */

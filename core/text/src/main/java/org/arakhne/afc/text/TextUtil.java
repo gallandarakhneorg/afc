@@ -1769,7 +1769,7 @@ public final class TextUtil {
 
 		private final List<String> buffer;
 
-		/**
+		/** Constructor.
 		 * @param buffer is the buffer to fill.
 		 */
 		CutStringToArray(List<String> buffer) {
@@ -1794,7 +1794,7 @@ public final class TextUtil {
 
 		private final StringBuilder buffer;
 
-		/**
+		/** Constructor.
 		 * @param buffer is the buffer to fill.
 		 */
 		CutStringToString(StringBuilder buffer) {
@@ -1869,7 +1869,7 @@ public final class TextUtil {
 			++this.size;
 		}
 
-		/** Replies the array;
+		/** Replies the array.
 		 *
 		 * @return the array.
 		 */

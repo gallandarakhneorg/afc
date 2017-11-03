@@ -85,7 +85,7 @@ public final class BusNetworkUtilities {
 		return new NetworkHaltIterator(busNetwork);
 	}
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -100,6 +100,9 @@ public final class BusNetworkUtilities {
 
 		private BusItineraryHalt next;
 
+		/** Constructor.
+		 * @param line the line.
+		 */
 		LineHaltIterator(BusLine line) {
 			this.itineraries = line.busItineraryIterator();
 			searchNext();
@@ -134,7 +137,7 @@ public final class BusNetworkUtilities {
 
 	} // class NetworkLineIterator
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -149,6 +152,10 @@ public final class BusNetworkUtilities {
 
 		private BusItineraryHalt next;
 
+		/** Constructor.
+		 *
+		 * @param network the network.
+		 */
 		NetworkHaltIterator(BusNetwork network) {
 			this.lines = network.busLineIterator();
 			searchNext();

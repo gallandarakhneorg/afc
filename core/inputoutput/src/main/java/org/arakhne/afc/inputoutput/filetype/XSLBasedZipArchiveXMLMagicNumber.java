@@ -41,7 +41,7 @@ public class XSLBasedZipArchiveXMLMagicNumber extends ZipArchiveXMLMagicNumber {
 
 	private final String schema;
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param rootNode is the name of the XML root node from which XLS information may be extracted.
 	 * @param schema is the XSL Schema ID associated to this magic number.
@@ -56,7 +56,7 @@ public class XSLBasedZipArchiveXMLMagicNumber extends ZipArchiveXMLMagicNumber {
 		this.schema = schema;
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param rootNode is the name of the XML root node from which XLS information may be extracted.
 	 * @param schema is the XSL Schema ID associated to this magic number.

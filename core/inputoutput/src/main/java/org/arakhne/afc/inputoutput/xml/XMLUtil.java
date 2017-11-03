@@ -2204,7 +2204,7 @@ public final class XMLUtil {
 
 		private int index;
 
-		/**
+		/** Constructor.
 		 * @param parent the parent node.
 		 * @param nodeName the child node name.
 		 */

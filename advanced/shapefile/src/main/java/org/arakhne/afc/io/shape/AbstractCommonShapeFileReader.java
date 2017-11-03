@@ -701,7 +701,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 		return this.buffer.getDouble();
 	}
 
-	/**
+	/** Iterator on the read elements.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$

@@ -337,7 +337,7 @@ public class TreeMapElementLayer<E extends MapElement> extends MapElementLayer<E
 		return new IteratorWrapper(this.mapElements.iterator());
 	}
 
-	/**
+	/** Internal iterator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -350,6 +350,9 @@ public class TreeMapElementLayer<E extends MapElement> extends MapElementLayer<E
 
 		private E lastReplied;
 
+		/** Constructor.
+		 * @param iterator the original iterator.
+		 */
 		IteratorWrapper(Iterator<E> iterator) {
 			this.iterator = iterator;
 		}

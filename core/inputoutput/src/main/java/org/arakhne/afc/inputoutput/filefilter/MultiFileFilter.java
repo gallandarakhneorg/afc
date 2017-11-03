@@ -50,7 +50,7 @@ public class MultiFileFilter implements FileFilter {
 		this(true, description, filters);
 	}
 
-	/**
+	/** Constructor.
 	 * @param acceptDirectories1 is <code>true</code> to
 	 *     permit to this file filter to accept directories;
 	 *     <code>false</code> if the directories should not

@@ -81,14 +81,15 @@ public class InformedArrayList<E> extends ArrayList<E> {
 		this.clazz = extractClassFrom(collection);
 	}
 
-	/**
+	/** Constructor.
+	 *
 	 * @param clazz is the initial top type of the array's elements.
 	 */
 	public InformedArrayList(Class<? extends E> clazz) {
 		this.clazz = clazz;
 	}
 
-	/**
+	/** Constructor.
 	 * @param initialCapacity is the initial capacity.
 	 * @param clazz is the initial top type of the array's elements.
 	 */
@@ -97,7 +98,7 @@ public class InformedArrayList<E> extends ArrayList<E> {
 		this.clazz = clazz;
 	}
 
-	/**
+	/** Constructor.
 	 * @param collection is the list of initial elements.
 	 * @param clazz is the initial top type of the array's elements.
 	 */

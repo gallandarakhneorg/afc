@@ -287,12 +287,12 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 	 */
 	protected interface ReferencableValue<K, V> extends Entry<K, V> {
 
-		/**
+		/** Replies if a value is enqueued.
 		 * @return if the value is enqueued into a reference queue.
 		 */
 		boolean isEnqueued();
 
-		/**
+		/** Replies the value.
 		 * @return the weak/soft reference.
 		 */
 		V get();
@@ -603,7 +603,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		private final VKT key;
 
-		/**
+		/** Constructor.
 		 * @param key is the key.
 		 * @param value is the value.
 		 * @param queue is the memory-release listener.
@@ -682,7 +682,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		private final VKT key;
 
-		/**
+		/** Constructor.
 		 * @param key is the key.
 		 * @param value is the value.
 		 * @param queue is the memory-release listener.
@@ -760,7 +760,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		private final VKT key;
 
-		/**
+		/** Constructor.
 		 * @param key is the key.
 		 * @param value is the value.
 		 * @param queue is the memory-release listener.

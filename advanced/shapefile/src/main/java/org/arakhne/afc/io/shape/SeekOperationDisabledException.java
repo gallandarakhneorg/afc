@@ -20,7 +20,8 @@
 
 package org.arakhne.afc.io.shape;
 
-/**
+/** Exception when the seek operation cannot be applied on a Shape file.
+ *
  * @author $Author: sgalland$
  * @author $Author: olamotte$
  * @version $FullVersion$

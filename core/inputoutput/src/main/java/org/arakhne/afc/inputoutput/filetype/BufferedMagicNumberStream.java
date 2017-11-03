@@ -45,7 +45,7 @@ final class BufferedMagicNumberStream extends FilterInputStream {
 
 	private int pos;
 
-	/**
+	/** Constructor.
 	 * @param is is the input stream.
 	 */
 	BufferedMagicNumberStream(InputStream is) {

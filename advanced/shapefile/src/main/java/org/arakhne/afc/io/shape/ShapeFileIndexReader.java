@@ -69,16 +69,16 @@ public class ShapeFileIndexReader extends AbstractCommonShapeFileReader<ShapeFil
 
 	/** Constructor.
 	 * @param file is the file to read
-	 *  @throws IOException in case of error.
+	 * @throws IOException in case of error.
 	 */
 	@SuppressWarnings("resource")
 	public ShapeFileIndexReader(File file) throws IOException {
 		this(new FileInputStream(file));
 	}
 
-	/**
+	/** Constructor.
 	 * @param file is the file to read
-	 *  @throws IOException in case of error.
+	 * @throws IOException in case of error.
 	 */
 	public ShapeFileIndexReader(URL file) throws IOException {
 		this(file.openStream());
@@ -111,7 +111,7 @@ public class ShapeFileIndexReader extends AbstractCommonShapeFileReader<ShapeFil
 	 * {@link EOFException} will be thrown.
 	 *
 	 * @param recordIndex is the index of record to reply at the next read.
-	 *  @throws IOException in case of error.
+	 * @throws IOException in case of error.
 	 */
 	@Override
 	public void seek(int recordIndex) throws IOException {

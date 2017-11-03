@@ -71,7 +71,7 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 		this.z = zProperty;
 	}
 
-	/**
+	/** Constructor.
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple3ifx(Tuple3D<?> tuple) {
@@ -79,14 +79,14 @@ public class Tuple3ifx<RT extends Tuple3ifx<? super RT>> implements Tuple3D<RT> 
 		set(tuple.ix(), tuple.iy(), tuple.iz());
 	}
 
-	/**
+	/** Constructor.
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple3ifx(int[] tuple) {
 		this(tuple[0], tuple[1], tuple[2]);
 	}
 
-	/**
+	/** Constructor.
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple3ifx(double[] tuple) {

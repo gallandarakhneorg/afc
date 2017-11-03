@@ -213,7 +213,7 @@ public final class FileType {
 
 		private final Collection<MagicNumber> defaultNumbers = new ArrayList<>();
 
-		/**
+		/** Constructor.
 		 * @param parent is the parent of this content type map, which will be invoked if this map does not know the answer.
 		 */
 		public ContentFileTypeMap(FileTypeMap parent) {
@@ -226,8 +226,6 @@ public final class FileType {
 			this.parent = new SoftReference<>(FileTypeMap.getDefaultFileTypeMap());
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public String getContentType(File filename) {
 			if (!filename.exists()) {

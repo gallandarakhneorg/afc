@@ -78,6 +78,8 @@ public class ReadOnlyUnitVectorWrapper extends UnitVectorProperty {
 	 */
 	private class ReadOnlyPropertyImpl extends ReadOnlyObjectPropertyBase<Vector2dfx> implements ReadOnlyUnitVectorProperty {
 
+		/** Constructor.
+		 */
 		ReadOnlyPropertyImpl() {
 			//
 		}

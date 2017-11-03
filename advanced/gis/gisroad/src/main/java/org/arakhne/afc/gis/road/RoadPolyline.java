@@ -1057,7 +1057,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 		return this;
 	}
 
-	/**
+	/** Internationa point fusion validator.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -1068,6 +1068,8 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 
 		private double sqDistance;
 
+		/** Constructor.
+		 */
 		Validator() {
 			//
 		}

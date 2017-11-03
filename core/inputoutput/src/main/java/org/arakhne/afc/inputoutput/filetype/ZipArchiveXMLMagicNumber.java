@@ -51,7 +51,7 @@ public abstract class ZipArchiveXMLMagicNumber extends ZipArchiveMagicNumber {
 
 	private final String rootNode;
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param formatVersion is the version of the supported format.
 	 * @param innerFile is the file to open from the inside of the Zip archive
@@ -64,7 +64,7 @@ public abstract class ZipArchiveXMLMagicNumber extends ZipArchiveMagicNumber {
 		this.rootNode = rootNode;
 	}
 
-	/**
+	/** Constructor.
 	 * @param mimeType is the MIME type associated to this magic number.
 	 * @param innerFile is the file to open from the inside of the Zip archive
 	 *     to test the type. The filename is relative to the root of the zip file
@@ -76,8 +76,6 @@ public abstract class ZipArchiveXMLMagicNumber extends ZipArchiveMagicNumber {
 		this.rootNode = rootNode;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	protected final boolean isContentType(ZipInputStream zipStream, ZipEntry zipEntry, InputStream zipEntryStream) {
 		try {

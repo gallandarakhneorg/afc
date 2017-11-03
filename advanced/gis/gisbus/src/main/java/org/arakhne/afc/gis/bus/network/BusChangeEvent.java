@@ -51,7 +51,7 @@ public class BusChangeEvent extends EventObject {
 
 	private final Object newValue;
 
-	/**
+	/** Constructor.
 	 * @param source is the source of the event.
 	 * @param type is the type of the event.
 	 * @param subObject is a changed subobject.

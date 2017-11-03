@@ -76,7 +76,7 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	 */
 	private final ShapeFileIndexReader shxReader;
 
-	/**
+	/** Constructor.
 	 * @param inputStream is the stream to read
 	 * @param dbase_importer is the dBase reader to use to read the attribute's values.
 	 * @param shxReader is the shape file index to reader.
@@ -88,7 +88,7 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 		this.shxReader = shxReader;
 	}
 
-	/**
+	/** Constructor.
 	 * @param inputStream is the stream to read
 	 * @param dbase_importer is the dBase reader to use to read the attribute's values.
 	 * @param shxReader is the shape file index to reader.
@@ -99,7 +99,7 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 		this.shxReader = shxReader;
 	}
 
-	/**
+	/** Constructor.
 	 * @param file is the file to read
 	 * @param dbase_importer is the dBase reader to use to read the attribute's values.
 	 * @param shxReader is the shape file index to reader.
@@ -111,7 +111,7 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 		this.shxReader = shxReader;
 	}
 
-	/**
+	/** Constructor.
 	 * @param inputStream is the stream to read
 	 * @param dbase_importer is the dBase reader to use to read the attribute's values.
 	 * @param shxReader is the shape file index to reader.

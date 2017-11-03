@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>core</artifactId>
+		<groupId>org.arakhne.afc.core</groupId>
+		<version>14.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>maths</artifactId>
+	<name>Math Tool Parent</name>
+	<packaging>pom</packaging>
+	<inceptionYear>2013</inceptionYear>
+
+	<modules>
+		<module>mathstochastic</module>
+		<module>mathgen</module>
+		<module>mathtree</module>
+		<module>mathgraph</module>
+		<module>mathgeom</module>
+		<module>mathphysics</module>
+		<module>math</module>
+	</modules>
+
+</project>
