@@ -2669,7 +2669,12 @@ public final class FileSystem {
 					thefile = file;
 				}
 			}
-			final URL url = thefile.toURI().toURL();
+			final URL url;
+			if (thefile.isAbsolute()) {
+				url = thefile.toURI().toURL();
+			} else {
+				url = new URL("file:" + thefile.toString()); //$NON-NLS-1$
+			}
 			return toShortestURL(url);
 		} catch (MalformedURLException e) {
 			return null;

@@ -290,6 +290,19 @@ public class FileSystemTest {
 	}
 
 	@Test
+	public void convertFileToURLFile_issue173() throws Exception {
+		URLHandlerUtil.installArakhneHandlers();
+		try {
+			File f1 = new File("./myfile.txt");  //$NON-NLS-1$
+			URL u1 = new URL("file:./myfile.txt"); //$NON-NLS-1$
+			assertEquals(u1, FileSystem.convertFileToURL(f1));
+		}
+		finally {
+			URLHandlerUtil.uninstallArakhneHandlers();
+		}
+	}
+
+	@Test
 	public void getParentURLURL() throws Exception {
 		assertEquals(
 				new URL("http://www.arakhne.org/"),  //$NON-NLS-1$
