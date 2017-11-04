@@ -55,9 +55,8 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Path3ifx
-	extends AbstractShape3ifx<Path3ifx>
-	implements Path3ai<Shape3ifx<?>, Path3ifx, PathElement3ifx, Point3ifx, Vector3ifx, RectangularPrism3ifx> {
+public class Path3ifx extends AbstractShape3ifx<Path3ifx>
+		implements Path3ai<Shape3ifx<?>, Path3ifx, PathElement3ifx, Point3ifx, Vector3ifx, RectangularPrism3ifx> {
 
 	private static final long serialVersionUID = -5410743023218999966L;
 
@@ -109,15 +108,15 @@ public class Path3ifx
 	}
 
 	/** Construct a path by copying the given elements.
-     * @param iterator the iterator that provides the elements to copy.
-     */
+	 * @param iterator the iterator that provides the elements to copy.
+	 */
 	public Path3ifx(Iterator<PathElement3ifx> iterator) {
 		this(DEFAULT_WINDING_RULE, iterator);
 	}
 
 	/** Construct an empty path with the given path winding rule.
-     * @param windingRule the path winding rule.
-     */
+	 * @param windingRule the path winding rule.
+	 */
 	public Path3ifx(PathWindingRule windingRule) {
 		assert windingRule != null : AssertMessages.notNullParameter(0);
 		if (windingRule != DEFAULT_WINDING_RULE) {
@@ -126,9 +125,9 @@ public class Path3ifx
 	}
 
 	/** Construct a path by copying the given elements, and the given path winding rule.
-     * @param windingRule the path winding rule.
-     * @param iterator the iterator that provides the elements to copy.
-     */
+	 * @param windingRule the path winding rule.
+	 * @param iterator the iterator that provides the elements to copy.
+	 */
 	public Path3ifx(PathWindingRule windingRule, Iterator<PathElement3ifx> iterator) {
 		assert windingRule != null : AssertMessages.notNullParameter(0);
 		assert iterator != null : AssertMessages.notNullParameter(1);
@@ -139,8 +138,8 @@ public class Path3ifx
 	}
 
 	/** Constructor by copy.
-     * @param path the path to copy.
-     */
+	 * @param path the path to copy.
+	 */
 	public Path3ifx(Path3ai<?, ?, ?, ?, ?, ?> path) {
 		set(path);
 	}
@@ -150,9 +149,9 @@ public class Path3ifx
 	public boolean containsControlPoint(Point3D<?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		if (this.coords != null && !this.coords.isEmpty()) {
-            for (int i = 0; i < this.coords.size(); i++) {
-                final Point3ifx point = this.coords.get(i);
-                if (point.ix() == pt.ix() && point.iy() == pt.iy() && point.iz() == pt.iz()) {
+			for (int i = 0; i < this.coords.size(); i++) {
+				final Point3ifx point = this.coords.get(i);
+				if (point.ix() == pt.ix() && point.iy() == pt.iy() && point.iz() == pt.iz()) {
 					return true;
 				}
 			}
@@ -211,7 +210,7 @@ public class Path3ifx
 	@Override
 	public void translate(int dx, int dy, int dz) {
 		for (final Point3ifx point : this.coords) {
-		    point.add(dx, dy, dz);
+			point.add(dx, dy, dz);
 		}
 	}
 
@@ -219,8 +218,8 @@ public class Path3ifx
 	public void transform(Transform3D transform) {
 		assert transform != null : AssertMessages.notNullParameter();
 		for (final Point3ifx point : this.coords) {
-            transform.transform(point);
-        }
+			transform.transform(point);
+		}
 	}
 
 	/** Replies the isEmpty property.
@@ -231,17 +230,17 @@ public class Path3ifx
 		if (this.isEmpty == null) {
 			this.isEmpty = new SimpleBooleanProperty(this, MathFXAttributeNames.IS_EMPTY);
 			this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
-			    final PathIterator3ai<PathElement3ifx> pi = getPathIterator();
-			    PathElement3ifx pe;
-			    while (pi.hasNext()) {
-			        pe = pi.next();
-                    if (pe.isDrawable()) {
-			            return false;
-			        }
-			    }
-			    return true;
+				final PathIterator3ai<PathElement3ifx> pi = getPathIterator();
+				PathElement3ifx pe;
+				while (pi.hasNext()) {
+					pe = pi.next();
+					if (pe.isDrawable()) {
+						return false;
+					}
+				}
+				return true;
 			},
-			        innerTypesProperty(), innerCoordinatesProperty()));
+					innerTypesProperty(), innerCoordinatesProperty()));
 		}
 		return this.isEmpty;
 	}
@@ -256,13 +255,13 @@ public class Path3ifx
 		if (this.boundingBox == null) {
 			this.boundingBox = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-			    final RectangularPrism3ifx bb = getGeomFactory().newBox();
-			    Path3ai.computeDrawableElementBoundingBox(
-			            getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-			            bb);
-			    return bb;
+				final RectangularPrism3ifx bb = getGeomFactory().newBox();
+				Path3ai.computeDrawableElementBoundingBox(
+						getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						bb);
+				return bb;
 			},
-			        innerCoordinatesProperty()));
+					innerCoordinatesProperty()));
 		}
 		return this.boundingBox;
 	}
@@ -278,13 +277,13 @@ public class Path3ifx
 		if (this.logicalBounds == null) {
 			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.CONTROL_POINT_BOUNDING_BOX);
 			this.logicalBounds.bind(Bindings.createObjectBinding(() -> {
-			    final RectangularPrism3ifx bb = getGeomFactory().newBox();
-			    Path3ai.computeControlPointBoundingBox(
-			            getPathIterator(),
-			            bb);
-			    return bb;
+				final RectangularPrism3ifx bb = getGeomFactory().newBox();
+				Path3ai.computeControlPointBoundingBox(
+						getPathIterator(),
+						bb);
+				return bb;
 			},
-			        innerCoordinatesProperty()));
+					innerCoordinatesProperty()));
 		}
 		return this.logicalBounds;
 	}
@@ -332,23 +331,23 @@ public class Path3ifx
 		if (this.isPolyline == null) {
 			this.isPolyline = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_POLYLINE, false);
 			this.isPolyline.bind(Bindings.createBooleanBinding(() -> {
-			    boolean first = true;
-			    boolean hasOneLine = false;
-			    for (final PathElementType type : innerTypesProperty()) {
-			        if (first) {
-			            if (type != PathElementType.MOVE_TO) {
-			                return false;
-			            }
-			            first = false;
-			        } else if (type != PathElementType.LINE_TO) {
-			            return false;
-			        } else {
-			            hasOneLine = true;
-			        }
-			    }
-			    return hasOneLine;
+				boolean first = true;
+				boolean hasOneLine = false;
+				for (final PathElementType type : innerTypesProperty()) {
+					if (first) {
+						if (type != PathElementType.MOVE_TO) {
+							return false;
+						}
+						first = false;
+					} else if (type != PathElementType.LINE_TO) {
+						return false;
+					} else {
+						hasOneLine = true;
+					}
+				}
+				return hasOneLine;
 			},
-			        innerTypesProperty()));
+					innerTypesProperty()));
 		}
 		return this.isPolyline;
 	}
@@ -366,14 +365,14 @@ public class Path3ifx
 		if (this.isCurved == null) {
 			this.isCurved = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_CURVED, false);
 			this.isCurved.bind(Bindings.createBooleanBinding(() -> {
-			    for (final PathElementType type : innerTypesProperty()) {
-			        if (type == PathElementType.CURVE_TO || type == PathElementType.QUAD_TO) {
-			            return true;
-			        }
-			    }
-			    return false;
+				for (final PathElementType type : innerTypesProperty()) {
+					if (type == PathElementType.CURVE_TO || type == PathElementType.QUAD_TO) {
+						return true;
+					}
+				}
+				return false;
 			},
-			        innerTypesProperty()));
+					innerTypesProperty()));
 		}
 		return this.isCurved;
 	}
@@ -391,18 +390,18 @@ public class Path3ifx
 		if (this.isMultipart == null) {
 			this.isMultipart = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_MULTIPARTS, false);
 			this.isMultipart.bind(Bindings.createBooleanBinding(() -> {
-			    boolean foundOne = false;
-			    for (final PathElementType type : innerTypesProperty()) {
-			        if (type == PathElementType.MOVE_TO) {
-			            if (foundOne) {
-			                return true;
-			            }
-			            foundOne = true;
-			        }
-			    }
-			    return false;
+				boolean foundOne = false;
+				for (final PathElementType type : innerTypesProperty()) {
+					if (type == PathElementType.MOVE_TO) {
+						if (foundOne) {
+							return true;
+						}
+						foundOne = true;
+					}
+				}
+				return false;
 			},
-			        innerTypesProperty()));
+					innerTypesProperty()));
 		}
 		return this.isMultipart;
 	}
@@ -420,24 +419,24 @@ public class Path3ifx
 		if (this.isPolygon == null) {
 			this.isPolygon = new ReadOnlyBooleanWrapper(this, MathFXAttributeNames.IS_POLYGON, false);
 			this.isPolygon.bind(Bindings.createBooleanBinding(() -> {
-			    boolean first = true;
-			    boolean lastIsClose = false;
-			    for (final PathElementType type : innerTypesProperty()) {
-			        lastIsClose = false;
-			        if (first) {
-			            if (type != PathElementType.MOVE_TO) {
-			                return false;
-			            }
-			            first = false;
-			        } else if (type == PathElementType.MOVE_TO) {
-			            return false;
-			        } else if (type == PathElementType.CLOSE) {
-			            lastIsClose = true;
-			        }
-			    }
-			    return lastIsClose;
+				boolean first = true;
+				boolean lastIsClose = false;
+				for (final PathElementType type : innerTypesProperty()) {
+					lastIsClose = false;
+					if (first) {
+						if (type != PathElementType.MOVE_TO) {
+							return false;
+						}
+						first = false;
+					} else if (type == PathElementType.MOVE_TO) {
+						return false;
+					} else if (type == PathElementType.CLOSE) {
+						lastIsClose = true;
+					}
+				}
+				return lastIsClose;
 			},
-			        innerTypesProperty()));
+					innerTypesProperty()));
 		}
 		return this.isPolygon;
 	}
@@ -450,8 +449,8 @@ public class Path3ifx
 	@Override
 	public void closePath() {
 		if (this.types == null
-			|| this.types.isEmpty()
-			|| (this.types.get(this.types.size() - 1) != PathElementType.CLOSE
+				|| this.types.isEmpty()
+				|| (this.types.get(this.types.size() - 1) != PathElementType.CLOSE
 				&& this.types.get(this.types.size() - 1) != PathElementType.MOVE_TO)) {
 			this.types.add(PathElementType.CLOSE);
 		}
@@ -473,17 +472,17 @@ public class Path3ifx
 		final int n = (this.coords != null) ? this.coords.size() * 3 : 0;
 		final int[] clone = new int[n];
 		if (n > 0) {
-		    final Iterator<Point3ifx> iterator = this.coords.iterator();
-		    int i = 0;
-		    while (iterator.hasNext()) {
-		        final Point3ifx point = iterator.next();
-		        if (!(transform == null || transform.isIdentity())) {
-		            transform.transform(point);
-		        }
-		        clone[i++] = point.ix();
-		        clone[i++] = point.iy();
-		        clone[i++] = point.iz();
-		    }
+			final Iterator<Point3ifx> iterator = this.coords.iterator();
+			int i = 0;
+			while (iterator.hasNext()) {
+				final Point3ifx point = iterator.next();
+				if (!(transform == null || transform.isIdentity())) {
+					transform.transform(point);
+				}
+				clone[i++] = point.ix();
+				clone[i++] = point.iy();
+				clone[i++] = point.iz();
+			}
 		}
 		return clone;
 	}
@@ -492,19 +491,19 @@ public class Path3ifx
 	public float[] toFloatArray(Transform3D transform) {
 		final int n = (this.coords != null) ? this.coords.size() : 0;
 		final float[] clone = new float[n];
-        if (n > 0) {
-            final Iterator<Point3ifx> iterator = this.coords.iterator();
-            int i = 0;
-            while (iterator.hasNext()) {
-                final Point3ifx point = iterator.next();
-                if (!(transform == null || transform.isIdentity())) {
-                    transform.transform(point);
-                }
-                clone[i++] = (float) point.getX();
-                clone[i++] = (float) point.getY();
-                clone[i++] = (float) point.getZ();
-            }
-        }
+		if (n > 0) {
+			final Iterator<Point3ifx> iterator = this.coords.iterator();
+			int i = 0;
+			while (iterator.hasNext()) {
+				final Point3ifx point = iterator.next();
+				if (!(transform == null || transform.isIdentity())) {
+					transform.transform(point);
+				}
+				clone[i++] = (float) point.getX();
+				clone[i++] = (float) point.getY();
+				clone[i++] = (float) point.getZ();
+			}
+		}
 		return clone;
 	}
 
@@ -512,19 +511,19 @@ public class Path3ifx
 	public double[] toDoubleArray(Transform3D transform) {
 		final int n = (this.coords != null) ? this.coords.size() * 3 : 0;
 		final double[] clone = new double[n];
-        if (n > 0) {
-            final Iterator<Point3ifx> iterator = this.coords.iterator();
-            int i = 0;
-            while (iterator.hasNext()) {
-                final Point3ifx point = iterator.next();
-                if (!(transform == null || transform.isIdentity())) {
-                    transform.transform(point);
-                }
-                clone[i++] = point.getX();
-                clone[i++] = point.getY();
-                clone[i++] = point.getZ();
-            }
-        }
+		if (n > 0) {
+			final Iterator<Point3ifx> iterator = this.coords.iterator();
+			int i = 0;
+			while (iterator.hasNext()) {
+				final Point3ifx point = iterator.next();
+				if (!(transform == null || transform.isIdentity())) {
+					transform.transform(point);
+				}
+				clone[i++] = point.getX();
+				clone[i++] = point.getY();
+				clone[i++] = point.getZ();
+			}
+		}
 		return clone;
 	}
 
@@ -533,16 +532,16 @@ public class Path3ifx
 		final int n = (this.coords != null) ? this.coords.size() : 0;
 		final Point3ifx[] clone = new Point3ifx[n];
 		if (n > 0) {
-            final Iterator<Point3ifx> iterator = this.coords.iterator();
-            Point3ifx point = iterator.next();
-            for (int i = 0; i < n; ++i) {
-                if (!(transform == null || transform.isIdentity())) {
-                    transform.transform(point);
-                }
-                clone[i] = point;
-                point = iterator.next();
-            }
-        }
+			final Iterator<Point3ifx> iterator = this.coords.iterator();
+			Point3ifx point = iterator.next();
+			for (int i = 0; i < n; ++i) {
+				if (!(transform == null || transform.isIdentity())) {
+					transform.transform(point);
+				}
+				clone[i] = point;
+				point = iterator.next();
+			}
+		}
 		return clone;
 	}
 
@@ -606,7 +605,7 @@ public class Path3ifx
 			final int lastIndex = this.types.size() - 1;
 			final int coordSize = this.coords.size();
 			int coordIndex = coordSize;
-            switch (this.types.get(lastIndex)) {
+			switch (this.types.get(lastIndex)) {
 			case CLOSE:
 				// no coord to remove
 				break;
@@ -622,7 +621,7 @@ public class Path3ifx
 			case QUAD_TO:
 				coordIndex = coordSize - 2;
 				break;
-            case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 				throw new IllegalStateException();
 			}
@@ -635,21 +634,21 @@ public class Path3ifx
 
 	@Override
 	public void moveTo(int x, int y, int z) {
-	    if (this.types != null && !this.types.isEmpty()
-	            && this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
-	        assert this.coords != null && !this.coords.isEmpty();
-	        final int idx = this.coords.size() - 1;
-	        this.coords.set(idx, getGeomFactory().newPoint(x, y, z));
-	    } else {
-	        innerTypesProperty().add(PathElementType.MOVE_TO);
-	        final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
-	        coords.add(getGeomFactory().newPoint(x, y, z));
-	    }
+		if (this.types != null && !this.types.isEmpty()
+				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
+			assert this.coords != null && !this.coords.isEmpty();
+			final int idx = this.coords.size() - 1;
+			this.coords.set(idx, getGeomFactory().newPoint(x, y, z));
+		} else {
+			innerTypesProperty().add(PathElementType.MOVE_TO);
+			final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
+			coords.add(getGeomFactory().newPoint(x, y, z));
+		}
 	}
 
 	@Override
 	public void moveTo(Point3D<?, ?> position) {
-	    assert position != null : AssertMessages.notNullParameter();
+		assert position != null : AssertMessages.notNullParameter();
 		if (this.types != null && !this.types.isEmpty()
 				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
 			assert this.coords != null && !this.coords.isEmpty();
@@ -670,15 +669,15 @@ public class Path3ifx
 
 	@Override
 	public void lineTo(int x, int y, int z) {
-	    ensureMoveTo();
-	    innerTypesProperty().add(PathElementType.LINE_TO);
-	    final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
-	    coords.add(getGeomFactory().newPoint(x, y, z));
+		ensureMoveTo();
+		innerTypesProperty().add(PathElementType.LINE_TO);
+		final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
+		coords.add(getGeomFactory().newPoint(x, y, z));
 	}
 
 	@Override
 	public void lineTo(Point3D<?, ?> to) {
-	    assert to != null : AssertMessages.notNullParameter();
+		assert to != null : AssertMessages.notNullParameter();
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.LINE_TO);
 		final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
@@ -687,17 +686,17 @@ public class Path3ifx
 
 	@Override
 	public void quadTo(int x1, int y1, int z1, int x2, int y2, int z2) {
-	    ensureMoveTo();
-	    innerTypesProperty().add(PathElementType.QUAD_TO);
-	    final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
-	    coords.add(getGeomFactory().newPoint(x1, y1, z1));
-	    coords.add(getGeomFactory().newPoint(x2, y2, z2));
+		ensureMoveTo();
+		innerTypesProperty().add(PathElementType.QUAD_TO);
+		final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
+		coords.add(getGeomFactory().newPoint(x1, y1, z1));
+		coords.add(getGeomFactory().newPoint(x2, y2, z2));
 	}
 
 	@Override
 	public void quadTo(Point3D<?, ?> ctrl, Point3D<?, ?> to) {
-	    assert ctrl != null : AssertMessages.notNullParameter(0);
-	    assert to != null : AssertMessages.notNullParameter(1);
+		assert ctrl != null : AssertMessages.notNullParameter(0);
+		assert to != null : AssertMessages.notNullParameter(1);
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.QUAD_TO);
 		final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
@@ -708,20 +707,20 @@ public class Path3ifx
 	@Override
 	@SuppressWarnings("checkstyle:parameternumber")
 	public void curveTo(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3) {
-	    ensureMoveTo();
-	    innerTypesProperty().add(PathElementType.CURVE_TO);
-	    final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
-	    coords.add(getGeomFactory().newPoint(x1, y1, z1));
-	    coords.add(getGeomFactory().newPoint(x2, y2, z2));
-	    coords.add(getGeomFactory().newPoint(x3, y3, z3));
+		ensureMoveTo();
+		innerTypesProperty().add(PathElementType.CURVE_TO);
+		final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
+		coords.add(getGeomFactory().newPoint(x1, y1, z1));
+		coords.add(getGeomFactory().newPoint(x2, y2, z2));
+		coords.add(getGeomFactory().newPoint(x3, y3, z3));
 	}
 
 	@Override
 	@SuppressWarnings("checkstyle:parameternumber")
 	public void curveTo(Point3D<?, ?> ctrl1, Point3D<?, ?> ctrl2, Point3D<?, ?> to) {
-	    assert ctrl1 != null : AssertMessages.notNullParameter(0);
-	    assert ctrl2 != null : AssertMessages.notNullParameter(1);
-	    assert to != null : AssertMessages.notNullParameter(2);
+		assert ctrl1 != null : AssertMessages.notNullParameter(0);
+		assert ctrl2 != null : AssertMessages.notNullParameter(1);
+		assert to != null : AssertMessages.notNullParameter(2);
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.CURVE_TO);
 		final ReadOnlyListWrapper<Point3ifx> coords = innerCoordinatesProperty();
@@ -756,7 +755,7 @@ public class Path3ifx
 			throw new IndexOutOfBoundsException();
 		}
 		final Point3ifx point = this.coords.get(index / 3);
-        return index % 3 == 0 ? point.ix() : index % 3 == 1 ? point.iy() : point.iz();
+		return index % 3 == 0 ? point.ix() : index % 3 == 1 ? point.iy() : point.iz();
 	}
 
 	@Override
@@ -776,13 +775,13 @@ public class Path3ifx
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:booleanexpressioncomplexity", "checkstyle:magicnumber"})
 	public boolean remove(int x, int y, int z) {
 		if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
-            for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size(); ++j) {
-                final Point3ifx point = this.coords.get(i);
-                switch (this.types.get(j)) {
+			for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size(); ++j) {
+				final Point3ifx point = this.coords.get(i);
+				switch (this.types.get(j)) {
 				case MOVE_TO:
 					//$FALL-THROUGH$
 				case LINE_TO:
-                    if (x == point.ix() && y == point.iy() && z == point.iz()) {
+					if (x == point.ix() && y == point.iy() && z == point.iz()) {
 						this.coords.remove(i);
 						this.types.remove(j);
 						return true;
@@ -790,30 +789,28 @@ public class Path3ifx
 					i++;
 					break;
 				case CURVE_TO:
-				    final Point3ifx p2 = this.coords.get(i + 1);
-				    final Point3ifx p3 = this.coords.get(i + 2);
-                    if ((x == point.ix() && y == point.iy() && z == point.iz())
-                            || (x == p2.ix() && y == p2.iy() && z == p2.iz())
-                            || (x == p3.ix() && y == p3.iy() && z == p3.iz())) {
-                        this.coords.remove(i, i + 3);
+					final Point3ifx p2 = this.coords.get(i + 1);
+					final Point3ifx p3 = this.coords.get(i + 2);
+					if ((x == point.ix() && y == point.iy() && z == point.iz())
+							|| (x == p2.ix() && y == p2.iy() && z == p2.iz())
+							|| (x == p3.ix() && y == p3.iy() && z == p3.iz())) {
+						this.coords.remove(i, i + 3);
 						this.types.remove(j);
 						return true;
 					}
 					i += 3;
 					break;
 				case QUAD_TO:
-				    final Point3ifx pt = this.coords.get(i + 1);
-                    if ((x == point.ix() && y == point.iy() && z == point.iz())
-                            || (x == pt.ix() && y == pt.iy() && z == pt.iz())) {
-                        this.coords.remove(i, i + 2);
-                        this.types.remove(j);
-                        return true;
-                    }
+					final Point3ifx pt = this.coords.get(i + 1);
+					if ((x == point.ix() && y == point.iy() && z == point.iz())
+							|| (x == pt.ix() && y == pt.iy() && z == pt.iz())) {
+						this.coords.remove(i, i + 2);
+						this.types.remove(j);
+						return true;
+					}
 					i += 2;
 					break;
-				case CLOSE:
-					break;
-                case ARC_TO:
+					//$CASES-OMITTED$
 				default:
 					break;
 				}
@@ -822,62 +819,61 @@ public class Path3ifx
 		return false;
 	}
 
-    /** Remove the point from this path.
-     *
-     * <p>If the given point do not match exactly a point in the path, nothing is removed.
-     *
-     * @param point the point to remove.
-     * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
-     */
-    @SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity"})
-    public boolean remove(Point3D<?, ?> point) {
-        if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
-            for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size(); j++) {
-                final Point3ifx currentPoint = this.coords.get(i);
-                switch (this.types.get(j)) {
-                case MOVE_TO:
-                    //$FALL-THROUGH$
-                case LINE_TO:
-                    if (point.equals(currentPoint)) {
-                        this.coords.remove(i);
-                        this.types.remove(j);
-                        return true;
-                    }
-                    i++;
-                    break;
-                case CURVE_TO:
-                    final Point3ifx p2 = this.coords.get(i + 1);
-                    final Point3ifx p3 = this.coords.get(i + 2);
-                    if ((point.equals(currentPoint))
-                            || (point.equals(p2))
-                            || (point.equals(p3))) {
-                        this.coords.remove(i, i + 3);
-                        this.types.remove(j);
-                        return true;
-                    }
-                    i += 3;
-                    break;
-                case QUAD_TO:
-                    final Point3ifx pt = this.coords.get(i + 1);
-                    if ((point.equals(currentPoint))
-                            || (point.equals(pt))) {
-                        this.coords.remove(i, i + 2);
-                        this.types.remove(j);
-                        return true;
-                    }
-                    i += 2;
-                    break;
-                case CLOSE:
-                    break;
-                case ARC_TO:
-                    throw new IllegalStateException();
-                default:
-                    break;
-                }
-            }
-        }
-        return false;
-    }
+	/** Remove the point from this path.
+	 *
+	 * <p>If the given point do not match exactly a point in the path, nothing is removed.
+	 *
+	 * @param point the point to remove.
+	 * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
+	 */
+	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity"})
+	public boolean remove(Point3D<?, ?> point) {
+		if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
+			for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size(); j++) {
+				final Point3ifx currentPoint = this.coords.get(i);
+				switch (this.types.get(j)) {
+				case MOVE_TO:
+					//$FALL-THROUGH$
+				case LINE_TO:
+					if (point.equals(currentPoint)) {
+						this.coords.remove(i);
+						this.types.remove(j);
+						return true;
+					}
+					i++;
+					break;
+				case CURVE_TO:
+					final Point3ifx p2 = this.coords.get(i + 1);
+					final Point3ifx p3 = this.coords.get(i + 2);
+					if ((point.equals(currentPoint))
+							|| (point.equals(p2))
+							|| (point.equals(p3))) {
+						this.coords.remove(i, i + 3);
+						this.types.remove(j);
+						return true;
+					}
+					i += 3;
+					break;
+				case QUAD_TO:
+					final Point3ifx pt = this.coords.get(i + 1);
+					if ((point.equals(currentPoint))
+							|| (point.equals(pt))) {
+						this.coords.remove(i, i + 2);
+						this.types.remove(j);
+						return true;
+					}
+					i += 2;
+					break;
+				case ARC_TO:
+					throw new IllegalStateException();
+					//$CASES-OMITTED$
+				default:
+					break;
+				}
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public void set(Path3ifx path) {

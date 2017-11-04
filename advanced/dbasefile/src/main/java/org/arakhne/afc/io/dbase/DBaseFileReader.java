@@ -1024,11 +1024,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 					rawOffset += read8ByteDoubleRecordValue(field, recordNumber, i + 1, rawData, rawOffset, dblvalue2);
 					value = dblvalue2.get();
 					break;
-				case BINARY:
-				case GENERAL:
-				case MEMORY:
-				case PICTURE:
-				case VARIABLE:
+					//$CASES-OMITTED$
 				default:
 				}
 

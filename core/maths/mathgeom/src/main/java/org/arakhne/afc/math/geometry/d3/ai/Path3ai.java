@@ -202,9 +202,7 @@ public interface Path3ai<
 					foundOneLine = true;
 				}
 				break;
-			case MOVE_TO:
-			case CLOSE:
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 		}
@@ -416,9 +414,7 @@ public interface Path3ai<
                 }
 				foundOneControlPoint = true;
 				break;
-			case MOVE_TO:
-			case CLOSE:
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 		}
@@ -557,7 +553,7 @@ public interface Path3ai<
 				cury = movy;
 				curz = movz;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 		}
@@ -580,7 +576,7 @@ public interface Path3ai<
 				// SHAPE_INTERSECTS may be return
 				numCrosses = 0;
 				break;
-			case STANDARD:
+				//$CASES-OMITTED$
 			default:
 			}
 		}
@@ -714,7 +710,7 @@ public interface Path3ai<
 				cury = movy;
 				curz = movz;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 		}
@@ -738,7 +734,7 @@ public interface Path3ai<
 				// SHAPE_INTERSECTS may be return
 				numCrosses = 0;
 				break;
-			case STANDARD:
+				//$CASES-OMITTED$
 			default:
 				// Standard behavior
 				break;
@@ -877,7 +873,7 @@ public interface Path3ai<
 				cury = movy;
 				curz = movz;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 		}
@@ -904,7 +900,7 @@ public interface Path3ai<
 				// SHAPE_INTERSECTS may be return
 				numCrossings = 0;
 				break;
-			case STANDARD:
+				//$CASES-OMITTED$
 			default:
 				break;
 			}
@@ -1048,7 +1044,7 @@ public interface Path3ai<
 				cury = movy;
 				curz = movz;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 		}
@@ -1070,7 +1066,7 @@ public interface Path3ai<
 				// SHAPE_INTERSECTS may be returned
 				numCrossings = 0;
 				break;
-			case STANDARD:
+				//$CASES-OMITTED$
 			default:
 			    break;
 			}
@@ -1293,7 +1289,7 @@ public interface Path3ai<
 				// Count should always be a multiple of 2 here.
 				// assert((crossings & 1) != 0);
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 		}
@@ -1318,7 +1314,7 @@ public interface Path3ai<
 				// SHAPE_INTERSECTS may be return
 				numCrossings = 0;
 				break;
-			case STANDARD:
+				//$CASES-OMITTED$
 			default:
 				break;
 			}
@@ -1504,9 +1500,7 @@ public interface Path3ai<
 					}
 				}
 				break;
-			case QUAD_TO:
-			case CURVE_TO:
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 				throw new IllegalStateException();
 			}
@@ -1625,9 +1619,7 @@ public interface Path3ai<
 				candidateY = point.iy();
 				candidateZ = point.iz();
 				break;
-			case QUAD_TO:
-			case CURVE_TO:
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 				throw new IllegalStateException(
 						pe.getType() == null ? null : pe.getType().toString());
@@ -1699,7 +1691,7 @@ public interface Path3ai<
 			case CLOSE:
 				closePath();
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 		}
@@ -1860,8 +1852,7 @@ public interface Path3ai<
 			case QUAD_TO:
 			case CURVE_TO:
 				throw new IllegalStateException();
-			case MOVE_TO:
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 
@@ -2213,7 +2204,7 @@ public interface Path3ai<
 						this.p1.ix(), this.p1.iy(), this.p1.iz(),
 						this.p2.ix(), this.p2.iy(), this.p2.iz());
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
             if (element == null) {
@@ -2357,7 +2348,7 @@ public interface Path3ai<
 						this.p1.ix(), this.p1.iy(), this.p1.iz(),
 						this.p2.ix(), this.p2.iy(), this.p1.iz());
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
             if (element == null) {
@@ -2417,10 +2408,7 @@ public interface Path3ai<
 								elt.getToX(), elt.getToY(), elt.getToZ());
 						this.lineIterator = segment.getPointIterator();
 						break;
-					case MOVE_TO:
-					case CURVE_TO:
-					case QUAD_TO:
-					case ARC_TO:
+						//$CASES-OMITTED$
 					default:
 						throw new IllegalStateException();
 					}
@@ -3147,7 +3135,7 @@ public interface Path3ai<
 				this.holdIndex += 6;
 				this.levelIndex--;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 		}

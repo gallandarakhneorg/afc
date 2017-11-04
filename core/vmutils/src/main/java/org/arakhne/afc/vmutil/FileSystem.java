@@ -383,9 +383,7 @@ public final class FileSystem {
 		case SOLARIS:
 		case HPUX:
 			return true;
-		case MACOSX:
-		case WIN:
-		case OTHER:
+			//$CASES-OMITTED$
 		default:
 			return false;
 		}
@@ -2379,15 +2377,7 @@ public final class FileSystem {
 				return join(current, file);
 			}
 			break;
-		case UNSUPPORTED:
-		case TELNET:
-		case FTP:
-		case HTTP:
-		case HTTPS:
-		case MAILTO:
-		case NEWS:
-		case RESOURCE:
-		case SSH:
+			//$CASES-OMITTED$
 		default:
 			// do not change the URL
 		}
@@ -2498,15 +2488,7 @@ public final class FileSystem {
 			prefix = null;
 			parentStr = ".." + URL_PATH_SEPARATOR; //$NON-NLS-1$
 			break;
-		case FTP:
-		case HTTP:
-		case HTTPS:
-		case MAILTO:
-		case NEWS:
-		case RESOURCE:
-		case SSH:
-		case TELNET:
-		case UNSUPPORTED:
+			//$CASES-OMITTED$
 		default:
 			prefix = null;
 			parentStr = URL_PATH_SEPARATOR;

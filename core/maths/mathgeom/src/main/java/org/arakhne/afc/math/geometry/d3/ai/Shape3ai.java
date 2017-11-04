@@ -453,7 +453,7 @@ public interface Shape3ai<
 			case CLOSE:
 				newPath.closePath();
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 		}

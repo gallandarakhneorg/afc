@@ -151,7 +151,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.coords != null && !this.coords.isEmpty()) {
 			final int size = this.coords.size();
 			for (int i = 0; i < size; i++) {
-			    final Point2ifx point = this.coords.get(i);
+				final Point2ifx point = this.coords.get(i);
 				if (point.ix() == pt.ix() && point.iy() == pt.iy()) {
 					return true;
 				}
@@ -205,22 +205,22 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		bits = 31 * bits + Objects.hashCode(this.coords);
 		bits = 31 * bits + Objects.hashCode(this.types);
 		bits = 31 * bits + Objects.hashCode(this.windingRule);
-        return bits ^ (bits >> 31);
+		return bits ^ (bits >> 31);
 	}
 
 	@Override
 	public void translate(int dx, int dy) {
 		for (final Point2ifx pt : this.coords) {
-            pt.add(dx, dy);
-        }
+			pt.add(dx, dy);
+		}
 	}
 
 	@Override
 	public void transform(Transform2D transform) {
 		assert transform != null : AssertMessages.notNullParameter();
 		for (final Point2ifx pt : this.coords) {
-            transform.transform(pt);
-        }
+			transform.transform(pt);
+		}
 	}
 
 	/** Replies the isEmpty property.
@@ -465,16 +465,16 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		final int n = (this.coords != null) ? this.coords.size() * 2 : 0;
 		final int[] clone = new int[n];
 		if (n > 0) {
-		    final Iterator<Point2ifx> iterator = this.coords.iterator();
-		    Point2ifx point = iterator.next();
-		    for (int i = 0; i < n; i += 2) {
-		        if (!(transform == null || transform.isIdentity())) {
-		            transform.transform(point);
-		        }
-		        clone[i] = point.ix();
-		        clone[i + 1] = point.iy();
-		        point = iterator.next();
-		    }
+			final Iterator<Point2ifx> iterator = this.coords.iterator();
+			Point2ifx point = iterator.next();
+			for (int i = 0; i < n; i += 2) {
+				if (!(transform == null || transform.isIdentity())) {
+					transform.transform(point);
+				}
+				clone[i] = point.ix();
+				clone[i + 1] = point.iy();
+				point = iterator.next();
+			}
 		}
 		return clone;
 	}
@@ -484,16 +484,16 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		final int n = (this.coords != null) ? this.coords.size() * 2 : 0;
 		final float[] clone = new float[n];
 		if (n > 0) {
-		    final Iterator<Point2ifx> iterator = this.coords.iterator();
-            Point2ifx point = iterator.next();
-            for (int i = 0; i < n; i += 2) {
-                if (!(transform == null || transform.isIdentity())) {
-                    transform.transform(point);
-                }
-                clone[i] = (float) point.getX();
-                clone[i + 1] = (float) point.getY();
-                point = iterator.next();
-            }
+			final Iterator<Point2ifx> iterator = this.coords.iterator();
+			Point2ifx point = iterator.next();
+			for (int i = 0; i < n; i += 2) {
+				if (!(transform == null || transform.isIdentity())) {
+					transform.transform(point);
+				}
+				clone[i] = (float) point.getX();
+				clone[i + 1] = (float) point.getY();
+				point = iterator.next();
+			}
 		}
 		return clone;
 	}
@@ -503,16 +503,16 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		final int n = (this.coords != null) ? this.coords.size() * 2 : 0;
 		final double[] clone = new double[n];
 		if (n > 0) {
-		    final Iterator<Point2ifx> iterator = this.coords.iterator();
-            Point2ifx point = iterator.next();
-            for (int i = 0; i < n; i += 2) {
-                if (!(transform == null || transform.isIdentity())) {
-                    transform.transform(point);
-                }
-                clone[i] = point.getX();
-                clone[i + 1] = point.getY();
-                point = iterator.next();
-            }
+			final Iterator<Point2ifx> iterator = this.coords.iterator();
+			Point2ifx point = iterator.next();
+			for (int i = 0; i < n; i += 2) {
+				if (!(transform == null || transform.isIdentity())) {
+					transform.transform(point);
+				}
+				clone[i] = point.getX();
+				clone[i + 1] = point.getY();
+				point = iterator.next();
+			}
 		}
 		return clone;
 	}
@@ -522,15 +522,15 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		final int n = (this.coords != null) ? this.coords.size() : 0;
 		final Point2ifx[] clone = new Point2ifx[n];
 		if (n > 0) {
-		    final Iterator<Point2ifx> iterator = this.coords.iterator();
-            Point2ifx point = iterator.next();
-            for (int i = 0; i < n; ++i) {
-                if (!(transform == null || transform.isIdentity())) {
-                    transform.transform(point);
-                }
-                clone[i] = point;
-                point = iterator.next();
-            }
+			final Iterator<Point2ifx> iterator = this.coords.iterator();
+			Point2ifx point = iterator.next();
+			for (int i = 0; i < n; ++i) {
+				if (!(transform == null || transform.isIdentity())) {
+					transform.transform(point);
+				}
+				clone[i] = point;
+				point = iterator.next();
+			}
 		}
 		return clone;
 	}
@@ -602,7 +602,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 			case QUAD_TO:
 				coordIndex = coordSize - 2;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 				throw new IllegalStateException();
 			}
@@ -615,21 +615,21 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void moveTo(int x, int y) {
-	    if (this.types != null && !this.types.isEmpty()
-	            && this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
-	        assert this.coords != null && !this.coords.isEmpty();
-	        final int idx = this.coords.size() - 1;
-	        this.coords.set(idx, getGeomFactory().newPoint(x, y));
-	    } else {
-	        innerTypesProperty().add(PathElementType.MOVE_TO);
-	        final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
-	        coords.add(getGeomFactory().newPoint(x, y));
-	    }
+		if (this.types != null && !this.types.isEmpty()
+				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
+			assert this.coords != null && !this.coords.isEmpty();
+			final int idx = this.coords.size() - 1;
+			this.coords.set(idx, getGeomFactory().newPoint(x, y));
+		} else {
+			innerTypesProperty().add(PathElementType.MOVE_TO);
+			final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
+			coords.add(getGeomFactory().newPoint(x, y));
+		}
 	}
 
 	@Override
 	public void moveTo(Point2D<?, ?> position) {
-	    assert position != null : AssertMessages.notNullParameter();
+		assert position != null : AssertMessages.notNullParameter();
 		if (this.types != null && !this.types.isEmpty()
 				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
 			assert this.coords != null && !this.coords.isEmpty();
@@ -650,15 +650,15 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void lineTo(int x, int y) {
-	    ensureMoveTo();
-	    innerTypesProperty().add(PathElementType.LINE_TO);
-	    final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
-	    coords.add(getGeomFactory().newPoint(x, y));
+		ensureMoveTo();
+		innerTypesProperty().add(PathElementType.LINE_TO);
+		final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
+		coords.add(getGeomFactory().newPoint(x, y));
 	}
 
 	@Override
 	public void lineTo(Point2D<?, ?> to) {
-	    assert to != null : AssertMessages.notNullParameter();
+		assert to != null : AssertMessages.notNullParameter();
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.LINE_TO);
 		final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
@@ -667,17 +667,17 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void quadTo(int x1, int y1, int x2, int y2) {
-	    ensureMoveTo();
-	    innerTypesProperty().add(PathElementType.QUAD_TO);
-	    final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
-	    coords.add(getGeomFactory().newPoint(x1, y1));
-	    coords.add(getGeomFactory().newPoint(x2, y2));
+		ensureMoveTo();
+		innerTypesProperty().add(PathElementType.QUAD_TO);
+		final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
+		coords.add(getGeomFactory().newPoint(x1, y1));
+		coords.add(getGeomFactory().newPoint(x2, y2));
 	}
 
 	@Override
 	public void quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
-	    assert ctrl != null : AssertMessages.notNullParameter(0);
-	    assert to != null : AssertMessages.notNullParameter(2);
+		assert ctrl != null : AssertMessages.notNullParameter(0);
+		assert to != null : AssertMessages.notNullParameter(2);
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.QUAD_TO);
 		final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
@@ -687,19 +687,19 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void curveTo(int x1, int y1, int x2, int y2, int x3, int y3) {
-	    ensureMoveTo();
-	    innerTypesProperty().add(PathElementType.CURVE_TO);
-	    final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
-	    coords.add(getGeomFactory().newPoint(x1, y1));
-	    coords.add(getGeomFactory().newPoint(x2, y2));
-	    coords.add(getGeomFactory().newPoint(x3, y3));
+		ensureMoveTo();
+		innerTypesProperty().add(PathElementType.CURVE_TO);
+		final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
+		coords.add(getGeomFactory().newPoint(x1, y1));
+		coords.add(getGeomFactory().newPoint(x2, y2));
+		coords.add(getGeomFactory().newPoint(x3, y3));
 	}
 
 	@Override
 	public void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
-	    assert ctrl1 != null : AssertMessages.notNullParameter(0);
-	    assert ctrl2 != null : AssertMessages.notNullParameter(1);
-	    assert to != null : AssertMessages.notNullParameter(2);
+		assert ctrl1 != null : AssertMessages.notNullParameter(0);
+		assert ctrl2 != null : AssertMessages.notNullParameter(1);
+		assert to != null : AssertMessages.notNullParameter(2);
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.CURVE_TO);
 		final ReadOnlyListWrapper<Point2ifx> coords = innerPointsProperty();
@@ -739,14 +739,14 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void setLastPoint(int x, int y) {
-	    if (this.coords != null && !this.coords.isEmpty()) {
-	        final int idx = this.coords.size() - 1;
-	        final Point2ifx point = this.coords.get(idx);
-	        point.setX(x);
-	        point.setY(y);
-	    } else {
-	        throw new IllegalStateException();
-	    }
+		if (this.coords != null && !this.coords.isEmpty()) {
+			final int idx = this.coords.size() - 1;
+			final Point2ifx point = this.coords.get(idx);
+			point.setX(x);
+			point.setY(y);
+		} else {
+			throw new IllegalStateException();
+		}
 	}
 
 	@Override
@@ -762,66 +762,65 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	@Override
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity"})
 	public boolean remove(int x, int y) {
-	    if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
-	        for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size(); j++) {
-	            final Point2ifx point = this.coords.get(i);
-	            switch (this.types.get(j)) {
-	            case MOVE_TO:
-	                //$FALL-THROUGH$
-	            case LINE_TO:
-	                if (x == point.ix() && y == point.iy()) {
-	                    this.coords.remove(i);
-	                    this.types.remove(j);
-	                    return true;
-	                }
-	                i++;
-	                break;
-	            case CURVE_TO:
-	                final Point2ifx p2 = this.coords.get(i + 1);
-	                final Point2ifx p3 = this.coords.get(i + 2);
-	                if ((x == point.ix() && y == point.iy())
-	                        || (x == p2.ix() && y == p2.iy())
-	                        || (x == p3.ix() && y == p3.iy())) {
-	                    this.coords.remove(i, i + 3);
-	                    this.types.remove(j);
-	                    return true;
-	                }
-	                i += 3;
-	                break;
-	            case QUAD_TO:
-	                final Point2ifx pt = this.coords.get(i + 1);
-	                if ((x == point.ix() && y == point.iy())
-	                        || (x == pt.ix() && y == pt.iy())) {
-	                    this.coords.remove(i, i + 2);
-	                    this.types.remove(j);
-	                    return true;
-	                }
-	                i += 2;
-	                break;
-	            case CLOSE:
-	                break;
-	            case ARC_TO:
-	                throw new IllegalStateException();
-	            default:
-	                break;
-	            }
-	        }
-	    }
-	    return false;
+		if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
+			for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size(); j++) {
+				final Point2ifx point = this.coords.get(i);
+				switch (this.types.get(j)) {
+				case MOVE_TO:
+					//$FALL-THROUGH$
+				case LINE_TO:
+					if (x == point.ix() && y == point.iy()) {
+						this.coords.remove(i);
+						this.types.remove(j);
+						return true;
+					}
+					i++;
+					break;
+				case CURVE_TO:
+					final Point2ifx p2 = this.coords.get(i + 1);
+					final Point2ifx p3 = this.coords.get(i + 2);
+					if ((x == point.ix() && y == point.iy())
+							|| (x == p2.ix() && y == p2.iy())
+							|| (x == p3.ix() && y == p3.iy())) {
+						this.coords.remove(i, i + 3);
+						this.types.remove(j);
+						return true;
+					}
+					i += 3;
+					break;
+				case QUAD_TO:
+					final Point2ifx pt = this.coords.get(i + 1);
+					if ((x == point.ix() && y == point.iy())
+							|| (x == pt.ix() && y == pt.iy())) {
+						this.coords.remove(i, i + 2);
+						this.types.remove(j);
+						return true;
+					}
+					i += 2;
+					break;
+				case ARC_TO:
+					throw new IllegalStateException();
+					//$CASES-OMITTED$
+				default:
+					break;
+				}
+			}
+		}
+		return false;
 	}
 
 	/** Remove the point from this path.
 	 *
-     * <p>If the given point do not match exactly a point in the path, nothing is removed.
-     *
-     * @param point the point to remove.
-     * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
+	 * <p>If the given point do not match exactly a point in the path, nothing is removed.
+	 *
+	 * @param point the point to remove.
+	 * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
 	 */
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity"})
 	public boolean remove(Point2D<?, ?> point) {
 		if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
 			for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size(); j++) {
-			    final Point2ifx currentPoint = this.coords.get(i);
+				final Point2ifx currentPoint = this.coords.get(i);
 				switch (this.types.get(j)) {
 				case MOVE_TO:
 					//$FALL-THROUGH$
@@ -834,8 +833,8 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 					i++;
 					break;
 				case CURVE_TO:
-				    final Point2ifx p2 = this.coords.get(i + 1);
-				    final Point2ifx p3 = this.coords.get(i + 2);
+					final Point2ifx p2 = this.coords.get(i + 1);
+					final Point2ifx p3 = this.coords.get(i + 2);
 					if ((point.equals(currentPoint))
 							|| (point.equals(p2))
 							|| (point.equals(p3))) {
@@ -846,7 +845,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 					i = i + 3;
 					break;
 				case QUAD_TO:
-				    final Point2ifx pt = this.coords.get(i + 1);
+					final Point2ifx pt = this.coords.get(i + 1);
 					if ((point.equals(currentPoint))
 							|| (point.equals(pt))) {
 						this.coords.remove(i, i + 2);
@@ -855,10 +854,9 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 					}
 					i = i + 2;
 					break;
-				case CLOSE:
-					break;
 				case ARC_TO:
 					throw new IllegalStateException();
+					//$CASES-OMITTED$
 				default:
 					break;
 				}

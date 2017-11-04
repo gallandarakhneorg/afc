@@ -270,16 +270,7 @@ public class DBaseFileField {
 				this.length = fieldLength;
 			}
 			break;
-		case BINARY:
-		case BOOLEAN:
-		case DATE:
-		case DOUBLE:
-		case GENERAL:
-		case INTEGER_2BYTES:
-		case INTEGER_4BYTES:
-		case MEMORY:
-		case PICTURE:
-		case VARIABLE:
+			//$CASES-OMITTED$
 		default:
 			// Do nothing
 		}

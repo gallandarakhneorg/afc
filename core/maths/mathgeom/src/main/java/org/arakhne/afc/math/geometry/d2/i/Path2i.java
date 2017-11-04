@@ -597,7 +597,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 				this.isPolyline = null;
 				this.isCurved = null;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 				throw new IllegalStateException();
 			}

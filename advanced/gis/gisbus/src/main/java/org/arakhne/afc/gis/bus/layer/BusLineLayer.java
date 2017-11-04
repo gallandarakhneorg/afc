@@ -176,31 +176,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 					case ALL_ITINERARIES_REMOVED:
 						fired = onAllBusItineraryRemoved();
 						break;
-					case ALL_HUBS_REMOVED:
-					case ALL_ITINERARY_HALTS_REMOVED:
-					case ALL_LINES_REMOVED:
-					case ALL_SEGMENTS_REMOVED:
-					case ALL_STOPS_REMOVED:
-					case HUB_ADDED:
-					case HUB_CHANGED:
-					case HUB_REMOVED:
-					case ITINERARY_HALT_ADDED:
-					case ITINERARY_HALT_CHANGED:
-					case ITINERARY_HALT_REMOVED:
-					case ITINERARY_INVERTED:
-					case LINE_ADDED:
-					case LINE_CHANGED:
-					case LINE_REMOVED:
-					case NETWORK_CHANGED:
-					case PRIMITIVE_ADDED:
-					case PRIMITIVE_CHANGED:
-					case PRIMITIVE_REMOVED:
-					case SEGMENT_ADDED:
-					case SEGMENT_REMOVED:
-					case STOP_ADDED:
-					case STOP_CHANGED:
-					case STOP_REMOVED:
-					case VALIDITY:
+						//$CASES-OMITTED$
 					default:
 					}
 					if (!fired) {

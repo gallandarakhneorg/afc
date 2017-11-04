@@ -663,9 +663,7 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 		case POLYLINE_M:
 		case POLYLINE_Z:
 			return MapPolyline.class;
-		case MULTIPATCH:
-		case NULL:
-		case UNSUPPORTED:
+			//$CASES-OMITTED$
 		default:
 		}
 		throw new IllegalArgumentException();

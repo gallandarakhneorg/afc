@@ -626,7 +626,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 				this.isPolyline = null;
 				this.isCurved = null;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 				throw new IllegalStateException();
 			}
@@ -802,7 +802,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 			case CLOSE:
 				++j;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 				break;
 			}

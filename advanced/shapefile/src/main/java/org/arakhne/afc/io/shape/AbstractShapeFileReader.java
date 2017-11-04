@@ -206,7 +206,7 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 			createdElement = readMultiPatch(elementIndex, recordType);
 			break;
 
-		case UNSUPPORTED:
+			//$CASES-OMITTED$
 		default:
 			throw new InvalidShapeTypeException(recordType.name());
 		}
@@ -388,13 +388,6 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 		// Create the instance of the element
 		E newElement = null;
 		switch (type) {
-		case UNSUPPORTED:
-		case NULL:
-		case POINT:
-		case POINT_Z:
-		case POINT_M:
-		case MULTIPATCH:
-			break;
 		case POLYGON_Z:
 		case POLYGON_M:
 		case POLYGON:
@@ -410,6 +403,7 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 		case MULTIPOINT_Z:
 			newElement = createMultiPoint(createAttributeCollection(elementIndex), elementIndex, points, hasZ);
 			break;
+			//$CASES-OMITTED$
 		default:
 		}
 

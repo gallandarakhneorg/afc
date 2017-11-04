@@ -59,17 +59,7 @@ public final class Resources {
 		case ANDROID:
 			wrapper = new AndroidResourceWrapper();
 			break;
-		case AIX:
-		case BSD:
-		case FREEBSD:
-		case HPUX:
-		case LINUX:
-		case MACOSX:
-		case NETBSD:
-		case OPENBSD:
-		case OTHER:
-		case SOLARIS:
-		case WIN:
+			//$CASES-OMITTED$
 		default:
 		}
 

@@ -491,7 +491,7 @@ public interface Shape3afp<
 			case CLOSE:
 				newPath.closePath();
 				break;
-            case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 		}

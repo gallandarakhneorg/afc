@@ -744,7 +744,7 @@ public abstract class AbstractShapeFileWriter<E> extends AbstractCommonShapeFile
 		case MULTIPATCH:
 			recordLength = writeMultiPatch(recordIndex, element);
 			break;
-		case UNSUPPORTED:
+			//$CASES-OMITTED$
 		default:
 			throw new InvalidShapeTypeException(type.name());
 		}

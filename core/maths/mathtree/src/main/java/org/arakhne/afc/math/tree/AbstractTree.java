@@ -79,7 +79,7 @@ public abstract class AbstractTree<D, N extends TreeNode<D, N>>
 			return new PostfixDepthFirstTreeIterator<>(this);
 		case INFIX:
 			return new InfixDepthFirstTreeIterator<>(this);
-		case PREFIX:
+			//$CASES-OMITTED$
 		default:
 			return new PrefixDepthFirstTreeIterator<>(this);
 		}
@@ -120,7 +120,7 @@ public abstract class AbstractTree<D, N extends TreeNode<D, N>>
 			return new PostfixDataDepthFirstTreeIterator<>(this);
 		case INFIX:
 			return new InfixDataDepthFirstTreeIterator<>(this);
-		case PREFIX:
+			//$CASES-OMITTED$
 		default:
 			return new PrefixDataDepthFirstTreeIterator<>(this);
 		}

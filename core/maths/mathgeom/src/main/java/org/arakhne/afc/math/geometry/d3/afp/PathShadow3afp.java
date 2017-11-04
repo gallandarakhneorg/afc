@@ -267,7 +267,7 @@ public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
 				cury = movy;
 				curz = movz;
 				break;
-            case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 			}
 		}

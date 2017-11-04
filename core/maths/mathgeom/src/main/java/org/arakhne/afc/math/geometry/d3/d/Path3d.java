@@ -598,7 +598,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 				this.isPolyline = null;
 				this.isCurved = null;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 				throw new IllegalStateException();
 			}
@@ -789,7 +789,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 			case CLOSE:
 				++j;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 				break;
 			}

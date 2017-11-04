@@ -574,7 +574,7 @@ public class Path2d
 				this.isPolyline = null;
 				this.isCurved = null;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 				throw new IllegalStateException();
 			}
@@ -758,7 +758,7 @@ public class Path2d
 			case CLOSE:
 				++j;
 				break;
-			case ARC_TO:
+				//$CASES-OMITTED$
 			default:
 				throw new IllegalStateException();
 			}

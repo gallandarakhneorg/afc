@@ -183,40 +183,28 @@ public enum DBaseFieldType {
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
 	public static DBaseFieldType fromAttributeType(AttributeType type) throws DBaseFileException {
 		switch (type) {
+		case UUID:
+		case URL:
+		case URI:
+		case POINT:
+		case POINT3D:
+		case POLYLINE:
+		case POLYLINE3D:
 		case STRING:
+		case ENUMERATION:
+		case INET_ADDRESS:
+		case TYPE:
 			return DBaseFieldType.STRING;
 		case DATE:
 			return DBaseFieldType.DATE;
 		case BOOLEAN:
 			return DBaseFieldType.BOOLEAN;
 		case REAL:
-			return DBaseFieldType.NUMBER;
 		case INTEGER:
+		case TIMESTAMP:
 			return DBaseFieldType.NUMBER;
 		case OBJECT:
 			return DBaseFieldType.BINARY;
-		case UUID:
-			return DBaseFieldType.STRING;
-		case URL:
-			return DBaseFieldType.STRING;
-		case URI:
-			return DBaseFieldType.STRING;
-		case POINT:
-			return DBaseFieldType.STRING;
-		case POINT3D:
-			return DBaseFieldType.STRING;
-		case POLYLINE:
-			return DBaseFieldType.STRING;
-		case POLYLINE3D:
-			return DBaseFieldType.STRING;
-		case TIMESTAMP:
-			return DBaseFieldType.NUMBER;
-		case ENUMERATION:
-			return DBaseFieldType.STRING;
-		case INET_ADDRESS:
-			return DBaseFieldType.STRING;
-		case TYPE:
-			return DBaseFieldType.STRING;
 		default:
 			throw new InvalidDBaseFieldTypeException(type);
 		}

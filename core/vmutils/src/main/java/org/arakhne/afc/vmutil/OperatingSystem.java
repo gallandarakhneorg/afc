@@ -123,10 +123,7 @@ public enum OperatingSystem {
 		case WIN:
 			type = OperatingSystemIdentificationType.OPERATING_SYSTEM;
 			break;
-		case AIX:
-		case HPUX:
-		case SOLARIS:
-		case OTHER:
+			//$CASES-OMITTED$
 		default:
 		}
 		if (nativeWrapper == null) {
@@ -185,9 +182,7 @@ public enum OperatingSystem {
 		case OPENBSD:
 		case SOLARIS:
 			return true;
-		case WIN:
-		case OTHER:
-			return false;
+			//$CASES-OMITTED$
 		default:
 		}
 		return false;

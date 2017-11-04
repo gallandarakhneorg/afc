@@ -201,30 +201,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 					case ITINERARY_INVERTED:
 						fired = onBusItineraryInverted(event);
 						break;
-					case ALL_HUBS_REMOVED:
-					case ALL_ITINERARIES_REMOVED:
-					case ALL_LINES_REMOVED:
-					case ALL_SEGMENTS_REMOVED:
-					case ALL_STOPS_REMOVED:
-					case HUB_ADDED:
-					case HUB_CHANGED:
-					case HUB_REMOVED:
-					case ITINERARY_ADDED:
-					case ITINERARY_CHANGED:
-					case ITINERARY_REMOVED:
-					case LINE_ADDED:
-					case LINE_CHANGED:
-					case LINE_REMOVED:
-					case NETWORK_CHANGED:
-					case PRIMITIVE_ADDED:
-					case PRIMITIVE_CHANGED:
-					case PRIMITIVE_REMOVED:
-					case SEGMENT_ADDED:
-					case SEGMENT_REMOVED:
-					case STOP_ADDED:
-					case STOP_CHANGED:
-					case STOP_REMOVED:
-					case VALIDITY:
+						//$CASES-OMITTED$
 					default:
 					}
 					if (!fired) {
