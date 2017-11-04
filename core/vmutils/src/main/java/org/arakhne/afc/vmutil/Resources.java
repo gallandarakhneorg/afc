@@ -131,7 +131,11 @@ public final class Resources {
 			b.append(NAME_SEPARATOR);
 		}
 		b.append(path);
-		return getResource(packagename.getClass().getClassLoader(), b.toString());
+		ClassLoader cl = classLoader;
+		if (cl == null) {
+			cl = packagename.getClass().getClassLoader();
+		}
+		return getResource(cl, b.toString());
 	}
 
 	/**
@@ -250,7 +254,11 @@ public final class Resources {
 			b.append(NAME_SEPARATOR);
 		}
 		b.append(path);
-		return getResourceAsStream(classLoader, b.toString());
+		ClassLoader cl = classLoader;
+		if (cl == null) {
+			cl = packagename.getClass().getClassLoader();
+		}
+		return getResourceAsStream(cl, b.toString());
 	}
 
 	/**
