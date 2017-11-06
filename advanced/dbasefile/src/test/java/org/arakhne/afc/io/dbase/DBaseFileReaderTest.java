@@ -58,17 +58,17 @@ public class DBaseFileReaderTest extends AbstractTestCase {
 	
 	static {
 		PHOTOGRAMMETRIE_VALUE = Locale.getStringWithDefaultFrom(
-				"fr/utbm/set/io/dbase/test", //$NON-NLS-1$
+				"org/arakhne/afc/io/dbase/test", //$NON-NLS-1$
 				"PHOTOGRAMMETRIE", //$NON-NLS-1$
 				null);
 		assert(PHOTOGRAMMETRIE_VALUE!=null);
 		BDTOPO_VALUE = Locale.getStringWithDefaultFrom(
-				"fr/utbm/set/io/dbase/test", //$NON-NLS-1$
+				"org/arakhne/afc/io/dbase/test", //$NON-NLS-1$
 				"BDTOPO", //$NON-NLS-1$
 				null);
 		assert(BDTOPO_VALUE!=null);
 		BATIMENT_RELIGIEUX_VALUE = Locale.getStringWithDefaultFrom(
-				"fr/utbm/set/io/dbase/test", //$NON-NLS-1$
+				"org/arakhne/afc/io/dbase/test", //$NON-NLS-1$
 				"BATIMENT_RELIGIEUX", //$NON-NLS-1$
 				null);
 		assert(BATIMENT_RELIGIEUX_VALUE!=null);

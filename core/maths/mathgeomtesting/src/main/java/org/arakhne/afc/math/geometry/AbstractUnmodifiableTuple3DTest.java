@@ -18,11 +18,12 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d3;
+package org.arakhne.afc.math.geometry;
 
 import org.junit.Assume;
 import org.junit.Test;
 
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.d.Tuple3d;
 
 @SuppressWarnings("all")

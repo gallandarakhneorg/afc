@@ -162,7 +162,9 @@ public final class GeoLocationArea extends AbstractGeoLocation {
 	@Pure
 	@Override
 	public Rectangle2d toBounds2D() {
-		return new Rectangle2d(this.x1, this.y1, this.x2 - this.x1, this.y2 - this.y1);
+		final Rectangle2d r = new Rectangle2d();
+		r.setFromCorners(this.x1, this.y1, this.x2, this.y2);
+		return r;
 	}
 
 	@Pure

@@ -123,7 +123,7 @@ public class RoadPathTest extends AbstractGisTest {
 	}
 
 	@Test
-	public static void testRoadPathVoid() {
+	public void testRoadPathVoid() {
 		RoadPath path = new RoadPath();
 		assertTrue(path.isEmpty());
 	}

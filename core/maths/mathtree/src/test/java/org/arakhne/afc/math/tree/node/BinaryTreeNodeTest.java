@@ -27,6 +27,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.tree.node.BinaryTreeNode.BinaryTreeZone;
 import org.arakhne.afc.math.tree.node.BinaryTreeNode.DefaultBinaryTreeNode;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -268,14 +270,12 @@ public class BinaryTreeNodeTest {
 			this.name = name1;
 		}
 		
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
-		public String toString() {
-			return this.name;
+		public void toJson(JsonBuffer buffer) {
+			super.toJson(buffer);
+			buffer.add("name", this.name); //$NON-NLS-1$
 		}
-		
+	
 	}
 	
 }

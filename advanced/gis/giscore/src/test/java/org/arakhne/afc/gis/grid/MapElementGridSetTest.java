@@ -66,18 +66,24 @@ public class MapElementGridSetTest extends AbstractTestCase {
 		MapElement element;
 
 		Rectangle2d abounds = new Rectangle2d();
+		boolean first = true;
 
 		while ((element=reader.read())!=null) {
 			if (element instanceof MapPolyline) {
 				MapPolyline p = (MapPolyline)element;
 				this.reference.add(p);
-				abounds.setUnion(p.getBoundingBox().toBoundingBox());
+				if (first) {
+					first = false;
+					abounds.set(p.getBoundingBox());
+				} else {
+					abounds.setUnion(p.getBoundingBox());
+				}
 			}
 		}
 
 		reader.close();
 
-		if (!abounds.isEmpty()) this.bounds = abounds;
+		if (!first) this.bounds = abounds;
 		else this.bounds = null;
 	}
 
@@ -90,13 +96,13 @@ public class MapElementGridSetTest extends AbstractTestCase {
 
 	@Test
 	public void testGetNearest() {
-    	System.out.println("Preparing the benchmark..."); //$NON-NLS-1$
+		getLogger().info("Preparing the benchmark..."); //$NON-NLS-1$
 		assertNotNull(this.bounds);
 		MapElementGridSet<MapPolyline> test = new MapElementGridSet<>(100, 100, this.bounds);
         test.addAll(this.reference);
         assertEquals(this.reference.size(), test.size());
 
-    	System.out.println("Run test..."); //$NON-NLS-1$
+        getLogger().info("Run test..."); //$NON-NLS-1$
 
     	Random rnd = new Random();
     	MapPolyline nearestData;
@@ -104,29 +110,42 @@ public class MapElementGridSetTest extends AbstractTestCase {
     	Point2d p;
     	final ArrayList<MapPolyline> nearest = new ArrayList<>();
 
-    	x = rnd.nextDouble()*this.bounds.getWidth()+this.bounds.getMinX();
-    	y = rnd.nextDouble()*this.bounds.getHeight()+this.bounds.getMinY();
-    	p = new Point2d(x,y);
+    	boolean found = false;
+    	int tries = 5;
+    	do {
+    		nearest.clear();
+        	x = rnd.nextDouble()*this.bounds.getWidth()+this.bounds.getMinX();
+        	y = rnd.nextDouble()*this.bounds.getHeight()+this.bounds.getMinY();
+        	p = new Point2d(x,y);
 
-    	minDistance = Double.MAX_VALUE;
-    	nearest.clear();
-    	for (MapPolyline line : this.reference) {
-    		distance = line.getDistance(p);
-    		if (isEpsilonEquals(minDistance, distance)) {
-    			nearest.add(line);
-    		}
-    		else if (distance<minDistance) {
-    			minDistance = distance;
-    			nearest.clear();
-    			nearest.add(line);
-    		}
+        	minDistance = Double.MAX_VALUE;
+        	for (MapPolyline line : this.reference) {
+        		distance = line.getDistance(p);
+        		if (distance<minDistance) {
+        			minDistance = distance;
+        		}
+        	}
+        	for (MapPolyline line : this.reference) {
+        		distance = line.getDistance(p);
+        		if (isEpsilonEquals(distance, minDistance)) {
+        			nearest.add(line);
+        		}
+        	}
+
+        	nearestData = test.getNearest(x, y);
+        	assertNotNull(nearestData);
+
+        	found = false;
+        	for (MapPolyline poly : nearest) {
+        		if (poly == nearestData) {
+        			found = true;
+        			break;
+        		}
+        	}
+        	--tries;
     	}
-
-    	nearestData = test.getNearest(x, y);
-    	assertNotNull(nearestData);
-
-    	//TODO: assertEpsilonEquals(minDistance, nearestData.distance(p));
-    	assertTrue(nearest.contains(nearestData));
+    	while (!found && tries > 0);
+    	assertTrue("Polyline not found", found); //$NON-NLS-1$
 	}
 
 	@Test
@@ -141,7 +160,7 @@ public class MapElementGridSetTest extends AbstractTestCase {
 
         for(int i=0; i<testCount; ++i) {
         	msg = "test "+(i+1)+"/"+testCount; //$NON-NLS-1$ //$NON-NLS-2$
-        	System.out.print(msg+"..."); //$NON-NLS-1$
+        	getLogger().info(msg+"..."); //$NON-NLS-1$
 
 	        // Add an element
         	double x = this.bounds.getMinX() + rnd.nextDouble() * this.bounds.getWidth();
@@ -156,7 +175,7 @@ public class MapElementGridSetTest extends AbstractTestCase {
 	        assertEquals(msg,this.reference.size(), test.size());
 	        assertTrue(msg,test.slowContains(newElement));
 	    	assertEpsilonEquals(msg,this.reference.toArray(),test.toArray());
-        	System.out.println("done"); //$NON-NLS-1$
+	    	getLogger().info("done"); //$NON-NLS-1$
         }
 	}
 

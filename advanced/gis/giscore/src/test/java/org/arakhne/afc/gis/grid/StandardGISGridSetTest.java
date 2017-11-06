@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.TreeSet;
 
+import com.google.common.collect.Iterables;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,7 +71,7 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 	@Before
 	public void setUp() throws Exception {
 		try {
-			System.out.print("Reading reference shape file..."); //$NON-NLS-1$
+			getLogger().info("Reading reference shape file..."); //$NON-NLS-1$
 
 			this.reference = new ArrayList<>();
 
@@ -82,7 +83,8 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 			MapElement element;
 
 			ESRIBounds eb = reader.getBoundsFromHeader();
-			this.worldBounds = new Rectangle2d(
+			this.worldBounds = new Rectangle2d();
+			this.worldBounds.setFromCorners(
 					eb.getMinX(), eb.getMinY(),
 					eb.getMaxX(), eb.getMaxY());
 
@@ -91,8 +93,8 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 			int i=0;
 			while (i<MAX_REFERENCE_SIZE && (element=reader.read())!=null) {
 				this.reference.add(element);
-				x += element.getBoundingBox().toBoundingBox().getCenterX();
-				y += element.getBoundingBox().toBoundingBox().getCenterY();
+				x += element.getBoundingBox().getCenterX();
+				y += element.getBoundingBox().getCenterY();
 				++i;
 			}
 
@@ -104,7 +106,7 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 			this.center = new Point2d(x,y);
 		}
 		finally {
-			System.out.println("finished"); //$NON-NLS-1$
+			getLogger().info("finished"); //$NON-NLS-1$
 		}
 	}
 
@@ -128,9 +130,8 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 		this.reference.add(new MapPoint(800,0));
 
 		Rectangle2d bounds = new Rectangle2d();
-		for(GISPrimitive p : this.reference) {
-			bounds.add(((MapPoint)p).getPoint());
-		}
+		bounds.setFromPointCloud(Iterables.transform(this.reference,
+				(it) -> ((MapPoint)it).getPoint()));
 
 		StandardGISGridSet<GISPrimitive> test = new StandardGISGridSet<>(100, 100, bounds);
 		assertTrue(test.addAll(this.reference));
@@ -397,7 +398,7 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 
 		for(int i=0; i<testCount; ++i) {
 			msg = "test "+(i+1)+"/"+testCount; //$NON-NLS-1$ //$NON-NLS-2$
-			System.out.print(msg+"..."); //$NON-NLS-1$
+			getLogger().info(msg+"..."); //$NON-NLS-1$
 
 			// Add an element
 			double x = this.worldBounds.getMinX() + rnd.nextDouble() * this.worldBounds.getWidth();
@@ -408,7 +409,7 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 			assertEquals(msg,this.reference.size(), test.size());
 			assertTrue(msg,test.slowContains(newElement));
 			assertEpsilonEquals(msg,this.reference.toArray(),test.toArray());
-			System.out.println("done"); //$NON-NLS-1$
+			getLogger().info("done"); //$NON-NLS-1$
 		}
 	}
 
@@ -421,7 +422,7 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 
 		for(int i=0; i<testCount; ++i) {
 			msg = "test "+(i+1)+"/"+testCount; //$NON-NLS-1$ //$NON-NLS-2$
-			System.out.print(msg+"..."); //$NON-NLS-1$
+			getLogger().info(msg+"..."); //$NON-NLS-1$
 
 			removalIndex = rnd.nextInt(this.reference.size());
 
@@ -438,7 +439,7 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 			assertFalse(msg,test.slowContains(toRemove));
 			assertTrue(msg, this.reference.remove(toRemove));
 			assertEpsilonEquals(msg,this.reference.toArray(),test.toArray());
-			System.out.println("done"); //$NON-NLS-1$
+			getLogger().info("done"); //$NON-NLS-1$
 		}
 	}
 
@@ -464,14 +465,15 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 		for(int idxTest=0; idxTest<testCount; ++idxTest) {
 
 			msg = "test "+(idxTest+1)+"/"+testCount; //$NON-NLS-1$ //$NON-NLS-2$
-			System.out.print(msg+"..."); //$NON-NLS-1$
+			getLogger().info(msg+"..."); //$NON-NLS-1$
 
 			deltaX = rnd.nextInt(1000)*(rnd.nextBoolean() ? -1 : 1);
 			deltaY = rnd.nextInt(1000)*(rnd.nextBoolean() ? -1 : 1);
 			width = rnd.nextInt(100);
 			height = rnd.nextInt(100);
 
-			bounds = new Rectangle2d(
+			bounds = new Rectangle2d();
+			bounds.setFromCorners(
 					this.center.getX()+deltaX, this.center.getY()+deltaY,
 					this.center.getX()+deltaX+width,
 					this.center.getY()+deltaY+height);
@@ -508,19 +510,19 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 
 			//TODO: assertEquals(0, inter.size());
 
-			System.out.println("done"); //$NON-NLS-1$
+			getLogger().info("done"); //$NON-NLS-1$
 		}
 	}
 
 	@Test
 	public void testGetGeoLocation() {
-		System.out.print("Populate the tree..."); //$NON-NLS-1$
+		getLogger().info("Populate the tree..."); //$NON-NLS-1$
 		StandardGISGridSet<GISPrimitive> test = new StandardGISGridSet<>(100,100,this.worldBounds);
 		assertTrue(test.addAll(this.reference));
 		assertEquals(this.reference.size(), test.size());
-		System.out.println("finished"); //$NON-NLS-1$
+		getLogger().info("finished"); //$NON-NLS-1$
 
-		System.out.println("Running tests..."); //$NON-NLS-1$
+		getLogger().info("Running tests..."); //$NON-NLS-1$
 		assertNull(test.get((GeoLocation)null));
 
 		// Test the content
@@ -529,7 +531,7 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 		GISPrimitive actual;
 		for(int idx=0; idx<count; ++idx) {
 			if (idx%10==0)
-				System.out.println("\t("+(idx+1)+"/"+count+")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				getLogger().info("\t("+(idx+1)+"/"+count+")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			p = this.reference.get(getRandom().nextInt(this.reference.size()));
 			actual = test.get(p.getGeoLocation());
 			try {
@@ -542,18 +544,18 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 		}
 
 		assertNull(test.get(new GeoLocationPoint(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)));
-		System.out.println("\tfinished"); //$NON-NLS-1$
+		getLogger().info("\tfinished"); //$NON-NLS-1$
 	}
 
 	@Test
 	public void testGetGeoId() {
-		System.out.print("Populate the tree..."); //$NON-NLS-1$
+		getLogger().info("Populate the tree..."); //$NON-NLS-1$
 		StandardGISGridSet<GISPrimitive> test = new StandardGISGridSet<>(100,100,this.worldBounds);
 		assertTrue(test.addAll(this.reference));
 		assertEquals(this.reference.size(), test.size());
-		System.out.println("finished"); //$NON-NLS-1$
+		getLogger().info("finished"); //$NON-NLS-1$
 
-		System.out.println("Running tests..."); //$NON-NLS-1$
+		getLogger().info("Running tests..."); //$NON-NLS-1$
 		assertNull(test.get((GeoId)null));
 
 		// Test the content
@@ -561,12 +563,12 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 		GISPrimitive p;
 		for(int idx=0; idx<count; ++idx) {
 			if (idx%10==0)
-				System.out.println("\t("+(idx+1)+"/"+count+")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				getLogger().info("\t("+(idx+1)+"/"+count+")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			p = this.reference.get(getRandom().nextInt(this.reference.size()));
 			assertSame(p, test.get(p.getGeoId()));
 		}
 
-		System.out.println("\tfinished"); //$NON-NLS-1$
+		getLogger().info("\tfinished"); //$NON-NLS-1$
 	}
 
 }

@@ -184,6 +184,18 @@ public interface Shape2afp<
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	default boolean intersects(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+		// CAUTION:
+		// It is important to test several types in the reverse order than the inheritance hierarchy.
+		if (shape instanceof Rectangle2afp) {
+			return intersects((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof OrientedRectangle2afp) {
+			return intersects((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Parallelogram2afp) {
+			return intersects((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		//
 		if (shape instanceof Circle2afp) {
 			return intersects((Circle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
@@ -193,20 +205,11 @@ public interface Shape2afp<
 		if (shape instanceof MultiShape2afp) {
 			return intersects((MultiShape2afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (shape instanceof OrientedRectangle2afp) {
-			return intersects((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Parallelogram2afp) {
-			return intersects((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
 		if (shape instanceof Path2afp) {
 			return intersects((Path2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
 		if (shape instanceof PathIterator2afp) {
 			return intersects((PathIterator2afp<?>) shape);
-		}
-		if (shape instanceof Rectangle2afp) {
-			return intersects((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
 		if (shape instanceof RoundRectangle2afp) {
 			return intersects((RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
@@ -327,6 +330,18 @@ public interface Shape2afp<
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	default double getDistanceSquared(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+		// CAUTION:
+		// It is important to test several types in the reverse order than the inheritance hierarchy.
+		if (shape instanceof Rectangle2afp) {
+			return getDistanceSquared((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof OrientedRectangle2afp) {
+			return getDistanceSquared((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Parallelogram2afp) {
+			return getDistanceSquared((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		//
 		if (shape instanceof Circle2afp) {
 			return getDistanceSquared((Circle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
@@ -336,17 +351,8 @@ public interface Shape2afp<
 		if (shape instanceof MultiShape2afp) {
 			return getDistanceSquared((MultiShape2afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (shape instanceof OrientedRectangle2afp) {
-			return getDistanceSquared((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Parallelogram2afp) {
-			return getDistanceSquared((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
 		if (shape instanceof Path2afp) {
 			return getDistanceSquared((Path2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Rectangle2afp) {
-			return getDistanceSquared((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
 		if (shape instanceof RoundRectangle2afp) {
 			return getDistanceSquared((RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
@@ -483,6 +489,18 @@ public interface Shape2afp<
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	default P getClosestPointTo(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+		// CAUTION:
+		// It is important to test several types in the reverse order than the inheritance hierarchy.
+		if (shape instanceof Rectangle2afp) {
+			return getClosestPointTo((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof OrientedRectangle2afp) {
+			return getClosestPointTo((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Parallelogram2afp) {
+			return getClosestPointTo((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		//
 		if (shape instanceof Circle2afp) {
 			return getClosestPointTo((Circle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
@@ -492,17 +510,8 @@ public interface Shape2afp<
 		if (shape instanceof MultiShape2afp) {
 			return getClosestPointTo((MultiShape2afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (shape instanceof OrientedRectangle2afp) {
-			return getClosestPointTo((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Parallelogram2afp) {
-			return getClosestPointTo((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
 		if (shape instanceof Path2afp) {
 			return getClosestPointTo((Path2afp<?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Rectangle2afp) {
-			return getClosestPointTo((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
 		if (shape instanceof RoundRectangle2afp) {
 			return getClosestPointTo((RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape);

@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.tree.node.IcosepQuadTreeNode;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * A node inside a {@link StandardGISTreeSet}.
@@ -70,7 +71,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 
 	/** Bounds of the data in the subtree.
 	 */
-	private Rectangle2afp<?, ?, ?, ?, ?, ?> dataBounds;
+	private transient Rectangle2afp<?, ?, ?, ?, ?, ?> dataBounds;
 
 	/** Constructor.
 	 * @param zone is the zone enclosed by this node.
@@ -219,9 +220,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 	 */
 	@Pure
 	void clearBounds() {
-		if (this.dataBounds != null) {
-			this.dataBounds = null;
-		}
+		this.dataBounds = null;
 		final N parent = getParentNode();
 		if (parent != null) {
 			parent.clearBounds();
@@ -252,6 +251,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 	@Pure
 	protected Rectangle2d calcBounds() {
 		final Rectangle2d bb = new Rectangle2d();
+		boolean first = true;
 		Rectangle2afp<?, ?, ?, ?, ?, ?> b;
 
 		// Child bounds
@@ -261,7 +261,16 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 			if (child != null) {
 				b = child.getBounds();
 				if (b != null) {
-					bb.setUnion(b);
+					if (first) {
+						first = false;
+						bb.setFromCorners(
+								b.getMinX(),
+								b.getMinY(),
+								b.getMaxX(),
+								b.getMaxY());
+					} else {
+						bb.setUnion(b);
+					}
 				}
 			}
 		}
@@ -276,13 +285,22 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 				if (location != null) {
 					b = location.toBounds2D();
 					if (b != null) {
-						bb.setUnion(b);
+						if (first) {
+							first = false;
+							bb.setFromCorners(
+									b.getMinX(),
+									b.getMinY(),
+									b.getMaxX(),
+									b.getMaxY());
+						} else {
+							bb.setUnion(b);
+						}
 					}
 				}
 			}
 		}
 
-		return !bb.isEmpty() ? bb : null;
+		return first ? null : bb;
 	}
 
 	@Override
@@ -380,7 +398,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 		final Rectangle2d b = new Rectangle2d();
 		final double dw = this.nodeWidth / 2.;
 		final double dh = this.nodeHeight / 2.;
-		b.set(this.verticalSplit - dw, this.horizontalSplit - dh,
+		b.setFromCorners(this.verticalSplit - dw, this.horizontalSplit - dh,
 				this.verticalSplit + dw, this.horizontalSplit + dh);
 		return b;
 	}
@@ -420,14 +438,12 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 
 	@Override
 	@Pure
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		b.append(getDepth());
-		b.append(" "); //$NON-NLS-1$
-		b.append(this.zone);
-		b.append(" "); //$NON-NLS-1$
-		b.append(super.toString());
-		return b.toString();
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("depth", getDepth()); //$NON-NLS-1$
+		buffer.add("zone", getZone()); //$NON-NLS-1$
+		buffer.add("areaBounds", getAreaBounds()); //$NON-NLS-1$
+		buffer.add("bounds", getBounds()); //$NON-NLS-1$
 	}
 
 }

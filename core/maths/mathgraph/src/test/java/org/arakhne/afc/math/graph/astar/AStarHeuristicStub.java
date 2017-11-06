@@ -41,7 +41,7 @@ public class AStarHeuristicStub implements AStarHeuristic<AStarNodeStub> {
 	public double evaluate(AStarNodeStub p1, AStarNodeStub p2) {
 		double dx = p1.positionX - p2.positionX;
 		double dy = p1.positionY - p2.positionY;
-		return Math.sqrt(dx * dx + dy * dy);
+		return Math.hypot(dx, dy);
 	}
 
 }

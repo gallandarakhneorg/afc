@@ -157,13 +157,19 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 	@Override
 	protected Rectangle2d calcBounds() {
 		final Rectangle2d r = new Rectangle2d();
+		boolean first = true;
 		for (final  MapLayer sublayer : this.subLayers) {
 			final Rectangle2d subBounds = sublayer.getBoundingBox();
 			if (subBounds != null && !subBounds.isEmpty()) {
-				r.setUnion(subBounds);
+				if (first) {
+					first = false;
+					r.set(subBounds);
+				} else {
+					r.setUnion(subBounds);
+				}
 			}
 		}
-		return r.isEmpty() ? null : r;
+		return first ? null : r;
 	}
 
 	@Override
@@ -179,6 +185,7 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 	 */
 	protected Rectangle2d calcVisibleBounds() {
 		final Rectangle2d r = new Rectangle2d();
+		boolean first = true;
 		Rectangle2d subBounds;
 		for (final MapLayer sublayer : this.subLayers) {
 			if (sublayer.isVisible()) {
@@ -188,11 +195,16 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 					subBounds = sublayer.getBoundingBox();
 				}
 				if (subBounds != null && !subBounds.isEmpty()) {
-					r.setUnion(r);
+					if (first) {
+						first = false;
+						r.set(subBounds);
+					} else {
+						r.setUnion(subBounds);
+					}
 				}
 			}
 		}
-		return r.isEmpty() ? null : r;
+		return first ? null : r;
 	}
 
 	@Override

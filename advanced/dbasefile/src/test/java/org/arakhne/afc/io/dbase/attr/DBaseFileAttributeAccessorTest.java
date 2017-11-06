@@ -60,7 +60,7 @@ public class DBaseFileAttributeAccessorTest extends AbstractTestCase {
 	}
 
 	@After
-	protected void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 		this.pool.close();
 		this.accessor = null;
 		this.pool = null;

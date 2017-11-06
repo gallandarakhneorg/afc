@@ -71,7 +71,7 @@ public class BusNetworkTest extends AbstractTestCase {
 	private BusNetwork network;
 
 	@Before
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		this.itinerary1 = new BusItinerary("ITINERARY1"); //$NON-NLS-1$
 		this.itinerary2 = new BusItinerary("ITINERARY2"); //$NON-NLS-1$
 		this.halt1 = new BusItineraryHalt(this.itinerary1, "HALT1", BusItineraryHaltType.STOP_ON_DEMAND); //$NON-NLS-1$
@@ -105,7 +105,7 @@ public class BusNetworkTest extends AbstractTestCase {
 	}
 
 	@After
-	protected void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 		this.network.removeBusChangeListener(this.eventHandler);
 		this.roadNetwork = null;
 		this.segment1 = this.segment2 = this.segment3 = null;

@@ -122,7 +122,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			vy = velocity.getY();
 		}
 
-		olength = Math.sqrt(vx * vx + vy * vy);
+		olength = Math.hypot(vx, vy);
 		if (olength != 0.) {
 			a = MathUtil.clamp(
 					(Vector2D.dotProduct(vx, vy, velocity.getX(), velocity.getY()) < 0.) ? -olength : olength,
@@ -176,7 +176,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			vy = velocity.getY();
 		}
 
-		olength = Math.sqrt(vx * vx + vy * vy);
+		olength = Math.hypot(vx, vy);
 		if (olength != 0.) {
 			a = MathUtil.clamp(
 					(Vector2D.dotProduct(vx, vy, velocity.getX(), velocity.getY()) < 0.) ? -olength : olength,

@@ -61,7 +61,7 @@ public interface UnmodifiablePoint1D<
 	}
 
 	@Override
-	default void setShiftDistance(double shift) {
+	default void setLateralDistance(double shift) {
 		throw new UnsupportedOperationException();
 	}
 

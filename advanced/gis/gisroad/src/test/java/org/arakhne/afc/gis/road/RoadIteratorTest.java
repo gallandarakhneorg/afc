@@ -250,7 +250,7 @@ public class RoadIteratorTest extends AbstractGisTest {
     	assertEquals(this.segment3, iterator.next());
     	assertFalse(iterator.hasNext());
 
-    	iterator = this.network.depthIterator(this.segment1, 500., Math.sqrt(100*100+100*100)-1, this.segment1.getEndPoint(),false,true);
+    	iterator = this.network.depthIterator(this.segment1, 500., Math.hypot(100,100)-1, this.segment1.getEndPoint(),false,true);
     	assertTrue(iterator.hasNext());
     	assertEquals(this.segment1, iterator.next());
     	assertTrue(iterator.hasNext());

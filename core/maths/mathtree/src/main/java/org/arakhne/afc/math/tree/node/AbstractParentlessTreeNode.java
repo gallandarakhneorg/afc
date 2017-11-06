@@ -29,13 +29,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.tree.TreeDataEvent;
 import org.arakhne.afc.math.tree.TreeNode;
 import org.arakhne.afc.math.tree.TreeNodeListener;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 
 /**
@@ -194,16 +194,22 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 
 	@Override
 	@Pure
-	public String toString() {
-		final StringBuilder buffer = new StringBuilder();
-		buffer.append('[');
-		if (this.data != null) {
-			for (final D data : this.data) {
-				buffer.append(Objects.toString(data));
-			}
-		}
-		buffer.append(']');
+	public final String toString() {
+		final JsonBuffer buffer = new JsonBuffer();
+		toJson(buffer);
 		return buffer.toString();
+	}
+
+	/** Replies the Json representation of this node.
+	 *
+	 * @param buffer the Json buffer.
+	 * @since 14.0
+	 */
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		if (this.data != null) {
+			buffer.add("data", this.data); //$NON-NLS-1$
+		}
 	}
 
 	@Override

@@ -197,7 +197,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 			stop.rebuild();
 			if (!stop.isValidPrimitive() && isEventFirable()) {
 				this.validBusStops.remove(stop);
-				ListUtil.add(this.invalidBusStops, INVALID_STOP_COMPARATOR, stop, true, false);
+				ListUtil.addIfAbsent(this.invalidBusStops, INVALID_STOP_COMPARATOR, stop);
 			}
 		}
 
@@ -220,7 +220,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 			hub.rebuild();
 			if (!hub.isValidPrimitive() && isEventFirable()) {
 				this.validBusHubs.remove(hub);
-				ListUtil.add(this.invalidBusHubs, INVALID_HUB_COMPARATOR, hub, true, false);
+				ListUtil.addIfAbsent(this.invalidBusHubs, INVALID_HUB_COMPARATOR, hub);
 			}
 		}
 
@@ -267,16 +267,22 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	@Pure
 	protected Rectangle2d calcBounds() {
 		final Rectangle2d r = new Rectangle2d();
+		boolean first = true;
 		Rectangle2d lr;
 		if (this.busLines != null) {
 			for (final BusLine line : this.busLines) {
 				lr = line.getBoundingBox().toBoundingBox();
 				if (lr != null) {
-					r.setUnion(lr);
+					if (first) {
+						first = false;
+						r.set(lr);
+					} else {
+						r.setUnion(lr);
+					}
 				}
 			}
 		}
-		return r.isEmpty() ? null : r;
+		return first ? null : r;
 	}
 
 	@Override
@@ -733,7 +739,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 			if (!this.validBusStops.add(busStop)) {
 				return false;
 			}
-		} else if (ListUtil.add(this.invalidBusStops, INVALID_STOP_COMPARATOR, busStop, true, false) < 0) {
+		} else if (ListUtil.addIfAbsent(this.invalidBusStops, INVALID_STOP_COMPARATOR, busStop) < 0) {
 			return false;
 		}
 
@@ -1079,7 +1085,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 			if (!this.validBusHubs.add(hub)) {
 				return false;
 			}
-		} else if (ListUtil.add(this.invalidBusHubs, INVALID_HUB_COMPARATOR, hub, true, false) < 0) {
+		} else if (ListUtil.addIfAbsent(this.invalidBusHubs, INVALID_HUB_COMPARATOR, hub) < 0) {
 			return false;
 		}
 
@@ -1376,7 +1382,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 					this.validBusStops.add(stop);
 				} else {
 					this.validBusStops.remove(stop);
-					ListUtil.add(this.invalidBusStops, INVALID_STOP_COMPARATOR, stop, true, false);
+					ListUtil.addIfAbsent(this.invalidBusStops, INVALID_STOP_COMPARATOR, stop);
 				}
 			}
 		}
@@ -1392,7 +1398,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 					this.validBusHubs.add(hub);
 				} else {
 					this.validBusHubs.remove(hub);
-					ListUtil.add(this.invalidBusHubs, INVALID_HUB_COMPARATOR, hub, true, false);
+					ListUtil.addIfAbsent(this.invalidBusHubs, INVALID_HUB_COMPARATOR, hub);
 				}
 			}
 		}

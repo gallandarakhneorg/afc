@@ -1214,13 +1214,13 @@ public interface Segment2afp<
         final double ratio = numerator / denomenator;
 
         if (ratio <= 0.) {
-            return Math.sqrt(xp1 * xp1 + yp1 * yp1);
+            return Math.hypot(xp1, yp1);
         }
 
         if (ratio >= 1.) {
             final double xp2 = px - x2;
             final double yp2 = py - y2;
-            return Math.sqrt(xp2 * xp2 + yp2 * yp2);
+            return Math.hypot(xp2, yp2);
         }
 
         final double factor = (xp1 * y21 - yp1 * x21) / denomenator;
@@ -1597,9 +1597,9 @@ public interface Segment2afp<
      * Replies the projection a point on a segment.
      *
      * @param px
-     *            is the coordiante of the point to project
+     *            is the coordinate of the point to project
      * @param py
-     *            is the coordiante of the point to project
+     *            is the coordinate of the point to project
      * @param s1x
      *            is the x-coordinate of the first line point.
      * @param s1y

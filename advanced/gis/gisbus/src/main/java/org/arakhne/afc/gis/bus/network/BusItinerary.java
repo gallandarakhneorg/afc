@@ -300,7 +300,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			halt.rebuild();
 			if (!halt.isValidPrimitive() && !halt.isEventFirable()) {
 				ListUtil.remove(this.validHalts, VALID_HALT_COMPARATOR, halt);
-				ListUtil.add(this.invalidHalts, INVALID_HALT_COMPARATOR, halt, true, false);
+				ListUtil.addIfAbsent(this.invalidHalts, INVALID_HALT_COMPARATOR, halt);
 			}
 		}
 
@@ -310,7 +310,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			halt.rebuild();
 			if (halt.isValidPrimitive() && !halt.isEventFirable()) {
 				ListUtil.remove(this.invalidHalts, INVALID_HALT_COMPARATOR, halt);
-				ListUtil.add(this.validHalts, VALID_HALT_COMPARATOR, halt, true, false);
+				ListUtil.addIfAbsent(this.validHalts, VALID_HALT_COMPARATOR, halt);
 			}
 		}
 
@@ -503,34 +503,55 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	protected Rectangle2d calcBounds() {
 		Rectangle2d sr;
 		final Rectangle2d r = new Rectangle2d();
+		boolean first = true;
 		final Iterator<RoadSegment> iterator = this.roadSegments.roadSegments();
 		RoadSegment segment;
 		while (iterator.hasNext()) {
 			segment = iterator.next();
 			sr = segment.getBoundingBox().toBoundingBox();
 			if (sr != null) {
-				r.setUnion(sr);
+				if (first) {
+					first = false;
+					r.set(sr);
+				} else {
+					r.setUnion(sr);
+				}
 			}
 		}
 		for (final BusItineraryHalt halt : this.validHalts) {
 			sr = halt.getBoundingBox().toBoundingBox();
 			if (sr != null) {
-				r.setUnion(sr);
+				if (first) {
+					first = false;
+					r.set(sr);
+				} else {
+					r.setUnion(sr);
+				}
 			}
 		}
 		for (final BusItineraryHalt halt: this.invalidHalts) {
 			if (halt.getBusStop() != null && halt.getBusStop().getPosition2D() != null) {
 				sr = halt.getBoundingBox().toBoundingBox();
 				if (sr != null) {
-					r.setUnion(sr);
+					if (first) {
+						first = false;
+						r.set(sr);
+					} else {
+						r.setUnion(sr);
+					}
 				}
 				sr = halt.getBusStop().getBoundingBox().toBoundingBox();
 				if (sr != null) {
-					r.setUnion(sr);
+					if (first) {
+						first = false;
+						r.set(sr);
+					} else {
+						r.setUnion(sr);
+					}
 				}
 			}
 		}
-		return r.isEmpty() ? null : r;
+		return first ? null : r;
 	}
 
 	@Override
@@ -1096,9 +1117,9 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		}
 
 		if (halt.isValidPrimitive()) {
-			ListUtil.add(this.validHalts, VALID_HALT_COMPARATOR, halt, true, false);
+			ListUtil.addIfAbsent(this.validHalts, VALID_HALT_COMPARATOR, halt);
 		} else {
-			ListUtil.add(this.invalidHalts, INVALID_HALT_COMPARATOR, halt, true, false);
+			ListUtil.addIfAbsent(this.invalidHalts, INVALID_HALT_COMPARATOR, halt);
 		}
 		halt.setEventFirable(isEventFirable());
 		++this.insertionIndex;
@@ -1815,7 +1836,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 			for (final BusItineraryHalt busHalt : tabV) {
 				assert busHalt != null && busHalt.isValidPrimitive();
-				ListUtil.add(this.validHalts, VALID_HALT_COMPARATOR, busHalt, true, false);
+				ListUtil.addIfAbsent(this.validHalts, VALID_HALT_COMPARATOR, busHalt);
 			}
 
 			if (this.roadNetwork == null) {
@@ -2478,10 +2499,10 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			if (oldValidity != currentValidity) {
 				if (currentValidity) {
 					ListUtil.remove(this.invalidHalts, INVALID_HALT_COMPARATOR, halt);
-					ListUtil.add(this.validHalts, VALID_HALT_COMPARATOR, halt, true, false);
+					ListUtil.addIfAbsent(this.validHalts, VALID_HALT_COMPARATOR, halt);
 				} else {
 					this.validHalts.remove(halt);
-					ListUtil.add(this.invalidHalts, INVALID_HALT_COMPARATOR, halt, true, false);
+					ListUtil.addIfAbsent(this.invalidHalts, INVALID_HALT_COMPARATOR, halt);
 				}
 				checkPrimitiveValidity();
 			}

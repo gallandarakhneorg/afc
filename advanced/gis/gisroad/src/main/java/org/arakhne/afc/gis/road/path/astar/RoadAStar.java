@@ -960,6 +960,11 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		}
 
 		@Override
+		public double getRoadBorderDistance() {
+			return getVirtualizedSegment().getRoadBorderDistance();
+		}
+
+		@Override
 		public void setWidth(double width) {
 			getVirtualizedSegment().setWidth(width);
 		}

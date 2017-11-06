@@ -93,9 +93,19 @@ public class GeoLocationPointListTest extends AbstractGisTest {
 			coord = Integer.valueOf(j * 100).doubleValue() + this.count1;
 			this.coords13[j] = this.coords13[j+1] = coord;
 
-			this.b11.add(new Point2d(this.coords11[j], this.coords11[j+1]));
-			this.b12.add(new Point2d(this.coords12[this.count1-j-1], this.coords12[this.count1-j-2]));
-			this.b13.add(new Point2d(this.coords13[j], this.coords13[j+1]));
+			Point2d pts1 = new Point2d(this.coords11[j], this.coords11[j+1]);
+			Point2d pts2 = new Point2d(this.coords12[this.count1-j-1], this.coords12[this.count1-j-2]);
+			Point2d pts3 = new Point2d(this.coords13[j], this.coords13[j+1]);
+
+			if (j == 0) {
+				this.b11.set(pts1, pts1);
+				this.b12.set(pts2, pts2);
+				this.b13.set(pts3, pts3);
+			} else {
+				this.b11.add(pts1);
+				this.b12.add(pts2);
+				this.b13.add(pts3);
+			}
 		}
 
 		this.coords21 = new double[this.count2];
@@ -110,9 +120,19 @@ public class GeoLocationPointListTest extends AbstractGisTest {
 			coord = Integer.valueOf(j * 100).doubleValue() + this.count1 + this.count2;
 			this.coords23[j] = this.coords23[j+1] = coord;
 
-			this.b21.add(new Point2d(this.coords21[j], this.coords21[j+1]));
-			this.b22.add(new Point2d(this.coords22[this.count2-j-1], this.coords22[this.count2-j-2]));
-			this.b23.add(new Point2d(this.coords23[j], this.coords23[j+1]));
+			Point2d pts1 = new Point2d(this.coords21[j], this.coords21[j+1]);
+			Point2d pts2 = new Point2d(this.coords22[this.count2-j-1], this.coords22[this.count2-j-2]);
+			Point2d pts3 = new Point2d(this.coords23[j], this.coords23[j+1]);
+
+			if (j == 0) {
+				this.b21.set(pts1, pts1);
+				this.b22.set(pts2, pts2);
+				this.b23.set(pts3, pts3);
+			} else {
+				this.b21.add(pts1);
+				this.b22.add(pts2);
+				this.b23.add(pts3);
+			}
 		}
 
 		// Creation of GeoLocations

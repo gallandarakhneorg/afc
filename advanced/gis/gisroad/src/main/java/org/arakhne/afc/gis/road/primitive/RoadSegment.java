@@ -121,6 +121,20 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	@Pure
 	double getLength();
 
+	/** Replies the distance to the road border according to the driving side on the road.
+	 *
+	 * <p>This function is equivalent to calls to {@link #getLaneCenter(int)} and
+	 * {@link #getLaneSize(int)}:
+	 * <pre><code>
+	 * getLaneCenter(0) - getLaneSize(0) / 2
+	 * </code></pre>
+	 *
+	 * @return shift distance from the segment's center to the road border.
+	 * @since 14.0
+	 */
+	@Pure
+	double getRoadBorderDistance();
+
 	/** Returns the road width in the geo-located referencial.
 	 * The width is the distance between the border lines of the road.
 	 *

@@ -252,9 +252,7 @@ public class AttributeTest extends AbstractTestCase {
 			
 			if (type.isNullAllowed()) {
 				assertAttributeException(attr, "getBoolean");  //$NON-NLS-1$
-				assertAttributeException(attr, "getColor");  //$NON-NLS-1$
 				assertAttributeException(attr, "getDate");  //$NON-NLS-1$
-				assertAttributeException(attr, "getImage");  //$NON-NLS-1$
 				assertAttributeException(attr, "getInteger");  //$NON-NLS-1$
 				assertNull(attr.getJavaObject());
 				assertAttributeException(attr, "getPoint");  //$NON-NLS-1$
@@ -287,9 +285,7 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertFalse((Boolean)attr.getValue());
 		assertFalse(attr.getBoolean());
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(0, attr.getInteger());
 		assertEpsilonEquals(0., attr.getReal());
 		assertEquals(0, attr.getTimestamp());
@@ -317,7 +313,6 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(currentDate,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
 		assertEquals(currentDate,attr.getDate());
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(currentDate.getTime(),attr.getInteger());
 		assertEpsilonEquals(currentDate.getTime(),attr.getReal());
 		assertEquals(currentDate.getTime(),attr.getTimestamp());
@@ -344,7 +339,6 @@ public class AttributeTest extends AbstractTestCase {
 		assertEpsilonEquals(nb,((Number)attr.getValue()).floatValue());
 		assertEquals(nb!=0f, attr.getBoolean());
 		assertEquals(new Date((long)nb),attr.getDate());
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals((long)nb,attr.getInteger());
 		assertEpsilonEquals(nb,attr.getReal());
 		assertEquals((long)nb,attr.getTimestamp());
@@ -371,7 +365,6 @@ public class AttributeTest extends AbstractTestCase {
 		assertEpsilonEquals(nb,((Number)attr.getValue()).doubleValue());
 		assertEquals(nb!=0., attr.getBoolean());
 		assertEquals(new Date((long)nb),attr.getDate());
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals((long)nb,attr.getInteger());
 		assertEpsilonEquals(nb,attr.getReal());
 		assertEquals((long)nb,attr.getTimestamp());
@@ -398,7 +391,6 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(nb,((Number)attr.getValue()).intValue());
 		assertEquals(nb!=0, attr.getBoolean());
 		assertEquals(new Date(nb),attr.getDate());
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(nb,attr.getInteger());
 		assertEquals(nb,(int)attr.getReal());
 		assertEquals(nb,attr.getTimestamp());
@@ -425,7 +417,6 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(nb,((Number)attr.getValue()).longValue());
 		assertEquals(nb!=0, attr.getBoolean());
 		assertEquals(new Date(nb),attr.getDate());
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(nb,attr.getInteger());
 		assertEpsilonEquals(nb,attr.getReal());
 		assertEquals(nb,attr.getTimestamp());
@@ -453,7 +444,6 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(pt,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
@@ -483,7 +473,6 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(pt,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
@@ -514,7 +503,6 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(pt,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
@@ -545,7 +533,6 @@ public class AttributeTest extends AbstractTestCase {
 		assertEquals(pt,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
@@ -573,9 +560,7 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertEquals(str,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertEpsilonEquals(x,attr.getReal());
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
@@ -601,9 +586,7 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertEquals(str,attr.getValue());
 		assertTrue(attr.getBoolean());
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
@@ -630,9 +613,7 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertEquals(str,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertEpsilonEquals(currentDate,attr.getDate());
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
@@ -658,9 +639,7 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertEquals(str,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertEpsilonEquals(currentDate,attr.getDate());
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
@@ -688,9 +667,7 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertEquals(str,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(nb,attr.getInteger());
 		assertEpsilonEquals(nb,attr.getReal());
 		assertEquals(nb,attr.getTimestamp());
@@ -718,9 +695,7 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertEquals(str,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertEquals(nb,attr.getInteger());
 		assertEpsilonEquals(nb,attr.getReal());
 		assertEquals(nb,attr.getTimestamp());
@@ -748,9 +723,7 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertEquals(str,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertEpsilonEquals(nb,attr.getReal());
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
@@ -779,9 +752,7 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertEquals(str,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
@@ -812,9 +783,7 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertEquals(str,attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
@@ -851,9 +820,7 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertArrayEquals(list,(Point2D[])attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$
@@ -892,9 +859,7 @@ public class AttributeTest extends AbstractTestCase {
 		
 		assertArrayEquals(list,(Point3D[])attr.getValue());
 		assertAttributeException(attr,"getBoolean");  //$NON-NLS-1$
-		assertAttributeException(attr,"getColor");  //$NON-NLS-1$
 		assertAttributeException(attr,"getDate");  //$NON-NLS-1$
-		assertAttributeException(attr,"getImage");  //$NON-NLS-1$
 		assertAttributeException(attr,"getInteger");  //$NON-NLS-1$
 		assertAttributeException(attr,"getReal");  //$NON-NLS-1$
 		assertAttributeException(attr,"getTimestamp");  //$NON-NLS-1$

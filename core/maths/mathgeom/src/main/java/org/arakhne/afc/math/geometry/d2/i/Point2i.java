@@ -130,7 +130,7 @@ public class Point2i extends Tuple2i<Point2i> implements Point2D<Point2i, Vector
 		assert point != null : AssertMessages.notNullParameter();
 		final double dx = this.x - point.getX();
 		final double dy = this.y - point.getY();
-		return Math.sqrt(dx * dx + dy * dy);
+		return Math.hypot(dx, dy);
 	}
 
 	@Pure

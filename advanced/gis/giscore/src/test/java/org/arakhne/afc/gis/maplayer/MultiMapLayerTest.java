@@ -32,7 +32,7 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
  * @since 14.0
  */
 @SuppressWarnings("all")
-public class MapLayerLayerTest extends AbstractMultiMapLayerTest<MultiMapLayer<MapLayer>> {
+public class MultiMapLayerTest extends AbstractMultiMapLayerTest<MultiMapLayer<MapLayer>> {
 
 	@Override
 	protected MultiMapLayer<MapLayer> createLayer(Rectangle2d bounds) {

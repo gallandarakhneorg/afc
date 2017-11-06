@@ -64,7 +64,9 @@ public abstract class AbstractPostfixDepthFirstTreeIterator<P extends IterableNo
 	 * @param node is the node to iterate.
 	 */
 	public AbstractPostfixDepthFirstTreeIterator(P node) {
-		this.availableNodes.push(node);
+		if (node != null) {
+			this.availableNodes.push(node);
+		}
 	}
 
 	/** Replies an object to type N which is corresponding to
@@ -88,7 +90,7 @@ public abstract class AbstractPostfixDepthFirstTreeIterator<P extends IterableNo
 	protected abstract boolean isTraversableParent(P parent);
 
 	private void startIterator() {
-		final P root = this.availableNodes.pop();
+		final P root = this.availableNodes.isEmpty() ? null : this.availableNodes.pop();
 		if ((root != null)
 				&& (isTraversableParent(root))) {
 			this.availableNodes.push(root);

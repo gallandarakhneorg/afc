@@ -59,7 +59,7 @@ public class StandardRoadNetworkTest extends AbstractGisTest {
 	public void setUp() throws Exception {
 		try {
 			GeoLocationUtil.setGISCoordinateSystemAsDefault();
-			Rectangle2d worldRect = new Rectangle2d(-500, -500, 500, 500);
+			Rectangle2d worldRect = new Rectangle2d(-500, -500, 1000, 1000);
 			this.network = new StandardRoadNetwork(worldRect, new HeapAttributeCollection());
 
 			//-----------------------------------
@@ -966,19 +966,19 @@ public class StandardRoadNetworkTest extends AbstractGisTest {
 		assertNotNull(p);
 		assertSame(this.segment4, p.getSegment());
 		assertEpsilonEquals(314.6466271867538, p.getCurvilineCoordinate());
-		assertEpsilonEquals(0., p.getShiftDistance());
+		assertEpsilonEquals(0., p.getLateralDistance());
 
 		p = this.network.getNearestPosition(new Point2d(1000.,1000.));
 		assertNotNull(p);
 		assertSame(this.segment9, p.getSegment());
 		assertEpsilonEquals(0., p.getCurvilineCoordinate());
-		assertEpsilonEquals(0., p.getShiftDistance());
+		assertEpsilonEquals(0., p.getLateralDistance());
 
 		p = this.network.getNearestPosition(new Point2d(1000.,0.));
 		assertNotNull(p);
 		assertSame(this.segment6, p.getSegment());
 		assertEpsilonEquals(304.57839869, p.getCurvilineCoordinate());
-		assertEpsilonEquals(0., p.getShiftDistance());
+		assertEpsilonEquals(0., p.getLateralDistance());
 	}
 
 	@Test

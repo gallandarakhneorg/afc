@@ -40,7 +40,7 @@ import org.arakhne.afc.testtools.AbstractTestCase;
  * @since 14.0
  */
 @SuppressWarnings("all")
-public class AbstractGisTest extends AbstractTestCase {
+public abstract class AbstractGisTest extends AbstractTestCase {
 
 	protected Point2d randomPoint2D() {
 		return new Point2d(getRandom().nextDouble() * 100, getRandom().nextDouble() * 100);
@@ -79,17 +79,19 @@ public class AbstractGisTest extends AbstractTestCase {
 
 	protected void assertEpsilonEquals(Point2D<?, ?> expected, Point2D<?, ?> actual) {
 		setDecimalPrecision(1);
-		assertEpsilonEquals(expected.getX(), actual.getX());
-		assertEpsilonEquals(expected.getY(), actual.getY());
+		final double distance = expected.getDistance(actual);
+		assertEpsilonZero("Not same points: expected=" + expected //$NON-NLS-1$
+				+ "; actual=" + actual //$NON-NLS-1$
+				+ "; distance=" + distance, distance); //$NON-NLS-1$
 		setDecimalPrecision(DEFAULT_DECIMAL_COUNT);
 	}
 
 	protected Rectangle2d makeBounds(Point2d p) {
 		return new Rectangle2d(
-				((float)p.getX())-GeoLocationUtil.GIS_POINT_DEMI_SIZE,
-				((float)p.getY())-GeoLocationUtil.GIS_POINT_DEMI_SIZE,
-				((float)p.getX())+GeoLocationUtil.GIS_POINT_DEMI_SIZE,
-				((float)p.getY())+GeoLocationUtil.GIS_POINT_DEMI_SIZE);
+				((float)p.getX()-GeoLocationUtil.GIS_POINT_DEMI_SIZE),
+				((float)p.getY()-GeoLocationUtil.GIS_POINT_DEMI_SIZE),
+				(float)GeoLocationUtil.GIS_POINT_SIZE,
+				(float)GeoLocationUtil.GIS_POINT_SIZE);
 	}
 
 	protected Rectangle2d makeBounds(Point2d min, Point2d max) {

@@ -258,7 +258,7 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 		if (isOnSameSegment(p1)) {
 			final double a = getX() - p1.getX();
 			final double b = getY() - p1.getY();
-			return Math.sqrt(a * a + b * b);
+			return Math.hypot(a, b);
 		}
 		return Double.POSITIVE_INFINITY;
 	}
@@ -344,23 +344,23 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 		setX(curviline);
 	}
 
-	/** Replies the shift distance.
+	/** Replies the lateral distance.
 	 *
-	 * @return the shift distance.
+	 * @return the lateral distance.
 	 */
 	@Pure
 	@Inline(value = "getY()")
-	default double getShiftDistance() {
+	default double getLateralDistance() {
 		return getY();
 	}
 
 	/** Set the shift distance.
 	 *
-	 * @param shift is the shift distance.
+	 * @param distance is the shift distance.
 	 */
 	@Inline(value = "setY($1)")
-	default void setShiftDistance(double shift) {
-		setY(shift);
+	default void setLateralDistance(double distance) {
+		setY(distance);
 	}
 
 	/** Replies the segment.

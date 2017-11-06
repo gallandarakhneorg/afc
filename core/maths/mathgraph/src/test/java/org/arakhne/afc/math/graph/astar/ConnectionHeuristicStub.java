@@ -41,7 +41,7 @@ public class ConnectionHeuristicStub implements AStarHeuristic<ConnectionStub> {
 	public double evaluate(ConnectionStub p1, ConnectionStub p2) {
 		double dx = p1.positionX - p2.positionX;
 		double dy = p1.positionY - p2.positionY;
-		return Math.sqrt(dx * dx + dy * dy);
+		return Math.hypot(dx, dy);
 	}
 
 }

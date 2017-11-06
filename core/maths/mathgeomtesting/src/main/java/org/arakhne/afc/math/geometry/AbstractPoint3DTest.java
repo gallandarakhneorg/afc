@@ -18,10 +18,14 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d3;
+package org.arakhne.afc.math.geometry;
 
 import org.junit.Assume;
 import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 @SuppressWarnings("all")
 public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V>, V extends Vector3D<? super V, ? super P>,

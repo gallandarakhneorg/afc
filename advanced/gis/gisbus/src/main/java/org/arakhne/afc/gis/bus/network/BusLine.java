@@ -308,13 +308,19 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	protected Rectangle2d calcBounds() {
 		Rectangle2d ir;
 		final Rectangle2d r = new Rectangle2d();
+		boolean first = true;
 		for (final BusItinerary itinerary : this.itineraries) {
 			ir = itinerary.getBoundingBox();
 			if (ir != null) {
-				r.setUnion(ir);
+				if (first) {
+					first = true;
+					r.set(ir);
+				} else {
+					r.setUnion(ir);
+				}
 			}
 		}
-		return r.isEmpty() ? null : r;
+		return first ? null : r;
 	}
 
 	@Override

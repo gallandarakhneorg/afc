@@ -135,35 +135,36 @@ public class GISLayerWriter implements AutoCloseable {
 	@SuppressWarnings("resource")
 	@Override
 	public void close() throws IOException {
-		try {
-			this.tmpOutput.close();
+		if (this.tmpFile.canRead()) {
+			try {
+				this.tmpOutput.close();
 
-			try (WritableByteChannel out = Channels.newChannel(this.output)) {
-				try (ReadableByteChannel in = Channels.newChannel(new FileInputStream(this.tmpFile))) {
-
-					// Write the header
-					final int limit = HEADER_KEY.getBytes().length + 6;
-					final ByteBuffer hBuffer = ByteBuffer.allocate(limit);
-					in.read(hBuffer);
-					hBuffer.limit(limit);
-					hBuffer.position(HEADER_KEY.getBytes().length + 2);
-					hBuffer.putInt(this.length);
-					hBuffer.rewind();
-					out.write(hBuffer);
-
-					final ByteBuffer buffer = ByteBuffer.allocate(4096);
-					int read;
-					while ((read = in.read(buffer)) >= 0) {
-						buffer.rewind();
-						buffer.limit(read);
-						out.write(buffer);
-						buffer.rewind();
-						buffer.limit(buffer.capacity());
+				try (WritableByteChannel out = Channels.newChannel(this.output)) {
+					try (ReadableByteChannel in = Channels.newChannel(new FileInputStream(this.tmpFile))) {
+						// Write the header
+						final int limit = HEADER_KEY.getBytes().length + 6;
+						final ByteBuffer hBuffer = ByteBuffer.allocate(limit);
+						hBuffer.limit(limit);
+						in.read(hBuffer);
+						hBuffer.position(HEADER_KEY.getBytes().length + 2);
+						hBuffer.putInt(this.length);
+						hBuffer.rewind();
+						out.write(hBuffer);
+						// Write the objects
+						final ByteBuffer buffer = ByteBuffer.allocate(4096);
+						int read;
+						while ((read = in.read(buffer)) >= 0) {
+							buffer.rewind();
+							buffer.limit(read);
+							out.write(buffer);
+							buffer.rewind();
+							buffer.limit(buffer.capacity());
+						}
 					}
 				}
+			} finally {
+				this.tmpFile.delete();
 			}
-		} finally {
-			this.tmpFile.delete();
 		}
 	}
 
@@ -217,7 +218,7 @@ public class GISLayerWriter implements AutoCloseable {
 	protected void writeHeader() throws IOException {
 		this.tmpOutput.write(HEADER_KEY.getBytes());
 		this.tmpOutput.write(new byte[]{MAJOR_SPEC_NUMBER, MINOR_SPEC_NUMBER});
-		this.tmpOutput.write(0);
+		this.tmpOutput.write(new byte[] {0, 0, 0, 0});
 	}
 
 }

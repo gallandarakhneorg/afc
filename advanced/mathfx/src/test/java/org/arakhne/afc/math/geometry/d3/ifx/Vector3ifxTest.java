@@ -22,7 +22,7 @@ package org.arakhne.afc.math.geometry.d3.ifx;
 
 import org.junit.Ignore;
 
-import org.arakhne.afc.math.geometry.d3.AbstractVector3DTest;
+import org.arakhne.afc.math.geometry.AbstractVector3DTest;
 
 @SuppressWarnings("all")
 @Ignore("temporary")

@@ -87,7 +87,7 @@ public class ShapeElementTypeTest extends AbstractIoShapeTest {
 	}
 
 	@Test
-	public static void testHasZ() {
+	public void testHasZ() {
 		assertTrue(ShapeElementType.MULTIPATCH.hasZ());
 		assertFalse(ShapeElementType.MULTIPOINT.hasZ());
 		assertFalse(ShapeElementType.MULTIPOINT_M.hasZ());
@@ -106,7 +106,7 @@ public class ShapeElementTypeTest extends AbstractIoShapeTest {
 	}
 
 	@Test
-	public static void testHasM() {
+	public void testHasM() {
 		assertTrue(ShapeElementType.MULTIPATCH.hasM());
 		assertFalse(ShapeElementType.MULTIPOINT.hasM());
 		assertTrue(ShapeElementType.MULTIPOINT_M.hasM());

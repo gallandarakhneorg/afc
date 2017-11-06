@@ -1048,6 +1048,11 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		}
 
 		@Override
+		public double getRoadBorderDistance() {
+			return this.segment.get().getRoadBorderDistance();
+		}
+
+		@Override
 		public final void setWidth(double width) {
 			this.segment.get().setWidth(width);
 		}

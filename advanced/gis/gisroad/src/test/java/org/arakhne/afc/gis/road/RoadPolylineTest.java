@@ -60,31 +60,40 @@ public class RoadPolylineTest extends AbstractGisTest {
 	public void setUp() throws Exception {
 		GeoLocationUtil.setGISCoordinateSystemAsDefault();
 
+		getLogger().info("Initializing..."); //$NON-NLS-1$
+		
+		getLogger().fine("testedSegment"); //$NON-NLS-1$
 		this.testedSegment = new RoadSegmentStub("testedSegment", true); //$NON-NLS-1$
 		this.connection1 = new RoadConnectionStub("connection1"); //$NON-NLS-1$
 		this.testedSegment.setStartPoint(this.connection1);
 		this.connection2 = new RoadConnectionStub("connection2"); //$NON-NLS-1$
 		this.testedSegment.setEndPoint(this.connection2);
 
+		getLogger().fine("firstNeightbour"); //$NON-NLS-1$
 		this.firstNeighbour = new RoadSegmentStub("firstNeightbour", true); //$NON-NLS-1$
 		this.firstNeighbour.setEndPoint(this.connection1);
 		this.culDeSac1 = new RoadConnectionStub("culDeSac1"); //$NON-NLS-1$
 		this.firstNeighbour.setStartPoint(this.culDeSac1);
 
+		getLogger().fine("secondNeightbour"); //$NON-NLS-1$
 		this.secondNeighbour = new RoadSegmentStub("secondNeightbour", true); //$NON-NLS-1$
 		this.secondNeighbour.setEndPoint(this.connection2);
 		this.culDeSac2 = new RoadConnectionStub("culDeSac2"); //$NON-NLS-1$
 		this.secondNeighbour.setStartPoint(this.culDeSac2);
 
+		getLogger().fine("loopSegment"); //$NON-NLS-1$
 		this.loopSegment = new RoadSegmentStub("loopSegment", true); //$NON-NLS-1$
 		this.connection3 = new RoadConnectionStub("connection3"); //$NON-NLS-1$
 		this.loopSegment.setStartPoint(this.connection3);
 		this.loopSegment.setEndPoint(this.connection3);
 
+		getLogger().fine("thirdNeightbour"); //$NON-NLS-1$
 		this.thirdNeighbour = new RoadSegmentStub("thirdNeightbour", true); //$NON-NLS-1$
 		this.thirdNeighbour.setEndPoint(this.connection3);
 		this.culDeSac3 = new RoadConnectionStub("culDeSac3"); //$NON-NLS-1$
 		this.thirdNeighbour.setStartPoint(this.culDeSac3);
+
+		getLogger().info("done"); //$NON-NLS-1$
 	}
 
 	@After

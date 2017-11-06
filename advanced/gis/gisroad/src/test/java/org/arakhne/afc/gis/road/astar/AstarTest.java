@@ -124,7 +124,7 @@ public class AstarTest extends AbstractGisTest {
 			if (rn==null) {
 				try {
 					URL file = Resources.getResource(AstarTest.class, "Belfort.shp"); //$NON-NLS-1$
-					System.out.print("Reading "+FileSystem.largeBasename(file)+"..."); //$NON-NLS-1$ //$NON-NLS-2$
+					getLogger().info("Reading "+FileSystem.largeBasename(file)+"..."); //$NON-NLS-1$ //$NON-NLS-2$
 					try (GISShapeFileReader reader = new GISShapeFileReader(file, RoadPolyline.class)) {
 						ESRIBounds eBounds = reader.getBoundsFromHeader();
 						Rectangle2d mapBounds = new Rectangle2d();
@@ -137,7 +137,7 @@ public class AstarTest extends AbstractGisTest {
 							rn.addRoadSegment(e);
 						}
 						this.ROAD_NETWORK = new SoftReference<>(rn);
-						System.out.println("done"); //$NON-NLS-1$
+						getLogger().info("done"); //$NON-NLS-1$
 					}
 				}
 				catch(RuntimeException e) {

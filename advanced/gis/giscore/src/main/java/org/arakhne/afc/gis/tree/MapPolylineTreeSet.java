@@ -270,7 +270,7 @@ public class MapPolylineTreeSet<P extends MapPolyline> extends MapElementTreeSet
 			final double iy = this.insertionCover.getMinY() - this.precision;
 			final double ax = this.insertionCover.getMaxX() + this.precision;
 			final double ay = this.insertionCover.getMaxY() + this.precision;
-			this.insertionCover.set(ix, iy, ax, ay);
+			this.insertionCover.setFromCorners(ix, iy, ax, ay);
 		}
 
 		/** Compute the possible insertion of the specified polyline inside the tree and replies the two nearest

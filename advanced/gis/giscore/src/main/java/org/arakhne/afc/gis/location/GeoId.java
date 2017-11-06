@@ -193,7 +193,9 @@ public final class GeoId implements Serializable, Comparable<GeoId> {
 			startIndex = endIndex + 1;
 			final long maxy = Long.parseLong(this.id.substring(startIndex));
 
-			return new Rectangle2d(minx, miny, maxx - minx, maxy - miny);
+			final Rectangle2d r = new Rectangle2d();
+			r.setFromCorners(minx, miny, maxx, maxy);
+			return r;
 		} catch (Throwable exception) {
 			//
 		}

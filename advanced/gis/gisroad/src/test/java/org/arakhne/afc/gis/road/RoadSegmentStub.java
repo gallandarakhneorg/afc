@@ -385,7 +385,9 @@ public class RoadSegmentStub extends RoadPolyline {
 				Point2d pt2 = this.points.get(i);
 				double distance = pt2.getDistance(pt1);
 				if (currentLength+distance>=desiredLength) {
-					return new Vector2d(pt1.getX()-pt2.getX(),pt1.getY()-pt2.getY());
+					final Vector2d v = new Vector2d(pt1.getX()-pt2.getX(),pt1.getY()-pt2.getY());
+					v.normalize();
+					return v;
 				}
 				currentLength += distance;
 			}

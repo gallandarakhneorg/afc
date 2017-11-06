@@ -946,7 +946,7 @@ public final class GISCoordinates {
 
 		// Extended Lambert II (x,y) -> graphical coordinate NTF (lambda_ntf,phi_ntf)
 		// ALG0004
-		final double R = Math.sqrt(((x - Xs) * (x - Xs)) + ((y - Ys) * (y - Ys)));
+		final double R = Math.hypot(x - Xs, y - Ys);
 		final double g = Math.atan((x - Xs) / (Ys - y));
 		final double lamdda_ntf = lambda_0 + (g / n);
 		final double L = -(1 / n) * Math.log(Math.abs(R / c));
@@ -1009,7 +1009,7 @@ public final class GISCoordinates {
 		final double l840 = 0.04079234433;
 		a = 6378137.0;
 
-		final double P = Math.sqrt((x_w * x_w) + (y_w * y_w));
+		final double P = Math.hypot(x_w, y_w);
 
 		double lambda_w = l840 + Math.atan(y_w / x_w);
 

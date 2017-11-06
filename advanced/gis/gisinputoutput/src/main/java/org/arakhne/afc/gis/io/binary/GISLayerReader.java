@@ -20,12 +20,15 @@
 
 package org.arakhne.afc.gis.io.binary;
 
+import static org.arakhne.afc.gis.io.binary.GISLayerIOConstants.HEADER_KEY;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
@@ -199,24 +202,36 @@ public class GISLayerReader implements AutoCloseable, Iterable<MapLayer> {
 	 *
 	 * @throws IOException in case of error.
 	 */
+	@SuppressWarnings({"resource", "checkstyle:magicnumber"})
 	protected void readHeader() throws IOException {
+		final ReadableByteChannel in = Channels.newChannel(this.input);
+		final int limit = HEADER_KEY.getBytes().length + 2;
+		final ByteBuffer hBuffer = ByteBuffer.allocate(limit);
+		hBuffer.limit(limit);
+
+		// Check the header
 		final byte[] key = GISLayerIOConstants.HEADER_KEY.getBytes();
-		final byte[] buffer = new byte[key.length + 2];
-		final int n = this.input.read(buffer);
-		if (n != buffer.length) {
+		final int n = in.read(hBuffer);
+		if (n != limit) {
 			throw new IOException("Invalid file header"); //$NON-NLS-1$
 		}
 		for (int i = 0; i < key.length; ++i) {
-			if (buffer[i] != key[i]) {
+			if (hBuffer.get(i) != key[i]) {
 				throw new IOException("Invalid file header"); //$NON-NLS-1$
 			}
 		}
-		final byte major = buffer[buffer.length - 2];
-		final byte minor = buffer[buffer.length - 1];
-		if (major != 1 || minor != 0) {
+		// Check the format version
+		final byte major = hBuffer.get(key.length);
+		final byte minor = hBuffer.get(key.length + 1);
+		if (major != GISLayerIOConstants.MAJOR_SPEC_NUMBER || minor != GISLayerIOConstants.MINOR_SPEC_NUMBER) {
 			throw new IOException("Invalid file format version."); //$NON-NLS-1$
 		}
-		this.restToRead = this.input.read();
+		// Read the number of objects inside the input stream
+		final ByteBuffer sBuffer = ByteBuffer.allocate(4);
+		sBuffer.limit(4);
+		in.read(sBuffer);
+		sBuffer.rewind();
+		this.restToRead = sBuffer.getInt();
 	}
 
 	/** Internal iterator.

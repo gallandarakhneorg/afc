@@ -18,17 +18,20 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d3;
+package org.arakhne.afc.math.geometry;
 
 import org.junit.Assume;
 import org.junit.Test;
 
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.d.Tuple3d;
 
 @SuppressWarnings("all")
-public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super P, ? super V>, V extends Vector3D<? super V, ? super P>>
-               extends AbstractPoint3DTest<P, V, Point3D> {
-	
+public abstract class AbstractUnmodifiableVector3DTest<V extends Vector3D<? super V, ? super P>, P extends Point3D<? super P, ? super V>>
+		extends AbstractVector3DTest<V, P, Vector3D> {
+
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void absolute() {
@@ -49,7 +52,7 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void addDoubleDoubleDouble() {
+	public final void addDoubleDouble() {
 		getT().add(6.5, 7.5, 0);
 	}
 
@@ -137,7 +140,7 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void setDoubleDoubleDouble() {
+	public final void setDoubleDouble() {
 		getT().set(-45.5, 78.5, 0);
 	}
 
@@ -162,26 +165,16 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	public final void setXDouble() {
 		getT().setX(45.5);
 	}
-	
+
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setYInt() {
-	    getT().setY(45);
+		getT().setY(45);
 	}
-	
+
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setYDouble() {
-	    getT().setY(45.5);
-	}
-
-	@Test(expected = UnsupportedOperationException.class)
-	public final void setZInt() {
-		getT().setZ(45);
-	}
-
-	@Test(expected = UnsupportedOperationException.class)
-	public final void setZDouble() {
-		getT().setZ(45.5);
+		getT().setY(45.5);
 	}
 
 	@Override
@@ -195,20 +188,15 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	public final void subXInt() {
 		getT().subX(45);
 	}
-	
+
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subYInt() {
-	    getT().subY(78);
+		getT().subY(78);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void subZInt() {
-		getT().subZ(78);
-	}
-
-	@Test(expected = UnsupportedOperationException.class)
-	public final void subDoubleDoubleDouble() {
+	public final void subDoubleDouble() {
 		getT().sub(45.5, 78.5, 0);
 	}
 
@@ -216,15 +204,10 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	public final void subXDouble() {
 		getT().subX(45.5);
 	}
-	
-	@Test(expected = UnsupportedOperationException.class)
-	public final void subYDouble() {
-	    getT().subY(78.5);
-	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void subZDouble() {
-		getT().subZ(78.5);
+	public final void subYDouble() {
+		getT().subY(78.5);
 	}
 
 	@Override
@@ -435,136 +418,250 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
-	public final void addPoint3DVector3D() {
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.add(point, vector1);
-	}
-
-	@Override
-	@Test(expected = UnsupportedOperationException.class)
-	public final void addVector3DPoint3D() {
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.add(vector1, point);
-	}
-
-	@Override
-	@Test(expected = UnsupportedOperationException.class)
-	public final void addVector3D() {
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.add(vector1);
-	}
-
-	@Override
-	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddDoubleVector3DPoint3D_iffp() {
+	public final void addVector3DVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.scaleAdd(2.5, vector1, point);
+		Vector3D vector = createVector(0, 0, 0);
+		Vector3D vector3 = createVector(1.2, 1.2, 0);
+		Vector3D vector5 = createTuple(0.0, 0.0, 0);
+		vector5.add(vector3,vector);
 	}
 
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddDoubleVector3DPoint3D_ifi() {
+	public final void addVector3DVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.scaleAdd(2.5, vector1, point);
+		Vector3D vector = createVector(0, 0, 0);
+		Vector3D vector3 = createVector(1.2, 1.2, 0);
+		Vector3D vector5 = createTuple(0.0, 0.0, 0);
+		vector5.add(vector3,vector);
 	}
 
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddIntVector3DPoint3D() {
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.scaleAdd(2, vector1, point);
-	}
-
-	@Override
-	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddIntPoint3DVector3D() {
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.scaleAdd(2, point, vector1);
-	}
-
-	@Override
-	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddDoublePoint3DVector3D_iffp() {
+	public final void addVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.scaleAdd(2.5, point, vector1);
+		Vector3D vector = createTuple(0,0, 0);
+		Vector3D vector3 = createVector(1.2,1.2, 0);
+		vector.add(vector3);
 	}
 
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddDoublePoint3DVector3D_ifi() {
+	public final void addVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.scaleAdd(2.5, point, vector1);
+		Vector3D vector = createTuple(0,0, 0);
+		Vector3D vector3 = createVector(1.2,1.2, 0);
+		vector.add(vector3);
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleAddIntVector3DVector3D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector3D vector = createVector(-1,0, 0);
+		Vector3D vector2 = createVector(1.0,1.2, 0);
+		Vector3D vector3 = createTuple(0.0,0.0, 0);
+		vector3.scaleAdd(0,vector2,vector);
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleAddIntVector3DVector3D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector3D vector = createVector(-1,0, 0);
+		Vector3D vector2 = createVector(1.0,1.2, 0);
+		Vector3D vector3 = createTuple(0.0,0.0, 0);
+		vector3.scaleAdd(0,vector2,vector);
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleAddDoubleVector3DVector3D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector3D vect = createVector(1,0, 0);
+		Vector3D vector = createVector(-1,1, 0);
+		Vector3D newVector = createTuple(0.0,0.0, 0);
+		newVector.scaleAdd(0.0, vector, vect);
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleAddDoubleVector3DVector3D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector3D vect = createVector(1,0, 0);
+		Vector3D vector = createVector(-1,1, 0);
+		Vector3D newVector = createTuple(0.0,0.0, 0);
+		newVector.scaleAdd(0.0, vector, vect);
 	}
 
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddIntVector3D() {
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.scaleAdd(2, vector1);
+		Vector3D vector = createVector(1,0, 0);
+		Vector3D newVector = createTuple(0,0, 0);
+		newVector.scaleAdd(0,vector);
 	}
 
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddDoubleVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.scaleAdd(2.5, vector1);
+		Vector3D vector = createVector(1,0, 0);
+		Vector3D newVector = createTuple(0.0,0.0, 0);
+		newVector.scaleAdd(0.5,vector);
 	}
 
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleAddDoubleVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.scaleAdd(2.5, vector1);
+		Vector3D vector = createVector(1,0, 0);
+		Vector3D newTuple = createTuple(0.0,0.0, 0);
+		newTuple.scaleAdd(0.5,vector);
 	}
 
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
-	public final void subPoint3DVector3D() {
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.sub(point, vector1);
+	public final void subVector3DVector3D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector3D vect = createVector(0, 0, 0);
+		Vector3D vector = createVector(-1.2, -1.2, 0);
+		Vector3D newVector = createTuple(0.0, 0.0, 0);
+		newVector.sub(vect,vector);
 	}
 
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
-	public final void subVector3D() {
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.sub(vector1);
+	public final void subVector3DVector3D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector3D vect = createVector(0, 0, 0);
+		Vector3D vector = createVector(-1.2, -1.2, 0);
+		Vector3D newVector = createTuple(0.0, 0.0, 0);
+		newVector.sub(vect,vector);
 	}
 
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
-	public final void operator_addVector3D() {
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.operator_add(vector1);
+	public final void subPoint3DPoint3D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Point3D point = createPoint(0, 0, 0);
+		Point3D vector = createPoint(-1.2, -1.2, 0);
+		Vector3D newVector = createTuple(0.0, 0.0, 0);
+		newVector.sub(point,vector);
 	}
 
 	@Override
 	@Test(expected = UnsupportedOperationException.class)
-	public final void operator_removeVector3D() {
-		Point3D point = createTuple(1, 2, 0);
-		Vector3D vector1 = createVector(0, 0, 0);
-		point.operator_remove(vector1);
+	public final void subPoint3DPoint3D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Point3D point = createPoint(0, 0, 0);
+		Point3D vector = createPoint(-1.2, -1.2, 0);
+		Vector3D newPoint = createTuple(0.0, 0.0, 0);
+		newPoint.sub(point,vector);
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subVector3D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector3D vect = createTuple(0, 0, 0);
+		Vector3D vector = createVector(-1.2, -1.2, 0);
+		vect.sub(vector);
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subVector3D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector3D vect = createTuple(0, 0, 0);
+		Vector3D vector = createVector(-1.2, -1.2, 0);
+		vect.sub(vector);
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void normalize_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector3D vector = createTuple(1,2, 0);
+		vector.normalize();
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)  
+	public final void normalize_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector3D vector = createTuple(1,2, 0);
+		vector.normalize();
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void normalizeVector3D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector3D vector = createTuple(0,0, 0);
+		vector.normalize(createVector(1,2, 0));
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)  
+	public final void normalizeVector3D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector3D vector = createTuple(0,0, 0);
+		vector.normalize(createVector(1,2, 0));
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setLength_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector3D vector = createTuple(getRandom().nextDouble(), getRandom().nextDouble(), getRandom().nextDouble());
+		double newLength = getRandom().nextDouble();
+		vector.setLength(newLength);
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setLength_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector3D vector = createTuple(0, 2, 0);
+		int newLength = 5;
+		vector.setLength(newLength);
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void operator_addVector3D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector3D vector = createTuple(0,0, 0);
+		Vector3D vector3 = createVector(1.2,1.2, 0);
+		vector.operator_add(vector3);
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void operator_addVector3D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector3D vector = createTuple(0,0, 0);
+		Vector3D vector3 = createVector(1.2,1.2, 0);
+		vector.operator_add(vector3);
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void operator_removeVector3D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector3D vect = createTuple(0, 0, 0);
+		Vector3D vector = createVector(-1.2, -1.2, 0);
+		vect.operator_remove(vector);
+	}
+
+	@Override
+	@Test(expected = UnsupportedOperationException.class)
+	public final void operator_removeVector3D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector3D vect = createTuple(0, 0, 0);
+		Vector3D vector = createVector(-1.2, -1.2, 0);
+		vect.operator_remove(vector);
 	}
 
 }

@@ -75,7 +75,7 @@ public class DBaseFileAttributePoolTest extends AbstractTestCase {
 	}
 
 	@After
-	protected void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 		this.pool.close();
 		this.pool = null;
 		this.resource = null;

@@ -37,7 +37,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.google.common.base.Strings;
 import org.junit.Assert;
 import org.junit.ComparisonFailure;
 
@@ -64,6 +67,10 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	/** Random number sequence.
 	 */
 	private final Random random = new Random();
+
+	/** Logger for unit tests.
+	 */
+	private Logger unitLogger;
 
 	/** Replies the random number generator.
 	 *
@@ -233,9 +240,12 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual the actual value.
 	 */
 	public static void assertNotEquals(String message, Object expected, Object actual) {
-		if (!Objects.equals(expected, actual)) {
-			throw new junit.framework.ComparisonFailure(message,
-					Objects.toString(expected), Objects.toString(actual));
+		if (Objects.equals(expected, actual)) {
+			if (!Strings.isNullOrEmpty(message)) {
+				fail(message);
+			} else {
+				fail("Expecting to be not equals to " + Objects.toString(expected)); //$NON-NLS-1$
+			}
 		}
 	}
 
@@ -1281,6 +1291,24 @@ public abstract class AbstractTestCase extends EnableAssertion {
 					formatFailMessage(message, "having similar collections is not expected", expected, actual), //$NON-NLS-1$
 					Arrays.toString(expected), Arrays.toString(actual));
 		}
+	}
+
+	/** Replies the unit test logger.
+	 *
+	 * @return the unit test logger.
+	 * @since 14.0
+	 */
+	public Logger getLogger() {
+		if (this.unitLogger == null) {
+			this.unitLogger = Logger.getLogger(getClass().getName());
+			final String value = Strings.nullToEmpty(System.getenv("org.arakhne.afc.tests.logging")); //$NON-NLS-1$
+			if ("true".equals(value.toLowerCase())) { //$NON-NLS-1$
+				this.unitLogger.setLevel(Level.ALL);
+			} else {
+				this.unitLogger.setLevel(Level.WARNING);
+			}
+		}
+		return this.unitLogger;
 	}
 
 }

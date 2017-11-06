@@ -83,7 +83,6 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 
 	/** List of road segments.
 	 */
-	//private MapPolylineTreeSet<RoadPolyline> roadSegments;
 	private  GISPolylineSet<RoadPolyline> roadSegments;
 
 	/** Number of road connections in the network.
@@ -300,14 +299,20 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	@Pure
 	protected Rectangle2d calcBounds() {
 		final Rectangle2d rect = new Rectangle2d();
-		Rectangle2afp<?, ?, ?, ?, ?, ?> rs;
+		boolean first = true;
+		Rectangle2d rs;
 		for (final RoadSegment segment : getRoadSegments()) {
 			rs = segment.getBoundingBox();
 			if (rs != null && !rs.isEmpty()) {
-				rect.setUnion(rs);
+				if (first) {
+					first = false;
+					rect.set(rs);
+				} else {
+					rect.setUnion(rs);
+				}
 			}
 		}
-		return rect.isEmpty() ? null : rect;
+		return first ? null : rect;
 	}
 
 	@Override

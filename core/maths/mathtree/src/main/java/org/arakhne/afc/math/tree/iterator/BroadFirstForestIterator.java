@@ -30,6 +30,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /**
  * This class is an iterator on a forest that replies the tree nodes.
@@ -56,7 +57,7 @@ public class BroadFirstForestIterator<D>
 	 * @param iterator is the iterator on the trees.
 	 */
 	public BroadFirstForestIterator(Iterator<Tree<D, ?>> iterator) {
-		assert iterator != null;
+		assert iterator != null : AssertMessages.notNullParameter();
 		Tree<D, ?> tree;
 		TreeNode<D, ?> node;
 		while (iterator.hasNext()) {

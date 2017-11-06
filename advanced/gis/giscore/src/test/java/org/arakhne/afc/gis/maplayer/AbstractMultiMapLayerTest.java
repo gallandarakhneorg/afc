@@ -66,14 +66,19 @@ public abstract class AbstractMultiMapLayerTest<L extends MultiMapLayer<MapLayer
 	 */
 	protected static Rectangle2d computeBounds(Collection<MapLayerStub> elements) {
 		Rectangle2d expectedBounds = new Rectangle2d();
-
+		boolean first = true;
 		for (MapLayerStub element : elements) {
 			Shape2d<?> elementBounds = element.getOriginalBounds();
 			assertNotNull(elementBounds);
-			expectedBounds.setUnion(elementBounds.toBoundingBox());
+			if (first) {
+				first = false;
+				expectedBounds.set(elementBounds.toBoundingBox());
+			} else {
+				expectedBounds.setUnion(elementBounds.toBoundingBox());
+			}
 		}
 
-		return expectedBounds.isEmpty() ? null : expectedBounds;
+		return first ? null : expectedBounds;
 	}
 
 	private Rectangle2d expectedBounds = null;
@@ -85,6 +90,7 @@ public abstract class AbstractMultiMapLayerTest<L extends MultiMapLayer<MapLayer
 	public void setUp() throws Exception {
 		int elementCount = 5;//(int)(Math.random() * 20)+1;
 		this.expectedBounds = new Rectangle2d();
+		boolean first = true;
 		this.children.clear();
 
 		for(int i=0; i<elementCount; ++i) {
@@ -94,15 +100,20 @@ public abstract class AbstractMultiMapLayerTest<L extends MultiMapLayer<MapLayer
 
 			Shape2d<?> elementBounds = element.getOriginalBounds();
 			assertNotNull(elementBounds);
-			this.expectedBounds.setUnion(elementBounds.toBoundingBox());
+			if (first) {
+				first = false;
+				this.expectedBounds.set(elementBounds.toBoundingBox());
+			} else {
+				this.expectedBounds.setUnion(elementBounds.toBoundingBox());
+			}
 		}
 
-		setUp(this.expectedBounds);
+		setUpTest(this.expectedBounds);
 	}
 
 	@Override
-	public void setUp(Rectangle2d bounds) throws Exception {
-		super.setUp(bounds);
+	public void setUpTest(Rectangle2d bounds) throws Exception {
+		super.setUpTest(bounds);
 
 		for(int i=this.children.size()-1; i>=0; --i) {
 			getLayer().addMapLayer(this.children.get(i));
@@ -656,8 +667,8 @@ public abstract class AbstractMultiMapLayerTest<L extends MultiMapLayer<MapLayer
 		for(Entry<String, Object> expectedAttr : this.expectedAttributes.entrySet()) {
 			AttributeValue val = clone.getAttribute(expectedAttr.getKey());
 			assertNotNull("name="+expectedAttr.getKey(), val); //$NON-NLS-1$
-			assertEquals("name="+expectedAttr.getKey(), this.expectedAttributeTypes.get(expectedAttr.getKey()), val.getType()); //$NON-NLS-1$
-			AttributeValue v = new AttributeValueImpl(val.getType(), expectedAttr.getValue());
+			AttributeType expectedType = this.expectedAttributeTypes.get(expectedAttr.getKey());
+			AttributeValue v = new AttributeValueImpl(expectedType, expectedAttr.getValue());
 			assertEquals("name="+expectedAttr.getKey(), v, val); //$NON-NLS-1$
 		}
 

@@ -150,14 +150,20 @@ public class ArrayMapElementLayer<E extends MapElement> extends MapElementLayer<
 	@Pure
 	protected Rectangle2d calcBounds() {
 		final Rectangle2d r = new Rectangle2d();
+		boolean first = true;
 		Rectangle2d subBounds;
 		for (final  E mapelement : this.mapElements) {
 			subBounds = mapelement.getBoundingBox();
 			if (subBounds != null && !subBounds.isEmpty()) {
-				r.setUnion(subBounds);
+				if (first) {
+					first = false;
+					r.set(subBounds);
+				} else {
+					r.setUnion(subBounds);
+				}
 			}
 		}
-		return r.isEmpty() ? null : r;
+		return first ? null : r;
 	}
 
 	@Override

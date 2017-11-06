@@ -275,8 +275,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	static double signedAngle(double x1, double y1, double x2, double y2) {
-		final double length1 = Math.sqrt(x1 * x1 + y1 * y1);
-		final double length2 = Math.sqrt(x2 * x2 + y2 * y2);
+		final double length1 = Math.hypot(x1, y1);
+		final double length2 = Math.hypot(x2, y2);
 
 		if ((length1 == 0.) || (length2 == 0.)) {
 			return Double.NaN;
@@ -599,9 +599,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default double getLength() {
-		final double x = getX();
-		final double y = getY();
-		return Math.sqrt(x * x + y * y);
+		return Math.hypot(getX(), getY());
 	}
 
 	/**

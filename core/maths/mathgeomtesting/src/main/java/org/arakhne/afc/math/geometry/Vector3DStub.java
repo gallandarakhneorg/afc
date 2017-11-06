@@ -18,7 +18,11 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d3;
+package org.arakhne.afc.math.geometry;
+
+import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
 
 @SuppressWarnings("all")
 public final class Vector3DStub implements UnmodifiableVector3D<Vector3DStub, Point3DStub> {

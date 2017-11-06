@@ -34,7 +34,6 @@ import org.arakhne.afc.gis.location.GeoLocationNowhere;
 import org.arakhne.afc.gis.location.GeoLocationPoint;
 import org.arakhne.afc.gis.road.primitive.RoadNetwork;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystemConstants;
 import org.arakhne.afc.math.geometry.d1.Direction1D;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -62,6 +61,10 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @since 14.0
  */
 public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
+
+	/** Distance between the road border and the bus halt.
+	 */
+	public static final double DISTANCE_BETWEEN_HALT_AND_ROAD_BORDER = 1.;
 
 	private static final long serialVersionUID = 5282365930067534990L;
 
@@ -345,7 +348,11 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 		final Point1d p1d5 = getPosition1D();
 		if (p1d5 != null) {
 			final Point2d pos = new Point2d();
-			p1d5.getSegment().projectsOnPlane(p1d5.getCurvilineCoordinate(), pos, null);
+			p1d5.getSegment().projectsOnPlane(
+					p1d5.getCurvilineCoordinate(),
+					p1d5.getLateralDistance(),
+					pos,
+					null);
 			return pos;
 		}
 		return null;
@@ -368,19 +375,19 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 				final RoadNetwork network = segment.getRoadNetwork();
 				assert network != null;
 
-				double jutting = segment.getWidth() / 2.;
+				double lateral = segment.getRoadBorderDistance();
+				if (lateral < 0.) {
+					lateral -= DISTANCE_BETWEEN_HALT_AND_ROAD_BORDER;
+				} else {
+					lateral += DISTANCE_BETWEEN_HALT_AND_ROAD_BORDER;
+				}
+
 				final boolean isSegmentDirection = getRoadSegmentDirection().isSegmentDirection();
-				final boolean isRightCirculation = network.isRightSidedTrafficDirection();
-
-				if (CoordinateSystemConstants.COLLADA_2D.isRightHanded() != isRightCirculation) {
-					jutting = -jutting;
-				}
-
 				if (!isSegmentDirection) {
-					jutting = -jutting;
+					lateral = -lateral;
 				}
 
-				this.bufferPosition1D = new Point1d(segment, this.curvilineDistance, jutting);
+				this.bufferPosition1D = new Point1d(segment, this.curvilineDistance, lateral);
 			}
 		}
 		return this.bufferPosition1D;

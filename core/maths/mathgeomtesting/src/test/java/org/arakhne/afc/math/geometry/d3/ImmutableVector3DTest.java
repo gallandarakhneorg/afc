@@ -22,6 +22,8 @@ package org.arakhne.afc.math.geometry.d3;
 
 import org.junit.Ignore;
 
+import org.arakhne.afc.math.geometry.AbstractUnmodifiableVector3DTest;
+
 @SuppressWarnings("all")
 @Ignore("temporary")
 public class ImmutableVector3DTest extends AbstractUnmodifiableVector3DTest<ImmutableVector3D, ImmutablePoint3D> {

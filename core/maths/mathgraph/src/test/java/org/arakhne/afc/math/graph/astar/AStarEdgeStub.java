@@ -88,7 +88,7 @@ class AStarEdgeStub implements GraphSegment<AStarEdgeStub,AStarNodeStub> {
 	public double getLength() {
 		double dx = this.c1.positionX - this.c2.positionX;
 		double dy = this.c1.positionY - this.c2.positionY;
-		return Math.sqrt(dx * dx + dy * dy);
+		return Math.hypot(dx, dy);
 	}
 
 }

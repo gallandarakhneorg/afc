@@ -18,9 +18,13 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d3;
+package org.arakhne.afc.math.geometry;
 
 import org.arakhne.afc.math.geometry.GeomConstants;
+import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 @SuppressWarnings("all")
 public final class GeomFactory3DStub implements GeomFactory3D<Vector3DStub, Point3DStub> {

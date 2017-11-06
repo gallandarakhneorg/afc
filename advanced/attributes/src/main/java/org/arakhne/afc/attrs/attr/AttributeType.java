@@ -918,7 +918,7 @@ public enum AttributeType {
 
 	static {
 		final String pName = AttributeType.class.getPackage().getName();
-		NAME_RESOURCE_FILE = pName + ".types"; //$NON-NLS-1$
+		NAME_RESOURCE_FILE = pName.replaceAll("\\.",  "/") + "/types"; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 	}
 
 	/** Replies the name of this type (localized).
@@ -934,17 +934,6 @@ public enum AttributeType {
 			}
 		}
 		return this.localizedName;
-	}
-
-	/** Replies the name of this type (localized).
-	 *
-	 * @return the localized name of this type.
-	 * @deprecated since 13.0, see {@link #getLocalizedName()}
-	 */
-	@Pure
-	@Deprecated
-	public String getName() {
-		return getLocalizedName();
 	}
 
 	@Pure

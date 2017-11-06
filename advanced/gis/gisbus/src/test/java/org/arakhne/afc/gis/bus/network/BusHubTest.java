@@ -52,7 +52,7 @@ public class BusHubTest extends AbstractTestCase {
 	private BusNetwork busNetwork;
 
 	private static RoadNetwork readRoadNetwork() {
-		Rectangle2d m = new Rectangle2d(-100, -100, 200, 100);
+		Rectangle2d m = new Rectangle2d(-100, -100, 200, 200);
 		StandardRoadNetwork network = new StandardRoadNetwork(m);
 		RoadPolyline road;
 		road = new RoadPolyline();

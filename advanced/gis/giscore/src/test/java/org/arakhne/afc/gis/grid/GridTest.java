@@ -22,6 +22,7 @@ package org.arakhne.afc.gis.grid;
 
 import java.util.ArrayList;
 
+import com.google.common.collect.Iterables;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,9 +63,8 @@ public class GridTest extends AbstractGisTest {
         this.reference.add(new MapPoint(800,0));
 
         this.bounds = new Rectangle2d();
-        for(MapPoint p : this.reference) {
-        	this.bounds.add(p.getPoint());
-        }
+        this.bounds.setFromPointCloud(Iterables.transform(this.reference,
+        		(it) -> it.getPoint()));
 
         this.grid = new Grid<>(10, 10, this.bounds);
         for(MapPoint p : this.reference) {
@@ -89,87 +89,87 @@ public class GridTest extends AbstractGisTest {
 
 		assertTrue(iterator.hasNext());
 		cell = iterator.next();
-		assertEquals(3, iterator.getLevel());
 		assertNotNull(cell);
 		assertEquals(7, cell.column());
 		assertEquals(0, cell.row());
+		assertEquals(3, iterator.getLevel());
 
 		assertTrue(iterator.hasNext());
 		cell = iterator.next();
-		assertEquals(4, iterator.getLevel());
 		assertNotNull(cell);
 		assertEquals(8, cell.column());
 		assertEquals(0, cell.row());
+		assertEquals(4, iterator.getLevel());
 
 		assertTrue(iterator.hasNext());
 		cell = iterator.next();
-		assertEquals(4, iterator.getLevel());
 		assertNotNull(cell);
 		assertEquals(0, cell.column());
 		assertEquals(0, cell.row());
+		assertEquals(4, iterator.getLevel());
 
 		assertTrue(iterator.hasNext());
 		cell = iterator.next();
-		assertEquals(5, iterator.getLevel());
 		assertNotNull(cell);
 		assertEquals(0, cell.column());
 		assertEquals(7, cell.row());
+		assertEquals(5, iterator.getLevel());
 
 		assertTrue(iterator.hasNext());
 		cell = iterator.next();
-		assertEquals(5, iterator.getLevel());
 		assertNotNull(cell);
 		assertEquals(1, cell.column());
 		assertEquals(7, cell.row());
+		assertEquals(5, iterator.getLevel());
 
 		assertTrue(iterator.hasNext());
 		cell = iterator.next();
-		assertEquals(5, iterator.getLevel());
 		assertNotNull(cell);
 		assertEquals(4, cell.column());
 		assertEquals(7, cell.row());
+		assertEquals(5, iterator.getLevel());
 
 		assertTrue(iterator.hasNext());
 		cell = iterator.next();
-		assertEquals(5, iterator.getLevel());
 		assertNotNull(cell);
 		assertEquals(5, cell.column());
 		assertEquals(7, cell.row());
+		assertEquals(5, iterator.getLevel());
 
 		assertTrue(iterator.hasNext());
 		cell = iterator.next();
-		assertEquals(6, iterator.getLevel());
 		assertNotNull(cell);
 		assertEquals(0, cell.column());
 		assertEquals(8, cell.row());
+		assertEquals(6, iterator.getLevel());
 
 		assertTrue(iterator.hasNext());
 		cell = iterator.next();
-		assertEquals(6, iterator.getLevel());
 		assertNotNull(cell);
 		assertEquals(1, cell.column());
 		assertEquals(8, cell.row());
+		assertEquals(6, iterator.getLevel());
 
 		assertTrue(iterator.hasNext());
 		cell = iterator.next();
-		assertEquals(6, iterator.getLevel());
 		assertNotNull(cell);
 		assertEquals(4, cell.column());
 		assertEquals(8, cell.row());
+		assertEquals(6, iterator.getLevel());
 
 		assertTrue(iterator.hasNext());
 		cell = iterator.next();
-		assertEquals(6, iterator.getLevel());
 		assertNotNull(cell);
 		assertEquals(5, cell.column());
 		assertEquals(8, cell.row());
+		assertEquals(6, iterator.getLevel());
 
 		assertTrue(iterator.hasNext());
 		cell = iterator.next();
-		assertEquals(7, iterator.getLevel());
 		assertNotNull(cell);
 		assertEquals(9, cell.column());
 		assertEquals(9, cell.row());
+		assertEquals(7, iterator.getLevel());
 
 		assertFalse(iterator.hasNext());
 	}

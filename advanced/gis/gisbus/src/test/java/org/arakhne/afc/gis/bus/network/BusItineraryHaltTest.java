@@ -297,14 +297,14 @@ public class BusItineraryHaltTest extends AbstractTestCase {
 		p = this.halt.getPosition1D();
 		assertNotNull(p);
 		assertEpsilonEquals(4., p.getCurvilineCoordinate());
-		assertEpsilonEquals(1., p.getShiftDistance());
+		assertEpsilonEquals(2., p.getLateralDistance());
 
 		this.halt.setRoadSegmentIndex(1);
 		this.halt.checkPrimitiveValidity();
 		p = this.halt.getPosition1D();
 		assertNotNull(p);
 		assertEpsilonEquals(4., p.getCurvilineCoordinate());
-		assertEpsilonEquals(-1., p.getShiftDistance());
+		assertEpsilonEquals(-2, p.getLateralDistance());
 
 		this.halt.setRoadSegmentIndex(-1);
 		this.halt.checkPrimitiveValidity();
@@ -362,14 +362,14 @@ public class BusItineraryHaltTest extends AbstractTestCase {
 		p = this.halt.getPosition2D();
 		assertNotNull(p);
 		assertEpsilonEquals(-14., p.getX());
-		assertEpsilonEquals(149., p.getY());
+		assertEpsilonEquals(148., p.getY());
 
 		this.halt.setRoadSegmentIndex(1);
 		this.halt.checkPrimitiveValidity();
 		p = this.halt.getPosition2D();
 		assertNotNull(p);
 		setDecimalPrecision(3);
-		assertEpsilonEquals(-10.424, p.getX());
+		assertEpsilonEquals(-11.41421, p.getX());
 		assertEpsilonEquals(145.899, p.getY());
 		setDecimalPrecision(DEFAULT_DECIMAL_COUNT);
 
@@ -431,13 +431,13 @@ public class BusItineraryHaltTest extends AbstractTestCase {
 		p = this.halt.getGeoPosition();
 		assertNotNull(p);
 		assertEpsilonEquals(-14f, p.getX());
-		assertEpsilonEquals(149f, p.getY());
+		assertEpsilonEquals(148f, p.getY());
 
 		this.halt.setRoadSegmentIndex(1);
 		p = this.halt.getGeoPosition();
 		assertNotNull(p);
 		setDecimalPrecision(3);
-		assertEpsilonEquals(-10.4f, p.getX());
+		assertEpsilonEquals(-11.41421f, p.getX());
 		assertEpsilonEquals(145.9f, p.getY());
 		setDecimalPrecision(DEFAULT_DECIMAL_COUNT);
 
@@ -502,7 +502,7 @@ public class BusItineraryHaltTest extends AbstractTestCase {
 		assertNotNull(p);
 		assertTrue(p instanceof GeoLocationPoint);
 		assertEpsilonEquals(-14f, ((GeoLocationPoint)p).getX());
-		assertEpsilonEquals(149f, ((GeoLocationPoint)p).getY());
+		assertEpsilonEquals(148f, ((GeoLocationPoint)p).getY());
 
 		this.halt.setRoadSegmentIndex(1);
 		this.halt.checkPrimitiveValidity();
@@ -510,7 +510,7 @@ public class BusItineraryHaltTest extends AbstractTestCase {
 		assertNotNull(p);
 		assertTrue(p instanceof GeoLocationPoint);
 		setDecimalPrecision(3);
-		assertEpsilonEquals(-10.4f, ((GeoLocationPoint)p).getX());
+		assertEpsilonEquals(-11.41421f, ((GeoLocationPoint)p).getX());
 		assertEpsilonEquals(145.9f, ((GeoLocationPoint)p).getY());
 		setDecimalPrecision(DEFAULT_DECIMAL_COUNT);
 

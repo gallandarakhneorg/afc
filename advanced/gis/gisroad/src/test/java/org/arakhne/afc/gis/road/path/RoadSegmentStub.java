@@ -89,10 +89,16 @@ class RoadSegmentStub implements RoadSegment {
 		double l = 0.;
 		Point2d p,previous = null;
 		Rectangle2d bounds = new Rectangle2d();
+		boolean first = true;
 		for(int i=0; i<pts.length-1; i+=2) {
 			p = new Point2d(pts[i], pts[i+1]);
 			this.points.add(p);
-			bounds.add(p);
+			if (first) {
+				first = false;
+				bounds.set(p, p);
+			} else {
+				bounds.add(p);
+			}
 			if (previous!=null) {
 				l += p.getDistance(previous);
 			}
@@ -379,6 +385,11 @@ class RoadSegmentStub implements RoadSegment {
 
 	@Override
 	public double getWidth() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public double getRoadBorderDistance() {
 		throw new UnsupportedOperationException();
 	}
 

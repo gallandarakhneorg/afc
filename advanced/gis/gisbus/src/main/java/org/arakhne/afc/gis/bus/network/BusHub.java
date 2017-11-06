@@ -257,19 +257,23 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 		if (this.busStops == null || this.busStops.isEmpty()) {
 			return null;
 		}
-
 		final Rectangle2d r = new Rectangle2d();
-
+		boolean first = true;
 		for (final BusStop stop : this.busStops) {
 			if (stop != null) {
 				final Point2d p = stop.getPosition2D();
 				if (p != null) {
-					r.add(p);
+					if (first) {
+						first = false;
+						r.set(p, p);
+					} else {
+						r.add(p);
+					}
 				}
 			}
 		}
 
-		return r.isEmpty() ? null : r;
+		return first ? null : r;
 	}
 
 	@Override

@@ -96,7 +96,7 @@ public class AStarOrientedTest extends AbstractTestCase {
 	}
 
 	private static double dist(double a, double b) {
-		return Math.sqrt(a*a+b*b);
+		return Math.hypot(a, b);
 	}
 	
 	/**

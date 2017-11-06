@@ -66,11 +66,11 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 
 	/** the layer that contains this element.
 	 */
-	WeakReference<C> mapContainer;
+	transient WeakReference<C> mapContainer;
 
 	/** Identifier of this element.
 	 */
-	private transient UUID uid;
+	private UUID uid;
 
 	/** Indicates if the events are fired.
 	 */

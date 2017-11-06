@@ -37,11 +37,9 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("static-method")
+@SuppressWarnings("all")
 public class ListUtilTest {
 
-	/**
-	 */
 	@Test
 	public void containsComparatorTList() {
 		List<Integer> list = new ArrayList<>();
@@ -56,8 +54,6 @@ public class ListUtilTest {
 		assertTrue(ListUtil.contains(list, new NaturalOrderComparator<Integer>(), 6));
 	}
 
-	/**
-	 */
 	@Test
 	public void addComparatorTListBoolean_true_false() {
 		List<Integer> list = new ArrayList<>();
@@ -79,8 +75,6 @@ public class ListUtilTest {
 		assertFalse(iterator.hasNext());
 	}
 
-	/**
-	 */
 	@Test
 	public void addComparatorTListBoolean_false_false() {
 		List<Integer> list = new ArrayList<>();
@@ -101,8 +95,6 @@ public class ListUtilTest {
 		assertFalse(iterator.hasNext());
 	}
 
-	/**
-	 */
 	@Test
 	public void addComparatorTListBoolean_true_true() {
 		List<Integer> list = new ArrayList<>();
@@ -124,8 +116,6 @@ public class ListUtilTest {
 		assertFalse(iterator.hasNext());
 	}
 
-	/**
-	 */
 	@Test
 	public void addComparatorTListBoolean_false_true() {
 		List<Integer> list = new ArrayList<>();
@@ -383,6 +373,26 @@ public class ListUtilTest {
 		assertEquals(Integer.valueOf(6), iterator.next());
 		assertEquals(Integer.valueOf(6), iterator.next());
 		assertEquals(Integer.valueOf(12), iterator.next());
+		assertEquals(Integer.valueOf(30), iterator.next());
+		assertFalse(iterator.hasNext());
+	}
+
+	@Test
+	public void addIfAbsent() {
+		List<Integer> list = new ArrayList<>();
+		list.addAll(Arrays.asList(1, 4, 6, 12, 30));
+		
+		assertEquals(0, ListUtil.addIfAbsent(list, new NaturalOrderComparator<Integer>(), -2));
+		assertEquals(-1, ListUtil.addIfAbsent(list, new NaturalOrderComparator<Integer>(), 4));
+		assertEquals(5, ListUtil.addIfAbsent(list, new NaturalOrderComparator<Integer>(), 16));
+		
+		Iterator<Integer> iterator = list.iterator();
+		assertEquals(Integer.valueOf(-2), iterator.next());
+		assertEquals(Integer.valueOf(1), iterator.next());
+		assertEquals(Integer.valueOf(4), iterator.next());
+		assertEquals(Integer.valueOf(6), iterator.next());
+		assertEquals(Integer.valueOf(12), iterator.next());
+		assertEquals(Integer.valueOf(16), iterator.next());
 		assertEquals(Integer.valueOf(30), iterator.next());
 		assertFalse(iterator.hasNext());
 	}

@@ -208,7 +208,9 @@ public abstract class MapComposedElement extends MapElement {
 				}
 			}
 		}
-		return new Rectangle2d(minx, miny, maxx - minx, maxy - miny);
+		final Rectangle2d r = new Rectangle2d();
+		r.setFromCorners(minx, miny, maxx, maxy);
+		return r;
 	}
 
 	@Override

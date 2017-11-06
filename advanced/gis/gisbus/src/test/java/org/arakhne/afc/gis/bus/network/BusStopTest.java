@@ -144,7 +144,7 @@ public class BusStopTest extends AbstractTestCase {
 	public void testDistanceDoubleDouble() {
 		this.stop.setPosition(new GeoLocationPoint(34., 35.));
 		double dist = this.stop.distance(0., 0.);
-		assertEpsilonEquals(Math.sqrt(34.*34.+35.*35.), dist);
+		assertEpsilonEquals(Math.hypot(34., 35.), dist);
 	}
 
 	@Test
@@ -156,7 +156,7 @@ public class BusStopTest extends AbstractTestCase {
 		assertTrue(Double.isNaN(dist));
 		this.busNetwork.addBusStop(stop2);
 		dist = this.stop.distance(stop2);
-		assertEpsilonEquals(Math.sqrt(Math.pow(34.-(-34.), 2)+Math.pow(35.-(-30.),2)), dist);
+		assertEpsilonEquals(Math.hypot(34.-(-34.), 35.-(-30.)), dist);
 		double dist2 = stop2.distance(this.stop);
 		assertEpsilonEquals(dist, dist2);
 	}
@@ -165,14 +165,14 @@ public class BusStopTest extends AbstractTestCase {
 	public void testDistancePoint2d() {
 		this.stop.setPosition(new GeoLocationPoint(34., 35.));
 		double dist = this.stop.distance(new Point2d(0., 0.));
-		assertEpsilonEquals(Math.sqrt(34.*34.+35.*35.), dist);
+		assertEpsilonEquals(Math.hypot(34.,35.), dist);
 	}
 
 	@Test
 	public void testDistanceGeoLocationPoint() {
 		this.stop.setPosition(new GeoLocationPoint(34., 35.));
 		double dist = this.stop.distance(new GeoLocationPoint(0., 0.));
-		assertEpsilonEquals(Math.sqrt(34.*34.+35.*35.), dist);
+		assertEpsilonEquals(Math.hypot(34.,35.), dist);
 	}
 
 	@Test

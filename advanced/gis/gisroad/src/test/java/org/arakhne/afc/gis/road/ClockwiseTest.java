@@ -60,7 +60,7 @@ public class ClockwiseTest extends AbstractGisTest {
 	private StandardRoadNetwork network;
 
 	@Before
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		GeoLocationUtil.setGISCoordinateSystemAsDefault();
 		URL shapeFile = ClockwiseTest.class.getResource("/org/arakhne/afc/gis/road/Export_Output_Bug26.shp"); //$NON-NLS-1$
 		assertNotNull(shapeFile);
@@ -84,7 +84,7 @@ public class ClockwiseTest extends AbstractGisTest {
 	}
 
 	@After
-	protected void tearDown() throws Exception {
+	public void tearDown() throws Exception {
 		this.bounds = null;
 		this.network = null;
 	}

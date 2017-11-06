@@ -50,6 +50,7 @@ public class GISCoordinatesTest extends AbstractGisTest {
 
 	@Before
 	public void setUp() throws Exception {
+		setDecimalPrecision(3);
 		// -------------------
 		// GIVEN BY IGN CIRCE:
 		// -------------------

@@ -986,7 +986,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 	public void getLocalizedName() {
 		for (AttributeType type : AttributeType.values()) {
 			String name = type.getLocalizedName();
-			assertNotEquals("Invalid attribute name", "OTHER", name); //$NON-NLS-1$ //$NON-NLS-2$
+			assertNotEquals("Invalid attribute name for " + type.name(), "OTHER", name); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 	

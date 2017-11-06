@@ -22,7 +22,7 @@ package org.arakhne.afc.math.geometry.d3.dfx;
 
 import org.junit.Ignore;
 
-import org.arakhne.afc.math.geometry.d3.AbstractUnmodifiablePoint3DTest;
+import org.arakhne.afc.math.geometry.AbstractUnmodifiablePoint3DTest;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
 

@@ -67,18 +67,24 @@ public class MapPolylineGridSetTest extends AbstractGisTest {
 		MapElement element;
 
 		Rectangle2d abounds = new Rectangle2d();
+		boolean first = true;
 
 		while ((element=reader.read())!=null) {
 			if (element instanceof MapPolyline) {
 				MapPolyline p = (MapPolyline)element;
 				this.reference.add(p);
-				abounds.setUnion(p.getBoundingBox().toBoundingBox());
+				if (first) {
+					first = false;
+					abounds.set(p.getBoundingBox());
+				} else {
+					abounds.setUnion(p.getBoundingBox());
+				}
 			}
 		}
 
 		reader.close();
 
-		if (!abounds.isEmpty()) this.bounds = abounds;
+		if (!first) this.bounds = abounds;
 		else this.bounds = null;
 	}
 

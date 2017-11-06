@@ -29,11 +29,11 @@ import org.junit.Test;
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.Point3DStub;
+import org.arakhne.afc.math.geometry.Vector3DStub;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3DTestRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.Point3DStub;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.Vector3DStub;
 
 @SuppressWarnings("all")
 public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {

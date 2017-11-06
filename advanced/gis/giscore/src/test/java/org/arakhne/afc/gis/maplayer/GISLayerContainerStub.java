@@ -179,11 +179,19 @@ class GISLayerContainerStub extends AbstractAttributeCollectionStub implements G
     @Override
 	public Rectangle2d getBoundingBox() {
     	Rectangle2d r = new Rectangle2d();
+    	boolean first = true;
 		for(MapLayer layer : this.list) {
 			Rectangle2d r2 = layer.getBoundingBox().toBoundingBox();
-			if (r2!=null) r.setUnion(r2);
+			if (r2!=null) {
+				if (first) {
+					first = false;
+					r.set(r2);
+				} else {
+					r.setUnion(r2);
+				}
+			}
 		}
-		return r.isEmpty() ? null : r;
+		return first ? null : r;
 	}
 
     @Override
@@ -223,7 +231,7 @@ class GISLayerContainerStub extends AbstractAttributeCollectionStub implements G
 				logical2pixel_x(r_logic.getMinX()),
 				logical2pixel_y(r_logic.getMinY()),
 				logical2pixel_size(r_logic.getWidth()),
-				logical2pixel_x(r_logic.getHeight()));
+				logical2pixel_size(r_logic.getHeight()));
 	}
 
 	/**
@@ -264,7 +272,7 @@ class GISLayerContainerStub extends AbstractAttributeCollectionStub implements G
 				pixel2logical_x(r_screen.getMinX()),
 				pixel2logical_y(r_screen.getMinY()),
 				pixel2logical_size(r_screen.getWidth()),
-				pixel2logical_x(r_screen.getHeight()));
+				pixel2logical_size(r_screen.getHeight()));
 	}
 
 	/**

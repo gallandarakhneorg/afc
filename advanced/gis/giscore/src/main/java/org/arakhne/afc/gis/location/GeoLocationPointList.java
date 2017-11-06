@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.gis.location;
 
-import java.util.Objects;
+import java.util.Arrays;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -40,7 +40,7 @@ public final class GeoLocationPointList extends AbstractGeoLocation {
 
 	private final float[] pts;
 
-	private transient int hash;
+	private transient int hash = -1;
 
 	private transient Rectangle2d bounds;
 
@@ -88,8 +88,8 @@ public final class GeoLocationPointList extends AbstractGeoLocation {
 	@SuppressWarnings("checkstyle:equalshashcode")
 	@Pure
 	public int hashCode() {
-		if (this.hash == 0) {
-			this.hash = Objects.hash(this.pts);
+		if (this.hash == -1) {
+			this.hash = Arrays.hashCode(this.pts);
 		}
 		return this.hash;
 	}
@@ -145,7 +145,8 @@ public final class GeoLocationPointList extends AbstractGeoLocation {
 					y2 = this.pts[i + 1];
 				}
 			}
-			this.bounds = new Rectangle2d(x1, y1, x2 - x1, y2 - y1);
+			this.bounds = new Rectangle2d();
+			this.bounds.setFromCorners(x1, y1, x2, y2);
 		}
 		return this.bounds;
 	}

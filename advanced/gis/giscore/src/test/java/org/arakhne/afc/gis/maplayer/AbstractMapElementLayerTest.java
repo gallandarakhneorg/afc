@@ -64,14 +64,18 @@ public abstract class AbstractMapElementLayerTest<L extends MapElementLayer<MapP
 	 */
 	protected static Rectangle2d computeBounds(Collection<MapPolylineStub> elements) {
 		Rectangle2d expectedBounds = new Rectangle2d();
-
+		boolean first = true;
 		for (MapPolylineStub element : elements) {
 			Rectangle2d elementBounds = element.getOriginalBounds().toBoundingBox();
 			assertNotNull(elementBounds);
-			expectedBounds.setUnion(elementBounds);
+			if (first) {
+				first = false;
+				expectedBounds.set(elementBounds);
+			} else {
+				expectedBounds.setUnion(elementBounds);
+			}
 		}
-
-		return expectedBounds.isEmpty() ? null : expectedBounds;
+		return first ? null : expectedBounds;
 	}
 
 	private static final int TEST_COUNT = 500;
@@ -86,6 +90,7 @@ public abstract class AbstractMapElementLayerTest<L extends MapElementLayer<MapP
 	public void setUp() throws Exception {
 		int elementCount = getRandom().nextInt(20)+5;
 		this.expectedBounds = new Rectangle2d();
+		boolean first = true;
 		this.children.clear();
 
 		for(int i=0; i<elementCount; ++i) {
@@ -96,10 +101,15 @@ public abstract class AbstractMapElementLayerTest<L extends MapElementLayer<MapP
 
 			Rectangle2d elementBounds = element.getOriginalBounds().toBoundingBox();
 			assertNotNull(elementBounds);
-			this.expectedBounds.setUnion(elementBounds);
+			if (first) {
+				first = false;
+				this.expectedBounds.set(elementBounds);
+			} else {
+				this.expectedBounds.setUnion(elementBounds);
+			}
 		}
 
-		setUp(this.expectedBounds);
+		setUpTest(this.expectedBounds);
 	}
 
 	/** Insert the element in the list of the expected children.
@@ -112,8 +122,8 @@ public abstract class AbstractMapElementLayerTest<L extends MapElementLayer<MapP
 	}
 
 	@Override
-	public void setUp(Rectangle2d bounds) throws Exception {
-		super.setUp(bounds);
+	public void setUpTest(Rectangle2d bounds) throws Exception {
+		super.setUpTest(bounds);
 
 		for(int i=0; i<this.children.size(); ++i) {
 			getLayer().addMapElement(this.children.get(i));
@@ -302,7 +312,8 @@ public abstract class AbstractMapElementLayerTest<L extends MapElementLayer<MapP
 			allElements.remove(idx);
 
 			assertEpsilonEquals(allElements.size(),layer.size());
-			assertEpsilonEquals(computeBounds(allElements),layer.getBoundingBox());
+			Rectangle2d expectedBounds = computeBounds(allElements);
+			assertEpsilonEquals(expectedBounds, layer.getBoundingBox());
 
 			for(int i=0; i<allElements.size(); ++i) {
 				MapPolylineStub elt = allElements.get(i);
@@ -361,8 +372,8 @@ public abstract class AbstractMapElementLayerTest<L extends MapElementLayer<MapP
 		for(Entry<String, Object> expectedAttr : this.expectedAttributes.entrySet()) {
 			AttributeValue val = clone.getAttribute(expectedAttr.getKey());
 			assertNotNull("name="+expectedAttr.getKey(), val); //$NON-NLS-1$
-			assertEquals("name="+expectedAttr.getKey(), this.expectedAttributeTypes.get(expectedAttr.getKey()), val.getType()); //$NON-NLS-1$
-			AttributeValue v = new AttributeValueImpl(val.getType(), expectedAttr.getValue());
+			AttributeType expectedType = this.expectedAttributeTypes.get(expectedAttr.getKey());
+			AttributeValue v = new AttributeValueImpl(expectedType, expectedAttr.getValue());
 			assertEquals("name="+expectedAttr.getKey(), v, val); //$NON-NLS-1$
 		}
 

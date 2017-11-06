@@ -62,13 +62,11 @@ public class DBaseFileWriterTest extends AbstractTestCase {
 	
 	private static List<AttributeProvider> readFile(InputStream inputStream) throws IOException {
 		ArrayList<AttributeProvider> alist = new ArrayList<>();
-		DBaseFileReader reader = new DBaseFileReader(inputStream);		
-		
-		for(AttributeProvider provider : reader) {
-			alist.add(provider);
+		try (DBaseFileReader reader = new DBaseFileReader(inputStream)) {	
+			for(AttributeProvider provider : reader) {
+				alist.add(provider);
+			}
 		}
-		
-		inputStream.close();		
 		return alist;
 	}
 	

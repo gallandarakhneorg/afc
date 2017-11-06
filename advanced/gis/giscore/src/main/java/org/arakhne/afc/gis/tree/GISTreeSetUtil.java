@@ -349,7 +349,7 @@ public final class GISTreeSetUtil {
 				&& MathUtil.isEpsilonEqual(reference.getMaxY(), y2, MapElementConstants.POINT_FUSION_DISTANCE)) {
 			y2 = reference.getMaxY();
 		}
-		rect.set(x1, y1, x2, y2);
+		rect.setFromCorners(x1, y1, x2, y2);
 	}
 
 	/** Compute the union of the building bounds of the given node and the given geolocation.

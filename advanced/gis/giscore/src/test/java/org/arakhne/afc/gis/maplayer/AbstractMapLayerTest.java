@@ -21,7 +21,6 @@
 package org.arakhne.afc.gis.maplayer;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import org.arakhne.afc.gis.AbstractGisTest;
@@ -80,8 +79,7 @@ public abstract class AbstractMapLayerTest<L extends MapLayer> extends AbstractG
 	 */
 	protected abstract Rectangle2d getExpectedChildBounds();
 
-	@Before
-	public void setUp(Rectangle2d bounds) throws Exception {
+	public void setUpTest(Rectangle2d bounds) throws Exception {
 		this.layer = createLayer(bounds);
 		this.container = new GISLayerContainerStub();
 		this.container.addMapLayer(this.layer);
@@ -95,19 +93,25 @@ public abstract class AbstractMapLayerTest<L extends MapLayer> extends AbstractG
 
 	@After
 	public final void tearDown() {
-		tearDown(this.layer);
+		tearDownTest(this.layer);
 		this.layer = null;
 	}
 
 	/**
 	 * @param thelayer
 	 */
-	protected void tearDown(L thelayer) {
+	protected void tearDownTest(L thelayer) {
 		//
 	}
 
 	@Test
 	public abstract void testGetBounds();
+
+	private static Rectangle2d newRectangle2d(double x1, double y1, double x2, double y2) {
+		Rectangle2d r = new Rectangle2d();
+		r.setFromCorners(x1, y1, x2, y2);
+		return r;
+	}
 
 	@Test
 	public void testIntersects() {
@@ -125,16 +129,17 @@ public abstract class AbstractMapLayerTest<L extends MapLayer> extends AbstractG
 		double w = bounds.getWidth();
 		double h = bounds.getHeight();
 
-		assertTrue(thelayer.intersects(new Rectangle2d(x0,y0,x0+w,y0+h)));
-		assertTrue(thelayer.intersects(new Rectangle2d(x0-10,y0-10,x0+10,y0+10)));
-		assertTrue(thelayer.intersects(new Rectangle2d(xc,yc,xc+w,yc+h)));
-		assertTrue(thelayer.intersects(new Rectangle2d(xc,yc,xc+1,yc+1)));
-		assertTrue(thelayer.intersects(new Rectangle2d(x0-10,y0-10,x0-10+w*2,y0-10+h*2)));
+		assertTrue(thelayer.intersects(newRectangle2d(x0,y0,x0+w,y0+h)));
+		assertTrue(thelayer.intersects(newRectangle2d(x0-10,y0-10,x0+10,y0+10)));
+		assertTrue(thelayer.intersects(newRectangle2d(xc,yc,xc+w,yc+h)));
+		assertTrue(thelayer.intersects(newRectangle2d(xc,yc,xc+1,yc+1)));
+		assertTrue(thelayer.intersects(newRectangle2d(x0-10,y0-10,x0-10+w*2,y0-10+h*2)));
 
-		assertFalse(thelayer.intersects(new Rectangle2d(x0-10,y0,x0,y0+1)));
-		assertFalse(thelayer.intersects(new Rectangle2d(x1+10,y0,x1,y0+1)));
-		assertFalse(thelayer.intersects(new Rectangle2d(x0,y0-10,x0+1,y0)));
-		assertFalse(thelayer.intersects(new Rectangle2d(x0,y1+10,x0+1,y1)));
+		// Use Math.ulp in order to avoid approximation errors.
+		assertFalse(thelayer.intersects(newRectangle2d(x0-10,y0,x0-Math.ulp(x0),y0+1)));
+		assertFalse(thelayer.intersects(newRectangle2d(x1+10,y0,x1+Math.ulp(x1),y0+1)));
+		assertFalse(thelayer.intersects(newRectangle2d(x0,y0-10,x0+1,y0-Math.ulp(y0))));
+		assertFalse(thelayer.intersects(newRectangle2d(x0,y1+10,x0+1,y1+Math.ulp(y1))));
 	}
 
 	@Test
@@ -144,9 +149,9 @@ public abstract class AbstractMapLayerTest<L extends MapLayer> extends AbstractG
 		Rectangle2d bounds = getExpectedChildBounds();
 
 		assertTrue(thelayer.contains(new Point2d(bounds.getMinX(), bounds.getCenterY()), 0));
-		assertTrue(thelayer.contains(new Point2d(bounds.getMaxX()-EPSILON, bounds.getCenterY()), 0));
+		assertTrue(thelayer.contains(new Point2d(bounds.getMaxX()-Math.ulp(bounds.getMaxX()), bounds.getCenterY()), 0));
 		assertTrue(thelayer.contains(new Point2d(bounds.getCenterX(), bounds.getMinY()), 0));
-		assertTrue(thelayer.contains(new Point2d(bounds.getCenterX(), bounds.getMaxY()-EPSILON), 0));
+		assertTrue(thelayer.contains(new Point2d(bounds.getCenterX(), bounds.getMaxY()-Math.ulp(bounds.getMaxY())), 0));
 
 		assertFalse(thelayer.contains(new Point2d(bounds.getMinX()-10, bounds.getCenterY()), 0));
 		assertFalse(thelayer.contains(new Point2d(bounds.getMaxX()+10, bounds.getCenterY()), 0));

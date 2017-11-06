@@ -135,7 +135,7 @@ public class Point2d extends Tuple2d<Point2d> implements Point2D<Point2d, Vector
 		assert pt != null : AssertMessages.notNullParameter();
 		final double dx = this.x - pt.getX();
 		final double dy = this.y - pt.getY();
-		return Math.sqrt(dx * dx + dy * dy);
+		return Math.hypot(dx, dy);
 	}
 
 	@Pure

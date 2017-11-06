@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.NavigableSet;
 import java.util.NoSuchElementException;
 
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -74,6 +75,23 @@ public final class ListUtil {
 			}
 		}
 		return -1;
+	}
+
+	/** Add the given element in the main list using a dichotomic algorithm if the element is not already present.
+	 *
+	 * <p>This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
+	 *
+	 * @param <E> is the type of the elements in the list.
+	 * @param list is the list to change.
+	 * @param comparator is the comparator of elements.
+	 * @param data is the data to insert.
+	 * @return the index where the element was inserted, or <code>-1</code>
+	 *     if the element was not inserted.
+	 * @since 14.0
+	 */
+	@Inline(value = "add($1, $2, $3, false, false)")
+	public static <E> int addIfAbsent(List<E> list, Comparator<? super E> comparator, E data) {
+		return add(list, comparator, data, false, false);
 	}
 
 	/** Add the given element in the main list using a dichotomic algorithm.

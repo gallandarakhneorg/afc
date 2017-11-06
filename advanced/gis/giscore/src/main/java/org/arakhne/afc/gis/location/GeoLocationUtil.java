@@ -328,7 +328,7 @@ public class GeoLocationUtil {
 		}
 
 		if (bounds != null && !Float.isNaN(minx)) {
-			bounds.set(minx, miny, maxx - minx, maxy - miny);
+			bounds.setFromCorners(minx, miny, maxx, maxy);
 		}
 		return Encryption.md5(buf.toString());
 	}

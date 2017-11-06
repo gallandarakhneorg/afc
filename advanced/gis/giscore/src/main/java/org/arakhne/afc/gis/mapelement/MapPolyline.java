@@ -272,9 +272,9 @@ public class MapPolyline extends MapComposedElement {
 		for (final Point2d p : points()) {
 			if (pp != null) {
 				double position = Segment2afp.findsProjectedPointPointLine(
-						p.getX(), p.getY(),
 						pos.getX(), pos.getY(),
-						pp.getX(), pp.getY());
+						pp.getX(), pp.getY(),
+						p.getX(), p.getY());
 				if (position < 0.) {
 					position = 0.;
 				}
@@ -285,8 +285,10 @@ public class MapPolyline extends MapComposedElement {
 				final double t = v.getLength();
 				v.scale(position);
 				final double dist = Point2D.getDistanceSquaredPointPoint(
-						pos.getX(), pos.getY(),
-						pp.getX() + v.getX(), pp.getY() + v.getY());
+						pos.getX(),
+						pos.getY(),
+						pp.getX() + v.getX(),
+						pp.getY() + v.getY());
 				if (dist < bestDistance) {
 					bestDistance = dist;
 					bestPosition = currentPosition + v.getLength();
@@ -676,13 +678,12 @@ public class MapPolyline extends MapComposedElement {
 
 			for (final Point2d thepoint : group.points()) {
 				if (prevPoint != null) {
-					// Compute the length betwen the current point and the previous point
-					final double distance = prevPoint.getDistance(thepoint);
-					if (desiredDistance < distance && distance != 0) {
+					// Compute the length between the current point and the previous point
+					double vx = thepoint.getX() - prevPoint.getX();
+					double vy = thepoint.getY() - prevPoint.getY();
+					final double norm = Math.hypot(vx, vy);
+					if (desiredDistance < norm && norm != 0) {
 						// The desired distance is on this part's segment
-						double vx = thepoint.getX() - prevPoint.getX();
-						double vy = thepoint.getY() - prevPoint.getY();
-						final double norm = Math.hypot(vx, vy);
 						if (norm != 0) {
 
 							// Compute the vector and the new point
@@ -709,32 +710,40 @@ public class MapPolyline extends MapComposedElement {
 							geoLocation.set(px, py);
 							return;
 						}
+						if (tangent != null) {
+							tangent.set(Double.NaN, Double.NaN);
+						}
 						geoLocation.set(thepoint);
 						return;
 					}
 					// pass to the next couple of points
-					desiredDistance -= distance;
+					desiredDistance -= norm;
 				}
 				prevPoint = thepoint;
 			}
 		}
 		// The end of the segment was reached
-		final Point2d antepenulvianPoint = getPointAt(getPointCount() - 2);
-		final Point2d lastPoint = getPointAt(getPointCount() - 1).clone();
+		final int ptsCount = getPointCount();
+		final Point2d p0 = getPointAt(ptsCount - 2);
+		final Point2d p1 = getPointAt(ptsCount - 1);
 		if (tangent != null) {
 			// The tangent is colinear to the last segment
-			tangent.set(
-					lastPoint.getX() - antepenulvianPoint.getX(),
-					lastPoint.getY() - antepenulvianPoint.getY());
+			tangent.sub(p1, p0);
+			tangent.normalize();
 		}
 		if (shifting != 0.) {
-			final Vector2d perpend = new Vector2d(lastPoint.getX() - antepenulvianPoint.getX(),
-					lastPoint.getY() - antepenulvianPoint.getY());
+			final Vector2d perpend = new Vector2d(
+					p1.getX() - p0.getX(),
+					p1.getY() - p0.getY());
+			perpend.normalize();
 			perpend.makeOrthogonal();
 			perpend.scale(shifting);
-			lastPoint.set(lastPoint.getX() + perpend.getX(), lastPoint.getY() + perpend.getY());
+			geoLocation.set(
+					p1.getX() + perpend.getX(),
+					p1.getY() + perpend.getY());
+		} else {
+			geoLocation.set(p1);
 		}
-		geoLocation.set(lastPoint);
 	}
 
 	/** Segment representation.

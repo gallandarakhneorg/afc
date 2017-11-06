@@ -22,7 +22,7 @@ package org.arakhne.afc.math.geometry.d3.d;
 
 import org.junit.Ignore;
 
-import org.arakhne.afc.math.geometry.d3.AbstractTuple3DTest;
+import org.arakhne.afc.math.geometry.AbstractTuple3DTest;
 
 @SuppressWarnings("all")
 @Ignore("temporary")

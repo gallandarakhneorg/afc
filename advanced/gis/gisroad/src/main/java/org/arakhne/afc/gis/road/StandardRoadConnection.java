@@ -362,8 +362,6 @@ class StandardRoadConnection implements RoadConnection {
 								&& this.connectedSegments.get(idxSegment).getRoadPolyline() != existingSegment) {
 							++idxSegment;
 						}
-						// Check if required
-						--idxSegment;
 						//Continue the search from the segment
 						continue;
 					}
@@ -378,6 +376,7 @@ class StandardRoadConnection implements RoadConnection {
 					return searchInsertionIndex(baseAngle, idxSegment + 1, otherConnectionIdx - 1);
 				} else {
 					// This case should never occurs
+					++idxSegment;
 					continue;
 				}
 
@@ -1023,7 +1022,7 @@ class StandardRoadConnection implements RoadConnection {
 
 				if (sIdx == -1 && sgmt.equals(startSegment)
 						&& (startConnection == null
-								|| startConnection == connectionInfo.connectedWithStartPoint)) {
+						|| startConnection == connectionInfo.connectedWithStartPoint)) {
 					sIdx = i;
 				}
 
@@ -1212,13 +1211,13 @@ class StandardRoadConnection implements RoadConnection {
 
 				if (sIdx == -1 && sgmt.equals(startSegment)
 						&& (startConnection == null
-								|| startConnection == connectionInfo.connectedWithStartPoint)) {
+						|| startConnection == connectionInfo.connectedWithStartPoint)) {
 					sIdx = i;
 				}
 
 				if (eIdx == -1 && sgmt.equals(endSegment)
 						&& (endConnection == null
-								|| endConnection != connectionInfo.connectedWithStartPoint)) {
+						|| endConnection != connectionInfo.connectedWithStartPoint)) {
 					eIdx = i;
 				}
 			}

@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d2;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
+import java.util.Locale;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -51,7 +52,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 * @return the string representation.
 	 */
 	static String toString(double x, double y) {
-		return MessageFormat.format(TUPLE_STRING_PATTERN, x, y);
+		final MessageFormat format = new MessageFormat(TUPLE_STRING_PATTERN, Locale.US);
+		return format.format(new Object[] {x, y});
 	}
 
 	/** Replies the string representation of the tuple.
@@ -61,7 +63,8 @@ public interface Tuple2D<RT extends Tuple2D<? super RT>> extends Cloneable, Seri
 	 * @return the string representation.
 	 */
 	static String toString(int x, int y) {
-		return MessageFormat.format(TUPLE_STRING_PATTERN, x, y);
+		final MessageFormat format = new MessageFormat(TUPLE_STRING_PATTERN, Locale.US);
+		return format.format(new Object[] {x, y});
 	}
 
 	/** Clone this point.

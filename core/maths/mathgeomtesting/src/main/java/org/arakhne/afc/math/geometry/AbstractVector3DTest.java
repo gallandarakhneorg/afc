@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d3;
+package org.arakhne.afc.math.geometry;
 
 import static org.arakhne.afc.math.MathConstants.PI;
 
@@ -27,6 +27,9 @@ import org.junit.ComparisonFailure;
 import org.junit.Test;
 
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D.PowerResult;
 
 @SuppressWarnings("all")

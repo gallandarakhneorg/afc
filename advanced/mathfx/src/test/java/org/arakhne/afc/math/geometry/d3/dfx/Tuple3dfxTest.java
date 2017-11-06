@@ -24,7 +24,7 @@ import javafx.beans.property.DoubleProperty;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import org.arakhne.afc.math.geometry.d3.AbstractTuple3DTest;
+import org.arakhne.afc.math.geometry.AbstractTuple3DTest;
 
 @SuppressWarnings("all")
 @Ignore("temporary")

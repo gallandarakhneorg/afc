@@ -1465,6 +1465,31 @@ public interface Rectangle2afp<
     	}
     }
 
+    @Override
+    default void setFromPointCloud(Iterable<? extends Point2D<?, ?>> pointCloud) {
+    	double minx = Double.MAX_VALUE;
+    	double miny = Double.MAX_VALUE;
+    	double maxx = Double.MIN_VALUE;
+    	double maxy = Double.MIN_VALUE;
+    	for (final Point2D<?, ?> pts : pointCloud) {
+    		final double x = pts.getX();
+    		if (x < minx) {
+    			minx = x;
+    		}
+    		if (x > maxx) {
+    			maxx = x;
+    		}
+    		final double y = pts.getY();
+    		if (y < miny) {
+    			miny = y;
+    		}
+    		if (y > maxy) {
+    			maxy = y;
+    		}
+    	}
+    	setFromCorners(minx, miny, maxx, maxy);
+    }
+
     /** Iterator on the path elements of the rectangle.
      *
      * @param <T> the type of the path elements.

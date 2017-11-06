@@ -277,7 +277,7 @@ public interface Vector1D<
 	default double getLength() {
 		final double x = getX();
 		final double y = getY();
-		return Math.sqrt(x * x + y * y);
+		return Math.hypot(x, y);
 	}
 
 	/**

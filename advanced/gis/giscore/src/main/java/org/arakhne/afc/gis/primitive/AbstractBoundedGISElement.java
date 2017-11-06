@@ -42,7 +42,7 @@ public abstract class AbstractBoundedGISElement<C extends GISContainer<?>, T ext
 
 	private static final long serialVersionUID = 2804454630472447980L;
 
-	private Rectangle2d bounds;
+	private transient Rectangle2d bounds;
 
 	/** Constructor.
 	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.

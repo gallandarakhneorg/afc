@@ -46,7 +46,8 @@ public class MapLayerStub extends MapLayer {
 	public MapLayerStub() {
 		super(null, new HeapAttributeCollection());
 		Random rnd = new Random();
-		this.bounds = new Rectangle2d(
+		this.bounds = new Rectangle2d();
+		this.bounds.setFromCorners(
 				rnd.nextDouble()*1000.,
 				rnd.nextDouble()*1000.,
 				rnd.nextDouble()*1000.,

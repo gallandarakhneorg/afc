@@ -66,18 +66,23 @@ public class MapElementTreeSetTest extends AbstractGisTest {
 		MapElement element;
 
 		Rectangle2d abounds = new Rectangle2d();
-
+		boolean first = true;
 		while ((element=reader.read())!=null) {
 			if (element instanceof MapPolyline) {
 				MapPolyline p = (MapPolyline)element;
 				this.reference.add(p);
-				abounds.setUnion(p.getBoundingBox().toBoundingBox());
+				if (first) {
+					first = false;
+					abounds.set(p.getBoundingBox());
+				} else {
+					abounds.setUnion(p.getBoundingBox());
+				}
 			}
 		}
 
 		reader.close();
 
-		if (!abounds.isEmpty()) this.bounds = abounds;
+		if (!first) this.bounds = abounds;
 		else this.bounds = null;
 	}
 
@@ -90,7 +95,7 @@ public class MapElementTreeSetTest extends AbstractGisTest {
 
 	@Test
 	public void testGetNearest() {
-    	System.out.println("Preparing the benchmark..."); //$NON-NLS-1$
+		getLogger().info("Preparing the benchmark..."); //$NON-NLS-1$
 		MapElementTreeSet<MapPolyline> test;
 		if (this.bounds!=null)
 			test = new MapElementTreeSet<>(this.bounds);
@@ -99,7 +104,7 @@ public class MapElementTreeSetTest extends AbstractGisTest {
         test.addAll(this.reference);
         assertEpsilonEquals(this.reference.size(), test.size());
 
-    	System.out.println("Run test..."); //$NON-NLS-1$
+        getLogger().info("Run test..."); //$NON-NLS-1$
 
     	Random rnd = new Random();
     	MapPolyline nearestData;
@@ -144,7 +149,7 @@ public class MapElementTreeSetTest extends AbstractGisTest {
 
         for(int i=0; i<testCount; ++i) {
         	msg = "test "+(i+1)+"/"+testCount; //$NON-NLS-1$ //$NON-NLS-2$
-        	System.out.print(msg+"..."); //$NON-NLS-1$
+        	getLogger().info(msg+"..."); //$NON-NLS-1$
 
 	        // Add an element
         	double x = this.bounds.getMinX() + rnd.nextDouble() * this.bounds.getWidth();
@@ -159,7 +164,7 @@ public class MapElementTreeSetTest extends AbstractGisTest {
 	        assertEquals(msg,this.reference.size(), test.size());
 	        assertTrue(msg,test.slowContains(newElement));
 	    	assertEpsilonEquals(msg,this.reference.toArray(),test.toArray());
-        	System.out.println("done"); //$NON-NLS-1$
+	    	getLogger().info("done"); //$NON-NLS-1$
         }
 	}
 

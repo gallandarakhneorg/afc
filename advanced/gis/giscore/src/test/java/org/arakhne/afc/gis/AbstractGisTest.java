@@ -20,6 +20,10 @@
 
 package org.arakhne.afc.gis;
 
+import java.util.Objects;
+
+import junit.framework.ComparisonFailure;
+
 import org.arakhne.afc.gis.location.GeoLocationUtil;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.gis.maplayer.MapLayer;
@@ -65,6 +69,14 @@ public class AbstractGisTest extends AbstractTestCase {
 	}
 
 	protected void assertEpsilonEquals(Shape2d<?> expected, Shape2d<?> actual) {
+		if (expected == null) {
+			assertNull(actual);
+			return;
+		}
+		if (actual == null) {
+			fail("Unexpected null bounds"); //$NON-NLS-1$
+			return;
+		}
 		Rectangle2d expectedb = expected.toBoundingBox();
 		Rectangle2d actualb = actual.toBoundingBox();
 		setDecimalPrecision(1);
@@ -84,22 +96,52 @@ public class AbstractGisTest extends AbstractTestCase {
 
 	protected Rectangle2d makeBounds(Point2d p) {
 		return new Rectangle2d(
-				((float)p.getX())-GeoLocationUtil.GIS_POINT_DEMI_SIZE,
-				((float)p.getY())-GeoLocationUtil.GIS_POINT_DEMI_SIZE,
-				((float)p.getX())+GeoLocationUtil.GIS_POINT_DEMI_SIZE,
-				((float)p.getY())+GeoLocationUtil.GIS_POINT_DEMI_SIZE);
+				((float) p.getX()-GeoLocationUtil.GIS_POINT_DEMI_SIZE),
+				((float) p.getY()-GeoLocationUtil.GIS_POINT_DEMI_SIZE),
+				(float) GeoLocationUtil.GIS_POINT_SIZE,
+				(float) GeoLocationUtil.GIS_POINT_SIZE);
 	}
 
 	protected Rectangle2d makeBounds(Point2d min, Point2d max) {
 		return new Rectangle2d(min, max);
 	}
 
-	protected void assertEpsilonEquals(MapLayer actual, MapLayer expected) {
-		fail("not implemented"); //$NON-NLS-1$
+	protected void assertEpsilonEquals(MapLayer expected, MapLayer actual) {
+		if (!Objects.equals(expected.getClass(), actual.getClass())) {
+			throw new ComparisonFailure("Not same type", expected.getClass().toString(), //$NON-NLS-1$
+					actual.getClass().toString());
+		}
+		if (!Objects.equals(actual.getGeoId(), expected.getGeoId())) {
+			throw new ComparisonFailure("Not same GeoId", expected.getGeoId().toString(), //$NON-NLS-1$
+					actual.getGeoId().toString());
+		}
+		if (!Objects.equals(expected.getClass(), actual.getClass())) {
+			throw new ComparisonFailure("Not same hashCode", expected.hashKey().toString(), //$NON-NLS-1$
+					actual.getClass().toString());
+		}
+		if (!Objects.equals(expected, actual)) {
+			throw new ComparisonFailure("Not same objects", expected.toString(), //$NON-NLS-1$
+					actual.toString());
+		}
 	}
 
-	protected void assertEpsilonEquals(MapElement actual, MapElement expected) {
-		fail("not implemented"); //$NON-NLS-1$
+	protected void assertEpsilonEquals(MapElement expected, MapElement actual) {
+		if (!Objects.equals(expected.getClass(), actual.getClass())) {
+			throw new ComparisonFailure("Not same type", expected.getClass().toString(), //$NON-NLS-1$
+					actual.getClass().toString());
+		}
+		if (!Objects.equals(actual.getGeoId(), expected.getGeoId())) {
+			throw new ComparisonFailure("Not same GeoId", expected.getGeoId().toString(), //$NON-NLS-1$
+					actual.getGeoId().toString());
+		}
+		if (!Objects.equals(expected.getClass(), actual.getClass())) {
+			throw new ComparisonFailure("Not same hashCode", expected.hashKey().toString(), //$NON-NLS-1$
+					actual.getClass().toString());
+		}
+		if (!Objects.equals(expected, actual)) {
+			throw new ComparisonFailure("Not same objects", expected.toString(), //$NON-NLS-1$
+					actual.toString());
+		}
 	}
 
 }

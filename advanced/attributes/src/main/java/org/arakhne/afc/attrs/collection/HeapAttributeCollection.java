@@ -70,7 +70,13 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	public HeapAttributeCollection clone() {
 		final HeapAttributeCollection clone = (HeapAttributeCollection) super.clone();
 		clone.heap = new TreeMap<>(new AttributeNameStringComparator());
-		clone.heap.putAll(this.heap);
+		for (final Attribute attr : getAllAttributes()) {
+			try {
+				clone.setAttribute(attr);
+			} catch (AttributeException e) {
+				throw new RuntimeException(e);
+			}
+		}
 		return clone;
 	}
 

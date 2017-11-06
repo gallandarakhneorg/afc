@@ -1005,23 +1005,30 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public double getLaneCenter(int laneIndex) {
-		double y;
+		double dist = getWidth() / 2.;
+		for (int i = 0; i < laneIndex; ++i) {
+			dist -= getLaneSize(i);
+		}
+		dist -= getLaneSize(laneIndex) / 2.;
+
 		final boolean isRightSided = getRoadNetwork().isRightSidedTrafficDirection();
 		final boolean isLeftHanded = CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded();
 		if (isRightSided == isLeftHanded) {
-			y = getWidth() / 2.;
-			for (int i = 0; i < laneIndex; ++i) {
-				y -= getLaneSize(i);
-			}
-			y -= getLaneSize(laneIndex) / 2.;
-		} else {
-			y = -getWidth() / 2.;
-			for (int i = 0; i < laneIndex; ++i) {
-				y += getLaneSize(i);
-			}
-			y += getLaneSize(laneIndex) / 2.;
+			return dist;
 		}
-		return y;
+		return -dist;
+	}
+
+	@Override
+	@Pure
+	public double getRoadBorderDistance() {
+		final double dist = getWidth() / 2.;
+		final boolean isRightSided = getRoadNetwork().isRightSidedTrafficDirection();
+		final boolean isLeftHanded = CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded();
+		if (isRightSided == isLeftHanded) {
+			return dist;
+		}
+		return -dist;
 	}
 
 	@Override
