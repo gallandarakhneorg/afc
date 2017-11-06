@@ -24,6 +24,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d3.AbstractGeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
@@ -39,7 +40,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class GeomFactory3ifx implements GeomFactory3ai<PathElement3ifx, Point3ifx, Vector3ifx, RectangularPrism3ifx> {
+public class GeomFactory3ifx extends AbstractGeomFactory3D<Vector3ifx, Point3ifx>
+		implements GeomFactory3ai<PathElement3ifx, Point3ifx, Vector3ifx, RectangularPrism3ifx> {
 
 	/** The singleton of the factory.
 	 */

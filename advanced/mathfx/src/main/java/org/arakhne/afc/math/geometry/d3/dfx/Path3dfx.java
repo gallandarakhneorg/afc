@@ -37,7 +37,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -920,7 +919,7 @@ public class Path3dfx extends AbstractShape3dfx<Path3dfx>
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
 				final RectangularPrism3dfx bb = getGeomFactory().newBox();
 				Path3afp.computeDrawableElementBoundingBox(
-						getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 						bb);
 				return bb;
 			},

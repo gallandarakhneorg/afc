@@ -20,6 +20,10 @@
 
 package org.arakhne.afc.math.geometry.d3;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.GeomFactoryBase;
+
 /** Factory of geometrical primitives.
  *
  * @param <V> the types of the vectors.
@@ -30,13 +34,16 @@ package org.arakhne.afc.math.geometry.d3;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P extends Point3D<? super P, ? super V>> {
+public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>,
+		P extends Point3D<? super P, ? super V>>
+		extends GeomFactoryBase {
 
 	/** Convert the given point if it is not of the right type.
 	 *
 	 * @param point the point to convert.
 	 * @return <code>p</code> if it is of type <code>P</code>, or a copy of <code>p</code>.
 	 */
+	@Pure
 	P convertToPoint(Point3D<?, ?> point);
 
 	/** Convert the given vector.
@@ -44,6 +51,7 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P exten
 	 * @param vector the vector to convert.
 	 * @return the point.
 	 */
+	@Pure
 	P convertToPoint(Vector3D<?, ?> vector);
 
 	/** Convert the given point.
@@ -51,6 +59,7 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P exten
 	 * @param point the point to convert.
 	 * @return the vector.
 	 */
+	@Pure
 	V convertToVector(Point3D<?, ?> point);
 
 	/** Convert the given vector.
@@ -58,12 +67,14 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P exten
 	 * @param vector the vector to convert.
 	 * @return the vector.
 	 */
+	@Pure
 	V convertToVector(Vector3D<?, ?> vector);
 
 	/** Create a point.
 	 *
 	 * @return the point.
 	 */
+	@Pure
 	P newPoint();
 
 	/** Create a point.
@@ -73,6 +84,7 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P exten
 	 * @param z z coordinate of the point.
 	 * @return the point.
 	 */
+	@Pure
 	P newPoint(double x, double y, double z);
 
 	/** Create a point.
@@ -82,12 +94,14 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P exten
      * @param z z coordinate of the point.
 	 * @return the point.
 	 */
+	@Pure
 	P newPoint(int x, int y, int z);
 
 	/** Create a vector.
 	 *
 	 * @return the vector.
 	 */
+	@Pure
 	V newVector();
 
 	/** Create a vector.
@@ -97,6 +111,7 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P exten
      * @param z z coordinate of the vector.
 	 * @return the vector.
 	 */
+	@Pure
 	V newVector(double x, double y, double z);
 
 	/** Create a vector.
@@ -106,6 +121,7 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P exten
      * @param z z coordinate of the vector.
 	 * @return the vector.
 	 */
+	@Pure
 	V newVector(int x, int y, int z);
 
 	/** Creates a Quaternion.
@@ -114,6 +130,7 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P exten
 	 * @param angle the angle of the quaternion.
 	 * @return the quaternion.
 	 */
+	@Pure
 	Quaternion newQuaternion(Vector3D<?, ?> axis, double angle);
 
 	/**Creates a Quaternion.
@@ -123,5 +140,7 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P exten
 	 * @param heading the heading of the quaternion
 	 * @return the quaternion
 	 */
+	@Pure
 	Quaternion newQuaternion(double attitude, double bank, double heading);
+
 }

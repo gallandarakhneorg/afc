@@ -28,6 +28,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
@@ -774,7 +775,7 @@ public interface RoundRectangle2afp<
                 iterator,
                 getMinX(), getMinY(), getMaxX(), getMaxY(), getArcWidth(), getArcHeight(),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == MathConstants.SHAPE_INTERSECTS
+        return crossings == GeomConstants.SHAPE_INTERSECTS
                 || (crossings & mask) != 0;
 
     }
@@ -807,7 +808,7 @@ public interface RoundRectangle2afp<
     default PathIterator2afp<IE> getFlatteningPathIterator() {
         // TODO: Remove this part of the code when SPLINE_APPROXIMATION_RATIO is decreased.
         return new Path2afp.FlatteningPathIterator<>(getPathIterator(null),
-                MathConstants.SPLINE_APPROXIMATION_RATIO / 10.,
+        		getGeomFactory().getSplineApproximationRatio(),
                 Path2afp.DEFAULT_FLATTENING_LIMIT);
     }
 

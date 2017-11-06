@@ -29,6 +29,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
@@ -587,7 +588,7 @@ public interface Segment2afp<
         } else if (Circle2afp.intersectsCircleSegment(
                 cx, cy, radius,
                 x0, y0, x1, y1)) {
-            return MathConstants.SHAPE_INTERSECTS;
+            return GeomConstants.SHAPE_INTERSECTS;
         } else {
             numCrosses += calculatesCrossingsPointShadowSegment(cx, ymin, x0, y0, x1, y1);
             numCrosses += calculatesCrossingsPointShadowSegment(cx, ymax, x0, y0, x1, y1);
@@ -658,7 +659,7 @@ public interface Segment2afp<
         } else if (Ellipse2afp.intersectsEllipseSegment(
                 xmin, ymin, xmax - xmin, ymax - ymin,
                 x0, y0, x1, y1, true)) {
-            return MathConstants.SHAPE_INTERSECTS;
+            return GeomConstants.SHAPE_INTERSECTS;
         } else {
             final double xcenter = (xmin + xmax) / 2.;
             numCrosses += calculatesCrossingsPointShadowSegment(xcenter, ymin, x0, y0, x1, y1);
@@ -832,7 +833,7 @@ public interface Segment2afp<
         // where one of the endpoints is inside the rectangle.
         if ((x0 > rxmin && x0 < rxmax && y0 > rymin && y0 < rymax)
                 || (x1 > rxmin && x1 < rxmax && y1 > rymin && y1 < rymax)) {
-            return MathConstants.SHAPE_INTERSECTS;
+            return GeomConstants.SHAPE_INTERSECTS;
         }
         // Otherwise calculate the y intercepts and see where
         // they fall with respect to the rectangle
@@ -873,7 +874,7 @@ public interface Segment2afp<
             }
             return numCrosses;
         }
-        return MathConstants.SHAPE_INTERSECTS;
+        return GeomConstants.SHAPE_INTERSECTS;
     }
 
     /**
@@ -954,7 +955,7 @@ public interface Segment2afp<
         if (RoundRectangle2afp.intersectsRoundRectangleSegment(
                 rxmin, rymin, rxmax, rymax, arcWidth, arcHeight,
                 x0, y0, x1, y1)) {
-            return MathConstants.SHAPE_INTERSECTS;
+            return GeomConstants.SHAPE_INTERSECTS;
         }
 
         final double x = rxmax - arcWidth;
@@ -1022,7 +1023,7 @@ public interface Segment2afp<
                 }
             }
         } else if (intersectsSegmentSegmentWithEnds(x0, y0, x1, y1, sx1, sy1, sx2, sy2)) {
-            return MathConstants.SHAPE_INTERSECTS;
+            return GeomConstants.SHAPE_INTERSECTS;
         } else {
             final int side1;
             final int side2;
@@ -1154,7 +1155,7 @@ public interface Segment2afp<
         } else if (Triangle2afp.intersectsTriangleSegment(
                 tx1, ty1, tx2, ty2, tx3, ty3,
                 x0, y0, x1, y1)) {
-            return MathConstants.SHAPE_INTERSECTS;
+            return GeomConstants.SHAPE_INTERSECTS;
         } else {
             numCrosses += calculatesCrossingsPointShadowSegment(x4ymin, ymin, x0, y0, x1, y1);
             numCrosses += calculatesCrossingsPointShadowSegment(x4ymax, ymax, x0, y0, x1, y1);
@@ -2722,7 +2723,7 @@ public interface Segment2afp<
                 iterator,
                 getX1(), getY1(), getX2(), getY2(),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == MathConstants.SHAPE_INTERSECTS
+        return crossings == GeomConstants.SHAPE_INTERSECTS
                 || (crossings & mask) != 0;
 
     }

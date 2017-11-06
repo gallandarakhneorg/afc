@@ -26,7 +26,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>testtools</artifactId>
+			<artifactId>mathgeomtesting</artifactId>
 			<scope>test</scope>
 			<optional>true</optional>
 		</dependency>

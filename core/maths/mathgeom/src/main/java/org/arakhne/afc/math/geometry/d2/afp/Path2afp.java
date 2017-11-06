@@ -30,6 +30,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
@@ -109,7 +110,7 @@ public interface Path2afp<
 		int numCrossings = crossings;
 		double endx;
 		double endy;
-		while (numCrossings != MathConstants.SHAPE_INTERSECTS
+		while (numCrossings != GeomConstants.SHAPE_INTERSECTS
 				&& iterator.hasNext()) {
 			pathElement1 = iterator.next();
 			switch (pathElement1.getType()) {
@@ -123,7 +124,7 @@ public interface Path2afp<
 				endx = pathElement1.getToX();
 				endy = pathElement1.getToY();
 				numCrossings = shadow.computeCrossings(numCrossings, curx, cury, endx, endy);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -137,9 +138,9 @@ public interface Path2afp<
 				subPath.quadTo(
 						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(), endx, endy);
 				numCrossings = calculatesCrossingsPathIteratorPathShadow(
-						numCrossings, subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						numCrossings, subPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						shadow, CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -153,9 +154,9 @@ public interface Path2afp<
 				subPath.curveTo(pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
 						pathElement1.getCtrlX2(), pathElement1.getCtrlY2(), endx, endy);
 				numCrossings = calculatesCrossingsPathIteratorPathShadow(
-						numCrossings, subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						numCrossings, subPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						shadow, CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -170,9 +171,9 @@ public interface Path2afp<
 						pathElement1.getRotationX(), pathElement1.getLargeArcFlag(),
 						pathElement1.getSweepFlag());
 				numCrossings = calculatesCrossingsPathIteratorPathShadow(
-						numCrossings, subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						numCrossings, subPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						shadow, CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -192,7 +193,7 @@ public interface Path2afp<
 			default:
 			}
 		}
-		assert numCrossings != MathConstants.SHAPE_INTERSECTS;
+		assert numCrossings != GeomConstants.SHAPE_INTERSECTS;
 		final boolean isOpen = (curx != movx) || (cury != movy);
 		if (isOpen && type != null) {
 			switch (type) {
@@ -341,7 +342,7 @@ public interface Path2afp<
 				endx = pathElement1.getToX();
 				endy = pathElement1.getToY();
 				crossings = shadow.computeCrossings(crossings, curx, cury, endx, endy);
-				if (crossings == MathConstants.SHAPE_INTERSECTS) {
+				if (crossings == GeomConstants.SHAPE_INTERSECTS) {
 					result.set(shadow.getClosestPointInOtherShape());
 					return true;
 				}
@@ -351,7 +352,7 @@ public interface Path2afp<
 			case CLOSE:
 				if (curx != movx || cury != movy) {
 					crossings = shadow.computeCrossings(crossings, curx, cury, movx, movy);
-					if (crossings == MathConstants.SHAPE_INTERSECTS) {
+					if (crossings == GeomConstants.SHAPE_INTERSECTS) {
 						result.set(shadow.getClosestPointInOtherShape());
 						return true;
 					}
@@ -365,7 +366,7 @@ public interface Path2afp<
 			}
 		}
 		if (curx == movx && cury == movy) {
-			assert crossings != MathConstants.SHAPE_INTERSECTS;
+			assert crossings != GeomConstants.SHAPE_INTERSECTS;
 			final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 			if ((crossings & mask) != 0) {
 				// Second path is inside the first shape
@@ -383,7 +384,7 @@ public interface Path2afp<
 		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		Path2afp.findsClosestPointPathIteratorPoint(
-				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 				pt.getX(), pt.getY(),
 				point);
 		return point;
@@ -395,7 +396,7 @@ public interface Path2afp<
 	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
 		final P result = getGeomFactory().newPoint();
 		if (isCurved()) {
-			Path2afp.findsClosestPointPathIteratorPoint(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+			Path2afp.findsClosestPointPathIteratorPoint(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					circle.getCenterX(), circle.getCenterY(), result);
 		} else {
 			Path2afp.findsClosestPointPathIteratorPoint(getPathIterator(), circle.getCenterX(), circle.getCenterY(), result);
@@ -409,7 +410,7 @@ public interface Path2afp<
 	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
 		final P result = getGeomFactory().newPoint();
 		if (isCurved()) {
-			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					ellipse.getPathIterator(), result);
 		} else {
 			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), ellipse.getPathIterator(), result);
@@ -423,7 +424,7 @@ public interface Path2afp<
 	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
 		final P result = getGeomFactory().newPoint();
 		if (isCurved()) {
-			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					rectangle.getPathIterator(), result);
 		} else {
 			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), rectangle.getPathIterator(), result);
@@ -437,7 +438,7 @@ public interface Path2afp<
 	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
 		final P result = getGeomFactory().newPoint();
 		if (isCurved()) {
-			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					segment.getPathIterator(), result);
 		} else {
 			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), segment.getPathIterator(), result);
@@ -451,7 +452,7 @@ public interface Path2afp<
 	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
 		final P result = getGeomFactory().newPoint();
 		if (isCurved()) {
-			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					triangle.getPathIterator(), result);
 		} else {
 			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), triangle.getPathIterator(), result);
@@ -465,7 +466,7 @@ public interface Path2afp<
 	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
 		final P result = getGeomFactory().newPoint();
 		if (isCurved()) {
-			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					path.getPathIterator(), result);
 		} else {
 			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), path.getPathIterator(), result);
@@ -479,7 +480,7 @@ public interface Path2afp<
 	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
 		final P result = getGeomFactory().newPoint();
 		if (isCurved()) {
-			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					orientedRectangle.getPathIterator(), result);
 		} else {
 			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), orientedRectangle.getPathIterator(), result);
@@ -493,7 +494,7 @@ public interface Path2afp<
 	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
 		final P result = getGeomFactory().newPoint();
 		if (isCurved()) {
-			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					parallelogram.getPathIterator(), result);
 		} else {
 			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), parallelogram.getPathIterator(), result);
@@ -507,7 +508,7 @@ public interface Path2afp<
 	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
 		final P result = getGeomFactory().newPoint();
 		if (isCurved()) {
-			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					roundRectangle.getPathIterator(), result);
 		} else {
 			Path2afp.findsClosestPointPathIteratorPathIterator(getPathIterator(), roundRectangle.getPathIterator(), result);
@@ -521,7 +522,7 @@ public interface Path2afp<
 		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		Path2afp.findsFarthestPointPathIteratorPoint(
-				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 				pt.getX(), pt.getY(),
 				point);
 		return point;
@@ -612,7 +613,7 @@ public interface Path2afp<
 		final int crossings = calculatesCrossingsPathIteratorRectangleShadow(
 				0, pi, rx, ry, rx + rwidth, ry + rheight,
 				CrossingComputationType.AUTO_CLOSE);
-		return crossings != MathConstants.SHAPE_INTERSECTS
+		return crossings != GeomConstants.SHAPE_INTERSECTS
 				&& (crossings & mask) != 0;
 	}
 
@@ -638,7 +639,7 @@ public interface Path2afp<
 		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = calculatesCrossingsPathIteratorRectangleShadow(0, pi, x, y, x + width, y + height,
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == MathConstants.SHAPE_INTERSECTS
+		return crossings == GeomConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;
 	}
 
@@ -691,7 +692,7 @@ public interface Path2afp<
 				endx = element.getToX();
 				endy = element.getToY();
 				if (endx == px && endy == py) {
-					return MathConstants.SHAPE_INTERSECTS;
+					return GeomConstants.SHAPE_INTERSECTS;
 				}
 				numCrossings += Segment2afp.calculatesCrossingsPointShadowSegment(
 						px, py,
@@ -704,7 +705,7 @@ public interface Path2afp<
 				endx = element.getToX();
 				endy = element.getToY();
 				if (endx == px && endy == py) {
-					return MathConstants.SHAPE_INTERSECTS;
+					return GeomConstants.SHAPE_INTERSECTS;
 				}
 				subPath = factory.newPath(iterator.getWindingRule());
 				subPath.moveTo(curx, cury);
@@ -713,10 +714,10 @@ public interface Path2afp<
 						endx, endy);
 				numCrossings = calculatesCrossingsPathIteratorPointShadow(
 						numCrossings,
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						px, py,
 						CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -726,7 +727,7 @@ public interface Path2afp<
 				endx = element.getToX();
 				endy = element.getToY();
 				if (endx == px && endy == py) {
-					return MathConstants.SHAPE_INTERSECTS;
+					return GeomConstants.SHAPE_INTERSECTS;
 				}
 				subPath = factory.newPath(iterator.getWindingRule());
 				subPath.moveTo(curx, cury);
@@ -736,10 +737,10 @@ public interface Path2afp<
 						endx, endy);
 				numCrossings = calculatesCrossingsPathIteratorPointShadow(
 						numCrossings,
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						px, py,
 						CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -749,7 +750,7 @@ public interface Path2afp<
 				endx = element.getToX();
 				endy = element.getToY();
 				if (endx == px && endy == py) {
-					return MathConstants.SHAPE_INTERSECTS;
+					return GeomConstants.SHAPE_INTERSECTS;
 				}
 				subPath = factory.newPath(iterator.getWindingRule());
 				subPath.moveTo(curx, cury);
@@ -760,10 +761,10 @@ public interface Path2afp<
 						element.getSweepFlag());
 				numCrossings = calculatesCrossingsPathIteratorPointShadow(
 						numCrossings,
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						px, py,
 						CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -772,7 +773,7 @@ public interface Path2afp<
 			case CLOSE:
 				if (cury != movy || curx != movx) {
 					if (movx == px && movy == py) {
-						return MathConstants.SHAPE_INTERSECTS;
+						return GeomConstants.SHAPE_INTERSECTS;
 					}
 					numCrossings += Segment2afp.calculatesCrossingsPointShadowSegment(
 							px, py,
@@ -786,13 +787,13 @@ public interface Path2afp<
 			}
 		}
 
-		assert numCrossings != MathConstants.SHAPE_INTERSECTS;
+		assert numCrossings != GeomConstants.SHAPE_INTERSECTS;
 		final boolean isOpen = (curx != movx) || (cury != movy);
 		if (isOpen && type != null) {
 			switch (type) {
 			case AUTO_CLOSE:
 				if (movx == px && movy == py) {
-					return MathConstants.SHAPE_INTERSECTS;
+					return GeomConstants.SHAPE_INTERSECTS;
 				}
 				numCrossings += Segment2afp.calculatesCrossingsPointShadowSegment(
 						px, py,
@@ -849,7 +850,7 @@ public interface Path2afp<
 		double endx;
 		double endy;
 		int numCrosses = crossings;
-		while (numCrosses != MathConstants.SHAPE_INTERSECTS && iterator.hasNext()) {
+		while (numCrosses != GeomConstants.SHAPE_INTERSECTS && iterator.hasNext()) {
 			element = iterator.next();
 			switch (element.getType()) {
 			case MOVE_TO:
@@ -866,7 +867,7 @@ public interface Path2afp<
 						ex, ey, ew, eh,
 						curx, cury,
 						endx, endy);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -882,10 +883,10 @@ public interface Path2afp<
 						endx, endy);
 				numCrosses = calculatesCrossingsPathIteratorEllipseShadow(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						ex, ey, ew, eh,
 						CrossingComputationType.STANDARD);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -903,10 +904,10 @@ public interface Path2afp<
 						endx, endy);
 				numCrosses = calculatesCrossingsPathIteratorEllipseShadow(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						ex, ey, ew, eh,
 						CrossingComputationType.STANDARD);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -925,10 +926,10 @@ public interface Path2afp<
 						element.getSweepFlag());
 				numCrosses = calculatesCrossingsPathIteratorEllipseShadow(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						ex, ey, ew, eh,
 						CrossingComputationType.STANDARD);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -941,7 +942,7 @@ public interface Path2afp<
 							ex, ey, ew, eh,
 							curx, cury,
 							movx, movy);
-					if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+					if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 						return numCrosses;
 					}
 				}
@@ -952,7 +953,7 @@ public interface Path2afp<
 			}
 		}
 
-		assert numCrosses != MathConstants.SHAPE_INTERSECTS;
+		assert numCrosses != GeomConstants.SHAPE_INTERSECTS;
 
 		final boolean isOpen = (curx != movx) || (cury != movy);
 
@@ -1015,7 +1016,7 @@ public interface Path2afp<
 		Path2afp<?, ?, ?, ?, ?, ?> localPath;
 		double endx;
 		double endy;
-		while (numCrossings != MathConstants.SHAPE_INTERSECTS
+		while (numCrossings != GeomConstants.SHAPE_INTERSECTS
 				&& iterator.hasNext()) {
 			pathElement = iterator.next();
 			switch (pathElement.getType()) {
@@ -1034,7 +1035,7 @@ public interface Path2afp<
 						x1, y1, x2, y2, arcWidth, arcHeight,
 						curx, cury,
 						endx, endy);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -1051,10 +1052,10 @@ public interface Path2afp<
 						endx, endy);
 				numCrossings = calculatesCrossingsPathIteratorRoundRectangleShadow(
 						numCrossings,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						x1, y1, x2, y2, arcWidth, arcHeight,
 						CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -1072,10 +1073,10 @@ public interface Path2afp<
 						endx, endy);
 				numCrossings = calculatesCrossingsPathIteratorRoundRectangleShadow(
 						numCrossings,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						x1, y1, x2, y2, arcWidth, arcHeight,
 						CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -1094,10 +1095,10 @@ public interface Path2afp<
 						pathElement.getSweepFlag());
 				numCrossings = calculatesCrossingsPathIteratorRoundRectangleShadow(
 						numCrossings,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						x1, y1, x2, y2, arcWidth, arcHeight,
 						CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -1120,7 +1121,7 @@ public interface Path2afp<
 			default:
 			}
 		}
-		assert numCrossings != MathConstants.SHAPE_INTERSECTS;
+		assert numCrossings != GeomConstants.SHAPE_INTERSECTS;
 		final boolean isOpen = (curx != movx) || (cury != movy);
 		if (isOpen && type != null) {
 			switch (type) {
@@ -1195,7 +1196,7 @@ public interface Path2afp<
 						cx, cy, radius,
 						curx, cury,
 						endx, endy);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -1212,10 +1213,10 @@ public interface Path2afp<
 						endx, endy);
 				numCrosses = calculatesCrossingsPathIteratorCircleShadow(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						cx, cy, radius,
 						CrossingComputationType.STANDARD);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -1233,10 +1234,10 @@ public interface Path2afp<
 						endx, endy);
 				numCrosses = calculatesCrossingsPathIteratorCircleShadow(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						cx, cy, radius,
 						CrossingComputationType.STANDARD);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -1255,10 +1256,10 @@ public interface Path2afp<
 						element.getSweepFlag());
 				numCrosses = calculatesCrossingsPathIteratorCircleShadow(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						cx, cy, radius,
 						CrossingComputationType.STANDARD);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -1271,7 +1272,7 @@ public interface Path2afp<
 							cx, cy, radius,
 							curx, cury,
 							movx, movy);
-					if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+					if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 						return numCrosses;
 					}
 				}
@@ -1281,7 +1282,7 @@ public interface Path2afp<
 			default:
 			}
 		}
-		assert numCrosses != MathConstants.SHAPE_INTERSECTS;
+		assert numCrosses != GeomConstants.SHAPE_INTERSECTS;
 		final boolean isOpen = (curx != movx) || (cury != movy);
 		if (isOpen && type != null) {
 			switch (type) {
@@ -1323,7 +1324,7 @@ public interface Path2afp<
 			double x1, double y1, double x2, double y2, CrossingComputationType type) {
 		assert iterator != null : AssertMessages.notNullParameter(1);
 		// Copied from the AWT API
-		if (!iterator.hasNext() || crossings == MathConstants.SHAPE_INTERSECTS) {
+		if (!iterator.hasNext() || crossings == GeomConstants.SHAPE_INTERSECTS) {
 			return crossings;
 		}
 		PathElement2afp element;
@@ -1340,7 +1341,7 @@ public interface Path2afp<
 		double endx;
 		double endy;
 		int numCrosses = crossings;
-		while (numCrosses != MathConstants.SHAPE_INTERSECTS && iterator.hasNext()) {
+		while (numCrosses != GeomConstants.SHAPE_INTERSECTS && iterator.hasNext()) {
 			element = iterator.next();
 			switch (element.getType()) {
 			case MOVE_TO:
@@ -1357,7 +1358,7 @@ public interface Path2afp<
 						x1, y1, x2, y2,
 						curx, cury,
 						endx, endy);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -1374,10 +1375,10 @@ public interface Path2afp<
 						endx, endy);
 				numCrosses = calculatesCrossingsPathIteratorSegmentShadow(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						x1, y1, x2, y2,
 						CrossingComputationType.STANDARD);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -1395,10 +1396,10 @@ public interface Path2afp<
 						endx, endy);
 				numCrosses = calculatesCrossingsPathIteratorSegmentShadow(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						x1, y1, x2, y2,
 						CrossingComputationType.STANDARD);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -1417,10 +1418,10 @@ public interface Path2afp<
 						element.getSweepFlag());
 				numCrosses = calculatesCrossingsPathIteratorSegmentShadow(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						x1, y1, x2, y2,
 						CrossingComputationType.STANDARD);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -1443,7 +1444,7 @@ public interface Path2afp<
 			default:
 			}
 		}
-		assert numCrosses != MathConstants.SHAPE_INTERSECTS;
+		assert numCrosses != GeomConstants.SHAPE_INTERSECTS;
 		final boolean isOpen = (curx != movx) || (cury != movy);
 		if (isOpen && type != null) {
 			switch (type) {
@@ -1505,7 +1506,7 @@ public interface Path2afp<
 		int numCrossings = crossings;
 		double endx;
 		double endy;
-		while (numCrossings != MathConstants.SHAPE_INTERSECTS
+		while (numCrossings != GeomConstants.SHAPE_INTERSECTS
 				&& iterator.hasNext()) {
 			pathElement = iterator.next();
 			switch (pathElement.getType()) {
@@ -1526,7 +1527,7 @@ public interface Path2afp<
 						rxmax, rymax,
 						curx, cury,
 						endx, endy);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -1543,11 +1544,11 @@ public interface Path2afp<
 						endx, endy);
 				numCrossings = calculatesCrossingsPathIteratorRectangleShadow(
 						numCrossings,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						rxmin, rymin,
 						rxmax, rymax,
 						CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -1565,11 +1566,11 @@ public interface Path2afp<
 						endx, endy);
 				numCrossings = calculatesCrossingsPathIteratorRectangleShadow(
 						numCrossings,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						rxmin, rymin,
 						rxmax, rymax,
 						CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -1588,11 +1589,11 @@ public interface Path2afp<
 						pathElement.getSweepFlag());
 				numCrossings = calculatesCrossingsPathIteratorRectangleShadow(
 						numCrossings,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						rxmin, rymin,
 						rxmax, rymax,
 						CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -1617,7 +1618,7 @@ public interface Path2afp<
 			default:
 			}
 		}
-		assert numCrossings != MathConstants.SHAPE_INTERSECTS;
+		assert numCrossings != GeomConstants.SHAPE_INTERSECTS;
 		final boolean isOpen = (curx != movx) || (cury != movy);
 		if (isOpen && type != null) {
 			switch (type) {
@@ -1684,7 +1685,7 @@ public interface Path2afp<
 		int numCrossings = crossings;
 		double endx;
 		double endy;
-		while (numCrossings != MathConstants.SHAPE_INTERSECTS
+		while (numCrossings != GeomConstants.SHAPE_INTERSECTS
 				&& iterator.hasNext()) {
 			pathElement = iterator.next();
 			switch (pathElement.getType()) {
@@ -1703,7 +1704,7 @@ public interface Path2afp<
 						x1, y1, x2, y2, x3, y3,
 						curx, cury,
 						endx, endy);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -1720,10 +1721,10 @@ public interface Path2afp<
 						endx, endy);
 				numCrossings = calculatesCrossingsPathIteratorTriangleShadow(
 						numCrossings,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						x1, y1, x2, y2, x3, y3,
 						CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -1741,10 +1742,10 @@ public interface Path2afp<
 						endx, endy);
 				numCrossings = calculatesCrossingsPathIteratorTriangleShadow(
 						numCrossings,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						x1, y1, x2, y2, x3, y3,
 						CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -1763,10 +1764,10 @@ public interface Path2afp<
 						pathElement.getSweepFlag());
 				numCrossings = calculatesCrossingsPathIteratorTriangleShadow(
 						numCrossings,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						x1, y1, x2, y2, x3, y3,
 						CrossingComputationType.STANDARD);
-				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -1789,7 +1790,7 @@ public interface Path2afp<
 			default:
 			}
 		}
-		assert numCrossings != MathConstants.SHAPE_INTERSECTS;
+		assert numCrossings != GeomConstants.SHAPE_INTERSECTS;
 		final boolean isOpen = (curx != movx) || (cury != movy);
 		if (isOpen && type != null) {
 			switch (type) {
@@ -1876,7 +1877,7 @@ public interface Path2afp<
 						element.getCtrlX2(), element.getCtrlY2(),
 						element.getToX(), element.getToY());
 				if (calculatesDrawableElementBoundingBox(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						subBox)) {
 					if (subBox.getMinX() < xmin) {
 						xmin = subBox.getMinX();
@@ -1903,7 +1904,7 @@ public interface Path2afp<
 						element.getRotationX(), element.getLargeArcFlag(),
 						element.getSweepFlag());
 				if (calculatesDrawableElementBoundingBox(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						subBox)) {
 					if (subBox.getMinX() < xmin) {
 						xmin = subBox.getMinX();
@@ -1928,7 +1929,7 @@ public interface Path2afp<
 						element.getCtrlX1(), element.getCtrlY1(),
 						element.getToX(), element.getToY());
 				if (calculatesDrawableElementBoundingBox(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator(iterator.getGeomFactory().getSplineApproximationRatio()),
 						subBox)) {
 					if (subBox.getMinX() < xmin) {
 						xmin = subBox.getMinX();
@@ -2182,7 +2183,8 @@ public interface Path2afp<
 				subPath.quadTo(
 						pathElement.getCtrlX1(), pathElement.getCtrlY1(),
 						endx, endy);
-				length += calculatesPathLength(subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+				length += calculatesPathLength(subPath.getPathIterator(
+						iterator.getGeomFactory().getSplineApproximationRatio()));
 				curx = endx;
 				cury = endy;
 				break;
@@ -2195,7 +2197,8 @@ public interface Path2afp<
 						pathElement.getCtrlX1(), pathElement.getCtrlY1(),
 						pathElement.getCtrlX2(), pathElement.getCtrlY2(),
 						endx, endy);
-				length += calculatesPathLength(subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+				length += calculatesPathLength(subPath.getPathIterator(
+						iterator.getGeomFactory().getSplineApproximationRatio()));
 				curx = endx;
 				cury = endy;
 				break;
@@ -2209,7 +2212,8 @@ public interface Path2afp<
 						pathElement.getRadiusX(), pathElement.getRadiusY(),
 						pathElement.getRotationX(), pathElement.getLargeArcFlag(),
 						pathElement.getSweepFlag());
-				length += calculatesPathLength(subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+				length += calculatesPathLength(subPath.getPathIterator(
+						iterator.getGeomFactory().getSplineApproximationRatio()));
 				curx = endx;
 				cury = endy;
 				break;
@@ -2674,13 +2678,13 @@ public interface Path2afp<
 	@Pure
 	@Override
 	default boolean contains(double x, double y) {
-		return containsPoint(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), x, y);
+		return containsPoint(getPathIterator(getGeomFactory().getSplineApproximationRatio()), x, y);
 	}
 
 	@Override
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
 		assert rectangle != null : AssertMessages.notNullParameter();
-		return containsRectangle(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+		return containsRectangle(getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getWidth(), rectangle.getHeight());
 	}
 
@@ -2697,7 +2701,7 @@ public interface Path2afp<
 				0, getPathIterator(),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == MathConstants.SHAPE_INTERSECTS
+		return crossings == GeomConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;
 	}
 
@@ -2718,7 +2722,7 @@ public interface Path2afp<
 				getPathIterator(),
 				ellipse.getMinX(), ellipse.getMinY(), ellipse.getWidth(), ellipse.getHeight(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == MathConstants.SHAPE_INTERSECTS
+		return crossings == GeomConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;
 	}
 
@@ -2732,7 +2736,7 @@ public interface Path2afp<
 				getPathIterator(),
 				circle.getX(), circle.getY(), circle.getRadius(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == MathConstants.SHAPE_INTERSECTS
+		return crossings == GeomConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;
 	}
 
@@ -2746,7 +2750,7 @@ public interface Path2afp<
 				getPathIterator(),
 				segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == MathConstants.SHAPE_INTERSECTS
+		return crossings == GeomConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;
 	}
 
@@ -2760,7 +2764,7 @@ public interface Path2afp<
 				getPathIterator(),
 				triangle.getX1(), triangle.getY1(), triangle.getX2(), triangle.getY2(), triangle.getX3(), triangle.getY3(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == MathConstants.SHAPE_INTERSECTS
+		return crossings == GeomConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;
 	}
 
@@ -2796,7 +2800,7 @@ public interface Path2afp<
 				path.getPathIterator(),
 				new BasicPathShadow2afp(this),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == MathConstants.SHAPE_INTERSECTS
+		return crossings == GeomConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;
 	}
 
@@ -2810,7 +2814,7 @@ public interface Path2afp<
 				iterator,
 				new BasicPathShadow2afp(this),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == MathConstants.SHAPE_INTERSECTS
+		return crossings == GeomConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;
 	}
 
@@ -2916,7 +2920,7 @@ public interface Path2afp<
 	default PathIterator2afp<IE> getFlatteningPathIterator() {
 		return new FlatteningPathIterator<>(
 				getPathIterator(null),
-				MathConstants.SPLINE_APPROXIMATION_RATIO,
+				getGeomFactory().getSplineApproximationRatio(),
 				Path2afp.DEFAULT_FLATTENING_LIMIT);
 	}
 
@@ -2959,7 +2963,7 @@ public interface Path2afp<
 	default void toBoundingBox(B box) {
 		assert box != null : AssertMessages.notNullParameter();
 		Path2afp.calculatesDrawableElementBoundingBox(
-				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 				box);
 	}
 

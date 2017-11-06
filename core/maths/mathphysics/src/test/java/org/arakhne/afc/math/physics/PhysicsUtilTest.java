@@ -24,12 +24,12 @@ import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParamete
 
 import org.junit.Test;
 
-import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.testtools.AbstractTestCase;
 
 @SuppressWarnings("all")
-public class PhysicsUtilTest extends AbstractMathTestCase {
+public class PhysicsUtilTest extends AbstractTestCase {
 
 	@Test
 	public void acceleration() {

@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
@@ -95,7 +96,7 @@ public interface Vector1D<
 	@Inline(value = "$3.isUnitVector(($1), ($2), MathConstants.UNIT_VECTOR_EPSILON)",
 			imported = {Vector1D.class, MathConstants.class})
 	static boolean isUnitVector(double x, double y) {
-		return isUnitVector(x, y, MathConstants.UNIT_VECTOR_EPSILON);
+		return isUnitVector(x, y, GeomConstants.UNIT_VECTOR_EPSILON);
 	}
 
 	/**

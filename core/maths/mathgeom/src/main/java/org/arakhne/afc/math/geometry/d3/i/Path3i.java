@@ -26,7 +26,6 @@ import java.util.Iterator;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
@@ -312,7 +311,7 @@ public class Path3i extends AbstractShape3i<Path3i>
         if (bb == null) {
 			bb = getGeomFactory().newBox();
 			Path3ai.computeDrawableElementBoundingBox(
-					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
 		}
@@ -328,7 +327,7 @@ public class Path3i extends AbstractShape3i<Path3i>
         if (bb == null) {
 			bb = getGeomFactory().newBox();
 			Path3ai.computeDrawableElementBoundingBox(
-					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
 		}

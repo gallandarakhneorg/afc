@@ -20,6 +20,10 @@
 
 package org.arakhne.afc.math.geometry.d1;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.GeomFactoryBase;
+
 /** Factory of geometrical primitives.
  *
  * @param <V> the types of the vectors.
@@ -31,13 +35,15 @@ package org.arakhne.afc.math.geometry.d1;
  * @since 14.0
  */
 public interface GeomFactory1D<V extends Vector1D<? super V, ? super P, ?>,
-		P extends Point1D<? super P, ? super V, ?>> {
+		P extends Point1D<? super P, ? super V, ?>>
+		extends GeomFactoryBase {
 
 	/** Convert the given point if it is not of the right type.
 	 *
 	 * @param pt the point to convert.
 	 * @return <code>p</code> if it is of type <code>P</code>, or a copy of <code>p</code>.
 	 */
+	@Pure
 	P convertToPoint(Point1D<?, ?, ?> pt);
 
 	/** Convert the given vector if it is not of the right type.
@@ -45,6 +51,7 @@ public interface GeomFactory1D<V extends Vector1D<? super V, ? super P, ?>,
 	 * @param pt the point to convert.
 	 * @return the point.
 	 */
+	@Pure
 	P convertToPoint(Vector1D<?, ?, ?> pt);
 
 	/** Convert the given point.
@@ -52,6 +59,7 @@ public interface GeomFactory1D<V extends Vector1D<? super V, ? super P, ?>,
 	 * @param pt the point to convert.
 	 * @return the vector.
 	 */
+	@Pure
 	V convertToVector(Point1D<?, ?, ?> pt);
 
 	/** Convert the given vector.
@@ -59,6 +67,7 @@ public interface GeomFactory1D<V extends Vector1D<? super V, ? super P, ?>,
 	 * @param vector the vector to convert.
 	 * @return the vector.
 	 */
+	@Pure
 	V convertToVector(Vector1D<?, ?, ?> vector);
 
 	/** Create a point.
@@ -66,6 +75,7 @@ public interface GeomFactory1D<V extends Vector1D<? super V, ? super P, ?>,
 	 * @param segment the segment.
 	 * @return the point.
 	 */
+	@Pure
 	P newPoint(Segment1D<?, ?> segment);
 
 	/** Create a point.
@@ -75,6 +85,7 @@ public interface GeomFactory1D<V extends Vector1D<? super V, ? super P, ?>,
 	 * @param y y coordinate of the point.
 	 * @return the point.
 	 */
+	@Pure
 	P newPoint(Segment1D<?, ?> segment, double x, double y);
 
 	/** Create a point.
@@ -84,6 +95,7 @@ public interface GeomFactory1D<V extends Vector1D<? super V, ? super P, ?>,
 	 * @param y y coordinate of the point.
 	 * @return the point.
 	 */
+	@Pure
 	P newPoint(Segment1D<?, ?> segment, int x, int y);
 
 	/** Create a vector.
@@ -91,6 +103,7 @@ public interface GeomFactory1D<V extends Vector1D<? super V, ? super P, ?>,
 	 * @param segment the segment.
 	 * @return the vector.
 	 */
+	@Pure
 	V newVector(Segment1D<?, ?> segment);
 
 	/** Create a vector.
@@ -100,6 +113,7 @@ public interface GeomFactory1D<V extends Vector1D<? super V, ? super P, ?>,
 	 * @param y y coordinate of the vector.
 	 * @return the vector.
 	 */
+	@Pure
 	V newVector(Segment1D<?, ?> segment, double x, double y);
 
 	/** Create a vector.
@@ -109,6 +123,7 @@ public interface GeomFactory1D<V extends Vector1D<? super V, ? super P, ?>,
 	 * @param y y coordinate of the vector.
 	 * @return the vector.
 	 */
+	@Pure
 	V newVector(Segment1D<?, ?> segment, int x, int y);
 
 }

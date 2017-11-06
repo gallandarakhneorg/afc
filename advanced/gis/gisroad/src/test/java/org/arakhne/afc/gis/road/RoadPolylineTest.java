@@ -27,7 +27,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.arakhne.afc.gis.location.GeoLocationUtil;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 
@@ -254,54 +253,54 @@ public class RoadPolylineTest extends AbstractGisTest {
 
 	private void runTestGetGeoLocationForDistance(Vector2d tangent) {
 		assertEpsilonEquals(this.testedSegment.getOriginalPointAt(0),
-				this.testedSegment.getGeoLocationForDistance(0,0,null,tangent));
+				this.testedSegment.getGeoLocationForDistance(0,0,tangent));
 		if (tangent!=null)
 			assertColinear(this.testedSegment.getOriginalVectorAt(0),tangent);
 
 		assertEpsilonEquals(this.loopSegment.getOriginalPointAt(0),
-				this.loopSegment.getGeoLocationForDistance(0,0,null,tangent));
+				this.loopSegment.getGeoLocationForDistance(0,0,tangent));
 		if (tangent!=null)
 			assertColinear(this.loopSegment.getOriginalVectorAt(0),tangent);
 
 		assertEpsilonEquals(this.firstNeighbour.getOriginalPointAt(0),
-				this.firstNeighbour.getGeoLocationForDistance(0,0,null,tangent));
+				this.firstNeighbour.getGeoLocationForDistance(0,0,tangent));
 		if (tangent!=null)
 			assertColinear(this.firstNeighbour.getOriginalVectorAt(0),tangent);
 
 		assertEpsilonEquals(this.secondNeighbour.getOriginalPointAt(0),
-				this.secondNeighbour.getGeoLocationForDistance(0,0,null,tangent));
+				this.secondNeighbour.getGeoLocationForDistance(0,0,tangent));
 		if (tangent!=null)
 			assertColinear(this.secondNeighbour.getOriginalVectorAt(0),tangent);
 
 		assertEpsilonEquals(this.thirdNeighbour.getOriginalPointAt(0),
-				this.thirdNeighbour.getGeoLocationForDistance(0,0,null,tangent));
+				this.thirdNeighbour.getGeoLocationForDistance(0,0,tangent));
 		if (tangent!=null)
 			assertColinear(this.thirdNeighbour.getOriginalVectorAt(0),tangent);
 
 		//
 
 		assertEpsilonEquals(this.testedSegment.getOriginalPointAt(this.testedSegment.getOriginalPointCount()-1),
-				this.testedSegment.getGeoLocationForDistance(this.testedSegment.getOriginalLength(),0,null,tangent));
+				this.testedSegment.getGeoLocationForDistance(this.testedSegment.getOriginalLength(),0,tangent));
 		if (tangent!=null)
 			assertColinear(this.testedSegment.getOriginalVectorAt(this.testedSegment.getOriginalPointCount()-2),tangent);
 
 		assertEpsilonEquals(this.loopSegment.getOriginalPointAt(this.loopSegment.getOriginalPointCount()-1),
-				this.loopSegment.getGeoLocationForDistance(this.loopSegment.getOriginalLength(),0,null,tangent));
+				this.loopSegment.getGeoLocationForDistance(this.loopSegment.getOriginalLength(),0,tangent));
 		if (tangent!=null)
 			assertColinear(this.loopSegment.getOriginalVectorAt(this.loopSegment.getOriginalPointCount()-2),tangent);
 
 		assertEpsilonEquals(this.firstNeighbour.getOriginalPointAt(this.firstNeighbour.getOriginalPointCount()-1),
-				this.firstNeighbour.getGeoLocationForDistance(this.firstNeighbour.getOriginalLength(),0,null,tangent));
+				this.firstNeighbour.getGeoLocationForDistance(this.firstNeighbour.getOriginalLength(),0,tangent));
 		if (tangent!=null)
 			assertColinear(this.firstNeighbour.getOriginalVectorAt(this.firstNeighbour.getOriginalPointCount()-2),tangent);
 
 		assertEpsilonEquals(this.secondNeighbour.getOriginalPointAt(this.secondNeighbour.getOriginalPointCount()-1),
-				this.secondNeighbour.getGeoLocationForDistance(this.secondNeighbour.getOriginalLength(),0,null,tangent));
+				this.secondNeighbour.getGeoLocationForDistance(this.secondNeighbour.getOriginalLength(),0,tangent));
 		if (tangent!=null)
 			assertColinear(this.secondNeighbour.getOriginalVectorAt(this.secondNeighbour.getOriginalPointCount()-2),tangent);
 
 		assertEpsilonEquals(this.thirdNeighbour.getOriginalPointAt(this.thirdNeighbour.getOriginalPointCount()-1),
-				this.thirdNeighbour.getGeoLocationForDistance(this.thirdNeighbour.getOriginalLength(),0,null,tangent));
+				this.thirdNeighbour.getGeoLocationForDistance(this.thirdNeighbour.getOriginalLength(),0,tangent));
 		if (tangent!=null)
 			assertColinear(this.thirdNeighbour.getOriginalVectorAt(this.thirdNeighbour.getOriginalPointCount()-2),tangent);
 
@@ -314,62 +313,60 @@ public class RoadPolylineTest extends AbstractGisTest {
 
     		distance = ratio * this.testedSegment.getOriginalLength();
     		assertEpsilonEquals(this.testedSegment.getOriginalPointFor(ratio),
-    				this.testedSegment.getGeoLocationForDistance(distance,0,null,tangent));
+    				this.testedSegment.getGeoLocationForDistance(distance,0,tangent));
     		if (tangent!=null)
     			assertColinear(this.testedSegment.getOriginalVectorFor(ratio),tangent);
 
     		distance = ratio * this.loopSegment.getOriginalLength();
     		assertEpsilonEquals(this.loopSegment.getOriginalPointFor(ratio),
-    				this.loopSegment.getGeoLocationForDistance(distance,0,null,tangent));
+    				this.loopSegment.getGeoLocationForDistance(distance,0,tangent));
     		if (tangent!=null)
     			assertColinear(this.loopSegment.getOriginalVectorFor(ratio),tangent);
 
     		distance = ratio * this.firstNeighbour.getOriginalLength();
     		assertEpsilonEquals(this.firstNeighbour.getOriginalPointFor(ratio),
-    				this.firstNeighbour.getGeoLocationForDistance(distance,0,null,tangent));
+    				this.firstNeighbour.getGeoLocationForDistance(distance,0,tangent));
     		if (tangent!=null)
     			assertColinear(this.firstNeighbour.getOriginalVectorFor(ratio),tangent);
 
     		distance = ratio * this.secondNeighbour.getOriginalLength();
     		assertEpsilonEquals(this.secondNeighbour.getOriginalPointFor(ratio),
-    				this.secondNeighbour.getGeoLocationForDistance(distance,0,null,tangent));
+    				this.secondNeighbour.getGeoLocationForDistance(distance,0,tangent));
     		if (tangent!=null)
     			assertColinear(this.secondNeighbour.getOriginalVectorFor(ratio),tangent);
 
     		distance = ratio * this.thirdNeighbour.getOriginalLength();
     		assertEpsilonEquals(this.thirdNeighbour.getOriginalPointFor(ratio),
-    				this.thirdNeighbour.getGeoLocationForDistance(distance,0,null,tangent));
+    				this.thirdNeighbour.getGeoLocationForDistance(distance,0,tangent));
     		if (tangent!=null)
     			assertColinear(this.thirdNeighbour.getOriginalVectorFor(ratio),tangent);
     	}
 	}
 
-	private void runTestGetGeoLocationForDistanceWithShift(RoadSegmentStub sgmt, double ratio, double shift, CoordinateSystem2D system) {
+	private void runTestGetGeoLocationForDistanceWithShift(RoadSegmentStub sgmt, double ratio, double shift) {
 		Point2d p = sgmt.getOriginalPointFor(ratio);
 		Vector2d v = sgmt.getOriginalVectorFor(ratio);
 
 		Vector2d vp = new Vector2d(v);
-		vp.makeOrthogonal(system);
+		vp.makeOrthogonal();
 		vp.scale(shift);
 		Point2d pp = new Point2d(p.getX(),p.getY());
 		pp.add(vp);
 
 		double distance = ratio * sgmt.getOriginalLength();
-		assertEpsilonEquals(pp, sgmt.getGeoLocationForDistance(distance,shift,system,(Vector2d)null));
+		assertEpsilonEquals(pp, sgmt.getGeoLocationForDistance(distance,shift,(Vector2d)null));
 	}
 
     @Test
 	public void testGetGeoLocationForDistance() {
-		CoordinateSystem2D system = CoordinateSystem2D.getDefaultCoordinateSystem();
-
 		runTestGetGeoLocationForDistance(null);
 		runTestGetGeoLocationForDistance(new Vector2d());
 
-		runTestGetGeoLocationForDistanceWithShift(this.testedSegment, 0., -2., system);
-		runTestGetGeoLocationForDistanceWithShift(this.testedSegment, 0., 2., system);
+		runTestGetGeoLocationForDistanceWithShift(this.testedSegment, 0., -2.);
+		runTestGetGeoLocationForDistanceWithShift(this.testedSegment, 0., 2.);
 
-		runTestGetGeoLocationForDistanceWithShift(this.testedSegment, 1., -2., system);
-		runTestGetGeoLocationForDistanceWithShift(this.testedSegment, 1., 2., system);
+		runTestGetGeoLocationForDistanceWithShift(this.testedSegment, 1., -2.);
+		runTestGetGeoLocationForDistanceWithShift(this.testedSegment, 1., 2.);
 
     	Random rnd = new Random();
     	double ratio, shift;
@@ -377,8 +374,8 @@ public class RoadPolylineTest extends AbstractGisTest {
     		ratio = rnd.nextDouble();
     		shift = rnd.nextDouble() * SHIFTING_RANGE;
 
-    		runTestGetGeoLocationForDistanceWithShift(this.testedSegment, ratio, -shift, system);
-    		runTestGetGeoLocationForDistanceWithShift(this.testedSegment, ratio, shift, system);
+    		runTestGetGeoLocationForDistanceWithShift(this.testedSegment, ratio, -shift);
+    		runTestGetGeoLocationForDistanceWithShift(this.testedSegment, ratio, shift);
        	}
 	}
 

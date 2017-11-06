@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d1.d;
 
+import org.arakhne.afc.math.geometry.d1.AbstractGeomFactory1D;
 import org.arakhne.afc.math.geometry.d1.Point1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.Vector1D;
@@ -35,7 +36,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-public class GeomFactory1d implements GeomFactory1afp<Point1d, Vector1d, Segment1D<?, ?>, Rectangle1d> {
+public class GeomFactory1d extends AbstractGeomFactory1D<Vector1d, Point1d>
+		implements GeomFactory1afp<Point1d, Vector1d, Segment1D<?, ?>, Rectangle1d> {
 
 	/** The singleton of the factory.
 	 */

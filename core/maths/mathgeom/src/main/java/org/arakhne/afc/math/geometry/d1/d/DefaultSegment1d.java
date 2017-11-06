@@ -105,8 +105,7 @@ public class DefaultSegment1d implements Segment1D<Point2d, Vector2d> {
 
 	@Pure
 	@Override
-	public void projectsOnPlane(double positionOnSegment, Point2D<?, ?> position, Vector2D<?, ?> tangent,
-			CoordinateSystem2D system) {
+	public void projectsOnPlane(double positionOnSegment, Point2D<?, ?> position, Vector2D<?, ?> tangent) {
 		final Vector2D<?, ?> vector;
 		if (tangent == null) {
 			vector = new Vector2d();
@@ -128,7 +127,7 @@ public class DefaultSegment1d implements Segment1D<Point2d, Vector2d> {
 	@Pure
 	@Override
 	public void projectsOnPlane(double positionOnSegment, double shiftDistance, Point2D<?, ?> position,
-			Vector2D<?, ?> tangent, CoordinateSystem2D system) {
+			Vector2D<?, ?> tangent) {
 		final Vector2D<?, ?> vector;
 		if (tangent == null) {
 			vector = new Vector2d();
@@ -145,7 +144,7 @@ public class DefaultSegment1d implements Segment1D<Point2d, Vector2d> {
 			position.add(vector);
 			vector.normalize();
 
-			vector.makeOrthogonal(system);
+			vector.makeOrthogonal();
 			vector.scale(shiftDistance);
 
 			position.add(vector);

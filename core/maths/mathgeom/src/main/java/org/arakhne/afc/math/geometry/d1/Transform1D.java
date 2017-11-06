@@ -607,29 +607,12 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 
 	/** Replies a 2D transformation that is corresponding to this transformation.
 	 *
-	 * <p>The used coordinate system is replied by {@link CoordinateSystem2D#getDefaultCoordinateSystem()}.
-	 *
 	 * @param segment is the segment.
 	 * @return the 2D transformation or <code>null</code> if the segment could not be mapped
 	 *     to 2D.
 	 */
 	@Pure
-	@Inline(value = "toTransform2D($1, $3.getDefaultCoordinateSystem())", imported = {CoordinateSystem2D.class})
 	public final Transform2D toTransform2D(Segment1D<?, ?> segment) {
-		return toTransform2D(segment, CoordinateSystem2D.getDefaultCoordinateSystem());
-	}
-
-	/** Replies a 2D transformation that is corresponding to this transformation.
-	 *
-	 * <p>The used coordinate system is replied by {@link CoordinateSystem2D#getDefaultCoordinateSystem()}.
-	 *
-	 * @param segment is the segment.
-	 * @return the 2D transformation or <code>null</code> if the segment could not be mapped
-	 * @param system is the coordinate system to use.
-	 *     to 2D.
-	 */
-	@Pure
-	public final Transform2D toTransform2D(Segment1D<?, ?> segment, CoordinateSystem2D system) {
 		assert segment != null : AssertMessages.notNullParameter(0);
 		final Point2D<?, ?> a = segment.getFirstPoint();
 		if (a == null) {
@@ -639,40 +622,20 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 		if (b == null) {
 			return null;
 		}
-		return toTransform2D(a.getX(), a.getY(), b.getX(), b.getY(), system);
+		return toTransform2D(a.getX(), a.getY(), b.getX(), b.getY());
 	}
 
 	/** Replies a 2D transformation that is corresponding to this transformation.
-	 *
-	 * <p>The used coordinate system is replied by {@link CoordinateSystem2D#getDefaultCoordinateSystem()}.
 	 *
 	 * @param startPoint is the 2D position of the start point of the segment.
 	 * @param endPoint is the 2D position of the end point of the segment
 	 * @return the 2D transformation.
 	 */
 	@Pure
-	@Inline(value = "toTransform2D(($1).getX(), ($1).getY(), ($2).getX(), ($2).getY(), $3.getDefaultCoordinateSystem())",
-		imported = {CoordinateSystem2D.class})
 	public final Transform2D toTransform2D(Point2D<?, ?> startPoint, Point2D<?, ?> endPoint) {
 		assert startPoint != null : AssertMessages.notNullParameter(0);
 		assert endPoint != null : AssertMessages.notNullParameter(1);
-		return toTransform2D(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY(),
-				CoordinateSystem2D.getDefaultCoordinateSystem());
-	}
-
-	/** Replies a 2D transformation that is corresponding to this transformation.
-	 *
-	 * @param startPoint is the 2D position of the start point of the segment.
-	 * @param endPoint is the 2D position of the end point of the segment
-	 * @param system is the coordinate system to use.
-	 * @return the 2D transformation.
-	 */
-	@Pure
-	@Inline(value = "toTransform2D(($1).getX(), ($1).getY(), ($2).getX(), ($2).getY(), $3)")
-	public final Transform2D toTransform2D(Point2D<?, ?> startPoint, Point2D<?, ?> endPoint, CoordinateSystem2D system) {
-		assert startPoint != null : AssertMessages.notNullParameter(0);
-		assert endPoint != null : AssertMessages.notNullParameter(1);
-		return toTransform2D(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY(), system);
+		return toTransform2D(startPoint.getX(), startPoint.getY(), endPoint.getX(), endPoint.getY());
 	}
 
 	/** Replies a 2D transformation that is corresponding to this transformation.
@@ -686,27 +649,12 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	 * @return the 2D transformation.
 	 */
 	@Pure
-	@Inline(value = "toTransform2D($1, $2, $3, $4, $5.getDefaultCoordinateSystem())", imported = {CoordinateSystem2D.class})
 	public final Transform2D toTransform2D(double startX, double startY, double endX, double endY) {
-		return toTransform2D(startX, startY, endX, endY, CoordinateSystem2D.getDefaultCoordinateSystem());
-	}
-
-	/** Replies a 2D transformation that is corresponding to this transformation.
-	 *
-	 * @param startX is the 2D x coordinate of the start point of the segment.
-	 * @param startY is the 2D y coordinate of the start point of the segment.
-	 * @param endX is the 2D x coordinate of the end point of the segment
-	 * @param endY is the 2D y coordinate of the end point of the segment
-	 * @param system is the coordinate system to use.
-	 * @return the 2D transformation.
-	 */
-	@Pure
-	public Transform2D toTransform2D(double startX, double startY, double endX, double endY, CoordinateSystem2D system) {
 		final Transform2D trans = new Transform2D();
 
 		final Vector2d direction = new Vector2d(endX - startX, endY - startY);
 
-		final Vector2d shiftVector = direction.toOrthogonalVector(system);
+		final Vector2d shiftVector = direction.toOrthogonalVector();
 
 		double c = this.curvilineTranslation;
 		double j = this.shiftTranslation;

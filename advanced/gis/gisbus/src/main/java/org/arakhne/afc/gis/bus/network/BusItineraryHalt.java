@@ -34,7 +34,6 @@ import org.arakhne.afc.gis.location.GeoLocationNowhere;
 import org.arakhne.afc.gis.location.GeoLocationPoint;
 import org.arakhne.afc.gis.road.primitive.RoadNetwork;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystemConstants;
 import org.arakhne.afc.math.geometry.d1.Direction1D;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
@@ -346,8 +345,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 		final Point1d p1d5 = getPosition1D();
 		if (p1d5 != null) {
 			final Point2d pos = new Point2d();
-			p1d5.getSegment().projectsOnPlane(p1d5.getCurvilineCoordinate(),
-					pos, null, CoordinateSystem2D.getDefaultCoordinateSystem());
+			p1d5.getSegment().projectsOnPlane(p1d5.getCurvilineCoordinate(), pos, null);
 			return pos;
 		}
 		return null;

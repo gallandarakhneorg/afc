@@ -507,7 +507,6 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	public Vector2d getTangentAt(double positionOnSegment) {
 		final Vector2d tangent = new Vector2d();
 		getGeoLocationForDistance(positionOnSegment, 0.,
-				CoordinateSystem2D.getDefaultCoordinateSystem(),
 				tangent);
 		return tangent;
 	}
@@ -515,12 +514,12 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public void projectsOnPlane(double positionOnSegment, Point2D<?, ?> position,
-			Vector2D<?, ?> tangent, CoordinateSystem2D system) {
+			Vector2D<?, ?> tangent) {
 		final Point2d p;
 		if (tangent != null) {
-			p = getGeoLocationForDistance(positionOnSegment, 0., system, tangent);
+			p = getGeoLocationForDistance(positionOnSegment, 0., tangent);
 		} else {
-			p = getGeoLocationForDistance(positionOnSegment, 0., system);
+			p = getGeoLocationForDistance(positionOnSegment, 0.);
 		}
 		if (p != null && position != null) {
 			position.set(p);
@@ -530,12 +529,12 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Override
 	@Pure
 	public void projectsOnPlane(double positionOnSegment, double shiftDistance,
-			Point2D<?, ?> position, Vector2D<?, ?> tangent, CoordinateSystem2D system) {
+			Point2D<?, ?> position, Vector2D<?, ?> tangent) {
 		final Point2d p;
 		if (tangent != null) {
-			p = getGeoLocationForDistance(positionOnSegment, shiftDistance, system, tangent);
+			p = getGeoLocationForDistance(positionOnSegment, shiftDistance, tangent);
 		} else {
-			p = getGeoLocationForDistance(positionOnSegment, shiftDistance, system);
+			p = getGeoLocationForDistance(positionOnSegment, shiftDistance);
 		}
 		if (p != null && position != null) {
 			position.set(p);
@@ -546,44 +545,44 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	@Pure
 	public final Point2d getGeoLocationForLocationRatio(double ratio) {
 		final Point2d gl = new Point2d();
-		getGeoLocationForLocationRatio(ratio, 0., null, gl, null);
+		getGeoLocationForLocationRatio(ratio, 0., gl, null);
 		return gl;
 	}
 
 	@Override
 	@Pure
-	public final Point2d getGeoLocationForLocationRatio(double ratio, double shifting, CoordinateSystem2D system) {
+	public final Point2d getGeoLocationForLocationRatio(double ratio, double shifting) {
 		final Point2d gl = new Point2d();
-		getGeoLocationForLocationRatio(ratio, shifting, system, gl, null);
+		getGeoLocationForLocationRatio(ratio, shifting, gl, null);
 		return gl;
 	}
 
 	@Override
 	@Pure
 	public final void getGeoLocationForLocationRatio(double ratio, Point2D<?, ?> geoLocation) {
-		getGeoLocationForLocationRatio(ratio, 0., null, geoLocation, null);
+		getGeoLocationForLocationRatio(ratio, 0., geoLocation, null);
 	}
 
 	@Override
 	@Pure
 	public final void getGeoLocationForLocationRatio(double ratio, double shifting,
-			CoordinateSystem2D system, Point2D<?, ?> geoLocation) {
-		getGeoLocationForLocationRatio(ratio, shifting, system, geoLocation, null);
+			Point2D<?, ?> geoLocation) {
+		getGeoLocationForLocationRatio(ratio, shifting, geoLocation, null);
 	}
 
 	@Override
 	@Pure
 	public final Point2d getGeoLocationForLocationRatio(double ratio, double shifting,
-			CoordinateSystem2D system, Vector2D<?, ?> tangent) {
+			Vector2D<?, ?> tangent) {
 		final Point2d gl = new Point2d();
-		getGeoLocationForLocationRatio(ratio, shifting, system, gl, tangent);
+		getGeoLocationForLocationRatio(ratio, shifting, gl, tangent);
 		return gl;
 	}
 
 	@Override
 	@Pure
 	public final void getGeoLocationForLocationRatio(double ratio, double shifting,
-			CoordinateSystem2D system, Point2D<?, ?> output, Vector2D<?, ?> tangent) {
+			Point2D<?, ?> output, Vector2D<?, ?> tangent) {
 		assert output != null;
 		if (ratio <= 0.) {
 			final Point2d startPoint = getFirstPoint();
@@ -610,52 +609,52 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 
 		// Compute the location corresponding to the specified ration and shifting
 		final double desiredLength = ratio * getLength();
-		getGeoLocationForDistance(desiredLength, shifting, system, output, tangent);
+		getGeoLocationForDistance(desiredLength, shifting, output, tangent);
 	}
 
 	@Override
 	@Pure
 	public final Point2d getGeoLocationForDistance(double desired_distance) {
 		final Point2d gl = new Point2d();
-		getGeoLocationForDistance(desired_distance, 0., null, gl, null);
+		getGeoLocationForDistance(desired_distance, 0., gl, null);
 		return gl;
 	}
 
 	@Override
 	@Pure
-	public final Point2d getGeoLocationForDistance(double desired_distance, double shifting, CoordinateSystem2D system) {
+	public final Point2d getGeoLocationForDistance(double desired_distance, double shifting) {
 		final Point2d gl = new Point2d();
-		getGeoLocationForDistance(desired_distance, shifting, system, gl, null);
+		getGeoLocationForDistance(desired_distance, shifting, gl, null);
 		return gl;
 	}
 
 	@Override
 	@Pure
 	public Point2d getGeoLocationForDistance(double desired_distance, double shifting,
-			CoordinateSystem2D system, Vector2D<?, ?> tangent) {
+			Vector2D<?, ?> tangent) {
 		final Point2d gl = new Point2d();
-		getGeoLocationForDistance(desired_distance, shifting, system, gl, tangent);
+		getGeoLocationForDistance(desired_distance, shifting, gl, tangent);
 		return gl;
 	}
 
 	@Override
 	@Pure
 	public final void getGeoLocationForDistance(double desired_distance, Point2D<?, ?> geoLocation) {
-		getGeoLocationForDistance(desired_distance, 0., null, geoLocation, null);
+		getGeoLocationForDistance(desired_distance, 0., geoLocation, null);
 	}
 
 	@Override
 	@Pure
 	public final void getGeoLocationForDistance(double desired_distance, double shifting,
-			CoordinateSystem2D system, Point2D<?, ?> geoLocation) {
-		getGeoLocationForDistance(desired_distance, shifting, system, geoLocation, null);
+			Point2D<?, ?> geoLocation) {
+		getGeoLocationForDistance(desired_distance, shifting, geoLocation, null);
 	}
 
 	@Override
 	@Pure
 	public void getGeoLocationForDistance(double desired_distance, double shifting,
-			CoordinateSystem2D system, Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
-		computeGeoLocationForDistance(desired_distance, shifting, system, geoLocation, tangent);
+			Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
+		computeGeoLocationForDistance(desired_distance, shifting, geoLocation, tangent);
 	}
 
 	/**

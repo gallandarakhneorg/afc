@@ -28,7 +28,7 @@ package org.arakhne.afc.math.geometry.d3;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-final class ImmutableGeomFactory3D implements GeomFactory3D<ImmutableVector3D, ImmutablePoint3D> {
+final class ImmutableGeomFactory3D extends AbstractGeomFactory3D<ImmutableVector3D, ImmutablePoint3D> {
 
 	/** Singleton of the factory.
 	 */

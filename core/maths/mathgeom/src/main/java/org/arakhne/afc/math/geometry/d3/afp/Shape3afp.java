@@ -22,9 +22,9 @@ package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
@@ -133,7 +133,7 @@ public interface Shape3afp<
         }
 
         final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        return crossings != MathConstants.SHAPE_INTERSECTS
+        return crossings != GeomConstants.SHAPE_INTERSECTS
                 && (crossings & mask) != 0;
 	}
 

@@ -29,6 +29,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -761,7 +762,7 @@ public interface Circle2ai<
                 iterator,
                 getX(), getY(), getRadius(),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == MathConstants.SHAPE_INTERSECTS
+        return crossings == GeomConstants.SHAPE_INTERSECTS
                 || (crossings & mask) != 0;
     }
 
@@ -797,7 +798,7 @@ public interface Circle2ai<
     default PathIterator2ai<IE> getFlatteningPathIterator() {
         return new Path2ai.FlatteningPathIterator<>(
                 getPathIterator(null),
-                MathConstants.SPLINE_APPROXIMATION_RATIO,
+                getGeomFactory().getSplineApproximationRatio(),
                 Path2ai.DEFAULT_FLATTENING_LIMIT);
     }
 

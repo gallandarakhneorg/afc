@@ -28,6 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
@@ -498,7 +499,7 @@ public interface Segment3ai<
 		} else if (Sphere3ai.intersectsSphereSegment(
 				cx, cy, cz, radius,
 				x0, y0, z0, x1, y1, z1)) {
-			return MathConstants.SHAPE_INTERSECTS;
+			return GeomConstants.SHAPE_INTERSECTS;
 		} else {
 			numCrosses = computeCrossingsFromPoint(numCrosses, cx, ymin, cz, x0, y0, z0, x1, y1, z1, true, false);
 			numCrosses = computeCrossingsFromPoint(numCrosses, cx, ymax, cz, x0, y0, z0, x1, y1, z1, false, true);
@@ -587,7 +588,7 @@ public interface Segment3ai<
 	            }
 	        }
 	    } else if (intersectsSegmentSegment(x0, y0, z0, x1, y1, z1, sx1, sy1, sz1, sx2, sy2, sz2, true, true, null)) {
-	        return MathConstants.SHAPE_INTERSECTS;
+	        return GeomConstants.SHAPE_INTERSECTS;
 	    } else {
 	        // The line is intersectly partly the bounding rectangle of the segment.
 	        // We must determine on which side of the segment the points of the line are.
@@ -665,7 +666,7 @@ public interface Segment3ai<
 		// The line is horizontal, only SHAPE_INTERSECT may be replies
 		if (y0 == y1) {
             if (y0 >= rymin && y0 <= rymax && (x0 >= rxmin || x1 >= rxmin) && (x0 <= rxmax || x1 <= rxmax)) {
-                return MathConstants.SHAPE_INTERSECTS;
+                return GeomConstants.SHAPE_INTERSECTS;
             }
             return crossings;
         }
@@ -713,7 +714,7 @@ public interface Segment3ai<
             // where one of the endpoints is inside the rectangle.
             if ((x0 >= rxmin && x0 <= rxmax && y0 >= rymin && y0 <= rymax)
                     || (x1 >= rxmin && x1 <= rxmax && y1 >= rymin && y1 <= rymax)) {
-                return MathConstants.SHAPE_INTERSECTS;
+                return GeomConstants.SHAPE_INTERSECTS;
             }
 
             // Otherwise calculate the y intercepts and see where
@@ -767,7 +768,7 @@ public interface Segment3ai<
                         }
                     }
                 } else {
-                    return MathConstants.SHAPE_INTERSECTS;
+                    return GeomConstants.SHAPE_INTERSECTS;
                 }
             } else if (xintercept1 != null) {
                 // Only the top line of the rectangle is intersecting the segment
@@ -788,7 +789,7 @@ public interface Segment3ai<
                         }
                     }
                 } else {
-                    return MathConstants.SHAPE_INTERSECTS;
+                    return GeomConstants.SHAPE_INTERSECTS;
                 }
             } else if (xintercept2 != null) {
                 // Only the bottom line of the rectangle is intersecting the segment
@@ -809,7 +810,7 @@ public interface Segment3ai<
                         }
                     }
                 } else {
-                    return MathConstants.SHAPE_INTERSECTS;
+                    return GeomConstants.SHAPE_INTERSECTS;
                 }
             }
         }
@@ -919,7 +920,7 @@ public interface Segment3ai<
 			iterator.next(p);
             if (p.iy() == py) {
                 if (p.ix() == px) {
-                    return MathConstants.SHAPE_INTERSECTS;
+                    return GeomConstants.SHAPE_INTERSECTS;
                 }
                 if (p.ix() > px) {
 					// Found an intersection
@@ -1646,7 +1647,7 @@ public interface Segment3ai<
 				iterator,
 				getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+        return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
 
 	}
 

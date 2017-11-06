@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3.i;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d3.AbstractGeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
@@ -36,7 +37,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class GeomFactory3i implements GeomFactory3ai<PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
+public class GeomFactory3i extends AbstractGeomFactory3D<Vector3i, Point3i>
+		implements GeomFactory3ai<PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
 
 	/** The singleton of the factory.
 	 */

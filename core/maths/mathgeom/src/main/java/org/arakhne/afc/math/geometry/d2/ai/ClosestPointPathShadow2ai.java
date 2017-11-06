@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.ai;
 
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.util.OutputParameter;
@@ -116,9 +117,9 @@ class ClosestPointPathShadow2ai {
                 x0, y0, x1, y1);
 
         // Test if the shape is intesecting the shadow shape.
-        if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+        if (this.crossings == GeomConstants.SHAPE_INTERSECTS) {
             // The given line is intersecting the path shape
-            return MathConstants.SHAPE_INTERSECTS;
+            return GeomConstants.SHAPE_INTERSECTS;
         }
 
         // There is no intersection with the shadow path's shape.
@@ -147,7 +148,7 @@ class ClosestPointPathShadow2ai {
     private void discretizePathIterator(
             PathIterator2ai<?> pi,
             int x1, int y1, int x2, int y2) {
-        if (!pi.hasNext() || this.crossings == MathConstants.SHAPE_INTERSECTS) {
+        if (!pi.hasNext() || this.crossings == GeomConstants.SHAPE_INTERSECTS) {
             return;
         }
         PathElement2ai element;
@@ -182,7 +183,7 @@ class ClosestPointPathShadow2ai {
                 if (distance <= 0.) {
                     this.otherShapeClosestPoint.set(this.temporaryPoint1);
                     this.shadowShapeClosestPoint.set(this.temporaryPoint2);
-                    this.crossings = MathConstants.SHAPE_INTERSECTS;
+                    this.crossings = GeomConstants.SHAPE_INTERSECTS;
                     return;
                 } else if (distance < this.minDistance) {
                     this.minDistance = distance;
@@ -193,7 +194,7 @@ class ClosestPointPathShadow2ai {
                         curx, cury,
                         endx, endy,
                         x1, y1, x2, y2);
-                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+                if (this.crossings == GeomConstants.SHAPE_INTERSECTS) {
                     return;
                 }
                 curx = endx;
@@ -209,9 +210,9 @@ class ClosestPointPathShadow2ai {
                         element.getCtrlX1(), element.getCtrlY1(),
                         endx, endy);
                 discretizePathIterator(
-                        localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                        localPath.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
                         x1, y1, x2, y2);
-                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+                if (this.crossings == GeomConstants.SHAPE_INTERSECTS) {
                     return;
                 }
                 curx = endx;
@@ -228,9 +229,9 @@ class ClosestPointPathShadow2ai {
                         element.getCtrlX2(), element.getCtrlY2(),
                         endx, endy);
                 discretizePathIterator(
-                        localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                        localPath.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
                         x1, y1, x2, y2);
-                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+                if (this.crossings == GeomConstants.SHAPE_INTERSECTS) {
                     return;
                 }
                 curx = endx;
@@ -248,9 +249,9 @@ class ClosestPointPathShadow2ai {
                         element.getRotationX(), element.getLargeArcFlag(),
                         element.getSweepFlag());
                 discretizePathIterator(
-                        localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                        localPath.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
                         x1, y1, x2, y2);
-                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+                if (this.crossings == GeomConstants.SHAPE_INTERSECTS) {
                     return;
                 }
                 curx = endx;
@@ -263,7 +264,7 @@ class ClosestPointPathShadow2ai {
                     if (distance <= 0.) {
                         this.otherShapeClosestPoint.set(this.temporaryPoint1);
                         this.shadowShapeClosestPoint.set(this.temporaryPoint2);
-                        this.crossings = MathConstants.SHAPE_INTERSECTS;
+                        this.crossings = GeomConstants.SHAPE_INTERSECTS;
                         return;
                     } else if (distance < this.minDistance) {
                         this.minDistance = distance;
@@ -285,7 +286,7 @@ class ClosestPointPathShadow2ai {
             }
         }
 
-        assert this.crossings != MathConstants.SHAPE_INTERSECTS;
+        assert this.crossings != GeomConstants.SHAPE_INTERSECTS;
         if (curx != movx || cury != movy) {
             // Assume that when is the path is open, only
             // SHAPE_INTERSECTS may be return
@@ -398,7 +399,7 @@ class ClosestPointPathShadow2ai {
                 shadowX0, shadowY0, shadowX1, shadowY1,
                 sx0, sy0, sx1, sy1)) {
             // The segment is intersecting the shadowed segment.
-            this.crossings = MathConstants.SHAPE_INTERSECTS;
+            this.crossings = GeomConstants.SHAPE_INTERSECTS;
         } else {
             final int side1;
             final int side2;

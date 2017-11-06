@@ -25,6 +25,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.AbstractGeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
@@ -40,7 +41,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 @SuppressWarnings("checkstyle:classdataabstractioncoupling")
-public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
+public class GeomFactory2dfx extends AbstractGeomFactory2D<Vector2dfx, Point2dfx>
+		implements GeomFactory2afp<PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
 
 	/** The singleton of the factory.
 	 */

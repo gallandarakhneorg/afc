@@ -18,6 +18,7 @@
 		<module>mathtree</module>
 		<module>mathgraph</module>
 		<module>mathgeom</module>
+		<module>mathgeomtesting</module>
 		<module>mathphysics</module>
 		<module>math</module>
 	</modules>

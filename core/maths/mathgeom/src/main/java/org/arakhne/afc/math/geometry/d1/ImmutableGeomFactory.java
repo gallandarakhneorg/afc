@@ -30,7 +30,7 @@ package org.arakhne.afc.math.geometry.d1;
  * @since 14.0
  */
 final class ImmutableGeomFactory<S extends Segment1D<?, ?>>
-	implements GeomFactory1D<ImmutableVector1D<S>, ImmutablePoint1D<S>> {
+	extends AbstractGeomFactory1D<ImmutableVector1D<S>, ImmutablePoint1D<S>> {
 
 	/** Singleton of the factory.
 	 */

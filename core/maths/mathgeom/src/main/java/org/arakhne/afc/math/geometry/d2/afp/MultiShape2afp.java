@@ -318,7 +318,7 @@ public interface MultiShape2afp<
     default PathIterator2afp<IE> getFlatteningPathIterator() {
         return new Path2afp.FlatteningPathIterator<>(
                 getPathIterator(null),
-                MathConstants.SPLINE_APPROXIMATION_RATIO,
+                getGeomFactory().getSplineApproximationRatio(),
                 Path2afp.DEFAULT_FLATTENING_LIMIT);
     }
 

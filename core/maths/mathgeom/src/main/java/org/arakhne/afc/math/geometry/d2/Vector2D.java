@@ -28,6 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
@@ -67,7 +68,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	@Inline(value = "$3.isUnitVector(($1), ($2), $4.UNIT_VECTOR_EPSILON)",
 			imported = {Vector2D.class, MathConstants.class})
 	static boolean isUnitVector(double x, double y) {
-		return isUnitVector(x, y, MathConstants.UNIT_VECTOR_EPSILON);
+		return isUnitVector(x, y, GeomConstants.UNIT_VECTOR_EPSILON);
 	}
 
 	/**
@@ -124,7 +125,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	@Inline(value = "$5.isOrthogonal(($1), ($2), ($3), ($4), $6.ORTHOGONAL_VECTOR_EPSILON)",
 			imported = {Vector2D.class, MathConstants.class})
 	static boolean isOrthogonal(double x1, double y1, double x2, double y2) {
-		return isOrthogonal(x1, y1, x2, y2, MathConstants.ORTHOGONAL_VECTOR_EPSILON);
+		return isOrthogonal(x1, y1, x2, y2, GeomConstants.ORTHOGONAL_VECTOR_EPSILON);
 	}
 
 	/**
@@ -550,47 +551,27 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 
 	/** Change the coordinates of this vector to make it an orthogonal
 	 * vector to the original coordinates.
+	 *
+	 * <p>The orthogonal vector is always the one obtain after
+	 * a clockwise rotation of this vector.
+	 *
+	 * <p>The orthogonal vector does not depends on the current coordinate system.
 	 */
-	@Inline(value = "makeOrthogonal($1.getDefaultCoordinateSystem())", imported = {CoordinateSystem2D.class})
 	default void makeOrthogonal() {
-		makeOrthogonal(CoordinateSystem2D.getDefaultCoordinateSystem());
-	}
-
-	/** Change the coordinates of this vector to make it an orthogonal
-	 * vector to the original coordinates.
-	 *
-	 * @param system the coordinate system.
-	 * @since 14.0
-	 */
-	default void makeOrthogonal(CoordinateSystem2D system) {
-		if (system.isLeftHanded()) {
-			set(getY(), -getX());
-		} else {
-			set(-getY(), getX());
-		}
+		set(-getY(), getX());
 	}
 
 	/** Replies the orthogonal vector to this vector.
 	 *
+	 * <p>The orthogonal vector is always the one obtain after
+	 * a clockwise rotation of this vector.
+	 *
+	 * <p>The orthogonal vector does not depends on the current coordinate system.
+	 *
 	 * @return the orthogonal vector.
 	 */
 	@Pure
-	@Inline(value = "toOrthogonalVector($1.getDefaultCoordinateSystem())", imported = {CoordinateSystem2D.class})
 	default RV toOrthogonalVector() {
-		return toOrthogonalVector(CoordinateSystem2D.getDefaultCoordinateSystem());
-	}
-
-	/** Replies the orthogonal vector to this vector.
-	 *
-	 * @param system the coordinate system.
-	 * @return the orthogonal vector.
-	 * @since 14.0
-	 */
-	@Pure
-	default RV toOrthogonalVector(CoordinateSystem2D system) {
-		if (system.isLeftHanded()) {
-			return getGeomFactory().newVector(getY(), -getX());
-		}
 		return getGeomFactory().newVector(-getY(), getX());
 	}
 
@@ -721,39 +702,12 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #turnLeft(double)
 	 * @see #turnRight(double)
 	 */
-	@Inline(value = "turn($1, $2, $3.getDefaultCoordinateSystem())", imported = {CoordinateSystem2D.class})
 	default void turn(double angle, Vector2D<?, ?> vectorToTurn) {
-		turn(angle, vectorToTurn, CoordinateSystem2D.getDefaultCoordinateSystem());
-	}
-
-	/** Turn the given vector about the given rotation angle, and set this
-	 * vector with the result.
-	 *
-	 * <p>The rotation is done according to the trigonometric coordinate.
-	 * A positive rotation angle corresponds to a left or right rotation
-	 * according to the current {@link CoordinateSystem2D}.
-	 *
-	 * @param angle is the rotation angle in radians.
-	 * @param vectorToTurn the vector to turn.
-	 * @param system the coordinate system.
-	 * @since 14.0
-	 * @see #turn(double)
-	 * @see #turnLeft(double)
-	 * @see #turnRight(double)
-	 */
-	default void turn(double angle, Vector2D<?, ?> vectorToTurn, CoordinateSystem2D system) {
 		assert vectorToTurn != null : AssertMessages.notNullParameter(1);
 		final double sin = Math.sin(angle);
 		final double cos = Math.cos(angle);
-		final double x;
-		final double y;
-		if (system.isLeftHanded()) {
-			x =  cos * vectorToTurn.getX() + sin * vectorToTurn.getY();
-			y =  -sin * vectorToTurn.getX() + cos * vectorToTurn.getY();
-		} else {
-			x =  cos * vectorToTurn.getX() - sin * vectorToTurn.getY();
-			y =  sin * vectorToTurn.getX() + cos * vectorToTurn.getY();
-		}
+		final double x =  cos * vectorToTurn.getX() - sin * vectorToTurn.getY();
+		final double y =  sin * vectorToTurn.getX() + cos * vectorToTurn.getY();
 		set(x, y);
 	}
 

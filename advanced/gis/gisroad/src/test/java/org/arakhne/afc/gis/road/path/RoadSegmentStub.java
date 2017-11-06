@@ -46,7 +46,6 @@ import org.arakhne.afc.gis.road.primitive.RoadNetwork;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.gis.road.primitive.RoadType;
 import org.arakhne.afc.gis.road.primitive.TrafficDirection;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d1.Direction1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
@@ -231,14 +230,12 @@ class RoadSegmentStub implements RoadSegment {
 	}
 
 	@Override
-	public Point2d getGeoLocationForDistance(double desiredDistance,
-			double shifting, CoordinateSystem2D system) {
+	public Point2d getGeoLocationForDistance(double desiredDistance, double shifting) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public Point2d getGeoLocationForDistance(double desiredDistance,
-			double shifting, CoordinateSystem2D system, Vector2D<?, ?> tangent) {
+	public Point2d getGeoLocationForDistance(double desiredDistance, double shifting, Vector2D<?, ?> tangent) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -248,14 +245,13 @@ class RoadSegmentStub implements RoadSegment {
 	}
 
 	@Override
-	public void getGeoLocationForDistance(double desiredDistance,
-			double shifting, CoordinateSystem2D system, Point2D<?, ?> geoLocation) {
+	public void getGeoLocationForDistance(double desiredDistance, double shifting, Point2D<?, ?> geoLocation) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getGeoLocationForDistance(double desiredDistance,
-			double shifting, CoordinateSystem2D system, Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
+			double shifting, Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -265,14 +261,13 @@ class RoadSegmentStub implements RoadSegment {
 	}
 
 	@Override
-	public Point2d getGeoLocationForLocationRatio(double ratio,
-			double shifting, CoordinateSystem2D system) {
+	public Point2d getGeoLocationForLocationRatio(double ratio, double shifting) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Point2d getGeoLocationForLocationRatio(double ratio,
-			double shifting, CoordinateSystem2D system, Vector2D<?, ?> tangent) {
+			double shifting, Vector2D<?, ?> tangent) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -283,13 +278,13 @@ class RoadSegmentStub implements RoadSegment {
 
 	@Override
 	public void getGeoLocationForLocationRatio(double ratio,
-			double shifting, CoordinateSystem2D system, Point2D<?, ?> geoLocation) {
+			double shifting, Point2D<?, ?> geoLocation) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getGeoLocationForLocationRatio(double ratio,
-			double shifting, CoordinateSystem2D system, Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
+			double shifting, Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -479,14 +474,12 @@ class RoadSegmentStub implements RoadSegment {
 	}
 
 	@Override
-	public void projectsOnPlane(double arg0, Point2D<?, ?> arg1, Vector2D<?, ?> arg2,
-			CoordinateSystem2D arg3) {
+	public void projectsOnPlane(double arg0, Point2D<?, ?> arg1, Vector2D<?, ?> arg2) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void projectsOnPlane(double arg0, double arg1, Point2D<?, ?> arg2,
-			Vector2D<?, ?> arg3, CoordinateSystem2D arg4) {
+	public void projectsOnPlane(double arg0, double arg1, Point2D<?, ?> arg2, Vector2D<?, ?> arg3) {
 		throw new UnsupportedOperationException();
 	}
 

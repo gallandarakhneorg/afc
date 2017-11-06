@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d2.afp;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -128,7 +129,7 @@ class BasicPathShadow2afp {
                         x0, y0,
                         x1, y1);
 
-        if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+        if (numCrosses == GeomConstants.SHAPE_INTERSECTS) {
             // The segment is intersecting the bounds of the shadow path.
             // We must consider the shape of shadow path now.
             this.x4ymin = this.boundingMinX;
@@ -150,10 +151,10 @@ class BasicPathShadow2afp {
 
             // Test if the shape is intesecting the shadow shape.
             final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-            if (this.crossings == MathConstants.SHAPE_INTERSECTS
+            if (this.crossings == GeomConstants.SHAPE_INTERSECTS
                     || (this.crossings & mask) != 0) {
                 // The given line is intersecting the path shape
-                return MathConstants.SHAPE_INTERSECTS;
+                return GeomConstants.SHAPE_INTERSECTS;
             }
 
             // There is no intersection with the shadow path's shape.
@@ -184,7 +185,7 @@ class BasicPathShadow2afp {
     private void discretizePathIterator(
             PathIterator2afp<?> pi,
             double x1, double y1, double x2, double y2) {
-        if (!pi.hasNext() || this.crossings == MathConstants.SHAPE_INTERSECTS) {
+        if (!pi.hasNext() || this.crossings == GeomConstants.SHAPE_INTERSECTS) {
             return;
         }
         PathElement2afp element;
@@ -208,7 +209,7 @@ class BasicPathShadow2afp {
                 break;
             case LINE_TO:
                 setLineToFromDiscretizePathIterator(element, this.coordinateParam);
-                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+                if (this.crossings == GeomConstants.SHAPE_INTERSECTS) {
                     return;
                 }
                 curx = element.getToX();
@@ -217,7 +218,7 @@ class BasicPathShadow2afp {
             case QUAD_TO:
                 // only for local use.
                 setQuadToFromDiscretizePathIterator(element, pi, this.coordinateParam);
-                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+                if (this.crossings == GeomConstants.SHAPE_INTERSECTS) {
                     return;
                 }
                 curx = element.getToX();
@@ -226,7 +227,7 @@ class BasicPathShadow2afp {
             case CURVE_TO:
                 // only for local use.
                 setCurveToFromDiscretizePathIterator(element, pi, this.coordinateParam);
-                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+                if (this.crossings == GeomConstants.SHAPE_INTERSECTS) {
                     return;
                 }
                 curx = element.getToX();
@@ -235,7 +236,7 @@ class BasicPathShadow2afp {
             case ARC_TO:
                 // only for local use.
                 setArcToFromDiscretizePathIterator(element, pi, this.coordinateParam);
-                if (this.crossings == MathConstants.SHAPE_INTERSECTS) {
+                if (this.crossings == GeomConstants.SHAPE_INTERSECTS) {
                     return;
                 }
                 curx = element.getToX();
@@ -253,7 +254,7 @@ class BasicPathShadow2afp {
             }
         }
 
-        assert this.crossings != MathConstants.SHAPE_INTERSECTS;
+        assert this.crossings != GeomConstants.SHAPE_INTERSECTS;
 
         final boolean isOpen = (curx != movx) || (cury != movy);
 
@@ -283,7 +284,7 @@ class BasicPathShadow2afp {
                 elm.getCtrlX1(), elm.getCtrlY1(),
                 endx, endy);
         discretizePathIterator(
-                localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                localPath.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
                 param.getX1(), param.getY1(), param.getX2(), param.getY2());
     }
 
@@ -297,7 +298,7 @@ class BasicPathShadow2afp {
                 elm.getCtrlX1(), elm.getCtrlY1(),  elm.getCtrlX2(), elm.getCtrlY2(),
                 endx, endy);
         discretizePathIterator(
-                localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                localPath.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
                 prm.getX1(), prm.getY1(), prm.getX2(), prm.getY2());
     }
 
@@ -313,7 +314,7 @@ class BasicPathShadow2afp {
                 elm.getRotationX(), elm.getLargeArcFlag(),
                 elm.getSweepFlag());
         discretizePathIterator(
-                localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+                localPath.getPathIterator(pi.getGeomFactory().getSplineApproximationRatio()),
                 param.getX1(), param.getY1(), param.getX2(), param.getY2());
     }
 
@@ -406,7 +407,7 @@ class BasicPathShadow2afp {
                 shadowX0, shadowY0, shadowX1, shadowY1,
                 sx0, sy0, sx1, sy1)) {
             // The segment is intersecting the shadowed segment.
-            this.crossings = MathConstants.SHAPE_INTERSECTS;
+            this.crossings = GeomConstants.SHAPE_INTERSECTS;
         } else {
             final int side1;
             final int side2;

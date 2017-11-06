@@ -28,7 +28,7 @@ package org.arakhne.afc.math.geometry.d2;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-final class ImmutableGeomFactory implements GeomFactory2D<ImmutableVector2D, ImmutablePoint2D> {
+final class ImmutableGeomFactory extends AbstractGeomFactory2D<ImmutableVector2D, ImmutablePoint2D> {
 
 	/** Singleton of the factory.
 	 */

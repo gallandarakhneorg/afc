@@ -79,9 +79,8 @@ public interface Segment1D<RP extends Point2D<?, ?>, RV extends Vector2D<?, ?>> 
 	 * @param positionOnSegment is the position on the segment (in <code>0..length</code>).
 	 * @param position is the position to fill.
 	 * @param tangent is the tangent to the segment at the given position.
-	 * @param system is the coordinate system to use for conversion.
 	 */
-	void projectsOnPlane(double positionOnSegment, Point2D<?, ?> position, Vector2D<?, ?> tangent, CoordinateSystem2D system);
+	void projectsOnPlane(double positionOnSegment, Point2D<?, ?> position, Vector2D<?, ?> tangent);
 
 	/** Replies the 2D position and the 2D tangent at the position on the segment.
 	 *
@@ -89,10 +88,9 @@ public interface Segment1D<RP extends Point2D<?, ?>, RV extends Vector2D<?, ?>> 
 	 * @param shiftDistance is the distance that permits to shift the position from the segment.
 	 * @param position is the position to fill.
 	 * @param tangent is the tangent to the segment at the given position.
-	 * @param system is the coordinate system to use for conversion.
 	 */
 	void projectsOnPlane(double positionOnSegment, double shiftDistance, Point2D<?, ?> position,
-			Vector2D<?, ?> tangent, CoordinateSystem2D system);
+			Vector2D<?, ?> tangent);
 
 	/** Replies if this segment is connected to the specified segment by its first point.
 	 *

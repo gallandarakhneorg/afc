@@ -28,7 +28,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.d.DefaultSegment1d;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
@@ -664,13 +663,12 @@ public class MapPolyline extends MapComposedElement {
 	 *
 	 * @param desired_distance is the distance for which the geo location must be computed.
 	 * @param shifting is the shifting distance.
-	 * @param system is the 2D coordinate system used to determine the sign of the shifting value.
 	 * @param geoLocation is the point to set with geo-localized coordinates.
 	 * @param tangent is the vector which will be set by the coordinates of the tangent at the replied point.
 	 *     If <code>null</code> the tangent will not be computed.
 	 */
 	protected final void computeGeoLocationForDistance(double desired_distance, double shifting,
-			CoordinateSystem2D system, Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
+			Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
 		assert geoLocation != null;
 		double desiredDistance = desired_distance;
 		for (final PointGroup group : groups()) {
@@ -700,9 +698,9 @@ public class MapPolyline extends MapComposedElement {
 
 							// Shift the point on the left or on the right depending on
 							// the sign of the shifting value
-							if (shifting != 0 && system != null) {
+							if (shifting != 0) {
 								final Vector2d perpend = new Vector2d(vx, vy);
-								perpend.makeOrthogonal(system);
+								perpend.makeOrthogonal();
 								perpend.scale(shifting);
 								px += perpend.getX();
 								py += perpend.getY();
@@ -729,10 +727,10 @@ public class MapPolyline extends MapComposedElement {
 					lastPoint.getX() - antepenulvianPoint.getX(),
 					lastPoint.getY() - antepenulvianPoint.getY());
 		}
-		if (shifting != 0. && system != null) {
+		if (shifting != 0.) {
 			final Vector2d perpend = new Vector2d(lastPoint.getX() - antepenulvianPoint.getX(),
 					lastPoint.getY() - antepenulvianPoint.getY());
-			perpend.makeOrthogonal(system);
+			perpend.makeOrthogonal();
 			perpend.scale(shifting);
 			lastPoint.set(lastPoint.getX() + perpend.getX(), lastPoint.getY() + perpend.getY());
 		}
@@ -778,7 +776,6 @@ public class MapPolyline extends MapComposedElement {
 		public Vector2d getTangentAt(double positionOnSegment) {
 			final Vector2d tangent = new Vector2d();
 			computeGeoLocationForDistance(positionOnSegment, 0.,
-					CoordinateSystem2D.getDefaultCoordinateSystem(),
 					null,
 					tangent);
 			return tangent;
@@ -798,10 +795,9 @@ public class MapPolyline extends MapComposedElement {
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public void projectsOnPlane(double positionOnSegment, Point2D position, Vector2D tangent,
-				CoordinateSystem2D system) {
+		public void projectsOnPlane(double positionOnSegment, Point2D position, Vector2D tangent) {
 			final Point2d gl = new Point2d();
-			computeGeoLocationForDistance(positionOnSegment, 0., system, gl, tangent);
+			computeGeoLocationForDistance(positionOnSegment, 0., gl, tangent);
 			if (position != null) {
 				position.set(gl);
 			}
@@ -809,10 +805,9 @@ public class MapPolyline extends MapComposedElement {
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public void projectsOnPlane(double positionOnSegment, double shiftDistance, Point2D position, Vector2D tangent,
-				CoordinateSystem2D system) {
+		public void projectsOnPlane(double positionOnSegment, double shiftDistance, Point2D position, Vector2D tangent) {
 			final Point2d gl = new Point2d();
-			computeGeoLocationForDistance(positionOnSegment, shiftDistance, system, gl, tangent);
+			computeGeoLocationForDistance(positionOnSegment, shiftDistance, gl, tangent);
 			if (position != null) {
 				position.set(gl);
 			}

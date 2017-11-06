@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d3.ai;
 
-import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
+import org.arakhne.afc.math.geometry.d3.AbstractGeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
@@ -33,7 +33,7 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-final class InnerComputationGeomFactory implements GeomFactory3D<InnerComputationVector3ai, InnerComputationPoint3ai> {
+final class InnerComputationGeomFactory extends AbstractGeomFactory3D<InnerComputationVector3ai, InnerComputationPoint3ai> {
 
 	/** Singleton of the factory.
 	 */

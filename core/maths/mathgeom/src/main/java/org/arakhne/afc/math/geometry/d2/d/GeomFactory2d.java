@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.d;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.AbstractGeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
@@ -35,7 +36,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class GeomFactory2d implements GeomFactory2afp<PathElement2d, Point2d, Vector2d, Rectangle2d> {
+public class GeomFactory2d extends AbstractGeomFactory2D<Vector2d, Point2d>
+		implements GeomFactory2afp<PathElement2d, Point2d, Vector2d, Rectangle2d> {
 
 	/** The singleton of the factory.
 	 */

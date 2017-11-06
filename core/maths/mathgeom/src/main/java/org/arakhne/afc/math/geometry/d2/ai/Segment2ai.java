@@ -29,6 +29,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -383,7 +384,7 @@ public interface Segment2ai<
         } else if (Circle2ai.intersectsCircleSegment(
                 cx, cy, radius,
                 x0, y0, x1, y1)) {
-            return MathConstants.SHAPE_INTERSECTS;
+            return GeomConstants.SHAPE_INTERSECTS;
         } else {
             numCrosses = calculatesCrossingsAndXPointShadowSegment(numCrosses, cx, ymin, x0, y0, x1, y1, true, false, null);
             numCrosses = calculatesCrossingsAndXPointShadowSegment(numCrosses, cx, ymax, x0, y0, x1, y1, false, true, null);
@@ -468,7 +469,7 @@ public interface Segment2ai<
                 }
             }
         } else if (intersectsSegmentSegment(x0, y0, x1, y1, sx1, sy1, sx2, sy2, true, true, null)) {
-            return MathConstants.SHAPE_INTERSECTS;
+            return GeomConstants.SHAPE_INTERSECTS;
         } else {
             // The line is intersectly partly the bounding rectangle of the segment.
             // We must determine on which side of the segment the points of the line are.
@@ -547,7 +548,7 @@ public interface Segment2ai<
             if (y0 >= rymin && y0 <= rymax
                     && (x0 >= rxmin || x1 >= rxmin)
                     && (x0 <= rxmax || x1 <= rxmax)) {
-                return MathConstants.SHAPE_INTERSECTS;
+                return GeomConstants.SHAPE_INTERSECTS;
             }
             return crossings;
         }
@@ -594,7 +595,7 @@ public interface Segment2ai<
             // where one of the endpoints is inside the rectangle.
             if ((x0 >= rxmin && x0 <= rxmax && y0 >= rymin && y0 <= rymax)
                     || (x1 >= rxmin && x1 <= rxmax && y1 >= rymin && y1 <= rymax)) {
-                return MathConstants.SHAPE_INTERSECTS;
+                return GeomConstants.SHAPE_INTERSECTS;
             }
 
             // Otherwise calculate the y intercepts and see where
@@ -650,7 +651,7 @@ public interface Segment2ai<
                         }
                     }
                 } else {
-                    return MathConstants.SHAPE_INTERSECTS;
+                    return GeomConstants.SHAPE_INTERSECTS;
                 }
             } else if (xintercept1 != null) {
                 // Only the top line of the rectangle is intersecting the segment
@@ -669,7 +670,7 @@ public interface Segment2ai<
                         --numCrosses;
                     }
                 } else {
-                    return MathConstants.SHAPE_INTERSECTS;
+                    return GeomConstants.SHAPE_INTERSECTS;
                 }
             } else if (xintercept2 != null) {
                 // Only the bottom line of the rectangle is intersecting the segment
@@ -688,7 +689,7 @@ public interface Segment2ai<
                         --numCrosses;
                     }
                 } else {
-                    return MathConstants.SHAPE_INTERSECTS;
+                    return GeomConstants.SHAPE_INTERSECTS;
                 }
             }
         }
@@ -794,7 +795,7 @@ public interface Segment2ai<
             iterator.next(p);
             if (p.iy() == py) {
                 if (p.ix() == px) {
-                    return MathConstants.SHAPE_INTERSECTS;
+                    return GeomConstants.SHAPE_INTERSECTS;
                 }
                 if (p.ix() > px) {
                     // Found an intersection
@@ -1491,8 +1492,7 @@ public interface Segment2ai<
                 iterator,
                 getX1(), getY1(), getX2(), getY2(),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == MathConstants.SHAPE_INTERSECTS
-                || (crossings & mask) != 0;
+        return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
 
     }
 

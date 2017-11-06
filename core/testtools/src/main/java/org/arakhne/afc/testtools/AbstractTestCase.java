@@ -151,6 +151,16 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		}
 		aa = ma.setScale(0, BigDecimal.ROUND_DOWN);
 		bb = mb.setScale(0, BigDecimal.ROUND_DOWN);
+		if (aa.compareTo(bb) == 0) {
+			return true;
+		}
+		aa = ma.setScale(0, BigDecimal.ROUND_HALF_UP);
+		bb = mb.setScale(0, BigDecimal.ROUND_DOWN);
+		if (aa.compareTo(bb) == 0) {
+			return true;
+		}
+		aa = ma.setScale(0, BigDecimal.ROUND_DOWN);
+		bb = mb.setScale(0, BigDecimal.ROUND_HALF_UP);
 		return aa.compareTo(bb) == 0;
 	}
 

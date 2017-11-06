@@ -25,6 +25,7 @@ import java.lang.ref.WeakReference;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 
+import org.arakhne.afc.math.geometry.d1.AbstractGeomFactory1D;
 import org.arakhne.afc.math.geometry.d1.Point1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.Vector1D;
@@ -40,7 +41,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-public class GeomFactory1dfx implements GeomFactory1afp<Point1dfx, Vector1dfx, Segment1D<?, ?>, Rectangle1dfx> {
+public class GeomFactory1dfx extends AbstractGeomFactory1D<Vector1dfx, Point1dfx>
+		implements GeomFactory1afp<Point1dfx, Vector1dfx, Segment1D<?, ?>, Rectangle1dfx> {
 
 	/** The singleton of the factory.
 	 */

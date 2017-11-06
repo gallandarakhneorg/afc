@@ -24,9 +24,9 @@ import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
@@ -485,7 +485,7 @@ public interface Circle2afp<
                 iterator,
                 getX(), getY(), getRadius(),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == MathConstants.SHAPE_INTERSECTS
+        return crossings == GeomConstants.SHAPE_INTERSECTS
                 || (crossings & mask) != 0;
 
     }

@@ -39,7 +39,6 @@ import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadNetwork;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.io.shape.ESRIBounds;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
@@ -226,7 +225,7 @@ public class AstarTest extends AbstractGisTest {
 		Point2d pos = new Point2d();
 		pts.getSegment().projectsOnPlane(
 				pts.getCurvilineCoordinate(),
-				pos, null, CoordinateSystem2D.getDefaultCoordinateSystem());
+				pos, null);
 		return pos;
 	}
 

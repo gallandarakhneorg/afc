@@ -24,9 +24,9 @@ import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
@@ -493,7 +493,7 @@ public interface Sphere3afp<
 				iterator,
 				getX(), getY(), getZ(), getRadius(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+        return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
 
 	}
 

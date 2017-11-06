@@ -27,8 +27,8 @@ import java.util.TreeSet;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
@@ -794,7 +794,7 @@ public interface Sphere3ai<
 				iterator,
 				getX(), getY(), getZ(), getRadius(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+        return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
 	}
 
 	@Pure

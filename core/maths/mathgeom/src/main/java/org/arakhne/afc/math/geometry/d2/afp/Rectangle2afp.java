@@ -28,6 +28,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.IntersectionType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -967,7 +968,7 @@ public interface Rectangle2afp<
                 iterator,
                 getMinX(), getMinY(), getMaxX(), getMaxY(),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == MathConstants.SHAPE_INTERSECTS
+        return crossings == GeomConstants.SHAPE_INTERSECTS
                 || (crossings & mask) != 0;
 
     }

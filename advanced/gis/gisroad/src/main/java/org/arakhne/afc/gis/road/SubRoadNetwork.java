@@ -928,15 +928,15 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public final Point2d getGeoLocationForDistance(double desired_distance,
-				double shifting, CoordinateSystem2D system) {
-			return this.segment.get().getGeoLocationForDistance(desired_distance, shifting, system);
+				double shifting) {
+			return this.segment.get().getGeoLocationForDistance(desired_distance, shifting);
 		}
 
 		@Override
 		@Pure
 		public final Point2d getGeoLocationForDistance(double desired_distance,
-				double shifting, CoordinateSystem2D system, Vector2D<?, ?> tangent) {
-			return this.segment.get().getGeoLocationForDistance(desired_distance, shifting, system, tangent);
+				double shifting, Vector2D<?, ?> tangent) {
+			return this.segment.get().getGeoLocationForDistance(desired_distance, shifting, tangent);
 		}
 
 		@Override
@@ -948,17 +948,15 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public final void getGeoLocationForDistance(double desired_distance,
-				double shifting, CoordinateSystem2D system,
-				Point2D<?, ?> geoLocation) {
-			this.segment.get().getGeoLocationForDistance(desired_distance, shifting, system, geoLocation);
+				double shifting, Point2D<?, ?> geoLocation) {
+			this.segment.get().getGeoLocationForDistance(desired_distance, shifting, geoLocation);
 		}
 
 		@Override
 		@Pure
 		public final void getGeoLocationForDistance(double desired_distance,
-				double shifting, CoordinateSystem2D system,
-				Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
-			this.segment.get().getGeoLocationForDistance(desired_distance, shifting, system, geoLocation, tangent);
+				double shifting, Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
+			this.segment.get().getGeoLocationForDistance(desired_distance, shifting, geoLocation, tangent);
 		}
 
 		@Override
@@ -970,15 +968,15 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public final Point2d getGeoLocationForLocationRatio(double ratio,
-				double shifting, CoordinateSystem2D system) {
-			return this.segment.get().getGeoLocationForLocationRatio(ratio, shifting, system);
+				double shifting) {
+			return this.segment.get().getGeoLocationForLocationRatio(ratio, shifting);
 		}
 
 		@Override
 		@Pure
 		public final Point2d getGeoLocationForLocationRatio(double ratio,
-				double shifting, CoordinateSystem2D system, Vector2D<?, ?> tangent) {
-			return this.segment.get().getGeoLocationForLocationRatio(ratio, shifting, system, tangent);
+				double shifting, Vector2D<?, ?> tangent) {
+			return this.segment.get().getGeoLocationForLocationRatio(ratio, shifting, tangent);
 		}
 
 		@Override
@@ -990,16 +988,15 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public final void getGeoLocationForLocationRatio(double ratio,
-				double shifting, CoordinateSystem2D system,
-				Point2D<?, ?> geoLocation) {
-			this.segment.get().getGeoLocationForLocationRatio(ratio, shifting, system, geoLocation);
+				double shifting, Point2D<?, ?> geoLocation) {
+			this.segment.get().getGeoLocationForLocationRatio(ratio, shifting, geoLocation);
 		}
 
 		@Override
 		@Pure
 		public final void getGeoLocationForLocationRatio(double ratio,
-				double shifting, CoordinateSystem2D system, Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
-			this.segment.get().getGeoLocationForLocationRatio(ratio, shifting, system, geoLocation, tangent);
+				double shifting, Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
+			this.segment.get().getGeoLocationForLocationRatio(ratio, shifting, geoLocation, tangent);
 		}
 
 		@Override
@@ -1265,15 +1262,14 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public void projectsOnPlane(double positionOnSegment, double shiftDistance, Point2D<?, ?> position,
-				Vector2D<?, ?> tangent, CoordinateSystem2D system) {
-			this.segment.get().projectsOnPlane(positionOnSegment, shiftDistance, position, tangent, system);
+				Vector2D<?, ?> tangent) {
+			this.segment.get().projectsOnPlane(positionOnSegment, shiftDistance, position, tangent);
 		}
 
 		@Override
 		@Pure
-		public void projectsOnPlane(double positionOnSegment, Point2D<?, ?> position, Vector2D<?, ?> tangent,
-				CoordinateSystem2D system) {
-			this.segment.get().projectsOnPlane(positionOnSegment, position, tangent, system);
+		public void projectsOnPlane(double positionOnSegment, Point2D<?, ?> position, Vector2D<?, ?> tangent) {
+			this.segment.get().projectsOnPlane(positionOnSegment, position, tangent);
 		}
 
 		@Override

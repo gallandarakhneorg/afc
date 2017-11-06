@@ -110,7 +110,9 @@ public final class MathConstants {
 	 *
 	 *  <p>This attributes is used to parameter the approximation
 	 *  of the curve rendering.
+	 * @deprecated since 14.0, see mathgeom project.
 	 */
+	@Deprecated
 	public static final double SPLINE_APPROXIMATION_RATIO = .1;
 
 	/**
@@ -142,7 +144,9 @@ public final class MathConstants {
 	 * rectangle.  For containment tests, the answer is always
 	 * "false" if the path intersects the rectangle.  Thus, no
 	 * further processing is ever needed if an intersection occurs.
+	 * @deprecated since 14.0, see mathgeom project.
 	 */
+	@Deprecated
 	public static final int SHAPE_INTERSECTS = 0x80000000;
 
 	/**
@@ -150,7 +154,9 @@ public final class MathConstants {
 	 *
 	 * <p>The approximation introduced by the vector's length computation make this
 	 * epsilon still mandatory.
+	 * @deprecated since 14.0, see mathgeom project.
 	 */
+	@Deprecated
 	public static final double UNIT_VECTOR_EPSILON = 1E-5;
 
 	/**
@@ -158,7 +164,9 @@ public final class MathConstants {
 	 *
 	 * <p>The approximation introduced by the vector's length computation make this
 	 * epsilon still mandatory.
+	 * @deprecated since 14.0, see mathgeom project.
 	 */
+	@Deprecated
 	public static final double ORTHOGONAL_VECTOR_EPSILON = 1E-5;
 
 	private MathConstants() {

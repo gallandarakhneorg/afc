@@ -774,16 +774,14 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		}
 
 		@Override
-		public Point2d getGeoLocationForDistance(double desiredDistance,
-				double shifting, CoordinateSystem2D system) {
-			return getVirtualizedSegment().getGeoLocationForDistance(desiredDistance, shifting, system);
+		public Point2d getGeoLocationForDistance(double desiredDistance, double shifting) {
+			return getVirtualizedSegment().getGeoLocationForDistance(desiredDistance, shifting);
 		}
 
 		@Override
 		public Point2d getGeoLocationForDistance(double desiredDistance,
-				double shifting, CoordinateSystem2D system, Vector2D<?, ?> tangent) {
-			return getVirtualizedSegment().getGeoLocationForDistance(desiredDistance,
-					shifting, system, tangent);
+				double shifting, Vector2D<?, ?> tangent) {
+			return getVirtualizedSegment().getGeoLocationForDistance(desiredDistance, shifting, tangent);
 		}
 
 		@Override
@@ -794,17 +792,16 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 
 		@Override
 		public void getGeoLocationForDistance(double desiredDistance,
-				double shifting, CoordinateSystem2D system, Point2D<?, ?> geoLocation) {
+				double shifting, Point2D<?, ?> geoLocation) {
 			getVirtualizedSegment().getGeoLocationForDistance(desiredDistance,
-					shifting, system, geoLocation);
+					shifting, geoLocation);
 		}
 
 		@Override
 		public void getGeoLocationForDistance(double desiredDistance,
-				double shifting, CoordinateSystem2D system,
-				Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
+				double shifting, Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
 			getVirtualizedSegment().getGeoLocationForDistance(desiredDistance,
-					shifting, system, geoLocation, tangent);
+					shifting, geoLocation, tangent);
 		}
 
 		@Override
@@ -813,17 +810,15 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		}
 
 		@Override
-		public Point2d getGeoLocationForLocationRatio(double ratio,
-				double shifting, CoordinateSystem2D system) {
-			return getVirtualizedSegment().getGeoLocationForLocationRatio(ratio,
-					shifting, system);
+		public Point2d getGeoLocationForLocationRatio(double ratio, double shifting) {
+			return getVirtualizedSegment().getGeoLocationForLocationRatio(ratio, shifting);
 		}
 
 		@Override
 		public Point2d getGeoLocationForLocationRatio(double ratio,
-				double shifting, CoordinateSystem2D system, Vector2D<?, ?> tangent) {
+				double shifting, Vector2D<?, ?> tangent) {
 			return getVirtualizedSegment().getGeoLocationForLocationRatio(ratio,
-					shifting, system, tangent);
+					shifting, tangent);
 		}
 
 		@Override
@@ -834,17 +829,16 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 
 		@Override
 		public void getGeoLocationForLocationRatio(double ratio,
-				double shifting, CoordinateSystem2D system, Point2D<?, ?> geoLocation) {
+				double shifting, Point2D<?, ?> geoLocation) {
 			getVirtualizedSegment().getGeoLocationForLocationRatio(ratio,
-					shifting, system, geoLocation);
+					shifting, geoLocation);
 		}
 
 		@Override
 		public void getGeoLocationForLocationRatio(double ratio,
-				double shifting, CoordinateSystem2D system,
-				Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
+				double shifting, Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {
 			getVirtualizedSegment().getGeoLocationForLocationRatio(ratio,
-					shifting, system, geoLocation, tangent);
+					shifting, geoLocation, tangent);
 		}
 
 		@Override
@@ -1472,15 +1466,14 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		}
 
 		@Override
-		public void projectsOnPlane(double positionOnSegment, Point2D<?, ?> position, Vector2D<?, ?> tangent,
-				CoordinateSystem2D system) {
-			getVirtualizedSegment().projectsOnPlane(positionOnSegment, position, tangent, system);
+		public void projectsOnPlane(double positionOnSegment, Point2D<?, ?> position, Vector2D<?, ?> tangent) {
+			getVirtualizedSegment().projectsOnPlane(positionOnSegment, position, tangent);
 		}
 
 		@Override
 		public void projectsOnPlane(double positionOnSegment, double shiftDistance, Point2D<?, ?> position,
-				Vector2D<?, ?> tangent, CoordinateSystem2D system) {
-			getVirtualizedSegment().projectsOnPlane(positionOnSegment, shiftDistance, position, tangent, system);
+				Vector2D<?, ?> tangent) {
+			getVirtualizedSegment().projectsOnPlane(positionOnSegment, shiftDistance, position, tangent);
 		}
 
 		@Override

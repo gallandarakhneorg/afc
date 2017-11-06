@@ -31,7 +31,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.primitive.GISFlagContainer;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d1.Direction1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
@@ -208,11 +207,10 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 *
 	 * @param ratio is the location ratio.
 	 * @param shifting is the shifting distance.
-	 * @param system is the 2D coordinate system used to determine the sign of the shifting value.
 	 * @return the geo-location.
 	 */
 	@Pure
-	Point2d getGeoLocationForLocationRatio(double ratio, double shifting, CoordinateSystem2D system);
+	Point2d getGeoLocationForLocationRatio(double ratio, double shifting);
 
 	/** Replies the geo-location of the point described by the location ratio.
 	 * The location ratio is <code>0</code> for the starting point and <code>1</code>
@@ -220,13 +218,12 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 *
 	 * @param ratio is the location ratio.
 	 * @param shifting is the shifting distance.
-	 * @param system is the 2D coordinate system used to determine the sign of the shifting value.
 	 * @param tangent is the vector which will be set by the coordinates of the tangent at the replied point.
 	 *     If <code>null</code> the tangent will not be computed.
 	 * @return the geo-location.
 	 */
 	@Pure
-	Point2d getGeoLocationForLocationRatio(double ratio, double shifting, CoordinateSystem2D system,
+	Point2d getGeoLocationForLocationRatio(double ratio, double shifting,
 			Vector2D<?, ?> tangent);
 
 	/** Replies the geo-location of the point described by the location ratio.
@@ -246,10 +243,9 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 *
 	 * @param ratio is the location ratio.
 	 * @param shifting is the shifting distance.
-	 * @param system is the 2D coordinate system used to determine the sign of the shifting value.
 	 * @param geoLocation is the point to set with geo-localized coordinates.
 	 */
-	void getGeoLocationForLocationRatio(double ratio, double shifting, CoordinateSystem2D system,
+	void getGeoLocationForLocationRatio(double ratio, double shifting,
 			Point2D<?, ?> geoLocation);
 
 	/** Replies the geo-location of the point described by the location ratio.
@@ -258,12 +254,11 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 *
 	 * @param ratio is the location ratio.
 	 * @param shifting is the shifting distance.
-	 * @param system is the 2D coordinate system used to determine the sign of the shifting value.
 	 * @param geoLocation is the point to set with geo-localized coordinates.
 	 * @param tangent is the vector which will be set by the coordinates of the tangent at the replied point.
 	 *     If <code>null</code> the tangent will not be computed.
 	 */
-	void getGeoLocationForLocationRatio(double ratio, double shifting, CoordinateSystem2D system,
+	void getGeoLocationForLocationRatio(double ratio, double shifting,
 			Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent);
 
 	/** Replies the geo-location of the point described by the specified distance.
@@ -282,11 +277,10 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 *
 	 * @param desired_distance is the distance for which the geo location must be computed.
 	 * @param shifting is the shifting distance.
-	 * @param system is the 2D coordinate system used to determine the sign of the shifting value.
 	 * @return the geo-location.
 	 */
 	@Pure
-	Point2d getGeoLocationForDistance(double desired_distance, double shifting, CoordinateSystem2D system);
+	Point2d getGeoLocationForDistance(double desired_distance, double shifting);
 
 	/** Replies the geo-location of the point described by the specified distance.
 	 * The desired distance is <code>0</code> for the starting point and {@link #getLength()}
@@ -294,13 +288,12 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 *
 	 * @param desired_distance is the distance for which the geo location must be computed.
 	 * @param shifting is the shifting distance.
-	 * @param system is the 2D coordinate system used to determine the sign of the shifting value.
 	 * @param tangent is the vector which will be set by the coordinates of the tangent at the replied point.
 	 *     If <code>null</code> the tangent will not be computed.
 	 * @return the geo-location.
 	 */
 	@Pure
-	Point2d getGeoLocationForDistance(double desired_distance, double shifting, CoordinateSystem2D system,
+	Point2d getGeoLocationForDistance(double desired_distance, double shifting,
 			Vector2D<?, ?> tangent);
 
 	/** Replies the geo-location of the point described by the specified distance.
@@ -318,10 +311,9 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 *
 	 * @param desired_distance is the distance for which the geo location must be computed.
 	 * @param shifting is the shifting distance.
-	 * @param system is the 2D coordinate system used to determine the sign of the shifting value.
 	 * @param geoLocation is the point to set with geo-localized coordinates.
 	 */
-	void getGeoLocationForDistance(double desired_distance, double shifting, CoordinateSystem2D system,
+	void getGeoLocationForDistance(double desired_distance, double shifting,
 			Point2D<?, ?> geoLocation);
 
 	/** Replies the geo-location of the point described by the specified distance.
@@ -330,12 +322,11 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 *
 	 * @param desired_distance is the distance for which the geo location must be computed.
 	 * @param shifting is the shifting distance.
-	 * @param system is the 2D coordinate system used to determine the sign of the shifting value.
 	 * @param geoLocation is the point to set with geo-localized coordinates.
 	 * @param tangent is the vector which will be set by the coordinates of the tangent at the replied point.
 	 *     If <code>null</code> the tangent will not be computed.
 	 */
-	void getGeoLocationForDistance(double desired_distance, double shifting, CoordinateSystem2D system,
+	void getGeoLocationForDistance(double desired_distance, double shifting,
 			Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent);
 
 	//-------------------------------------------------

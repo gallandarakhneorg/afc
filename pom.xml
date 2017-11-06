@@ -96,6 +96,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.arakhne.afc.core</groupId>
+				<artifactId>mathgeomtesting</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.core</groupId>
 				<artifactId>mathphysics</artifactId>
 				<version>${afc.version}</version>
 			</dependency>

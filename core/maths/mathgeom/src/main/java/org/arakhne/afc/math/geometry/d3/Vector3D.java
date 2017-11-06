@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
@@ -61,7 +62,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	@Inline(value = "(Vector3D.isUnitVector($1, $2, $3, MathConstants.UNIT_VECTOR_EPSILON))",
 	  imported = {Vector3D.class, MathConstants.class})
 	static boolean isUnitVector(double x, double y, double z) {
-		return isUnitVector(x, y, z, MathConstants.UNIT_VECTOR_EPSILON);
+		return isUnitVector(x, y, z, GeomConstants.UNIT_VECTOR_EPSILON);
 	}
 
 	/**
