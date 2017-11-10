@@ -129,6 +129,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.arakhne.afc.gis</groupId>
+				<artifactId>giscoreui</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.gis</groupId>
 				<artifactId>gisinputoutput</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
@@ -139,7 +144,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.arakhne.afc.gis</groupId>
-				<artifactId>gisroadinputoutput</artifactId>
+				<artifactId>gisroadui</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
 

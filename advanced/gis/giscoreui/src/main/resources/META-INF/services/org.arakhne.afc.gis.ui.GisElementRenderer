@@ -1,0 +1,6 @@
+org.arakhne.afc.gis.ui.MapPolylineRenderer
+org.arakhne.afc.gis.ui.MapCircleRenderer
+org.arakhne.afc.gis.ui.MapMultiPointRenderer
+org.arakhne.afc.gis.ui.MapPointRenderer
+org.arakhne.afc.gis.ui.MapPolygonRenderer
+org.arakhne.afc.gis.ui.GisContainerRenderer

@@ -17,7 +17,9 @@
 	<modules>
 		<module>giscore</module>
 		<module>gisinputoutput</module>
+		<module>giscoreui</module>
 		<module>gisroad</module>
+		<module>gisroadui</module>
 		<module>gisbus</module>
 		<!-- 
 		<module>gisbusio</module>

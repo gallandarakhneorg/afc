@@ -21,7 +21,6 @@
 package org.arakhne.afc.gis.maplayer;
 
 import java.net.URL;
-import java.util.Iterator;
 import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -30,7 +29,6 @@ import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapElement;
-import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 
 /**
  * This class represents a layer that contains map elements.
@@ -89,14 +87,6 @@ public abstract class MapElementLayer<E extends MapElement> extends MapLayer imp
 		fireLayerContentChangedEvent(new MapLayerContentEvent(this));
 		fireElementChanged();
 	}
-
-	/** Iterates on the elements that intersect the specified bounds.
-	 *
-	 * @param bounds is the rectangle inside which the replied elements must be located
-	 * @return an iterator on the map elements.
-	 */
-	@Pure
-	public abstract Iterator<E> iterator(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds);
 
 	@Override
 	public void onMapElementGraphicalAttributeChanged() {

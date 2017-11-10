@@ -8,8 +8,8 @@
 		<version>14.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>giscore</artifactId>
-	<name>GIS Core Elements</name>
+	<artifactId>gisroadui</artifactId>
+	<name>UI Components for Road Elements</name>
 
 	<properties>
 		<manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>
@@ -17,39 +17,16 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>mathgeom</artifactId>
+			<groupId>org.arakhne.afc.gis</groupId>
+			<artifactId>gisroad</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>mathtree</artifactId>
+			<groupId>org.arakhne.afc.gis</groupId>
+			<artifactId>giscoreui</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>text</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.advanced</groupId>
-			<artifactId>attributes</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>testtools</artifactId>
-			<scope>test</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.advanced</groupId>
-			<artifactId>shapefile</artifactId>
-			<scope>test</scope>
-			<optional>true</optional>
+			<groupId>org.arakhne.afc.gis</groupId>
+			<artifactId>gisinputoutput</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -103,7 +80,7 @@
 					</archive>
 
 					<instructions>
-						<Export-Package>org.arakhne.afc.gis.*</Export-Package>
+						<Export-Package>org.arakhne.afc.gis.road.ui.*</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>

@@ -8,8 +8,8 @@
 		<version>14.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>giscore</artifactId>
-	<name>GIS Core Elements</name>
+	<artifactId>giscoreui</artifactId>
+	<name>UI Components for GIS</name>
 
 	<properties>
 		<manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>
@@ -17,39 +17,12 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>mathgeom</artifactId>
+			<groupId>org.arakhne.afc.gis</groupId>
+			<artifactId>giscore</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>mathtree</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>text</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.advanced</groupId>
-			<artifactId>attributes</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>testtools</artifactId>
-			<scope>test</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.advanced</groupId>
-			<artifactId>shapefile</artifactId>
-			<scope>test</scope>
-			<optional>true</optional>
+			<groupId>javafx</groupId>
+			<artifactId>jfxrt</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -69,16 +42,6 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<configuration>
 					<sourceDirectory>src/main/java</sourceDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<index>false</index>
-						<manifestFile>${manifest.file}</manifestFile>
-					</archive>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -103,7 +66,7 @@
 					</archive>
 
 					<instructions>
-						<Export-Package>org.arakhne.afc.gis.*</Export-Package>
+						<Export-Package>org.arakhne.afc.gis.ui.*</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>

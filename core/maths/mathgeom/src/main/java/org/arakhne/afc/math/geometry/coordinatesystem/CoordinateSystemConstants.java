@@ -205,6 +205,14 @@ public final class CoordinateSystemConstants {
 	 */
 	public static final CoordinateSystem3D BLENDER_3D = CoordinateSystem3D.XYZ_RIGHT_HAND;
 
+	/** Replies the preferred coordinate system for JavaFX.
+	 *
+	 * <p>JavaFX uses {@link CoordinateSystem2D#XY_LEFT_HAND} coordinate system.
+	 *
+	 * @since 14.0
+	 */
+	public static final CoordinateSystem2D JAVAFX_2D = CoordinateSystem2D.XY_LEFT_HAND;
+
 	private CoordinateSystemConstants() {
 		//
 	}

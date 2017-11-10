@@ -63,13 +63,6 @@
 						<manifestFile>${manifest.file}</manifestFile>
 					</archive>
 				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>test-jar</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
@@ -93,7 +86,7 @@
 					</archive>
 
 					<instructions>
-						<Export-Package>org.arakhne.afc.gis.*</Export-Package>
+						<Export-Package>org.arakhne.afc.gis.bus.*</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>

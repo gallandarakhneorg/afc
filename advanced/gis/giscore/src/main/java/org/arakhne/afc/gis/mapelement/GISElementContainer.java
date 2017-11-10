@@ -22,9 +22,13 @@ package org.arakhne.afc.gis.mapelement;
 
 import java.net.URL;
 import java.util.Collection;
+import java.util.Iterator;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.primitive.GISContainer;
+import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 
 /** Container of elements for a GIS application.
  *
@@ -158,5 +162,14 @@ public interface GISElementContainer<T extends MapElement> extends GISContainer<
 	 * @since 4.1
 	 */
 	void setElementGeometrySource(URL url, MapMetricProjection mapProjection);
+
+	/** Iterates on the elements that intersect the specified bounds.
+	 *
+	 * @param bounds is the rectangle inside which the replied elements must be located
+	 * @return an iterator on the map elements.
+	 * @since 14.0
+	 */
+	@Pure
+	Iterator<T> iterator(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds);
 
 }
