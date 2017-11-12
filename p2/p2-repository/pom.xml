@@ -26,6 +26,34 @@
 						<configuration>
 							<artifacts>
 								<artifact>
+									<id>org.arakhne.afc.core:vmutils:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:util:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:text:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:references:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:inputoutput:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:math:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.advanced:agentmotion:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
 									<id>org.arakhne.afc.core:vmutils:${afc.version}</id>
 									<override>true</override>
 								</artifact>

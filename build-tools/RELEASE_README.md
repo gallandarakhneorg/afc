@@ -10,30 +10,24 @@ A.1) Remove "-SNAPSHOT" in all the poms, and AndroidManifest.xml.
 
 A.2) Change the flags "bytecode.optimize" and "bytecode.debug" in pom.xml 
 
-A.3) Updgrade Maven dependencies and plugins.
+A.3) Change the P2 configuration. 
 
-A.4) Compiling locally without error.
+A.4) Updgrade Maven dependencies and plugins.
+
+A.5) Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
      $> mvn clean install
 
-A.5) Create the aggregated documentation, and copy the generated archive file into a safe folder:
+A.6) Create the aggregated documentation, and copy the generated archive file into a safe folder:
 
-     $> mvn-javadoc-aggregate
+     $> ./build-tools/src/main/resources/bash/generate_aggregate_javadoc.sh
 
-   or
-
-    $> mvn -Dmaven.test.skip=true clean org.arakhne.afc.maven:tag-replacer:generatereplacesrc javadoc:aggregate
-
-A.6) Prepare the bundles for Maven Central, and copy the generated archive files into a safe folder:
+A.7) Prepare the bundles for Maven Central, and copy the generated archive files into a safe folder:
 
      $> ./build-tools/src/main/resources/bash/prepare-bundles-for-central.sh
 
-    or
-
-     $> mvn-create-bundle --create -Dmaven.test.skip=true -DperformRelease=true
-
-A.7) Commit, Tag and push to Github:
+A.8) Commit, Tag and push to Github:
 
      $> git commit
      $> git tag "vX.Y.Z"
@@ -57,7 +51,7 @@ B.6) Announce the new version of AFC on the mailing lists.
 
 C) PHASE 3: DEVELOPMENT VERSION
 
-C.1) Revert step A.1.
+C.1) Revert step A.1 to A.3.
 
 C.2) Compiling locally without error.
 
