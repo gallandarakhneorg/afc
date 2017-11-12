@@ -5,27 +5,27 @@
 	<groupId>org.arakhne.afc</groupId>
 	<artifactId>afc</artifactId>
 	<packaging>pom</packaging>
-	<version>14.0-SNAPSHOT</version>
+	<version>14.0</version>
 	<name>Arakhnê Foundation Classes</name>
 	<inceptionYear>2006</inceptionYear>
 	<url>http://www.arakhne.org/afc/</url>
 	<description>Math, geometric, physic tools and other Java utilities.</description>
 
 	<properties>
-		<afc.version>14.0-SNAPSHOT</afc.version>
+		<afc.version>14.0</afc.version>
 		<afc.plugins.version>13.0</afc.plugins.version>
 		<min.java.version>1.8</min.java.version>
 		<year>2016</year>
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
 		<sourceEncoding>UTF-8</sourceEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<bytecode.optimize>false</bytecode.optimize>
-		<bytecode.debug>true</bytecode.debug>
+		<bytecode.optimize>true</bytecode.optimize>
+		<bytecode.debug>false</bytecode.debug>
 		<!-- Absolute path to the JDT compiler configuration -->
 		<jdtcompilerconfpath>${mainbasedir}/build-tools/src/main/resources/maven/maven-jdt-conf.properties</jdtcompilerconfpath>
 		<!-- Version of Mockito library -->
-		<mockito.version>2.11.0</mockito.version>
-		<mockito.version.osgi>2.11.0</mockito.version.osgi>
+		<mockito.version>2.12.0</mockito.version>
+		<mockito.version.osgi>2.12.0</mockito.version.osgi>
 		<!-- URL of the deployment server base -->
 		<afc.deployment.server>org.arakhne-ftp</afc.deployment.server>
 		<afc.deployment.base>ftp://ftp.tuxfamily.org/arakhne/arakhne-repository</afc.deployment.base>

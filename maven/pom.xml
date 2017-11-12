@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>afc</artifactId>
 		<groupId>org.arakhne.afc</groupId>
-		<version>14.0-SNAPSHOT</version>
+		<version>14.0</version>
 	</parent>
 
 	<groupId>org.arakhne.afc.maven</groupId>
