@@ -23,6 +23,7 @@ package org.arakhne.afc.gis.road.astar;
 import java.lang.ref.SoftReference;
 import java.net.URL;
 
+import org.junit.AssumptionViolatedException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,6 +40,7 @@ import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadNetwork;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.io.shape.ESRIBounds;
+import org.arakhne.afc.io.shape.ShapeFileFormatException;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
@@ -139,11 +141,11 @@ public class AstarTest extends AbstractGisTest {
 						this.ROAD_NETWORK = new SoftReference<>(rn);
 						getLogger().info("done"); //$NON-NLS-1$
 					}
-				}
-				catch(RuntimeException e) {
+				} catch (ShapeFileFormatException ex) {
+					throw new AssumptionViolatedException("Cannot read the Shape file", ex); //$NON-NLS-1$
+				} catch(RuntimeException e) {
 					throw e;
-				}
-				catch(Exception e) {
+				} catch(Exception e) {
 					throw new RuntimeException(e);
 				}
 			}

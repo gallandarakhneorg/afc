@@ -31,6 +31,7 @@ import java.util.TreeSet;
 
 import com.google.common.collect.Iterables;
 import org.junit.After;
+import org.junit.AssumptionViolatedException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,6 +44,7 @@ import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.gis.mapelement.MapPoint;
 import org.arakhne.afc.gis.primitive.GISPrimitive;
 import org.arakhne.afc.io.shape.ESRIBounds;
+import org.arakhne.afc.io.shape.ShapeFileFormatException;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
@@ -104,8 +106,9 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 			y /= this.reference.size();
 
 			this.center = new Point2d(x,y);
-		}
-		finally {
+		} catch (ShapeFileFormatException ex) {
+			throw new AssumptionViolatedException("Cannot read Shape file", ex); //$NON-NLS-1$
+		} finally {
 			getLogger().info("finished"); //$NON-NLS-1$
 		}
 	}

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.junit.After;
+import org.junit.AssumptionViolatedException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +33,7 @@ import org.arakhne.afc.gis.TestGISReader;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.gis.mapelement.MapPolyline;
 import org.arakhne.afc.gis.primitive.GISPrimitive;
+import org.arakhne.afc.io.shape.ShapeFileFormatException;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.testtools.AbstractTestCase;
@@ -61,30 +63,34 @@ public class MapElementGridSetTest extends AbstractTestCase {
 		InputStream is = Resources.getResourceAsStream(SHP_RESOURCE);
 		assertNotNull(is);
 
-		TestGISReader reader = new TestGISReader(is);
-
-		MapElement element;
-
-		Rectangle2d abounds = new Rectangle2d();
-		boolean first = true;
-
-		while ((element=reader.read())!=null) {
-			if (element instanceof MapPolyline) {
-				MapPolyline p = (MapPolyline)element;
-				this.reference.add(p);
-				if (first) {
-					first = false;
-					abounds.set(p.getBoundingBox());
-				} else {
-					abounds.setUnion(p.getBoundingBox());
+		try {
+			TestGISReader reader = new TestGISReader(is);
+	
+			MapElement element;
+	
+			Rectangle2d abounds = new Rectangle2d();
+			boolean first = true;
+	
+			while ((element=reader.read())!=null) {
+				if (element instanceof MapPolyline) {
+					MapPolyline p = (MapPolyline)element;
+					this.reference.add(p);
+					if (first) {
+						first = false;
+						abounds.set(p.getBoundingBox());
+					} else {
+						abounds.setUnion(p.getBoundingBox());
+					}
 				}
 			}
+	
+			reader.close();
+	
+			if (!first) this.bounds = abounds;
+			else this.bounds = null;
+		} catch (ShapeFileFormatException ex) {
+			throw new AssumptionViolatedException("Cannot read Shape file", ex); //$NON-NLS-1$
 		}
-
-		reader.close();
-
-		if (!first) this.bounds = abounds;
-		else this.bounds = null;
 	}
 
 	@After
