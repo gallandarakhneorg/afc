@@ -239,7 +239,7 @@ public interface XMLBuilder {
 	 *     instantiate.
 	 * @return A new <code>Element</code> object with the following
 	 *     attributes:
-	 * <table border='1' cellpadding='3'>
+	 * <table border='1' cellpadding='3' summary="Attributes">
 	 * <tr>
 	 * <th>Attribute</th>
 	 * <th>Value</th>
@@ -305,7 +305,7 @@ public interface XMLBuilder {
 	 * @param qualifiedName The qualified name of the attribute to
 	 *     instantiate.
 	 * @return A new <code>Attr</code> object with the following attributes:
-	 * <table border='1' cellpadding='3'>
+	 * <table border='1' cellpadding='3' summary="Attributes">
 	 * <tr>
 	 * <th>
 	 *   Attribute</th>

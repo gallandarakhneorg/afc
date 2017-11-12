@@ -57,10 +57,7 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	/** Factory of shapes.
 	 */
 	protected TestShapeFactory3ai<?, ?, B> factory;
-	
-	/**
-	 * @throws Exception
-	 */
+
 	@Before
 	public void setUp() throws Exception {
 		this.factory = createFactory();
@@ -107,9 +104,6 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 		return this.factory.createMultiShape();
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
 		this.shape = null;
@@ -118,9 +112,9 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	/** Assert is the given path iterator has a first element with the
 	 * given information.
 	 * 
-	 * @param pi
-	 * @param type
-	 * @param coords
+	 * @param pi path iterator.
+	 * @param type the expected type.
+	 * @param coords the expected coordinates.
 	 */
 	protected void assertElement(PathIterator3ai<?> pi, PathElementType type, int... coords) {
 		if (!pi.hasNext()) {
@@ -140,8 +134,8 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	/**
 	 * Replies if two arrays have the same values at epsilon.
 	 * 
-	 * @param a
-	 * @param b
+	 * @param a a set of coordinates.
+	 * @param b a set of coordinates.
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
@@ -160,8 +154,8 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	/**
 	 * Replies if two arrays have the same values at epsilon.
 	 * 
-	 * @param a
-	 * @param b
+	 * @param a a set of coordinates.
+	 * @param b a set of coordinates.
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
@@ -179,7 +173,7 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 
 	/** Assert is the given path iterator has no element.
 	 * 
-	 * @param pi
+	 * @param pi the path iterator.
 	 */
 	protected void assertNoElement(PathIterator3ai<?> pi) {
 		if (pi.hasNext()) {

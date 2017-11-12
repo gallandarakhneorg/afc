@@ -57,9 +57,6 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	 */
 	protected TestShapeFactory<?, ?, B> factory;
 	
-	/**
-	 * @throws Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 		this.factory = createFactory();
@@ -106,9 +103,6 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 		return this.factory.createMultiShape();
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
 		this.shape = null;
@@ -117,9 +111,9 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	/** Assert is the given path iterator has a first element with the
 	 * given information.
 	 * 
-	 * @param pi
-	 * @param type
-	 * @param coords
+	 * @param pi the path iterator.
+	 * @param type the expected type.
+	 * @param coords the expected coordinates.
 	 */
 	protected void assertElement(PathIterator2ai<?> pi, PathElementType type, int... coords) {
 		if (!pi.hasNext()) {
@@ -155,8 +149,8 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
     /**
 	 * Replies if two arrays have the same values at epsilon.
 	 * 
-	 * @param a
-	 * @param b
+	 * @param a a first set of coordinates.
+	 * @param b a second set of coordinates.
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
@@ -175,8 +169,8 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	/**
 	 * Replies if two arrays have the same values at epsilon.
 	 * 
-	 * @param a
-	 * @param b
+	 * @param a a first set of coordinates.
+	 * @param b a second set of coordinates.
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
@@ -194,7 +188,7 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 
 	/** Assert is the given path iterator has no element.
 	 * 
-	 * @param pi
+	 * @param pi the path iterator.
 	 */
 	protected void assertNoElement(PathIterator2ai<?> pi) {
 		if (pi.hasNext()) {

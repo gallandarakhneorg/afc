@@ -67,7 +67,7 @@ public interface Path3afp<
 		extends Shape3afp<ST, IT, IE, P, V, B>, Path3D<ST, IT, PathIterator3afp<IE>, P, V, B> {
 
 	/**
-	 * Multiple of cubic & quad curve size.
+	 * Multiple of cubic &amp; quad curve size.
 	 */
 	int GROW_SIZE = 24;
 

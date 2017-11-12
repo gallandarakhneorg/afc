@@ -51,9 +51,6 @@ public class BinaryTreeNodeTest {
 	private DefaultBinaryTreeNode<Object> node;
 	private DefaultBinaryTreeNode<Object> newNode;
 	
-	/**
-	 * @throws Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 		this.root = new NodeStub("root");  //$NON-NLS-1$
@@ -70,9 +67,6 @@ public class BinaryTreeNodeTest {
 		this.root.addTreeNodeListener(this.listener);
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
 		this.root.removeTreeNodeListener(this.listener);
@@ -81,8 +75,6 @@ public class BinaryTreeNodeTest {
 		this.listener.reset();
 	}
 
-	/**
-	 */
 	@Test
 	public void getChildCount() {
 		assertEquals(2, this.root.getChildCount());
@@ -91,8 +83,6 @@ public class BinaryTreeNodeTest {
 		assertEquals(2, this.node.getChildCount());
 	}
 
-	/**
-	 */
 	@Test
 	public void getNotNullChildCount() {
 		assertEquals(2, this.root.getNotNullChildCount());
@@ -101,8 +91,6 @@ public class BinaryTreeNodeTest {
 		assertEquals(0, this.node.getNotNullChildCount());
 	}
 	
-	/**
-	 */
 	@Test
 	public void setLeftChild_newNode() {
 		this.node.setLeftChild(this.newNode);
@@ -126,8 +114,6 @@ public class BinaryTreeNodeTest {
 		assertSame(this.node, this.listener.parentEvent.get(0).getNewParent());
 	}
 	
-	/**
-	 */
 	@Test
 	public void setLeftChild_moveNode() {
 		this.node.setLeftChild(this.child2);
@@ -161,8 +147,6 @@ public class BinaryTreeNodeTest {
 		assertSame(1, this.listener.removalEvent.get(0).getChildIndex());
 	}
 
-	/**
-	 */
 	@Test
 	public void setRightChild_newNode() {
 		this.node.setRightChild(this.newNode);
@@ -186,8 +170,6 @@ public class BinaryTreeNodeTest {
 		assertSame(this.node, this.listener.parentEvent.get(0).getNewParent());
 	}
 	
-	/**
-	 */
 	@Test
 	public void setRightChild_moveNode() {
 		this.node.setRightChild(this.child2);
@@ -221,8 +203,6 @@ public class BinaryTreeNodeTest {
 		assertSame(1, this.listener.removalEvent.get(0).getChildIndex());
 	}
 
-	/**
-	 */
 	@Test
 	public void moveToNodeInt() {
 		assertTrue(this.child2.moveTo(this.node, 0));

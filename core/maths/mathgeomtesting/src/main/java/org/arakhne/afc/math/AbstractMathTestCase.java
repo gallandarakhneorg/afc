@@ -64,8 +64,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Test if the actual value is equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param expected
-	 * @param actual
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(Tuple2D<?> expected, Tuple2D<?> actual) {
 		assertEpsilonEquals(null, expected, actual);
@@ -74,8 +74,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Test if the actual value is not equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param expected
-	 * @param actual
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(Tuple2D<?> expected, Tuple2D<?> actual) {
 		assertNotEpsilonEquals(null, expected, actual);
@@ -84,9 +84,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Test if the actual value is equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param message
-	 * @param expected
-	 * @param actual
+	 * @param message the error message.
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(String message, Tuple2D<?> expected, Tuple2D<?> actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
@@ -106,9 +106,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Test if the actual value is not equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param message
-	 * @param expected
-	 * @param actual
+	 * @param message the error message.
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(String message, Tuple2D<?> expected, Tuple2D<?> actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
@@ -128,8 +128,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Test if the actual value is equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param expected
-	 * @param actual
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
 		assertEpsilonEquals(null, expected, actual);
@@ -138,8 +138,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Test if the actual value is not equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param expected
-	 * @param actual
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
 		assertNotEpsilonEquals(null, expected, actual);
@@ -148,9 +148,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Test if the actual value is equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param message
-	 * @param expected
-	 * @param actual
+	 * @param message the error message.
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(String message, Tuple3D<?> expected, Tuple3D<?> actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
@@ -176,8 +176,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Replies if the actual value is equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param expected
-	 * @param actual
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 * @return the test result.
 	 */
 	public boolean isEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
@@ -189,9 +189,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Test if the actual value is not equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param message
-	 * @param expected
-	 * @param actual
+	 * @param message the error message.
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(String message, Tuple3D<?> expected, Tuple3D<?> actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
@@ -217,8 +217,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Test if the actual value is equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param expected
-	 * @param actual
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(Quaternion expected, Quaternion actual) {
 		assertEpsilonEquals(null, expected, actual);
@@ -227,8 +227,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Test if the actual value is not equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param expected
-	 * @param actual
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(Quaternion expected, Quaternion actual) {
 		assertNotEpsilonEquals(null, expected, actual);
@@ -237,9 +237,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Test if the actual value is equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param message
-	 * @param expected
-	 * @param actual
+	 * @param message the error message.
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(String message, Quaternion expected, Quaternion actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
@@ -271,9 +271,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	/** Test if the actual value is not equal to the expected value with
 	 * a distance of epsilon.
 	 * 
-	 * @param message
-	 * @param expected
-	 * @param actual
+	 * @param message the error message.
+	 * @param expected the expected value.
+	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(String message, Quaternion expected, Quaternion actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
@@ -401,9 +401,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual vector is equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
 	 */
 	public void assertFpVectorEquals(double x, double y, Vector2D<?, ?> v) {
 		double dx = x - v.getX();
@@ -419,9 +419,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual vector is equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
 	 */
 	public void assertIntVectorEquals(int x, int y, Vector2D<?, ?> v) {
 		if (x != v.ix() || y != v.iy()) {
@@ -434,9 +434,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual vector is not equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
 	 */
 	public void assertFpVectorNotEquals(double x, double y, Vector2D<?, ?> v) {
 		double dx = x - v.getX();
@@ -452,9 +452,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual vector is not equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
 	 */
 	public void assertIntVectorNotEquals(int x, int y, Vector2D<?, ?> v) {
 		if (x == v.ix() && y == v.iy()) {
@@ -467,10 +467,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual vector is equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
+	 * @param z the expected z.
 	 */
 	public void assertFpVectorEquals(double x, double y, double z, Vector3D<?, ?> v) {
 		double dx = x - v.getX();
@@ -487,10 +487,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual vector is equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
+	 * @param z the expected z.
 	 */
 	public void assertIntVectorEquals(int x, int y, int z, Vector3D<?, ?> v) {
 		if (x != v.ix() || y != v.iy() || z != v.iz()) {
@@ -503,10 +503,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual vector is not equal to the expected values.
 	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param v
+	 * @param x the expected x.
+	 * @param y the expected y.
+	 * @param z the expected z.
+	 * @param v the actual value.
 	 */
 	public void assertFpVectorNotEquals(double x, double y, double z, Vector3D<?, ?> v) {
 		double dx = x - v.getX();
@@ -523,10 +523,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual vector is not equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
+	 * @param z the expected z.
 	 */
 	public void assertIntVectorNotEquals(int x, int y, int z, Vector3D<?, ?> v) {
 		if (x == v.ix() && y == v.iy() && z == v.iz()) {
@@ -539,9 +539,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual point is equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
 	 */
 	public void assertFpPointEquals(double x, double y, Point2D<?, ?> v) {
 		double dx = x - v.getX();
@@ -557,9 +557,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	
 	/** Test if the actual point is equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
 	 */
 	public void assertIntPointEquals(int x, int y, Point2D<?, ?> v) {
 		if (x != v.ix() || y != v.iy()) {
@@ -572,9 +572,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	
 	/** Test if the actual point is not equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
 	 */
 	public void assertFpPointNotEquals(double x, double y, Point2D<?, ?> v) {
 		double dx = x - v.getX();
@@ -590,9 +590,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	
 	/** Test if the actual point is not equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
 	 */
 	public void assertIntPointNotEquals(int x, int y, Point2D<?, ?> v) {
 		if (x == v.ix() && y == v.iy()) {
@@ -604,10 +604,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	}
 	/** Test if the actual point is equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
+	 * @param z the expected z.
 	 */
 	public void assertFpPointEquals(double x, double y, double z, Point3D<?, ?> v) {
 		double dx = x - v.getX();
@@ -623,10 +623,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual point is equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
+	 * @param z the expected z.
 	 */
 	public void assertIntPointEquals(int x, int y, int z, Point3D<?, ?> v) {
 		if (x != v.ix() || y != v.iy() || z != v.iz()) {
@@ -638,10 +638,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual point is not equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
+	 * @param z the expected z.
 	 */
 	public void assertFpPointNotEquals(double x, double y, double z, Point3D<?, ?> v) {
 		double dx = x - v.getX();
@@ -657,9 +657,10 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual point is not equal to the expected values.
 	 * 
-	 * @param v
-	 * @param x
-	 * @param y
+	 * @param v the actual value.
+	 * @param x the expected x.
+	 * @param y the expected y.
+	 * @param z the expected z.
 	 */
 	public void assertIntPointNotEquals(int x, int y, int z, Point3D<?, ?> v) {
 		if (x == v.ix() && y == v.iy() && z == v.iz()) {
@@ -671,8 +672,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual matrix is equal to the expected values.
 	 * 
-	 * @param expected 
-	 * @param actual
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(Matrix2d expected, Matrix2d actual) {
 		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
@@ -687,8 +688,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual matrix is different from the expected values.
 	 * 
-	 * @param expected 
-	 * @param actual
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(Matrix2d expected, Matrix2d actual) {
 		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
@@ -703,8 +704,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual matrix is equal to the expected values.
 	 * 
-	 * @param expected 
-	 * @param actual
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(Matrix3d expected, Matrix3d actual) {
 		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
@@ -724,8 +725,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual matrix is different from the expected values.
 	 * 
-	 * @param expected 
-	 * @param actual
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(Matrix3d expected, Matrix3d actual) {
 		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
@@ -745,8 +746,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual matrix is equal to the expected values.
 	 * 
-	 * @param expected 
-	 * @param actual
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(Matrix4d expected, Matrix4d actual) {
 		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
@@ -773,8 +774,8 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Test if the actual matrix is different from the expected values.
 	 * 
-	 * @param expected 
-	 * @param actual
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(Matrix4d expected, Matrix4d actual) {
 		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
@@ -801,7 +802,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	
 	/** Assume that the given tuple is mutable.
 	 * 
-	 * @param tuple
+	 * @param tuple the tuple.
 	 */
 	public void assumeMutable(Tuple2D<?> tuple) {
 	    try {
@@ -813,7 +814,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	
 	/** Assume that the given tuple is mutable.
 	 * 
-	 * @param tuple
+	 * @param tuple the tuple.
 	 */
 	public void assumeImmutable(Tuple2D<?> tuple) {
 	    try {
@@ -826,7 +827,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 
 	/** Assume that the given tuple is mutable.
 	 * 
-	 * @param tuple
+	 * @param tuple the tuple.
 	 */
 	public void assumeMutable(Tuple3D<?> tuple) {
 		try {
@@ -838,7 +839,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	
 	/** Assume that the given tuple is mutable.
 	 * 
-	 * @param tuple
+	 * @param tuple the tuple.
 	 */
 	public void assumeImmutable(Tuple3D<?> tuple) {
 		try {

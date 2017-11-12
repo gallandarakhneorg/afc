@@ -70,6 +70,8 @@ then
 		
 		CDIR=`pwd`
 
+		NBBUNDLES=0
+		COMMAND_LINE="for file in "
 		for TARGET in `find -type d -name "target"`
 		do
 			cd "$TARGET"
@@ -97,10 +99,16 @@ then
 					done
 					jar cf "$BUNDLENAME" $FILES
 					echo "done"
+					NBBUNDLES=$[$NBBUNDLES + 1]
+					COMMAND_LINE="${COMMAND_LINE} ${BUNDLENAME}"
 				fi
 			fi
 			cd "$CDIR"
 		done
+		echo "$NBBUNDLES were created."
+		COMMAND_LINE="${COMMAND_LINE}; do cp -v \`find -name \"\$file\"\` ~/target; done"
+		echo "Copying command line:"
+		echo "${COMMAND_LINE}"
 
 	else
 		exit 255

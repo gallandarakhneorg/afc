@@ -40,7 +40,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  *
  * <p>Rotations in a 3D coordinate system follow the right/left hand rules
  * (assuming that <code>OX</code>, <code>OY</code> and <code>OZ</code> are the three axis of the coordinate system):
- * <table border="1" width="100%" summary="Rotations">
+ * <table width="100%" summary="Rotations">
  * <tr>
  * <td>Right-handed rule:</td>
  * <td>
@@ -50,7 +50,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <li>when rotating around <code>OY</code>, positive rotation angle is going from <code>OZ</code> to <code>OX</code></li>
  * <li>when rotating around <code>OZ</code>, positive rotation angle is going from <code>OX</code> to <code>OY</code></li>
  * </ul><br>
- * <img border="0" width="200" src="doc-files/rotation_right.png" alt="[Right-handed Rotation Rule]">
+ * <img width="200" src="doc-files/rotation_right.png" alt="[Right-handed Rotation Rule]">
  * </td>
  * </tr><tr>
  * <td>Left-handed rule:</td>
@@ -61,7 +61,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <li>when rotating around <code>OY</code>, positive rotation angle is going from <code>OZ</code> to <code>OX</code></li>
  * <li>when rotating around <code>OZ</code>, positive rotation angle is going from <code>OX</code> to <code>OY</code></li>
  * </ul><br>
- * <img border="0" width="200" src="doc-files/rotation_left.png" alt="[Left-handed Rotation Rule]">
+ * <img width="200" src="doc-files/rotation_left.png" alt="[Left-handed Rotation Rule]">
  * </td>
  * </tr></table>
  *
@@ -76,7 +76,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
     /**
      * Left handed XZY coordinate system.
      *
-     * <p><a hef="doc-files/xzy_left.png"><img src="doc-files/xzy_left.png" border="0" width="200" alt=
+     * <p><a href="doc-files/xzy_left.png"><img src="doc-files/xzy_left.png" width="200" alt=
      * "[Left Handed XZY Coordinate System]"></a>
      */
     XZY_LEFT_HAND(0, 1, 1, 0),
@@ -84,7 +84,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
     /**
      * Left handed XYZ coordinate system.
      *
-     * <p><a hef="doc-files/xyz_left.png"><img src="doc-files/xyz_left.png" border="0" width="200" alt=
+     * <p><a href="doc-files/xyz_left.png"><img src="doc-files/xyz_left.png" width="200" alt=
      * "[Left Handed XYZ Coordinate System]"></a>
      */
     XYZ_LEFT_HAND(-1, 0, 0, 1),
@@ -92,7 +92,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
     /**
      * Right handed XZY coordinate system.
      *
-     * <p><a hef="doc-files/xzy_right.png"><img src="doc-files/xzy_right.png" border="0" width="200" alt=
+     * <p><a href="doc-files/xzy_right.png"><img src="doc-files/xzy_right.png" width="200" alt=
      * "[Right Handed XZY Coordinate System]"></a>
      */
     XZY_RIGHT_HAND(0, -1, 1, 0),
@@ -100,7 +100,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
     /**
      * Right handed XYZ coordinate system.
      *
-     * <p><a hef="doc-files/xyz_right.png"><img src="doc-files/xyz_right.png" border="0" width="200" alt=
+     * <p><a href="doc-files/xyz_right.png"><img src="doc-files/xyz_right.png" width="200" alt=
      * "[Right Handed XYZ Coordinate System]"></a>
      */
     XYZ_RIGHT_HAND(1, 0, 0, 1);

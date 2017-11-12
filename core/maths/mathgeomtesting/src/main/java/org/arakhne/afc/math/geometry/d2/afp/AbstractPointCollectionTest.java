@@ -65,9 +65,6 @@ public abstract class AbstractPointCollectionTest<P extends Point2D<? super P, ?
 		this.collection = this.shape.toCollection();
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
 		this.shape = null;

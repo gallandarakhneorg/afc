@@ -133,7 +133,7 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	 * the <i>current</i> (sub)-road network.
 	 * {@link #isReallyCulDeSac()} takes into account only the top-most
 	 * road network element. See the following table for details:
-	 * <table>
+	 * <table summary="">
 	 * <thead>
 	 * <tr><th>Inside RoadNetwork</th>
 	 *     <th># Connected Segments at Top-Level</th>
@@ -203,7 +203,7 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	 * the <i>current</i> (sub)-road network.
 	 * {@link #isReallyCulDeSac()} takes into account only the top-most
 	 * road network element. See the following table for details:
-	 * <table>
+	 * <table summary="">
 	 * <thead>
 	 * <tr><th>Inside RoadNetwork</th>
 	 *     <th># Connected Segments at Top-Level</th>

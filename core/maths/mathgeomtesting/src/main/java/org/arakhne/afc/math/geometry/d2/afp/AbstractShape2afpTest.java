@@ -58,9 +58,6 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	 */
 	protected TestShapeFactory<? extends Point2D, ? extends Vector2D, B> factory;
 	
-	/**
-	 * @throws Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 		this.factory = createFactory();
@@ -159,9 +156,6 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 		return path;
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
 		this.shape = null;
@@ -170,9 +164,9 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	/** Assert is the given path iterator has a first element with the
 	 * given information.
 	 * 
-	 * @param pi
-	 * @param type
-	 * @param coords
+	 * @param pi the path iterator.
+	 * @param type the expected type.
+	 * @param coords the expected coordinates.
 	 */
 	public void assertElement(PathIterator2afp<?> pi, PathElementType type, double... coords) {
 		if (!pi.hasNext()) {
@@ -194,8 +188,8 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	/**
 	 * Replies if two arrays have the same values at epsilon.
 	 * 
-	 * @param a
-	 * @param b
+	 * @param a a first set of coordinates.
+	 * @param b a second set of coordinates.
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
@@ -214,8 +208,8 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	/**
 	 * Replies if two arrays have the same values at epsilon.
 	 * 
-	 * @param a
-	 * @param b
+	 * @param a a first set of coordinates.
+	 * @param b a second set of coordinates.
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
@@ -233,7 +227,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 
 	/** Assert is the given path iterator has no element.
 	 * 
-	 * @param pi
+	 * @param pi the path iterator.
 	 */
 	public static void assertNoElement(PathIterator2afp<?> pi) {
 		if (pi.hasNext()) {

@@ -56,14 +56,14 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 
 	/** Right handed XY coordinate system.
 	 *
-	 * <p><a href="doc-files/xy_right.png"><img border="0" src="doc-files/xy_right.png" width="200"
+	 * <p><a href="doc-files/xy_right.png"><img src="doc-files/xy_right.png" width="200"
 	 * alt="[Right Handed XY Coordinate System]"></a>
 	 */
 	XY_RIGHT_HAND,
 
 	/** Left handed XY coordinate system.
 	 *
-	 * <p><a href="doc-files/xy_left.png"><img border="0" src="doc-files/xy_left.png" width="200"
+	 * <p><a href="doc-files/xy_left.png"><img src="doc-files/xy_left.png" width="200"
 	 * alt="[Left Handed XY Coordinate System]"></a>
 	 */
 	XY_LEFT_HAND;

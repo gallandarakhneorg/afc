@@ -15,23 +15,23 @@ A.3) Updgrade Maven dependencies and plugins.
 A.4) Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
-     $> mvn clean install -P generate-android-libraries
+     $> mvn clean install
 
 A.5) Create the aggregated documentation, and copy the generated archive file into a safe folder:
 
-     $> mvn-javadoc-aggregate -P generate-android-libraries
+     $> mvn-javadoc-aggregate
 
    or
 
-    $> mvn -P generate-android-libraries -Dmaven.test.skip=true clean org.arakhne.afc.maven:tag-replacer:generatereplacesrc javadoc:aggregate
+    $> mvn -Dmaven.test.skip=true clean org.arakhne.afc.maven:tag-replacer:generatereplacesrc javadoc:aggregate
 
 A.6) Prepare the bundles for Maven Central, and copy the generated archive files into a safe folder:
 
-     $> ./build-tools/src/main/resources/bash/prepare-bundles-for-central.sh -P generate-android-libraries
+     $> ./build-tools/src/main/resources/bash/prepare-bundles-for-central.sh
 
     or
 
-     $> mvn-create-bundle --create -Dmaven.test.skip=true -DperformRelease=true -P generate-android-libraries
+     $> mvn-create-bundle --create -Dmaven.test.skip=true -DperformRelease=true
 
 A.7) Commit, Tag and push to Github:
 

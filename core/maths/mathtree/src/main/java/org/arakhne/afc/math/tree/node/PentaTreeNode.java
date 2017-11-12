@@ -35,7 +35,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * This is the generic implementation of a
  * tree for which each node has five children.
  *
- * <p><h3>moveTo</h3>
+ * <h3>moveTo</h3>
  * According to its definition in
  * {@link TreeNode#moveTo(TreeNode, int)}, the binary
  * tree node implementation of <code>moveTo</code>

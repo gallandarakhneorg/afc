@@ -82,12 +82,12 @@ public interface Shape3D<
 	 * <p>The equality test does not flatten the paths. It means that
 	 * is function has is functionnality equivalent to: <pre><code>
 	 * PathIterator2D it = this.getPathIterator();
-	 * while (it.hasNext() && pathIterator.hasNext()) {
+	 * while (it.hasNext() &amp;&amp; pathIterator.hasNext()) {
 	 *   PathElement2D e1 = it.next();
 	 *   PathElement2D e2 = it.next();
 	 *   if (!e1.equals(e2)) return false;
 	 * }
-	 * return !it.hasNext() && !pathIterator.hasNext();
+	 * return !it.hasNext() &amp;&amp; !pathIterator.hasNext();
 	 * </code></pre>
 	 *
 	 * @param pathIterator the path iterator to compare to the one of this shape.

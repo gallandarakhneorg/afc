@@ -138,9 +138,9 @@ public interface Sphere3ai<
 	 * @param cy is the y-coordinate of the sphere center
 	 * @param cz is the z-coordinate of the sphere center
 	 * @param cr is the radius of the sphere center
-	 * @param quadrant is the quadrant: <table>
+	 * @param quadrant is the quadrant: <table summary="">
 	 * <thead>
-	 * <th><td>quadrant</td><td>x</td><td>y</td></th>
+	 * <tr><th>quadrant</th><th>x</th><th>y</th></tr>
 	 * </thead>
 	 * <tbody>
 	 * <tr><td>0</td><td>&ge;cx</td><td>&ge;cy</td></tr>

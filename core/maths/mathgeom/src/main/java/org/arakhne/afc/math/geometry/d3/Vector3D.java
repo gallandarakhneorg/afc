@@ -134,7 +134,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 
 	/** Compute the determinant of two vectors.
 	 *
-	 * <p><pre><code>det(X1,X2) = |X1|.|X2|.sin(a)</code></pre>
+	 * <pre><code>det(X1,X2) = |X1|.|X2|.sin(a)</code></pre>
 	 * where <code>X1</code> and <code>X2</code> are two vectors
 	 * and <code>a</code> is the angle between <code>X1</code>
 	 * and <code>X2</code>.
@@ -290,7 +290,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * Computes the cross product of the vectors v1 and v2
 	 * as if the vectors are inside a left-hand coordinate system.
 	 *
-	 * <img src="doc-files/left_handed_cross_product.png">
+	 * <img src="doc-files/left_handed_cross_product.png" alt="">
 	 *
 	 * @param x1 x coordinate of the vector v1.
 	 * @param y1 y coordinate of the vector v1.
@@ -313,7 +313,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * Computes the cross product of the vectors v1 and v2
 	 * as if the vectors are inside a right-hand coordinate system.
 	 *
-	 * <img src="doc-files/right_handed_cross_product.png">
+	 * <img src="doc-files/right_handed_cross_product.png" alt="">
 	 *
 	 * @param x1 x coordinate of the vector v1.
 	 * @param y1 y coordinate of the vector v1.

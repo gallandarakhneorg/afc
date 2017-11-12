@@ -29,7 +29,7 @@ import org.arakhne.afc.attrs.attr.AttributeType;
 
 /** Describes the supported types in DBase fields.
  *
- * <p><pre>
+ * <pre>
  * -----------------------------------------------------------
  * 			Field Type (1 byte)
  * -----------------------------------------------------------

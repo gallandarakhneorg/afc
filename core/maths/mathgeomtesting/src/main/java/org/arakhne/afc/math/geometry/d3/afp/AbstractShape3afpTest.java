@@ -59,9 +59,6 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	 */
 	protected TestShapeFactory3afp<? extends Point3D, ? extends Vector3D, B> factory;
 	
-	/**
-	 * @throws Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 		this.factory = createFactory();
@@ -118,9 +115,6 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 		return path;
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
 		this.shape = null;
@@ -129,9 +123,9 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	/** Assert is the given path iterator has a first element with the
 	 * given information.
 	 * 
-	 * @param pi
-	 * @param type
-	 * @param coords
+	 * @param pi the path iterator.
+	 * @param type the expected type.
+	 * @param coords the expected coordinates.
 	 */
 	protected void assertElement(PathIterator3afp<?> pi, PathElementType type, double... coords) {
 		if (!pi.hasNext()) {
@@ -153,8 +147,8 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	/**
 	 * Replies if two arrays have the same values at epsilon.
 	 * 
-	 * @param a
-	 * @param b
+	 * @param a a set of coordinates.
+	 * @param b a set of coordinates.
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
@@ -173,8 +167,8 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	/**
 	 * Replies if two arrays have the same values at epsilon.
 	 * 
-	 * @param a
-	 * @param b
+	 * @param a a set of coordinates.
+	 * @param b a set of coordinates.
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
@@ -192,7 +186,7 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 
 	/** Assert is the given path iterator has no element.
 	 * 
-	 * @param pi
+	 * @param pi a path iterator.
 	 */
 	protected void assertNoElement(PathIterator3afp<?> pi) {
 		if (pi.hasNext()) {

@@ -28,7 +28,6 @@ import org.junit.runners.model.Statement;
 
 /** Enable tu run a unit test for all the types of a coordinate system 2D.
  * 
- * @see CoordinateSystem2D
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$

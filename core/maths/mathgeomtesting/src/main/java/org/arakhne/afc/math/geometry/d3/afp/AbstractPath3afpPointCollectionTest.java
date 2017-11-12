@@ -66,9 +66,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
 		this.collection = this.shape.toCollection();
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
 		this.shape = null;
@@ -86,8 +83,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
 		}
 	}
 	
-    /**
-     */
 	@Test
     public void size() {
     	assertEquals(7, this.collection.size());
@@ -99,8 +94,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertEquals(0, this.collection.size());
     }
 
-    /**
-     */
 	@Test
     public void isEmpty() {
     	assertFalse(this.collection.isEmpty());
@@ -112,8 +105,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertTrue(this.collection.isEmpty());
     }
 
-    /**
-     */
 	@Test
 	@Ignore
     public void containsObject() {
@@ -123,8 +114,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertFalse(this.collection.contains(this.factory.createPoint(-1, 6, 0)));
     }
 
-    /**
-     */
 	@Test
 	@Ignore
     public void iterator() {
@@ -168,8 +157,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertFalse(iterator.hasNext());
     }
 
-    /**
-     */
 	@Test
 	@Ignore
     public void toArray() {
@@ -205,8 +192,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertEpsilonEquals(0, ((Point3D) tab[6]).getZ());
     }
 
-    /**
-     */
 	@Test
 	@Ignore
     public void toArrayArray() {
@@ -231,8 +216,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertEpsilonEquals(0, tab[4].getZ());
     }
 
-    /**
-     */
 	@Test
 	@Ignore
     public void add() {
@@ -246,8 +229,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertCoords(123, 456, 0, 789, 1011, 0);
     }
 
-    /**
-     */
 	@Test
 	@Ignore
     public void remove() {
@@ -258,9 +239,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0);
     }
 
-
-    /**
-     */
 	@Test
     public void containsAll() {
     	assertTrue(this.collection.containsAll(
@@ -269,8 +247,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     			Arrays.asList(this.factory.createPoint(1, 1, 0), this.factory.createPoint(6, 6, 0))));
     }
 
-    /**
-     */
 	@Test
 	@Ignore
     public void addAll() {
@@ -279,8 +255,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertCoords(1, 1, 0, 2, 2, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0, 123, 456, 0, 789, 1011, 0);
     }
 
-    /**
-     */
 	@Test
 	@Ignore
     public void removeAll() {
@@ -289,8 +263,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0);
     }
 
-    /**
-     */
 	@Test
     public void retainAll() {
     	try {
@@ -303,8 +275,6 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	}
     }
 
-    /**
-     */
 	@Test
     public void clear() {
     	this.collection.clear();

@@ -95,7 +95,6 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 	 *
 	 * @param index the index.
 	 * @return the element.
-	 * @throw {@link IndexOutOfBoundsException}
 	 */
 	@Pure
 	public P getElementAt(int index) {

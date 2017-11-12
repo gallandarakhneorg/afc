@@ -39,7 +39,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * of a tree node which has a dynamic count count of children,
  * please see {@link NaryTreeNode}.
  *
- * <p><h3>moveTo</h3>
+ * <h3>moveTo</h3>
  * According to its definition in
  * {@link TreeNode#moveTo(TreeNode, int)}, the binary
  * tree node implementation of <code>moveTo</code>
