@@ -466,6 +466,84 @@ public class TextUtilTest extends AbstractTestCase {
 	}
 
 	@Test
+	public void toJavaString_01() {
+		assertEquals("abc", TextUtil.toJavaString("abc")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJavaString_02() {
+		assertEquals("a\\nb\\tc", TextUtil.toJavaString("a\nb\tc")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJavaString_03() {
+		assertEquals("a\\\\nbc\\\\T", TextUtil.toJavaString("a\\nbc\\T")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJavaString_04() {
+		assertEquals("ab/c", TextUtil.toJavaString("ab/c")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJavaString_05() {
+		assertEquals("ab\\\"c", TextUtil.toJavaString("ab\"c")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJavaString_06() {
+		assertEquals("ab'c", TextUtil.toJavaString("ab'c")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJavaString_07() {
+		assertEquals("ab\\u0004c", TextUtil.toJavaString("ab\u0004c")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJavaString_08() {
+		assertEquals("ab\\\\u0004c", TextUtil.toJavaString("ab\\u0004c")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJsonString_01() {
+		assertEquals("abc", TextUtil.toJsonString("abc")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJsonString_02() {
+		assertEquals("a\\nb\\tc", TextUtil.toJsonString("a\nb\tc")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJsonString_03() {
+		assertEquals("a\\\\nbc\\\\T", TextUtil.toJsonString("a\\nbc\\T")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJsonString_04() {
+		assertEquals("ab\\/c", TextUtil.toJsonString("ab/c")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJsonString_05() {
+		assertEquals("ab\\\"c", TextUtil.toJsonString("ab\"c")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJsonString_06() {
+		assertEquals("ab'c", TextUtil.toJsonString("ab'c")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJsonString_07() {
+		assertEquals("ab\\u0004c", TextUtil.toJsonString("ab\u0004c")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void toJsonString_08() {
+		assertEquals("ab\\\\u0004c", TextUtil.toJsonString("ab\\u0004c")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 
 	@Test
 	public void formatHex_01() {

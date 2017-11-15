@@ -1732,6 +1732,43 @@ public final class TextUtil {
 		return cost[len0 - 1];
 	}
 
+	/** Translate the given string to its Java string equivalent.
+	 * All the special characters will be escaped. The enclosing double quote
+	 * characters are not added.
+	 *
+	 * <p>The Java special characters are listed within {@link StringEscaper#JAVA_SPECIAL_CHARS}.
+	 * Any character outside the range [{@link StringEscaper#JAVA_MIN_CHAR}, {@link StringEscaper#JAVA_MAX_CHAR}]
+	 * is automatically escaped.
+	 *
+	 * @param text is the text to convert.
+	 * @return the Java string for the text.
+	 * @since 15.0
+	 */
+	@Pure
+	public static String toJavaString(String text) {
+		final StringEscaper escaper = new StringEscaper();
+		return escaper.escape(text);
+	}
+
+	/** Translate the given string to its Json string equivalent.
+	 * All the special characters will be escaped. The enclosing double quote
+	 * characters are not added.
+	 *
+	 * <p>The Json escaping extends the {@link #toJavaString(String) Java escaping} by
+	 * protecting the {@code /} character.
+	 *
+	 * @param text is the text to convert.
+	 * @return the Json string for the text.
+	 * @since 15.0
+	 */
+	@Pure
+	public static String toJsonString(String text) {
+		final StringEscaper escaper = new StringEscaper(
+				StringEscaper.JAVA_ESCAPE_CHAR,
+				StringEscaper.JAVA_STRING_CHAR, StringEscaper.JAVA_ESCAPE_CHAR, StringEscaper.JSON_SPECIAL_ESCAPED_CHAR);
+		return escaper.escape(text);
+	}
+
 	/**
 	 * Algorithm interface used by cut string functions to provide
 	 * a buffer filler.
