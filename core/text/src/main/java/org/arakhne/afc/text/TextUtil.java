@@ -39,6 +39,7 @@ import java.util.regex.Pattern;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.StringEscaper;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
@@ -1614,6 +1615,19 @@ public final class TextUtil {
 		}
 
 		return text.toString();
+	}
+
+	/** Format the given int value to hexadecimal.
+	 *
+	 * @param amount the value to convert.
+	 * @param digits the minimal number of digits.
+	 * @return a string representation of the given value.
+	 * @since 15.0
+	 */
+	@Pure
+	@Inline(value = "$3.formatHex($1, $2)", imported = {StringEscaper.class})
+	public static String formatHex(int amount, int digits) {
+		return StringEscaper.formatHex(amount, digits);
 	}
 
 	/** Format the given double value.

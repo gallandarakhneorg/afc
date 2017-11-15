@@ -464,4 +464,27 @@ public class TextUtilTest extends AbstractTestCase {
 		assertEquals(1, TextUtil.getLevenshteinDistance("", "a")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(3, TextUtil.getLevenshteinDistance("a", "abcd")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+
+	@Test
+
+	@Test
+	public void formatHex_01() {
+		assertEquals("4f", TextUtil.formatHex(0x4F, 1)); //$NON-NLS-1$
+	}
+
+	@Test
+	public void formatHex_02() {
+		assertEquals("4f", TextUtil.formatHex(0x4F, 2)); //$NON-NLS-1$
+	}
+
+	@Test
+	public void formatHex_03() {
+		assertEquals("04f", TextUtil.formatHex(0x4F, 3)); //$NON-NLS-1$
+	}
+
+	@Test
+	public void formatHex_04() {
+		assertEquals("004f", TextUtil.formatHex(0x4F, 4)); //$NON-NLS-1$
+	}
+
 }
