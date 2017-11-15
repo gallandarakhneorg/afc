@@ -2061,8 +2061,7 @@ public final class FileSystem {
 			} else if (URISchemeType.FILE.isScheme(urlDescription)) {
 				final File file = new File(URISchemeType.FILE.removeScheme(urlDescription));
 				try {
-					url = new URL(URISchemeType.FILE.name(), "", //$NON-NLS-1$
-							fromFileStandardToURLStandard(file));
+					url = new URL(URISchemeType.FILE.name(), "", fromFileStandardToURLStandard(file)); //$NON-NLS-1$
 				} catch (MalformedURLException e) {
 					//
 				}
@@ -2655,7 +2654,7 @@ public final class FileSystem {
 			if (thefile.isAbsolute()) {
 				url = thefile.toURI().toURL();
 			} else {
-				url = new URL("file:" + thefile.toString()); //$NON-NLS-1$
+				url = new URL(URISchemeType.FILE.name(), "", thefile.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return toShortestURL(url);
 		} catch (MalformedURLException e) {

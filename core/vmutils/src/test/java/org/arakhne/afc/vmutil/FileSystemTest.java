@@ -1334,12 +1334,15 @@ public class FileSystemTest {
 			} else if (getOS() == OperatingSystem.WIN) {
 				fn = filename.replaceAll(Pattern.quote(FileSystem.WINDOWS_SEPARATOR_STRING),
 						Matcher.quoteReplacement(File.separator));
+				if (addRootSlash && Pattern.matches("^[a-zA-Z]\\:.*$", fn)) { //$NON-NLS-1$
+					fn = File.separator + fn;
+				}
 			} else {
 				fn = filename.replaceAll(Pattern.quote(FileSystem.UNIX_SEPARATOR_STRING),
 						Matcher.quoteReplacement(File.separator));
-			}
-			if (addRootSlash && !fn.startsWith(File.separator)) {
-				fn = File.separator + fn;
+				if (addRootSlash && !fn.startsWith(File.separator)) {
+					fn = File.separator + fn;
+				}
 			}
 			return new File(fn);
 		}
@@ -1378,16 +1381,32 @@ public class FileSystemTest {
 
 		/** @return "/the path/to/file with space.toto" or "C:\the path\to\file with space.toto" or "/the path/to/file with space.toto"
 		 */
-		protected URL createFileUrlWithSpacesWithFile() throws MalformedURLException {
-			File file = newFile(getStandardFilenameWithSpaces(), false);
-			return file.toURI().toURL();
+		protected URL createFileUrlWithSpacesWithFile(boolean replaceSpaceChars, boolean addRootSlash) throws MalformedURLException {
+			String filename = getStandardFilenameWithSpaces();
+			String fn;
+			if (getOS() == OperatingSystem.WIN) {
+				// A root slash is mandatory because the path starts with a disk name.
+				fn = filename.replaceAll(Pattern.quote(FileSystem.WINDOWS_SEPARATOR_STRING),
+						Matcher.quoteReplacement(FileSystem.URL_PATH_SEPARATOR));
+				if (addRootSlash) {
+					fn = "/" + fn; //$NON-NLS-1$
+				}
+			} else {
+				fn = filename.replaceAll(Pattern.quote(FileSystem.UNIX_SEPARATOR_STRING),
+						Matcher.quoteReplacement(FileSystem.URL_PATH_SEPARATOR));
+			}
+			if (replaceSpaceChars) {
+				fn = fn.replaceAll(Pattern.quote(" "), //$NON-NLS-1$
+						Matcher.quoteReplacement("%20")); //$NON-NLS-1$
+			}
+			return new URL("file:" + fn); //$NON-NLS-1$
 		}
 
 		@Test
 		public void isJarURLURL() throws Exception {
 			assertFalse(FileSystem.isJarURL(createAbsoluteStandardFileUrl()));
 			assertFalse(FileSystem.isJarURL(createAbsoluteFolderUrl()));
-			assertFalse(FileSystem.isJarURL(createFileUrlWithSpacesWithFile()));
+			assertFalse(FileSystem.isJarURL(createFileUrlWithSpacesWithFile(true, true)));
 		}
 
 		@Test
@@ -1400,7 +1419,7 @@ public class FileSystemTest {
 		public void getJarFileURL() throws Exception {
 			assertNull(FileSystem.getJarFile(createAbsoluteStandardFileUrl()));
 			assertNull(FileSystem.getJarFile(createAbsoluteFolderUrl()));
-			assertNull(FileSystem.getJarFile(createFileUrlWithSpacesWithFile()));
+			assertNull(FileSystem.getJarFile(createFileUrlWithSpacesWithFile(true, true)));
 		}
 
 		@Test
@@ -1476,7 +1495,7 @@ public class FileSystemTest {
 		public void extensionsURL() throws MalformedURLException {
 			assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createAbsoluteStandardFileUrl())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			assertArrayEquals(new String[0], FileSystem.extensions(createAbsoluteFolderUrl()));
-			assertArrayEquals(new String[] {"toto"}, FileSystem.extensions(createFileUrlWithSpacesWithFile())); //$NON-NLS-1$
+			assertArrayEquals(new String[] {"toto"}, FileSystem.extensions(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
 		}
 
 		@Test
@@ -1497,7 +1516,7 @@ public class FileSystemTest {
 		public void extensionURL() throws MalformedURLException {
 			assertEquals(".z", FileSystem.extension(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
 			assertEquals("", FileSystem.extension(createAbsoluteFolderUrl())); //$NON-NLS-1$
-			assertEquals(".toto", FileSystem.extension(createFileUrlWithSpacesWithFile())); //$NON-NLS-1$
+			assertEquals(".toto", FileSystem.extension(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
 		}
 
 		@Test
@@ -1520,9 +1539,9 @@ public class FileSystemTest {
 			assertTrue(FileSystem.hasExtension(createAbsoluteStandardFileUrl(), "z")); //$NON-NLS-1$
 			assertFalse(FileSystem.hasExtension(createAbsoluteStandardFileUrl(), ".c")); //$NON-NLS-1$
 			assertFalse(FileSystem.hasExtension(createAbsoluteFolderUrl(), ".z")); //$NON-NLS-1$
-			assertTrue(FileSystem.hasExtension(createFileUrlWithSpacesWithFile(), ".toto")); //$NON-NLS-1$
-			assertTrue(FileSystem.hasExtension(createFileUrlWithSpacesWithFile(), "toto")); //$NON-NLS-1$
-			assertFalse(FileSystem.hasExtension(createFileUrlWithSpacesWithFile(), ".z")); //$NON-NLS-1$
+			assertTrue(FileSystem.hasExtension(createFileUrlWithSpacesWithFile(true, true), ".toto")); //$NON-NLS-1$
+			assertTrue(FileSystem.hasExtension(createFileUrlWithSpacesWithFile(true, true), "toto")); //$NON-NLS-1$
+			assertFalse(FileSystem.hasExtension(createFileUrlWithSpacesWithFile(true, true), ".z")); //$NON-NLS-1$
 		}
 
 		@Test
@@ -1551,7 +1570,7 @@ public class FileSystemTest {
 		public void basenameURL() throws MalformedURLException {
 			assertEquals("test.x.z", FileSystem.basename(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
 			assertEquals("home", FileSystem.basename(createAbsoluteFolderUrl())); //$NON-NLS-1$
-			assertEquals("file with space", FileSystem.basename(createFileUrlWithSpacesWithFile())); //$NON-NLS-1$
+			assertEquals("file with space", FileSystem.basename(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
 		}
 
 		@Test
@@ -1572,7 +1591,7 @@ public class FileSystemTest {
 		public void largeBasenameURL() throws MalformedURLException {
 			assertEquals("test.x.z.z", FileSystem.largeBasename(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
 			assertEquals("home", FileSystem.largeBasename(createAbsoluteFolderUrl())); //$NON-NLS-1$
-			assertEquals("file with space.toto", FileSystem.largeBasename(createFileUrlWithSpacesWithFile())); //$NON-NLS-1$
+			assertEquals("file with space.toto", FileSystem.largeBasename(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
 		}
 
 		@Test
@@ -1593,7 +1612,7 @@ public class FileSystemTest {
 		public void shortBasenameURL() throws MalformedURLException {
 			assertEquals("test", FileSystem.shortBasename(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
 			assertEquals("home", FileSystem.shortBasename(createAbsoluteFolderUrl())); //$NON-NLS-1$
-			assertEquals("file with space", FileSystem.shortBasename(createFileUrlWithSpacesWithFile())); //$NON-NLS-1$
+			assertEquals("file with space", FileSystem.shortBasename(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
 		}
 
 		@Test
@@ -1644,8 +1663,8 @@ public class FileSystemTest {
 			base = new URL("file:" + fromFileToUrl(getAbsoluteFoldername(), false) + "/a/b/c"); //$NON-NLS-1$ //$NON-NLS-2$
 			assertEquals(base, FileSystem.join(createAbsoluteFolderUrl(), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-			base = newFile(getStandardFilenameWithSpaces() + "/a/b/c", false).toURI().toURL(); //$NON-NLS-1$
-			assertEquals(base, FileSystem.join(createFileUrlWithSpacesWithFile(), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			base = newFile(getStandardFilenameWithSpaces() + "/a/b/c", true).toURI().toURL(); //$NON-NLS-1$
+			assertEquals(base, FileSystem.join(createFileUrlWithSpacesWithFile(false, true), "a", "b", "c")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 
 		@Test
@@ -1658,8 +1677,8 @@ public class FileSystemTest {
 			base = new URL("file:" + fromFileToUrl(getAbsoluteFoldername(), false) + "/a/b/c"); //$NON-NLS-1$ //$NON-NLS-2$
 			assertEquals(base, FileSystem.join(createAbsoluteFolderUrl(), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-			base = newFile(getStandardFilenameWithSpaces() + "/a/b/c", false).toURI().toURL(); //$NON-NLS-1$
-			assertEquals(base, FileSystem.join(createFileUrlWithSpacesWithFile(), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			base = newFile(getStandardFilenameWithSpaces() + "/a/b/c", true).toURI().toURL(); //$NON-NLS-1$
+			assertEquals(base, FileSystem.join(createFileUrlWithSpacesWithFile(true, true), new File("a"), new File("b"), new File("c"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 
 		@Test
@@ -1672,7 +1691,7 @@ public class FileSystemTest {
 			base = createAbsoluteFolderUrl();
 			assertEquals(base, FileSystem.convertStringToURL(base.toString(), false));
 
-			base = createFileUrlWithSpacesWithFile();
+			base = createFileUrlWithSpacesWithFile(true, true);
 			assertEquals(base, FileSystem.convertStringToURL(base.toString(), false));
 		}
 
@@ -1693,7 +1712,7 @@ public class FileSystemTest {
 					FileSystem.convertFileToURL(newFile(getAbsoluteStandardFilename(), true)));
 			assertEquals(createAbsoluteFolderUrl(),
 					FileSystem.convertFileToURL(newFile(getAbsoluteFoldername(), true)));
-			assertEquals(createFileUrlWithSpacesWithFile(),  
+			assertEquals(createFileUrlWithSpacesWithFile(getOS() != OperatingSystem.WIN, false),  
 					FileSystem.convertFileToURL(newFile(getStandardFilenameWithSpaces(), false)));
 		}
 
@@ -1841,7 +1860,7 @@ public class FileSystemTest {
 		public void removeExtensionURL() throws MalformedURLException {
 			assertEquals(new URL("file:/home/test.x.z"), FileSystem.removeExtension(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
 			assertEquals(new URL("file:/home"), FileSystem.removeExtension(createAbsoluteFolderUrl())); //$NON-NLS-1$
-			assertEquals(new URL("file:/the%20path/to/file%20with%20space"), FileSystem.removeExtension(createFileUrlWithSpacesWithFile())); //$NON-NLS-1$
+			assertEquals(new URL("file:/the%20path/to/file%20with%20space"), FileSystem.removeExtension(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
 		}
 
 		@Test
@@ -1855,7 +1874,7 @@ public class FileSystemTest {
 		public void replaceExtensionURL() throws MalformedURLException {
 			assertEquals(new URL("file:/home/test.x.z.xyz"), FileSystem.replaceExtension(createAbsoluteStandardFileUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
 			assertEquals(new URL("file:/home.xyz"), FileSystem.replaceExtension(createAbsoluteFolderUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(new URL("file:/the%20path/to/file%20with%20space.xyz"), FileSystem.replaceExtension(createFileUrlWithSpacesWithFile(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(new URL("file:/the%20path/to/file%20with%20space.xyz"), FileSystem.replaceExtension(createFileUrlWithSpacesWithFile(true, true), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Test
@@ -1869,7 +1888,7 @@ public class FileSystemTest {
 		public void addExtensionURL() throws MalformedURLException {
 			assertEquals(new URL("file:/home/test.x.z.z.xyz"), FileSystem.addExtension(createAbsoluteStandardFileUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
 			assertEquals(new URL("file:/home.xyz"), FileSystem.addExtension(createAbsoluteFolderUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(new URL("file:/the%20path/to/file%20with%20space.toto.xyz"), FileSystem.addExtension(createFileUrlWithSpacesWithFile(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(new URL("file:/the%20path/to/file%20with%20space.toto.xyz"), FileSystem.addExtension(createFileUrlWithSpacesWithFile(true, true), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Test
@@ -2008,7 +2027,7 @@ public class FileSystemTest {
 		public void removeExtensionURL() throws MalformedURLException {
 			assertEquals(new URL("file:/home/test.x.z"), FileSystem.removeExtension(createAbsoluteStandardFileUrl())); //$NON-NLS-1$
 			assertEquals(new URL("file:/home"), FileSystem.removeExtension(createAbsoluteFolderUrl())); //$NON-NLS-1$
-			assertEquals(new URL("file:/the%20path/to/file%20with%20space"), FileSystem.removeExtension(createFileUrlWithSpacesWithFile())); //$NON-NLS-1$
+			assertEquals(new URL("file:/the%20path/to/file%20with%20space"), FileSystem.removeExtension(createFileUrlWithSpacesWithFile(true, true))); //$NON-NLS-1$
 		}
 
 		@Test
@@ -2022,7 +2041,7 @@ public class FileSystemTest {
 		public void replaceExtensionURL() throws MalformedURLException {
 			assertEquals(new URL("file:/home/test.x.z.xyz"), FileSystem.replaceExtension(createAbsoluteStandardFileUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
 			assertEquals(new URL("file:/home.xyz"), FileSystem.replaceExtension(createAbsoluteFolderUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(new URL("file:/the%20path/to/file%20with%20space.xyz"), FileSystem.replaceExtension(createFileUrlWithSpacesWithFile(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(new URL("file:/the%20path/to/file%20with%20space.xyz"), FileSystem.replaceExtension(createFileUrlWithSpacesWithFile(true, true), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Test
@@ -2036,7 +2055,7 @@ public class FileSystemTest {
 		public void addExtensionURL() throws MalformedURLException {
 			assertEquals(new URL("file:/home/test.x.z.z.xyz"), FileSystem.addExtension(createAbsoluteStandardFileUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
 			assertEquals(new URL("file:/home.xyz"), FileSystem.addExtension(createAbsoluteFolderUrl(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
-			assertEquals(new URL("file:/the%20path/to/file%20with%20space.toto.xyz"), FileSystem.addExtension(createFileUrlWithSpacesWithFile(), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(new URL("file:/the%20path/to/file%20with%20space.toto.xyz"), FileSystem.addExtension(createFileUrlWithSpacesWithFile(true, true), ".xyz")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		@Test
