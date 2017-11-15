@@ -25,6 +25,8 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import org.arakhne.afc.vmutil.StringEscaper;
+
 /**
  * Basic Json buffer.
  *
@@ -37,6 +39,12 @@ import java.util.TreeMap;
 public class JsonBuffer {
 
 	private static final String INDENT_STRING = "\t"; //$NON-NLS-1$
+
+	private static final String NULL_CONSTANT = "null"; //$NON-NLS-1$
+
+	private static final String TRUE_CONSTANT = "true"; //$NON-NLS-1$
+
+	private static final String FALSE_CONSTANT = "false"; //$NON-NLS-1$
 
 	private final Map<String, Object> content = new TreeMap<>();
 
@@ -73,7 +81,25 @@ public class JsonBuffer {
 	 * @param value the value.
 	 */
 	public void add(String name, JsonBuffer value) {
-		this.content.put(name, value);
+		if (value != this) {
+			this.content.put(name, value);
+		}
+	}
+
+	/** Build the Json string representation of the given pairs.
+	 *
+	 * @param name the name of the first attribute.
+	 * @param value the value of the first attribute.
+	 * @param otherPairs the other pairs.
+	 * @return the string representation.
+	 */
+	public static String toString(String name, Object value, Object... otherPairs) {
+		final JsonBuffer buffer = new JsonBuffer();
+		buffer.add(name, value);
+		for (int i = 0; i < otherPairs.length; i += 2) {
+			buffer.add(Objects.toString(otherPairs[i]), otherPairs[i + 1]);
+		}
+		return buffer.toString();
 	}
 
 	@Override
@@ -97,7 +123,7 @@ public class JsonBuffer {
 			buffer.append(entry.getKey());
 			buffer.append("\": "); //$NON-NLS-1$
 			final Object value = entry.getValue();
-			valueToString(buffer, indent, value);
+			valueToString(buffer, false, indent, value);
 		}
 		buffer.append("\n"); //$NON-NLS-1$
 		doIndent(buffer, indent);
@@ -113,23 +139,37 @@ public class JsonBuffer {
 			} else {
 				buffer.append(",\n"); //$NON-NLS-1$
 			}
-			valueToString(buffer, indent, value);
+			valueToString(buffer, true, indent, value);
 		}
 		buffer.append("\n"); //$NON-NLS-1$
 		doIndent(buffer, indent);
 		buffer.append("]"); //$NON-NLS-1$
 	}
 
-	private static void valueToString(StringBuilder buffer, int indent, Object value) {
-		doIndent(buffer, indent + 1);
-		if (value instanceof JsonBuffer) {
+	private static void valueToString(StringBuilder buffer, boolean doIndent, int indent, Object value) {
+		if (doIndent) {
+			doIndent(buffer, indent + 1);
+		}
+		if (value == null) {
+			buffer.append(NULL_CONSTANT);
+		} else if (value instanceof JsonBuffer) {
 			toString(buffer, indent + 1, ((JsonBuffer) value).content);
 		} else if (value instanceof Map<?, ?>) {
 			toString(buffer, indent + 1, (Map<?, ?>) value);
 		} else if (value instanceof Iterable<?>) {
 			toString(buffer, indent + 1, (Iterable<?>) value);
-		} else {
+		} else if (value instanceof Number) {
 			buffer.append(Objects.toString(value));
+		} else if (value instanceof Boolean) {
+			buffer.append(((Boolean) value).booleanValue() ? TRUE_CONSTANT : FALSE_CONSTANT);
+		} else {
+			final String rawValue = Objects.toString(value);
+			buffer.append("\""); //$NON-NLS-1$
+			final StringEscaper escaper = new StringEscaper(
+					StringEscaper.JAVA_ESCAPE_CHAR,
+					StringEscaper.JAVA_STRING_CHAR, StringEscaper.JAVA_ESCAPE_CHAR, StringEscaper.JSON_SPECIAL_ESCAPED_CHAR);
+			buffer.append(escaper.escape(rawValue));
+			buffer.append("\""); //$NON-NLS-1$
 		}
 	}
 
