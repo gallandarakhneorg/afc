@@ -20,9 +20,11 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** A point that is used for internal computations.
  *
@@ -60,9 +62,18 @@ public class InnerComputationPoint2afp implements Point2D<InnerComputationPoint2
 		return InnerComputationGeomFactory.SINGLETON;
 	}
 
+	@Pure
 	@Override
 	public String toString() {
-		return Tuple2D.toString(this.x, this.y);
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
 	}
 
 	@Override

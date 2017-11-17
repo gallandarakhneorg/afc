@@ -20,9 +20,11 @@
 
 package org.arakhne.afc.math.geometry.d3.afp;
 
-import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** A vector that is used for internal computations.
  *
@@ -64,9 +66,19 @@ public class InnerComputationVector3afp implements Vector3D<InnerComputationVect
 		return InnerComputationGeomFactory3afp.SINGLETON;
 	}
 
+	@Pure
 	@Override
 	public String toString() {
-		return Tuple3D.toString(this.x, this.y, this.z);
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("z", getZ()); //$NON-NLS-1$
 	}
 
 	@Override

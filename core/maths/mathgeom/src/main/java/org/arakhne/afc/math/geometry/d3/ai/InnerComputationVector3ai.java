@@ -20,9 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d3.ai;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** A vector that is used for internal computations.
  *
@@ -148,6 +151,21 @@ public class InnerComputationVector3ai implements Vector3D<InnerComputationVecto
 	@Override
 	public UnmodifiableVector3D<InnerComputationVector3ai, InnerComputationPoint3ai> toUnmodifiable() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("z", getZ()); //$NON-NLS-1$
 	}
 
 }

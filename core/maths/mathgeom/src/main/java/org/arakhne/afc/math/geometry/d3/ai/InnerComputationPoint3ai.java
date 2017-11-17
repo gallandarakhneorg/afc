@@ -20,9 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d3.ai;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** A point that is used for internal computations.
  *
@@ -136,6 +139,21 @@ public class InnerComputationPoint3ai implements Point3D<InnerComputationPoint3a
 	@Override
 	public UnmodifiablePoint3D<InnerComputationPoint3ai, InnerComputationVector3ai> toUnmodifiable() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("z", getZ()); //$NON-NLS-1$
 	}
 
 }

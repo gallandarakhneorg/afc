@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 2D tuple with 2 integer numbers.
  *
@@ -338,7 +339,15 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 	@Pure
 	@Override
 	public String toString() {
-		return Tuple2D.toString(this.x, this.y);
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
 	}
 
 }

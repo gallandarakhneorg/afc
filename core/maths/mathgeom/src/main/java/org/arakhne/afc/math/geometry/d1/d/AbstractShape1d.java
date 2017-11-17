@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** Abstract shape with 2 double precision floating-point numbers.
  *
@@ -100,6 +101,11 @@ public abstract class AbstractShape1d<T extends AbstractShape1d<?>> implements S
 	@Override
 	public String toString() {
 		return ReflectionUtil.toString(this);
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		ReflectionUtil.toJson(this, buffer);
 	}
 
 }

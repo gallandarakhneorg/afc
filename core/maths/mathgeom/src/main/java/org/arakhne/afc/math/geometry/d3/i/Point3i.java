@@ -29,6 +29,7 @@ import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 2D Point with 2 integer numbers.
  *
@@ -317,6 +318,16 @@ public class Point3i extends Tuple3i<Point3i> implements Point3D<Point3i, Vector
 			@Override
 			public int iz() {
 				return Point3i.this.iz();
+			}
+
+			@Override
+			public String toString() {
+				return Point3i.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Point3i.this.toJson(buffer);
 			}
 
 		};

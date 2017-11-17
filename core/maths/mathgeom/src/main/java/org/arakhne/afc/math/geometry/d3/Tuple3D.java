@@ -21,12 +21,12 @@
 package org.arakhne.afc.math.geometry.d3;
 
 import java.io.Serializable;
-import java.text.MessageFormat;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonableObject;
 
 /** 3D tuple.
  *
@@ -38,33 +38,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  */
 public interface Tuple3D<RT extends Tuple3D<? super RT>>
-	extends Cloneable, Serializable {
-
-	/** Pattern for creation a string representation of a {@link Tuple3D}.
-	 */
-	String TUPLE_STRING_PATTERN = "({0}, {1}, {2})"; //$NON-NLS-1$
-
-	/** Replies the string representation of the tuple.
-	 *
-	 * @param x x coordinate.
-	 * @param y y coordinate.
-	 * @param z z coordinate.
-	 * @return the string representation.
-	 */
-	static String toString(double x, double y, double z) {
-		return MessageFormat.format(TUPLE_STRING_PATTERN, x, y, z);
-	}
-
-	/** Replies the string representation of the tuple.
-	 *
-	 * @param x x coordinate.
-	 * @param y y coordinate.
-	 * @param z z coordinate.
-	 * @return the string representation.
-	 */
-	static String toString(int x, int y, int z) {
-		return MessageFormat.format(TUPLE_STRING_PATTERN, x, y, z);
-	}
+	extends Cloneable, Serializable, JsonableObject {
 
 	/** Clone this point.
 	 *

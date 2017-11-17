@@ -20,6 +20,10 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+
 @SuppressWarnings("all")
 public final class Point2DStub implements Point2D<Point2DStub, Vector2DStub> {
 
@@ -109,6 +113,20 @@ public final class Point2DStub implements Point2D<Point2DStub, Vector2DStub> {
 	@Override
 	public UnmodifiablePoint2D<Point2DStub, Vector2DStub> toUnmodifiable() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
 	}
 
 }

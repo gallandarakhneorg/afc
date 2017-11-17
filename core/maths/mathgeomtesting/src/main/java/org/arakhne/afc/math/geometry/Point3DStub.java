@@ -20,9 +20,12 @@
 
 package org.arakhne.afc.math.geometry;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 @SuppressWarnings("all")
 public final class Point3DStub implements Point3D<Point3DStub, Vector3DStub> {
@@ -138,6 +141,21 @@ public final class Point3DStub implements Point3D<Point3DStub, Vector3DStub> {
 	@Override
 	public UnmodifiablePoint3D<Point3DStub, Vector3DStub> toUnmodifiable() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Pure
+	@Override
+	public String toString() {
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("z", getZ()); //$NON-NLS-1$
 	}
 
 }

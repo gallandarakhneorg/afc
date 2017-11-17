@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 1.5D tuple with 2 double precision floating-point numbers.
  *
@@ -412,7 +413,16 @@ public class Tuple1d<RT extends Tuple1d<? super RT>> implements Tuple2D<RT> {
 	@Pure
 	@Override
 	public String toString() {
-		return Point1D.toString(this.segment.get(), this.x, this.y);
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("segment", getSegment()); //$NON-NLS-1$
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
 	}
 
 }

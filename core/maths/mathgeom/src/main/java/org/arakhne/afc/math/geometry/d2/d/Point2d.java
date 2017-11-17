@@ -28,6 +28,7 @@ import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 2D Point with 2 double precision floating-point numbers.
  *
@@ -284,6 +285,16 @@ public class Point2d extends Tuple2d<Point2d> implements Point2D<Point2d, Vector
 			@Override
 			public int iy() {
 				return Point2d.this.iy();
+			}
+
+			@Override
+			public String toString() {
+				return Point2d.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Point2d.this.toJson(buffer);
 			}
 
 		};

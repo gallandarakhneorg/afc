@@ -26,6 +26,7 @@ import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.UnmodifiablePoint1D;
 import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 1.5D Point with 2 double precision floating-point numbers.
  *
@@ -186,6 +187,16 @@ public class Point1d extends Tuple1d<Point1d> implements Point1D<Point1d, Vector
 			@Override
 			public GeomFactory1D<Vector1d, Point1d> getGeomFactory() {
 				return Point1d.this.getGeomFactory();
+			}
+
+			@Override
+			public String toString() {
+				return Point1d.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Point1d.this.toJson(buffer);
 			}
 
 		};

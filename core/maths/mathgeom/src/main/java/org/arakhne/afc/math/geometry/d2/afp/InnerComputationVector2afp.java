@@ -20,9 +20,11 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** A vector that is used for internal computations.
  *
@@ -60,9 +62,18 @@ public class InnerComputationVector2afp implements Vector2D<InnerComputationVect
 		return InnerComputationGeomFactory.SINGLETON;
 	}
 
+	@Pure
 	@Override
 	public String toString() {
-		return Tuple2D.toString(this.x, this.y);
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
 	}
 
 	@Override

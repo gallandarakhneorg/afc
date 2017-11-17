@@ -22,10 +22,13 @@ package org.arakhne.afc.math.geometry.d1.afp;
 
 import java.lang.ref.WeakReference;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d1.GeomFactory1D;
 import org.arakhne.afc.math.geometry.d1.Point1D;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.math.geometry.d1.UnmodifiablePoint1D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** A point that is used for internal computations.
  *
@@ -64,9 +67,19 @@ public class InnerComputationPoint1afp implements Point1D<InnerComputationPoint1
 		this.y = y;
 	}
 
+	@Pure
 	@Override
 	public String toString() {
-		return Point1D.toString(getSegment(), getX(), getY());
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("segment", getSegment()); //$NON-NLS-1$
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
 	}
 
 	@Override

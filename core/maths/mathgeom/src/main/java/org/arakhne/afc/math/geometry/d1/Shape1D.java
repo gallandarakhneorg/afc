@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonableObject;
 
 /** 1D shape.
  *
@@ -48,7 +49,7 @@ public interface Shape1D<
 		V extends Vector1D<? super V, ? super P, ? super S>,
 		S extends Segment1D<?, ?>,
 		B extends Shape1D<?, ?, P, V, S, B>>
-		extends Cloneable, Serializable {
+		extends Cloneable, Serializable, JsonableObject {
 
 	/** Replies the geometry factory associated to this point.
 	 *

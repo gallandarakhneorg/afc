@@ -20,9 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d1;
 
-import java.text.MessageFormat;
-import java.util.Objects;
-
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -52,10 +49,6 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	RS extends Segment1D<?, ?>>
 	extends Tuple2D<RP>, Comparable<Point1D<?, ?, ?>> {
 
-	/** Pattern for creation a string representation of a {@link Point1D}.
-	 */
-	String POINT_STRING_PATTERN = "({0}, {1}, {2})"; //$NON-NLS-1$
-
 	@Override
 	default int compareTo(Point1D<?, ?, ?> point) {
 		if (point == null) {
@@ -73,28 +66,6 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 		final int h1 = mySegment != null ? mySegment.hashCode() : 0;
 		final int h2 = otherSegment != null ? otherSegment.hashCode() : 0;
 		return h1 - h2;
-	}
-
-	/** Replies the string representation of the tuple.
-	 *
-	 * @param segment the segment.
-	 * @param x x coordinate.
-	 * @param y y coordinate.
-	 * @return the string representation.
-	 */
-	static String toString(Segment1D<?, ?> segment, double x, double y) {
-		return MessageFormat.format(POINT_STRING_PATTERN, Objects.toString(segment), x, y);
-	}
-
-	/** Replies the string representation of the tuple.
-	 *
-	 * @param segment the segment.
-	 * @param x x coordinate.
-	 * @param y y coordinate.
-	 * @return the string representation.
-	 */
-	static String toString(Segment1D<?, ?> segment, int x, int y) {
-		return MessageFormat.format(POINT_STRING_PATTERN, Objects.toString(segment), x, y);
 	}
 
 	/** Clamp the curviline coordinate to the segment.

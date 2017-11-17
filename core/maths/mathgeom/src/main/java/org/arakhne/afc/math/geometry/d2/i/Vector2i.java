@@ -29,6 +29,7 @@ import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 2D Vector with 2 integer numbers.
  *
@@ -289,6 +290,16 @@ public class Vector2i extends Tuple2i<Vector2i> implements Vector2D<Vector2i, Po
 			@Override
 			public int iy() {
 				return Vector2i.this.iy();
+			}
+
+			@Override
+			public String toString() {
+				return Vector2i.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Vector2i.this.toJson(buffer);
 			}
 
 		};

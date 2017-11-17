@@ -26,6 +26,7 @@ import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * Immutable vector 1.5D.
@@ -116,7 +117,16 @@ public final class ImmutableVector1D<S extends Segment1D<?, ?>>
 	@Pure
 	@Override
 	public String toString() {
-		return Point1D.toString(getSegment(), getX(), getY());
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("segment", getSegment()); //$NON-NLS-1$
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
 	}
 
 	@SuppressWarnings("unchecked")

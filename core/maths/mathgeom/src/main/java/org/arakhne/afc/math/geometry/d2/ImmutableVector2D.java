@@ -22,6 +22,8 @@ package org.arakhne.afc.math.geometry.d2;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+
 /**
  * Immutable vector 2D.
  *
@@ -89,7 +91,15 @@ public final class ImmutableVector2D implements UnmodifiableVector2D<ImmutableVe
 	@Pure
 	@Override
 	public String toString() {
-		return Tuple2D.toString(this.x, this.y);
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
 	}
 
 	@Override

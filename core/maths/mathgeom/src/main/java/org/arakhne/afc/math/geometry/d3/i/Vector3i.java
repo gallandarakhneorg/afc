@@ -28,6 +28,7 @@ import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 2D Vector with 2 integer numbers.
  *
@@ -296,6 +297,16 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 			@Override
 			public int iz() {
 				return Vector3i.this.iz();
+			}
+
+			@Override
+			public String toString() {
+				return Vector3i.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Vector3i.this.toJson(buffer);
 			}
 
 		};

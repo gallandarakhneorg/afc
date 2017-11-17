@@ -22,6 +22,8 @@ package org.arakhne.afc.math.geometry.d3;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+
 /**
  * Immutable point 3D.
  *
@@ -90,7 +92,16 @@ final class ImmutablePoint3D implements UnmodifiablePoint3D<ImmutablePoint3D, Im
 	@Pure
 	@Override
 	public String toString() {
-        return Tuple3D.toString(this.x, this.y, this.z);
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("z", getZ()); //$NON-NLS-1$
 	}
 
 	@Pure

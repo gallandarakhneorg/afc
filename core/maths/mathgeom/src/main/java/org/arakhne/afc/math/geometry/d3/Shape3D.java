@@ -27,6 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonableObject;
 
 /** 3D shape.
  *
@@ -50,7 +51,7 @@ public interface Shape3D<
 	P extends Point3D<? super P, ? super V>,
 	V extends Vector3D<? super V, ? super P>,
 	B extends Shape3D<?, ?, I, P, V, B>>
-	extends Cloneable, Serializable {
+	extends Cloneable, Serializable, JsonableObject {
 
 	/** Replies the geometry factory associated to this point.
 	 *

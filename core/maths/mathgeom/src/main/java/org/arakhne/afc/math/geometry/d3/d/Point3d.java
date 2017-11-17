@@ -29,6 +29,7 @@ import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 3D Point with 3 double precision floating-point numbers.
  *
@@ -313,6 +314,16 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 			@Override
 			public int iz() {
 				return Point3d.this.iz();
+			}
+
+			@Override
+			public String toString() {
+				return Point3d.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Point3d.this.toJson(buffer);
 			}
 
 		};
