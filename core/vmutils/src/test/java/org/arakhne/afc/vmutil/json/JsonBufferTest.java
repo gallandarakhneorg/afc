@@ -113,7 +113,17 @@ public class JsonBufferTest {
 	}
 	
 	@Test
-	public void add_JsonBuffer_01() {
+	public void add_JsonBuffer() {
+		JsonableObject obj = (buffer) -> {
+			buffer.add("abc", 345.6); //$NON-NLS-1$
+			buffer.add("def", "myvalue"); //$NON-NLS-1$ //$NON-NLS-2$
+		};
+		this.buffer.add("xyz", obj); //$NON-NLS-1$
+		assertEquals("{\n\t\"xyz\": {\n\t\t\"abc\": 345.6,\n\t\t\"def\": \"myvalue\"\n\t}\n}", this.buffer.toString()); //$NON-NLS-1$
+	}
+
+	@Test
+	public void add_JsonableObject_01() {
 		Object obj = new Object();
 		List<Object> col = Arrays.asList("myvalue", 123, 456.78, obj, true); //$NON-NLS-1$
 		JsonBuffer subbuffer = new JsonBuffer();

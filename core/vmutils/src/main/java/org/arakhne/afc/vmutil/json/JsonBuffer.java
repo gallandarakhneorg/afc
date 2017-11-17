@@ -109,6 +109,16 @@ public class JsonBuffer {
 		return buffer.toString();
 	}
 
+	private static void toString(StringBuilder buffer, int indent, JsonBuffer jsonBuffer) {
+		toString(buffer, indent, jsonBuffer.content);
+	}
+
+	private static void toString(StringBuilder buffer, int indent, JsonableObject jsonObject) {
+		final JsonBuffer jsonBuffer = new JsonBuffer();
+		jsonObject.toJson(jsonBuffer);
+		toString(buffer, indent, jsonBuffer);
+	}
+
 	private static void toString(StringBuilder buffer, int indent, Map<?, ?> map) {
 		buffer.append("{\n"); //$NON-NLS-1$
 		boolean first = true;
@@ -153,7 +163,9 @@ public class JsonBuffer {
 		if (value == null) {
 			buffer.append(NULL_CONSTANT);
 		} else if (value instanceof JsonBuffer) {
-			toString(buffer, indent + 1, ((JsonBuffer) value).content);
+			toString(buffer, indent + 1, (JsonBuffer) value);
+		} else if (value instanceof JsonableObject) {
+			toString(buffer, indent + 1, (JsonableObject) value);
 		} else if (value instanceof Map<?, ?>) {
 			toString(buffer, indent + 1, (Map<?, ?>) value);
 		} else if (value instanceof Iterable<?>) {

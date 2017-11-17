@@ -2654,7 +2654,7 @@ public final class FileSystem {
 			if (thefile.isAbsolute()) {
 				url = thefile.toURI().toURL();
 			} else {
-				url = new URL(URISchemeType.FILE.name(), "", thefile.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+				url = new URL(URISchemeType.FILE.name(), "", thefile.toString()); //$NON-NLS-1$
 			}
 			return toShortestURL(url);
 		} catch (MalformedURLException e) {

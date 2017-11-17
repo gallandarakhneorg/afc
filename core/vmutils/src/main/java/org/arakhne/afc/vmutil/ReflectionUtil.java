@@ -839,10 +839,24 @@ public final class ReflectionUtil {
 	 * @return the string representation.
 	 */
 	public static String toString(Object object) {
-		if (object == null) {
-			return ""; //$NON-NLS-1$
-		}
 		final JsonBuffer buffer = new JsonBuffer();
+		toJson(object, buffer);
+		return buffer.toString();
+	}
+
+	/** Replies the string representation of the given object.
+	 *
+	 * <p>The string representation is based on  the values replied by the getters (functions
+	 * that are starting by "get" or "is" or "has").
+	 *
+	 * @param object the object to analyze.
+	 * @param output the Json string representation.
+	 * @since 15.0
+	 */
+	public static void toJson(Object object, JsonBuffer output) {
+		if (object == null) {
+			return;
+		}
 		for (final Method method : object.getClass().getMethods()) {
 			try {
 				if (!method.isSynthetic() && !Modifier.isStatic(method.getModifiers()) && method.getParameterCount() == 0
@@ -850,16 +864,15 @@ public final class ReflectionUtil {
 						|| method.getReturnType().isEnum())) {
 					final String name = method.getName();
 					if (name.startsWith("get")) { //$NON-NLS-1$
-						buffer.add(name.substring(3).toLowerCase(), method.invoke(object));
+						output.add(name.substring(3).toLowerCase(), method.invoke(object));
 					} else if (name.startsWith("is")) { //$NON-NLS-1$
-						buffer.add(name.substring(2).toLowerCase(), method.invoke(object));
+						output.add(name.substring(2).toLowerCase(), method.invoke(object));
 					}
 				}
 			} catch (Exception e) {
 				//
 			}
 		}
-		return buffer.toString();
 	}
 
 }
