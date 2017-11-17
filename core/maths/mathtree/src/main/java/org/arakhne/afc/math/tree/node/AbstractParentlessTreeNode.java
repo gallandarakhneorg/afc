@@ -36,6 +36,7 @@ import org.arakhne.afc.math.tree.TreeDataEvent;
 import org.arakhne.afc.math.tree.TreeNode;
 import org.arakhne.afc.math.tree.TreeNodeListener;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.arakhne.afc.vmutil.json.JsonableObject;
 
 
 /**
@@ -52,7 +53,7 @@ import org.arakhne.afc.vmutil.json.JsonBuffer;
  * @since 13.0
  */
 public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentlessTreeNode<D, N>>
-		implements TreeNode<D, N>, Serializable {
+		implements TreeNode<D, N>, Serializable, JsonableObject {
 
 	/** By default, does tree nodes use a linked list or not.
 	 */
@@ -205,7 +206,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 	 * @param buffer the Json buffer.
 	 * @since 14.0
 	 */
-	@Pure
+	@Override
 	public void toJson(JsonBuffer buffer) {
 		if (this.data != null) {
 			buffer.add("data", this.data); //$NON-NLS-1$
