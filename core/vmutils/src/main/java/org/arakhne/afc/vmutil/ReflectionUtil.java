@@ -863,16 +863,28 @@ public final class ReflectionUtil {
 					&& (method.getReturnType().isPrimitive() || String.class.equals(method.getReturnType())
 						|| method.getReturnType().isEnum())) {
 					final String name = method.getName();
-					if (name.startsWith("get")) { //$NON-NLS-1$
-						output.add(name.substring(3).toLowerCase(), method.invoke(object));
-					} else if (name.startsWith("is")) { //$NON-NLS-1$
-						output.add(name.substring(2).toLowerCase(), method.invoke(object));
+					if (name.startsWith("get") && name.length() > 3) { //$NON-NLS-1$
+						output.add(makeName(name, 3), method.invoke(object));
+					} else if (name.startsWith("is") && name.length() > 2) { //$NON-NLS-1$
+						output.add(makeName(name, 2), method.invoke(object));
 					}
 				}
 			} catch (Exception e) {
 				//
 			}
 		}
+	}
+
+	private static String makeName(String value, int first) {
+		final String post = value.substring(first);
+		if (Pattern.matches("^[A-Z]+$", post)) { //$NON-NLS-1$
+			return post.toLowerCase();
+		}
+		final String firstLetter = Character.toString(Character.toLowerCase(post.charAt(0)));
+		if  (post.length() > 1) {
+			return firstLetter + post.substring(1);
+		}
+		return firstLetter;
 	}
 
 }
