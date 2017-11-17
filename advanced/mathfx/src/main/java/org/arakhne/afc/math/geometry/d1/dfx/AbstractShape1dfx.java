@@ -29,6 +29,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d1.Segment1D;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** Abstract shape with 2 double precision floating-point FX properties.
  *
@@ -129,6 +130,11 @@ public abstract class AbstractShape1dfx<T extends AbstractShape1dfx<?>> implemen
 	@Override
 	public String toString() {
 		return ReflectionUtil.toString(this);
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		ReflectionUtil.toJson(this, buffer);
 	}
 
 }

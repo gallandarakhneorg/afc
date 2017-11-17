@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 3D Vector with 3 integer FX properties.
  *
@@ -245,6 +246,16 @@ public class Vector3ifx extends Tuple3ifx<Vector3ifx> implements Vector3D<Vector
 			@Override
 			public int iz() {
 				return Vector3ifx.this.iz();
+			}
+
+			@Override
+			public String toString() {
+				return Vector3ifx.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Vector3ifx.this.toJson(buffer);
 			}
 
 		};

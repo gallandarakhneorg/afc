@@ -27,6 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 3D tuple with 3 double precision floating-point FX properties.
  *
@@ -174,7 +175,16 @@ public class Tuple3dfx<RT extends Tuple3dfx<? super RT>> implements Tuple3D<RT> 
 	@Pure
 	@Override
 	public String toString() {
-		return Tuple3D.toString(getX(), getY(), getZ());
+		final JsonBuffer objectDescription = new JsonBuffer();
+		toJson(objectDescription);
+        return objectDescription.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("z", getZ()); //$NON-NLS-1$
 	}
 
 	/** Replies the x property.

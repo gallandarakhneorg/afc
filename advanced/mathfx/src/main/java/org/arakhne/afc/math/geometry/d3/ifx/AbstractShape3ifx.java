@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.PathIterator3D;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** Abstract shape with 3 integer FX properties.
  *
@@ -86,6 +87,11 @@ public abstract class AbstractShape3ifx<T extends AbstractShape3ifx<?>> implemen
 	@Override
 	public String toString() {
 		return ReflectionUtil.toString(this);
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		ReflectionUtil.toJson(this, buffer);
 	}
 
 }

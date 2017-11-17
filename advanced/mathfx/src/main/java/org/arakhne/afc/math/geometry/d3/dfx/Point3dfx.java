@@ -26,6 +26,7 @@ import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 3D Point with 3 double precision floating-point FX properties.
  *
@@ -182,6 +183,16 @@ public class Point3dfx extends Tuple3dfx<Point3dfx> implements Point3D<Point3dfx
 			@Override
 			public double getZ() {
 				return Point3dfx.this.getZ();
+			}
+
+			@Override
+			public String toString() {
+				return Point3dfx.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Point3dfx.this.toJson(buffer);
 			}
 
 		};

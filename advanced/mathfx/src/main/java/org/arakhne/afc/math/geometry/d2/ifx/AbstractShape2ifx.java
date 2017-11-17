@@ -25,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** Abstract shape with 2 integer FX properties.
  *
@@ -73,6 +74,11 @@ public abstract class AbstractShape2ifx<T extends AbstractShape2ifx<?>> implemen
 	@Override
 	public String toString() {
 		return ReflectionUtil.toString(this);
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		ReflectionUtil.toJson(this, buffer);
 	}
 
 }

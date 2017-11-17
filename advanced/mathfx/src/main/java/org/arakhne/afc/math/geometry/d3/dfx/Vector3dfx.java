@@ -30,6 +30,7 @@ import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 3D Vector with 3 double precision floating-point FX properties.
  *
@@ -245,6 +246,16 @@ public class Vector3dfx extends Tuple3dfx<Vector3dfx> implements Vector3D<Vector
 			@Override
 			public double getZ() {
 				return Vector3dfx.this.getZ();
+			}
+
+			@Override
+			public String toString() {
+				return Vector3dfx.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Vector3dfx.this.toJson(buffer);
 			}
 
 		};

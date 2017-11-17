@@ -27,6 +27,7 @@ import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 2D Point with 2 integer FX properties.
  *
@@ -165,6 +166,16 @@ public class Point2ifx extends Tuple2ifx<Point2ifx> implements Point2D<Point2ifx
 			@Override
 			public int iy() {
 				return Point2ifx.this.iy();
+			}
+
+			@Override
+			public String toString() {
+				return Point2ifx.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Point2ifx.this.toJson(buffer);
 			}
 
 		};

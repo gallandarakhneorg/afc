@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 2D Vector with 2 double precision floating-point FX properties.
  *
@@ -245,6 +246,16 @@ public class Vector2dfx extends Tuple2dfx<Vector2dfx> implements Vector2D<Vector
 			@Override
 			public double getX() {
 				return Vector2dfx.this.getX();
+			}
+
+			@Override
+			public String toString() {
+				return Vector2dfx.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Vector2dfx.this.toJson(buffer);
 			}
 
 		};

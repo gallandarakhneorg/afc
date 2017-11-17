@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 2D Vector with 2 integer FX properties.
  *
@@ -246,6 +247,16 @@ public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector
 			@Override
 			public int iy() {
 				return Vector2ifx.this.iy();
+			}
+
+			@Override
+			public String toString() {
+				return Vector2ifx.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Vector2ifx.this.toJson(buffer);
 			}
 
 		};

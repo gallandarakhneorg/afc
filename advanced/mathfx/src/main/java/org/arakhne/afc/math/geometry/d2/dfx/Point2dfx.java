@@ -26,6 +26,7 @@ import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 2D Point with 2 double precision floating-point FX properties.
  *
@@ -165,6 +166,16 @@ public class Point2dfx extends Tuple2dfx<Point2dfx> implements Point2D<Point2dfx
 			@Override
 			public double getX() {
 				return Point2dfx.this.getX();
+			}
+
+			@Override
+			public String toString() {
+				return Point2dfx.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Point2dfx.this.toJson(buffer);
 			}
 
 		};

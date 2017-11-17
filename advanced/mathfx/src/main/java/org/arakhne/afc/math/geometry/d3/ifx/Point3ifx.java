@@ -27,6 +27,7 @@ import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 3D Point with 3 integer FX properties.
  *
@@ -181,6 +182,16 @@ public class Point3ifx extends Tuple3ifx<Point3ifx> implements Point3D<Point3ifx
 			@Override
 			public int iz() {
 				return Point3ifx.this.iz();
+			}
+
+			@Override
+			public String toString() {
+				return Point3ifx.this.toString();
+			}
+
+			@Override
+			public void toJson(JsonBuffer buffer) {
+				Point3ifx.this.toJson(buffer);
 			}
 
 		};
