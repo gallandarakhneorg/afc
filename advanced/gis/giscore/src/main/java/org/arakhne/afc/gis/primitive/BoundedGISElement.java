@@ -22,6 +22,7 @@ package org.arakhne.afc.gis.primitive;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.afp.BoundedElement2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 
@@ -33,16 +34,7 @@ import org.arakhne.afc.math.geometry.d2.d.Shape2d;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-public interface BoundedGISElement extends GISElement {
-
-	/** Replies the bounding box of this element.
-	 *
-	 * <p>The bounding box encloses the shape replied by {@link #getShape()}.
-	 *
-	 * @return the bounding box or <code>null</code> if not applicable.
-	 */
-	@Pure
-	Rectangle2d getBoundingBox();
+public interface BoundedGISElement extends GISElement, BoundedElement2afp<Rectangle2d> {
 
 	/** Replies the shape of this this element.
 	 *

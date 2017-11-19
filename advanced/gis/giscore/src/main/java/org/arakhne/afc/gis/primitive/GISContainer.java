@@ -22,6 +22,7 @@ package org.arakhne.afc.gis.primitive;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.afp.BoundedElement2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 
 /** Container of GIS elements.
@@ -33,7 +34,7 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-public interface GISContainer<T extends GISElement> extends Iterable<T> {
+public interface GISContainer<T extends GISElement> extends Iterable<T>, BoundedElement2afp<Rectangle2d> {
 
 	/** Replies the name of the container.
 	 *
@@ -41,13 +42,6 @@ public interface GISContainer<T extends GISElement> extends Iterable<T> {
 	 */
 	@Pure
 	String getName();
-
-	/** Replies the bounding box of this element.
-	 *
-	 * @return the bounding box or <code>null</code> if not applicable.
-	 */
-	@Pure
-	Rectangle2d getBoundingBox();
 
 	/** Clear the current bounding box to force the computation of it at
 	 * the next call to {@link #getBoundingBox()}.

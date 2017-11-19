@@ -236,7 +236,7 @@ public class ArrayMapElementLayer<E extends MapElement> extends MapElementLayer<
 	@Override
 	@Pure
 	public Class<? extends E> getElementType() {
-		return this.mapElements.getComponentType();
+		return this.mapElements.getElementType();
 	}
 
 	@Override
