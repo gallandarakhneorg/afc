@@ -35,7 +35,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.GISPolylineSet;
-import org.arakhne.afc.gis.grid.MapPolylineGridSet;
 import org.arakhne.afc.gis.location.GeoId;
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.location.GeoLocationArea;
@@ -55,6 +54,7 @@ import org.arakhne.afc.gis.road.primitive.UnexpectedRoadNetworkException;
 import org.arakhne.afc.gis.road.primitive.UnsupportedRoadConnectionException;
 import org.arakhne.afc.gis.road.primitive.UnsupportedRoadSegmentException;
 import org.arakhne.afc.gis.tree.GISTreeSet;
+import org.arakhne.afc.gis.tree.MapPolylineTreeSet;
 import org.arakhne.afc.math.geometry.d1.d.Point1d;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
@@ -138,7 +138,12 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	 */
 	@SuppressWarnings({"static-method", "checkstyle:magicnumber"})
 	protected GISPolylineSet<RoadPolyline> createInternalDataStructure(Rectangle2afp<?, ?, ?, ?, ?, ?> originalBounds) {
-		return new MapPolylineGridSet<>(100, 100,
+		/*return new MapPolylineGridSet<>(100, 100,
+				originalBounds.getMinX(),
+				originalBounds.getMinY(),
+				originalBounds.getWidth(),
+				originalBounds.getHeight());*/
+		return new MapPolylineTreeSet<>(
 				originalBounds.getMinX(),
 				originalBounds.getMinY(),
 				originalBounds.getWidth(),

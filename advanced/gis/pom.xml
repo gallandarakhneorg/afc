@@ -9,7 +9,7 @@
 		<version>15.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.arakhne.afc.gis</groupId>
+	<groupId>org.arakhne.afc.gis.ui</groupId>
 	<artifactId>gis</artifactId>
 	<packaging>pom</packaging>
 	<name>GIS Libraries</name>
@@ -17,9 +17,9 @@
 	<modules>
 		<module>giscore</module>
 		<module>gisinputoutput</module>
-		<module>giscoreui</module>
+		<module>giscorefx</module>
 		<module>gisroad</module>
-		<module>gisroadui</module>
+		<module>gisroadfx</module>
 		<module>gisbus</module>
 		<!-- 
 		<module>gisbusio</module>

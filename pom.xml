@@ -112,6 +112,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.arakhne.afc.advanced</groupId>
+				<artifactId>mathfx</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.advanced</groupId>
 				<artifactId>dbasefile</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
@@ -128,8 +133,8 @@
 				<version>${afc.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.arakhne.afc.gis</groupId>
-				<artifactId>giscoreui</artifactId>
+				<groupId>org.arakhne.afc.gis.ui</groupId>
+				<artifactId>giscorefx</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
 			<dependency>
@@ -143,8 +148,8 @@
 				<version>${afc.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.arakhne.afc.gis</groupId>
-				<artifactId>gisroadui</artifactId>
+				<groupId>org.arakhne.afc.gis.ui</groupId>
+				<artifactId>gisroadfx</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
 
