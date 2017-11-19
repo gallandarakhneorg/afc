@@ -22,6 +22,7 @@ package org.arakhne.afc.inputoutput.filefilter;
 
 import java.io.File;
 
+import javafx.stage.FileChooser.ExtensionFilter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.vmutil.FileSystem;
@@ -73,6 +74,11 @@ public abstract class AbstractFileFilter implements FileFilter {
 			}
 		}
 		this.description = Locale.getString("EXTENSION_STRING", description, b.toString()); //$NON-NLS-1$
+	}
+
+	@Override
+	public ExtensionFilter toJavaFX() {
+		return new ExtensionFilter(getDescription(), getExtensions());
 	}
 
 	@Pure

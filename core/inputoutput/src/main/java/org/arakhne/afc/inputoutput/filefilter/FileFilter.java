@@ -22,6 +22,7 @@ package org.arakhne.afc.inputoutput.filefilter;
 
 import java.io.FilenameFilter;
 
+import javafx.stage.FileChooser;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** File filter.
@@ -46,5 +47,12 @@ public interface FileFilter extends java.io.FileFilter, FilenameFilter {
 	 */
 	@Pure
 	String[] getExtensions();
+
+	/** Replies the JavaFX file extension filter.
+	 *
+	 * @return the filter.
+	 * @since 15.0
+	 */
+	FileChooser.ExtensionFilter toJavaFX();
 
 }
