@@ -18,6 +18,7 @@
 		<module>agentmotion</module>
 		<module>dbasefile</module>
 		<module>shapefile</module>
+		<module>nodefx</module>
 		<module>gis</module>
 	</modules>
 

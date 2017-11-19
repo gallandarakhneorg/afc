@@ -139,6 +139,12 @@ AFC library contains the following alive modules:
 | mathfx
 | JavaFX implementation of the mathematic and geometry tools
 
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/nodefx/package-summary.html[JavaFX Nodes and Components]
+|
+| org.arakhne.afc.advanced
+| nodefx
+| Set of nodes and components for JavaFX, e.g. a viewer with zoom support.
+
 | link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/shape/package-summary.html[Shape File Reader and Writer]
 |
 | org.arakhne.afc.advanced

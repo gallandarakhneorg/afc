@@ -125,6 +125,11 @@
 				<artifactId>shapefile</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.advanced</groupId>
+				<artifactId>nodefx</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
 			
 
 			<dependency>
