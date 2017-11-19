@@ -33,8 +33,6 @@ import org.junit.Test;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.collection.AttributeProvider;
-import org.arakhne.afc.io.dbase.DBaseFileReader;
-import org.arakhne.afc.io.dbase.DBaseFileWriter;
 import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.util.ArrayUtil;
 import org.arakhne.afc.vmutil.Resources;

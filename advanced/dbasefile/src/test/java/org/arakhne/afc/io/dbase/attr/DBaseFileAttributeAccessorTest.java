@@ -29,8 +29,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.arakhne.afc.attrs.attr.AttributeValue;
-import org.arakhne.afc.io.dbase.attr.DBaseFileAttributeAccessor;
-import org.arakhne.afc.io.dbase.attr.DBaseFileAttributePool;
 import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.vmutil.Resources;
 

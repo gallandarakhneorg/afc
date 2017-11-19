@@ -25,9 +25,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.arakhne.afc.io.dbase.attr.DBaseFileAttributeProvider;
-import org.arakhne.afc.testtools.AbstractTestCase;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +33,7 @@ import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
-import org.arakhne.afc.io.dbase.attr.DBaseFileAttributePool;
+import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.vmutil.Resources;
 import org.arakhne.afc.vmutil.locale.Locale;
 

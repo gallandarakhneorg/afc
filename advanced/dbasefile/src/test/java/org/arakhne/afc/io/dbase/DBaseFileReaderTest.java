@@ -32,11 +32,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.arakhne.afc.attrs.collection.AttributeProvider;
-import org.arakhne.afc.io.dbase.DBaseFieldType;
-import org.arakhne.afc.io.dbase.DBaseFileField;
-import org.arakhne.afc.io.dbase.DBaseFileReader;
-import org.arakhne.afc.io.dbase.DBaseFileRecord;
-import org.arakhne.afc.io.dbase.MustCallReadHeaderFunctionException;
 import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.vmutil.Resources;
 import org.arakhne.afc.vmutil.locale.Locale;
