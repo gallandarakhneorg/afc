@@ -50,7 +50,7 @@ public class StaticMapElementDrawer implements Drawer<MapElement> {
 	public void draw(ZoomableGraphicsContext gc, MapElement element) {
 		Drawer<? super MapElement> drawer = this.drawer;
 		if (drawer == null) {
-			drawer = Drawers.getDrawersFor(element.getClass());
+			drawer = Drawers.getDrawerFor(element.getClass());
 			if (drawer != null) {
 				this.type = element.getClass();
 				this.drawer = drawer;

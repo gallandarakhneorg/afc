@@ -44,7 +44,7 @@ public class DynamicMapElementDrawer implements Drawer<MapElement> {
 
 	@Override
 	public void draw(ZoomableGraphicsContext gc, MapElement element) {
-		final Drawer<? super MapElement> drawer = Drawers.getDrawersFor(element.getClass());
+		final Drawer<? super MapElement> drawer = Drawers.getDrawerFor(element.getClass());
 		if (drawer != null) {
 			drawer.draw(gc, element);
 		}

@@ -44,7 +44,7 @@ public class RoadNetworkDrawer extends GisContainerDrawer<RoadPolyline> {
 	/** Constructor.
 	 */
 	public RoadNetworkDrawer() {
-		this(Drawers.getDrawersFor(RoadPolyline.class));
+		this(Drawers.getDrawerFor(RoadPolyline.class));
 	}
 
 	/** Constructor.
@@ -61,7 +61,7 @@ public class RoadNetworkDrawer extends GisContainerDrawer<RoadPolyline> {
 		if (lod == LevelOfDetails.LOW) {
 			// Too small to draw the road details => uses the standard map polyline drawer.
 			if (this.mappolylineDrawer == null) {
-				this.mappolylineDrawer = Drawers.getDrawersFor(MapPolyline.class);
+				this.mappolylineDrawer = Drawers.getDrawerFor(MapPolyline.class);
 			}
 			draw(gc, element, this.mappolylineDrawer);
 		} else {
