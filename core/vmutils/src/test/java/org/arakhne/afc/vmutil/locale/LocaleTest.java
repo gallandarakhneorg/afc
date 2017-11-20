@@ -868,4 +868,11 @@ public class LocaleTest {
     			Locale.getString("FORMAT_7", data));  //$NON-NLS-1$
     }
 
+	@Test
+	public void decodeStringByteArray() {
+		byte[] bytes = new byte[] {80, 104, 111, 116, 111, 103, 114, 97, 109, 109, -126, 116, 114,
+				105, 101, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32};
+		String str = Locale.decodeString(bytes);
+		assertEquals("Photogrammétrie", str); //$NON-NLS-1$
+	}
 }

@@ -30,6 +30,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.MissingResourceException;
@@ -65,8 +66,47 @@ public final class Locale {
 
 	private static final int BUFFER_SIZE = 2048;
 
+	private static Charset[] decodingCharsets;
+
+	static {
+		final Charset def = Charset.defaultCharset();
+		final List<Charset> list = new ArrayList<>();
+		Charset c;
+		c = Charset.forName("IBM437"); //$NON-NLS-1$
+		if (c != null && !def.equals(c)) {
+			list.add(c);
+		}
+		c = Charset.forName("ISO-8859-1"); //$NON-NLS-1$
+		if (c != null && !def.equals(c)) {
+			list.add(c);
+		}
+		c = Charset.forName("UTF-8"); //$NON-NLS-1$
+		if (c != null && !def.equals(c)) {
+			list.add(c);
+		}
+		list.add(def);
+		decodingCharsets = new Charset[list.size()];
+		list.toArray(decodingCharsets);
+	}
+
 	private Locale() {
 		//
+	}
+
+	/** Replies the charsets for decoding that must be used prior to the installed charsets.
+	 *
+	 * @return the priorized decoding charsets.
+	 */
+	public static Charset[] getPriorizedDecodingCharsets() {
+		return decodingCharsets;
+	}
+
+	/** Change the charsets for decoding that must be used prior to the installed charsets.
+	 *
+	 * @param charsets the priorized decoding charsets.
+	 */
+	public static void setPriorizedDecodingCharsets(Charset[] charsets) {
+		decodingCharsets = charsets;
 	}
 
 	private static Class<?> detectResourceClass(Class<?> resource) {
@@ -386,20 +426,17 @@ public final class Locale {
 	 */
 	@Pure
 	public static String decodeString(byte[] bytes) {
-		final Charset defaultCharset = Charset.defaultCharset();
-		final Charset westEuropean = Charset.forName("ISO-8859-1"); //$NON-NLS-1$
-		final Charset utf = Charset.forName("UTF-8"); //$NON-NLS-1$
+		final Charset[] prior = getPriorizedDecodingCharsets();
 
 		final String refBuffer = new String(bytes);
 
-		CharBuffer buffer = decodeString(bytes, defaultCharset, refBuffer.length());
+		CharBuffer buffer = null;
 
-		if ((buffer == null) && (!defaultCharset.equals(westEuropean))) {
-			buffer = decodeString(bytes, westEuropean, refBuffer.length());
-		}
-
-		if ((buffer == null) && (!defaultCharset.equals(utf))) {
-			buffer = decodeString(bytes, utf, refBuffer.length());
+		for (final Charset charset : prior) {
+			buffer = decodeString(bytes, charset, refBuffer.length());
+			if (buffer != null) {
+				break;
+			}
 		}
 
 		if (buffer == null) {
@@ -413,9 +450,9 @@ public final class Locale {
 		}
 		// Use the default encoding
 		if (buffer == null) {
-			return refBuffer;
+			return refBuffer.trim();
 		}
-		return buffer.toString();
+		return buffer.toString().trim();
 	}
 
 	/** Decode the specified array of bytes with the specified charset.
@@ -443,7 +480,7 @@ public final class Locale {
 					return null;
 				}
 			}
-			// Apply a proprietaty detection
+			// Apply a proprietary detection
 			buffer.position(0);
 			char c;
 			int type;
