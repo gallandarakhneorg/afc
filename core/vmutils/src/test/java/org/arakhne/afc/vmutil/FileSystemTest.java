@@ -277,7 +277,7 @@ public class FileSystemTest {
 		URLHandlerUtil.installArakhneHandlers();
 		try {
 			File f1 = new File("/toto");  //$NON-NLS-1$
-			URL u1 = f1.toURI().toURL();
+			URL u1 = new URL("file:/toto"); //$NON-NLS-1$
 			URL u2 = Resources.getResource("org/arakhne/afc/vmutil/test.txt");  //$NON-NLS-1$
 			URL u2e = new URL("resource:org/arakhne/afc/vmutil/test.txt");  //$NON-NLS-1$
 			File f2 = FileSystem.convertURLToFile(u2);
