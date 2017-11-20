@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.gis.road.ui;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +29,7 @@ import java.io.InputStream;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
@@ -35,10 +38,10 @@ import org.arakhne.afc.gis.road.RoadPolyline;
 import org.arakhne.afc.gis.road.StandardRoadNetwork;
 import org.arakhne.afc.gis.road.layer.RoadNetworkLayer;
 import org.arakhne.afc.gis.road.primitive.RoadNetworkException;
-import org.arakhne.afc.gis.ui.GisViewerPane;
+import org.arakhne.afc.gis.ui.GisPane;
 import org.arakhne.afc.io.shape.ESRIBounds;
+import org.arakhne.afc.io.shape.ShapeFileFilter;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
-import org.arakhne.afc.vmutil.Resources;
 
 /**
  * Application for viewing GIS primitives.
@@ -51,12 +54,10 @@ import org.arakhne.afc.vmutil.Resources;
  */
 public class SimpleViewer extends Application {
 
-	private static final String SHP_RESOURCE = "org/arakhne/afc/gis/road/ui/Belfort.shp"; //$NON-NLS-1$
-
-	private static StandardRoadNetwork loadNetwork() {
+	private static StandardRoadNetwork loadNetwork(File file) {
 		try {
 			final StandardRoadNetwork network;
-			try (InputStream is = Resources.getResourceAsStream(SHP_RESOURCE)) {
+			try (InputStream is = new FileInputStream(file)) {
 				assert is != null;
 				try (GISShapeFileReader reader = new GISShapeFileReader(is, RoadPolyline.class)) {
 					final Rectangle2d worldRect = new Rectangle2d();
@@ -90,21 +91,29 @@ public class SimpleViewer extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		final StandardRoadNetwork network = loadNetwork();
-		final RoadNetworkLayer networkLayer = new RoadNetworkLayer(network);
+		final FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Shape File"); //$NON-NLS-1$
+		fileChooser.setSelectedExtensionFilter(new ShapeFileFilter().toJavaFX());
+		final File shapeFile = fileChooser.showOpenDialog(primaryStage);
+		if (shapeFile != null) {
+			final StandardRoadNetwork network = loadNetwork(shapeFile);
+			final RoadNetworkLayer networkLayer = new RoadNetworkLayer(network);
 
-		final BorderPane root = new BorderPane();
+			final BorderPane root = new BorderPane();
 
-		final GisViewerPane<RoadPolyline> scrollPane = new GisViewerPane<>(networkLayer);
+			final GisPane<RoadPolyline> scrollPane = new GisPane<>(networkLayer);
 
-		root.setCenter(scrollPane);
+			root.setCenter(scrollPane);
 
-		final Scene scene = new Scene(root, 1024, 768);
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm()); //$NON-NLS-1$
+			final Scene scene = new Scene(root, 1024, 768);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm()); //$NON-NLS-1$
 
-		primaryStage.setTitle("Simple GIS viewer"); //$NON-NLS-1$
-		primaryStage.setScene(scene);
-		primaryStage.show();
+			primaryStage.setTitle("Road Network Viewer"); //$NON-NLS-1$
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} else {
+			primaryStage.close();
+		}
 	}
 
 	/** Main program.
@@ -112,7 +121,7 @@ public class SimpleViewer extends Application {
 	 * @param args the command line arguments.
 	 */
 	public static void main(String[] args) {
-		launch(args);
+		launch();
 	}
 
 }

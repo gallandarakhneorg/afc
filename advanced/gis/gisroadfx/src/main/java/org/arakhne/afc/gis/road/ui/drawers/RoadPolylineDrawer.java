@@ -26,8 +26,8 @@ import javafx.scene.shape.StrokeLineJoin;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.gis.road.RoadPolyline;
-import org.arakhne.afc.gis.ui.GisGraphicsContext;
 import org.arakhne.afc.gis.ui.drawers.AbstractMapPolylineDrawer;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Drawer of a map road polyline.
  *
@@ -46,20 +46,54 @@ public class RoadPolylineDrawer extends AbstractMapPolylineDrawer<RoadPolyline> 
 	}
 
 	@Override
-	public void draw(GisGraphicsContext gc, RoadPolyline element) {
+	public void draw(ZoomableGraphicsContext gc, RoadPolyline element) {
 		definePath(gc, element);
 
-		final Color color = gc.rgb(element.getColor());
 		gc.setFill(null);
+		gc.setLineCap(StrokeLineCap.ROUND);
+		gc.setLineJoin(StrokeLineJoin.ROUND);
+
+		if (gc.getState() == 0) {
+			setupRoadBorders(gc, element);
+		} else {
+			setupRoadInterior(gc, element);
+		}
+
+		gc.stroke();
+	}
+
+	/** Setup for drawing the road borders.
+	 *
+	 * @param gc the graphics context.
+	 * @param element the element to draw.
+	 */
+	@SuppressWarnings("static-method")
+	protected void setupRoadBorders(ZoomableGraphicsContext gc, RoadPolyline element) {
+		final Color color = gc.rgb(element.getColor());
+		gc.setStroke(color);
+		final double width;
+		if (element.isWidePolyline()) {
+			width = 2 + gc.doc2fxSize(element.getWidth());
+		} else {
+			width = 3;
+		}
+		gc.setLineWidthInPixels(width);
+	}
+
+	/** Setup for drawing the road interior.
+	 *
+	 * @param gc the graphics context.
+	 * @param element the element to draw.
+	 */
+	@SuppressWarnings("static-method")
+	protected void setupRoadInterior(ZoomableGraphicsContext gc, RoadPolyline element) {
+		final Color color = gc.rgb(element.getColor());
 		gc.setStroke(color.invert());
 		if (element.isWidePolyline()) {
 			gc.setLineWidthInMeters(element.getWidth());
 		} else {
 			gc.setLineWidthInPixels(1);
 		}
-		gc.setLineCap(StrokeLineCap.ROUND);
-		gc.setLineJoin(StrokeLineJoin.ROUND);
-		gc.stroke();
 	}
 
 }

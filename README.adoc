@@ -91,6 +91,12 @@ AFC library contains the following alive modules:
 | gisroad
 | Base elements for creating data structures that represent a road network.
 
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/road/ui/package-summary.html[JavaFX Pane for Road Network]
+|
+| org.arakhne.afc.gis.road.ui
+| gisroadfx
+| JavaFX panel and canvas dedicated to road network.
+
 | link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/filefilter/package-summary.html[Input-Output Utilities]
 |
 | org.arakhne.afc.core
