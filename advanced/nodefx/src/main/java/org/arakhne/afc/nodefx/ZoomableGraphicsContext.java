@@ -289,6 +289,21 @@ public class ZoomableGraphicsContext {
 		return Color.rgb(red, green, blue, opacity);
 	}
 
+	/** Parse the given RGBA color.
+	 *
+	 * @param rgb the RGB color.
+	 * @param opacity the opacity, 0 for fully transparent, 1 for fully opaque.
+	 * @return the JavaFX color.
+	 */
+	@SuppressWarnings({ "checkstyle:magicnumber", "static-method" })
+	@Pure
+	public Color rgba(int rgb, double opacity) {
+		final int red = (rgb & 0x00FF0000) >> 16;
+		final int green = (rgb & 0x0000FF00) >> 8;
+		final int blue = rgb & 0x000000FF;
+		return Color.rgb(red, green, blue, opacity);
+	}
+
 	/** Transform a document x coordinate to its JavaFX equivalent.
 	 *
 	 * @param x the document x coordinate.
