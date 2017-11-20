@@ -3,11 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>org.arakhne.afc.gis</groupId>
+		<groupId>org.arakhne.afc.advanced</groupId>
 		<artifactId>gis</artifactId>
 		<version>15.0-SNAPSHOT</version>
 	</parent>
 
+	<groupId>org.arakhne.afc.gis</groupId>
 	<artifactId>giscore</artifactId>
 	<name>GIS Core Elements</name>
 
