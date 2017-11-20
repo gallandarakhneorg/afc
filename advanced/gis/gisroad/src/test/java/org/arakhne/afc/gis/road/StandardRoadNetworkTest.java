@@ -948,12 +948,15 @@ public class StandardRoadNetworkTest extends AbstractGisTest {
 		assertEquals(this.segment4,
 				this.network.getNearestSegment(
 						new Point2d(-5.,0.)));
-		assertEquals(this.segment9,
+		assertEquals(this.segment6,
 				this.network.getNearestSegment(
 						new Point2d(1000.,1000.)));
 		assertEquals(this.segment6,
 				this.network.getNearestSegment(
 						new Point2d(1000.,0.)));
+		assertEquals(this.segment1,
+				this.network.getNearestSegment(
+						new Point2d(0.,1000.)));
 		assertTrue(Arrays.asList(this.segment4, this.segment1).contains(this.network.getNearestSegment(
 						new Point2d(0.,0.))));
 	}
@@ -970,8 +973,8 @@ public class StandardRoadNetworkTest extends AbstractGisTest {
 
 		p = this.network.getNearestPosition(new Point2d(1000.,1000.));
 		assertNotNull(p);
-		assertSame(this.segment9, p.getSegment());
-		assertEpsilonEquals(0., p.getCurvilineCoordinate());
+		assertSame(this.segment6, p.getSegment());
+		assertEpsilonEquals(304.5784, p.getCurvilineCoordinate());
 		assertEpsilonEquals(0., p.getLateralDistance());
 
 		p = this.network.getNearestPosition(new Point2d(1000.,0.));
