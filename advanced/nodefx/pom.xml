@@ -24,6 +24,12 @@
 			<groupId>javafx</groupId>
 			<artifactId>jfxrt</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>testtools</artifactId>
+			<scope>test</scope>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -203,6 +203,7 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 	}
 
 	/** Replies the document graphics context.
+	 *
 	 * @return the graphics context.
 	 */
 	public ZoomableGraphicsContext getDocumentGraphicsContext2D() {

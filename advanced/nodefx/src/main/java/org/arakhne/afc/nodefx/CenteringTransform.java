@@ -48,7 +48,7 @@ public class CenteringTransform {
 	 */
 	private final DoubleProperty translationX;
 
-	/** Indicates if the X axis is flipped.
+	/** Indicates if the X axis is inverted.
 	 */
 	private final BooleanProperty invertX;
 
@@ -56,7 +56,7 @@ public class CenteringTransform {
 	 */
 	private final DoubleProperty translationY;
 
-	/** Indicates if the Y axis is flipped.
+	/** Indicates if the Y axis is inverted.
 	 */
 	private final BooleanProperty invertY;
 

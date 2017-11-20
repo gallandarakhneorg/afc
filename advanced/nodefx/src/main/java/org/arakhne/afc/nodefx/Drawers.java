@@ -59,7 +59,15 @@ public final class Drawers {
 		return services.iterator();
 	}
 
-	/** Replies the registered document drawer that is supporting the given type.
+	/** Replies the first registered document drawer that is supporting the given type.
+	 *
+	 * <p>If multiple drawers handles the given type, the ones handling the top most type
+	 * within the type hierarchy are selected. If there is more than one drawer selected,
+	 * the first encountered is chosen. In this case, there is no warranty about the
+	 * order of the drawers; and the replied drawer may be any of the selected drawers.
+	 * The only assumption that could be done on the order of the drawers is:
+	 * if only one Jar library provides drawers' implementation, then the order of
+	 * the drawers is the same as the order of the types declared within the service's file.
 	 *
 	 * @param <T> the type of the elements to drawer.
 	 * @param type the type of the elements to drawer.
@@ -67,7 +75,7 @@ public final class Drawers {
 	 */
 	@SuppressWarnings("unchecked")
 	@Pure
-	public static <T> Drawer<T> getDrawersFor(Class<? extends T> type) {
+	public static <T> Drawer<T> getDrawerFor(Class<? extends T> type) {
 		assert type != null : AssertMessages.notNullParameter();
 		final Iterator<Drawer<?>> iterator = getAllDrawers();
 		Drawer<T> defaultChoice = null;
@@ -77,9 +85,9 @@ public final class Drawers {
 			if (elementType.equals(type)) {
 				return (Drawer<T>) drawer;
 			}
-			if (elementType.isAssignableFrom(type)
+			if (type.isAssignableFrom(elementType)
 				&& (defaultChoice == null
-					|| defaultChoice.getElementType().isAssignableFrom(elementType))) {
+					|| elementType.isAssignableFrom(defaultChoice.getElementType()))) {
 				defaultChoice = (Drawer<T>) drawer;
 			}
 		}
@@ -87,6 +95,14 @@ public final class Drawers {
 	}
 
 	/** Replies the registered document Drawer that is supporting the given type.
+	 *
+	 * <p>If multiple drawers handles the given type, the ones handling the top most type
+	 * within the type hierarchy are selected. If there is more than one drawer selected,
+	 * the first encountered is chosen. In this case, there is no warranty about the
+	 * order of the drawers; and the replied drawer may be any of the selected drawers.
+	 * The only assumption that could be done on the order of the drawers is:
+	 * if only one Jar library provides drawers' implementation, then the order of
+	 * the drawers is the same as the order of the types declared within the service's file.
 	 *
 	 * @param <T> the type of the elements to drawer.
 	 * @param <DT> the type of the document.

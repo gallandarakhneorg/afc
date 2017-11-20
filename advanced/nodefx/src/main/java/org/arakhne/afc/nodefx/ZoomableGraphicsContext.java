@@ -70,9 +70,9 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
 @SuppressWarnings("checkstyle:methodcount")
 public class ZoomableGraphicsContext {
 
-	//TODO private static final double HIGH_DETAILLED_METER_SIZE = 2.;
-
 	private static final double LOW_DETAILLED_METER_SIZE = .2;
+
+	private static final double HIGH_DETAILLED_METER_SIZE = 5;
 
 	private final GraphicsContext gc;
 
@@ -197,6 +197,8 @@ public class ZoomableGraphicsContext {
 			final double meterSize = doc2fxSize(1);
 			if (meterSize <= LOW_DETAILLED_METER_SIZE) {
 				this.lod = LevelOfDetails.LOW;
+			} else if (meterSize >= HIGH_DETAILLED_METER_SIZE) {
+				this.lod = LevelOfDetails.HIGH;
 			} else {
 				this.lod = LevelOfDetails.NORMAL;
 			}
@@ -247,6 +249,8 @@ public class ZoomableGraphicsContext {
 
 	/** Parse the given RGB color.
 	 *
+	 * <p>Opacity is always {@code 1}.
+	 *
 	 * @param color the RGB color.
 	 * @return the JavaFX color.
 	 */
@@ -261,7 +265,7 @@ public class ZoomableGraphicsContext {
 
 	/** Parse the given RGBA color.
 	 *
-	 * @param color the RGB color.
+	 * @param color the RGBA color.
 	 * @return the JavaFX color.
 	 */
 	@SuppressWarnings({ "checkstyle:magicnumber", "static-method" })
