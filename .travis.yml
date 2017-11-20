@@ -10,7 +10,7 @@ matrix:
       jdk: oraclejdk8
       before_install:
       - ./build-tools/src/main/resources/bash/travis-download-maven.sh
-      - export M2_HOME=$HOME/.binaries/apache-maven-3.3.9
+      - export M2_HOME=$HOME/.binaries/apache-maven-3.5.2
       - export PATH=$M2_HOME/bin:$PATH
       - mvn -Xmx32m --version
       - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx1g\"" > $HOME/.mavenrc
@@ -18,7 +18,7 @@ matrix:
       osx_image: xcode8
       before_install:
       - ./build-tools/src/main/resources/bash/travis-download-maven.sh
-      - export M2_HOME=$HOME/.binaries/apache-maven-3.3.9
+      - export M2_HOME=$HOME/.binaries/apache-maven-3.5.2
       - export PATH=$M2_HOME/bin:$PATH
       - mvn -Xmx32m --version
       - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx1g -Dmaven.test.skip=true -Dcheckstyle.skip=true\"" > $HOME/.mavenrc
