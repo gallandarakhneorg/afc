@@ -21,8 +21,8 @@
 package org.arakhne.afc.gis.ui.drawers;
 
 import org.arakhne.afc.gis.mapelement.MapElement;
-import org.arakhne.afc.gis.ui.GisDrawer;
-import org.arakhne.afc.gis.ui.GisGraphicsContext;
+import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Drawer that draws nothing..
  *
@@ -33,7 +33,7 @@ import org.arakhne.afc.gis.ui.GisGraphicsContext;
  * @since 15.0
  */
 @SuppressWarnings("rawtypes")
-public final class GisNoDrawer implements GisDrawer {
+public final class GisNoDrawer implements Drawer {
 
 	@Override
 	public Class<? extends MapElement> getElementType() {
@@ -41,7 +41,7 @@ public final class GisNoDrawer implements GisDrawer {
 	}
 
 	@Override
-	public void draw(GisGraphicsContext gc, Object element) {
+	public void draw(ZoomableGraphicsContext gc, Object element) {
 		//
 	}
 

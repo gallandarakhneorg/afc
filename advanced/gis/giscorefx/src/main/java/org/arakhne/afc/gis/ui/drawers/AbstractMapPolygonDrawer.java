@@ -23,10 +23,10 @@ package org.arakhne.afc.gis.ui.drawers;
 import javafx.scene.shape.FillRule;
 
 import org.arakhne.afc.gis.mapelement.MapPolygon;
-import org.arakhne.afc.gis.ui.GisDrawer;
-import org.arakhne.afc.gis.ui.GisGraphicsContext;
 import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
 import org.arakhne.afc.math.geometry.d2.d.PathElement2d;
+import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Abstract drawer of a map polygon.
  *
@@ -37,14 +37,14 @@ import org.arakhne.afc.math.geometry.d2.d.PathElement2d;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public abstract class AbstractMapPolygonDrawer<T extends MapPolygon> implements GisDrawer<T> {
+public abstract class AbstractMapPolygonDrawer<T extends MapPolygon> implements Drawer<T> {
 
 	/** Draw the polygon path.
 	 *
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
 	 */
-	protected void definePath(GisGraphicsContext gc, T element) {
+	protected void definePath(ZoomableGraphicsContext gc, T element) {
 		gc.beginPath();
 		final PathIterator2afp<PathElement2d> pathIterator = element.toPath2D().getPathIterator();
 		switch (pathIterator.getWindingRule()) {

@@ -22,12 +22,11 @@ package org.arakhne.afc.gis.ui;
 
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapElement;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystemConstants;
 import org.arakhne.afc.nodefx.DocumentDrawer;
-import org.arakhne.afc.nodefx.ZoomableCanvas;
+import org.arakhne.afc.nodefx.ZoomablePane;
 import org.arakhne.afc.util.InformedIterable;
 
-/** Resizeable canvas for rendering GIS primitives.
+/** Resizeable pane for rendering GIS primitives.
  *
  * <p>The GIS elements are displayed within this {@code GisCanvas} by the {@link DocumentDrawer drawers}
  * that are declared as services.
@@ -42,18 +41,15 @@ import org.arakhne.afc.util.InformedIterable;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class GisCanvas<T extends MapElement> extends ZoomableCanvas<T, GISElementContainer<T>> {
-
-	private static final boolean DEFAULT_INVERTED_Y_AXIS =
-			CoordinateSystemConstants.GIS_2D.isLeftHanded() != CoordinateSystemConstants.JAVAFX_2D.isLeftHanded();
+public class GisPane<T extends MapElement> extends ZoomablePane<T, GISElementContainer<T>> {
 
 	/** Constructor. The renderer is detected with the type replied by
 	 * {@link InformedIterable#getElementType()} on the model.
 	 *
 	 * @param model the source of the elements.
 	 */
-	public GisCanvas(GISElementContainer<T> model) {
-		this(model, null);
+	public GisPane(GISElementContainer<T> model) {
+		this(new GisCanvas<>(model));
 	}
 
 	/** Constructor.
@@ -61,9 +57,16 @@ public class GisCanvas<T extends MapElement> extends ZoomableCanvas<T, GISElemen
 	 * @param model the source of the elements.
 	 * @param drawer the drawer.
 	 */
-	public GisCanvas(GISElementContainer<T> model, DocumentDrawer<T, GISElementContainer<T>> drawer) {
-		super(model, drawer);
-		setInvertedAxisY(DEFAULT_INVERTED_Y_AXIS);
+	public GisPane(GISElementContainer<T> model, DocumentDrawer<T, GISElementContainer<T>> drawer) {
+		this(new GisCanvas<>(model, drawer));
+	}
+
+	/** Constructor with the canvas.
+	 *
+	 * @param canvas the pre-created canvas with the model to display inside.
+	 */
+	public GisPane(GisCanvas<T> canvas) {
+		super(canvas);
 	}
 
 }

@@ -21,10 +21,10 @@
 package org.arakhne.afc.gis.ui.drawers;
 
 import org.arakhne.afc.gis.mapelement.MapMultiPoint;
-import org.arakhne.afc.gis.ui.GisDrawer;
-import org.arakhne.afc.gis.ui.GisGraphicsContext;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Abstract drawer of a map multi-point.
  *
@@ -35,14 +35,14 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public abstract class AbstractMapMultiPointDrawer<T extends MapMultiPoint> implements GisDrawer<T> {
+public abstract class AbstractMapMultiPointDrawer<T extends MapMultiPoint> implements Drawer<T> {
 
 	/** Define a path that corresponds to the small rectangles around the points.
 	 *
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
 	 */
-	protected void defineSmallRectangles(GisGraphicsContext gc, T element) {
+	protected void defineSmallRectangles(ZoomableGraphicsContext gc, T element) {
 		final double ptsSize = element.getPointSize() / 2.;
 		final Rectangle2afp<?, ?, ?, ?, ?, ?> visibleArea = gc.getVisibleArea();
 		for (final Point2d point : element.points()) {
@@ -65,7 +65,7 @@ public abstract class AbstractMapMultiPointDrawer<T extends MapMultiPoint> imple
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
 	 */
-	protected void defineBigRectangles(GisGraphicsContext gc, T element) {
+	protected void defineBigRectangles(ZoomableGraphicsContext gc, T element) {
 		final double ptsSize = element.getPointSize();
 		final Rectangle2afp<?, ?, ?, ?, ?, ?> visibleArea = gc.getVisibleArea();
 		for (final Point2d point : element.points()) {

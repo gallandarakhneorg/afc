@@ -24,7 +24,7 @@ import javafx.scene.paint.Color;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.gis.mapelement.MapPolygon;
-import org.arakhne.afc.gis.ui.GisGraphicsContext;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Drawer of a map polygon.
  *
@@ -43,7 +43,7 @@ public class MapPolygonDrawer extends AbstractMapPolygonDrawer<MapPolygon> {
 	}
 
 	@Override
-	public void draw(GisGraphicsContext gc, MapPolygon element) {
+	public void draw(ZoomableGraphicsContext gc, MapPolygon element) {
 		definePath(gc, element);
 		final Color color = gc.rgb(element.getColor());
 		gc.setFill(color);

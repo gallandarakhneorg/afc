@@ -21,8 +21,9 @@
 package org.arakhne.afc.gis.ui.drawers;
 
 import org.arakhne.afc.gis.mapelement.MapElement;
-import org.arakhne.afc.gis.ui.GisDrawer;
-import org.arakhne.afc.gis.ui.GisGraphicsContext;
+import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.Drawers;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Drawer that draws any map element for which a drawer is known.
  *
@@ -34,11 +35,11 @@ import org.arakhne.afc.gis.ui.GisGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class StaticMapElementDrawer implements GisDrawer<MapElement> {
+public class StaticMapElementDrawer implements Drawer<MapElement> {
 
 	private Class<? extends MapElement> type = MapElement.class;
 
-	private GisDrawer<? super MapElement> drawer;
+	private Drawer<? super MapElement> drawer;
 
 	@Override
 	public Class<? extends MapElement> getElementType() {
@@ -46,10 +47,10 @@ public class StaticMapElementDrawer implements GisDrawer<MapElement> {
 	}
 
 	@Override
-	public void draw(GisGraphicsContext gc, MapElement element) {
-		GisDrawer<? super MapElement> drawer = this.drawer;
+	public void draw(ZoomableGraphicsContext gc, MapElement element) {
+		Drawer<? super MapElement> drawer = this.drawer;
 		if (drawer == null) {
-			drawer = GisDrawer.getDrawersFor(element.getClass());
+			drawer = Drawers.getDrawersFor(element.getClass());
 			if (drawer != null) {
 				this.type = element.getClass();
 				this.drawer = drawer;

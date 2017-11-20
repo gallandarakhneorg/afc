@@ -67,6 +67,12 @@ AFC library contains the following alive modules:
 | giscore
 | Base elements for building data structures for Geographical Information Systems.
 
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/ui/package-summary.html[JavaFX Pane for GIS Primitives]
+|
+| org.arakhne.afc.gis.ui
+| giscorefx
+| JavaFX panel and canvas dedicated to GIS primitives.
+
 | link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[GIS Bus Network]
 |
 | org.arakhne.afc.gis

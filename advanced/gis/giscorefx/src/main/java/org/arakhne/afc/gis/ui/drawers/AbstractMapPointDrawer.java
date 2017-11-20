@@ -21,8 +21,8 @@
 package org.arakhne.afc.gis.ui.drawers;
 
 import org.arakhne.afc.gis.mapelement.MapPoint;
-import org.arakhne.afc.gis.ui.GisDrawer;
-import org.arakhne.afc.gis.ui.GisGraphicsContext;
+import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Abstract drawer of a map point.
  *
@@ -33,14 +33,14 @@ import org.arakhne.afc.gis.ui.GisGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public abstract class AbstractMapPointDrawer<T extends MapPoint> implements GisDrawer<T> {
+public abstract class AbstractMapPointDrawer<T extends MapPoint> implements Drawer<T> {
 
 	/** Define a path that corresponds to the small rectangle around a point.
 	 *
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
 	 */
-	protected void defineSmallRectangle(GisGraphicsContext gc, T element) {
+	protected void defineSmallRectangle(ZoomableGraphicsContext gc, T element) {
 		final double ptsSize = element.getPointSize() / 2.;
 		final double x = element.getX() - ptsSize;
 		final double y = element.getY() - ptsSize;
@@ -58,7 +58,7 @@ public abstract class AbstractMapPointDrawer<T extends MapPoint> implements GisD
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
 	 */
-	protected void defineBigRectangle(GisGraphicsContext gc, T element) {
+	protected void defineBigRectangle(ZoomableGraphicsContext gc, T element) {
 		final double ptsSize = element.getPointSize();
 		final double x = element.getX() - ptsSize;
 		final double y = element.getY() - ptsSize;

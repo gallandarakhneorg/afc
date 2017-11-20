@@ -26,7 +26,7 @@ import javafx.scene.shape.StrokeLineJoin;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.gis.mapelement.MapPolyline;
-import org.arakhne.afc.gis.ui.GisGraphicsContext;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Drawer of a map polyline.
  *
@@ -45,7 +45,7 @@ public class MapPolylineDrawer extends AbstractMapPolylineDrawer<MapPolyline> {
 	}
 
 	@Override
-	public void draw(GisGraphicsContext gc, MapPolyline element) {
+	public void draw(ZoomableGraphicsContext gc, MapPolyline element) {
 		definePath(gc, element);
 
 		final Color color = gc.rgb(element.getColor());

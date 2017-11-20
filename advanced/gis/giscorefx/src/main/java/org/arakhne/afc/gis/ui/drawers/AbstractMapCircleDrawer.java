@@ -21,8 +21,8 @@
 package org.arakhne.afc.gis.ui.drawers;
 
 import org.arakhne.afc.gis.mapelement.MapCircle;
-import org.arakhne.afc.gis.ui.GisDrawer;
-import org.arakhne.afc.gis.ui.GisGraphicsContext;
+import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Abstract drawer of a map circle.
  *
@@ -33,14 +33,14 @@ import org.arakhne.afc.gis.ui.GisGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public abstract class AbstractMapCircleDrawer<T extends MapCircle> implements GisDrawer<T> {
+public abstract class AbstractMapCircleDrawer<T extends MapCircle> implements Drawer<T> {
 
 	/** Stroke the circle.
 	 *
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
 	 */
-	protected void stroke(GisGraphicsContext gc, T element) {
+	protected void stroke(ZoomableGraphicsContext gc, T element) {
 		final double radius = element.getRadius();
 		final double diameter = radius * radius;
 		final double minx = element.getX() - radius;
@@ -53,7 +53,7 @@ public abstract class AbstractMapCircleDrawer<T extends MapCircle> implements Gi
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
 	 */
-	protected void fill(GisGraphicsContext gc, T element) {
+	protected void fill(ZoomableGraphicsContext gc, T element) {
 		final double radius = element.getRadius();
 		final double diameter = radius * radius;
 		final double minx = element.getX() - radius;

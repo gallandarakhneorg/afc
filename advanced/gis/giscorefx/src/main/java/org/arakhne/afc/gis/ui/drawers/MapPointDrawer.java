@@ -24,7 +24,7 @@ import javafx.scene.paint.Color;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.gis.mapelement.MapPoint;
-import org.arakhne.afc.gis.ui.GisGraphicsContext;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Drawer of a map point.
  *
@@ -43,7 +43,7 @@ public class MapPointDrawer extends AbstractMapPointDrawer<MapPoint> {
 	}
 
 	@Override
-	public void draw(GisGraphicsContext gc, MapPoint element) {
+	public void draw(ZoomableGraphicsContext gc, MapPoint element) {
 		final Color color = gc.rgb(element.getColor());
 		gc.setFill(color);
 		gc.setStroke(color.darker());

@@ -26,8 +26,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapElement;
-import org.arakhne.afc.gis.ui.GisDrawer;
-import org.arakhne.afc.gis.ui.GisGraphicsContext;
+import org.arakhne.afc.nodefx.DocumentDrawer;
+import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Drawer of a map element container.
@@ -39,9 +40,9 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class GisContainerDrawer<T extends MapElement> implements GisDrawer<GISElementContainer<T>> {
+public class GisContainerDrawer<T extends MapElement> implements DocumentDrawer<T, GISElementContainer<T>> {
 
-	private final GisDrawer<? super T> drawer;
+	private final Drawer<? super T> drawer;
 
 	/** Constructor based on a {@link StaticMapElementDrawer} drawer.
 	 */
@@ -53,28 +54,36 @@ public class GisContainerDrawer<T extends MapElement> implements GisDrawer<GISEl
 	 *
 	 * @param drawer the element drawer.
 	 */
-	public GisContainerDrawer(GisDrawer<? super T> drawer) {
+	public GisContainerDrawer(Drawer<? super T> drawer) {
 		assert drawer != null : AssertMessages.notNullParameter();
 		this.drawer = drawer;
 	}
 
-	/** Replies the element drawer.
-	 *
-	 * @return the element drawer.
-	 */
-	public GisDrawer<? super T> getElementDrawer() {
+	@Override
+	public Drawer<? super T> getElementDrawer() {
 		return this.drawer;
 	}
 
 	@Override
 	@SuppressWarnings("checkstyle:magicnumber")
-	public void draw(GisGraphicsContext gc, GISElementContainer<T> element) {
+	public void draw(ZoomableGraphicsContext gc, GISElementContainer<T> element) {
+		draw(gc, element, getElementDrawer());
+	}
+
+	/** Draw the elements.
+	 *
+	 * @param gc the graphical context.
+	 * @param element the elements.
+	 * @param drawer the drawer.
+	 */
+	protected void draw(ZoomableGraphicsContext gc, GISElementContainer<T> element, Drawer<? super T> drawer) {
 		final Iterator<T> iterator = element.iterator(gc.getVisibleArea());
-		final GisDrawer<? super T> drawer = getElementDrawer();
 		while (iterator.hasNext()) {
 			final T mapelement = iterator.next();
 			if (isDrawable(gc, mapelement)) {
+				gc.save();
 				drawer.draw(gc, mapelement);
+				gc.restore();
 			}
 		}
 	}
@@ -86,24 +95,14 @@ public class GisContainerDrawer<T extends MapElement> implements GisDrawer<GISEl
 		return (Class<? extends GISElementContainer<T>>) GISElementContainer.class;
 	}
 
-	/** Replies the type of the elements inside this container.
-	 *
-	 * @return the type of the elements inside this container.
-	 */
 	@SuppressWarnings("unchecked")
-	@Pure
-	public Class<? extends MapElement> getContainedElementType() {
-		return (Class<? extends MapElement>) getElementDrawer().getElementType();
+	@Override
+	public Class<? extends T> getContainedElementType() {
+		return (Class<? extends T>) getElementDrawer().getElementType();
 	}
 
-	/** Replies if the given element could be drawn.
-	 *
-	 * @param gc the current graphics context.
-	 * @param mapelement the element to draw.
-	 * @return {@code true} to draw the element. {@code false} to hide the element.
-	 */
-	@SuppressWarnings("checkstyle:magicnumber")
-	public boolean isDrawable(GisGraphicsContext gc, T mapelement) {
+	@Override
+	public boolean isDrawable(ZoomableGraphicsContext gc, T mapelement) {
 		return gc.consumeBudget();
 	}
 

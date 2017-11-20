@@ -21,8 +21,9 @@
 package org.arakhne.afc.gis.ui.drawers;
 
 import org.arakhne.afc.gis.mapelement.MapElement;
-import org.arakhne.afc.gis.ui.GisDrawer;
-import org.arakhne.afc.gis.ui.GisGraphicsContext;
+import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.Drawers;
+import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Drawer that draws any map element for which a drawer is known.
  *
@@ -34,7 +35,7 @@ import org.arakhne.afc.gis.ui.GisGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class DynamicMapElementDrawer implements GisDrawer<MapElement> {
+public class DynamicMapElementDrawer implements Drawer<MapElement> {
 
 	@Override
 	public Class<? extends MapElement> getElementType() {
@@ -42,8 +43,8 @@ public class DynamicMapElementDrawer implements GisDrawer<MapElement> {
 	}
 
 	@Override
-	public void draw(GisGraphicsContext gc, MapElement element) {
-		final GisDrawer<? super MapElement> drawer = GisDrawer.getDrawersFor(element.getClass());
+	public void draw(ZoomableGraphicsContext gc, MapElement element) {
+		final Drawer<? super MapElement> drawer = Drawers.getDrawersFor(element.getClass());
 		if (drawer != null) {
 			drawer.draw(gc, element);
 		}
