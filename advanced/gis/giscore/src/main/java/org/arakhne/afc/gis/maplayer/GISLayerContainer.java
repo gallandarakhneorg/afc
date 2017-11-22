@@ -27,6 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.gis.primitive.GISContainer;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.arakhne.afc.util.InformedIterable;
 
 /** Container of layers for a GIS application.
  *
@@ -43,7 +44,7 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-public interface GISLayerContainer<L extends MapLayer> extends GISContainer<L> {
+public interface GISLayerContainer<L extends MapLayer> extends GISContainer<L>, InformedIterable<L> {
 
 	/** Replies the bounding box of this visible elements.
 	 *

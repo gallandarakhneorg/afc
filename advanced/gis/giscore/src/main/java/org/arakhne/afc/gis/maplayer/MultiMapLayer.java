@@ -155,6 +155,11 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 	}
 
 	@Override
+	public Class<? extends L> getElementType() {
+		return this.subLayers.getElementType();
+	}
+
+	@Override
 	protected Rectangle2d calcBounds() {
 		final Rectangle2d r = new Rectangle2d();
 		boolean first = true;

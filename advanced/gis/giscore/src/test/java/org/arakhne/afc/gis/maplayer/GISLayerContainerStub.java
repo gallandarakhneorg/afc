@@ -474,4 +474,9 @@ class GISLayerContainerStub extends AbstractAttributeCollectionStub implements G
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public Class<? extends MapLayer> getElementType() {
+		throw new UnsupportedOperationException();
+	}
+
 }
