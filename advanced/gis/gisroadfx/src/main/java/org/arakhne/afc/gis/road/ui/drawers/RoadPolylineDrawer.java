@@ -53,10 +53,17 @@ public class RoadPolylineDrawer extends AbstractMapPolylineDrawer<RoadPolyline> 
 		gc.setLineCap(StrokeLineCap.ROUND);
 		gc.setLineJoin(StrokeLineJoin.ROUND);
 
-		if (gc.getState() == 0) {
+		switch (gc.getState()) {
+		case RoadNetworkDrawerConstants.DRAWING_STATE_ROAD_BORDERS:
 			setupRoadBorders(gc, element);
-		} else {
+			break;
+		case RoadNetworkDrawerConstants.DRAWING_STATE_ROAD_INTERIOR:
 			setupRoadInterior(gc, element);
+			break;
+		case RoadNetworkDrawerConstants.DRAWING_STATE_ROAD_DETAILS:
+			setupRoadDetails(gc, element);
+			break;
+		default:
 		}
 
 		gc.stroke();
@@ -94,6 +101,15 @@ public class RoadPolylineDrawer extends AbstractMapPolylineDrawer<RoadPolyline> 
 		} else {
 			gc.setLineWidthInPixels(1);
 		}
+	}
+
+	/** Setup for drawing the road details.
+	 *
+	 * @param gc the graphics context.
+	 * @param element the element to draw.
+	 */
+	protected void setupRoadDetails(ZoomableGraphicsContext gc, RoadPolyline element) {
+		//
 	}
 
 }

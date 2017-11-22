@@ -23,7 +23,7 @@ package org.arakhne.afc.gis.road.ui.drawers;
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapPolyline;
 import org.arakhne.afc.gis.road.RoadPolyline;
-import org.arakhne.afc.gis.ui.drawers.GisContainerDrawer;
+import org.arakhne.afc.gis.ui.drawers.GisElementContainerDrawer;
 import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.Drawers;
 import org.arakhne.afc.nodefx.LevelOfDetails;
@@ -37,7 +37,7 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class RoadNetworkDrawer extends GisContainerDrawer<RoadPolyline> {
+public class RoadNetworkDrawer extends GisElementContainerDrawer<RoadPolyline> {
 
 	private Drawer<MapPolyline> mappolylineDrawer;
 
@@ -66,13 +66,19 @@ public class RoadNetworkDrawer extends GisContainerDrawer<RoadPolyline> {
 			draw(gc, element, this.mappolylineDrawer);
 		} else {
 			gc.save();
-			gc.setState(0);
+			gc.setState(RoadNetworkDrawerConstants.DRAWING_STATE_ROAD_BORDERS);
 			super.draw(gc, element);
 			gc.restore();
 			gc.save();
-			gc.setState(1);
+			gc.setState(RoadNetworkDrawerConstants.DRAWING_STATE_ROAD_INTERIOR);
 			super.draw(gc, element);
 			gc.restore();
+			/*TODO Draw road details
+			gc.save();
+			gc.setState(RoadNetworkDrawerConstants.DRAWING_STATE_ROAD_DETAILS);
+			super.draw(gc, element);
+			gc.restore();
+			*/
 		}
 	}
 
