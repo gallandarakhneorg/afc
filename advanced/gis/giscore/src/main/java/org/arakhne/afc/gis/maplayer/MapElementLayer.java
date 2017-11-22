@@ -45,18 +45,18 @@ public abstract class MapElementLayer<E extends MapElement> extends MapLayer imp
 	/** Name of the attribute which is containing the URL
 	 * of the source of the element geometries.
 	 */
-	public static final String ATTR_ELEMENT_GEOMETRY_URL = "ElementGeometryUrl"; //$NON-NLS-1$
+	public static final String ATTR_ELEMENT_GEOMETRY_URL = "elementGeometryUrl"; //$NON-NLS-1$
 
 	/** Name of the attribute which is containing the type of map
 	 * projection for the source file of the element geometries.
 	 * @since 4.1
 	 */
-	public static final String ATTR_ELEMENT_GEOMETRY_PROJECTION = "ElementGeometryProjection"; //$NON-NLS-1$
+	public static final String ATTR_ELEMENT_GEOMETRY_PROJECTION = "elementGeometryProjection"; //$NON-NLS-1$
 
 	/** Name of the attribute which is containing the URL
 	 * of the source of the element attributes.
 	 */
-	public static final String ATTR_ELEMENT_ATTRIBUTES_URL = "ElementAttributeUrl"; //$NON-NLS-1$
+	public static final String ATTR_ELEMENT_ATTRIBUTES_URL = "elementAttributeUrl"; //$NON-NLS-1$
 
 	private static final long serialVersionUID = -398027492247194045L;
 

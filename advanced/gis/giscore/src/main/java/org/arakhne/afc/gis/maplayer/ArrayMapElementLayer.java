@@ -56,10 +56,19 @@ public class ArrayMapElementLayer<E extends MapElement> extends MapElementLayer<
 
 	private InformedArrayList<E> mapElements = new InformedArrayList<>();
 
-	/** Create a new layer with the specified attribute source.
+	/** Create a new layer.
 	 */
 	public ArrayMapElementLayer() {
 		this(null, null);
+	}
+
+	/** Create a new layer with the specified element type.
+	 *
+	 * @param type the type of the map elements.
+	 */
+	public ArrayMapElementLayer(Class<? extends E> type) {
+		this(null, null);
+		this.mapElements.setElementType(type);
 	}
 
 	/** Create a new layer with the specified attribute source.
