@@ -15,7 +15,7 @@ matrix:
       - mvn -Xmx32m --version
       - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx1g\"" > $HOME/.mavenrc
     - os: osx
-      osx_image: xcode8
+      osx_image: xcode8.3 # see https://docs.travis-ci.com/user/osx-ci-environment/
       before_install:
       - ./build-tools/src/main/resources/bash/travis-download-maven.sh
       - export M2_HOME=$HOME/.binaries/apache-maven-3.5.2
