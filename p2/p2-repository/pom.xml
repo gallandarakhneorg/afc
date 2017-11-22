@@ -93,6 +93,9 @@
 									<id>org.arakhne.afc.advanced:attributes:${afc.version}</id>
 									<override>true</override>
 									<singleton>true</singleton>
+									<excludes>
+										<exclude>javafx:jfxrt::</exclude>
+									</excludes>
 								</artifact>
 								<artifact>
 									<id>org.arakhne.afc.advanced:agentmotion:${afc.version}</id>
@@ -135,6 +138,9 @@
 									<id>org.arakhne.afc.gis:giscore:${afc.version}</id>
 									<override>true</override>
 									<singleton>true</singleton>
+									<excludes>
+										<exclude>javafx:jfxrt::</exclude>
+									</excludes>
 								</artifact>
 								<artifact>
 									<id>org.arakhne.afc.gis:gisinputoutput:${afc.version}</id>
@@ -148,11 +154,17 @@
 									<id>org.arakhne.afc.gis:gisroad:${afc.version}</id>
 									<override>true</override>
 									<singleton>true</singleton>
+									<excludes>
+										<exclude>javafx:jfxrt::</exclude>
+									</excludes>
 								</artifact>
 								<artifact>
 									<id>org.arakhne.afc.gis:gisbus:${afc.version}</id>
 									<override>true</override>
 									<singleton>true</singleton>
+									<excludes>
+										<exclude>javafx:jfxrt::</exclude>
+									</excludes>
 								</artifact>
 								<artifact>
 									<id>org.arakhne.afc.gis.ui:giscorefx:${afc.version}</id>
