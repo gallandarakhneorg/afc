@@ -1311,4 +1311,17 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		return this.unitLogger;
 	}
 
+	/** Assert if the two values are equal. The error message contains the hexadecimal values.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 */
+	@SuppressWarnings("static-method")
+	public void assertHexEquals(int expected, int actual) {
+		if (expected != actual) {
+			fail("Not same value. Expected: " + Integer.toHexString(expected) //$NON-NLS-1$
+				+ "; Actual: " + Integer.toHexString(actual)); //$NON-NLS-1$
+		}
+	}
+
 }
