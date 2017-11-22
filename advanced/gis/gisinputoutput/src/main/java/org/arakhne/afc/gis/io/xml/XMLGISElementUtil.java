@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.common.base.Strings;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -46,6 +47,7 @@ import org.arakhne.afc.gis.mapelement.MapPoint;
 import org.arakhne.afc.gis.mapelement.MapPolygon;
 import org.arakhne.afc.gis.mapelement.MapPolyline;
 import org.arakhne.afc.gis.mapelement.MapPonctualElement;
+import org.arakhne.afc.gis.maplayer.MapElementLayer;
 import org.arakhne.afc.gis.primitive.GISElement;
 import org.arakhne.afc.inputoutput.mime.MimeName;
 import org.arakhne.afc.inputoutput.path.PathBuilder;
@@ -98,15 +100,6 @@ public final class XMLGISElementUtil {
 
 	/** <code>doubleFrame=""</code>. */
 	private static final String ATTR_DOUBLEFRAME = "doubleFrame"; //$NON-NLS-1$
-
-	/** <code>elementAttributeSourceURL=""</code>. */
-	private static final String ATTR_ELEMENTATTRIBUTESOURCEURL = "elementAttributeSourceURL"; //$NON-NLS-1$
-
-	/** <code>elementGeometrySourceURL=""</code>. */
-	private static final String ATTR_ELEMENTGEOMETRYSOURCEURL = "elementGeometrySourceURL"; //$NON-NLS-1$
-
-	/** <code>elementGeometrySourceProjection=""</code>. */
-	private static final String ATTR_ELEMENTGEOMETRYSOURCEPROJECTION = "elementGeometrySourceProjection"; //$NON-NLS-1$
 
 	/** <code>firstPointIndex=""</code>. */
 	private static final String ATTR_FIRSTPOINTINDEX = "firstPointIndex"; //$NON-NLS-1$
@@ -236,7 +229,7 @@ public final class XMLGISElementUtil {
 	 *
 	 * @param element is the XML node to read.
 	 * @param elementNodeName is the name of the XML node that should contains the map element data.
-	 *     It myst be one of {@link #NODE_POINT}, {@link #NODE_CIRCLE}, {@link #NODE_POLYGON}, {@link #NODE_POLYLINE},
+	 *     It must be one of {@link #NODE_POINT}, {@link #NODE_CIRCLE}, {@link #NODE_POLYGON}, {@link #NODE_POLYLINE},
 	 * {@link #NODE_MULTIPOINT}, or {@code null} for the XML node name itself.
 	 * @param pathBuilder is the tool to make paths absolute.
 	 * @param resources is the tool that permits to gather the resources.
@@ -245,7 +238,7 @@ public final class XMLGISElementUtil {
 	 */
 	public static MapElement readMapElement(Element element, String elementNodeName,
 			PathBuilder pathBuilder, XMLResources resources) throws IOException {
-		return readMapElement(element, null, pathBuilder, resources);
+		return readMapElement(element, elementNodeName, null, pathBuilder, resources);
 	}
 
 	/** Read a map element from the XML description.
@@ -253,7 +246,7 @@ public final class XMLGISElementUtil {
 	 * @param <T> is the type of the element to create.
 	 * @param element is the XML node to read.
 	 * @param elementNodeName is the name of the XML node that should contains the map element data.
-	 *     It myst be one of {@link #NODE_POINT}, {@link #NODE_CIRCLE}, {@link #NODE_POLYGON}, {@link #NODE_POLYLINE},
+	 *     It must be one of {@link #NODE_POINT}, {@link #NODE_CIRCLE}, {@link #NODE_POLYGON}, {@link #NODE_POLYLINE},
 	 * {@link #NODE_MULTIPOINT}, or {@code null} for the XML node name itself.
 	 * @param type is the type of the element to create, or {@code null} to use the default.
 	 * @param pathBuilder is the tool to make paths absolute.
@@ -440,7 +433,7 @@ public final class XMLGISElementUtil {
 
 			return (T) multipoint;
 		}
-		throw new IOException("unable to parse the XML node to retreive a map element"); //$NON-NLS-1$
+		throw new IOException("unable to parse the XML node to retrieve a map element"); //$NON-NLS-1$
 	}
 
 	/** Replies the default name of the XML node for the given type of map element.
@@ -448,7 +441,7 @@ public final class XMLGISElementUtil {
 	 * @param type the type of the map element.
 	 * @return the default XML node name; or {@code null} if the type if unknown.
 	 */
-	public static String getDefaultMapElementNodeNode(Class<? extends MapElement> type) {
+	public static String getDefaultMapElementNodeName(Class<? extends MapElement> type) {
 		if (MapPolyline.class.isAssignableFrom(type)) {
 			return NODE_POLYLINE;
 		}
@@ -534,7 +527,7 @@ public final class XMLGISElementUtil {
 
 		url = primitive.getElementGeometrySourceURL();
 		if (url != null) {
-			xmlNode.setAttribute(ATTR_ELEMENTGEOMETRYSOURCEURL,
+			xmlNode.setAttribute(MapElementLayer.ATTR_ELEMENT_GEOMETRY_URL,
 					resources.add(url, MimeName.MIME_SHAPE_FILE.getMimeConstant()));
 			saveElements = false;
 		}
@@ -543,11 +536,11 @@ public final class XMLGISElementUtil {
 		if (mapProjection == null) {
 			mapProjection = MapMetricProjection.getDefault();
 		}
-		xmlNode.setAttribute(ATTR_ELEMENTGEOMETRYSOURCEPROJECTION, mapProjection.name());
+		xmlNode.setAttribute(MapElementLayer.ATTR_ELEMENT_GEOMETRY_PROJECTION, mapProjection.name());
 
 		url = primitive.getElementAttributeSourceURL();
 		if (!saveElements && url != null) {
-			xmlNode.setAttribute(ATTR_ELEMENTATTRIBUTESOURCEURL,
+			xmlNode.setAttribute(MapElementLayer.ATTR_ELEMENT_ATTRIBUTES_URL,
 					resources.add(url, MimeName.MIME_DBASE_FILE.getMimeConstant()));
 		}
 
@@ -597,7 +590,7 @@ public final class XMLGISElementUtil {
 		// Build the reader for the attributes
 		DBaseFileReader attrReader = null;
 		URL attrSourceURL = null;
-		String sattr = XMLUtil.getAttributeValueWithDefault(xmlNode, null, ATTR_ELEMENTATTRIBUTESOURCEURL);
+		String sattr = XMLUtil.getAttributeValueWithDefault(xmlNode, null, MapElementLayer.ATTR_ELEMENT_ATTRIBUTES_URL);
 		if (sattr != null && sattr.length() > 0) {
 			if (XMLResources.isStringIdentifier(sattr)) {
 				final long id = XMLResources.getNumericalIdentifier(sattr);
@@ -632,14 +625,14 @@ public final class XMLGISElementUtil {
 			}
 		}
 
-		// Retreive the map projection
+		// Retrieve the map projection
 		final MapMetricProjection mapProjection = XMLUtil.getAttributeEnumWithDefault(xmlNode, MapMetricProjection.class,
-				MapMetricProjection.getDefault(), ATTR_ELEMENTGEOMETRYSOURCEPROJECTION);
+				MapMetricProjection.getDefault(), MapElementLayer.ATTR_ELEMENT_GEOMETRY_PROJECTION);
 
 		// Build the reader for the shapes
 		GISShapeFileReader shapeReader = null;
 		URL shapeSourceURL = null;
-		sattr = XMLUtil.getAttributeValueWithDefault(xmlNode, null, ATTR_ELEMENTGEOMETRYSOURCEURL);
+		sattr = XMLUtil.getAttributeValueWithDefault(xmlNode, null, MapElementLayer.ATTR_ELEMENT_GEOMETRY_URL);
 		if (sattr != null && sattr.length() > 0) {
 			if (XMLResources.isStringIdentifier(sattr)) {
 				final long id = XMLResources.getNumericalIdentifier(sattr);
@@ -692,11 +685,17 @@ public final class XMLGISElementUtil {
 		}
 
 		// Read embedded elements
+		final String enm;
+		final String enmDefault = getDefaultMapElementNodeName(primitive.getElementType());
+		if (Strings.isNullOrEmpty(elementNodeName)) {
+			enm = enmDefault;
+		} else {
+			enm = elementNodeName;
+		}
 		T mapElement;
-		for (final Element elementNode : XMLUtil.getElementsFromPath(xmlNode, NODE_ELEMENTS, elementNodeName)) {
+		for (final Element elementNode : XMLUtil.getElementsFromPath(xmlNode, NODE_ELEMENTS, enm)) {
 			mapElement = XMLGISElementUtil.readMapElement(elementNode,
-					XMLGISElementUtil.getDefaultMapElementNodeNode(primitive.getElementType()),
-					primitive.getElementType(), pathBuilder, resources);
+					enmDefault, primitive.getElementType(), pathBuilder, resources);
 			if (mapElement != null) {
 				primitive.addMapElement(mapElement);
 			}

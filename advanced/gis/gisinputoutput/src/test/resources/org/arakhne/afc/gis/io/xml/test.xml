@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<point x="3" y="4" name="name1">
+	<attributes>
+		<attribute name="attr1" type="STRING" value="Text"/>
+	</attributes>
+</point>

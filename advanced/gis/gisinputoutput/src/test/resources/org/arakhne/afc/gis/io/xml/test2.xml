@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+	<elements>
+		<point x="3" y="4" name="name1">
+			<attributes>
+				<attribute name="attr1" type="STRING" value="Text"/>
+			</attributes>
+		</point>
+		<point x="34" y="55" name="name2">
+			<attributes>
+				<attribute name="attr2" type="STRING" value="Text2"/>
+			</attributes>
+		</point>
+	</elements>
+</doc>
