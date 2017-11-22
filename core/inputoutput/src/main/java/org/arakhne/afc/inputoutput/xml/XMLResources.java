@@ -37,11 +37,12 @@ import org.arakhne.afc.inputoutput.mime.MimeName;
 import org.arakhne.afc.inputoutput.path.PathBuilder;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
-/** Class that store a collection of resources (URL and files) and their associated
- * identifiers.
+/** Class that store a collection of resources (URL, files and raw data) and their associated
+ * identifiers within a XML file. An object of this type may be used as a repository
+ * of resources that are defined within an XML file.
  *
  * <p>MIME types are string and not {@link MimeName} because this enumeration
- * does not exostively contains all the MIME types on the World. Use a string
+ * does not exhaustively contains all the MIME types on the World. Use a string
  * is more generic in this case.
  *
  * @author $Author: sgalland$
@@ -64,8 +65,8 @@ public class XMLResources implements Comparator<Object> {
 
 	private long nextFreeId;
 
-	/**
-	 * @param pathBuilder is the path builder to use to compare the resources.
+	/** Constructor.
+	 * @param pathBuilder is the path builder to use to build the paths of the resources in order to compare the them.
 	 */
 	public XMLResources(PathBuilder pathBuilder) {
 		this.pathBuilder = pathBuilder;

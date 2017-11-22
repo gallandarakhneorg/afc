@@ -20,11 +20,16 @@
 
 package org.arakhne.afc.inputoutput.xml;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -38,20 +43,33 @@ import java.util.UUID;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import org.arakhne.afc.inputoutput.path.PathBuilder;
+import org.arakhne.afc.inputoutput.path.SimplePathBuilder;
 import org.arakhne.afc.testtools.AbstractTestCase;
+import org.arakhne.afc.text.TextUtil;
+import org.arakhne.afc.vmutil.FileSystem;
 
 @SuppressWarnings("all")
 public class XMLUtilTest extends AbstractTestCase {
 
 	private final static URL url = Resources.getResource(XMLUtilTest.class, "test.xml"); //$NON-NLS-1$
+
+	private final static URL url2 = Resources.getResource(XMLUtilTest.class, "test2.xml"); //$NON-NLS-1$
+
+	private final static URL url3 = Resources.getResource(XMLUtilTest.class, "test3.xml"); //$NON-NLS-1$
+
+	private final static URL url4 = Resources.getResource(XMLUtilTest.class, "test4.xml"); //$NON-NLS-1$
 
 	private Document document;
 
@@ -487,6 +505,383 @@ public class XMLUtilTest extends AbstractTestCase {
 	public void toStringNode() {
 		Document doc = XMLUtil.parseXML("<a><b id = \"v\"/></a>"); //$NON-NLS-1$
 		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><a><b id=\"v\"/></a>", XMLUtil.toString(doc)); //$NON-NLS-1$
+	}
+
+	@Test
+	public void readXMLReader() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><a><b id=\"v\"/></a>"; //$NON-NLS-1$
+		Document doc;
+		try (StringReader reader = new StringReader(source)) {
+			doc = XMLUtil.readXML(reader);
+		}
+		assertEquals("v", XMLUtil.getAttributeValue(doc, "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	}
+
+	@Test
+	public void readXMLInputStream() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><a><b id=\"v\"/></a>"; //$NON-NLS-1$
+		Document doc;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			doc = XMLUtil.readXML(reader);
+		}
+		assertEquals("v", XMLUtil.getAttributeValue(doc, "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	}
+
+	@Test
+	public void readXMLURL() throws Exception {
+		Document doc = XMLUtil.readXML(url2);
+		assertEquals("v", XMLUtil.getAttributeValue(doc, "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	}
+
+	@Test
+	public void readXMLFile() throws Exception {
+		Document doc = XMLUtil.readXML(FileSystem.convertURLToFile(url2));
+		assertEquals("v", XMLUtil.getAttributeValue(doc, "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	}
+
+	@Test
+	public void readXMLString() throws Exception {
+		Document doc = XMLUtil.readXML(FileSystem.convertURLToFile(url2).getAbsolutePath());
+		assertEquals("v", XMLUtil.getAttributeValue(doc, "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	}
+
+	@Test
+	public void readXMLFragmentReader() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		DocumentFragment fragment;
+		try (StringReader reader = new StringReader(source)) {
+			fragment = XMLUtil.readXMLFragment(reader);
+		}
+		assertEquals("v", XMLUtil.getAttributeValue(fragment, "root", "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		assertEquals("w", XMLUtil.getAttributeValue(fragment, "root", "c", "d", "e", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	}
+
+	@Test
+	public void readXMLFragmentReader_skipRoot() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		DocumentFragment fragment;
+		try (StringReader reader = new StringReader(source)) {
+			fragment = XMLUtil.readXMLFragment(reader, true);
+		}
+		assertEquals("v", XMLUtil.getAttributeValue(fragment, "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
+		assertEquals("w", XMLUtil.getAttributeValue(fragment, "c", "d", "e", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+	}
+
+	@Test
+	public void readXMLFragmentInputStream() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		DocumentFragment fragment;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			fragment = XMLUtil.readXMLFragment(reader);
+		}
+		assertEquals("v", XMLUtil.getAttributeValue(fragment, "root", "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		assertEquals("w", XMLUtil.getAttributeValue(fragment, "root", "c", "d", "e", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	}
+
+	@Test
+	public void readXMLFragmentInputStream_skipRoot() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		DocumentFragment fragment;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			fragment = XMLUtil.readXMLFragment(reader, true);
+		}
+		assertEquals("v", XMLUtil.getAttributeValue(fragment, "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
+		assertEquals("w", XMLUtil.getAttributeValue(fragment, "c", "d", "e", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+	}
+
+	@Test
+	public void readXMLFragmentURL() throws Exception {
+		DocumentFragment fragment = XMLUtil.readXMLFragment(url3);
+		assertEquals("v", XMLUtil.getAttributeValue(fragment, "root", "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		assertEquals("w", XMLUtil.getAttributeValue(fragment, "root", "c", "d", "e", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	}
+
+	@Test
+	public void readXMLFragmentURL_skipRoot() throws Exception {
+		DocumentFragment fragment = XMLUtil.readXMLFragment(url3, true);
+		assertEquals("v", XMLUtil.getAttributeValue(fragment, "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
+		assertEquals("w", XMLUtil.getAttributeValue(fragment, "c", "d", "e", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+	}
+
+	@Test
+	public void readXMLFragmentFile() throws Exception {
+		DocumentFragment fragment = XMLUtil.readXMLFragment(FileSystem.convertURLToFile(url3));
+		assertEquals("v", XMLUtil.getAttributeValue(fragment, "root", "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		assertEquals("w", XMLUtil.getAttributeValue(fragment, "root", "c", "d", "e", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	}
+
+	@Test
+	public void readXMLFragmentFile_skipRoot() throws Exception {
+		DocumentFragment fragment = XMLUtil.readXMLFragment(FileSystem.convertURLToFile(url3), true);
+		assertEquals("v", XMLUtil.getAttributeValue(fragment, "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
+		assertEquals("w", XMLUtil.getAttributeValue(fragment, "c", "d", "e", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+	}
+
+	@Test
+	public void readXMLFragmentString() throws Exception {
+		DocumentFragment fragment = XMLUtil.readXMLFragment(FileSystem.convertURLToFile(url3).getAbsolutePath());
+		assertEquals("v", XMLUtil.getAttributeValue(fragment, "root", "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		assertEquals("w", XMLUtil.getAttributeValue(fragment, "root", "c", "d", "e", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	}
+
+	@Test
+	public void readXMLFragmentString_skipRoot() throws Exception {
+		DocumentFragment fragment = XMLUtil.readXMLFragment(FileSystem.convertURLToFile(url3).getAbsolutePath(), true);
+		assertEquals("v", XMLUtil.getAttributeValue(fragment, "a", "b", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
+		assertEquals("w", XMLUtil.getAttributeValue(fragment, "c", "d", "e", "id")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ 
+	}
+
+	@Test
+	public void writeXMLDocumentOutputStream() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		Document doc;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			doc = XMLUtil.readXML(reader);
+		}
+		String actual;
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			XMLUtil.writeXML(doc, baos);
+			baos.flush();
+			actual = new String(baos.toByteArray());
+		}
+		assertEquals(source, actual);
+	}
+
+	@Test
+	public void writeXMLDocumentWriter() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		Document doc;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			doc = XMLUtil.readXML(reader);
+		}
+		String actual;
+		try (StringWriter sw = new StringWriter()) {
+			XMLUtil.writeXML(doc, sw);
+			sw.flush();
+			actual = sw.toString();
+		}
+		assertEquals(source, actual);
+	}
+
+	@Test
+	public void writeXMLDocumentFile() throws Exception  {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		Document doc;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			doc = XMLUtil.readXML(reader);
+		}
+		File file = File.createTempFile("unittest", ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
+		try {
+			XMLUtil.writeXML(doc, file);
+			String actual = TextUtil.join("\n", Files.readLines(file, Charset.defaultCharset())); //$NON-NLS-1$
+			assertEquals(source, actual);
+		} finally {
+			file.delete();
+		}
+	}
+
+	@Test
+	public void writeXMLDocumentString() throws Exception  {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		Document doc;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			doc = XMLUtil.readXML(reader);
+		}
+		File file = File.createTempFile("unittest", ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
+		try {
+			XMLUtil.writeXML(doc, file.getAbsolutePath());
+			String actual = TextUtil.join("\n", Files.readLines(file, Charset.defaultCharset())); //$NON-NLS-1$
+			assertEquals(source, actual);
+		} finally {
+			file.delete();
+		}
+	}
+
+	@Test
+	public void writeXMLDocumentFragmentOutputStream() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		DocumentFragment fragment;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			fragment = XMLUtil.readXMLFragment(reader, true);
+		}
+		String actual;
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			XMLUtil.writeXML(fragment, baos);
+			baos.flush();
+			actual = new String(baos.toByteArray());
+		}
+		final String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c>"; //$NON-NLS-1$
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void writeXMLDocumentFragmentWriter() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		DocumentFragment fragment;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			fragment = XMLUtil.readXMLFragment(reader, true);
+		}
+		String actual;
+		try (StringWriter sw = new StringWriter()) {
+			XMLUtil.writeXML(fragment, sw);
+			sw.flush();
+			actual = sw.toString();
+		}
+		final String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c>"; //$NON-NLS-1$
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void writeXMLDocumentFragmentFile() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		DocumentFragment fragment;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			fragment = XMLUtil.readXMLFragment(reader, true);
+		}
+		File file = File.createTempFile("unittest", ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
+		try {
+			XMLUtil.writeXML(fragment, file);
+			String actual = TextUtil.join("\n", Files.readLines(file, Charset.defaultCharset())); //$NON-NLS-1$
+			final String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c>"; //$NON-NLS-1$
+			assertEquals(expected, actual);
+		} finally {
+			file.delete();
+		}
+	}
+
+	@Test
+	public void writeXMLDocumentFragmentString() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		DocumentFragment fragment;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			fragment = XMLUtil.readXMLFragment(reader, true);
+		}
+		File file = File.createTempFile("unittest", ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
+		try {
+			XMLUtil.writeXML(fragment, file.getAbsolutePath());
+			String actual = TextUtil.join("\n", Files.readLines(file, Charset.defaultCharset())); //$NON-NLS-1$
+			final String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c>"; //$NON-NLS-1$
+			assertEquals(expected, actual);
+		} finally {
+			file.delete();
+		}
+	}
+
+	@Test
+	public void writeXMLNodeOutputStream() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		Document doc;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			doc = XMLUtil.readXML(reader);
+		}
+		String actual;
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			XMLUtil.writeXML(doc.getFirstChild().getFirstChild().getFirstChild(), baos);
+			baos.flush();
+			actual = new String(baos.toByteArray());
+		}
+		final String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><b id=\"v\"/>"; //$NON-NLS-1$
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void writeXMLNodeWriter() throws Exception {
+		final String source = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?><root><a><b id=\"v\"/></a><c><d><e id=\"w\"/></d></c></root>"; //$NON-NLS-1$
+		Document doc;
+		try (ByteArrayInputStream reader = new ByteArrayInputStream(source.getBytes())) {
+			doc = XMLUtil.readXML(reader);
+		}
+		String actual;
+		try (StringWriter sw = new StringWriter()) {
+			XMLUtil.writeXML(doc.getFirstChild().getFirstChild().getFirstChild(), sw);
+			sw.flush();
+			actual = sw.toString();
+		}
+		final String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><b id=\"v\"/>"; //$NON-NLS-1$
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void readResourcesElementXMLResources() throws Exception {
+		Document doc = XMLUtil.readXML(url4);
+		PathBuilder builder = new SimplePathBuilder();
+		XMLResources res = new XMLResources(builder);
+
+		int nb = XMLUtil.readResources((Element) doc.getFirstChild(), res);
+
+		assertEquals(3, nb);
+		
+		XMLResources.Entry entry;
+		
+		entry = res.getResource(1);
+		assertTrue(entry.isURL());
+		assertFalse(entry.isFile());
+		assertFalse(entry.isEmbeddedData());
+		assertEquals(new URL("file:/path/to/file.txt"), entry.getURL()); //$NON-NLS-1$
+		assertEquals("text/plain", entry.getMimeType()); //$NON-NLS-1$
+
+		entry = res.getResource(3);
+		assertFalse(entry.isURL());
+		assertTrue(entry.isFile());
+		assertFalse(entry.isEmbeddedData());
+		assertEquals(FileSystem.convertURLToFile(new URL("file:/path/to/file.html")), entry.getFile()); //$NON-NLS-1$
+		assertEquals("text/html", entry.getMimeType()); //$NON-NLS-1$
+
+		entry = res.getResource(4);
+		assertFalse(entry.isURL());
+		assertFalse(entry.isFile());
+		assertTrue(entry.isEmbeddedData());
+		assertArrayEquals("This is a text.\n".getBytes(), entry.getEmbeddedData()); //$NON-NLS-1$
+		assertEquals("application/octet-stream", entry.getMimeType()); //$NON-NLS-1$
+	}
+
+	@Test
+	public void readResourceURLElementXMLResourcesStringArray() throws Exception {
+		Document doc = XMLUtil.readXML(url4);
+		PathBuilder builder = new SimplePathBuilder();
+		XMLResources res = new XMLResources(builder);
+		XMLUtil.readResources((Element) doc.getFirstChild(), res);
+
+		URL url = XMLUtil.readResourceURL((Element) doc.getFirstChild(), res, "a", "b", "c", "res"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+		assertEquals(new URL("file:/path/to/file.txt"), url); //$NON-NLS-1$
+
+		assertNull(XMLUtil.readResourceURL((Element) doc.getFirstChild(), res, "a", "b", "c", "res2")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	}
+
+	@Test
+	public void writeResourcesElementXMLResourcesXMLBuilder() throws Exception {
+		PathBuilder pathBuilder = new SimplePathBuilder();
+		XMLResources res = new XMLResources(pathBuilder);
+		res.add(new URL("file:/path/to/file.txt"), "text/plain"); //$NON-NLS-1$ //$NON-NLS-2$
+		res.add(FileSystem.convertURLToFile(new URL("file:/path/to/file.html")), "text/html"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		final Document doc = builder.newDocument();
+		
+		XMLBuilder xmlBuilder = new XMLBuilder() {
+			@Override
+			public Document getDocument() throws DOMException {
+				return doc;
+			}
+		};
+		
+		Element root = xmlBuilder.createElement("root"); //$NON-NLS-1$
+		doc.appendChild(root);
+		
+		XMLUtil.writeResources(doc.getDocumentElement(), res, xmlBuilder);
+		
+		String actual;
+		try (StringWriter sw = new StringWriter()) {
+			XMLUtil.writeXML(doc, sw);
+			sw.flush();
+			actual = sw.toString();
+		}
+		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><root><resources>" //$NON-NLS-1$
+				+ "<resource id=\"#resource0\" mime=\"text/plain\" url=\"file:/path/to/file.txt\"/>" //$NON-NLS-1$
+				+ "<resource file=\"file:/path/to/file.html\" id=\"#resource1\" mime=\"text/html\"/>" //$NON-NLS-1$
+				+ "</resources></root>", actual); //$NON-NLS-1$
 	}
 
 	/**

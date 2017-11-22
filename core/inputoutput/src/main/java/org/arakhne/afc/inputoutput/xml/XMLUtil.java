@@ -65,6 +65,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.google.common.base.Strings;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -1860,7 +1861,7 @@ public final class XMLUtil {
 	 */
 	@Pure
 	public static byte[] parseString(String text) {
-		return Base64.getDecoder().decode(text);
+		return Base64.getDecoder().decode(Strings.nullToEmpty(text).trim());
 	}
 
 	/** Parse a string representation of an XML document.
@@ -1967,6 +1968,8 @@ public final class XMLUtil {
 
 	/**
 	 * Read an XML fragment from an XML file.
+	 * The XML file is well-formed. It means that the fragment will contains a single element: the root element
+	 * within the input file.
 	 *
 	 * @param file is the file to read
 	 * @return the fragment from the {@code file}.
@@ -1975,14 +1978,34 @@ public final class XMLUtil {
 	 * @throws ParserConfigurationException if the parser cannot  be configured.
 	 */
 	public static DocumentFragment readXMLFragment(File file) throws IOException, SAXException, ParserConfigurationException {
+		return readXMLFragment(file, false);
+	}
+
+	/**
+	 * Read an XML fragment from an XML file.
+	 * The XML file is well-formed. It means that the fragment will contains a single element: the root element
+	 * within the input file.
+	 *
+	 * @param file is the file to read
+	 * @param skipRoot if {@code true} the root element itself is not part of the fragment, and the children
+	 *     of the root element are directly added within the fragment.
+	 * @return the fragment from the {@code file}.
+	 * @throws IOException if the stream cannot be read.
+	 * @throws SAXException if the stream does not contains valid XML data.
+	 * @throws ParserConfigurationException if the parser cannot  be configured.
+	 */
+	public static DocumentFragment readXMLFragment(File file, boolean skipRoot)
+			throws IOException, SAXException, ParserConfigurationException {
 		assert file != null : AssertMessages.notNullParameter();
 		try (FileInputStream fis = new FileInputStream(file)) {
-			return readXMLFragment(fis);
+			return readXMLFragment(fis, skipRoot);
 		}
 	}
 
 	/**
 	 * Read an XML fragment from an XML file.
+	 * The XML file is well-formed. It means that the fragment will contains a single element: the root element
+	 * within the input stream.
 	 *
 	 * @param stream is the stream to read
 	 * @return the fragment from the {@code stream}.
@@ -1992,6 +2015,24 @@ public final class XMLUtil {
 	 */
 	public static DocumentFragment readXMLFragment(InputStream stream) throws IOException,
 			SAXException, ParserConfigurationException {
+		return readXMLFragment(stream, false);
+	}
+
+	/**
+	 * Read an XML fragment from an XML file.
+	 * The XML file is well-formed. It means that the fragment will contains a single element: the root element
+	 * within the input stream.
+	 *
+	 * @param stream is the stream to read
+	 * @param skipRoot if {@code true} the root element itself is not part of the fragment, and the children
+	 *     of the root element are directly added within the fragment.
+	 * @return the fragment from the {@code stream}.
+	 * @throws IOException if the stream cannot be read.
+	 * @throws SAXException if the stream does not contains valid XML data.
+	 * @throws ParserConfigurationException if the parser cannot  be configured.
+	 */
+	public static DocumentFragment readXMLFragment(InputStream stream, boolean skipRoot) throws IOException,
+			SAXException, ParserConfigurationException {
 		assert stream != null : AssertMessages.notNullParameter();
 		try {
 			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -1999,12 +2040,23 @@ public final class XMLUtil {
 			final Document doc = builder.parse(stream);
 
 			final DocumentFragment fragment = doc.createDocumentFragment();
-			final NodeList children = doc.getChildNodes();
-			final int length = children.getLength();
-			for (int i = 0; i < length; ++i) {
-				fragment.appendChild(children.item(i));
+			if (skipRoot) {
+				final NodeList root = doc.getChildNodes();
+				if (root.getLength() == 0) {
+					return fragment;
+				}
+				final NodeList children = root.item(0).getChildNodes();
+				final int len = children.getLength();
+				for (int i = 0; i < len; ++i) {
+					fragment.appendChild(children.item(0));
+				}
+			} else {
+				final NodeList children = doc.getChildNodes();
+				final int len = children.getLength();
+				for (int i = 0; i < len; ++i) {
+					fragment.appendChild(children.item(i));
+				}
 			}
-
 			return fragment;
 		} finally {
 			stream.close();
@@ -2013,6 +2065,8 @@ public final class XMLUtil {
 
 	/**
 	 * Read an XML fragment from an XML file.
+	 * The XML file is well-formed. It means that the fragment will contains a single element: the root element
+	 * within the input stream.
 	 *
 	 * @param reader is the stream to read
 	 * @return the fragment from the {@code reader}.
@@ -2022,18 +2076,47 @@ public final class XMLUtil {
 	 */
 	public static DocumentFragment readXMLFragment(Reader reader) throws IOException, SAXException,
 			ParserConfigurationException {
+		return readXMLFragment(reader, false);
+	}
+
+	/**
+	 * Read an XML fragment from an XML file.
+	 * The XML file is well-formed. It means that the fragment will contains a single element: the root element
+	 * within the input stream.
+	 *
+	 * @param reader is the stream to read
+	 * @param skipRoot if {@code true} the root element itself is not part of the fragment, and the children
+	 *     of the root element are directly added within the fragment.
+	 * @return the fragment from the {@code reader}.
+	 * @throws IOException if the stream cannot be read.
+	 * @throws SAXException if the stream does not contains valid XML data.
+	 * @throws ParserConfigurationException if the parser cannot  be configured.
+	 */
+	public static DocumentFragment readXMLFragment(Reader reader, boolean skipRoot) throws IOException, SAXException,
+			ParserConfigurationException {
 		assert reader != null : AssertMessages.notNullParameter();
 		try {
 			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			final DocumentBuilder builder = factory.newDocumentBuilder();
 			final Document doc = builder.parse(new InputSource(reader));
 			final DocumentFragment fragment = doc.createDocumentFragment();
-			final NodeList children = doc.getChildNodes();
-			final int len = children.getLength();
-			for (int i = 0; i < len; ++i) {
-				fragment.appendChild(children.item(i));
+			if (skipRoot) {
+				final NodeList root = doc.getChildNodes();
+				if (root.getLength() == 0) {
+					return fragment;
+				}
+				final NodeList children = root.item(0).getChildNodes();
+				final int len = children.getLength();
+				for (int i = 0; i < len; ++i) {
+					fragment.appendChild(children.item(0));
+				}
+			} else {
+				final NodeList children = doc.getChildNodes();
+				final int len = children.getLength();
+				for (int i = 0; i < len; ++i) {
+					fragment.appendChild(children.item(i));
+				}
 			}
-
 			return fragment;
 		} finally {
 			reader.close();
@@ -2042,6 +2125,8 @@ public final class XMLUtil {
 
 	/**
 	 * Read an XML fragment from an XML file.
+	 * The XML file is well-formed. It means that the fragment will contains a single element: the root element
+	 * within the input file.
 	 *
 	 * @param file is the file to read
 	 * @return the fragment from the {@code file}.
@@ -2050,14 +2135,34 @@ public final class XMLUtil {
 	 * @throws ParserConfigurationException if the parser cannot  be configured.
 	 */
 	public static DocumentFragment readXMLFragment(String file) throws IOException, SAXException, ParserConfigurationException {
+		return readXMLFragment(file, false);
+	}
+
+	/**
+	 * Read an XML fragment from an XML file.
+	 * The XML file is well-formed. It means that the fragment will contains a single element: the root element
+	 * within the input file.
+	 *
+	 * @param file is the file to read
+	 * @param skipRoot if {@code true} the root element itself is not part of the fragment, and the children
+	 *     of the root element are directly added within the fragment.
+	 * @return the fragment from the {@code file}.
+	 * @throws IOException if the stream cannot be read.
+	 * @throws SAXException if the stream does not contains valid XML data.
+	 * @throws ParserConfigurationException if the parser cannot  be configured.
+	 */
+	public static DocumentFragment readXMLFragment(String file, boolean skipRoot)
+			throws IOException, SAXException, ParserConfigurationException {
 		assert file != null : AssertMessages.notNullParameter();
 		try (FileInputStream fis = new FileInputStream(file)) {
-			return readXMLFragment(fis);
+			return readXMLFragment(fis, skipRoot);
 		}
 	}
 
 	/**
 	 * Read an XML fragment from an XML file.
+	 * The XML file is well-formed. It means that the fragment will contains a single element: the root element
+	 * within the input file.
 	 *
 	 * @param file is the file to read
 	 * @return the fragment from the {@code file}.
@@ -2066,8 +2171,26 @@ public final class XMLUtil {
 	 * @throws ParserConfigurationException if the parser cannot  be configured.
 	 */
 	public static DocumentFragment readXMLFragment(URL file) throws IOException, SAXException, ParserConfigurationException {
+		return readXMLFragment(file, false);
+	}
+
+	/**
+	 * Read an XML fragment from an XML file.
+	 * The XML file is well-formed. It means that the fragment will contains a single element: the root element
+	 * within the input file.
+	 *
+	 * @param file is the file to read
+	 * @param skipRoot if {@code true} the root element itself is not part of the fragment, and the children
+	 *     of the root element are directly added within the fragment.
+	 * @return the fragment from the {@code file}.
+	 * @throws IOException if the stream cannot be read.
+	 * @throws SAXException if the stream does not contains valid XML data.
+	 * @throws ParserConfigurationException if the parser cannot  be configured.
+	 */
+	public static DocumentFragment readXMLFragment(URL file, boolean skipRoot)
+			throws IOException, SAXException, ParserConfigurationException {
 		assert file != null : AssertMessages.notNullParameter();
-		return readXMLFragment(file.openStream());
+		return readXMLFragment(file.openStream(), skipRoot);
 	}
 
 	/** Write an enumeration value.
@@ -2376,66 +2499,6 @@ public final class XMLUtil {
 		writeNode(node, writer);
 	}
 
-	/**
-	 * Utility class for manipulating XML data and files.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 14.0
-	 */
-	private static class NameBasedIterator implements Iterator<Node> {
-
-		private final String nodeName;
-
-		private final NodeList list;
-
-		private Node next;
-
-		private int index;
-
-		/** Constructor.
-		 * @param parent the parent node.
-		 * @param nodeName the child node name.
-		 */
-		NameBasedIterator(Node parent, String nodeName) {
-			this.index = 0;
-			this.list = parent.getChildNodes();
-			this.nodeName = nodeName;
-			searchNode();
-		}
-
-		@Pure
-		@Override
-		public boolean hasNext() {
-			return this.next != null;
-		}
-
-		@Override
-		public Node next() {
-			final Node child = this.next;
-			if (child == null) {
-				throw new NoSuchElementException();
-			}
-			searchNode();
-			return child;
-		}
-
-		private void searchNode() {
-			this.next = null;
-			while (this.index < this.list.getLength()) {
-				final Node child = this.list.item(this.index);
-				++this.index;
-				if (this.nodeName.equals(child.getNodeName())) {
-					this.next = child;
-					return;
-				}
-			}
-		}
-
-	}
-
 	/** Write the given resources into the given XML node.
 	 *
 	 * @param node is the XML node to fill.
@@ -2539,7 +2602,7 @@ public final class XMLUtil {
 							++nb;
 						} else {
 							// Read embedded resource
-							final CDATASection rawData = getChild(node, CDATASection.class);
+							final CDATASection rawData = getChild(resourceNode, CDATASection.class);
 							if (rawData != null) {
 								final byte[] data = parseString(rawData.getData());
 								if (data != null) {
@@ -2582,6 +2645,66 @@ public final class XMLUtil {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Utility class for manipulating XML data and files.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 14.0
+	 */
+	private static class NameBasedIterator implements Iterator<Node> {
+
+		private final String nodeName;
+
+		private final NodeList list;
+
+		private Node next;
+
+		private int index;
+
+		/** Constructor.
+		 * @param parent the parent node.
+		 * @param nodeName the child node name.
+		 */
+		NameBasedIterator(Node parent, String nodeName) {
+			this.index = 0;
+			this.list = parent.getChildNodes();
+			this.nodeName = nodeName;
+			searchNode();
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.next != null;
+		}
+
+		@Override
+		public Node next() {
+			final Node child = this.next;
+			if (child == null) {
+				throw new NoSuchElementException();
+			}
+			searchNode();
+			return child;
+		}
+
+		private void searchNode() {
+			this.next = null;
+			while (this.index < this.list.getLength()) {
+				final Node child = this.list.item(this.index);
+				++this.index;
+				if (this.nodeName.equals(child.getNodeName())) {
+					this.next = child;
+					return;
+				}
+			}
+		}
+
 	}
 
 }

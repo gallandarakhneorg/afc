@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resources>
+		<resource id="#resource1" mime="text/plain" url="file:/path/to/file.txt"/>
+		<resource id="#resource3" mime="text/html" file="file:/path/to/file.html"/>
+		<resource id="#resource4">
+			<![CDATA[
+			VGhpcyBpcyBhIHRleHQuCg==
+			]]>
+		</resource>
+	</resources>
+	<a>
+		<b>
+			<c res="#resource1"/>
+		</b>
+	</a>
+</root>
