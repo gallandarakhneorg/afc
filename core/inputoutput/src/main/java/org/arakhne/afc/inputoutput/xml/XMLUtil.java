@@ -36,8 +36,12 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,6 +66,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.w3c.dom.Attr;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
@@ -72,6 +78,7 @@ import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import org.arakhne.afc.inputoutput.xml.XMLResources.Entry;
 import org.arakhne.afc.vmutil.ClassLoaderFinder;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -88,6 +95,12 @@ import org.arakhne.afc.vmutil.locale.Locale;
  */
 @SuppressWarnings({"checkstyle:methodcount", "checkstyle:classfanoutcomplexity", "checkstyle:classdataabstractioncoupling"})
 public final class XMLUtil {
+
+	/** <code>&lt;resource /&gt;</code>. */
+	public static final String NODE_RESOURCE = "resource"; //$NON-NLS-1$
+
+	/** <code>&lt;resources /&gt;</code>. */
+	public static final String NODE_RESOURCES = "resources"; //$NON-NLS-1$
 
 	/** Format of the date in XML files.
 	 * The dateTime is specified in the following form "YYYY-MM-DDThh:mm:ss" where:<ul>
@@ -114,14 +127,55 @@ public final class XMLUtil {
 	 */
 	public static final String ATTR_COLOR = "color"; //$NON-NLS-1$
 
+	/** <code>url=""</code>. */
+	public static final String ATTR_URL = "url"; //$NON-NLS-1$
+
+	/** <code>mime=""</code>. */
+	public static final String ATTR_MIMETYPE = "mime"; //$NON-NLS-1$
+
+	/** <code>file=""</code>. */
+	public static final String ATTR_FILE = "file"; //$NON-NLS-1$
+
 	/** List of XML colors and there corresponding Java colors.
 	 */
 	public static final Map<String, Integer> COLOR_MATCHES;
 
-	private static final String COLOR_DEFINITION_PATTERN = "^\\s*([^:\\s*]+)\\s*:\\s*([0-9]+)" //$NON-NLS-1$
-			+ "\\s*,\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*,\\s*([0-9]+)\\s*$"; //$NON-NLS-1$
+	private static final String POSITIVE_INTEGER_NUMBER_PATTERN = "[0-9]+"; //$NON-NLS-1$
 
-	private static final String EOL_PATTERN = "[\n\r]+"; //$NON-NLS-1$
+	private static final String POSITIVE_DOUBLE_NUMBER_PATTERN = "(?:(?:[0-9]+(?:\\.[0-9]*)?)|" //$NON-NLS-1$
+			+ "(?:\\.[0-9]+))(?:[eE][-+][0-9]+)?"; //$NON-NLS-1$
+
+	private static final Pattern HTML_RGB_PATTERN = Pattern.compile(
+			"rgb\\s*\\(\\s*(" //$NON-NLS-1$
+			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*,\\s*(" //$NON-NLS-1$
+			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*,\\s*(" //$NON-NLS-1$
+			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*\\)"); //$NON-NLS-1$
+
+	private static final Pattern HTML_RGBA_PATTERN = Pattern.compile(
+			"rgba\\s*\\(\\s*(" //$NON-NLS-1$
+			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*,\\s*(" //$NON-NLS-1$
+			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*,\\s*(" //$NON-NLS-1$
+			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*,\\s*(" //$NON-NLS-1$
+			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*\\)"); //$NON-NLS-1$
+
+	private static final Pattern HTML_HSL_PATTERN = Pattern.compile(
+			"hsl\\s*\\(\\s*(" //$NON-NLS-1$
+			+ POSITIVE_DOUBLE_NUMBER_PATTERN + "\\%?)\\s*,\\s*(" //$NON-NLS-1$
+			+ POSITIVE_DOUBLE_NUMBER_PATTERN + "\\%?)\\s*,\\s*(" //$NON-NLS-1$
+			+ POSITIVE_DOUBLE_NUMBER_PATTERN + "\\%?)\\s*\\)"); //$NON-NLS-1$
+
+	private static final Pattern HTML_HSLA_PATTERN = Pattern.compile(
+			"hsla\\s*\\(\\s*(" + POSITIVE_DOUBLE_NUMBER_PATTERN + "\\%?)\\s*,\\s*(" //$NON-NLS-1$ //$NON-NLS-2$
+					+ POSITIVE_DOUBLE_NUMBER_PATTERN + "\\%?)?\\s*," //$NON-NLS-1$
+			+ "\\s*(" + POSITIVE_DOUBLE_NUMBER_PATTERN + "\\%?)?\\s*,\\s*([0-9]+)\\s*\\)"); //$NON-NLS-1$ //$NON-NLS-2$
+
+	private static final String COLOR_DEFINITION_PATTERN = "^\\s*([^:\\s*]+)\\s*:\\s*(" //$NON-NLS-1$
+			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*,\\s*(" //$NON-NLS-1$
+			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*,\\s*(" //$NON-NLS-1$
+			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*,\\s*(" //$NON-NLS-1$
+			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*$"; //$NON-NLS-1$
+
+	private static final String EOL_PATTERN = "[ \t\n\r]*;[ \\t\\n\\r]*"; //$NON-NLS-1$
 
 	private static final String CONSTANT_TRUE = "true"; //$NON-NLS-1$
 
@@ -155,7 +209,7 @@ public final class XMLUtil {
 				final Matcher matcher = pattern.matcher(definition);
 				if (matcher.matches()) {
 					map.put(matcher.group(1),
-							encodeColor(
+							encodeRgbaColor(
 									Integer.parseInt(matcher.group(2)),
 									Integer.parseInt(matcher.group(3)),
 									Integer.parseInt(matcher.group(4)),
@@ -167,18 +221,90 @@ public final class XMLUtil {
 	}
 
 	@SuppressWarnings("checkstyle:magicnumber")
-	private static int decodeColor(String colorString) {
-		final Integer intval = Integer.decode(colorString);
-        return intval.intValue();
+	private static int decodeHexInteger(String colorString) {
+		try {
+			return Integer.parseInt(colorString, 16);
+		} catch (Throwable exception) {
+			return 0;
+		}
+	}
+
+	private static int decodeDecInteger(String colorString) {
+		try {
+			return Integer.parseInt(colorString);
+		} catch (Throwable exception) {
+			return 0;
+		}
+	}
+
+	private static double decodeDouble(String colorString) {
+		try {
+			final Double dblval = Double.valueOf(colorString);
+			return dblval.doubleValue();
+		} catch (Throwable exception) {
+			return 0.;
+		}
 	}
 
 	@SuppressWarnings("checkstyle:magicnumber")
-	private static Integer encodeColor(int red, int green, int blue, int alpha) {
+	private static double decodeFactor(String colorString) {
+		if (colorString == null) {
+			return 0.;
+		}
+		if (colorString.endsWith("%")) { //$NON-NLS-1$
+			return decodeDecInteger(colorString.substring(0, colorString.length() - 1)) / 100.;
+		}
+		return decodeDouble(colorString);
+	}
+
+	@SuppressWarnings("checkstyle:magicnumber")
+	private static int encodeRgbaColor(int red, int green, int blue, int alpha) {
 		int col = (alpha & 0xFF) << 24;
 		col |= (red & 0xFF) << 16;
 		col |= (green & 0xFF) << 8;
 		col |= blue & 0xFF;
 		return Integer.valueOf(col);
+	}
+
+	@SuppressWarnings("checkstyle:magicnumber")
+	private static int encodeHslaColor(double hue, double saturation, double lightness, int alpha) {
+		final double red;
+		final double green;
+		final double blue;
+		if (saturation == 0) {
+			// achromatic
+			red = lightness;
+			green = lightness;
+			blue = lightness;
+		} else {
+			final double q = lightness < .5 ? lightness * (1 + saturation) : lightness + saturation - lightness * saturation;
+			final double p = 2 * lightness - q;
+			red = hue2rgb(p, q, hue + 1. / 3.);
+			green = hue2rgb(p, q, hue);
+			blue = hue2rgb(p, q, hue - 1. / 3.);
+		}
+		return encodeRgbaColor((int) (red * 255), (int) (green * 255), (int) (blue * 255), alpha);
+	}
+
+	@SuppressWarnings("checkstyle:magicnumber")
+	private static double hue2rgb(double p0, double q0, double t0) {
+		double t = t0;
+		if (t < 0.) {
+			t += 1.;
+		}
+		if (t > 1.) {
+			t -= 1.;
+		}
+		if (t < 1. / 6.) {
+			return p0 + (q0 - p0) * 6. * t;
+		}
+		if (t < 1. / 2.) {
+			return q0;
+		}
+		if (t < 2. / 3.) {
+			return p0 + (q0 - p0) * (2. / 3. - t) * 6.;
+		}
+		return p0;
 	}
 
 	/** Replies the boolean value that corresponds to the specified attribute's path.
@@ -227,8 +353,8 @@ public final class XMLUtil {
 	 *      it was node found in the document
 	 */
 	@Pure
-	public static boolean getAttributeBooleanWithDefault(Node document, boolean caseSensitive,
-			boolean defaultValue, String... path) {
+	public static Boolean getAttributeBooleanWithDefault(Node document, boolean caseSensitive,
+			Boolean defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		final String v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v == null || v.isEmpty()) {
@@ -253,7 +379,7 @@ public final class XMLUtil {
 	 *     it was node found in the document
 	 */
 	@Pure
-	public static boolean getAttributeBooleanWithDefault(Node document, boolean defaultValue, String... path) {
+	public static Boolean getAttributeBooleanWithDefault(Node document, Boolean defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		return getAttributeBooleanWithDefault(document, true, defaultValue, path);
 	}
@@ -365,7 +491,7 @@ public final class XMLUtil {
 	 *      it was node found in the document
 	 */
 	@Pure
-	public static int getAttributeColorWithDefault(Node document, boolean caseSensitive, int defaultValue,
+	public static Integer getAttributeColorWithDefault(Node document, boolean caseSensitive, Integer defaultValue,
 			String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		final String v = getAttributeValue(document, caseSensitive, 0, path);
@@ -391,7 +517,7 @@ public final class XMLUtil {
 	 * @return the color of the specified attribute.
 	 */
 	@Pure
-	public static int getAttributeColorWithDefault(Node document, int defaultValue, String... path) {
+	public static Integer getAttributeColorWithDefault(Node document, Integer defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		return getAttributeColorWithDefault(document, true, defaultValue, path);
 	}
@@ -520,7 +646,7 @@ public final class XMLUtil {
 	 *     it was node found in the document
 	 */
 	@Pure
-	public static double getAttributeDoubleWithDefault(Node document, boolean caseSensitive, double defaultValue,
+	public static Double getAttributeDoubleWithDefault(Node document, boolean caseSensitive, Double defaultValue,
 			String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		final String v = getAttributeValue(document, caseSensitive, 0, path);
@@ -546,7 +672,7 @@ public final class XMLUtil {
 	 * @return the double value of the specified attribute or <code>0</code>.
 	 */
 	@Pure
-	public static double getAttributeDoubleWithDefault(Node document, double defaultValue, String... path) {
+	public static Double getAttributeDoubleWithDefault(Node document, Double defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		return getAttributeDoubleWithDefault(document, true, defaultValue, path);
 	}
@@ -597,13 +723,21 @@ public final class XMLUtil {
 		assert type != null : AssertMessages.notNullParameter(1);
 		final String v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null && !v.isEmpty()) {
-			try {
-				final T value = Enum.valueOf(type, v);
-				if (value != null) {
-					return value;
+			if (caseSensitive) {
+				try {
+					final T value = Enum.valueOf(type, v);
+					if (value != null) {
+						return value;
+					}
+				} catch (Throwable e) {
+					//
 				}
-			} catch (Throwable e) {
-				//
+			} else {
+				for (final T value : type.getEnumConstants()) {
+					if (v.equalsIgnoreCase(value.name())) {
+						return value;
+					}
+				}
 			}
 		}
 		return defaultValue;
@@ -671,7 +805,7 @@ public final class XMLUtil {
 	 *     it was node found in the document
 	 */
 	@Pure
-	public static float getAttributeFloatWithDefault(Node document, boolean caseSensitive, float defaultValue, String... path) {
+	public static Float getAttributeFloatWithDefault(Node document, boolean caseSensitive, Float defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		final String v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null) {
@@ -696,7 +830,7 @@ public final class XMLUtil {
 	 * @return the float value of the specified attribute or <code>0</code>.
 	 */
 	@Pure
-	public static float getAttributeFloatWithDefault(Node document, float defaultValue, String... path) {
+	public static Float getAttributeFloatWithDefault(Node document, Float defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		return getAttributeFloatWithDefault(document, true, defaultValue, path);
 	}
@@ -747,7 +881,7 @@ public final class XMLUtil {
 	 *     it was node found in the document
 	 */
 	@Pure
-	public static int getAttributeIntWithDefault(Node document, boolean caseSensitive, int defaultValue, String... path) {
+	public static Integer getAttributeIntWithDefault(Node document, boolean caseSensitive, Integer defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		final String v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null) {
@@ -772,7 +906,7 @@ public final class XMLUtil {
 	 * @return the integer value of the specified attribute or <code>0</code>.
 	 */
 	@Pure
-	public static int getAttributeIntWithDefault(Node document, int defaultValue, String... path) {
+	public static Integer getAttributeIntWithDefault(Node document, Integer defaultValue, String... path) {
 		return getAttributeIntWithDefault(document, true, defaultValue, path);
 	}
 
@@ -790,7 +924,7 @@ public final class XMLUtil {
 	@Pure
 	public static long getAttributeLong(Node document, boolean caseSensitive, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		return getAttributeLongWithDefault(document, caseSensitive, 0, path);
+		return getAttributeLongWithDefault(document, caseSensitive, (long) 0, path);
 	}
 
 	/** Replies the long value that corresponds to the specified attribute's path.
@@ -806,7 +940,7 @@ public final class XMLUtil {
 	@Pure
 	public static long getAttributeLong(Node document, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
-		return getAttributeLongWithDefault(document, true, 0, path);
+		return getAttributeLongWithDefault(document, true, (long) 0, path);
 	}
 
 	/** Replies the long value that corresponds to the specified attribute's path.
@@ -822,7 +956,7 @@ public final class XMLUtil {
 	 *     it was node found in the document
 	 */
 	@Pure
-	public static long getAttributeLongWithDefault(Node document, boolean caseSensitive, long defaultValue, String... path) {
+	public static Long getAttributeLongWithDefault(Node document, boolean caseSensitive, Long defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		final String v = getAttributeValue(document, caseSensitive, 0, path);
 		if (v != null) {
@@ -847,7 +981,7 @@ public final class XMLUtil {
 	 * @return the long value of the specified attribute or <code>0</code>.
 	 */
 	@Pure
-	public static long getAttributeLongWithDefault(Node document, long defaultValue, String... path) {
+	public static Long getAttributeLongWithDefault(Node document, Long defaultValue, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		return getAttributeLongWithDefault(document, true, defaultValue, path);
 	}
@@ -1079,8 +1213,8 @@ public final class XMLUtil {
 				if (node != null) {
 					final String name = node.getNodeName();
 					if (name != null
-						&& ((caseSensitive && name.equals(path[idxStart]))
-							|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
+							&& ((caseSensitive && name.equals(path[idxStart]))
+									|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
 						final String value = getAttributeValue(node, caseSensitive, idxStart + 1, path);
 						if (value != null) {
 							return value;
@@ -1089,7 +1223,24 @@ public final class XMLUtil {
 				}
 			}
 		} else if (document instanceof Element) {
-			return ((Element) document).getAttribute(path[idxStart]);
+			if (caseSensitive) {
+				return ((Element) document).getAttribute(path[idxStart]);
+			}
+			final NamedNodeMap map = ((Element) document).getAttributes();
+			final int len = map.getLength();
+			for (int i = 0; i < len; ++i) {
+				final Node node = map.item(i);
+				if (node instanceof Attr) {
+					final Attr attr = (Attr) node;
+					final String name = attr.getName();
+					if (name != null && name.equalsIgnoreCase(path[idxStart])) {
+						final String value = attr.getValue();
+						if (value != null) {
+							return value;
+						}
+					}
+				}
+			}
 		} else {
 			final NamedNodeMap attrs = document.getAttributes();
 			if (attrs != null) {
@@ -1099,7 +1250,7 @@ public final class XMLUtil {
 					final String name = node.getNodeName();
 					if (name != null
 							&& ((caseSensitive && name.equals(path[idxStart]))
-								|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
+									|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
 						return node.getNodeValue();
 					}
 				}
@@ -1246,8 +1397,8 @@ public final class XMLUtil {
 					final Element element = (Element) node;
 					final String name = node.getNodeName();
 					if (name != null
-						&& ((caseSensitive && name.equals(path[idxStart]))
-						|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
+							&& ((caseSensitive && name.equals(path[idxStart]))
+									|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
 						final Element nd = (path.length - idxStart) == 1
 								? element : getElementFromPath(node, caseSensitive, idxStart + 1, path);
 						if (nd != null) {
@@ -1356,7 +1507,7 @@ public final class XMLUtil {
 					final String name = element.getNodeName();
 					if (name != null
 							&& ((caseSensitive && name.equals(path[idxStart]))
-							|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
+									|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
 						if  ((path.length - idxStart) == 1) {
 							result.add(element);
 						} else {
@@ -1428,7 +1579,7 @@ public final class XMLUtil {
 					final String name = node.getNodeName();
 					if (name != null
 							&& ((caseSensitive && name.equals(path[idxStart]))
-								|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
+									|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
 						final Node nd = (path.length - idxStart) == 1
 								? node : getNodeFromPath(node, caseSensitive, idxStart + 1, path);
 						if (nd != null) {
@@ -1497,7 +1648,7 @@ public final class XMLUtil {
 					final String name = node.getNodeName();
 					if (name != null
 							&& ((caseSensitive && name.equals(path[idxStart]))
-								|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
+									|| (!caseSensitive && name.equalsIgnoreCase(path[idxStart])))) {
 						if  ((path.length - idxStart) == 1) {
 							result.add(node);
 						} else {
@@ -1596,25 +1747,66 @@ public final class XMLUtil {
 	/**
 	 * Parses an XML/HTML color.
 	 *
+	 * <p>The supported formats of color are:<ul>
+	 * <li><code>#<i>hex</i></code></li>
+	 * <li><code><i>name</i></code></li>
+	 * <li><code>rgb(<i>r</i>, <i>g</i>, <i>b</i>)</code></li>
+	 * <li><code>rgba(<i>r</i>, <i>g</i>, <i>b</i>, <i>a</i>)</code></li>
+	 * <li><code>hsl(<i>h</i>[%], <i>s</i>[%], <i>l</i>[%])</code></li>
+	 * <li><code>hsla(<i>h</i>[%], <i>s</i>[%], <i>l</i>[%], <i>a</i>)</code></li>
+	 * </ul>
+	 *
 	 * @param xmlColor is the color to translate from a XML/HTML string.
 	 * @return the color.
 	 * @throws ColorFormatException if the color has invalid format.
 	 * @see #toColor(int, int, int, int)
 	 */
 	@Pure
+	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:npathcomplexity"})
 	public static int parseColor(String xmlColor) throws ColorFormatException {
 		if (xmlColor == null || "".equals(xmlColor)) { //$NON-NLS-1$
 			return 0;
 		}
 		if (xmlColor.startsWith("#")) { //$NON-NLS-1$
 			try {
-				final StringBuilder str = new StringBuilder(xmlColor);
-				str.deleteCharAt(0);
-				str.insert(0, "0x"); //$NON-NLS-1$
-				return decodeColor(str.toString());
+				final String str = xmlColor.substring(1);
+				if (str.length() == 6) {
+					return 0xFF000000 | decodeHexInteger(str.toString());
+				}
+				return decodeHexInteger(str.toString());
 			} catch (NumberFormatException e) {
 				throw new ColorFormatException(xmlColor);
 			}
+		}
+		Matcher matcher = HTML_RGB_PATTERN.matcher(xmlColor);
+		if (matcher.find()) {
+			final int red = decodeDecInteger(matcher.group(1));
+			final int green = decodeDecInteger(matcher.group(2));
+			final int blue = decodeDecInteger(matcher.group(3));
+			return encodeRgbaColor(red, green, blue, 0xFF);
+		}
+		matcher = HTML_RGBA_PATTERN.matcher(xmlColor);
+		if (matcher.find()) {
+			final int red = decodeDecInteger(matcher.group(1));
+			final int green = decodeDecInteger(matcher.group(2));
+			final int blue = decodeDecInteger(matcher.group(3));
+			final int alpha = decodeDecInteger(matcher.group(4));
+			return encodeRgbaColor(red, green, blue, alpha);
+		}
+		matcher = HTML_HSL_PATTERN.matcher(xmlColor);
+		if (matcher.find()) {
+			final double hue = decodeFactor(matcher.group(1));
+			final double saturation = decodeFactor(matcher.group(2));
+			final double lightness = decodeFactor(matcher.group(3));
+			return encodeHslaColor(hue, saturation, lightness, 0xFF);
+		}
+		matcher = HTML_HSLA_PATTERN.matcher(xmlColor);
+		if (matcher.find()) {
+			final double hue = decodeFactor(matcher.group(1));
+			final double saturation = decodeFactor(matcher.group(2));
+			final double lightness = decodeFactor(matcher.group(3));
+			final int alpha = decodeDecInteger(matcher.group(4));
+			return encodeHslaColor(hue, saturation, lightness, alpha);
 		}
 		final Integer color = COLOR_MATCHES.get(xmlColor.toLowerCase());
 		if (color != null) {
@@ -1623,8 +1815,7 @@ public final class XMLUtil {
 		throw new ColorFormatException(xmlColor);
 	}
 
-	/**
-	 * Parses an XML/HTML date.
+	/** Parses an XML/HTML date.
 	 *
 	 * @param xmlDate is the date to translate from a XML/HTML string.
 	 * @return the date.
@@ -1661,7 +1852,7 @@ public final class XMLUtil {
 		}
 	}
 
-	/** Parse a string with contains a set of bytes.
+	/** Parse a Base64 string with contains a set of bytes.
 	 *
 	 * @param text is the string to uudecode
 	 * @return the decoding result
@@ -1956,7 +2147,7 @@ public final class XMLUtil {
 	 */
 	@Pure
 	public static String toColor(int red, int green, int blue, int alpha) {
-		return toColor(encodeColor(red, green, blue, alpha));
+		return toColor(encodeRgbaColor(red, green, blue, alpha));
 	}
 
 	/** Translate a set of bytes into an XML-compliant set of characters.
@@ -2030,10 +2221,10 @@ public final class XMLUtil {
 			trans.setParameter(OutputKeys.INDENT, CONSTANT_YES);
 
 			final DOMSource source = new DOMSource(node);
-   			try (PrintStream flot = new PrintStream(stream)) {
-   				final StreamResult xmlStream = new StreamResult(flot);
-	   			trans.transform(source, xmlStream);
-   			}
+			try (PrintStream flot = new PrintStream(stream)) {
+				final StreamResult xmlStream = new StreamResult(flot);
+				trans.transform(source, xmlStream);
+			}
 		} catch (Exception e) {
 			throw new IOException(e);
 		}
@@ -2049,10 +2240,10 @@ public final class XMLUtil {
 			trans.setParameter(OutputKeys.INDENT, CONSTANT_YES);
 
 			final DOMSource source = new DOMSource(node);
-   			try (PrintWriter flot = new PrintWriter(writer)) {
-   				final StreamResult xmlStream = new StreamResult(flot);
-	   			trans.transform(source, xmlStream);
-   			}
+			try (PrintWriter flot = new PrintWriter(writer)) {
+				final StreamResult xmlStream = new StreamResult(flot);
+				trans.transform(source, xmlStream);
+			}
 		} catch (Exception e) {
 			throw new IOException(e);
 		}
@@ -2243,6 +2434,154 @@ public final class XMLUtil {
 			}
 		}
 
+	}
+
+	/** Write the given resources into the given XML node.
+	 *
+	 * @param node is the XML node to fill.
+	 * @param resources are the resources to put out.
+	 * @param builder is the tool to create XML nodes.
+	 */
+	public static void writeResources(Element node, XMLResources resources, XMLBuilder builder) {
+		if (resources != null) {
+			final Element resourcesNode = builder.createElement(NODE_RESOURCES);
+			for (final java.util.Map.Entry<Long, Entry> pair : resources.getPairs().entrySet()) {
+				final Entry e = pair.getValue();
+				if (e.isURL()) {
+					final Element resourceNode = builder.createElement(NODE_RESOURCE);
+					resourceNode.setAttribute(ATTR_ID, XMLResources.getStringIdentifier(pair.getKey()));
+					resourceNode.setAttribute(ATTR_URL, e.getURL().toExternalForm());
+					resourceNode.setAttribute(ATTR_MIMETYPE, e.getMimeType());
+					resourcesNode.appendChild(resourceNode);
+				} else if (e.isFile()) {
+					final Element resourceNode = builder.createElement(NODE_RESOURCE);
+					resourceNode.setAttribute(ATTR_ID, XMLResources.getStringIdentifier(pair.getKey()));
+					final File file = e.getFile();
+					final StringBuilder url = new StringBuilder();
+					url.append("file:"); //$NON-NLS-1$
+					boolean addSlash = false;
+					for (final String elt : FileSystem.split(file)) {
+						try {
+							if (addSlash) {
+								url.append("/"); //$NON-NLS-1$
+							}
+							url.append(URLEncoder.encode(elt, Charset.defaultCharset().name()));
+						} catch (UnsupportedEncodingException e1) {
+							throw new Error(e1);
+						}
+						addSlash = true;
+					}
+					resourceNode.setAttribute(ATTR_FILE, url.toString());
+					resourceNode.setAttribute(ATTR_MIMETYPE, e.getMimeType());
+					resourcesNode.appendChild(resourceNode);
+				} else if (e.isEmbeddedData()) {
+					final Element resourceNode = builder.createElement(NODE_RESOURCE);
+					resourceNode.setAttribute(ATTR_ID, XMLResources.getStringIdentifier(pair.getKey()));
+					resourceNode.setAttribute(ATTR_MIMETYPE, e.getMimeType());
+					final byte[] data = e.getEmbeddedData();
+					final CDATASection cdata = builder.createCDATASection(toString(data));
+					resourceNode.appendChild(cdata);
+					resourcesNode.appendChild(resourceNode);
+				}
+			}
+			if (resourcesNode.getChildNodes().getLength() > 0) {
+				node.appendChild(resourcesNode);
+			}
+		}
+	}
+
+	/** Read the given resources from the given XML node.
+	 * The <var>node</var> should have a node named "resources" with
+	 * a node named "resource" for each resource inside.
+	 *
+	 * <p>The given <var>resources</var> are not cleared before the XML document
+	 * is read.
+	 *
+	 * @param node is the XML node to read.
+	 * @param resources is the collection of resources to fill out.
+	 * @return the number of read resources.
+	 * @throws IOException in case of error.
+	 */
+	@SuppressWarnings({"checkstyle:nestedifdepth"})
+	public static int readResources(Element node, XMLResources resources) throws IOException {
+		int nb = 0;
+		if (resources != null) {
+			for (final Element resourceNode : getElementsFromPath(node, NODE_RESOURCES, NODE_RESOURCE)) {
+				try {
+					final String sid = getAttributeValue(resourceNode, ATTR_ID);
+					final long id = XMLResources.getNumericalIdentifier(sid);
+					final String mimeType = getAttributeValue(resourceNode, ATTR_MIMETYPE);
+					String ssource = getAttributeValue(resourceNode, ATTR_URL);
+					if (ssource != null && !"".equals(ssource)) { //$NON-NLS-1$
+						// Read URL resource
+						resources.add(id, new URL(ssource), mimeType);
+						++nb;
+					} else {
+						ssource = getAttributeValue(resourceNode, ATTR_FILE);
+						if (ssource != null && !"".equals(ssource)) { //$NON-NLS-1$
+							// Read File resource
+							final URL url = new URL(ssource);
+							final String path = url.getPath();
+							final StringBuilder b = new StringBuilder();
+							boolean addSlash = false;
+							for (final String elt : path.split("[/]")) { //$NON-NLS-1$
+								try {
+									if (addSlash) {
+										b.append(File.separator);
+									}
+									b.append(URLDecoder.decode(elt, Charset.defaultCharset().name()));
+								} catch (UnsupportedEncodingException e1) {
+									throw new Error(e1);
+								}
+								addSlash = true;
+							}
+							resources.add(id, new File(b.toString()), mimeType);
+							++nb;
+						} else {
+							// Read embedded resource
+							final CDATASection rawData = getChild(node, CDATASection.class);
+							if (rawData != null) {
+								final byte[] data = parseString(rawData.getData());
+								if (data != null) {
+									resources.add(id, data, mimeType);
+									++nb;
+								}
+							}
+						}
+					}
+				} catch (AssertionError e) {
+					throw e;
+				} catch (IOException e) {
+					throw e;
+				} catch (Throwable e) {
+					throw new IOException(e);
+				}
+			}
+		}
+		return nb;
+	}
+
+	/** Replies the resource URL that is contained inside the XML attribute
+	 * defined in the given node and with the given XML path.
+	 *
+	 * @param node is the XML node to read.
+	 * @param resources is the collection of resources to read.
+	 * @param path is the XML path, relative to the node, of the attribute. The last
+	 *     element of the array is the name of the attribute.
+	 * @return the resource URL, or <code>null</code> if it cannot be retrieved.
+	 */
+	@Pure
+	public static URL readResourceURL(Element node, XMLResources resources, String... path) {
+		final String stringValue = getAttributeValue(node, path);
+		if (XMLResources.isStringIdentifier(stringValue)) {
+			try {
+				final long id = XMLResources.getNumericalIdentifier(stringValue);
+				return resources.getResourceURL(id);
+			} catch (Throwable exception) {
+				//
+			}
+		}
+		return null;
 	}
 
 }

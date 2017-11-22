@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<catalog>
+   <book id="bk101">
+      <author fakebool1="true" number2="12564">Author1</author>
+      <title fakebool2="false" uuids1="e48d046f-975c-4a22-92ff-cb23b50716ce ; 4f89a62d-04d3-4aec-ab67-8f60bff3d5b0">Title1</title>
+      <genre fakeclass1="java.lang.Integer" enum2="b">Genre1</genre>
+      <price color1="#00FF01" url1="http://www.arakhne.org">44.95</price>
+      <publish date1="2017-11-12T12:45:47" enum1="B">2000-10-01</publish>
+      <description number1="12.56e4" uuid1="e48d046f-975c-4a22-92ff-cb23b50716ce">An in-depth look at creating applications 
+      with XML.</description>
+   </book>
+   <book id="bk202" />
+</catalog>
