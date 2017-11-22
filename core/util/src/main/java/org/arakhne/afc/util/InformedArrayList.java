@@ -189,6 +189,15 @@ public class InformedArrayList<E> extends ArrayList<E> implements InformedIterab
 		return this.clazz;
 	}
 
+	/** Change the class of the elements in this iterable object.
+	 *
+	 * @param type the type of the elements.
+	 * @since 15.0
+	 */
+	public void setElementType(Class<? extends E> type) {
+		this.clazz = type;
+	}
+
 	@Override
 	public boolean add(E elt) {
 		if (super.add(elt)) {
