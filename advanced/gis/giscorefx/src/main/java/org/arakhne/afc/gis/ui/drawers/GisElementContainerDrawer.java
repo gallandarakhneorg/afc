@@ -40,13 +40,13 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class GisContainerDrawer<T extends MapElement> implements DocumentDrawer<T, GISElementContainer<T>> {
+public class GisElementContainerDrawer<T extends MapElement> implements DocumentDrawer<T, GISElementContainer<T>> {
 
 	private final Drawer<? super T> drawer;
 
 	/** Constructor based on a {@link StaticMapElementDrawer} drawer.
 	 */
-	public GisContainerDrawer() {
+	public GisElementContainerDrawer() {
 		this(new StaticMapElementDrawer());
 	}
 
@@ -54,7 +54,7 @@ public class GisContainerDrawer<T extends MapElement> implements DocumentDrawer<
 	 *
 	 * @param drawer the element drawer.
 	 */
-	public GisContainerDrawer(Drawer<? super T> drawer) {
+	public GisElementContainerDrawer(Drawer<? super T> drawer) {
 		assert drawer != null : AssertMessages.notNullParameter();
 		this.drawer = drawer;
 	}

@@ -20,34 +20,18 @@
 
 package org.arakhne.afc.gis.ui.drawers;
 
-import org.arakhne.afc.gis.mapelement.MapElement;
+import org.arakhne.afc.gis.maplayer.MapLayer;
 import org.arakhne.afc.nodefx.Drawer;
-import org.arakhne.afc.nodefx.Drawers;
-import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
-/** Drawer that draws any map element for which a drawer is known.
+/** Abstract drawer of a map layer.
  *
- * <p>The drawer is determined dynamically when drawing each map element.
- *
+ * @param <T> the type of the map circles.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class DynamicMapElementDrawer implements Drawer<MapElement> {
-
-	@Override
-	public Class<? extends MapElement> getElementType() {
-		return MapElement.class;
-	}
-
-	@Override
-	public void draw(ZoomableGraphicsContext gc, MapElement element) {
-		final Drawer<? super MapElement> drawer = Drawers.getDrawerFor(element.getClass());
-		if (drawer != null) {
-			drawer.draw(gc, element);
-		}
-	}
-
+public abstract class AbstractMapLayerDrawer<T extends MapLayer> implements Drawer<T> {
+	//
 }

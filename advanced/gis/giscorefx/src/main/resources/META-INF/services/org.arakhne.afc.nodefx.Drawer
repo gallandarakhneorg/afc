@@ -4,5 +4,6 @@ org.arakhne.afc.gis.ui.drawers.MapCircleDrawer
 org.arakhne.afc.gis.ui.drawers.MapMultiPointDrawer
 org.arakhne.afc.gis.ui.drawers.MapPointDrawer
 org.arakhne.afc.gis.ui.drawers.StaticMapElementDrawer
-org.arakhne.afc.gis.ui.drawers.DynamicMapElementDrawer
-org.arakhne.afc.gis.ui.drawers.GisContainerDrawer
+org.arakhne.afc.gis.ui.drawers.StaticMapLayerDrawer
+org.arakhne.afc.gis.ui.drawers.GisElementContainerDrawer
+org.arakhne.afc.gis.ui.drawers.GisLayerContainerDrawer

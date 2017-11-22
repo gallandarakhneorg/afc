@@ -20,11 +20,14 @@
 
 package org.arakhne.afc.gis.ui.drawers;
 
-import org.arakhne.afc.gis.mapelement.MapElement;
+import org.arakhne.afc.gis.maplayer.MapLayer;
 import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.Drawers;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
-/** Drawer that draws nothing..
+/** Drawer that draws any map layer for which a drawer is known.
+ *
+ * <p>The drawer is determined a single time when the first map layer is drawn.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -32,17 +35,30 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-@SuppressWarnings("rawtypes")
-public final class GisNoDrawer implements Drawer {
+public class StaticMapLayerDrawer implements Drawer<MapLayer> {
+
+	private Class<? extends MapLayer> type = MapLayer.class;
+
+	private Drawer<? super MapLayer> drawer;
 
 	@Override
-	public Class<? extends MapElement> getElementType() {
-		return MapElement.class;
+	public Class<? extends MapLayer> getElementType() {
+		return this.type;
 	}
 
 	@Override
-	public void draw(ZoomableGraphicsContext gc, Object element) {
-		//
+	public void draw(ZoomableGraphicsContext gc, MapLayer element) {
+		Drawer<? super MapLayer> drawer = this.drawer;
+		if (drawer == null) {
+			drawer = Drawers.getDrawerFor(element.getClass());
+			if (drawer != null) {
+				this.type = element.getClass();
+				this.drawer = drawer;
+			}
+		}
+		if (drawer != null) {
+			drawer.draw(gc, element);
+		}
 	}
 
 }
