@@ -496,7 +496,7 @@ public final class XMLUtil {
 			String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
 		final String v = getAttributeValue(document, caseSensitive, 0, path);
-		if (v != null) {
+		if (v != null && !"".equals(v)) { //$NON-NLS-1$
 			try {
 				return parseColor(v);
 			} catch (ColorFormatException e) {
