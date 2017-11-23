@@ -113,6 +113,7 @@ public class SimpleViewer extends Application {
 			primaryStage.show();
 		} else {
 			primaryStage.close();
+			System.exit(0);
 		}
 	}
 
