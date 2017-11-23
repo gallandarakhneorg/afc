@@ -65,8 +65,6 @@ public class XMLGISElementUtilTest extends AbstractTestCase {
 
 	private final static URL url2 = Resources.getResource(XMLGISElementUtilTest.class, "test2.xml"); //$NON-NLS-1$
 
-	private final static URL url3 = Resources.getResource(XMLGISElementUtilTest.class, "test.shp"); //$NON-NLS-1$
-
 	private Document document;
 	
 	@Before
@@ -389,7 +387,7 @@ public class XMLGISElementUtilTest extends AbstractTestCase {
 		PathBuilder pathBuilder = new SimplePathBuilder();
 		XMLResources res = new XMLResources(pathBuilder);
 		ArrayMapElementLayer<MapPoint> container = new ArrayMapElementLayer(MapPoint.class);
-		container.setElementGeometrySource(url3, MapMetricProjection.FRANCE_LAMBERT_2);
+		container.setElementGeometrySource(new URL("file:/path/to/file.shp"), MapMetricProjection.FRANCE_LAMBERT_2); //$NON-NLS-1$
 		MapPoint pts1 = new MapPoint(3, 4);
 		pts1.setName("name1"); //$NON-NLS-1$
 		container.addMapElement(pts1);
@@ -422,7 +420,7 @@ public class XMLGISElementUtilTest extends AbstractTestCase {
 		final String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" //$NON-NLS-1$
 				+ "<doc elementGeometryProjection=\"FRANCE_LAMBERT_2\" elementGeometryUrl=\"#resource0\"/>"; //$NON-NLS-1$
 		assertEquals(expected, actual);
-		assertEquals(url3, res.getResourceURL(0));
+		assertEquals(new URL("file:/path/to/file.shp"), res.getResourceURL(0)); //$NON-NLS-1$
 	}
 
 }
