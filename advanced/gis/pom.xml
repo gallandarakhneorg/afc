@@ -18,6 +18,7 @@
 		<module>gisinputoutput</module>
 		<module>giscorefx</module>
 		<module>gisroad</module>
+		<module>gisroadinputoutput</module>
 		<module>gisroadfx</module>
 		<module>gisbus</module>
 		<!-- 

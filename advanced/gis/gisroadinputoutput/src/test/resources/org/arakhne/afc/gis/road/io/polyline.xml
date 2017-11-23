@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<polyline name="name1" wide="true" color="orange">
+	<points>
+		<point x="1" y="2"/>
+		<point x="-3" y="4"/>
+		<point x="5" y="-6"/>
+	</points>
+	<groups>
+		<group firstPointIndex="0" lastPointIndex="2"/>
+	</groups>
+	<attributes>
+		<attribute name="attr1" type="STRING" value="Text"/>
+	</attributes>
+</polyline>

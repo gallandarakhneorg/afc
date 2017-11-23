@@ -92,7 +92,7 @@ AFC library contains the following alive modules:
 | Readers and writers for Geographical Information System.
 
 |
-| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[GIS Road Network]
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/road/package-summary.html[GIS Road Network]
 | org.arakhne.afc.gis
 | gisroad
 | Base elements for creating data structures that represent a road network.
@@ -101,7 +101,13 @@ AFC library contains the following alive modules:
 | link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/road/ui/package-summary.html[JavaFX Pane for Road Network]
 | org.arakhne.afc.gis.road.ui
 | gisroadfx
-| JavaFX panel and canvas dedicated to road network.
+| JavaFX panel and canvas dedicated to road networks.
+
+|
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/road/io/package-summary.html[GIS Road Network]
+| org.arakhne.afc.gis
+| gisroadinputoutput
+| Readers and writers for road networks.
 
 |
 | link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/shape/package-summary.html[Shape File Reader and Writer]
