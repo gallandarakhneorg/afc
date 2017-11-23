@@ -234,10 +234,10 @@ public class ESRIBoundsTest extends AbstractIoShapeTest {
 				this.minx, this.miny,
 				this.maxx - this.minx,
 				this.maxy - this.miny);
-		assertEpsilonEquals(expected.getMinX(), this.bounds.toRectangle2D().getMinX());
-		assertEpsilonEquals(expected.getMinY(), this.bounds.toRectangle2D().getMinY());
-		assertEpsilonEquals(expected.getMaxX(), this.bounds.toRectangle2D().getMaxX());
-		assertEpsilonEquals(expected.getMaxY(), this.bounds.toRectangle2D().getMaxY());
+		assertEpsilonEquals(expected.getMinX(), this.bounds.toRectangle2d().getMinX());
+		assertEpsilonEquals(expected.getMinY(), this.bounds.toRectangle2d().getMinY());
+		assertEpsilonEquals(expected.getMaxX(), this.bounds.toRectangle2d().getMaxX());
+		assertEpsilonEquals(expected.getMaxY(), this.bounds.toRectangle2d().getMaxY());
 	}
 
 	@Test
