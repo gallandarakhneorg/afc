@@ -43,12 +43,6 @@ AFC library contains the following alive modules:
 | agentmotion
 | Collection of algorithms for calculating the motion of mobile agents.
 
-| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/dbase/package-summary.html[DBase Reader and Writer]
-|
-| org.arakhne.afc.advanced
-| dbasefile
-| Reader and Writer of the DBase database files.
-
 | link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/util/package-summary.html[General Utilities]
 |
 | org.arakhne.afc.core
@@ -61,41 +55,59 @@ AFC library contains the following alive modules:
 | attributes
 | Library for creating generic attributes, aka. Variant attributes.
 
-| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[Geographical Information System API]
+| Geographical Information System
 |
+|
+|
+| Tools for Geographical Information Systems.
+
+|
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/dbase/package-summary.html[DBase Reader and Writer]
+| org.arakhne.afc.advanced
+| dbasefile
+| Reader and Writer of the DBase database files.
+
+|
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[Geographical Information System API]
 | org.arakhne.afc.gis
 | giscore
 | Base elements for building data structures for Geographical Information Systems.
 
-| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/ui/package-summary.html[JavaFX Pane for GIS Primitives]
 |
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/ui/package-summary.html[JavaFX Pane for GIS Primitives]
 | org.arakhne.afc.gis.ui
 | giscorefx
 | JavaFX panel and canvas dedicated to GIS primitives.
 
-| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[GIS Bus Network]
 |
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[GIS Bus Network]
 | org.arakhne.afc.gis
 | gisbus
 | Base elements for creating data structures that represent a bus network, or any public transport network.
 
-| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[GIS Input-Output API]
 |
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[GIS Input-Output API]
 | org.arakhne.afc.gis
 | gisinputoutput
 | Readers and writers for Geographical Information System.
 
-| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[GIS Road Network]
 |
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[GIS Road Network]
 | org.arakhne.afc.gis
 | gisroad
 | Base elements for creating data structures that represent a road network.
 
-| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/road/ui/package-summary.html[JavaFX Pane for Road Network]
 |
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/road/ui/package-summary.html[JavaFX Pane for Road Network]
 | org.arakhne.afc.gis.road.ui
 | gisroadfx
 | JavaFX panel and canvas dedicated to road network.
+
+|
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/shape/package-summary.html[Shape File Reader and Writer]
+| org.arakhne.afc.advanced
+| shapefile
+| Reader and Writer of the ESRi Shape files.
 
 | link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/filefilter/package-summary.html[Input-Output Utilities]
 |
@@ -156,12 +168,6 @@ AFC library contains the following alive modules:
 | org.arakhne.afc.advanced
 | nodefx
 | Set of nodes and components for JavaFX, e.g. a viewer with zoom support.
-
-| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/shape/package-summary.html[Shape File Reader and Writer]
-|
-| org.arakhne.afc.advanced
-| shapefile
-| Reader and Writer of the ESRi Shape files.
 
 | link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/text/package-summary.html[Text Utilities]
 |
