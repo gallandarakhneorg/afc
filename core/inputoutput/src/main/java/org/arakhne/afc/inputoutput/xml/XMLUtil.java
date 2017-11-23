@@ -47,10 +47,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -81,9 +79,9 @@ import org.xml.sax.SAXException;
 
 import org.arakhne.afc.inputoutput.xml.XMLResources.Entry;
 import org.arakhne.afc.vmutil.ClassLoaderFinder;
+import org.arakhne.afc.vmutil.ColorNames;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
-import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * Utility class for manipulating XML data and files.
@@ -137,10 +135,6 @@ public final class XMLUtil {
 	/** <code>file=""</code>. */
 	public static final String ATTR_FILE = "file"; //$NON-NLS-1$
 
-	/** List of XML colors and there corresponding Java colors.
-	 */
-	public static final Map<String, Integer> COLOR_MATCHES;
-
 	private static final String POSITIVE_INTEGER_NUMBER_PATTERN = "[0-9]+"; //$NON-NLS-1$
 
 	private static final String POSITIVE_DOUBLE_NUMBER_PATTERN = "(?:(?:[0-9]+(?:\\.[0-9]*)?)|" //$NON-NLS-1$
@@ -170,14 +164,6 @@ public final class XMLUtil {
 					+ POSITIVE_DOUBLE_NUMBER_PATTERN + "\\%?)?\\s*," //$NON-NLS-1$
 			+ "\\s*(" + POSITIVE_DOUBLE_NUMBER_PATTERN + "\\%?)?\\s*,\\s*([0-9]+)\\s*\\)"); //$NON-NLS-1$ //$NON-NLS-2$
 
-	private static final String COLOR_DEFINITION_PATTERN = "^\\s*([^:\\s*]+)\\s*:\\s*(" //$NON-NLS-1$
-			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*,\\s*(" //$NON-NLS-1$
-			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*,\\s*(" //$NON-NLS-1$
-			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*,\\s*(" //$NON-NLS-1$
-			+ POSITIVE_INTEGER_NUMBER_PATTERN + ")\\s*$"; //$NON-NLS-1$
-
-	private static final String EOL_PATTERN = "[ \t\n\r]*;[ \\t\\n\\r]*"; //$NON-NLS-1$
-
 	private static final String CONSTANT_TRUE = "true"; //$NON-NLS-1$
 
 	private static final String CONSTANT_YES = "yes"; //$NON-NLS-1$
@@ -192,33 +178,8 @@ public final class XMLUtil {
 
 	private static final String INDENT_NUMBER = "indent-number"; //$NON-NLS-1$
 
-	static {
-		COLOR_MATCHES = initializeColors();
-	}
-
 	private XMLUtil() {
 		//
-	}
-
-	@SuppressWarnings("checkstyle:magicnumber")
-	private static Map<String, Integer> initializeColors() {
-		final Map<String, Integer> map = new HashMap<>();
-		final String colors = Locale.getString(XMLUtil.class, "COLOR_MATCHES"); //$NON-NLS-1$
-		if (colors != null) {
-			final Pattern pattern = Pattern.compile(COLOR_DEFINITION_PATTERN);
-			for (final String definition : colors.split(EOL_PATTERN)) {
-				final Matcher matcher = pattern.matcher(definition);
-				if (matcher.matches()) {
-					map.put(matcher.group(1),
-							encodeRgbaColor(
-									Integer.parseInt(matcher.group(2)),
-									Integer.parseInt(matcher.group(3)),
-									Integer.parseInt(matcher.group(4)),
-									Integer.parseInt(matcher.group(5))));
-				}
-			}
-		}
-		return map;
 	}
 
 	@SuppressWarnings("checkstyle:magicnumber")
@@ -1757,10 +1718,13 @@ public final class XMLUtil {
 	 * <li><code>hsla(<i>h</i>[%], <i>s</i>[%], <i>l</i>[%], <i>a</i>)</code></li>
 	 * </ul>
 	 *
+	 * <p>The supported color names are listed in {@link ColorNames}.
+	 *
 	 * @param xmlColor is the color to translate from a XML/HTML string.
 	 * @return the color.
 	 * @throws ColorFormatException if the color has invalid format.
 	 * @see #toColor(int, int, int, int)
+	 * see {@link ColorNames}
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:npathcomplexity"})
@@ -1809,7 +1773,7 @@ public final class XMLUtil {
 			final int alpha = decodeDecInteger(matcher.group(4));
 			return encodeHslaColor(hue, saturation, lightness, alpha);
 		}
-		final Integer color = COLOR_MATCHES.get(xmlColor.toLowerCase());
+		final Integer color = ColorNames.getColorFromName(xmlColor);
 		if (color != null) {
 			return color.intValue();
 		}
