@@ -637,14 +637,14 @@ public class MapPolyline extends MapComposedElement {
 	@Pure
 	protected Rectangle2d calcBounds() {
 		final Rectangle2d bounds = super.calcBounds().toBoundingBox();
-		if (bounds != null && this.isWidePolyline) {
+		if (bounds != null && isWidePolyline()) {
 			final double w = getWidth();
 			final double mx = bounds.getMinX();
 			final double my = bounds.getMinY();
 			final double xx = bounds.getMaxX();
 			final double xy = bounds.getMaxY();
-			bounds.add(mx - w, my - w);
-			bounds.add(xx + w, xy + w);
+			final double dw = w / 2.;
+			bounds.setFromCorners(mx - dw, my - dw, xx + dw, xy + dw);
 		}
 		return bounds;
 	}
