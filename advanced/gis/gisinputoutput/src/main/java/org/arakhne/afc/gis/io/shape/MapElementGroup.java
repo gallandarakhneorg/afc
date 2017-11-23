@@ -158,16 +158,16 @@ public class MapElementGroup {
 	void add(MapElement element) {
 		final Rectangle2d r = element.getBoundingBox();
 		if (r != null) {
-			if (Double.isNaN(this.minx) || this.minx < r.getMinX()) {
+			if (Double.isNaN(this.minx) || this.minx > r.getMinX()) {
 				this.minx = r.getMinX();
 			}
-			if (Double.isNaN(this.maxx) || this.maxx > r.getMaxX()) {
+			if (Double.isNaN(this.maxx) || this.maxx < r.getMaxX()) {
 				this.maxx = r.getMaxX();
 			}
-			if (Double.isNaN(this.miny) || this.miny < r.getMinY()) {
+			if (Double.isNaN(this.miny) || this.miny > r.getMinY()) {
 				this.miny = r.getMinY();
 			}
-			if (Double.isNaN(this.maxy) || this.maxy > r.getMaxY()) {
+			if (Double.isNaN(this.maxy) || this.maxy < r.getMaxY()) {
 				this.maxy = r.getMaxY();
 			}
 		}
