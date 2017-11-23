@@ -72,58 +72,58 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 public final class XMLGISElementUtil {
 
 	/** <code>&lt;circle /&gt;</code>. */
-	private static final String NODE_CIRCLE = "circle"; //$NON-NLS-1$
+	public static final String NODE_CIRCLE = "circle"; //$NON-NLS-1$
 
 	/** <code>&lt;elements /&gt;</code>. */
-	private static final String NODE_ELEMENTS = "elements"; //$NON-NLS-1$
+	public static final String NODE_ELEMENTS = "elements"; //$NON-NLS-1$
 
 	/** <code>&lt;group /&gt;</code>. */
-	private static final String NODE_GROUP = "group"; //$NON-NLS-1$
+	public static final String NODE_GROUP = "group"; //$NON-NLS-1$
 
 	/** <code>&lt;groups /&gt;</code>. */
-	private static final String NODE_GROUPS = "groups"; //$NON-NLS-1$
+	public static final String NODE_GROUPS = "groups"; //$NON-NLS-1$
 
 	/** <code>&lt;multipoint /&gt;</code>. */
-	private static final String NODE_MULTIPOINT = "multipoint"; //$NON-NLS-1$
+	public static final String NODE_MULTIPOINT = "multipoint"; //$NON-NLS-1$
 
 	/** <code>&lt;point /&gt;</code>. */
-	private static final String NODE_POINT = "point"; //$NON-NLS-1$
+	public static final String NODE_POINT = "point"; //$NON-NLS-1$
 
 	/** <code>&lt;points /&gt;</code>. */
-	private static final String NODE_POINTS = "points"; //$NON-NLS-1$
+	public static final String NODE_POINTS = "points"; //$NON-NLS-1$
 
 	/** <code>&lt;polygon /&gt;</code>. */
-	private static final String NODE_POLYGON = "polygon"; //$NON-NLS-1$
+	public static final String NODE_POLYGON = "polygon"; //$NON-NLS-1$
 
 	/** <code>&lt;polyline /&gt;</code>. */
-	private static final String NODE_POLYLINE = "polyline"; //$NON-NLS-1$
+	public static final String NODE_POLYLINE = "polyline"; //$NON-NLS-1$
 
 	/** <code>doubleFrame=""</code>. */
-	private static final String ATTR_DOUBLEFRAME = "doubleFrame"; //$NON-NLS-1$
+	public static final String ATTR_DOUBLEFRAME = "doubleFrame"; //$NON-NLS-1$
 
 	/** <code>firstPointIndex=""</code>. */
-	private static final String ATTR_FIRSTPOINTINDEX = "firstPointIndex"; //$NON-NLS-1$
+	public static final String ATTR_FIRSTPOINTINDEX = "firstPointIndex"; //$NON-NLS-1$
 
 	/** <code>lastPointIndex=""</code>. */
-	private static final String ATTR_LASTPOINTINDEX = "lastPointIndex"; //$NON-NLS-1$
+	public static final String ATTR_LASTPOINTINDEX = "lastPointIndex"; //$NON-NLS-1$
 
 	/** <code>radius=""</code>. */
-	private static final String ATTR_RADIUS = "radius"; //$NON-NLS-1$
+	public static final String ATTR_RADIUS = "radius"; //$NON-NLS-1$
 
 	/** <code>size=""</code>. */
-	private static final String ATTR_SIZE = "size"; //$NON-NLS-1$
+	public static final String ATTR_SIZE = "size"; //$NON-NLS-1$
 
 	/** <code>wide=""</code>. */
-	private static final String ATTR_WIDE = "wide"; //$NON-NLS-1$
+	public static final String ATTR_WIDE = "wide"; //$NON-NLS-1$
 
 	/** <code>width=""</code>. */
-	private static final String ATTR_WIDTH = "width"; //$NON-NLS-1$
+	public static final String ATTR_WIDTH = "width"; //$NON-NLS-1$
 
 	/** <code>x=""</code>. */
-	private static final String ATTR_X = "x"; //$NON-NLS-1$
+	public static final String ATTR_X = "x"; //$NON-NLS-1$
 
 	/** <code>y=""</code>. */
-	private static final String ATTR_Y = "y"; //$NON-NLS-1$
+	public static final String ATTR_Y = "y"; //$NON-NLS-1$
 
 	private XMLGISElementUtil() {
 		//
@@ -194,7 +194,7 @@ public final class XMLGISElementUtil {
 				final Element pointNode = builder.createElement(NODE_POINT);
 				final Point2d p = mce.getPointAt(idxPoint);
 				pointNode.setAttribute(ATTR_X, Double.toString(p.getX()));
-				pointNode.setAttribute(ATTR_Y, Double.toString(p.getX()));
+				pointNode.setAttribute(ATTR_Y, Double.toString(p.getY()));
 				pointsNode.appendChild(pointNode);
 			}
 			if (pointsNode.getChildNodes().getLength() > 0) {
