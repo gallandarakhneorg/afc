@@ -51,7 +51,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @throws IOException in case of error.
 	 */
 	public ShapeFileWriter(File shapeName, ShapeElementType elementType, ElementExporter<E> exporter) throws IOException {
@@ -61,7 +61,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @throws IOException in case of error.
 	 */
 	public ShapeFileWriter(URL shapeName, ShapeElementType elementType, ElementExporter<E> exporter) throws IOException {
@@ -71,7 +71,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param stream is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @throws IOException in case of error.
 	 */
 	public ShapeFileWriter(OutputStream stream, ShapeElementType elementType, ElementExporter<E> exporter) throws IOException {
@@ -81,7 +81,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param channel is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @throws IOException in case of error.
 	 */
 	public ShapeFileWriter(WritableByteChannel channel, ShapeElementType elementType,
@@ -92,7 +92,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @param shxWriter is the writer used to create the index
 	 * @throws IOException in case of error.
 	 */
@@ -104,7 +104,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @param shxWriter is the writer used to create the index
 	 * @throws IOException in case of error.
 	 */
@@ -116,7 +116,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param stream is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @param shxWriter is the writer used to create the index
 	 * @throws IOException in case of error.
 	 */
@@ -128,7 +128,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param channel is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @param shxWriter is the writer used to create the index
 	 * @throws IOException in case of error.
 	 */
@@ -140,7 +140,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @param dbfWriter is the writer used to export the attributes
 	 * @throws IOException in case of error.
 	 */
@@ -152,7 +152,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @param dbfWriter is the writer used to export the attributes
 	 * @throws IOException in case of error.
 	 */
@@ -164,7 +164,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param stream is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @param dbfWriter is the writer used to export the attributes
 	 * @throws IOException in case of error.
 	 */
@@ -176,7 +176,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param channel is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @param dbfWriter is the writer used to export the attributes
 	 * @throws IOException in case of error.
 	 */
@@ -188,7 +188,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @param dbfWriter is the writer used to export the attributes
 	 * @param shxWriter is the writer used to create the index
 	 * @throws IOException in case of error.
@@ -203,7 +203,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param shapeName is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @param dbfWriter is the writer used to export the attributes
 	 * @param shxWriter is the writer used to create the index
 	 * @throws IOException in case of error.
@@ -218,7 +218,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param stream is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @param dbfWriter is the writer used to export the attributes
 	 * @param shxWriter is the writer used to create the index
 	 * @throws IOException in case of error.
@@ -234,7 +234,7 @@ public class ShapeFileWriter<E> extends AbstractShapeFileWriter<E> {
 	/** Constructor.
 	 * @param channel is the file to write
 	 * @param elementType is the type of the elements to write.
-	 * @param exporter is the exporter object which will invoked to retreive element data.
+	 * @param exporter is the exporter object which will invoked to retrieve element data.
 	 * @param dbfWriter is the writer used to export the attributes
 	 * @param shxWriter is the writer used to create the index
 	 * @throws IOException in case of error.

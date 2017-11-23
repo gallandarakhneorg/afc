@@ -209,7 +209,7 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private class Point3dImporter extends AbstractElementFactory<Point3d> {
+	private class Point3dImporter implements ElementFactory<Point3d> {
 		
 		/**
 		 */

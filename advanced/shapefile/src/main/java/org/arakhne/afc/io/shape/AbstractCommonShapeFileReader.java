@@ -107,7 +107,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 */
 	protected double maxm;
 
-	/** Is the type of element stored inside the shape file.
+	/** Is the type of element storead inside the shape file.
 	 */
 	protected ShapeElementType expectedShapeType;
 
@@ -127,9 +127,9 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 */
 	private ByteBuffer buffer;
 
-	/** Indicates if the header was already red.
+	/** Indicates if the header was already read.
 	 */
-	private boolean headerWasRed;
+	private boolean headerWasread;
 
 	/** Associated task progression object.
 	 */
@@ -173,13 +173,13 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 		this(Channels.newChannel(file.openStream()));
 	}
 
-	/** Replies if the header was red.
+	/** Replies if the header was read.
 	 *
-	 * @return <code>true</code> if the header was red, otherwise <code>false</code>
+	 * @return <code>true</code> if the header was read, otherwise <code>false</code>
 	 */
 	@Pure
 	protected boolean isHeaderRead() {
-		return this.headerWasRed;
+		return this.headerWasread;
 	}
 
 	/** Replies the task progression.
@@ -205,21 +205,21 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 * @throws IOException in case of error.
 	 */
 	public int getFileSize() throws IOException {
-		if (!this.headerWasRed) {
+		if (!this.headerWasread) {
 			readHeader();
 		}
 		return this.fileSize;
 	}
 
-	/** Replies the type of the elements stored in the file.
+	/** Replies the type of the elements storead in the file.
 	 *
 	 * <p>This type of element is extracted from header.
 	 *
 	 * @return the type of element, or <code>null</code> if
-	 *     the header could not be red.
+	 *     the header could not be read.
 	 */
 	public ShapeElementType getShapeElementType() {
-		if (!this.headerWasRed) {
+		if (!this.headerWasread) {
 			try {
 				readHeader();
 			} catch (IOException exception) {
@@ -229,9 +229,9 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 		return this.expectedShapeType;
 	}
 
-	/** Replies the count of bytes red from the shape file.
+	/** Replies the count of bytes read from the shape file.
 	 *
-	 * @return the count of bytes red from shape file.
+	 * @return the count of bytes read from shape file.
 	 * @throws IOException in case of error.
 	 */
 	public int getFileReadingPosition() throws IOException {
@@ -239,7 +239,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 		return this.buffer.position() + this.bufferPosition;
 	}
 
-	/** Replies the bounds red from the shape file header.
+	/** Replies the bounds read from the shape file header.
 	 *
 	 * @return the bounds or <code>null</code>
 	 */
@@ -262,16 +262,16 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public final void readHeader() throws IOException {
-		if (!this.headerWasRed) {
+		if (!this.headerWasread) {
 			preReadingStage();
 
 			final ByteBuffer hbuffer = ByteBuffer.allocate(100);
-			final int red = this.stream.read(hbuffer);
-			if (red < 0) {
+			final int read = this.stream.read(hbuffer);
+			if (read < 0) {
 				throw new EOFException();
 			}
 			hbuffer.rewind();
-			hbuffer.limit(red);
+			hbuffer.limit(read);
 
 			hbuffer.order(ByteOrder.BIG_ENDIAN);
 
@@ -338,7 +338,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 				this.minm = t;
 			}
 
-			this.headerWasRed = true;
+			this.headerWasread = true;
 			this.nextExpectedRecordIndex = 0;
 
 			postHeaderReadingStage();
@@ -359,21 +359,21 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	private void initializeContentBuffer() throws IOException {
 		if (this.seekEnabled) {
 			this.buffer = ByteBuffer.allocate(this.fileSize - HEADER_BYTES);
-			final int red = this.stream.read(this.buffer);
-			if (red < 0) {
+			final int read = this.stream.read(this.buffer);
+			if (read < 0) {
 				throw new EOFException();
 			}
 			this.buffer.rewind();
-			this.buffer.limit(red);
+			this.buffer.limit(read);
 			this.bufferPosition = HEADER_BYTES;
 		} else {
 			this.buffer = ByteBuffer.allocate(BLOCK_SIZE);
-			final int red = this.stream.read(this.buffer);
-			if (red < 0) {
+			final int read = this.stream.read(this.buffer);
+			if (read < 0) {
 				throw new EOFException();
 			}
 			this.buffer.rewind();
-			this.buffer.limit(red);
+			this.buffer.limit(read);
 			this.bufferPosition = HEADER_BYTES;
 		}
 	}
@@ -385,7 +385,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 * @throws IOException in case of error.
 	 */
 	public void disableSeek() throws IOException {
-		if (this.seekEnabled && !this.headerWasRed) {
+		if (this.seekEnabled && !this.headerWasread) {
 			this.seekEnabled = false;
 		}
 	}
@@ -414,14 +414,14 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 
 	/** Read the elements for a shape file.
 	 *
-	 * @return the list of the elements red from the Shape file or <code>null</code> on end-of-file.
+	 * @return the list of the elements read from the Shape file or <code>null</code> on end-of-file.
 	 * @throws IOException in case of error.
 	 */
 	public E read() throws IOException {
 		boolean status = false;
 		try {
 
-			// Read header if not already red
+			// Read header if not already read
 			readHeader();
 
 			// Read the records
@@ -469,7 +469,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	/**
 	 * Read a record according to its type.
 	 *
-	 * @param recordIndex is the index of the red record.
+	 * @param recordIndex is the index of the read record.
 	 * @return the element extracted from the record
 	 * @throws EOFException if EOF is reach to early.
 	 * @throws IOException in case of error.
@@ -477,7 +477,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	protected abstract E readRecord(int recordIndex) throws EOFException, IOException;
 
 	/** Called after the reader was initialized and before the
-	 * header of the shape file was red.
+	 * header of the shape file was read.
 	 *
 	 * @throws IOException in case of error.
 	 */
@@ -485,7 +485,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 		//
 	}
 
-	/** Called after all the entries was red.
+	/** Called after all the entries was read.
 	 *
 	 * @param success is <code>true</code> is the reading was successfull,
 	 *     otherwhise <code>false</code>.
@@ -495,19 +495,19 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 		//
 	}
 
-	/** Called just after an entry was red but just before the dBase attributes
-	 * were red.
+	/** Called just after an entry was read but just before the dBase attributes
+	 * were read.
 	 *
 	 * @param element_representation is the value returned by the reading function.
 	 * @return <code>true</code> if the object is assumed to be valid (ie. replies by
-	 *     the reding function, otherwhise <code>false</code>.
+	 *     the reading function, otherwhise <code>false</code>.
 	 * @throws IOException in case of error.
 	 */
 	protected boolean postRecordReadingStage(E element_representation) throws IOException {
 		return true;
 	}
 
-	/** Called just after the header was red.
+	/** Called just after the header was read.
 	 *
 	 * @throws IOException in case of error.
 	 */
@@ -630,13 +630,13 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 			this.bufferPosition += this.buffer.position();
 			this.buffer.compact();
 			int limit = this.buffer.position();
-			final int red = this.stream.read(this.buffer);
-			if (red < 0) {
+			final int read = this.stream.read(this.buffer);
+			if (read < 0) {
 				if (limit == 0) {
 					throw new EOFException();
 				}
 			} else {
-				limit += red;
+				limit += read;
 			}
 			this.buffer.rewind();
 			this.buffer.limit(limit);
@@ -647,7 +647,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 		}
 	}
 
-	/** Skip an amout of bytes.
+	/** Skip an amount of bytes.
 	 *
 	 * @param amount the amount to skip.
 	 * @throws IOException in case of error.

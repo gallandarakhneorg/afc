@@ -39,4 +39,13 @@ public class SeekOperationDisabledException extends ShapeFileException {
 		//
 	}
 
+	/** Constructor.
+	 *
+	 * @param reason the description of the error.
+	 * @since 15.0
+	 */
+	public SeekOperationDisabledException(String reason) {
+		super(reason);
+	}
+
 }

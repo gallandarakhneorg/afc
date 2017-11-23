@@ -155,7 +155,7 @@ public class ShapeFileReaderTest extends AbstractIoShapeTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private class NullFactory extends AbstractElementFactory<Integer> {
+	private class NullFactory implements ElementFactory<Integer> {
 
 		/**
 		 */

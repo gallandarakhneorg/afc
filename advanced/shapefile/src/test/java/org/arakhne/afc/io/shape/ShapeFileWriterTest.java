@@ -240,7 +240,7 @@ public class ShapeFileWriterTest extends AbstractIoShapeTest {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class ElementFactoryStub extends AbstractElementFactory<Point3d> {
+	private static class ElementFactoryStub implements ElementFactory<Point3d> {
 
 		/**
 		 */

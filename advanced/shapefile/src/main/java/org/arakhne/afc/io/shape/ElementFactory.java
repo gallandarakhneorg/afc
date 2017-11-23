@@ -24,10 +24,14 @@ import java.io.IOException;
 
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.collection.AttributeCollection;
+import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 
 /**
- *     This interface describes a service which is creating
- * element instances from shpae file data.
+ * This interface describes a service which is creating
+ * element instances from shape file data.
+ *
+ * <p>For an {@code ElementFactory} that creates GIS map elements, you should directly use
+ * a {@code GISShapeFileReader}, which embeds the element factory.
  *
  * @param <E> is the type of elements which is red by this reader.
  * @author $Author: sgalland$
@@ -37,7 +41,7 @@ import org.arakhne.afc.attrs.collection.AttributeCollection;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-interface ElementFactory<E> {
+public interface ElementFactory<E> {
 
 	//---- PRE
 
@@ -46,13 +50,17 @@ interface ElementFactory<E> {
 	 *
 	 * @throws IOException in case of error.
 	 */
-	void preReadingStage() throws IOException;
+	default void preReadingStage() throws IOException {
+		//
+	}
 
 	/** Called after the header of the shape file was red.
 	 *
 	 * @throws IOException in case of error.
 	 */
-	void postHeaderReadingStage() throws IOException;
+	default void postHeaderReadingStage() throws IOException {
+		//
+	}
 
 	//---- CREATION
 
@@ -65,7 +73,9 @@ interface ElementFactory<E> {
 	 * @see #createPolygon(AttributeCollection, int, int[], ESRIPoint[], boolean)
 	 * @see #createPolyline(AttributeCollection, int, int[], ESRIPoint[], boolean)
 	 */
-	AttributeCollection createAttributeCollection(int elementIndex);
+	default AttributeCollection createAttributeCollection(int elementIndex) {
+		return new HeapAttributeCollection();
+	}
 
 	/** Create a polyline.
 	 *
@@ -77,7 +87,9 @@ interface ElementFactory<E> {
 	 * @return an object representing the creating element, depending of your implementation.
 	 *     This value will be passed to {@link #postEntryReadingStage(Object)}.
 	 */
-	E createPolyline(AttributeCollection provider, int shapeIndex, int[] parts, ESRIPoint[] points, boolean hasZ);
+	default E createPolyline(AttributeCollection provider, int shapeIndex, int[] parts, ESRIPoint[] points, boolean hasZ) {
+		return null;
+	}
 
 	/** Create a polygon.
 	 *
@@ -89,7 +101,9 @@ interface ElementFactory<E> {
 	 * @return an object representing the creating element, depending of your implementation.
 	 *     This value will be passed to {@link #postEntryReadingStage(Object)}.
 	 */
-	E createPolygon(AttributeCollection provider, int shapeIndex, int[] parts, ESRIPoint[] points, boolean hasZ);
+	default E createPolygon(AttributeCollection provider, int shapeIndex, int[] parts, ESRIPoint[] points, boolean hasZ) {
+		return null;
+	}
 
 	/** Create a multipoint.
 	 *
@@ -100,7 +114,9 @@ interface ElementFactory<E> {
 	 * @return an object representing the creating element, depending of your implementation.
 	 *     This value will be passed to {@link #postEntryReadingStage(Object)}.
 	 */
-	E createMultiPoint(AttributeCollection provider, int shapeIndex, ESRIPoint[] points, boolean hasZ);
+	default E createMultiPoint(AttributeCollection provider, int shapeIndex, ESRIPoint[] points, boolean hasZ) {
+		return null;
+	}
 
 	/** Create a point instance.
 	 *
@@ -110,7 +126,9 @@ interface ElementFactory<E> {
 	 * @return an object representing the creating point, depending of your implementation.
 	 *     This value will be passed to {@link #postEntryReadingStage(Object)}.
 	 */
-	E createPoint(AttributeCollection provider, int shape_index, ESRIPoint point);
+	default E createPoint(AttributeCollection provider, int shape_index, ESRIPoint point) {
+		return null;
+	}
 
 	/**
 	 * Create a multipatch.
@@ -137,8 +155,10 @@ interface ElementFactory<E> {
 	 * @return an object representing the creating multipatch, depending of your implementation.
 	 *     This value will be passed to {@link #postShapeReadingStage(Object)}.
 	 */
-	E createMultiPatch(AttributeCollection provider, int shapeIndex, int[] parts,
-			ShapeMultiPatchType[] partTypes, ESRIPoint[] points);
+	default E createMultiPatch(AttributeCollection provider, int shapeIndex, int[] parts,
+			ShapeMultiPatchType[] partTypes, ESRIPoint[] points) {
+		return null;
+	}
 
 	/** Invoked to put an attribute in the element.
 	 *
@@ -146,7 +166,9 @@ interface ElementFactory<E> {
 	 * @param attributeName is the name of the attribute.
 	 * @param value is the value of the attribute.
 	 */
-	void putAttributeIn(E element, String attributeName, AttributeValue value);
+	default void putAttributeIn(E element, String attributeName, AttributeValue value) {
+		//
+	}
 
 	//---- POST
 
@@ -154,36 +176,44 @@ interface ElementFactory<E> {
 	 * were red.
 	 *
 	 * @param element is the value returned by the reading function.
-	 * @return <code>true</code> if the object is assumed to be valid (ie. it will be replies by
-	 *     the reading function), otherwhise <code>false</code>.
+	 * @return {@code true} if the object is assumed to be valid (ie. it will be replies by
+	 *     the reading function), otherwise {@code false}.
 	 * @throws IOException in case of error.
 	 */
-	boolean postEntryReadingStage(E element) throws IOException;
+	default boolean postEntryReadingStage(E element) throws IOException {
+		return true;
+	}
 
 	/** Invoked after the element's attributes were red from the dBase source.
 	 *
 	 * @param element the element.
-	 * @return <code>true</code> if the object is assumed to be valid (ie. it will be replies by
-	 *     the reading function), otherwhise <code>false</code>.
+	 * @return {@code true} if the object is assumed to be valid (ie. it will be replies by
+	 *     the reading function), otherwise {@code false}.
 	 * @throws IOException in case of error.
 	 */
-	boolean postAttributeReadingStage(E element) throws IOException;
+	default boolean postAttributeReadingStage(E element) throws IOException {
+		return true;
+	}
 
-	/** Invoked after the element's shape was red but before the attributes were retreived.
+	/** Invoked after the element's shape was red but before the attributes were retrieved.
 	 *
 	 * @param element the element.
-	 * @return <code>true</code> if the object is assumed to be valid (ie. it will be replies by
-	 *     the reading function), otherwhise <code>false</code>.
+	 * @return {@code true} if the object is assumed to be valid (ie. it will be replies by
+	 *     the reading function), otherwise {@code false}.
 	 * @throws IOException in case of error.
 	 */
-	boolean postShapeReadingStage(E element) throws IOException;
+	default boolean postShapeReadingStage(E element) throws IOException {
+		return true;
+	}
 
 	/** Called after all the entries was red.
 	 *
-	 * @param success is <code>true</code> is the reading was successfull,
-	 *     otherwhise <code>false</code>
+	 * @param success is {@code true} is the reading was successful,
+	 *     otherwise {@code false}
 	 * @throws IOException in case of error.
 	 */
-	void postReadingStage(boolean success) throws IOException;
+	default void postReadingStage(boolean success) throws IOException {
+		//
+	}
 
 }

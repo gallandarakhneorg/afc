@@ -32,6 +32,9 @@ import org.arakhne.afc.attrs.collection.AttributeProvider;
  * by a {@link ShapeFileWriter} to export elements
  * inside an ESRI shape file.
  *
+ * <p>For an {@code ElementExporter} that exports GIS map elements, you should directly use
+ * a {@code GISShapeFileWriter}, which embeds the element exporter.
+ *
  * @param <E> is the type of element to write inside the ESRI shape file.
  * @author $Author: sgalland$
  * @author $Author: olamotte$
@@ -62,7 +65,7 @@ interface ElementExporter<E> {
 	@Pure
 	AttributeProvider getAttributeProvider(E element) throws IOException;
 
-	/** Invoked to retreive the bounds of the world.
+	/** Invoked to retrieve the bounds of the world.
 	 *
 	 * @return the bounds.
 	 */
@@ -116,10 +119,10 @@ interface ElementExporter<E> {
 	 *
 	 * <p>A single Triangle Strip, or Triangle Fan, represents a single surface patch.
 	 *
-	 * <p>A sequence of parts that are rings can describe a polygonal surface patch with holes. The
+	 * <p>A sequence of parts that are rings can describe a polygon surface patch with holes. The
 	 * sequence typically consists of an Outer Ring, representing the outer boundary of the
 	 * patch, followed by a number of Inner Rings representing holes. When the individual
-	 * types of rings in a collection of rings representing a polygonal patch with holes are
+	 * types of rings in a collection of rings representing a polygon patch with holes are
 	 * unknown, the sequence must start with First Ring, followed by a number of Rings. A
 	 * sequence of Rings not preceded by an First Ring is treated as a sequence of Outer Rings
 	 * without holes.

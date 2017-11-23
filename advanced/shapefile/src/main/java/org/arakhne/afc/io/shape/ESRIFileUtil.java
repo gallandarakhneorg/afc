@@ -316,7 +316,7 @@ public final class ESRIFileUtil {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 14.0
 	 */
-	public static class NullFactory extends AbstractElementFactory<Object> {
+	public static class NullFactory implements ElementFactory<Object> {
 
 		/** Object replied by this factory.
 		 */

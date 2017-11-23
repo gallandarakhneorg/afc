@@ -649,7 +649,7 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 				return;
 			}
 		}
-		throw new SeekOperationDisabledException();
+		throw new SeekOperationDisabledException("Unspecified Shape File Index"); //$NON-NLS-1$
 	}
 
 	@Override
