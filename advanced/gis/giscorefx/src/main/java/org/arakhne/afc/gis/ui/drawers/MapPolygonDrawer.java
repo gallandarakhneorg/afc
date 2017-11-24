@@ -45,7 +45,7 @@ public class MapPolygonDrawer extends AbstractMapPolygonDrawer<MapPolygon> {
 	@Override
 	public void draw(ZoomableGraphicsContext gc, MapPolygon element) {
 		definePath(gc, element);
-		final Color color = gc.rgb(element.getColor());
+		final Color color = gc.rgb(getDrawingColor(element));
 		gc.setFill(color);
 		gc.setStroke(null);
 		gc.fill();

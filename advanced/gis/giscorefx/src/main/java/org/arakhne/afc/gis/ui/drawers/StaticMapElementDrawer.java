@@ -35,7 +35,7 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class StaticMapElementDrawer implements Drawer<MapElement> {
+public class StaticMapElementDrawer extends AbstractGISEditableDrawer<MapElement> {
 
 	private Class<? extends MapElement> type = MapElement.class;
 

@@ -74,9 +74,8 @@ public class RoadPolylineDrawer extends AbstractMapPolylineDrawer<RoadPolyline> 
 	 * @param gc the graphics context.
 	 * @param element the element to draw.
 	 */
-	@SuppressWarnings("static-method")
 	protected void setupRoadBorders(ZoomableGraphicsContext gc, RoadPolyline element) {
-		final Color color = gc.rgb(element.getColor());
+		final Color color = gc.rgb(getDrawingColor(element));
 		gc.setStroke(color);
 		final double width;
 		if (element.isWidePolyline()) {
@@ -92,9 +91,8 @@ public class RoadPolylineDrawer extends AbstractMapPolylineDrawer<RoadPolyline> 
 	 * @param gc the graphics context.
 	 * @param element the element to draw.
 	 */
-	@SuppressWarnings("static-method")
 	protected void setupRoadInterior(ZoomableGraphicsContext gc, RoadPolyline element) {
-		final Color color = gc.rgb(element.getColor());
+		final Color color = gc.rgb(getDrawingColor(element));
 		gc.setStroke(color.invert());
 		if (element.isWidePolyline()) {
 			gc.setLineWidthInMeters(element.getWidth());

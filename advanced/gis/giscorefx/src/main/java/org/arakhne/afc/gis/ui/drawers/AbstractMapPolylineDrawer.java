@@ -25,7 +25,6 @@ import javafx.scene.shape.FillRule;
 import org.arakhne.afc.gis.mapelement.MapPolyline;
 import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
 import org.arakhne.afc.math.geometry.d2.d.PathElement2d;
-import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Abstract drawer of a map polyline.
@@ -37,7 +36,7 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public abstract class AbstractMapPolylineDrawer<T extends MapPolyline> implements Drawer<T> {
+public abstract class AbstractMapPolylineDrawer<T extends MapPolyline> extends AbstractGISEditableDrawer<T> {
 
 	/** Draw the polyline path.
 	 *

@@ -44,7 +44,7 @@ public class MapPointDrawer extends AbstractMapPointDrawer<MapPoint> {
 
 	@Override
 	public void draw(ZoomableGraphicsContext gc, MapPoint element) {
-		final Color color = gc.rgb(element.getColor());
+		final Color color = gc.rgb(getDrawingColor(element));
 		gc.setFill(color);
 		gc.setStroke(color.darker());
 		if (element.isDoubleFramed()) {

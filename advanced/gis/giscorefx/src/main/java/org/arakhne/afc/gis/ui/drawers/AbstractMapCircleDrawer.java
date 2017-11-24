@@ -21,7 +21,6 @@
 package org.arakhne.afc.gis.ui.drawers;
 
 import org.arakhne.afc.gis.mapelement.MapCircle;
-import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Abstract drawer of a map circle.
@@ -33,7 +32,7 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public abstract class AbstractMapCircleDrawer<T extends MapCircle> implements Drawer<T> {
+public abstract class AbstractMapCircleDrawer<T extends MapCircle> extends AbstractGISEditableDrawer<T> {
 
 	/** Stroke the circle.
 	 *

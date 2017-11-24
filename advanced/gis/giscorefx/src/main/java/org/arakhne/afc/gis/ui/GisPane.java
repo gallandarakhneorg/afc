@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.gis.ui;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.nodefx.DocumentDrawer;
@@ -67,6 +69,16 @@ public class GisPane<T extends MapElement> extends ZoomablePane<T, GISElementCon
 	 */
 	public GisPane(GisCanvas<T> canvas) {
 		super(canvas);
+	}
+
+	/** Replies the document canvas within this pane.
+	 *
+	 * @return the document canvas.
+	 * @since 15.0
+	 */
+	@Pure
+	public GisCanvas<T> getGisCanvas() {
+		return (GisCanvas<T>) getDocumentCanvas();
 	}
 
 }

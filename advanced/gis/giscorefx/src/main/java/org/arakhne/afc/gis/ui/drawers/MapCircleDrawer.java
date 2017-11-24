@@ -44,7 +44,7 @@ public class MapCircleDrawer extends AbstractMapCircleDrawer<MapCircle> {
 
 	@Override
 	public void draw(ZoomableGraphicsContext gc, MapCircle element) {
-		final Color color = gc.rgb(element.getColor());
+		final Color color = gc.rgb(getDrawingColor(element));
 		gc.setFill(color);
 		gc.setStroke(color.darker());
 		gc.setStroke(null);

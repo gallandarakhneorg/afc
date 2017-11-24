@@ -48,7 +48,7 @@ public class MapPolylineDrawer extends AbstractMapPolylineDrawer<MapPolyline> {
 	public void draw(ZoomableGraphicsContext gc, MapPolyline element) {
 		definePath(gc, element);
 
-		final Color color = gc.rgb(element.getColor());
+		final Color color = gc.rgb(getDrawingColor(element));
 		gc.setFill(null);
 		gc.setStroke(color);
 		if (element.isWidePolyline()) {

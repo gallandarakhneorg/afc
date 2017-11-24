@@ -44,7 +44,7 @@ public class MapMultiPointDrawer extends AbstractMapMultiPointDrawer<MapMultiPoi
 
 	@Override
 	public void draw(ZoomableGraphicsContext gc, MapMultiPoint element) {
-		final Color color = gc.rgb(element.getColor());
+		final Color color = gc.rgb(getDrawingColor(element));
 		gc.setFill(color);
 		gc.setStroke(color.darker());
 		if (element.isDoubleFramed()) {

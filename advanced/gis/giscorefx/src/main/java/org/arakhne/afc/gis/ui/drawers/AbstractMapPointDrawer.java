@@ -21,7 +21,6 @@
 package org.arakhne.afc.gis.ui.drawers;
 
 import org.arakhne.afc.gis.mapelement.MapPoint;
-import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
 /** Abstract drawer of a map point.
@@ -33,7 +32,7 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public abstract class AbstractMapPointDrawer<T extends MapPoint> implements Drawer<T> {
+public abstract class AbstractMapPointDrawer<T extends MapPoint> extends AbstractGISEditableDrawer<T> {
 
 	/** Define a path that corresponds to the small rectangle around a point.
 	 *
