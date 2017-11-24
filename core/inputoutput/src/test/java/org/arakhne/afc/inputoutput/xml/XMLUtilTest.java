@@ -152,11 +152,13 @@ public class XMLUtilTest extends AbstractTestCase {
 	@Test
 	public void toColorInt() {
 		assertEquals("#45123456", XMLUtil.toColor(0x45123456)); //$NON-NLS-1$
+		assertEquals("lime", XMLUtil.toColor(0xFF00FF00)); //$NON-NLS-1$
 	}
 
 	@Test
 	public void toColorIntIntIntInt() {
 		assertEquals("#45123456", XMLUtil.toColor(18, 52, 86, 69)); //$NON-NLS-1$
+		assertEquals("lime", XMLUtil.toColor(0, 255, 0, 255)); //$NON-NLS-1$
 	}
 
 	@Test

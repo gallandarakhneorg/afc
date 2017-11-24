@@ -2214,6 +2214,10 @@ public final class XMLUtil {
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	public static String toColor(int rgba) {
+		final String code = ColorNames.getColorNameFromValue(rgba);
+		if (!Strings.isNullOrEmpty(code)) {
+			return code;
+		}
 		final StringBuilder s = new StringBuilder("#"); //$NON-NLS-1$
 		s.append(Integer.toHexString(rgba));
 		while (s.length() < 7) {
