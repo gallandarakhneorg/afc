@@ -102,6 +102,18 @@ public class JsonBuffer {
 		return buffer.toString();
 	}
 
+	/** Build the Json string representation of the given value.
+	 *
+	 * @param value the value of the first attribute.
+	 * @return the string representation.
+	 * @since 15.0
+	 */
+	public static String toString(JsonableObject value) {
+		final JsonBuffer buffer = new JsonBuffer();
+		value.toJson(buffer);
+		return buffer.toString();
+	}
+
 	@Override
 	public String toString() {
 		final StringBuilder buffer = new StringBuilder();
@@ -190,4 +202,5 @@ public class JsonBuffer {
 			buffer.append(INDENT_STRING);
 		}
 	}
+
 }
