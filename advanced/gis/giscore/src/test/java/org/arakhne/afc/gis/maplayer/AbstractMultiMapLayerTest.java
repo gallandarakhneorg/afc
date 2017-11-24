@@ -438,7 +438,7 @@ public abstract class AbstractMultiMapLayerTest<L extends MultiMapLayer<MapLayer
 			}
 
 			assertEpsilonEquals(allElements.size(),layer.size());
-			Rectangle2d actualBounds = layer.getBoundingBox().toBoundingBox();
+			Rectangle2d actualBounds = layer.getBoundingBox();
 			assertEpsilonEquals(refBounds.getMinX(),actualBounds.getMinX());
 			assertEpsilonEquals(refBounds.getMaxX(),actualBounds.getMaxX());
 			assertEpsilonEquals(refBounds.getMinY(),actualBounds.getMinY());

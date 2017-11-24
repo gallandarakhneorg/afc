@@ -175,7 +175,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	@Override
 	@Pure
 	public GeoLocation getGeoLocation() {
-		final Rectangle2d b = getBoundingBox().toBoundingBox();
+		final Rectangle2d b = getBoundingBox();
 		if (b == null) {
 			return new GeoLocationNowhere(getUUID());
 		}
@@ -188,7 +188,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 */
 	@Pure
 	public GeoLocationPoint getGeoPosition() {
-		final Rectangle2d b = getBoundingBox().toBoundingBox();
+		final Rectangle2d b = getBoundingBox();
 		if (b == null) {
 			return null;
 		}
@@ -201,7 +201,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 */
 	@Pure
 	public Point2d getPosition2D() {
-		final Rectangle2d b = getBoundingBox().toBoundingBox();
+		final Rectangle2d b = getBoundingBox();
 		if (b == null) {
 			return null;
 		}

@@ -281,7 +281,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 		Rectangle2d lr;
 		if (this.busLines != null) {
 			for (final BusLine line : this.busLines) {
-				lr = line.getBoundingBox().toBoundingBox();
+				lr = line.getBoundingBox();
 				if (lr != null) {
 					if (first) {
 						first = false;
@@ -916,12 +916,14 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 			return null;
 		}
 		for (final BusStop busStop : this.validBusStops) {
-			if (id.equals(busStop.getUUID())) {
+			final UUID busid = busStop.getUUID();
+			if (id.equals(busid)) {
 				return busStop;
 			}
 		}
 		for (final BusStop busStop : this.invalidBusStops) {
-			if (id.equals(busStop.getUUID())) {
+			final UUID busid = busStop.getUUID();
+			if (id.equals(busid)) {
 				return busStop;
 			}
 		}

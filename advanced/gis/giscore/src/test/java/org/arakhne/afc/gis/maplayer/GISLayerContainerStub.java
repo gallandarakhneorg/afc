@@ -181,7 +181,7 @@ class GISLayerContainerStub extends AbstractAttributeCollectionStub implements G
     	Rectangle2d r = new Rectangle2d();
     	boolean first = true;
 		for(MapLayer layer : this.list) {
-			Rectangle2d r2 = layer.getBoundingBox().toBoundingBox();
+			Rectangle2d r2 = layer.getBoundingBox();
 			if (r2!=null) {
 				if (first) {
 					first = false;

@@ -519,7 +519,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		RoadSegment segment;
 		while (iterator.hasNext()) {
 			segment = iterator.next();
-			sr = segment.getBoundingBox().toBoundingBox();
+			sr = segment.getBoundingBox();
 			if (sr != null) {
 				if (first) {
 					first = false;
@@ -530,7 +530,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 			}
 		}
 		for (final BusItineraryHalt halt : this.validHalts) {
-			sr = halt.getBoundingBox().toBoundingBox();
+			sr = halt.getBoundingBox();
 			if (sr != null) {
 				if (first) {
 					first = false;
@@ -542,7 +542,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 		}
 		for (final BusItineraryHalt halt: this.invalidHalts) {
 			if (halt.getBusStop() != null && halt.getBusStop().getPosition2D() != null) {
-				sr = halt.getBoundingBox().toBoundingBox();
+				sr = halt.getBoundingBox();
 				if (sr != null) {
 					if (first) {
 						first = false;
@@ -551,7 +551,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 						r.setUnion(sr);
 					}
 				}
-				sr = halt.getBusStop().getBoundingBox().toBoundingBox();
+				sr = halt.getBusStop().getBoundingBox();
 				if (sr != null) {
 					if (first) {
 						first = false;

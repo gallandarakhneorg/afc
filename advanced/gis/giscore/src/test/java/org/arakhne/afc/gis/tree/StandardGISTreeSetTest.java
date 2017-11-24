@@ -95,8 +95,8 @@ public class StandardGISTreeSetTest extends AbstractGisTest {
 			int i=0;
 			while (i<MAX_REFERENCE_SIZE && (element=reader.read())!=null) {
 				this.reference.add(element);
-				x += element.getBoundingBox().toBoundingBox().getCenterX();
-				y += element.getBoundingBox().toBoundingBox().getCenterY();
+				x += element.getBoundingBox().getCenterX();
+				y += element.getBoundingBox().getCenterY();
 				++i;
 			}
 
