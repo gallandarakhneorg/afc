@@ -22,6 +22,7 @@ package org.arakhne.afc.vmutil;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -35,7 +36,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
 /**
  * Utilities for retrieving color values from a color name.
  *
- * <p>The supported color names are listing is the table blow.
+ * <p>The supported color names are listing is the table below. The given colors are defined within the JavaFX standards.
  * <table border="1">
  * <thead>
  * <tr><th>Color Name</th><th>RGB Color</th><th>R, G, B, A Components</th><th>Example</th></tr>
@@ -443,6 +444,24 @@ public final class ColorNames {
 	@Pure
 	public static Integer getColorFromName(String colorName) {
 		return COLOR_MATCHES.get(colorName);
+	}
+
+	/** Replies the color name for the given color value.
+	 *
+	 * <p>See the documentation of the {@link #ColorNames} type for obtaining a list of the colors.
+	 *
+	 * @param colorValue the color value.
+	 * @return the color name, or {@code null} if the value does not correspond to an known color.
+	 */
+	@Pure
+	public static String getColorNameFromValue(int colorValue) {
+		for (final Entry<String, Integer> entry : COLOR_MATCHES.entrySet()) {
+			final int knownValue = entry.getValue().intValue();
+			if (colorValue == knownValue) {
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 
 }

@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.vmutil;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -211,6 +211,16 @@ public class ColorNamesTest {
 		for (String nm : NAMES) {
 			assertNotNull("Invalid color: " + nm, ColorNames.getColorFromName(nm)); //$NON-NLS-1$
 		}
+	}
+
+	@Test
+	public void getColorNameFromValue() {
+		assertEquals("red", ColorNames.getColorNameFromValue(0xFFFF0000)); //$NON-NLS-1$
+		assertNull(ColorNames.getColorNameFromValue(0xFF0000));
+		assertEquals("lime", ColorNames.getColorNameFromValue(0xFF00FF00)); //$NON-NLS-1$
+		assertNull(ColorNames.getColorNameFromValue(0x00FF00));
+		assertEquals("blue", ColorNames.getColorNameFromValue(0xFF0000FF)); //$NON-NLS-1$
+		assertNull(ColorNames.getColorNameFromValue(0x0000FF));
 	}
 
 }
