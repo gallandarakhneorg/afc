@@ -504,4 +504,18 @@ public interface ZoomableViewer<T, DT extends InformedIterable<? super T> & Boun
 	 */
 	void setDrawableElementBudget(int budget);
 
+	/** Add a drawing listener.
+	 *
+	 * @param listener the listener.
+	 * @since 15.0
+	 */
+	void addDrawingListener(DrawingListener listener);
+
+	/** Remove a drawing listener.
+	 *
+	 * @param listener the listener.
+	 * @since 15.0
+	 */
+	void removeDrawingListener(DrawingListener listener);
+
 }

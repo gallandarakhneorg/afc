@@ -705,10 +705,7 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 		}
 	}
 
-	/** Add a drawing listener.
-	 *
-	 * @param listener the listener.
-	 */
+	@Override
 	public void addDrawingListener(DrawingListener listener) {
 		if (this.listeners == null) {
 			this.listeners = new ListenerCollection<>();
@@ -716,10 +713,7 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 		this.listeners.add(DrawingListener.class, listener);
 	}
 
-	/** Remove a drawing listener.
-	 *
-	 * @param listener the listener.
-	 */
+	@Override
 	public void removeDrawingListener(DrawingListener listener) {
 		if (this.listeners != null) {
 			this.listeners.remove(DrawingListener.class, listener);

@@ -449,10 +449,6 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 				}
 			}
 		});
-
-		/*setOnZoom(event -> {
-			System.out.println("ZOOM"); //$NON-NLS-1$
-		});*/
 	}
 
 	/** Setup the response of the pane to key events.
@@ -1035,6 +1031,16 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 	@Override
 	public final void setDrawableElementBudget(int budget) {
 		getDocumentCanvas().setDrawableElementBudget(budget);
+	}
+
+	@Override
+	public void addDrawingListener(DrawingListener listener) {
+		getDocumentCanvas().addDrawingListener(listener);
+	}
+
+	@Override
+	public void removeDrawingListener(DrawingListener listener) {
+		getDocumentCanvas().removeDrawingListener(listener);
 	}
 
 	/** The color square at the corner of a {@code ZoomablePane}.
