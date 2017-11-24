@@ -127,18 +127,18 @@ public class CenteredTransformTest extends AbstractTestCase {
 
 	@Test
 	public void toGlobalX() {
-		assertEpsilonEquals(-7.5,  this.ts[0].toGlobalX(5));
-		assertEpsilonEquals(2.5,  this.ts[1].toGlobalX(5));
-		assertEpsilonEquals(-7.5,  this.ts[2].toGlobalX(5));
-		assertEpsilonEquals(2.5,  this.ts[3].toGlobalX(5));
+		assertEpsilonEquals(7.5,  this.ts[0].toGlobalX(5));
+		assertEpsilonEquals(-2.5,  this.ts[1].toGlobalX(5));
+		assertEpsilonEquals(7.5,  this.ts[2].toGlobalX(5));
+		assertEpsilonEquals(-2.5,  this.ts[3].toGlobalX(5));
 	}
 
 	@Test
 	public void toGlobalY() {
-		assertEpsilonEquals(-9,  this.ts[0].toGlobalY(5));
-		assertEpsilonEquals(-9,  this.ts[1].toGlobalY(5));
-		assertEpsilonEquals(1,  this.ts[2].toGlobalY(5));
-		assertEpsilonEquals(1,  this.ts[3].toGlobalY(5));
+		assertEpsilonEquals(9,  this.ts[0].toGlobalY(5));
+		assertEpsilonEquals(9,  this.ts[1].toGlobalY(5));
+		assertEpsilonEquals(-1,  this.ts[2].toGlobalY(5));
+		assertEpsilonEquals(-1,  this.ts[3].toGlobalY(5));
 	}
 
 }

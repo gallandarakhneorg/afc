@@ -140,7 +140,7 @@ public class CenteringTransform {
 	@Pure
 	public double toGlobalX(double x) {
 		final double adjustedX = x - this.translationX.get();
-		return this.invertX.get() ? adjustedX : -adjustedX;
+		return this.invertX.get() ? -adjustedX : adjustedX;
 	}
 
 	/** Change the coordinate system of {@code y} from the
@@ -152,7 +152,7 @@ public class CenteringTransform {
 	@Pure
 	public double toGlobalY(double y) {
 		final double adjustedY = y - this.translationY.get();
-		return this.invertY.get() ? adjustedY : -adjustedY;
+		return this.invertY.get() ? -adjustedY : adjustedY;
 	}
 
 }
