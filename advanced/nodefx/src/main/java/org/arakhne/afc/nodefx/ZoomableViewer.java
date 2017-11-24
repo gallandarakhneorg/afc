@@ -27,8 +27,11 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.BoundedElement2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.util.InformedIterable;
 
 /** View of document elements that provides a basic UI to show them.
@@ -518,6 +521,187 @@ public interface ZoomableViewer<T, DT extends InformedIterable<? super T> & Boun
 	 */
 	void removeDrawingListener(DrawingListener listener);
 
+	/** Replies the position inside the document that corresponds to the given position on screen.
+	 *
+	 * <p>The position on the screen may be the mouse position.
+	 *
+	 * @param position the position on the screen.
+	 * @return the position in the document.
+	 * @since 15.0
+	 */
+	@Pure
+	default Point2d toDocumentPosition(Point2D<?, ?> position) {
+		return new Point2d(toDocumentPositionX(position.getX()), toDocumentPositionY(position.getY()));
+	}
+
+	/** Replies the position inside the document that corresponds to the given position on screen.
+	 *
+	 * <p>The position on the screen may be the mouse position.
+	 *
+	 * @param x x coordinate of the position on the screen.
+	 * @param y y coordinate of the position on the screen.
+	 * @return the position in the document.
+	 * @since 15.0
+	 */
+	@Pure
+	default Point2d toDocumentPosition(double x, double y) {
+		return new Point2d(toDocumentPositionX(x), toDocumentPositionY(y));
+	}
+
+	/** Replies the X position inside the document that corresponds to the given X position on screen.
+	 *
+	 * <p>The position on the screen may be the mouse position.
+	 *
+	 * @param x x coordinate of the position on the screen.
+	 * @return the position in the document.
+	 * @since 15.0
+	 */
+	@Pure
+	double toDocumentPositionX(double x);
+
+	/** Replies the Y position inside the document that corresponds to the given Y position on screen.
+	 *
+	 * <p>The position on the screen may be the mouse position.
+	 *
+	 * @param y y coordinate of the position on the screen.
+	 * @return the position in the document.
+	 * @since 15.0
+	 */
+	@Pure
+	double toDocumentPositionY(double y);
+
+	/** Replies the size inside the document that corresponds to the given size on screen.
+	 *
+	 * <p>The size on the screen is generally given in pixels.
+	 *
+	 * @param size the size on the screen.
+	 * @return the size in the document.
+	 * @since 15.0
+	 */
+	@Pure
+	double toDocumentSize(double size);
+
+	/** Replies the position inside the document that corresponds to the given rectangle on the screen..
+	 *
+	 * @param rect the rectangle on the screen.
+	 * @return the rectangle in the document.
+	 * @since 15.0
+	 */
+	@Pure
+	default Rectangle2d toDocumentRect(Rectangle2afp<?, ?, ?, ?, ?, ?> rect) {
+		return toDocumentRect(rect.getMinX(), rect.getMinY(), rect.getWidth(), rect.getHeight());
+	}
+
+	/** Replies the position inside the document that corresponds to the given rectangle on the screen..
+	 *
+	 * @param x the minimum x coordinate within the rectangle.
+	 * @param y the minimum y coordinate within the rectangle.
+	 * @param width the width of rectangle.
+	 * @param height the height of rectangle.
+	 * @return the rectangle in the document.
+	 * @since 15.0
+	 */
+	@Pure
+	default Rectangle2d toDocumentRect(double x, double y, double width, double height) {
+		final double x1 = toDocumentPositionX(x);
+		final double x2 = toDocumentPositionX(x + width);
+		final double y1 = toDocumentPositionY(y);
+		final double y2 = toDocumentPositionY(y + height);
+		final Rectangle2d rect = new Rectangle2d();
+		rect.setFromCorners(x1, y1, x2, y2);
+		return rect;
+	}
+
+	/** Replies the position on the screen that corresponds to the given position within the document.
+	 *
+	 * <p>The position on the screen may be the mouse position.
+	 *
+	 * @param position the position within the document.
+	 * @return the position on the screen.
+	 * @since 15.0
+	 */
+	@Pure
+	default Point2d toScreenPosition(Point2D<?, ?> position) {
+		return new Point2d(toScreenPositionX(position.getX()), toScreenPositionY(position.getY()));
+	}
+
+	/** Replies the position on the screen that corresponds to the given position within the document.
+	 *
+	 * <p>The position on the screen may be the mouse position.
+	 *
+	 * @param x x coordinate of the position within the document.
+	 * @param y y coordinate of the position within the document.
+	 * @return the position on the screen..
+	 * @since 15.0
+	 */
+	@Pure
+	default Point2d toScreenPosition(double x, double y) {
+		return new Point2d(toScreenPositionX(x), toScreenPositionY(y));
+	}
+
+	/** Replies the X position on the screen that corresponds to the given X position within the document.
+	 *
+	 * <p>The position on the screen may be the mouse position.
+	 *
+	 * @param x x coordinate of the position within the document.
+	 * @return the position on the screen.
+	 * @since 15.0
+	 */
+	@Pure
+	double toScreenPositionX(double x);
+
+	/** Replies the Y position on the screen that corresponds to the given Y position within the document.
+	 *
+	 * <p>The position on the screen may be the mouse position.
+	 *
+	 * @param y y coordinate of the position within the document.
+	 * @return the position on the screen.
+	 * @since 15.0
+	 */
+	@Pure
+	double toScreenPositionY(double y);
+
+	/** Replies the size on the screen that corresponds to the given size within the document.
+	 *
+	 * <p>The size on the screen is generally given in pixels.
+	 *
+	 * @param size the size within the document.
+	 * @return the size on the screen.
+	 * @since 15.0
+	 */
+	@Pure
+	double toScreenSize(double size);
+
+	/** Replies the position on the screen that corresponds to the given rectangle inside the document.
+	 *
+	 * @param rect the rectangle within the document.
+	 * @return the rectangle on the screen.
+	 * @since 15.0
+	 */
+	@Pure
+	default Rectangle2d toScreenRect(Rectangle2afp<?, ?, ?, ?, ?, ?> rect) {
+		return toScreenRect(rect.getMinX(), rect.getMinY(), rect.getWidth(), rect.getHeight());
+	}
+
+	/** Replies the position on the screen that corresponds to the given rectangle inside the document.
+	 *
+	 * @param x the minimum x coordinate within the rectangle.
+	 * @param y the minimum y coordinate within the rectangle.
+	 * @param width the width of rectangle.
+	 * @param height the height of rectangle.
+	 * @return the rectangle on the screen.
+	 * @since 15.0
+	 */
+	@Pure
+	default Rectangle2d toScreenRect(double x, double y, double width, double height) {
+		final double x1 = toScreenPositionX(x);
+		final double x2 = toScreenPositionX(x + width);
+		final double y1 = toScreenPositionY(y);
+		final double y2 = toScreenPositionY(y + height);
+		final Rectangle2d rect = new Rectangle2d();
+		rect.setFromCorners(x1, y1, x2, y2);
+		return rect;
+	}
 
 	/** Refresh the content of the viewer in order to have a new image drawn.
 	 *

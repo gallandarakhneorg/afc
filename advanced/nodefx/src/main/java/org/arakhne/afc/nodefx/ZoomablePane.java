@@ -1043,6 +1043,35 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 		getDocumentCanvas().removeDrawingListener(listener);
 	}
 
+	@Override
+	public double toDocumentPositionX(double x) {
+		return getDocumentCanvas().toDocumentPositionX(x);
+	}
+
+	@Override
+	public double toDocumentPositionY(double y) {
+		return getDocumentCanvas().toDocumentPositionY(y);
+	}
+
+	@Override
+	public double toDocumentSize(double size) {
+		return getDocumentCanvas().toDocumentSize(size);
+	}
+
+	@Override
+	public double toScreenPositionX(double x) {
+		return getDocumentCanvas().toScreenPositionX(x);
+	}
+
+	@Override
+	public double toScreenPositionY(double y) {
+		return getDocumentCanvas().toScreenPositionY(y);
+	}
+
+	@Override
+	public double toScreenSize(double size) {
+		return getDocumentCanvas().toScreenSize(size);
+	}
 
 	@Override
 	public void drawContent() {

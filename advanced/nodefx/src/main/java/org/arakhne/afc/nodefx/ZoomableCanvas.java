@@ -748,9 +748,34 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 		}
 	}
 
+	@Override
+	public double toDocumentPositionX(double x) {
+		return getDocumentGraphicsContext2D().fx2docX(x);
+	}
 
+	@Override
+	public double toDocumentPositionY(double y) {
+		return getDocumentGraphicsContext2D().fx2docY(y);
+	}
 
+	@Override
+	public double toDocumentSize(double size) {
+		return getDocumentGraphicsContext2D().fx2docSize(size);
+	}
 
+	@Override
+	public double toScreenPositionX(double x) {
+		return getDocumentGraphicsContext2D().doc2fxX(x);
+	}
+
+	@Override
+	public double toScreenPositionY(double y) {
+		return getDocumentGraphicsContext2D().doc2fxY(y);
+	}
+
+	@Override
+	public double toScreenSize(double size) {
+		return getDocumentGraphicsContext2D().doc2fxSize(size);
 	}
 
 }

@@ -33,6 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.nodefx.tests.MyDoc;
 import org.arakhne.afc.testtools.AbstractTestCase;
@@ -326,6 +327,141 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	@Test
 	public void getScaleValueToFit() {
 		assertEpsilonEquals(25, this.canvas.getScaleValueToFit());
+	}
+
+	@Test
+	public void toDocumentPositionX() {
+		//Document: Rectangle2d(1, 2, 3, 4)
+		//Canvas: Rectangle2d(0, 0, 100, 100)
+		this.canvas.setScaleValue(1.23);
+		assertEpsilonEquals(2.5, this.canvas.toDocumentPositionX(50));
+		assertEpsilonEquals(-30.0203, this.canvas.toDocumentPositionX(10));
+	}
+
+	@Test
+	public void toDocumentPositionY() {
+		//Document: Rectangle2d(1, 2, 3, 4)
+		//Canvas: Rectangle2d(0, 0, 100, 100)
+		this.canvas.setScaleValue(1.23);
+		assertEpsilonEquals(4, this.canvas.toDocumentPositionY(50));
+		assertEpsilonEquals(-28.5203, this.canvas.toDocumentPositionY(10));
+	}
+
+	@Test
+	public void toDocumentSize() {
+		this.canvas.setScaleValue(1.23);
+		assertEpsilonEquals(8.1301, this.canvas.toDocumentSize(10));
+	}
+	@Test
+	public void toDocumentPositionPoint2D() {
+		//Document: Rectangle2d(1, 2, 3, 4)
+		//Canvas: Rectangle2d(0, 0, 100, 100)
+		this.canvas.setScaleValue(1.23);
+		Point2d p = this.canvas.toDocumentPosition(new Point2d(10, 10));
+		assertEpsilonEquals(-30.0203, p.getX());
+		assertEpsilonEquals(-28.5203, p.getY());
+	}
+
+	@Test
+	public void toDocumentPositionDoubleDouble() {
+		//Document: Rectangle2d(1, 2, 3, 4)
+		//Canvas: Rectangle2d(0, 0, 100, 100)
+		this.canvas.setScaleValue(1.23);
+		Point2d p = this.canvas.toDocumentPosition(10, 10);
+		assertEpsilonEquals(-30.0203, p.getX());
+		assertEpsilonEquals(-28.5203, p.getY());
+	}
+
+	@Test
+	public void toDocumentRectRectangle2afp() {
+		//Document: Rectangle2d(1, 2, 3, 4)
+		//Canvas: Rectangle2d(0, 0, 100, 100)
+		this.canvas.setScaleValue(1.23);
+		Rectangle2d r = this.canvas.toDocumentRect(new Rectangle2d(10, 10, 34, 56));
+		assertEpsilonEquals(-30.0203, r.getMinX());
+		assertEpsilonEquals(-28.5203, r.getMinY());
+		assertEpsilonEquals(27.6423, r.getWidth());
+		assertEpsilonEquals(45.5285, r.getHeight());
+	}
+
+	@Test
+	public void toDocumentRectDoubleDoubleDoubleDouble() {
+		//Document: Rectangle2d(1, 2, 3, 4)
+		//Canvas: Rectangle2d(0, 0, 100, 100)
+		this.canvas.setScaleValue(1.23);
+		Rectangle2d r = this.canvas.toDocumentRect(10, 10, 34, 56);
+		assertEpsilonEquals(-30.0203, r.getMinX());
+		assertEpsilonEquals(-28.5203, r.getMinY());
+		assertEpsilonEquals(27.6423, r.getWidth());
+		assertEpsilonEquals(45.5285, r.getHeight());
+	}
+
+	@Test
+	public void toScreenPositionX() {
+		//Document: Rectangle2d(1, 2, 3, 4)
+		//Canvas: Rectangle2d(0, 0, 100, 100)
+		this.canvas.setScaleValue(1.23);
+		assertEpsilonEquals(50, this.canvas.toScreenPositionX(2.5));
+		assertEpsilonEquals(59.225, this.canvas.toScreenPositionX(10));
+	}
+
+	@Test
+	public void toScreenPositionY() {
+		//Document: Rectangle2d(1, 2, 3, 4)
+		//Canvas: Rectangle2d(0, 0, 100, 100)
+		this.canvas.setScaleValue(1.23);
+		assertEpsilonEquals(50, this.canvas.toScreenPositionY(4));
+		assertEpsilonEquals(57.38, this.canvas.toScreenPositionY(10));
+	}
+
+	@Test
+	public void toScreenSize() {
+		this.canvas.setScaleValue(1.23);
+		assertEpsilonEquals(12.3, this.canvas.toScreenSize(10));
+	}
+
+	@Test
+	public void toScreenPositionPoint2D() {
+		//Document: Rectangle2d(1, 2, 3, 4)
+		//Canvas: Rectangle2d(0, 0, 100, 100)
+		this.canvas.setScaleValue(1.23);
+		Point2d p = this.canvas.toScreenPosition(new Point2d(10, 10));
+		assertEpsilonEquals(59.225, p.getX());
+		assertEpsilonEquals(57.38, p.getY());
+	}
+
+	@Test
+	public void toScreenPositionDoubleDouble() {
+		//Document: Rectangle2d(1, 2, 3, 4)
+		//Canvas: Rectangle2d(0, 0, 100, 100)
+		this.canvas.setScaleValue(1.23);
+		Point2d p = this.canvas.toScreenPosition(10, 10);
+		assertEpsilonEquals(59.225, p.getX());
+		assertEpsilonEquals(57.38, p.getY());
+	}
+
+	@Test
+	public void toScreenRectRectangle2afp() {
+		//Document: Rectangle2d(1, 2, 3, 4)
+		//Canvas: Rectangle2d(0, 0, 100, 100)
+		this.canvas.setScaleValue(1.23);
+		Rectangle2d r = this.canvas.toScreenRect(new Rectangle2d(10, 10, 34, 56));
+		assertEpsilonEquals(59.225, r.getMinX());
+		assertEpsilonEquals(57.38, r.getMinY());
+		assertEpsilonEquals(41.82, r.getWidth());
+		assertEpsilonEquals(68.88, r.getHeight());
+	}
+
+	@Test
+	public void toScreenRectDoubleDoubleDoubleDouble() {
+		//Document: Rectangle2d(1, 2, 3, 4)
+		//Canvas: Rectangle2d(0, 0, 100, 100)
+		this.canvas.setScaleValue(1.23);
+		Rectangle2d r = this.canvas.toScreenRect(10, 10, 34, 56);
+		assertEpsilonEquals(59.225, r.getMinX());
+		assertEpsilonEquals(57.38, r.getMinY());
+		assertEpsilonEquals(41.82, r.getWidth());
+		assertEpsilonEquals(68.88, r.getHeight());
 	}
 
 }
