@@ -37,6 +37,7 @@ import org.arakhne.afc.gis.primitive.GISTreeBrowsable;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.util.InformedArrayList;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class is a container of layers.
@@ -152,6 +153,13 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 		resetBoundingBox();
 
 		return clone;
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("layers", getAllMapLayers()); //$NON-NLS-1$
 	}
 
 	@Override

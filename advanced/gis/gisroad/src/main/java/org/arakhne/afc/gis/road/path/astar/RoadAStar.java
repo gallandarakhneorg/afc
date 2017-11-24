@@ -69,6 +69,7 @@ import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.math.graph.astar.AStar;
 import org.arakhne.afc.math.graph.astar.AStarHeuristic;
 import org.arakhne.afc.math.graph.astar.AStarNode;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class provides an implementation of the
@@ -1484,6 +1485,11 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		@Override
 		public void toPath2D(Path2d path, double startPosition, double endPosition) {
 			getVirtualizedSegment().toPath2D(path, startPosition, endPosition);
+		}
+
+		@Override
+		public void toJson(JsonBuffer buffer) {
+			getVirtualizedSegment().toJson(buffer);
 		}
 
 	} // class VirtualSegment

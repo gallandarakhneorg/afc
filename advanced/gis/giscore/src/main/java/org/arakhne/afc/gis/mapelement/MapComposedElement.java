@@ -34,6 +34,7 @@ import org.arakhne.afc.gis.location.GeoLocationPointList;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 
 /**
@@ -72,6 +73,21 @@ public abstract class MapComposedElement extends MapElement {
 	 */
 	public MapComposedElement(UUID id, AttributeCollection attributeSource) {
 		super(id, attributeSource);
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		final JsonBuffer groups = new JsonBuffer();
+		int grpIdx = 0;
+		for (final PointGroup grp : groups()) {
+			final JsonBuffer group = new JsonBuffer();
+			group.add("index", grpIdx); //$NON-NLS-1$
+			groups.add("points", grp.points()); //$NON-NLS-1$
+			++grpIdx;
+		}
+		buffer.add("groups", groups); //$NON-NLS-1$
 	}
 
 	/** Clone this object to obtain a valid copy.

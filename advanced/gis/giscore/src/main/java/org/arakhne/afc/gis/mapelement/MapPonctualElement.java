@@ -30,6 +30,7 @@ import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.location.GeoLocationPoint;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class is for a map element that owns one geo-referenced point.
@@ -96,14 +97,9 @@ public abstract class MapPonctualElement extends MapElement {
 
 	@Override
 	@Pure
-	public String toString() {
-		final StringBuilder buf = new StringBuilder();
-		buf.append('(');
-		buf.append(this.position.getX());
-		buf.append(';');
-		buf.append(this.position.getY());
-		buf.append(')');
-		return buf.toString();
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("position", getPoint()); //$NON-NLS-1$
 	}
 
 	@Override

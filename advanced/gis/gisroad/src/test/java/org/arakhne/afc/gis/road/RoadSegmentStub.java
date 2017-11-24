@@ -23,12 +23,15 @@ package org.arakhne.afc.gis.road;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.gis.road.RoadPolyline;
 import org.arakhne.afc.gis.road.StandardRoadConnection;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** Stub for RoadSegment.
  *
@@ -208,8 +211,9 @@ public class RoadSegmentStub extends RoadPolyline {
 	}
 
 	@Override
-	public String toString() {
-		return this.label;
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("label", this.label); //$NON-NLS-1$
 	}
 
 	/**

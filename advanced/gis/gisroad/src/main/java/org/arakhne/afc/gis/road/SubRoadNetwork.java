@@ -71,6 +71,7 @@ import org.arakhne.afc.math.graph.GraphIterator;
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.math.graph.SubGraph;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class describes a road network sub graph.
@@ -1754,6 +1755,11 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		public void toPath2D(Path2d path, double startPosition, double endPosition) {
 			this.segment.get().toPath2D(path, startPosition, endPosition);
+		}
+
+		@Override
+		public void toJson(JsonBuffer buffer) {
+			this.segment.get().toJson(buffer);
 		}
 
 	} // class WrapSegment

@@ -37,6 +37,7 @@ import org.arakhne.afc.gis.bus.network.BusChangeEvent.BusChangeEventType;
 import org.arakhne.afc.math.geometry.d2.d.Path2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
@@ -218,6 +219,13 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	 */
 	public BusLine(UUID id, AttributeCollection attributeProvider) {
 		super(id, attributeProvider);
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("itineraries", busItineraries()); //$NON-NLS-1$
 	}
 
 	/** Replies a bus line name that was not exist in the specified

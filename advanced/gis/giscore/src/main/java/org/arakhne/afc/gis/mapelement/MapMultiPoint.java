@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Path2d;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * Class the permits to display a multi-point.
@@ -85,6 +86,14 @@ public class MapMultiPoint extends MapComposedElement {
 	 */
 	public MapMultiPoint(UUID id) {
 		super(id, null);
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("doubleFramed", isDoubleFramed()); //$NON-NLS-1$
+		buffer.add("pointSize", getPointSize()); //$NON-NLS-1$
 	}
 
 	/**

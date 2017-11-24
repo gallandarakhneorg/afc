@@ -52,6 +52,7 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.math.graph.GraphIterator;
 import org.arakhne.afc.util.OutputParameter;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class describes a road segment
@@ -129,6 +130,15 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 		this.userData = null;
 		setWidePolyline(true);
 	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("roadType", getRoadType()); //$NON-NLS-1$
+		buffer.add("width", getWidth()); //$NON-NLS-1$
+	}
+
 
 	/** Clone this object to obtain a valid copy.
 	 *

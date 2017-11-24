@@ -40,6 +40,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
@@ -156,6 +157,22 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 
 		// Link this halt to its container
 		setContainer(itinerary);
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		if (getBusStop() != null) {
+			buffer.add("stop", getBusStop().getUUID()); //$NON-NLS-1$
+		}
+		if (getRoadSegment() != null) {
+			buffer.add("road", getRoadSegment().getUUID()); //$NON-NLS-1$
+		}
+		if (getPosition1D() != null) {
+			buffer.add("position", getPosition1D().getCurvilineCoordinate()); //$NON-NLS-1$
+		}
+		buffer.add("type", getType()); //$NON-NLS-1$
 	}
 
 	/** Replies a bus halt name that was not exist in the specified

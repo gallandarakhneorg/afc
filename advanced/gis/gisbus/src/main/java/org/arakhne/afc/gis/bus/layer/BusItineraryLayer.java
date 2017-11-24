@@ -35,6 +35,7 @@ import org.arakhne.afc.gis.maplayer.MapLayer;
 import org.arakhne.afc.gis.maplayer.MapLayerContentEvent;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class permits to display a bus itinerary.
@@ -216,6 +217,13 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 			initializeElements();
 		}
 		this.busItinerary.addBusChangeListener(this.listener);
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("itinerary", getBusItinerary()); //$NON-NLS-1$
 	}
 
 	@Pure

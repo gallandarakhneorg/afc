@@ -43,6 +43,7 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.util.ListUtil;
 import org.arakhne.afc.util.MultiCollection;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * A bus network is composed of {@link BusLine bus lines}.
@@ -178,6 +179,15 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 */
 	public BusNetwork(UUID id, RoadNetwork roadNetwork) {
 		this(id, null, roadNetwork, new HeapAttributeCollection());
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("lines", busLines()); //$NON-NLS-1$
+		buffer.add("validHubs", this.validBusHubs); //$NON-NLS-1$
+		buffer.add("invalidHubs", this.invalidBusHubs); //$NON-NLS-1$
 	}
 
 	@Override

@@ -65,6 +65,7 @@ import org.arakhne.afc.math.graph.GraphIterator;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.util.OutputParameter;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class describes a road network.
@@ -129,6 +130,13 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 		super(id, null);
 		this.roadSegments = createInternalDataStructure(originalBounds);
 		initAttributes();
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("roads", getRoadSegments()); //$NON-NLS-1$
 	}
 
 	/** Create the internal data structure.

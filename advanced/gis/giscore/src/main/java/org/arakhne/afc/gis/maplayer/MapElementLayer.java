@@ -29,6 +29,7 @@ import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapElement;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class represents a layer that contains map elements.
@@ -79,6 +80,13 @@ public abstract class MapElementLayer<E extends MapElement> extends MapLayer imp
 	 */
 	public MapElementLayer(UUID id, AttributeCollection attributeSource, boolean isTemp) {
 		super(id, attributeSource, isTemp);
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("elements", getAllMapElements()); //$NON-NLS-1$
 	}
 
 	/** Fire the event that indicates the content of this layer was changed.

@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class permits to store a geo-located point.
@@ -131,6 +132,14 @@ public class MapPoint extends MapPonctualElement {
 	 */
 	public MapPoint(UUID id, AttributeCollection attributeSource, double geoX, double geoY) {
 		super(id, attributeSource, geoX, geoY);
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("doubleFramed", isDoubleFramed()); //$NON-NLS-1$
+		buffer.add("pointSize", getPointSize()); //$NON-NLS-1$
 	}
 
 	/**

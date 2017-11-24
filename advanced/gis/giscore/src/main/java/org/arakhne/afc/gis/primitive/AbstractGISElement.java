@@ -43,6 +43,7 @@ import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.attrs.collection.AttributeProvider;
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.gis.location.GeoId;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** Element of a GIS application.
  *
@@ -671,26 +672,20 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 
 	@Override
 	@Pure
-	public String toString() {
-		final GeoId geoId = getGeoId();
-		if (geoId != null) {
-			return geoId.toString();
-		}
-		final StringBuilder buf = new StringBuilder();
-		final String name = getName();
-		final UUID id = getUUID();
-		buf.append('<');
-		if (name != null) {
-			buf.append(name);
-			buf.append('|');
-		}
-		if (id != null) {
-			buf.append(id.toString());
-			buf.append('|');
-		}
-		buf.append(hashKey());
-		buf.append('>');
-		return buf.toString();
+	public final String toString() {
+		final JsonBuffer buffer = new JsonBuffer();
+		toJson(buffer);
+		return buffer.toString();
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("javaType", getClass().getName()); //$NON-NLS-1$
+		buffer.add("name", getName()); //$NON-NLS-1$
+		buffer.add("id", getUUID()); //$NON-NLS-1$
+		buffer.add("geoId", getGeoId()); //$NON-NLS-1$
+		buffer.add("hashKey", hashKey()); //$NON-NLS-1$
 	}
 
 }

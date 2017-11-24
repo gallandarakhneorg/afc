@@ -34,6 +34,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.math.geometry.d2.d.Circle2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class permits to define a circle.
@@ -223,16 +224,9 @@ public class MapCircle extends MapPonctualElement {
 
 	@Override
 	@Pure
-	public String toString() {
-		final StringBuilder buf = new StringBuilder();
-		buf.append('(');
-		buf.append(this.getX());
-		buf.append(';');
-		buf.append(this.getY());
-		buf.append(';');
-		buf.append(this.getRadius());
-		buf.append(')');
-		return buf.toString();
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("radius", getRadius()); //$NON-NLS-1$
 	}
 
 	/** Replies if the specified objects is the same as this one.

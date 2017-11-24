@@ -38,6 +38,7 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.references.WeakArrayList;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
@@ -160,6 +161,16 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 		setName(name);
 		// Set the position of the element
 		setPosition(position);
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		if (getGeoPosition() != null) {
+			buffer.add("x", getGeoPosition().getX()); //$NON-NLS-1$
+			buffer.add("y", getGeoPosition().getY()); //$NON-NLS-1$
+		}
 	}
 
 	/** Replies a bus stop name that was not exist in the specified

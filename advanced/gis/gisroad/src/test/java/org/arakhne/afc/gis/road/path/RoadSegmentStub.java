@@ -58,6 +58,7 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.math.graph.GraphIterator;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** Stub for RoadSegment.
  *
@@ -110,7 +111,7 @@ class RoadSegmentStub implements RoadSegment {
 
 	@Override
 	public String toString() {
-		return this.label;
+		return JsonBuffer.toString(this);
 	}
 
 	@Override
@@ -1136,6 +1137,11 @@ class RoadSegmentStub implements RoadSegment {
 	@Override
 	public void toPath2D(Path2d path, double startPosition, double endPosition) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("label", this.label); //$NON-NLS-1$
 	}
 
 }

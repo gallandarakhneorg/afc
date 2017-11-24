@@ -26,6 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** Element of a GIS application which is bounded.
  *
@@ -51,6 +52,13 @@ public abstract class AbstractBoundedGISElement<C extends GISContainer<?>, T ext
 	 */
 	public AbstractBoundedGISElement(UUID id, AttributeCollection attributeSource) {
 		super(id, attributeSource);
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("bounds", getBoundingBox()); //$NON-NLS-1$
 	}
 
 	/** Clone this object to obtain a valid copy.

@@ -42,6 +42,7 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.util.OutputParameter;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * Class the permits to display a polyline.
@@ -93,6 +94,13 @@ public class MapPolyline extends MapComposedElement {
 	 */
 	public MapPolyline(UUID id, AttributeCollection attributeSource) {
 		super(id, attributeSource);
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("wide", isWidePolyline()); //$NON-NLS-1$
 	}
 
 	/** Set if this polyline must be drawn with a wide height.

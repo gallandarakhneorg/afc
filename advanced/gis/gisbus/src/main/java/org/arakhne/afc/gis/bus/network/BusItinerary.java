@@ -34,6 +34,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import org.eclipse.xtext.xbase.lib.Pair;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -61,6 +62,7 @@ import org.arakhne.afc.util.IntegerList;
 import org.arakhne.afc.util.ListUtil;
 import org.arakhne.afc.util.MultiCollection;
 import org.arakhne.afc.util.Triplet;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
@@ -264,6 +266,15 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	public BusItinerary(UUID id, AttributeCollection attributeProvider) {
 		super(id, attributeProvider);
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("roads", Iterables.transform(roadSegments(), (it) -> it.getGeoId())); //$NON-NLS-1$
+		buffer.add("validHalts", this.validHalts); //$NON-NLS-1$
+		buffer.add("invalidHalts", this.invalidHalts); //$NON-NLS-1$
 	}
 
 	/** Replies a bus itinerary name that was not exist in the specified

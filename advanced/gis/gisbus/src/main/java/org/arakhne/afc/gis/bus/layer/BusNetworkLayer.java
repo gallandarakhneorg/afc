@@ -23,6 +23,8 @@ package org.arakhne.afc.gis.bus.layer;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.bus.network.BusChangeEvent;
 import org.arakhne.afc.gis.bus.network.BusChangeListener;
@@ -33,6 +35,7 @@ import org.arakhne.afc.gis.maplayer.MapLayerContentEvent;
 import org.arakhne.afc.gis.maplayer.MultiMapLayer;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class permits to display a bus network.
@@ -202,6 +205,13 @@ public class BusNetworkLayer extends MultiMapLayer<BusLineLayer> implements BusL
 			initializeElements();
 		}
 		this.busNetwork.addBusChangeListener(this.listener);
+	}
+
+	@Override
+	@Pure
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("line", getBusNetwork()); //$NON-NLS-1$
 	}
 
 	private static AttributeCollection extractAttributeCollection(AttributeCollection userDefinedProvider, BusNetwork network) {

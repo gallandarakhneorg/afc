@@ -28,6 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.gis.location.GeoId;
 import org.arakhne.afc.gis.location.GeoLocation;
+import org.arakhne.afc.vmutil.json.JsonableObject;
 
 
 /** A primitive inside a GIS context.
@@ -38,7 +39,7 @@ import org.arakhne.afc.gis.location.GeoLocation;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-public interface GISPrimitive extends Serializable {
+public interface GISPrimitive extends Serializable, JsonableObject {
 
 	/** Comparator on GISPrimitive.
 	 * It uses the geolocation of the elements

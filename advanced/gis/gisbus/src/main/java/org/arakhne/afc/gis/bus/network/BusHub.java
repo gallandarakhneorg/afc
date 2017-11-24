@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -38,6 +39,7 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.references.WeakArrayList;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
@@ -214,15 +216,9 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 
 	@Override
 	@Pure
-	public String toString() {
-		final StringBuilder b = new StringBuilder();
-		final String name = getName();
-		if (name != null) {
-			b.append(name);
-		}
-		b.append('=');
-		b.append(this.busStops.toString());
-		return b.toString();
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("stops", Iterables.transform(this.busStops, (it) -> it.getUUID())); //$NON-NLS-1$
 	}
 
 	/** Replies the name of this hub.
