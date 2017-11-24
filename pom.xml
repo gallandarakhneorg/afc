@@ -157,6 +157,16 @@
 				<artifactId>gisroadfx</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.gis</groupId>
+				<artifactId>gisroadinputoutput</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.gis</groupId>
+				<artifactId>gisbus</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.arakhne.afc.maven</groupId>

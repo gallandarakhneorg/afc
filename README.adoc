@@ -86,6 +86,12 @@ AFC library contains the following alive modules:
 | Base elements for creating data structures that represent a bus network, or any public transport network.
 
 |
+| link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/io/package-summary.html[GIS Bus Network]
+| org.arakhne.afc.gis
+| gisbusinputoutput
+| Readers and writers for bus networks.
+
+|
 | link:http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/gis/package-summary.html[GIS Input-Output API]
 | org.arakhne.afc.gis
 | gisinputoutput

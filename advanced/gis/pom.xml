@@ -21,9 +21,7 @@
 		<module>gisroadinputoutput</module>
 		<module>gisroadfx</module>
 		<module>gisbus</module>
-		<!-- 
-		<module>gisbusio</module>
-		-->
+		<module>gisbusinputoutput</module>
 	</modules>
 
 </project>
