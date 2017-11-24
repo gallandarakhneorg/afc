@@ -63,6 +63,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
+@SuppressWarnings("checkstyle:methodcount")
 public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedElement2afp<?>>
 		extends Canvas implements ZoomableViewer<T, DT> {
 
@@ -275,10 +276,9 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 
 	}
 
-	/** Draw the elements.
-	 */
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:nestedifdepth"})
-	protected void drawContent() {
+	@Override
+	public final void drawContent() {
 		final boolean old = this.renderingEnable.getAndSet(false);
 		if (old) {
 			if (this.refresher == null) {
@@ -329,13 +329,16 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 				}
 				this.refresher = this.drawRunAfterChain;
 				Platform.runLater(() -> {
-					if (this.refresher != null) {
-						this.refresher.run();
+					try {
+						if (this.refresher != null) {
+							this.refresher.run();
+						}
+					} finally {
+						this.refresher = null;
 					}
-					this.refresher = null;
 				});
 			} else {
-				this.renderingEnable.getAndSet(true);
+				this.renderingEnable.set(true);
 			}
 		}
 	}
@@ -745,22 +748,8 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 		}
 	}
 
-	/** Listener on drawing actions.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	public interface DrawingListener extends EventListener {
 
-		/** Drawing is starting.
-		 */
-		void onDrawingStart();
 
-		/** Drawing is finished.
-		 */
-		void onDrawingEnd();
 
 	}
 

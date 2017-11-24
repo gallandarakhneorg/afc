@@ -518,4 +518,11 @@ public interface ZoomableViewer<T, DT extends InformedIterable<? super T> & Boun
 	 */
 	void removeDrawingListener(DrawingListener listener);
 
+
+	/** Refresh the content of the viewer in order to have a new image drawn.
+	 *
+	 * @since 15.0
+	 */
+	void drawContent();
+
 }

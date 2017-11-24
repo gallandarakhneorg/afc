@@ -1043,6 +1043,12 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 		getDocumentCanvas().removeDrawingListener(listener);
 	}
 
+
+	@Override
+	public void drawContent() {
+		getDocumentCanvas().drawContent();
+	}
+
 	/** The color square at the corner of a {@code ZoomablePane}.
 	 *
 	 * @author $Author: sgalland$
