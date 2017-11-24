@@ -272,7 +272,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	@Pure
 	public void toJson(JsonBuffer buffer) {
 		super.toJson(buffer);
-		buffer.add("roads", Iterables.transform(roadSegments(), (it) -> it.getGeoId())); //$NON-NLS-1$
+		buffer.add("roads", Iterables.transform(roadSegments(), it -> it.getGeoId())); //$NON-NLS-1$
 		buffer.add("validHalts", this.validHalts); //$NON-NLS-1$
 		buffer.add("invalidHalts", this.invalidHalts); //$NON-NLS-1$
 	}

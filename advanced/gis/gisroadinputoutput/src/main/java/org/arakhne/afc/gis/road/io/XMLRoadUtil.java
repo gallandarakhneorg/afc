@@ -228,7 +228,8 @@ public final class XMLRoadUtil {
 		return roadNetwork;
 	}
 
-	/**
+	/** Wrapper of a Road polyline container.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$

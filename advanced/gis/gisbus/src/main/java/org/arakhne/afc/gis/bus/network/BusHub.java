@@ -218,7 +218,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	@Pure
 	public void toJson(JsonBuffer buffer) {
 		super.toJson(buffer);
-		buffer.add("stops", Iterables.transform(this.busStops, (it) -> it.getUUID())); //$NON-NLS-1$
+		buffer.add("stops", Iterables.transform(this.busStops, it -> it.getUUID())); //$NON-NLS-1$
 	}
 
 	/** Replies the name of this hub.
