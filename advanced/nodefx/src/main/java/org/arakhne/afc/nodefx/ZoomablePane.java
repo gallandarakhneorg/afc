@@ -49,11 +49,13 @@ import javafx.css.StyleableObjectProperty;
 import javafx.css.StyleableProperty;
 import javafx.event.EventDispatchChain;
 import javafx.event.EventDispatcher;
+import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.AccessibleRole;
 import javafx.scene.Cursor;
 import javafx.scene.control.Control;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -309,7 +311,7 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 	/** Setup the response based on listeners.
 	 */
 	protected void setupListeners() {
-		getDocumentCanvas().addDrawingListener(new ZoomableCanvas.DrawingListener() {
+		addDrawingListener(new DrawingListener() {
 			private long time;
 
 			@Override
@@ -327,20 +329,14 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 		});
 	}
 
-	/** Setup the response of the pane to mouse events.
+	/** Replies the default event handler that may be used for starting the panning action on the panel.
+	 *
+	 * @return the event handler.
+	 * @since 15.0
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
-	protected void setupMousing() {
-		final ZoomableCanvas<T, DT> canvas = getDocumentCanvas();
-		canvas.setOnMousePressed(e -> {
-			this.pressX = e.getX();
-			this.pressY = e.getY();
-			this.hbarValue = this.hbar.getValue();
-			this.vbarValue = this.vbar.getValue();
-		});
-
-		canvas.setOnDragDetected(e -> {
-			if (isPannable() && e.getButton() == getPanButton()) {
+	public EventHandler<MouseEvent> getDefaultOnDragDetectedEventHandler() {
+		return e -> {
+			if (isPannable() && e.getButton() == getPanButton() && !e.isPopupTrigger()) {
 				this.dragDetected = true;
 				if (this.savedCursor == null) {
 					final ZoomableCanvas<T, DT> canvas0 = getDocumentCanvas();
@@ -352,33 +348,16 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 					requestLayout();
 				}
 			}
-		});
+		};
+	}
 
-		canvas.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
-			if (this.dragDetected) {
-				this.dragDetected = false;
-				final Cursor scurs = this.savedCursor;
-				this.savedCursor = null;
-				if (scurs != null) {
-					getDocumentCanvas().setCursor(scurs);
-					requestLayout();
-				}
-			}
-		});
-
-		canvas.setOnDragDone(event -> {
-			if (this.dragDetected) {
-				this.dragDetected = false;
-				final Cursor scurs = this.savedCursor;
-				this.savedCursor = null;
-				if (scurs != null) {
-					getDocumentCanvas().setCursor(scurs);
-					requestLayout();
-				}
-			}
-		});
-
-		canvas.setOnMouseDragged(e -> {
+	/** Replies the default event handler that may be used for starting the panning action on the panel.
+	 *
+	 * @return the event handler.
+	 * @since 15.0
+	 */
+	public EventHandler<MouseEvent> getDefaultOnMouseDraggedEventHandler() {
+		return e -> {
 			// for mobile-touch we allow drag, even if not pannable
 			if (this.dragDetected || IS_TOUCH_SUPPORTED) {
 				if (!this.dragDetected) {
@@ -423,17 +402,58 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 				// we need to consume drag events, as we don't want the view pane itself to be dragged on every mouse click
 				e.consume();
 			}
+		};
+	}
+
+	/** Setup the response of the pane to mouse events.
+	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
+	protected void setupMousing() {
+		final ZoomableCanvas<T, DT> canvas = getDocumentCanvas();
+		canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+			this.pressX = e.getX();
+			this.pressY = e.getY();
+			this.hbarValue = this.hbar.getValue();
+			this.vbarValue = this.vbar.getValue();
 		});
 
-		setOnScrollStarted(event -> {
+		setOnDragDetected(getDefaultOnDragDetectedEventHandler());
+
+		addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
+			if (this.dragDetected) {
+				this.dragDetected = false;
+				final Cursor scurs = this.savedCursor;
+				this.savedCursor = null;
+				if (scurs != null) {
+					getDocumentCanvas().setCursor(scurs);
+					requestLayout();
+				}
+			}
+		});
+
+		addEventHandler(DragEvent.DRAG_DONE, event -> {
+			if (this.dragDetected) {
+				this.dragDetected = false;
+				final Cursor scurs = this.savedCursor;
+				this.savedCursor = null;
+				if (scurs != null) {
+					getDocumentCanvas().setCursor(scurs);
+					requestLayout();
+				}
+			}
+		});
+
+		addEventHandler(MouseEvent.MOUSE_DRAGGED, getDefaultOnMouseDraggedEventHandler());
+
+		addEventHandler(ScrollEvent.SCROLL_STARTED, event -> {
 			this.scrollDetected = true;
 		});
 
-		setOnScrollFinished(event -> {
+		addEventHandler(ScrollEvent.SCROLL_FINISHED, event -> {
 			this.scrollDetected = false;
 		});
 
-		setOnScroll(event -> {
+		addEventHandler(ScrollEvent.SCROLL, event -> {
 			if (!this.scrollDetected) {
 				event.consume();
 				final double delta;
