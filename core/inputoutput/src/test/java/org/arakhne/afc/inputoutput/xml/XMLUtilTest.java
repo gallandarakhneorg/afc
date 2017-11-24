@@ -59,6 +59,7 @@ import org.arakhne.afc.inputoutput.path.SimplePathBuilder;
 import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.text.TextUtil;
 import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.OperatingSystem;
 
 @SuppressWarnings("all")
 public class XMLUtilTest extends AbstractTestCase {
@@ -846,7 +847,11 @@ public class XMLUtilTest extends AbstractTestCase {
 
 		URL url = XMLUtil.readResourceURL((Element) doc.getFirstChild(), res, "a", "b", "c", "res"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-		assertEquals(new URL("file:/path/to/file.txt"), url); //$NON-NLS-1$
+		if (OperatingSystem.WIN.isCurrentOS()) {
+			assertEquals("file:/" + FileSystem.getUserHomeDirectoryName().replaceAll("\\\\", "/") + "//path/to/file.txt", url.toExternalForm()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		} else {
+			assertEquals("file:/path/to/file.txt", url.toExternalForm()); //$NON-NLS-1$
+		}
 
 		assertNull(XMLUtil.readResourceURL((Element) doc.getFirstChild(), res, "a", "b", "c", "res2")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
