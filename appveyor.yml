@@ -20,7 +20,7 @@ install:
   - cmd: java -version
 
 build_script:
-  - mvn -B clean install -Dcheckstyle.skip=true
+  - mvn -B clean install
 
 cache:
   - C:\maven\ -> appveyor.yml

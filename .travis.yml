@@ -8,12 +8,20 @@ matrix:
   include:
     - os: linux
       jdk: oraclejdk8
+      addons:
+        apt:
+          packages:
+          - xvfb
+      env:
+      - M2_HOME: "$HOME/.binaries/apache-maven-3.5.2"
+      - PATH: "$M2_HOME/bin:$PATH"
+      - DISPLAY: ":99.0"
       before_install:
-      - ./build-tools/src/main/resources/bash/travis-download-maven.sh
-      - export M2_HOME=$HOME/.binaries/apache-maven-3.5.2
-      - export PATH=$M2_HOME/bin:$PATH
-      - mvn -Xmx32m --version
       - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx1g\"" > $HOME/.mavenrc
+      - ./build-tools/src/main/resources/bash/travis-download-maven.sh
+      - mvn -Xmx32m --version
+      - "sh -e /etc/init.d/xvfb start"
+      - sleep 3 # give xvfb some time to start
     - os: osx
       osx_image: xcode8.3 # see https://docs.travis-ci.com/user/osx-ci-environment/
       before_install:
@@ -21,7 +29,7 @@ matrix:
       - export M2_HOME=$HOME/.binaries/apache-maven-3.5.2
       - export PATH=$M2_HOME/bin:$PATH
       - mvn -Xmx32m --version
-      - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx1g -Dmaven.test.skip=true -Dcheckstyle.skip=true\"" > $HOME/.mavenrc
+      - echo "MAVEN_OPTS=\"$MAVEN_OPTS -XX:+CMSClassUnloadingEnabled -Xmx1g\"" > $HOME/.mavenrc
 
 install: true
 
