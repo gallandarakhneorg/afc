@@ -26,7 +26,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.vmutil.locale.Locale;
 
-/** This class defines the supported map metric projections in the SeTGIS
+/** This class defines the supported map metric projections in the GIS
  * API.
  *
  * <p>A map metric projection is any method of representing the surface of a

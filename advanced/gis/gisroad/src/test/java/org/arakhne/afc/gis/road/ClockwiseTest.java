@@ -45,7 +45,7 @@ import org.arakhne.afc.gis.road.primitive.RoadConnection.ClockwiseBoundType;
 /** Unit test dedicated to
  * [counter] clockwise iterators on road segments..
  * <p>
- * This unit test is related to bug {@jira SETGIS-4}.
+ * This unit test is related to bug {@jira GIS-4}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

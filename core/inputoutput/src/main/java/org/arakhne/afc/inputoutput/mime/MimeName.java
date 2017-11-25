@@ -291,14 +291,14 @@ public enum MimeName {
 	MIME_DBASE_FILE("application/x-dbf"), //$NON-NLS-1$
 
 	/**
-	 * MIME type for SeTGIS project (gip).
+	 * MIME type for GIS project (gip).
 	 */
-	MIME_SETGIS_PROJECT("application/x-setgis-project"), //$NON-NLS-1$
+	MIME_GIS_PROJECT("application/x-GIS-project"), //$NON-NLS-1$
 
 	/**
-	 * MIME type for Compressed SeTGIS project (giz).
+	 * MIME type for Compressed GIS project (giz).
 	 */
-	MIME_SETGIS_PROJECT_ZIP("application/x-setgis-zipped-project"), //$NON-NLS-1$
+	MIME_GIS_PROJECT_ZIP("application/x-GIS-zipped-project"), //$NON-NLS-1$
 
 	/**
 	 * MIME type for SeT Framework project (fwj).

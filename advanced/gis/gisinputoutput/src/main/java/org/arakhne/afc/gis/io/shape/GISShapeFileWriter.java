@@ -332,7 +332,7 @@ public class GISShapeFileWriter extends AbstractShapeFileWriter<MapElement> {
 	}
 
 	/**
-	 * Replies the type of map element which is corresponding to the given SeTGIS class.
+	 * Replies the type of map element which is corresponding to the given GIS class.
 	 *
 	 * @param type the type of element.
 	 * @return the type of map element.

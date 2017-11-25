@@ -673,7 +673,7 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 	 * Replies the type of map element replied by this reader.
 	 *
 	 * <p>This function retrieve the element type from the header with
-	 * {@link #getShapeElementType()} and matches it to the SeTGIS API
+	 * {@link #getShapeElementType()} and matches it to the GIS API
 	 * with {@link #fromESRI(ShapeElementType)}.
 	 *
 	 * @return the type of map element; or <code>null</code> if unsupported.
@@ -696,7 +696,7 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 	 * Replies the type of map element replied by this reader.
 	 *
 	 * <p>This function retrieve the element type from the header with
-	 * {@link #getShapeElementType()} and matches it to the SeTGIS API
+	 * {@link #getShapeElementType()} and matches it to the GIS API
 	 * with {@link #fromESRI(ShapeElementType)}.
 	 *
 	 * @param type the type of map element; or <code>null</code> to use the type within the shape file header.
