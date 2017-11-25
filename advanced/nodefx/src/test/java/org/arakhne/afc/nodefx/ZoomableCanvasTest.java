@@ -21,7 +21,7 @@
 package org.arakhne.afc.nodefx;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.spy;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -31,12 +31,15 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.nodefx.tests.MyDoc;
 import org.arakhne.afc.testtools.AbstractTestCase;
+import org.arakhne.afc.testtools.jfx.JfxRunner;
+import org.arakhne.afc.testtools.jfx.TestInJfxThread;
 import org.arakhne.afc.util.InformedIterable;
 
 /**
@@ -47,6 +50,7 @@ import org.arakhne.afc.util.InformedIterable;
  * @since 15.0
  */
 @SuppressWarnings("all")
+@RunWith(JfxRunner.class)
 public class ZoomableCanvasTest extends AbstractTestCase {
 
 	private MyDoc model;
@@ -57,10 +61,8 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 
 	@Before
 	public void setUp() {
-		this.model = mock(MyDoc.class);
 		this.bounds = new Rectangle2d(1, 2, 3, 4);
-		when(this.model.getBoundingBox()).thenReturn(this.bounds);
-		when(this.model.getElementType()).thenReturn(Integer.class);
+		this.model = spy(new MyDoc(this.bounds));
 		this.canvas = new ZoomableCanvas(this.model);
 		this.canvas.setWidth(100);
 		this.canvas.setHeight(100);
@@ -74,18 +76,21 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 	
 	@Test
+	@TestInJfxThread
 	public void documentModelProperty() {
 		ObjectProperty prop = this.canvas.documentModelProperty();
 		assertSame(this.model, prop.get());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getDocumentModel() {
 		Object prop = this.canvas.getDocumentModel();
 		assertSame(this.model, prop);
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setDocumentModel() {
 		InformedIterable model2 = mock(InformedIterable.class);
 		this.canvas.setDocumentModel(model2);
@@ -94,18 +99,21 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void documentDrawerProperty() {
 		ObjectProperty prop = this.canvas.documentDrawerProperty();
 		assertNotNull(prop.get());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getDocumentDrawer() {
 		DocumentDrawer prop = this.canvas.getDocumentDrawer();
 		assertNotNull(prop);
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setDocumentDrawer() {
 		DocumentDrawer drawer = mock(DocumentDrawer.class);
 		this.canvas.setDocumentDrawer(drawer);
@@ -114,29 +122,34 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void documentBoundsProperty() {
 		ReadOnlyObjectProperty prop = this.canvas.documentBoundsProperty();
 		assertSame(this.bounds, prop.get());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getDocumentBounds() {
 		Rectangle2afp prop = this.canvas.getDocumentBounds();
 		assertSame(this.bounds, prop);
 	}
 
 	@Test
+	@TestInJfxThread
 	public void scaleValueProperty() {
 		DoubleProperty prop = this.canvas.scaleValueProperty();
 		assertEpsilonEquals(1, prop.get());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getScaleValue() {
 		assertEpsilonEquals(1, this.canvas.getScaleValue());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setScaleValue() {
 		assertEpsilonEquals(1, this.canvas.getScaleValue());
 		this.canvas.setScaleValue(2);
@@ -144,6 +157,7 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setScaleValueDoubleDoubleDouble() {
 		assertEpsilonEquals(1, this.canvas.getScaleValue());
 		this.canvas.setScaleValue(2, 3, 4);
@@ -153,74 +167,87 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void minScaleValueProperty() {
 		DoubleProperty prop = this.canvas.minScaleValueProperty();
 		assertEpsilonEquals(ZoomableViewer.MINIMUM_SCALE_VALUE, prop.get());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getMinScaleValue() {
 		assertEpsilonEquals(ZoomableViewer.MINIMUM_SCALE_VALUE, this.canvas.getMinScaleValue());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setMinScaleValue() {
 		this.canvas.setMinScaleValue(0.000001);
 		assertEpsilonEquals(0.000001, this.canvas.getMinScaleValue());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void maxScaleValueProperty() {
 		DoubleProperty prop = this.canvas.maxScaleValueProperty();
 		assertEpsilonEquals(ZoomableViewer.MAXIMUM_SCALE_VALUE, prop.get());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getMaxScaleValue() {
 		assertEpsilonEquals(ZoomableViewer.MAXIMUM_SCALE_VALUE, this.canvas.getMaxScaleValue());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setMaxScaleValue() {
 		this.canvas.setMaxScaleValue(100000);
 		assertEpsilonEquals(100000, this.canvas.getMaxScaleValue());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void viewportCenterXProperty() {
 		DoubleProperty prop = this.canvas.viewportCenterXProperty();
 		assertEpsilonEquals(this.bounds.getCenterX(), prop.get());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getViewportCenterX() {
 		assertEpsilonEquals(this.bounds.getCenterX(), this.canvas.getViewportCenterX());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setViewportCenterX() {
 		this.canvas.setViewportCenterX(1234);
 		assertEpsilonEquals(1234, this.canvas.getViewportCenterX());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void viewportCenterYProperty() {
 		DoubleProperty prop = this.canvas.viewportCenterYProperty();
 		assertEpsilonEquals(this.bounds.getCenterY(), prop.get());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getViewportCenterY() {
 		assertEpsilonEquals(this.bounds.getCenterY(), this.canvas.getViewportCenterY());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setViewportCenterY() {
 		this.canvas.setViewportCenterY(1234);
 		assertEpsilonEquals(1234, this.canvas.getViewportCenterY());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setViewportCenter() {
 		this.canvas.setViewportCenter(1234, 5678);
 		assertEpsilonEquals(1234, this.canvas.getViewportCenterX());
@@ -228,6 +255,7 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void viewportBoundsProperty() {
 		ReadOnlyObjectProperty<Rectangle2afp<?, ?, ?, ?, ?, ?>> prop = this.canvas.viewportBoundsProperty();
 		Rectangle2afp bounds = prop.get();
@@ -238,6 +266,7 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getViewportBounds() {
 		Rectangle2afp bounds = this.canvas.getViewportBounds();
 		assertEpsilonEquals(this.bounds.getCenterX() - 50, bounds.getMinX());
@@ -247,89 +276,105 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void scaleChangeProperty() {
 		DoubleProperty prop = this.canvas.scaleChangeProperty();
 		assertEpsilonEquals(ZoomableViewer.DEFAULT_SCALE_CHANGE, prop.get());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getScaleChange() {
 		assertEpsilonEquals(ZoomableViewer.DEFAULT_SCALE_CHANGE, this.canvas.getScaleChange());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setScaleChange() {
 		this.canvas.setScaleChange(1234.567);
 		assertEpsilonEquals(1234.567, this.canvas.getScaleChange());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void invertedAxisXProperty() {
 		BooleanProperty prop = this.canvas.invertedAxisXProperty();
 		assertFalse(prop.get());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void isInvertedAxisX() {
 		assertFalse(this.canvas.isInvertedAxisX());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setInvertedAxisX() {
 		this.canvas.setInvertedAxisX(true);
 		assertTrue(this.canvas.isInvertedAxisX());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void invertedAxisYProperty() {
 		BooleanProperty prop = this.canvas.invertedAxisYProperty();
 		assertFalse(prop.get());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void isInvertedAxisY() {
 		assertFalse(this.canvas.isInvertedAxisY());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setInvertedAxisY() {
 		this.canvas.setInvertedAxisY(true);
 		assertTrue(this.canvas.isInvertedAxisY());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void drawableElementBudgetProperty() {
 		IntegerProperty prop = this.canvas.drawableElementBudgetProperty();
 		assertEquals(ZoomableViewer.DEFAULT_DRAWABLE_ELEMENT_BUDGET, prop.get());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getDrawableElementBudget() {
 		assertEquals(ZoomableViewer.DEFAULT_DRAWABLE_ELEMENT_BUDGET, this.canvas.getDrawableElementBudget());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void setDrawableElementBudget() {
 		this.canvas.setDrawableElementBudget(1234);
 		assertEquals(1234, this.canvas.getDrawableElementBudget());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getScaleValueToFit_true() {
 		assertEpsilonEquals(1, this.canvas.getScaleValueToFit(true));
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getScaleValueToFit_false() {
 		assertEpsilonEquals(25, this.canvas.getScaleValueToFit(false));
 	}
 
 	@Test
+	@TestInJfxThread
 	public void getScaleValueToFit() {
 		assertEpsilonEquals(25, this.canvas.getScaleValueToFit());
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toDocumentPositionX() {
 		//Document: Rectangle2d(1, 2, 3, 4)
 		//Canvas: Rectangle2d(0, 0, 100, 100)
@@ -339,6 +384,7 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toDocumentPositionY() {
 		//Document: Rectangle2d(1, 2, 3, 4)
 		//Canvas: Rectangle2d(0, 0, 100, 100)
@@ -348,11 +394,14 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toDocumentSize() {
 		this.canvas.setScaleValue(1.23);
 		assertEpsilonEquals(8.1301, this.canvas.toDocumentSize(10));
 	}
+
 	@Test
+	@TestInJfxThread
 	public void toDocumentPositionPoint2D() {
 		//Document: Rectangle2d(1, 2, 3, 4)
 		//Canvas: Rectangle2d(0, 0, 100, 100)
@@ -363,6 +412,7 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toDocumentPositionDoubleDouble() {
 		//Document: Rectangle2d(1, 2, 3, 4)
 		//Canvas: Rectangle2d(0, 0, 100, 100)
@@ -373,6 +423,7 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toDocumentRectRectangle2afp() {
 		//Document: Rectangle2d(1, 2, 3, 4)
 		//Canvas: Rectangle2d(0, 0, 100, 100)
@@ -385,6 +436,7 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toDocumentRectDoubleDoubleDoubleDouble() {
 		//Document: Rectangle2d(1, 2, 3, 4)
 		//Canvas: Rectangle2d(0, 0, 100, 100)
@@ -397,6 +449,7 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toScreenPositionX() {
 		//Document: Rectangle2d(1, 2, 3, 4)
 		//Canvas: Rectangle2d(0, 0, 100, 100)
@@ -406,6 +459,7 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toScreenPositionY() {
 		//Document: Rectangle2d(1, 2, 3, 4)
 		//Canvas: Rectangle2d(0, 0, 100, 100)
@@ -415,12 +469,14 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toScreenSize() {
 		this.canvas.setScaleValue(1.23);
 		assertEpsilonEquals(12.3, this.canvas.toScreenSize(10));
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toScreenPositionPoint2D() {
 		//Document: Rectangle2d(1, 2, 3, 4)
 		//Canvas: Rectangle2d(0, 0, 100, 100)
@@ -431,6 +487,7 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toScreenPositionDoubleDouble() {
 		//Document: Rectangle2d(1, 2, 3, 4)
 		//Canvas: Rectangle2d(0, 0, 100, 100)
@@ -441,6 +498,7 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toScreenRectRectangle2afp() {
 		//Document: Rectangle2d(1, 2, 3, 4)
 		//Canvas: Rectangle2d(0, 0, 100, 100)
@@ -453,6 +511,7 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	}
 
 	@Test
+	@TestInJfxThread
 	public void toScreenRectDoubleDoubleDoubleDouble() {
 		//Document: Rectangle2d(1, 2, 3, 4)
 		//Canvas: Rectangle2d(0, 0, 100, 100)

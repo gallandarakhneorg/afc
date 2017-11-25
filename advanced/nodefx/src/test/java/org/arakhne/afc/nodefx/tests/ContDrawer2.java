@@ -32,16 +32,16 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @since 15.0
  */
 @SuppressWarnings("all")
-public class ContDrawer2 implements DocumentDrawer<Number, MyDoc<Number>> {
+public class ContDrawer2 implements DocumentDrawer<Double, MyDoc> {
 
 	@Override
-	public void draw(ZoomableGraphicsContext gc, MyDoc<Number> element) {
-		throw new UnsupportedOperationException();
+	public void draw(ZoomableGraphicsContext gc, MyDoc element) {
+		//
 	}
 
 	@Override
-	public Class<? extends MyDoc<Number>> getElementType() {
-		return (Class<? extends MyDoc<Number>>) MyDoc.class;
+	public Class<? extends MyDoc> getElementType() {
+		return MyDoc.class;
 	}
 
 	@Override
@@ -50,12 +50,12 @@ public class ContDrawer2 implements DocumentDrawer<Number, MyDoc<Number>> {
 	}
 
 	@Override
-	public Class<? extends Number> getContainedElementType() {
-		return Integer.class;
+	public Class<? extends Double> getContainedElementType() {
+		return Double.class;
 	}
 
 	@Override
-	public boolean isDrawable(ZoomableGraphicsContext gc, Number mapelement) {
+	public boolean isDrawable(ZoomableGraphicsContext gc, Double mapelement) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -115,7 +115,7 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 				widthProperty().removeListener(li);
 				heightProperty().removeListener(li);
 			}
-			this.renderingEnable.set(true);
+			setRenderingEnable(true);
 			drawContent();
 		}
 	};
@@ -276,10 +276,35 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 
 	}
 
+	/** Replies the rendering state of the canvas.
+	 *
+	 * <p>If the replied value is evaluated to {@code true}, the {@link #drawContent()}
+	 * function does nothing.
+	 *
+	 * @return {@code true} if the drawing function is active; {@code false} if it is inactive.
+	 * @since 15.0
+	 */
+	public boolean isRenderingEnable() {
+		return this.renderingEnable.get();
+	}
+
+	/** Change the rendering state of the canvas.
+	 *
+	 * <p>If the replied value is evaluated to {@code true}, the {@link #drawContent()}
+	 * function does nothing.
+	 *
+	 * @param newState {@code true} if the drawing function is active; {@code false} if it is inactive.
+	 * @return the value of the state before the change.
+	 * @since 15.0
+	 */
+	protected boolean setRenderingEnable(boolean newState) {
+		return this.renderingEnable.getAndSet(newState);
+	}
+
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:nestedifdepth"})
 	@Override
 	public final void drawContent() {
-		final boolean old = this.renderingEnable.getAndSet(false);
+		final boolean old = setRenderingEnable(false);
 		if (old) {
 			if (this.refresher == null) {
 				if (this.drawRunAfterChain == null) {
@@ -324,7 +349,7 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 						},
 						() -> {
 							fireDrawingEnd();
-							this.renderingEnable.set(old);
+							setRenderingEnable(old);
 						});
 				}
 				this.refresher = this.drawRunAfterChain;
@@ -338,7 +363,7 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 					}
 				});
 			} else {
-				this.renderingEnable.set(true);
+				setRenderingEnable(true);
 			}
 		}
 	}
@@ -369,8 +394,13 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 	@Override
 	public ObjectProperty<DocumentDrawer<T, DT>> documentDrawerProperty() {
 		if (this.drawer == null) {
-			final DocumentDrawer<T, DT> defaultDrawer = Drawers.getDocumentDrawerFor(
-					getDocumentModel().getElementType());
+			final Class<?> type = getDocumentModel().getElementType();
+			final DocumentDrawer<T, DT> defaultDrawer;
+			if (type != null) {
+				defaultDrawer = Drawers.getDocumentDrawerFor(type);
+			} else {
+				defaultDrawer = null;
+			}
 			this.drawer = new SimpleObjectProperty<DocumentDrawer<T, DT>>(this, DOCUMENT_DRAWER_PROPERTY, defaultDrawer) {
 				@Override
 				protected void invalidated() {
@@ -447,11 +477,11 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 
 	@Override
 	public final void setScaleValue(double scaleValue, double centerX, double centerY) {
-		final boolean old = this.renderingEnable.getAndSet(false);
+		final boolean old = setRenderingEnable(false);
 		setScaleValue(scaleValue);
 		setViewportCenterX(centerX);
 		setViewportCenterY(centerY);
-		this.renderingEnable.set(old);
+		setRenderingEnable(old);
 		drawContent();
 	}
 
@@ -560,10 +590,10 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 
 	@Override
 	public final void setViewportCenter(double x, double y) {
-		final boolean old = this.renderingEnable.getAndSet(false);
+		final boolean old = setRenderingEnable(false);
 		setViewportCenterX(x);
 		setViewportCenterY(y);
-		this.renderingEnable.set(old);
+		setRenderingEnable(old);
 		drawContent();
 	}
 

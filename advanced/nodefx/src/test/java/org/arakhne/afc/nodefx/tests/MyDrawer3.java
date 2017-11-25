@@ -35,7 +35,7 @@ public class MyDrawer3 implements Drawer<Number> {
 
 	@Override
 	public void draw(ZoomableGraphicsContext gc, Number element) {
-		throw new UnsupportedOperationException();
+		//
 	}
 
 	@Override

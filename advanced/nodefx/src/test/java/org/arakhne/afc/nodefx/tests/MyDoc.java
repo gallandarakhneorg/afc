@@ -34,21 +34,27 @@ import org.arakhne.afc.util.InformedIterable;
  * @since 15.0
  */
 @SuppressWarnings("all")
-public class MyDoc<T> implements InformedIterable<T>, BoundedElement2afp<Rectangle2d> {
+public class MyDoc implements InformedIterable<Number>, BoundedElement2afp<Rectangle2d> {
+
+	private Rectangle2d bounds;
+
+	public MyDoc(Rectangle2d bounds) {
+		this.bounds = bounds;
+	}
 
 	@Override
-	public Iterator<T> iterator() {
+	public Iterator<Number> iterator() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Rectangle2d getBoundingBox() {
-		throw new UnsupportedOperationException();
+		return this.bounds;
 	}
 
 	@Override
-	public Class<? extends T> getElementType() {
-		throw new UnsupportedOperationException();
+	public Class<? extends Integer> getElementType() {
+		return Integer.class;
 	}
 
 }

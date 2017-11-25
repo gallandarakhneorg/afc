@@ -32,30 +32,30 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @since 15.0
  */
 @SuppressWarnings("all")
-public class ContDrawer1 implements DocumentDrawer<String, MyDoc<String>> {
+public class ContDrawer1 implements DocumentDrawer<Integer, MyDoc> {
 
 	@Override
-	public void draw(ZoomableGraphicsContext gc, MyDoc<String> element) {
+	public void draw(ZoomableGraphicsContext gc, MyDoc element) {
+		//
+	}
+
+	@Override
+	public Class<? extends MyDoc> getElementType() {
+		return MyDoc.class;
+	}
+
+	@Override
+	public Drawer<? super Integer> getElementDrawer() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public Class<? extends MyDoc<String>> getElementType() {
-		return (Class<? extends MyDoc<String>>) MyDoc.class;
+	public Class<? extends Integer> getContainedElementType() {
+		return Integer.class;
 	}
 
 	@Override
-	public Drawer<? super String> getElementDrawer() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Class<? extends String> getContainedElementType() {
-		return String.class;
-	}
-
-	@Override
-	public boolean isDrawable(ZoomableGraphicsContext gc, String mapelement) {
+	public boolean isDrawable(ZoomableGraphicsContext gc, Integer mapelement) {
 		throw new UnsupportedOperationException();
 	}
 

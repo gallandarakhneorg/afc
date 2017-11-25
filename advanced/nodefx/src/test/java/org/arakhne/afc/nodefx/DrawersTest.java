@@ -32,7 +32,6 @@ import org.junit.Test;
 
 import org.arakhne.afc.nodefx.tests.ContDrawer1;
 import org.arakhne.afc.nodefx.tests.ContDrawer2;
-import org.arakhne.afc.nodefx.tests.MyDoc;
 import org.arakhne.afc.nodefx.tests.MyDrawer1;
 import org.arakhne.afc.nodefx.tests.MyDrawer2;
 import org.arakhne.afc.nodefx.tests.MyDrawer3;
@@ -107,21 +106,21 @@ public class DrawersTest {
 
 	@Test
 	public void getDrawerFor_04() {
-		Drawer<? extends Number> d1 = Drawers.getDrawerFor(Number.class);
+		Drawer d1 = Drawers.getDrawerFor(Number.class);
 		assertNotNull(d1);
 		assertTrue(d1 instanceof MyDrawer2);
 	}
 
 	@Test
 	public void getDocumentDrawerFor_01() {
-		DocumentDrawer<String, MyDoc<String>> d1 = Drawers.getDocumentDrawerFor(String.class);
+		DocumentDrawer d1 = Drawers.getDocumentDrawerFor(Integer.class);
 		assertNotNull(d1);
 		assertTrue(d1 instanceof ContDrawer1);
 	}
 
 	@Test
 	public void getDocumentDrawerFor_02() {
-		DocumentDrawer d1 = Drawers.getDocumentDrawerFor(Integer.class);
+		DocumentDrawer d1 = Drawers.getDocumentDrawerFor(Double.class);
 		assertNotNull(d1);
 		assertTrue(d1 instanceof ContDrawer2);
 	}
