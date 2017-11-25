@@ -66,9 +66,9 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
  */
 public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 
-	private final Class<? extends MapElement> elementType;
-
 	private final URL dbaseURL;
+
+	private Class<? extends MapElement> elementType;
 
 	private MapMetricProjection mapProjection = MapMetricProjection.getDefault();
 
@@ -681,12 +681,29 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 	 */
 	@Pure
 	public Class<? extends MapElement> getMapElementType() {
+		if (this.elementType != null) {
+			return this.elementType;
+		}
 		try {
 			return fromESRI(getShapeElementType());
 		} catch (IllegalArgumentException exception) {
 			//
 		}
 		return null;
+	}
+
+	/**
+	 * Replies the type of map element replied by this reader.
+	 *
+	 * <p>This function retrieve the element type from the header with
+	 * {@link #getShapeElementType()} and matches it to the SeTGIS API
+	 * with {@link #fromESRI(ShapeElementType)}.
+	 *
+	 * @param type the type of map element; or <code>null</code> to use the type within the shape file header.
+	 * @since 15.0
+	 */
+	public void setMapElementType(Class<? extends MapElement> type) {
+		this.elementType = type;
 	}
 
 	/** Extract the UUID from the attributes.
@@ -734,12 +751,13 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 	private <TT extends MapElement> TT createObjectInstance(UUID id,
 			AttributeCollection provider, Class<TT> type) {
 		MapElement elt = null;
-		if (this.elementType != null) {
-			if (!type.isAssignableFrom(this.elementType)) {
+		final Class<? extends MapElement> elementType = getMapElementType();
+		if (elementType != null) {
+			if (!type.isAssignableFrom(elementType)) {
 				throw new RuntimeException("unable to create an instance of " + type.getName()); //$NON-NLS-1$
 			}
 			try {
-				final Constructor<? extends MapElement> cons = this.elementType.getConstructor(UUID.class,
+				final Constructor<? extends MapElement> cons = elementType.getConstructor(UUID.class,
 						AttributeCollection.class);
 				elt = cons.newInstance(id, provider);
 			} catch (Throwable exception) {
@@ -747,7 +765,7 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 			}
 			if (elt == null) {
 				try {
-					final Constructor<? extends MapElement> cons = this.elementType.getConstructor(AttributeCollection.class);
+					final Constructor<? extends MapElement> cons = elementType.getConstructor(AttributeCollection.class);
 					elt = cons.newInstance(provider);
 				} catch (Throwable exception) {
 					//
@@ -755,7 +773,7 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 			}
 			if (elt == null) {
 				try {
-					final Constructor<? extends MapElement> cons = this.elementType.getConstructor(UUID.class);
+					final Constructor<? extends MapElement> cons = elementType.getConstructor(UUID.class);
 					elt = cons.newInstance(id);
 				} catch (Throwable exception) {
 					//
@@ -763,7 +781,7 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 			}
 			if (elt == null) {
 				try {
-					elt = this.elementType.newInstance();
+					elt = elementType.newInstance();
 				} catch (Throwable exception) {
 					//
 				}

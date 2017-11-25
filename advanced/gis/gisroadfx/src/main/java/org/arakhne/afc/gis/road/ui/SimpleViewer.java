@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.Iterator;
 
 import javafx.application.Application;
@@ -37,7 +38,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
+import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapElement;
+import org.arakhne.afc.gis.maplayer.MapElementLayer;
+import org.arakhne.afc.gis.maplayer.TreeMapElementLayer;
 import org.arakhne.afc.gis.primitive.FlagContainer;
 import org.arakhne.afc.gis.road.RoadPolyline;
 import org.arakhne.afc.gis.road.StandardRoadNetwork;
@@ -45,11 +49,13 @@ import org.arakhne.afc.gis.road.layer.RoadNetworkLayer;
 import org.arakhne.afc.gis.road.primitive.RoadNetworkException;
 import org.arakhne.afc.gis.ui.GisPane;
 import org.arakhne.afc.io.shape.ESRIBounds;
+import org.arakhne.afc.io.shape.ShapeElementType;
 import org.arakhne.afc.io.shape.ShapeFileFilter;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.text.TextUtil;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * Application for viewing GIS primitives.
@@ -62,14 +68,15 @@ import org.arakhne.afc.vmutil.json.JsonBuffer;
  */
 public class SimpleViewer extends Application {
 
-	private volatile RoadPolyline selectedRoad;
+	private volatile MapElement selectedRoad;
 
-	private static StandardRoadNetwork loadNetwork(File file) {
+	private static GISElementContainer<?> loadShapeFile(File file) {
 		try {
-			final StandardRoadNetwork network;
+			StandardRoadNetwork network = null;
+			MapElementLayer<MapElement> layer = null;
 			try (InputStream is = new FileInputStream(file)) {
 				assert is != null;
-				try (GISShapeFileReader reader = new GISShapeFileReader(is, RoadPolyline.class)) {
+				try (GISShapeFileReader reader = new GISShapeFileReader(is)) {
 					final Rectangle2d worldRect = new Rectangle2d();
 					final ESRIBounds esriBounds = reader.getBoundsFromHeader();
 					worldRect.setFromCorners(
@@ -78,14 +85,29 @@ public class SimpleViewer extends Application {
 							esriBounds.getMaxX(),
 							esriBounds.getMaxY());
 
-					network = new StandardRoadNetwork(worldRect);
+					if (reader.getShapeElementType() == ShapeElementType.POLYLINE) {
+						reader.setMapElementType(RoadPolyline.class);
+					}
+
 					MapElement element;
 
 					while ((element = reader.read()) != null) {
 						if (element instanceof RoadPolyline) {
+							if (network == null) {
+								network = new StandardRoadNetwork(worldRect);
+							}
 							final RoadPolyline sgmt = (RoadPolyline) element;
 							try {
 								network.addRoadSegment(sgmt);
+							} catch (RoadNetworkException e) {
+								throw new RuntimeException(e);
+							}
+						} else {
+							if (layer == null) {
+								layer = new TreeMapElementLayer<>(worldRect);
+							}
+							try {
+								layer.addMapElement(element);
 							} catch (RoadNetworkException e) {
 								throw new RuntimeException(e);
 							}
@@ -93,61 +115,66 @@ public class SimpleViewer extends Application {
 					}
 				}
 			}
-			return network;
+			if (network != null) {
+				final RoadNetworkLayer networkLayer = new RoadNetworkLayer(network);
+				return networkLayer;
+			}
+			return layer;
 		} catch (IOException exception) {
 			throw new IOError(exception);
 		}
 	}
 
 	@Override
-	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:regexp"})
+	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:regexp", "rawtypes", "unchecked"})
 	public void start(Stage primaryStage) {
 		final FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Shape File"); //$NON-NLS-1$
-		fileChooser.setSelectedExtensionFilter(new ShapeFileFilter().toJavaFX());
+		fileChooser.setTitle(Locale.getString(SimpleViewer.class, "OPEN_WINDOW_TITLE")); //$NON-NLS-1$
+		fileChooser.getExtensionFilters().add(new ShapeFileFilter().toJavaFX());
 		final File shapeFile = fileChooser.showOpenDialog(primaryStage);
 		if (shapeFile != null) {
-			final StandardRoadNetwork network = loadNetwork(shapeFile);
-			final RoadNetworkLayer networkLayer = new RoadNetworkLayer(network);
+			final GISElementContainer loadedResource = loadShapeFile(shapeFile);
 
 			final BorderPane root = new BorderPane();
 
 			final Label messageBar = new Label(""); //$NON-NLS-1$
 			messageBar.setTextAlignment(TextAlignment.CENTER);
 
-			final GisPane<RoadPolyline> scrollPane = new GisPane<>(networkLayer);
+			final GisPane<MapElement> scrollPane = new GisPane(loadedResource);
+
+			final String mouseLocationPattern = Locale.getString(SimpleViewer.class, "MOUSE_POSITION"); //$NON-NLS-1$
 
 			scrollPane.setOnMouseMoved(event -> {
 				final Point2d mousePosition = scrollPane.toDocumentPosition(event.getX(), event.getY());
-				messageBar.setText("(" + TextUtil.formatDouble(event.getX(), 4) //$NON-NLS-1$
-					+ "; " + TextUtil.formatDouble(event.getY(), 4) //$NON-NLS-1$
-					+ ") / (" + TextUtil.formatDouble(mousePosition.getX(), 4) //$NON-NLS-1$
-					+ "; " + TextUtil.formatDouble(mousePosition.getY(), 4) //$NON-NLS-1$
-					+ ")"); //$NON-NLS-1$
+				messageBar.setText(MessageFormat.format(mouseLocationPattern,
+						TextUtil.formatDouble(event.getX(), 1),
+						TextUtil.formatDouble(event.getY(), 1),
+						TextUtil.formatDouble(mousePosition.getX(), 4),
+						TextUtil.formatDouble(mousePosition.getY(), 4)));
 			});
 
 			scrollPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
 				final Point2d mousePosition = scrollPane.toDocumentPosition(event.getX(), event.getY());
-				messageBar.setText("(" + TextUtil.formatDouble(event.getX(), 4) //$NON-NLS-1$
-					+ "; " + TextUtil.formatDouble(event.getY(), 4) //$NON-NLS-1$
-					+ ") / (" + TextUtil.formatDouble(mousePosition.getX(), 4) //$NON-NLS-1$
-					+ "; " + TextUtil.formatDouble(mousePosition.getY(), 4) //$NON-NLS-1$
-					+ ")"); //$NON-NLS-1$
+				messageBar.setText(MessageFormat.format(mouseLocationPattern,
+						TextUtil.formatDouble(event.getX(), 1),
+						TextUtil.formatDouble(event.getY(), 1),
+						TextUtil.formatDouble(mousePosition.getX(), 4),
+						TextUtil.formatDouble(mousePosition.getY(), 4)));
 			});
 
 			scrollPane.setOnMouseClicked(event -> {
-				final RoadPolyline select1 = this.selectedRoad;
+				final MapElement select1 = this.selectedRoad;
 				this.selectedRoad = null;
 				if (select1 != null) {
 					select1.unsetFlag(FlagContainer.FLAG_SELECTED);
 				}
 				final Point2d mousePosition = scrollPane.toDocumentPosition(event.getX(), event.getY());
 				final Rectangle2d selectionArea = scrollPane.toDocumentRect(event.getX() - 2, event.getY() - 2, 5, 5);
-				final Iterator<RoadPolyline> iterator = scrollPane.getDocumentModel().iterator(selectionArea);
+				final Iterator<? extends MapElement> iterator = scrollPane.getDocumentModel().iterator(selectionArea);
 				double dist = Double.MAX_VALUE;
-				RoadPolyline select2 = null;
+				MapElement select2 = null;
 				while (iterator.hasNext()) {
-					final RoadPolyline road = iterator.next();
+					final MapElement road = iterator.next();
 					final double distance = Math.abs(road.getDistance(mousePosition));
 					if (distance < dist) {
 						dist = distance;
@@ -171,7 +198,7 @@ public class SimpleViewer extends Application {
 			final Scene scene = new Scene(root, 1024, 768);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm()); //$NON-NLS-1$
 
-			primaryStage.setTitle("Road Network Viewer"); //$NON-NLS-1$
+			primaryStage.setTitle(Locale.getString(SimpleViewer.class, "WINDOW_TITLE", shapeFile.getName())); //$NON-NLS-1$
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} else {

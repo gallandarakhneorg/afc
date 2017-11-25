@@ -107,7 +107,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 */
 	protected double maxm;
 
-	/** Is the type of element storead inside the shape file.
+	/** Is the type of element stored inside the shape file.
 	 */
 	protected ShapeElementType expectedShapeType;
 
@@ -211,7 +211,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 		return this.fileSize;
 	}
 
-	/** Replies the type of the elements storead in the file.
+	/** Replies the type of the elements stored in the file.
 	 *
 	 * <p>This type of element is extracted from header.
 	 *
