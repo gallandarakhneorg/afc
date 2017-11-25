@@ -50,6 +50,8 @@ import org.arakhne.afc.inputoutput.xml.XMLBuilder;
 import org.arakhne.afc.inputoutput.xml.XMLResources;
 import org.arakhne.afc.inputoutput.xml.XMLUtil;
 import org.arakhne.afc.testtools.AbstractTestCase;
+import org.arakhne.afc.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.OperatingSystem;
 
 /**
  * @author $Author: sgalland$
@@ -420,7 +422,12 @@ public class XMLGISElementUtilTest extends AbstractTestCase {
 		final String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" //$NON-NLS-1$
 				+ "<doc elementGeometryProjection=\"FRANCE_LAMBERT_2\" elementGeometryUrl=\"#resource0\"/>"; //$NON-NLS-1$
 		assertEquals(expected, actual);
-		assertEquals(new URL("file:/path/to/file.shp"), res.getResourceURL(0)); //$NON-NLS-1$
+		if (OperatingSystem.WIN.isCurrentOS()) {
+			assertEquals("file:/" + FileSystem.getUserHomeDirectoryName().replaceAll("\\\\",  "/") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ "//path/to/file.shp", res.getResourceURL(0).toExternalForm()); //$NON-NLS-1$
+		} else {
+			assertEquals("file:/path/to/file.shp", res.getResourceURL(0).toExternalForm()); //$NON-NLS-1$
+		}
 	}
 
 }
