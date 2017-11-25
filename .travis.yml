@@ -18,6 +18,7 @@ matrix:
       addons:
         apt:
           packages:
+          - oracle-java8-installer
           - xvfb
       env:
       - M2_HOME: "$HOME/.binaries/apache-maven-3.5.2"
@@ -30,8 +31,11 @@ matrix:
       - sleep 3 # give xvfb some time to start
     - os: osx
       osx_image: xcode8.3 # see https://docs.travis-ci.com/user/osx-ci-environment/
+      env:
+      - _JAVA_OPTIONS="-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500"
       before_install:
       - echo "MAVEN_OPTS=\"$MAVEN_OPTS\"" > $HOME/.mavenrc
+
 
 install: true
 

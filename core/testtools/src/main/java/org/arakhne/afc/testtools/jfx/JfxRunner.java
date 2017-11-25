@@ -22,6 +22,7 @@ package org.arakhne.afc.testtools.jfx;
 
 import java.util.concurrent.CountDownLatch;
 
+import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
 import org.junit.Test;
 import org.junit.runner.notification.RunNotifier;
@@ -55,7 +56,9 @@ public class JfxRunner extends BlockJUnit4ClassRunner {
 	 */
 	public JfxRunner(final Class<?> clazz) throws InitializationError {
 		super(clazz);
-		TestJfxApplication.startJavaFx();
+		if (Platform.isSupported(ConditionalFeature.GRAPHICS)) {
+			TestJfxApplication.startJavaFx();
+		}
 	}
 
 	@SuppressWarnings("synthetic-access")
