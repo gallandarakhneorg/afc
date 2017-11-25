@@ -24,7 +24,9 @@
 	</module>
 
 	<!-- Checks whether files end with a new line. -->
-	<module name="NewlineAtEndOfFile" />
+	<module name="NewlineAtEndOfFile">
+		<property name="lineSeparator" value="lf_cr_crlf" />
+	</module>
 
 	<!-- Checks that property files contain the same keys. -->
 	<module name="Translation" />
@@ -251,9 +253,9 @@
 
 		<!-- ************* *** SIZES *** ************* -->
 
-		<!-- Line length is 130 (100 in Google standards). -->
+		<!-- Line length is 150 (100 in Google standards). -->
 		<module name="LineLength">
-			<property name="max" value="130" />
+			<property name="max" value="150" />
 			<property name="ignorePattern"
 				value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
 		</module>
@@ -617,6 +619,14 @@
 			<property name="ignoreComments" value="true" />
 		</module>
 
+		<!-- Avoid com.google.common.base.Preconditions -->
+		<module name="Regexp">
+			<property name="format" value="(com\.google\.common\.base\.)?Preconditions" />
+			<property name="illegalPattern" value="true" />
+			<property name="message" value="Avoid run-time preconditions, use assertions." />
+			<property name="ignoreComments" value="true" />
+		</module>
+
 		<!-- Avoid too complex boolean expressions: 6 boolean operators are allowed -->
 		<module name="BooleanExpressionComplexity">
 			<property name="max" value="6" />
@@ -635,7 +645,7 @@
 		<!-- Restrict the number of decision points in the code. Less decision 
 			points means easier to test. -->
 		<module name="CyclomaticComplexity">
-			<property name="max" value="15" />
+			<property name="max" value="20" />
 		</module>
 
 		<!-- Number of paths in a code. 200 is a standard from AT&T. -->
