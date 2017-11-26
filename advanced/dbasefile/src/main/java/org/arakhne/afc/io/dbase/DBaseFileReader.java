@@ -60,6 +60,7 @@ import org.arakhne.afc.attrs.collection.AttributeProvider;
 import org.arakhne.afc.inputoutput.endian.EndianNumbers;
 import org.arakhne.afc.inputoutput.stream.LittleEndianDataInputStream;
 import org.arakhne.afc.util.OutputParameter;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 
@@ -1806,6 +1807,13 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 				} catch (Exception e) {
 					//
 				}
+			}
+		}
+
+		@Override
+		public void toJson(JsonBuffer buffer) {
+			for (final Attribute attr : attributes()) {
+				attr.toJson(buffer);
 			}
 		}
 
