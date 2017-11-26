@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.UUID;
 
+import com.google.common.collect.Iterables;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.attr.Attribute;
@@ -35,6 +36,7 @@ import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.NullAttribute;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class implements an abstract attribute provider.
@@ -447,6 +449,20 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			}
 		}
 		return defaultValue;
+	}
+
+	@Override
+	public final String toString() {
+		final JsonBuffer buffer = new JsonBuffer();
+		toJson(buffer);
+		return buffer.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add("attributes", Iterables.filter(attributes(), attr -> { //$NON-NLS-1$
+			return attr.isAssigned();
+		}));
 	}
 
 }

@@ -60,7 +60,7 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
-import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class contains an attribute value.
@@ -569,8 +569,20 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Pure
 	@Override
-	public String toString() {
-		return ReflectionUtil.toString(this);
+	public final String toString() {
+		final JsonBuffer buffer = new JsonBuffer();
+		toJson(buffer);
+		return buffer.toString();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		if (isAssigned() && this.value != null) {
+			buffer.add("value", this.value); //$NON-NLS-1$
+		}
+		if (this.type != null) {
+			buffer.add("type", this.type.name()); //$NON-NLS-1$
+		}
 	}
 
 	@Pure

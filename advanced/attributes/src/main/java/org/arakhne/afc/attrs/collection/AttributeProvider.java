@@ -37,6 +37,7 @@ import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
+import org.arakhne.afc.vmutil.json.JsonableObject;
 
 /**
  * This interface representes a provider of attributes
@@ -47,7 +48,7 @@ import org.arakhne.afc.attrs.attr.AttributeValue;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface AttributeProvider  extends Cloneable, Serializable {
+public interface AttributeProvider  extends Cloneable, Serializable, JsonableObject {
 
 	/** Make a deep copy of this object and replies the copy.
 	 *

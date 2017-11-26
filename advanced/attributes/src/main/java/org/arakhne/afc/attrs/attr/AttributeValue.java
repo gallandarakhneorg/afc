@@ -33,6 +33,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.vmutil.json.JsonableObject;
 
 /**
  * This class contains a metadata value.
@@ -43,7 +44,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings({"checkstyle:methodcount"})
-public interface AttributeValue extends Cloneable, Serializable {
+public interface AttributeValue extends Cloneable, Serializable, JsonableObject {
 
 	/**
 	 * Replies a comparator suitable for attribute values.

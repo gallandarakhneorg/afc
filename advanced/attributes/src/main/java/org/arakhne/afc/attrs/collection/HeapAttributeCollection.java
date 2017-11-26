@@ -764,11 +764,5 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		// Do nothing
 	}
 
-	@Pure
-	@Override
-	public String toString() {
-		return this.heap.toString();
-	}
-
 }
 

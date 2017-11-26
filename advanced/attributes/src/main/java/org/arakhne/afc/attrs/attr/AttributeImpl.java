@@ -33,7 +33,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class contains an attribute value.
@@ -406,10 +406,10 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
         return result ^ (result >> 31);
 	}
 
-	@Pure
 	@Override
-	public String toString() {
-		return ReflectionUtil.toString(this);
+	public void toJson(JsonBuffer buffer) {
+		super.toJson(buffer);
+		buffer.add("name", this.name); //$NON-NLS-1$
 	}
 
 	/** Assert that the attribute value was assigned and not <code>null</code>.

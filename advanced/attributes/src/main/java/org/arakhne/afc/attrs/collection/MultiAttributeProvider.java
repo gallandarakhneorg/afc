@@ -38,6 +38,7 @@ import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.references.SoftValueTreeMap;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * This class contains a collection of attribute containers and
@@ -333,6 +334,13 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 		private boolean hasMultipleValues;
 
 		private AttributeType topType;
+
+		@Override
+		public void toJson(JsonBuffer buffer) {
+			super.toJson(buffer);
+			buffer.add("topType", this.topType); //$NON-NLS-1$
+			buffer.add("hasMultipleValues", this.hasMultipleValues); //$NON-NLS-1$
+		}
 
 		/** Replies the type type associated to this attribute value.
 		 *
