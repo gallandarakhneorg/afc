@@ -171,7 +171,7 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 
 	/** Replies the attribute provider associated to this element.
 	 *
-	 * @return the attributre provider
+	 * @return the attribute provider
 	 */
 	@Pure
 	public AttributeCollection getAttributeCollection() {
@@ -686,6 +686,9 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 		buffer.add("id", getUUID()); //$NON-NLS-1$
 		buffer.add("geoId", getGeoId()); //$NON-NLS-1$
 		buffer.add("hashKey", hashKey()); //$NON-NLS-1$
+		if (this.attributeSource != null) {
+			this.attributeSource.toJson(buffer);
+		}
 	}
 
 }

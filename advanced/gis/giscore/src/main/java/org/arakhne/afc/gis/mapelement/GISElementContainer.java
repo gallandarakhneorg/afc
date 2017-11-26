@@ -29,7 +29,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.primitive.GISContainer;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
-import org.arakhne.afc.util.InformedIterable;
 
 /** Container of elements for a GIS application.
  *
@@ -40,7 +39,7 @@ import org.arakhne.afc.util.InformedIterable;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-public interface GISElementContainer<T extends MapElement> extends GISContainer<T>, InformedIterable<T> {
+public interface GISElementContainer<T extends MapElement> extends GISContainer<T> {
 
 	/** Replies the count of map elements.
 	 *

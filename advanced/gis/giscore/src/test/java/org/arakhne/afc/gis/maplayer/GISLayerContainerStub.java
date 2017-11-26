@@ -33,6 +33,7 @@ import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.gis.primitive.GISElement;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.util.InformedArrayList;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** Stub for GISLayerContainer.
  *
@@ -471,6 +472,11 @@ class GISLayerContainerStub extends AbstractAttributeCollectionStub implements G
 
 	@Override
 	public void toMap(Map<String, Object> mapToFill) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void toJson(JsonBuffer buffer) {
 		throw new UnsupportedOperationException();
 	}
 

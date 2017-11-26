@@ -495,9 +495,11 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	@Override
 	@Pure
 	public int getColor() {
-		final GISContainer<?> container = getContainer();
 		if (isContainerColorUsed()) {
-			return container.getColor();
+			final GISContainer<?> container = getContainer();
+			if (container != null) {
+				return container.getColor();
+			}
 		}
 		Integer c = getRawColor();
 		if (c == null) {

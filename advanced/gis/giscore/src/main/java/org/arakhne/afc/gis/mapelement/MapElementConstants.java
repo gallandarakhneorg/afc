@@ -25,6 +25,8 @@ import java.util.prefs.Preferences;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.ColorNames;
+
 /**
  * Set of global constants for map elements.
  *
@@ -52,7 +54,7 @@ public final class MapElementConstants {
 
 	/** Default color of a map elements.
 	 */
-	public static final int DEFAULT_COLOR = 0;
+	public static final int DEFAULT_COLOR = ColorNames.getColorFromName("darkgray"); //$NON-NLS-1$
 
 	private MapElementConstants() {
 		//

@@ -24,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.afp.BoundedElement2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.arakhne.afc.util.InformedIterable;
 
 /** Container of GIS elements.
  *
@@ -34,7 +35,7 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-public interface GISContainer<T extends GISElement> extends Iterable<T>, BoundedElement2afp<Rectangle2d> {
+public interface GISContainer<T extends GISElement> extends InformedIterable<T>, BoundedElement2afp<Rectangle2d> {
 
 	/** Replies the name of the container.
 	 *
