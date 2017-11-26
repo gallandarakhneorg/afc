@@ -62,10 +62,10 @@ public class ColorNamesTest {
 		"cornsilk", //$NON-NLS-1$
 		"crimson", //$NON-NLS-1$
 		"cyan", //$NON-NLS-1$
-		"barkblue", //$NON-NLS-1$
+		"darkblue", //$NON-NLS-1$
 		"darkcyan", //$NON-NLS-1$
 		"darkgoldenrod", //$NON-NLS-1$
-		"dargray", //$NON-NLS-1$
+		"darkgray", //$NON-NLS-1$
 		"darkgreen", //$NON-NLS-1$
 		"darkgrey", //$NON-NLS-1$
 		"darkkhaki", //$NON-NLS-1$
