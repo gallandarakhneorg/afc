@@ -38,7 +38,7 @@ public class Path2afpDrawer implements Drawer<Path2afp<?, ?, ? extends PathEleme
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends Path2afp<?, ?, ? extends PathElement2afp, ?, ?, ?>> getElementType() {
+	public Class<? extends Path2afp<?, ?, ? extends PathElement2afp, ?, ?, ?>> getPrimitiveType() {
 		return (Class<? extends Path2afp<?, ?, ? extends PathElement2afp, ?, ?, ?>>) Path2afp.class;
 	}
 

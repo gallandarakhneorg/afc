@@ -25,8 +25,8 @@ import java.util.ServiceLoader;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.afp.BoundedElement2afp;
-import org.arakhne.afc.util.InformedIterable;
+import org.arakhne.afc.references.SoftValueTreeMap;
+import org.arakhne.afc.vmutil.ClassComparator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Utility class for {@code ZoomableDrawer}.
@@ -42,8 +42,17 @@ public final class Drawers {
 	@SuppressWarnings("rawtypes")
 	private static ServiceLoader services;
 
+	private static SoftValueTreeMap<Class<?>, Drawer<?>> buffer = new SoftValueTreeMap<>(ClassComparator.SINGLETON);
+
 	private Drawers() {
 		//
+	}
+
+	/** Reload the drawers' definition.
+	 */
+	public static void reload() {
+		buffer.clear();
+		services.reload();
 	}
 
 	/** Replies all the registered document drawers.
@@ -77,58 +86,26 @@ public final class Drawers {
 	@Pure
 	public static <T> Drawer<T> getDrawerFor(Class<? extends T> type) {
 		assert type != null : AssertMessages.notNullParameter();
-		final Iterator<Drawer<?>> iterator = getAllDrawers();
+		final Drawer<?> bufferedType = buffer.get(type);
 		Drawer<T> defaultChoice = null;
-		while (iterator.hasNext()) {
-			final Drawer<?> drawer = iterator.next();
-			final Class<?> elementType = drawer.getElementType();
-			if (elementType.equals(type)) {
-				return (Drawer<T>) drawer;
-			}
-			if (type.isAssignableFrom(elementType)
-				&& (defaultChoice == null
-					|| elementType.isAssignableFrom(defaultChoice.getElementType()))) {
-				defaultChoice = (Drawer<T>) drawer;
-			}
-		}
-		return defaultChoice;
-	}
-
-	/** Replies the registered document Drawer that is supporting the given type.
-	 *
-	 * <p>If multiple drawers handles the given type, the ones handling the top most type
-	 * within the type hierarchy are selected. If there is more than one drawer selected,
-	 * the first encountered is chosen. In this case, there is no warranty about the
-	 * order of the drawers; and the replied drawer may be any of the selected drawers.
-	 * The only assumption that could be done on the order of the drawers is:
-	 * if only one Jar library provides drawers' implementation, then the order of
-	 * the drawers is the same as the order of the types declared within the service's file.
-	 *
-	 * @param <T> the type of the elements to drawer.
-	 * @param <DT> the type of the document.
-	 * @param type the type of the elements to drawer.
-	 * @return the drawer, or {@code null} if none.
-	 */
-	@SuppressWarnings("unchecked")
-	@Pure
-	public static <T, DT extends InformedIterable<? super T> & BoundedElement2afp<?>> DocumentDrawer<T, DT> getDocumentDrawerFor(
-			Class<?> type) {
-		assert type != null : AssertMessages.notNullParameter();
-		final Iterator<Drawer<?>> iterator = getAllDrawers();
-		DocumentDrawer<T, DT> defaultChoice = null;
-		while (iterator.hasNext()) {
-			final Drawer<?> drawer = iterator.next();
-			if (drawer instanceof DocumentDrawer<?, ?>) {
-				final DocumentDrawer<?, ?> containerRenderer = (DocumentDrawer<?, ?>) drawer;
-				final Class<?> elementType = containerRenderer.getContainedElementType();
-				if (elementType.equals(type)) {
-					return (DocumentDrawer<T, DT>) drawer;
-				}
-				if (elementType.isAssignableFrom(type)
+		if (bufferedType != null) {
+			defaultChoice = (Drawer<T>) bufferedType;
+		} else {
+			final Iterator<Drawer<?>> iterator = getAllDrawers();
+			while (iterator.hasNext()) {
+				final Drawer<?> drawer = iterator.next();
+				final Class<?> drawerType = drawer.getPrimitiveType();
+				if (drawerType.equals(type)) {
+					defaultChoice = (Drawer<T>) drawer;
+					break;
+				} else  if (drawerType.isAssignableFrom(type)
 					&& (defaultChoice == null
-						|| defaultChoice.getElementType().isAssignableFrom(elementType))) {
-					defaultChoice = (DocumentDrawer<T, DT>) drawer;
+						|| drawerType.isAssignableFrom(defaultChoice.getPrimitiveType()))) {
+					defaultChoice = (Drawer<T>) drawer;
 				}
+			}
+			if (defaultChoice != null) {
+				buffer.put(type, defaultChoice);
 			}
 		}
 		return defaultChoice;

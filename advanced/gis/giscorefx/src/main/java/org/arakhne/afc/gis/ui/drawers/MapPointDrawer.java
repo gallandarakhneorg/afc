@@ -38,7 +38,7 @@ public class MapPointDrawer extends AbstractMapPointDrawer<MapPoint> {
 
 	@Override
 	@Pure
-	public Class<? extends MapPoint> getElementType() {
+	public Class<? extends MapPoint> getPrimitiveType() {
 		return MapPoint.class;
 	}
 

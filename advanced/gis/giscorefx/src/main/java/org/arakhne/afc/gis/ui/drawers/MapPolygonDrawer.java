@@ -38,7 +38,7 @@ public class MapPolygonDrawer extends AbstractMapPolygonDrawer<MapPolygon> {
 
 	@Override
 	@Pure
-	public Class<? extends MapPolygon> getElementType() {
+	public Class<? extends MapPolygon> getPrimitiveType() {
 		return MapPolygon.class;
 	}
 

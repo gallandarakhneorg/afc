@@ -36,7 +36,7 @@ public class Ellipse2afpDrawer implements Drawer<Ellipse2afp<?, ?, ?, ?, ?, ?>> 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends Ellipse2afp<?, ?, ?, ?, ?, ?>> getElementType() {
+	public Class<? extends Ellipse2afp<?, ?, ?, ?, ?, ?>> getPrimitiveType() {
 		return (Class<? extends Ellipse2afp<?, ?, ?, ?, ?, ?>>) Ellipse2afp.class;
 	}
 

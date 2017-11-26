@@ -108,16 +108,16 @@ public class ZoomableCanvasTest extends AbstractTestCase {
 	@Test
 	@TestInJfxThread
 	public void getDocumentDrawer() {
-		DocumentDrawer prop = this.canvas.getDocumentDrawer();
+		Drawer prop = this.canvas.getDocumentDrawer();
 		assertNotNull(prop);
 	}
 
 	@Test
 	@TestInJfxThread
 	public void setDocumentDrawer() {
-		DocumentDrawer drawer = mock(DocumentDrawer.class);
+		Drawer drawer = mock(Drawer.class);
 		this.canvas.setDocumentDrawer(drawer);
-		DocumentDrawer prop = this.canvas.getDocumentDrawer();
+		Drawer prop = this.canvas.getDocumentDrawer();
 		assertSame(drawer, prop);
 	}
 

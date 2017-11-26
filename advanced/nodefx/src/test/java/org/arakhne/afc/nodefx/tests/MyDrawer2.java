@@ -39,7 +39,7 @@ public class MyDrawer2 implements Drawer<Number> {
 	}
 
 	@Override
-	public Class<? extends Number> getElementType() {
+	public Class<? extends Number> getPrimitiveType() {
 		return Integer.class;
 	}
 

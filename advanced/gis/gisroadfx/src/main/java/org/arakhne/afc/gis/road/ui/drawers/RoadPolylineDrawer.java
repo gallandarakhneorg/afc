@@ -28,6 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.gis.road.RoadPolyline;
 import org.arakhne.afc.gis.ui.drawers.AbstractMapPolylineDrawer;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
+import org.arakhne.afc.vmutil.ColorNames;
 
 /** Drawer of a map road polyline.
  *
@@ -39,9 +40,17 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  */
 public class RoadPolylineDrawer extends AbstractMapPolylineDrawer<RoadPolyline> {
 
+	/** Default color for roads' interior.
+	 */
+	public static final int ROAD_COLOR = ColorNames.getColorFromName("white"); //$NON-NLS-1$
+
+	/** Default color for selected roads' interior.
+	 */
+	public static final int SELECTED_ROAD_COLOR = ColorNames.getColorFromName("antiquewhite"); //$NON-NLS-1$
+
 	@Override
 	@Pure
-	public Class<? extends RoadPolyline> getElementType() {
+	public Class<? extends RoadPolyline> getPrimitiveType() {
 		return RoadPolyline.class;
 	}
 
@@ -92,8 +101,13 @@ public class RoadPolylineDrawer extends AbstractMapPolylineDrawer<RoadPolyline> 
 	 * @param element the element to draw.
 	 */
 	protected void setupRoadInterior(ZoomableGraphicsContext gc, RoadPolyline element) {
-		final Color color = gc.rgb(getDrawingColor(element));
-		gc.setStroke(color.invert());
+		final Color color;
+		if (isSelected(element)) {
+			color = gc.rgb(SELECTED_ROAD_COLOR);
+		} else {
+			color = gc.rgb(ROAD_COLOR);
+		}
+		gc.setStroke(color);
 		if (element.isWidePolyline()) {
 			gc.setLineWidthInMeters(element.getWidth());
 		} else {

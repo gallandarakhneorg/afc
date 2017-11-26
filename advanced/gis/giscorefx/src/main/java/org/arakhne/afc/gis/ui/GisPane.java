@@ -22,35 +22,34 @@ package org.arakhne.afc.gis.ui;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.gis.mapelement.GISElementContainer;
-import org.arakhne.afc.gis.mapelement.MapElement;
-import org.arakhne.afc.nodefx.DocumentDrawer;
+import org.arakhne.afc.gis.primitive.GISContainer;
+import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.ZoomablePane;
 import org.arakhne.afc.util.InformedIterable;
 
 /** Resizeable pane for rendering GIS primitives.
  *
- * <p>The GIS elements are displayed within this {@code GisCanvas} by the {@link DocumentDrawer drawers}
+ * <p>The GIS elements are displayed within this {@code GisCanvas} by the {@link Drawer drawers}
  * that are declared as services.
  *
  * <p>The {@code GisCanvas} provides a tool for displaying GIS elements. It does not provide
  * advanced UI components (scroll bars, etc.) and interaction means (mouse support, etc.).
  *
- * @param <T> the type of the map elements.
+ * @param <T> the type of the primitive container.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class GisPane<T extends MapElement> extends ZoomablePane<T, GISElementContainer<T>> {
+public class GisPane<T extends GISContainer<? super T>> extends ZoomablePane<T> {
 
 	/** Constructor. The renderer is detected with the type replied by
 	 * {@link InformedIterable#getElementType()} on the model.
 	 *
 	 * @param model the source of the elements.
 	 */
-	public GisPane(GISElementContainer<T> model) {
+	public GisPane(T model) {
 		this(new GisCanvas<>(model));
 	}
 
@@ -59,7 +58,7 @@ public class GisPane<T extends MapElement> extends ZoomablePane<T, GISElementCon
 	 * @param model the source of the elements.
 	 * @param drawer the drawer.
 	 */
-	public GisPane(GISElementContainer<T> model, DocumentDrawer<T, GISElementContainer<T>> drawer) {
+	public GisPane(T model, Drawer<? super T> drawer) {
 		this(new GisCanvas<>(model, drawer));
 	}
 

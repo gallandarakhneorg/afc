@@ -20,7 +20,6 @@
 
 package org.arakhne.afc.nodefx.tests;
 
-import org.arakhne.afc.nodefx.DocumentDrawer;
 import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
@@ -32,7 +31,7 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @since 15.0
  */
 @SuppressWarnings("all")
-public class ContDrawer1 implements DocumentDrawer<Integer, MyDoc> {
+public class ContDrawer1 implements Drawer<MyDoc> {
 
 	@Override
 	public void draw(ZoomableGraphicsContext gc, MyDoc element) {
@@ -40,23 +39,8 @@ public class ContDrawer1 implements DocumentDrawer<Integer, MyDoc> {
 	}
 
 	@Override
-	public Class<? extends MyDoc> getElementType() {
+	public Class<? extends MyDoc> getPrimitiveType() {
 		return MyDoc.class;
-	}
-
-	@Override
-	public Drawer<? super Integer> getElementDrawer() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Class<? extends Integer> getContainedElementType() {
-		return Integer.class;
-	}
-
-	@Override
-	public boolean isDrawable(ZoomableGraphicsContext gc, Integer mapelement) {
-		throw new UnsupportedOperationException();
 	}
 
 }

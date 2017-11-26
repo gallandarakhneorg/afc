@@ -38,7 +38,7 @@ public class MapMultiPointDrawer extends AbstractMapMultiPointDrawer<MapMultiPoi
 
 	@Override
 	@Pure
-	public Class<? extends MapMultiPoint> getElementType() {
+	public Class<? extends MapMultiPoint> getPrimitiveType() {
 		return MapMultiPoint.class;
 	}
 

@@ -75,8 +75,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
 /**
  * Panel that is displaying the document elements and supporting zooming.
  *
- * @param <T> the type of the document elements to display.
- * @param <DT> the type of the document.
+ * @param <T> the type of the document.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -84,8 +83,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 15.0
  */
 @SuppressWarnings("checkstyle:methodcount")
-public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedElement2afp<?>> extends BorderPane
-		implements ZoomableViewer<T, DT> {
+public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>> extends BorderPane
+		implements ZoomableViewer<T> {
 
 	/**
 	 * A static final reference to whether the platform we are on supports touch.
@@ -149,7 +148,7 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 
 	private ObjectProperty<Logger> logger;
 
-	private final ZoomableCanvas<T, DT> documentCanvas;
+	private final ZoomableCanvas<T> documentCanvas;
 
 	private final ScrollBar vbar;
 
@@ -175,7 +174,7 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 	 *
 	 * @param model the source of the elements.
 	 */
-	public ZoomablePane(DT model) {
+	public ZoomablePane(T model) {
 		this(new ZoomableCanvas<>(model));
 	}
 
@@ -184,7 +183,7 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 	 * @param canvas the pre-created canvas with the model to display inside.
 	 */
 	@SuppressWarnings({"unchecked", "checkstyle:methodlength", "checkstyle:executablestatementcount"})
-	public ZoomablePane(ZoomableCanvas<T, DT> canvas) {
+	public ZoomablePane(ZoomableCanvas<T> canvas) {
 		assert canvas != null : AssertMessages.notNullParameter();
 		this.documentCanvas = canvas;
 		//
@@ -339,7 +338,7 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 			if (isPannable() && e.getButton() == getPanButton() && !e.isPopupTrigger()) {
 				this.dragDetected = true;
 				if (this.savedCursor == null) {
-					final ZoomableCanvas<T, DT> canvas0 = getDocumentCanvas();
+					final ZoomableCanvas<T> canvas0 = getDocumentCanvas();
 					this.savedCursor = canvas0.getCursor();
 					if (this.savedCursor == null) {
 						this.savedCursor = Cursor.DEFAULT;
@@ -363,7 +362,7 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 				if (!this.dragDetected) {
 					this.dragDetected = true;
 					if (this.savedCursor == null) {
-						final ZoomableCanvas<T, DT> canvas0 = getDocumentCanvas();
+						final ZoomableCanvas<T> canvas0 = getDocumentCanvas();
 						this.savedCursor = canvas0.getCursor();
 						if (this.savedCursor == null) {
 							this.savedCursor = Cursor.DEFAULT;
@@ -409,7 +408,7 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	protected void setupMousing() {
-		final ZoomableCanvas<T, DT> canvas = getDocumentCanvas();
+		final ZoomableCanvas<T> canvas = getDocumentCanvas();
 		canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
 			this.pressX = e.getX();
 			this.pressY = e.getY();
@@ -642,7 +641,7 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 				}
 
 				@Override
-				public CssMetaData<ZoomablePane<?, ?>, Boolean> getCssMetaData() {
+				public CssMetaData<ZoomablePane<?>, Boolean> getCssMetaData() {
 					return StyleableProperties.PANNABLE;
 				}
 
@@ -701,7 +700,7 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 				}
 
 				@Override
-				public CssMetaData<ZoomablePane<?, ?>, MouseButton> getCssMetaData() {
+				public CssMetaData<ZoomablePane<?>, MouseButton> getCssMetaData() {
 					return StyleableProperties.PAN_BUTTON;
 				}
 
@@ -754,7 +753,7 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 				}
 
 				@Override
-				public CssMetaData<ZoomablePane<?, ?>, Number> getCssMetaData() {
+				public CssMetaData<ZoomablePane<?>, Number> getCssMetaData() {
 					return StyleableProperties.PAN_SENSITIVITY;
 				}
 
@@ -830,7 +829,7 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 	 * @return the document canvas.
 	 */
 	@Pure
-	public ZoomableCanvas<T, DT> getDocumentCanvas() {
+	public ZoomableCanvas<T> getDocumentCanvas() {
 		return this.documentCanvas;
 	}
 
@@ -844,32 +843,32 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 	}
 
 	@Override
-	public final ObjectProperty<DT> documentModelProperty() {
+	public final ObjectProperty<T> documentModelProperty() {
 		return getDocumentCanvas().documentModelProperty();
 	}
 
 	@Override
-	public final DT getDocumentModel() {
+	public final T getDocumentModel() {
 		return getDocumentCanvas().getDocumentModel();
 	}
 
 	@Override
-	public final void setDocumentModel(DT model) {
+	public final void setDocumentModel(T model) {
 		getDocumentCanvas().setDocumentModel(model);
 	}
 
 	@Override
-	public final ObjectProperty<DocumentDrawer<T, DT>> documentDrawerProperty() {
+	public final ObjectProperty<Drawer<? super T>> documentDrawerProperty() {
 		return getDocumentCanvas().documentDrawerProperty();
 	}
 
 	@Override
-	public final DocumentDrawer<T, DT> getDocumentDrawer() {
+	public final Drawer<? super T> getDocumentDrawer() {
 		return getDocumentCanvas().getDocumentDrawer();
 	}
 
 	@Override
-	public final void setDocumentDrawer(DocumentDrawer<T, DT> drawer) {
+	public final void setDocumentDrawer(Drawer<? super T> drawer) {
 		getDocumentCanvas().setDocumentDrawer(drawer);
 	}
 
@@ -1190,19 +1189,19 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 
 		/** Pannable CSS metadata.
 		 */
-		public static final CssMetaData<ZoomablePane<?, ?>, Boolean> PANNABLE = new CssMetaData<ZoomablePane<?, ?>, Boolean>(
+		public static final CssMetaData<ZoomablePane<?>, Boolean> PANNABLE = new CssMetaData<ZoomablePane<?>, Boolean>(
 				"-afc-pannable", //$NON-NLS-1$
 				BooleanConverter.getInstance(), Boolean.FALSE) {
 
 			@SuppressWarnings("synthetic-access")
 			@Override
-			public boolean isSettable(ZoomablePane<?, ?> pane) {
+			public boolean isSettable(ZoomablePane<?> pane) {
 				return pane.pannable == null || !pane.pannable.isBound();
 			}
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public StyleableProperty<Boolean> getStyleableProperty(ZoomablePane<?, ?> pane) {
+			public StyleableProperty<Boolean> getStyleableProperty(ZoomablePane<?> pane) {
 				return (StyleableProperty<Boolean>) pane.pannableProperty();
 			}
 		};
@@ -1210,19 +1209,19 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 		/** PanButton CSS metadata.
 		 */
 		@SuppressWarnings("synthetic-access")
-		public static final CssMetaData<ZoomablePane<?, ?>, MouseButton> PAN_BUTTON =
-			new CssMetaData<ZoomablePane<?, ?>, MouseButton>(
+		public static final CssMetaData<ZoomablePane<?>, MouseButton> PAN_BUTTON =
+			new CssMetaData<ZoomablePane<?>, MouseButton>(
 					"-afc-panbutton", //$NON-NLS-1$
 					new EnumConverter<>(MouseButton.class), DEFAULT_PAN_BUTTON) {
 
 				@Override
-				public boolean isSettable(ZoomablePane<?, ?> pane) {
+				public boolean isSettable(ZoomablePane<?> pane) {
 					return pane.pannable == null || !pane.pannable.isBound();
 				}
 
 				@SuppressWarnings("unchecked")
 				@Override
-				public StyleableProperty<MouseButton> getStyleableProperty(ZoomablePane<?, ?> pane) {
+				public StyleableProperty<MouseButton> getStyleableProperty(ZoomablePane<?> pane) {
 					return (StyleableProperty<MouseButton>) pane.panButtonProperty();
 				}
 			};
@@ -1230,18 +1229,18 @@ public class ZoomablePane<T, DT extends InformedIterable<? super T> & BoundedEle
 		/** PanButton CSS metadata.
 		 */
 		@SuppressWarnings("synthetic-access")
-		public static final CssMetaData<ZoomablePane<?, ?>, Number> PAN_SENSITIVITY = new CssMetaData<ZoomablePane<?, ?>, Number>(
+		public static final CssMetaData<ZoomablePane<?>, Number> PAN_SENSITIVITY = new CssMetaData<ZoomablePane<?>, Number>(
 				"-afc-panbutton", //$NON-NLS-1$
 				SizeConverter.getInstance(), DEFAULT_PAN_SENSITIVITY) {
 
 			@Override
-			public boolean isSettable(ZoomablePane<?, ?> pane) {
+			public boolean isSettable(ZoomablePane<?> pane) {
 				return pane.pannable == null || !pane.pannable.isBound();
 			}
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public StyleableProperty<Number> getStyleableProperty(ZoomablePane<?, ?> pane) {
+			public StyleableProperty<Number> getStyleableProperty(ZoomablePane<?> pane) {
 				return (StyleableProperty<Number>) pane.panSensitivityProperty();
 			}
 		};

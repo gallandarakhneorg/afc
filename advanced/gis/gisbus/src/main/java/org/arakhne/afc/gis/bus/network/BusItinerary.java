@@ -491,6 +491,11 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	//------------------------------------------------------------------
 
 	@Override
+	public Class<? extends BusItineraryHalt> getElementType() {
+		return BusItineraryHalt.class;
+	}
+
+	@Override
 	@Pure
 	public BusNetwork getBusNetwork() {
 		final BusLine line = getContainer();

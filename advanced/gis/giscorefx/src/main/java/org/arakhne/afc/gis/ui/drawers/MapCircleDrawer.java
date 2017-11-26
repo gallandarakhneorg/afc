@@ -38,7 +38,7 @@ public class MapCircleDrawer extends AbstractMapCircleDrawer<MapCircle> {
 
 	@Override
 	@Pure
-	public Class<? extends MapCircle> getElementType() {
+	public Class<? extends MapCircle> getPrimitiveType() {
 		return MapCircle.class;
 	}
 

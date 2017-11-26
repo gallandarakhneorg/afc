@@ -24,10 +24,9 @@ import java.util.Iterator;
 
 import org.arakhne.afc.gis.maplayer.GISLayerContainer;
 import org.arakhne.afc.gis.maplayer.MapLayer;
-import org.arakhne.afc.nodefx.DocumentDrawer;
 import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.Drawers;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
-import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Drawer of a map layer containers.
  *
@@ -38,14 +37,14 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class GisLayerContainerDrawer<T extends MapLayer> implements DocumentDrawer<T, GISLayerContainer<T>> {
+public class GisLayerContainerDrawer<T extends MapLayer> implements Drawer<GISLayerContainer<T>> {
 
-	private final Drawer<? super T> drawer;
+	private Drawer<? super T> drawer;
 
-	/** Constructor based on a {@link StaticMapElementDrawer} drawer.
+	/** Constructor.
 	 */
 	public GisLayerContainerDrawer() {
-		this(new StaticMapLayerDrawer());
+		this(null);
 	}
 
 	/** Constructor based on the given drawer.
@@ -53,43 +52,40 @@ public class GisLayerContainerDrawer<T extends MapLayer> implements DocumentDraw
 	 * @param drawer the element drawer.
 	 */
 	public GisLayerContainerDrawer(Drawer<? super T> drawer) {
-		assert drawer != null : AssertMessages.notNullParameter();
 		this.drawer = drawer;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends GISLayerContainer<T>> getElementType() {
+	public Class<? extends GISLayerContainer<T>> getPrimitiveType() {
 		return (Class<? extends GISLayerContainer<T>>) GISLayerContainer.class;
 	}
 
 	@Override
-	public Drawer<? super T> getElementDrawer() {
-		return this.drawer;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Class<? extends T> getContainedElementType() {
-		return (Class<? extends T>) getElementDrawer().getElementType();
-	}
-
-	@Override
-	public void draw(ZoomableGraphicsContext gc, GISLayerContainer<T> element) {
-		final Iterator<T> iterator = element.getBottomUpIterator();
-		while (iterator.hasNext()) {
-			final T layer = iterator.next();
-			if (isDrawable(gc, layer)) {
-				gc.save();
-				getElementDrawer().draw(gc, layer);
-				gc.restore();
+	public void draw(ZoomableGraphicsContext gc, GISLayerContainer<T> primitive) {
+		final Iterator<T> iterator = primitive.getBottomUpIterator();
+		if (this.drawer != null) {
+			while (iterator.hasNext()) {
+				final T layer = iterator.next();
+				if (layer.isVisible()) {
+					gc.save();
+					this.drawer.draw(gc, layer);
+					gc.restore();
+				}
+			}
+		} else {
+			while (iterator.hasNext()) {
+				final T layer = iterator.next();
+				if (layer.isVisible()) {
+					final Drawer<? super T> drawer = Drawers.getDrawerFor(layer.getClass());
+					if (drawer != null) {
+						gc.save();
+						drawer.draw(gc, layer);
+						gc.restore();
+					}
+				}
 			}
 		}
-	}
-
-	@Override
-	public boolean isDrawable(ZoomableGraphicsContext gc, T maplayer) {
-		return maplayer.isVisible();
 	}
 
 }

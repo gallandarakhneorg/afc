@@ -20,9 +20,12 @@
 
 package org.arakhne.afc.gis.ui.drawers;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.gis.primitive.FlagContainer;
 import org.arakhne.afc.gis.primitive.GISEditable;
 import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.vmutil.ColorNames;
 
 /** Abstract drawer of a GIS editable.
  *
@@ -35,31 +38,39 @@ import org.arakhne.afc.nodefx.Drawer;
  */
 public abstract class AbstractGISEditableDrawer<T extends GISEditable & FlagContainer>  implements Drawer<T> {
 
-	private static final int SELECTION_COLOR_RED = 0xFF;
+	private static final int SELECTION_COLOR = ColorNames.getColorFromName("lightcoral"); //$NON-NLS-1$
 
-	private static final int SELECTION_COLOR_GREEN = 0x00;
-
-	private static final int SELECTION_COLOR_BLUE = 0x00;
-
-	private static final double SELECTION_COLOR_INTERPOLATION = .5;
+	/** Replies the given element is selected.
+	 *
+	 * @param element the element.
+	 * @return {@code true} if the element is selected.
+	 */
+	@Pure
+	protected boolean isSelected(T element) {
+		return element.hasFlag(FlagContainer.FLAG_SELECTED);
+	}
 
 	/** Replies the color that should be used for drawing the given element.
 	 *
 	 * @param element the element.
 	 * @return the drawing color.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
+	@Pure
 	protected int getDrawingColor(T element) {
-		int color = element.getColor();
-		if (element.hasFlag(FlagContainer.FLAG_SELECTED)) {
-			// Interpolate to the selection color
-			int red = (0xFF0000 & color) >> 16;
-			int green = (0x00FF00 & color) >> 8;
-			int blue = 0x0000FF & color;
-			red += (red - SELECTION_COLOR_RED) * SELECTION_COLOR_INTERPOLATION;
-			green += (green - SELECTION_COLOR_GREEN) * SELECTION_COLOR_INTERPOLATION;
-			blue += (blue - SELECTION_COLOR_BLUE) * SELECTION_COLOR_INTERPOLATION;
-			color = 0xFF000000 | ((red & 0xFF) << 16) | ((green & 0xFF) << 8) | (blue & 0xFF);
+		return getDrawingColor(element.getColor(), isSelected(element));
+	}
+
+	/** Adapt the given color in order to be used for displaying.
+	 *
+	 * @param color the color to adapt.
+	 * @param isSelected indicates if the color should be adapted for selection.
+	 * @return the drawing color.
+	 */
+	@Pure
+	@SuppressWarnings({ "static-method" })
+	protected int getDrawingColor(int color, boolean isSelected) {
+		if (isSelected) {
+			return SELECTION_COLOR;
 		}
 		return color;
 	}

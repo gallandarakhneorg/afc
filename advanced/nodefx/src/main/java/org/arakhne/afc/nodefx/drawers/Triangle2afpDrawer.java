@@ -36,7 +36,7 @@ public class Triangle2afpDrawer implements Drawer<Triangle2afp<?, ?, ?, ?, ?, ?>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends Triangle2afp<?, ?, ?, ?, ?, ?>> getElementType() {
+	public Class<? extends Triangle2afp<?, ?, ?, ?, ?, ?>> getPrimitiveType() {
 		return (Class<? extends Triangle2afp<?, ?, ?, ?, ?, ?>>) Triangle2afp.class;
 	}
 

@@ -39,7 +39,7 @@ public class MyDrawer1 implements Drawer<String> {
 	}
 
 	@Override
-	public Class<? extends String> getElementType() {
+	public Class<? extends String> getPrimitiveType() {
 		return String.class;
 	}
 

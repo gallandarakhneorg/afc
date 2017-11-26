@@ -42,15 +42,14 @@ import org.arakhne.afc.util.InformedIterable;
  * <p>The {@code ZoomableViewer} provides advanced UI components (scroll bars, etc.)
  * and interaction means (mouse support, etc.) for scrolling and zooming in and out.
  *
- * @param <T> the type of the document elements.
- * @param <DT> the type of the document.
+ * @param <T> the type of the container.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public interface ZoomableViewer<T, DT extends InformedIterable<? super T> & BoundedElement2afp<?>> {
+public interface ZoomableViewer<T extends InformedIterable<?> & BoundedElement2afp<?>> {
 
 	/** Name of the property that contains the zooming/scale value.
 	 * A value of 1 means that there is no scaling. A value greater than
@@ -136,40 +135,40 @@ public interface ZoomableViewer<T, DT extends InformedIterable<? super T> & Boun
 	 * @return the property.
 	 */
 	@Pure
-	ObjectProperty<DT> documentModelProperty();
+	ObjectProperty<T> documentModelProperty();
 
 	/** Replies the model of the document.
 	 *
 	 * @return the model of the document.
 	 */
 	@Pure
-	DT getDocumentModel();
+	T getDocumentModel();
 
 	/** Change the model of the document.
 	 *
 	 * @param model the model of the document.
 	 */
-	void setDocumentModel(DT model);
+	void setDocumentModel(T model);
 
 	/** Replies the property that contains the document drawer.
 	 *
 	 * @return the property.
 	 */
 	@Pure
-	ObjectProperty<DocumentDrawer<T, DT>> documentDrawerProperty();
+	ObjectProperty<Drawer<? super T>> documentDrawerProperty();
 
 	/** Replies the drawer of the document.
 	 *
 	 * @return the drawer of the document.
 	 */
 	@Pure
-	DocumentDrawer<T, DT> getDocumentDrawer();
+	Drawer<? super T> getDocumentDrawer();
 
 	/** Change the drawer of the document.
 	 *
 	 * @param drawer the drawer of the document.
 	 */
-	void setDocumentDrawer(DocumentDrawer<T, DT> drawer);
+	void setDocumentDrawer(Drawer<? super T> drawer);
 
 	/** Replies the property that contains the document bounds.
 	 *

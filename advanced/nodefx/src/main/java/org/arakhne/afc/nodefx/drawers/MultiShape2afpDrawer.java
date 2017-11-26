@@ -38,7 +38,7 @@ public class MultiShape2afpDrawer implements Drawer<MultiShape2afp<?, ?, ?, ?, ?
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends MultiShape2afp<?, ?, ?, ?, ?, ?, ?>> getElementType() {
+	public Class<? extends MultiShape2afp<?, ?, ?, ?, ?, ?, ?>> getPrimitiveType() {
 		return (Class<? extends MultiShape2afp<?, ?, ?, ?, ?, ?, ?>>) MultiShape2afp.class;
 	}
 

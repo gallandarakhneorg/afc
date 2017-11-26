@@ -36,7 +36,7 @@ public class RoundRectangle2afpDrawer implements Drawer<RoundRectangle2afp<?, ?,
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends RoundRectangle2afp<?, ?, ?, ?, ?, ?>> getElementType() {
+	public Class<? extends RoundRectangle2afp<?, ?, ?, ?, ?, ?>> getPrimitiveType() {
 		return (Class<? extends RoundRectangle2afp<?, ?, ?, ?, ?, ?>>) RoundRectangle2afp.class;
 	}
 

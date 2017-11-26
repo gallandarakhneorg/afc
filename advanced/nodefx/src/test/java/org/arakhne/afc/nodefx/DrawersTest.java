@@ -22,6 +22,7 @@ package org.arakhne.afc.nodefx;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
@@ -31,7 +32,6 @@ import java.util.Set;
 import org.junit.Test;
 
 import org.arakhne.afc.nodefx.tests.ContDrawer1;
-import org.arakhne.afc.nodefx.tests.ContDrawer2;
 import org.arakhne.afc.nodefx.tests.MyDrawer1;
 import org.arakhne.afc.nodefx.tests.MyDrawer2;
 import org.arakhne.afc.nodefx.tests.MyDrawer3;
@@ -59,28 +59,23 @@ public class DrawersTest {
 		Drawer<?> d3 = iterator1.next();
 		assertTrue(iterator1.hasNext());
 		Drawer<?> d4 = iterator1.next();
-		assertTrue(iterator1.hasNext());
-		Drawer<?> d5 = iterator1.next();
 		assertFalse(iterator1.hasNext());
 
 		assertNotNull(d1);
 		assertNotNull(d2);
 		assertNotNull(d3);
 		assertNotNull(d4);
-		assertNotNull(d5);
 		
 		Set<Class<? extends Drawer<?>>> types = new HashSet<>();
 		types.add(MyDrawer1.class);
 		types.add(MyDrawer2.class);
 		types.add(MyDrawer3.class);
 		types.add(ContDrawer1.class);
-		types.add(ContDrawer2.class);
 		
 		assertTrue(types.remove(d1.getClass()));
 		assertTrue(types.remove(d2.getClass()));
 		assertTrue(types.remove(d3.getClass()));
 		assertTrue(types.remove(d4.getClass()));
-		assertTrue(types.remove(d5.getClass()));
 	}
 
 	@Test
@@ -107,22 +102,7 @@ public class DrawersTest {
 	@Test
 	public void getDrawerFor_04() {
 		Drawer d1 = Drawers.getDrawerFor(Number.class);
-		assertNotNull(d1);
-		assertTrue(d1 instanceof MyDrawer2);
-	}
-
-	@Test
-	public void getDocumentDrawerFor_01() {
-		DocumentDrawer d1 = Drawers.getDocumentDrawerFor(Integer.class);
-		assertNotNull(d1);
-		assertTrue(d1 instanceof ContDrawer1);
-	}
-
-	@Test
-	public void getDocumentDrawerFor_02() {
-		DocumentDrawer d1 = Drawers.getDocumentDrawerFor(Double.class);
-		assertNotNull(d1);
-		assertTrue(d1 instanceof ContDrawer2);
+		assertNull(d1);
 	}
 
 }

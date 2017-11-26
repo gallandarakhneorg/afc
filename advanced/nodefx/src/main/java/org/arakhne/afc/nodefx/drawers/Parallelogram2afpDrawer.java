@@ -38,7 +38,7 @@ public class Parallelogram2afpDrawer implements Drawer<Parallelogram2afp<?, ?, ?
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends Parallelogram2afp<?, ?, ? extends PathElement2afp, ?, ?, ?>> getElementType() {
+	public Class<? extends Parallelogram2afp<?, ?, ? extends PathElement2afp, ?, ?, ?>> getPrimitiveType() {
 		return (Class<? extends Parallelogram2afp<?, ?, ? extends PathElement2afp, ?, ?, ?>>) Parallelogram2afp.class;
 	}
 

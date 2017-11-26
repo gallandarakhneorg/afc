@@ -259,6 +259,11 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	//------------------------------------------------------------------
 
 	@Override
+	public Class<? extends BusLine> getElementType() {
+		return BusLine.class;
+	}
+
+	@Override
 	@Pure
 	public BusNetwork getBusNetwork() {
 		return this;

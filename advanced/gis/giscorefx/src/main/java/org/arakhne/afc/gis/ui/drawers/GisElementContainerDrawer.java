@@ -26,10 +26,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapElement;
-import org.arakhne.afc.nodefx.DocumentDrawer;
 import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.Drawers;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
-import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Drawer of a map element container.
  *
@@ -40,14 +39,14 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class GisElementContainerDrawer<T extends MapElement> implements DocumentDrawer<T, GISElementContainer<T>> {
+public class GisElementContainerDrawer<T extends MapElement> implements Drawer<GISElementContainer<T>> {
 
-	private final Drawer<? super T> drawer;
+	private Drawer<? super T> drawer;
 
-	/** Constructor based on a {@link StaticMapElementDrawer} drawer.
+	/** Constructor.
 	 */
 	public GisElementContainerDrawer() {
-		this(new StaticMapElementDrawer());
+		this(null);
 	}
 
 	/** Constructor based on the given drawer.
@@ -55,55 +54,47 @@ public class GisElementContainerDrawer<T extends MapElement> implements Document
 	 * @param drawer the element drawer.
 	 */
 	public GisElementContainerDrawer(Drawer<? super T> drawer) {
-		assert drawer != null : AssertMessages.notNullParameter();
 		this.drawer = drawer;
 	}
 
 	@Override
-	public Drawer<? super T> getElementDrawer() {
-		return this.drawer;
+	public final void draw(ZoomableGraphicsContext gc, GISElementContainer<T> primitive) {
+		this.drawer = draw(gc, primitive, this.drawer);
 	}
 
-	@Override
-	@SuppressWarnings("checkstyle:magicnumber")
-	public void draw(ZoomableGraphicsContext gc, GISElementContainer<T> element) {
-		draw(gc, element, getElementDrawer());
-	}
-
-	/** Draw the elements.
+	/** Draw the primitive with the given drawer.
 	 *
-	 * @param gc the graphical context.
-	 * @param element the elements.
-	 * @param drawer the drawer.
+	 * @param gc the graphics context to draw with.
+	 * @param primitive the primitive to draw.
+	 * @param drawer the drawer, or {@code null} to use the default.
+	 * @return the drawer to use.
 	 */
-	protected void draw(ZoomableGraphicsContext gc, GISElementContainer<T> element, Drawer<? super T> drawer) {
-		final Iterator<T> iterator = element.iterator(gc.getVisibleArea());
+	protected Drawer<? super T> draw(ZoomableGraphicsContext gc, GISElementContainer<T> primitive, Drawer<? super T> drawer) {
+		Drawer<? super T> drw = drawer;
+		final Iterator<T> iterator = primitive.iterator(gc.getVisibleArea());
 		while (iterator.hasNext()) {
 			final T mapelement = iterator.next();
-			if (isDrawable(gc, mapelement)) {
+			if (drw == null) {
+				drw = Drawers.getDrawerFor(mapelement.getClass());
+				if (drw != null) {
+					gc.save();
+					drw.draw(gc, mapelement);
+					gc.restore();
+				}
+			} else {
 				gc.save();
-				drawer.draw(gc, mapelement);
+				drw.draw(gc, mapelement);
 				gc.restore();
 			}
 		}
+		return drw;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	@Pure
-	public Class<? extends GISElementContainer<T>> getElementType() {
+	public Class<? extends GISElementContainer<T>> getPrimitiveType() {
 		return (Class<? extends GISElementContainer<T>>) GISElementContainer.class;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Class<? extends T> getContainedElementType() {
-		return (Class<? extends T>) getElementDrawer().getElementType();
-	}
-
-	@Override
-	public boolean isDrawable(ZoomableGraphicsContext gc, T mapelement) {
-		return gc.consumeBudget();
 	}
 
 }

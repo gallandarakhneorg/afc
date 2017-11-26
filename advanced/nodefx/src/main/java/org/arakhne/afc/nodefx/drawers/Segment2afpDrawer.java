@@ -36,7 +36,7 @@ public class Segment2afpDrawer implements Drawer<Segment2afp<?, ?, ?, ?, ?, ?>> 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends Segment2afp<?, ?, ?, ?, ?, ?>> getElementType() {
+	public Class<? extends Segment2afp<?, ?, ?, ?, ?, ?>> getPrimitiveType() {
 		return (Class<? extends Segment2afp<?, ?, ?, ?, ?, ?>>) Segment2afp.class;
 	}
 

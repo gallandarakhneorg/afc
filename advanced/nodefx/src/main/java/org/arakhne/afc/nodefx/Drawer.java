@@ -22,9 +22,9 @@ package org.arakhne.afc.nodefx;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Draw of an element.
+/** Draw of a primitive.
  *
- * @param <T> the type of the element to draw.
+ * @param <T> the type of the primitives to draw.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -33,18 +33,18 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public interface Drawer<T> {
 
-	/** Draw the given document elements.
+	/** Draw the given document primitives.
 	 *
 	 * @param gc the graphics context that must be used for drawing.
-	 * @param element the element to draw.
+	 * @param primitive the primitive to draw.
 	 */
-	void draw(ZoomableGraphicsContext gc, T element);
+	void draw(ZoomableGraphicsContext gc, T primitive);
 
-	/** Replies the type of the components that could be drawn by this drawer.
+	/** Replies the type of the primitives that could be drawn by this drawer.
 	 *
-	 * @return the type of the elements.
+	 * @return the type of the primitives.
 	 */
 	@Pure
-	Class<? extends T> getElementType();
+	Class<? extends T> getPrimitiveType();
 
 }

@@ -55,8 +55,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * <p>The {@code ZoomableCanvas} provides a tool for displaying document elements. It does not provide
  * advanced UI components (scroll bars, etc.) and interaction means (mouse support, etc.).
  *
- * @param <T> the type of the document elements.
- * @param <DT> the type of the document.
+ * @param <T> the type of the document.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -64,8 +63,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 15.0
  */
 @SuppressWarnings("checkstyle:methodcount")
-public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedElement2afp<?>>
-		extends Canvas implements ZoomableViewer<T, DT> {
+public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?>>
+		extends Canvas implements ZoomableViewer<T> {
 
 	private static final boolean DEFAULT_INVERTED_X_AXIS = false;
 
@@ -75,9 +74,9 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 
 	private ZoomableGraphicsContext documentGraphicsContext;
 
-	private ObjectProperty<DT> model;
+	private ObjectProperty<T> model;
 
-	private ObjectProperty<DocumentDrawer<T, DT>> drawer;
+	private ObjectProperty<Drawer<? super T>> drawer;
 
 	private BooleanProperty invertXAxis;
 
@@ -125,7 +124,7 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 	 *
 	 * @param model the source of the elements.
 	 */
-	public ZoomableCanvas(DT model) {
+	public ZoomableCanvas(T model) {
 		this(model, null);
 	}
 
@@ -134,7 +133,7 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 	 * @param model the source of the elements.
 	 * @param drawer the drawer.
 	 */
-	public ZoomableCanvas(DT model, DocumentDrawer<T, DT> drawer) {
+	public ZoomableCanvas(T model, Drawer<? super T> drawer) {
 		assert model != null : AssertMessages.notNullParameter(0);
 		documentModelProperty().set(model);
 		if (drawer != null) {
@@ -311,12 +310,12 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 					this.drawRunAfterChain = buildRunAfterChain(
 						() -> fireDrawingStart(),
 						() -> {
-							final DT model = getDocumentModel();
+							final T model = getDocumentModel();
 							if (model != null) {
 								final GraphicsContext gc = getGraphicsContext2D();
 								gc.clearRect(0, 0, getWidth(), getHeight());
 
-								final DocumentDrawer<T, DT> drawer = getDocumentDrawer();
+								final Drawer<? super T> drawer = getDocumentDrawer();
 								if (drawer != null) {
 									final ZoomableGraphicsContext docgc = getDocumentGraphicsContext2D();
 									docgc.prepareRendering();
@@ -369,9 +368,9 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 	}
 
 	@Override
-	public ObjectProperty<DT> documentModelProperty() {
+	public ObjectProperty<T> documentModelProperty() {
 		if (this.model == null) {
-			this.model = new SimpleObjectProperty<DT>(this, DOCUMENT_MODEL_PROPERTY) {
+			this.model = new SimpleObjectProperty<T>(this, DOCUMENT_MODEL_PROPERTY) {
 				@Override
 				protected void invalidated() {
 					assert get() != null;
@@ -382,31 +381,26 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 	}
 
 	@Override
-	public final DT getDocumentModel() {
+	public final T getDocumentModel() {
 		return documentModelProperty().get();
 	}
 
 	@Override
-	public final void setDocumentModel(DT model) {
+	public final void setDocumentModel(T model) {
 		documentModelProperty().set(model);
 	}
 
 	@Override
-	public ObjectProperty<DocumentDrawer<T, DT>> documentDrawerProperty() {
+	@SuppressWarnings("unchecked")
+	public ObjectProperty<Drawer<? super T>> documentDrawerProperty() {
 		if (this.drawer == null) {
-			final Class<?> type = getDocumentModel().getElementType();
-			final DocumentDrawer<T, DT> defaultDrawer;
-			if (type != null) {
-				defaultDrawer = Drawers.getDocumentDrawerFor(type);
-			} else {
-				defaultDrawer = null;
-			}
-			this.drawer = new SimpleObjectProperty<DocumentDrawer<T, DT>>(this, DOCUMENT_DRAWER_PROPERTY, defaultDrawer) {
+			final Drawer<? super T> defaultDrawer = Drawers.getDrawerFor((Class<? extends T>) getDocumentModel().getClass());
+			this.drawer = new SimpleObjectProperty<Drawer<? super T>>(this, DOCUMENT_DRAWER_PROPERTY, defaultDrawer) {
 				@Override
 				protected void invalidated() {
 					if (get() == null) {
-						final DocumentDrawer<T, DT> defaultDrawer = Drawers.getDocumentDrawerFor(
-								getDocumentModel().getElementType());
+						final Class<? extends T> type =  (Class<? extends T>) getDocumentModel().getClass();
+						final Drawer<? super T> defaultDrawer = Drawers.getDrawerFor(type);
 						set(defaultDrawer);
 					}
 				}
@@ -416,12 +410,12 @@ public class ZoomableCanvas<T, DT extends InformedIterable<? super T> & BoundedE
 	}
 
 	@Override
-	public final DocumentDrawer<T, DT> getDocumentDrawer() {
+	public final Drawer<? super T> getDocumentDrawer() {
 		return documentDrawerProperty().get();
 	}
 
 	@Override
-	public final void setDocumentDrawer(DocumentDrawer<T, DT> drawer) {
+	public final void setDocumentDrawer(Drawer<? super T> drawer) {
 		documentDrawerProperty().set(drawer);
 	}
 

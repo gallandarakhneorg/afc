@@ -233,8 +233,8 @@ public class ZoomableGraphicsContext {
 	 *     commands to.
 	 */
 	@Pure
-	public ZoomableCanvas<?, ?> getCanvas() {
-		return (ZoomableCanvas<?, ?>) this.gc.getCanvas();
+	public ZoomableCanvas<?> getCanvas() {
+		return (ZoomableCanvas<?>) this.gc.getCanvas();
 	}
 
 	/**
@@ -377,7 +377,7 @@ public class ZoomableGraphicsContext {
 	 */
 	@Pure
 	public double doc2fxAngle(double angle) {
-		final ZoomableCanvas<?, ?> canvas = getCanvas();
+		final ZoomableCanvas<?> canvas = getCanvas();
 		if (canvas.isInvertedAxisX() != canvas.isInvertedAxisY()) {
 			return -angle;
 		}
@@ -391,7 +391,7 @@ public class ZoomableGraphicsContext {
 	 */
 	@Pure
 	public double fx2docAngle(double angle) {
-		final ZoomableCanvas<?, ?> canvas = getCanvas();
+		final ZoomableCanvas<?> canvas = getCanvas();
 		if (canvas.isInvertedAxisX() != canvas.isInvertedAxisY()) {
 			return -angle;
 		}

@@ -40,7 +40,7 @@ public class MapPolylineDrawer extends AbstractMapPolylineDrawer<MapPolyline> {
 
 	@Override
 	@Pure
-	public Class<? extends MapPolyline> getElementType() {
+	public Class<? extends MapPolyline> getPrimitiveType() {
 		return MapPolyline.class;
 	}
 

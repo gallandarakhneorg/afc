@@ -20,31 +20,32 @@
 
 package org.arakhne.afc.gis.ui;
 
-import org.arakhne.afc.gis.mapelement.GISElementContainer;
-import org.arakhne.afc.gis.mapelement.MapElement;
+import org.arakhne.afc.gis.primitive.GISContainer;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystemConstants;
-import org.arakhne.afc.nodefx.DocumentDrawer;
+import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.ZoomableCanvas;
 import org.arakhne.afc.util.InformedIterable;
 
-/** Resizeable canvas for rendering GIS primitives.
+/** Abstract implementation of a resizeable canvas for rendering GIS primitives.
  *
- * <p>The GIS elements are displayed within this {@code GisCanvas} by the {@link DocumentDrawer drawers}
+ * <p>The GIS elements are displayed within this {@code GisCanvas} by the {@link Drawer drawers}
  * that are declared as services.
  *
  * <p>The {@code GisCanvas} provides a tool for displaying GIS elements. It does not provide
  * advanced UI components (scroll bars, etc.) and interaction means (mouse support, etc.).
  *
- * @param <T> the type of the map elements.
+ * @param <T> the type of the primitive container.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class GisCanvas<T extends MapElement> extends ZoomableCanvas<T, GISElementContainer<T>> {
+public class GisCanvas<T extends GISContainer<?>> extends ZoomableCanvas<T> {
 
-	private static final boolean DEFAULT_INVERTED_Y_AXIS =
+	/** Indicates if the Y axis should be inverted for GIS primitives.
+	 */
+	public static final boolean DEFAULT_INVERTED_Y_AXIS =
 			CoordinateSystemConstants.GIS_2D.isLeftHanded() != CoordinateSystemConstants.JAVAFX_2D.isLeftHanded();
 
 	/** Constructor. The renderer is detected with the type replied by
@@ -52,7 +53,7 @@ public class GisCanvas<T extends MapElement> extends ZoomableCanvas<T, GISElemen
 	 *
 	 * @param model the source of the elements.
 	 */
-	public GisCanvas(GISElementContainer<T> model) {
+	public GisCanvas(T model) {
 		this(model, null);
 	}
 
@@ -61,7 +62,7 @@ public class GisCanvas<T extends MapElement> extends ZoomableCanvas<T, GISElemen
 	 * @param model the source of the elements.
 	 * @param drawer the drawer.
 	 */
-	public GisCanvas(GISElementContainer<T> model, DocumentDrawer<T, GISElementContainer<T>> drawer) {
+	public GisCanvas(T model, Drawer<? super T> drawer) {
 		super(model, drawer);
 		setInvertedAxisY(DEFAULT_INVERTED_Y_AXIS);
 	}
