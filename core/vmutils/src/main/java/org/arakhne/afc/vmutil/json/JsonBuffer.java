@@ -48,13 +48,24 @@ public class JsonBuffer {
 
 	private final Map<String, Object> content = new TreeMap<>();
 
+	/** Replies if the buffer is empty or not.
+	 *
+	 * @return {@code true} if the buffer is empty. {@code false} if the buffer is not empty.
+	 * @since 15.0
+	 */
+	public boolean isEmpty() {
+		return this.content.isEmpty();
+	}
+
 	/** Add the given value.
 	 *
 	 * @param name the name.
 	 * @param value the value.
 	 */
 	public void add(String name, Object value) {
-		this.content.put(name, value);
+		if (value != null) {
+			this.content.put(name, value);
+		}
 	}
 
 	/** Add the given value.
@@ -63,7 +74,9 @@ public class JsonBuffer {
 	 * @param value the value.
 	 */
 	public void add(String name, Iterable<?> value) {
-		this.content.put(name, value);
+		if (value != null) {
+			this.content.put(name, value);
+		}
 	}
 
 	/** Add the given value.
@@ -72,7 +85,9 @@ public class JsonBuffer {
 	 * @param value the value.
 	 */
 	public void add(String name, Map<?, ?> value) {
-		this.content.put(name, value);
+		if (value != null) {
+			this.content.put(name, value);
+		}
 	}
 
 	/** Add the given value.
@@ -81,7 +96,7 @@ public class JsonBuffer {
 	 * @param value the value.
 	 */
 	public void add(String name, JsonBuffer value) {
-		if (value != this) {
+		if (value != null && value != this && !value.isEmpty()) {
 			this.content.put(name, value);
 		}
 	}
