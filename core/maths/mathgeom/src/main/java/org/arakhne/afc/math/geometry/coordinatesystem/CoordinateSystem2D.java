@@ -59,14 +59,80 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * <p><a href="doc-files/xy_right.png"><img src="doc-files/xy_right.png" width="200"
 	 * alt="[Right Handed XY Coordinate System]"></a>
 	 */
-	XY_RIGHT_HAND,
+	XY_RIGHT_HAND {
+		@Pure
+		@Override
+		public Vector2D<?, ?> getLeftVector() {
+			return new ImmutableVector2D(0, 1);
+		}
+
+		@Pure
+		@Override
+		public <T extends Vector2D<?, ?>> T getLeftVector(T vectorToFill) {
+			assert vectorToFill != null;
+			vectorToFill.set(0, 1);
+			return vectorToFill;
+		}
+
+		@Pure
+		@Override
+		public Vector2D<?, ?> getRightVector() {
+			return new ImmutableVector2D(0, -1);
+		}
+
+		@Override
+		public <T extends Vector2D<?, ?>> T getRightVector(T vectorToFill) {
+			assert vectorToFill != null;
+			vectorToFill.set(0, -1);
+			return vectorToFill;
+		}
+
+		@Pure
+		@Override
+		public CoordinateSystem3D toCoordinateSystem3D() {
+			return CoordinateSystem3D.XYZ_RIGHT_HAND;
+		}
+	},
 
 	/** Left handed XY coordinate system.
 	 *
 	 * <p><a href="doc-files/xy_left.png"><img src="doc-files/xy_left.png" width="200"
 	 * alt="[Left Handed XY Coordinate System]"></a>
 	 */
-	XY_LEFT_HAND;
+	XY_LEFT_HAND {
+		@Pure
+		@Override
+		public Vector2D<?, ?> getLeftVector() {
+			return new ImmutableVector2D(0, -1);
+		}
+
+		@Pure
+		@Override
+		public <T extends Vector2D<?, ?>> T getLeftVector(T vectorToFill) {
+			assert vectorToFill != null;
+			vectorToFill.set(0, -1);
+			return vectorToFill;
+		}
+
+		@Pure
+		@Override
+		public Vector2D<?, ?> getRightVector() {
+			return new ImmutableVector2D(0, 1);
+		}
+
+		@Override
+		public <T extends Vector2D<?, ?>> T getRightVector(T vectorToFill) {
+			assert vectorToFill != null;
+			vectorToFill.set(0, 1);
+			return vectorToFill;
+		}
+
+		@Pure
+		@Override
+		public CoordinateSystem3D toCoordinateSystem3D() {
+			return CoordinateSystem3D.XYZ_LEFT_HAND;
+		}
+	};
 
 	private static CoordinateSystem2D defaultCoordinateSystem;
 
@@ -344,16 +410,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the left vector.
 	 */
 	@Pure
-	public Vector2D<?, ?> getLeftVector() {
-		switch (this) {
-		case XY_LEFT_HAND:
-			return new ImmutableVector2D(0, -1);
-		case XY_RIGHT_HAND:
-			return new ImmutableVector2D(0, 1);
-		default:
-			throw new CoordinateSystemNotFoundException();
-		}
-	}
+	public abstract Vector2D<?, ?> getLeftVector();
 
 	/** Replies the left vector.
 	 *
@@ -361,36 +418,14 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param vectorToFill is the vector to set with the left vector values.
 	 * @return the left vector.
 	 */
-	public <T extends Vector2D<?, ?>> T getLeftVector(T vectorToFill) {
-		assert vectorToFill != null;
-		switch (this) {
-		case XY_LEFT_HAND:
-			vectorToFill.set(0, -1);
-			return vectorToFill;
-		case XY_RIGHT_HAND:
-			vectorToFill.set(0, 1);
-			return vectorToFill;
-		default:
-			throw new CoordinateSystemNotFoundException();
-
-		}
-	}
+	public abstract <T extends Vector2D<?, ?>> T getLeftVector(T vectorToFill);
 
 	/** Replies the right vector.
 	 *
 	 * @return the right vector.
 	 */
 	@Pure
-	public Vector2D<?, ?> getRightVector() {
-		switch (this) {
-		case XY_LEFT_HAND:
-			return new ImmutableVector2D(0, 1);
-		case XY_RIGHT_HAND:
-			return new ImmutableVector2D(0, -1);
-		default:
-			throw new CoordinateSystemNotFoundException();
-		}
-	}
+	public abstract Vector2D<?, ?> getRightVector();
 
 	/** Replies the right vector.
 	 *
@@ -398,19 +433,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param vectorToFill is the vector to set with the right vector values.
 	 * @return the right vector.
 	 */
-	public <T extends Vector2D<?, ?>> T getRightVector(T vectorToFill) {
-		assert vectorToFill != null;
-		switch (this) {
-		case XY_LEFT_HAND:
-			vectorToFill.set(0, 1);
-			return vectorToFill;
-		case XY_RIGHT_HAND:
-			vectorToFill.set(0, -1);
-			return vectorToFill;
-		default:
-			throw new CoordinateSystemNotFoundException();
-		}
-	}
+	public abstract <T extends Vector2D<?, ?>> T getRightVector(T vectorToFill);
 
 	/** Replies the 3D coordinate system which is corresponding to
 	 * this 2D coordinate system.
@@ -418,15 +441,6 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the 3D coordinate system
 	 */
 	@Pure
-	public CoordinateSystem3D toCoordinateSystem3D() {
-		switch (this) {
-		case XY_LEFT_HAND:
-			return CoordinateSystem3D.XYZ_LEFT_HAND;
-		case XY_RIGHT_HAND:
-			return CoordinateSystem3D.XYZ_RIGHT_HAND;
-		default:
-			throw new CoordinateSystemNotFoundException();
-		}
-	}
+	public abstract CoordinateSystem3D toCoordinateSystem3D();
 
 }
