@@ -29,6 +29,7 @@ import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 
 @SuppressWarnings("all")
+@Deprecated
 public class SeekingAlgorithmTest extends AbstractMathTestCase {
 
 	private SeekingAlgorithm seek;

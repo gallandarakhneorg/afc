@@ -13,6 +13,7 @@
 
 	<properties>
 		<afc.version>15.0-SNAPSHOT</afc.version>
+		<is_stable_version>false</is_stable_version>
 		<afc.plugins.version>13.0</afc.plugins.version>
 		<min.java.version>1.8</min.java.version>
 		<year>2018</year>
@@ -130,7 +131,7 @@
 				<artifactId>nodefx</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
-			
+
 
 			<dependency>
 				<groupId>org.arakhne.afc.gis</groupId>
@@ -457,7 +458,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<!--  Caution: version 3.7.0 has dependencies which required Java 9 -->
+					<!-- Caution: version 3.7.0 has dependencies which required Java 9 -->
 					<version>3.6.2</version>
 				</plugin>
 				<plugin>
@@ -526,6 +527,11 @@
 					<version>1.6</version>
 				</plugin>
 				<plugin>
+					<groupId>com.google.code.maven-replacer-plugin</groupId>
+					<artifactId>replacer</artifactId>
+					<version>1.5.3</version>
+				</plugin>
+				<plugin>
 					<groupId>org.arakhne.afc.maven</groupId>
 					<artifactId>tag-replacer</artifactId>
 					<version>${afc.plugins.version}</version>
@@ -554,7 +560,7 @@
 						</execution>
 					</executions>
 					<configuration>
-					    <!-- config is inside one of the dependencies -->
+						<!-- config is inside one of the dependencies -->
 						<configLocation>/checkstyle/checkstyle.xml</configLocation>
 						<!-- force absolute path of the config file -->
 						<propertyExpansion>${checkstyle.config_loc}</propertyExpansion>
@@ -640,6 +646,19 @@
 										<groupId>org.codehaus.gmavenplus</groupId>
 										<artifactId>gmavenplus-plugin</artifactId>
 										<versionRange>[1.5,)</versionRange>
+										<goals>
+											<goal>execute</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.google.code.maven-replacer-plugin</groupId>
+										<artifactId>replacer</artifactId>
+										<versionRange>[1.5.3,)</versionRange>
 										<goals>
 											<goal>execute</goal>
 										</goals>

@@ -48,7 +48,9 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 14.0
+ * @deprecated see "org.arakhne.afc.jasim:motionbehavior" module for replacement.
  */
+@Deprecated
 public class AgentMotion implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 8733139573585094484L;

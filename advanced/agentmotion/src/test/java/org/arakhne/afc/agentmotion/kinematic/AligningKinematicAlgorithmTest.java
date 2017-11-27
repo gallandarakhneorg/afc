@@ -28,6 +28,7 @@ import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 
 @SuppressWarnings("all")
+@Deprecated
 public class AligningKinematicAlgorithmTest extends AbstractMathTestCase {
 
 	private AligningKinematicAlgorithm aligning;

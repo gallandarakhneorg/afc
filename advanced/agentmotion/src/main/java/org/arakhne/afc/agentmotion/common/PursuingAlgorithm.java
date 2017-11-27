@@ -37,7 +37,9 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 14.0
+ * @deprecated see "org.arakhne.afc.jasim:motionbehavior" module for replacement.
  */
+@Deprecated
 public class PursuingAlgorithm extends AbstractTargetPositionPredictionAlgorithm
 		implements PursuingMotionAlgorithm {
 

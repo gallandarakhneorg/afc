@@ -6,28 +6,32 @@ The steps for releasing AFC are:
 
 A) PHASE 1: RELEASE VERSION
 
-A.1) Remove "-SNAPSHOT" in all the poms, and AndroidManifest.xml.
+A.1) Update the pom configuration
 
-A.2) Change the flags "bytecode.optimize" and "bytecode.debug" in pom.xml 
+A.1.1) Remove "-SNAPSHOT" in all the poms.
 
-A.3) Change the P2 configuration. 
+A.1.2) Change the "is_stable_version" flag inside the root pom.
 
-A.4) Updgrade Maven dependencies and plugins.
+A.1.3) Change the flags "bytecode.optimize" and "bytecode.debug" in pom.xml 
 
-A.5) Compiling locally without error.
+A.2) Change the P2 configuration. 
+
+A.3) Updgrade Maven dependencies and plugins.
+
+A.4) Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
      $> mvn clean install
 
-A.6) Create the aggregated documentation, and copy the generated archive file into a safe folder:
+A.5) Create the aggregated documentation, and copy the generated archive file into a safe folder:
 
      $> ./build-tools/src/main/resources/bash/generate_aggregate_javadoc.sh
 
-A.7) Prepare the bundles for Maven Central, and copy the generated archive files into a safe folder:
+A.6) Prepare the bundles for Maven Central, and copy the generated archive files into a safe folder:
 
      $> ./build-tools/src/main/resources/bash/prepare-bundles-for-central.sh
 
-A.8) Commit, Tag and push to Github:
+A.7) Commit, Tag and push to Github:
 
      $> git commit
      $> git tag "vX.Y.Z"
@@ -51,7 +55,7 @@ B.6) Announce the new version of AFC on the mailing lists.
 
 C) PHASE 3: DEVELOPMENT VERSION
 
-C.1) Revert step A.1 to A.3.
+C.1) Revert step A.1 to A.2.
 
 C.2) Compiling locally without error.
 

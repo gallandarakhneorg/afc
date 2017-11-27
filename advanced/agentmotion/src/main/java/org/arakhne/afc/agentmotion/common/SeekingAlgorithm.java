@@ -38,7 +38,9 @@ import org.arakhne.afc.math.geometry.d2.d.Vector2d;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 14.0
+ * @deprecated see "org.arakhne.afc.jasim:motionbehavior" module for replacement.
  */
+@Deprecated
 public class SeekingAlgorithm implements SeekingMotionAlgorithm, Serializable, Cloneable {
 
 	private static final long serialVersionUID = -8318025671219960417L;

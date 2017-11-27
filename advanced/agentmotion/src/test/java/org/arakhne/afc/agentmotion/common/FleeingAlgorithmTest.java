@@ -28,6 +28,7 @@ import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 
 @SuppressWarnings("all")
+@Deprecated
 public class FleeingAlgorithmTest extends AbstractMathTestCase {
 
 	private FleeingAlgorithm flee;

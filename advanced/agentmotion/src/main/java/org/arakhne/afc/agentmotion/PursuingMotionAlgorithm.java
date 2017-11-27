@@ -34,7 +34,9 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 14.0
+ * @deprecated see "org.arakhne.afc.jasim:motionbehavior" module for replacement.
  */
+@Deprecated
 public interface PursuingMotionAlgorithm {
 
 	/** Clone this algorithm.
