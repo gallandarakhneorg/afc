@@ -1,0 +1,53 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>jasim-environment</artifactId>
+		<groupId>fr.utbm.set.jasim</groupId>
+		<version>3.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>jasim-environment-base</artifactId>
+	<name>JaSIM Abstract Environment Model</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>fr.utbm.set.jasim</groupId>
+			<artifactId>jasim-environment-interface</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.utbm.set.sfc.core</groupId>
+			<artifactId>errorlogger</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.utbm.set.sfc.math</groupId>
+			<artifactId>tree</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.utbm.set.sfc.math</groupId>
+			<artifactId>random</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.utbm.set.sfc.io</groupId>
+			<artifactId>filefilter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.utbm.set.sfc.fileformat</groupId>
+			<artifactId>heightmap</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>util</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>fr.utbm.set.sfc.unittest</groupId>
+			<artifactId>extended</artifactId>
+			<scope>test</scope>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+</project>
