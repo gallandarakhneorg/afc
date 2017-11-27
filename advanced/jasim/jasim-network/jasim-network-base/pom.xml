@@ -1,0 +1,26 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>fr.utbm.set.jasim</groupId>
+		<artifactId>jasim-network</artifactId>
+		<version>3.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>jasim-network-base</artifactId>
+	<name>JaSIM Network Base Support</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>fr.utbm.set.sfc.math</groupId>
+			<artifactId>geom</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.utbm.set.sfc.io</groupId>
+			<artifactId>endian</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

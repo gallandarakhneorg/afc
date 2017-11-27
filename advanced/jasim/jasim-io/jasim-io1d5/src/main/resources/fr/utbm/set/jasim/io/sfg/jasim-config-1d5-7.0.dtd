@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<!-- $Id$
+
+     DTD definition for a JaSim configuration file for 1.5D simulation.
+     Version 7.0
+
+     Copyright (c) 2004-09, laboratory Systems and Transport - Computer Science Team.
+     All rights reserved.
+
+     http://set.utbm.fr/
+-->
+
+<!ELEMENT simulation (time?,environment,spawners?)>
+<!ATTLIST simulation dtdversion CDATA #FIXED "7.0">
+<!ATTLIST simulation id ID #REQUIRED>
+<!ATTLIST simulation name CDATA #IMPLIED>
+<!ATTLIST simulation date CDATA #IMPLIED>
+<!ATTLIST simulation authors CDATA #IMPLIED>
+<!ATTLIST simulation version CDATA #IMPLIED>
+<!ATTLIST simulation description CDATA #IMPLIED>
+
+<!ELEMENT time EMPTY>
+<!ATTLIST time type (step|realtime) "realtime">
+<!ATTLIST time unit (millisecond|second|minute|hour) "second">
+<!ATTLIST time timeStep CDATA "1">
+
+<!ELEMENT environment (places,portals?)>
+<!ATTLIST environment dimension CDATA #FIXED "1.5d">
+
+<!ELEMENT places (place+)>
+
+<!ELEMENT place (groundEnvironment,staticEnvironment?,dynamicEnvironment?,environmentProbes?)>
+<!ATTLIST place activate (true|false) "true">
+<!ATTLIST place id ID #REQUIRED>
+<!ATTLIST place name CDATA #IMPLIED>
+<!ATTLIST place perceptionAlgo (sequential|parallel) "sequential">
+
+<!ELEMENT groundEnvironment EMPTY>
+<!ATTLIST groundEnvironment id CDATA #REQUIRED>
+<!ATTLIST groundEnvironment shapeFile CDATA #REQUIRED>
+<!ATTLIST groundEnvironment dBaseFile CDATA #IMPLIED>
+
+<!ELEMENT staticEnvironment EMPTY>
+<!ATTLIST staticEnvironment class CDATA #REQUIRED>
+<!ATTLIST staticEnvironment prebuildResource CDATA #IMPLIED>
+
+<!ELEMENT dynamicEnvironment (agent*)>
+<!ATTLIST dynamicEnvironment class CDATA #IMPLIED>
+<!ATTLIST dynamicEnvironment prebuildResource CDATA #IMPLIED>
+
+<!ELEMENT agent (agentSemantic*)>
+<!ATTLIST agent activate (true|false) "true">
+<!ATTLIST agent class CDATA #REQUIRED>
+<!ATTLIST agent type CDATA #REQUIRED>
+
+<!ELEMENT agentSemantics (agentSemantic+)>
+
+<!ELEMENT agentSemantic (#PCDATA)>
+
+<!ELEMENT environmentProbes (environmentProbe+)>
+<!ATTLIST environmentProbes activate (true|false) "true">
+
+<!ELEMENT environmentProbe EMPTY>
+<!ATTLIST environmentProbe activate (true|false) "true">
+<!ATTLIST environmentProbe road CDATA #REQUIRED>
+<!ATTLIST environmentProbe x CDATA "0">
+<!ATTLIST environmentProbe y CDATA "0">
+<!ATTLIST environmentProbe name ID #REQUIRED>
+
+<!ELEMENT portals (portal+)>
+<!ATTLIST portals activate (true|false) "true">
+
+<!ELEMENT portal (portalSource,portalTarget)>
+<!ATTLIST portal activate (true|false) "true">
+
+<!ELEMENT portalSource EMPTY>
+<!ATTLIST portalSource place IDREF #REQUIRED>
+<!ATTLIST portalSource road CDATA #REQUIRED>
+<!ATTLIST portalSource x CDATA "0">
+<!ATTLIST portalSource y1 CDATA "0">
+<!ATTLIST portalSource y2 CDATA "0">
+<!ATTLIST portalSource direction (segment|reverse|both) "both">
+
+<!ELEMENT portalTarget EMPTY>
+<!ATTLIST portalTarget place IDREF #REQUIRED>
+<!ATTLIST portalTarget road CDATA #REQUIRED>
+<!ATTLIST portalTarget x CDATA "0">
+<!ATTLIST portalTarget y CDATA "0">
+<!ATTLIST portalTarget direction (segment|reverse) "segment">
+
+<!ELEMENT spawners (spawner+)>
+<!ATTLIST spawners activate (true|false) "true">
+
+<!ELEMENT spawner (entity+)>
+<!ATTLIST spawner activate (true|false) "true">
+<!ATTLIST spawner type (point|area) "point">
+<!ATTLIST spawner id ID #REQUIRED>
+<!ATTLIST spawner name CDATA #IMPLIED>
+<!ATTLIST spawner place IDREF "">
+<!ATTLIST spawner road CDATA #REQUIRED>
+<!ATTLIST spawner x CDATA "0">
+<!ATTLIST spawner y CDATA #IMPLIED>
+<!ATTLIST spawner width CDATA "0">
+<!ATTLIST spawner direction (segment|reverse|both) "both">
+<!ATTLIST spawner startDate CDATA "0">
+<!ATTLIST spawner endDate CDATA #IMPLIED>
+
+<!ELEMENT entity (frustums,body?,agentSemantics?,waypoints?,goals?,generationLaw,attributes?,probes?)>
+<!ATTLIST entity activate (true|false) "true">
+<!ATTLIST entity agentType CDATA #REQUIRED>
+<!ATTLIST entity budget CDATA #IMPLIED>
+
+<!ELEMENT frustums (frustum+)>
+
+<!ELEMENT frustum EMPTY>
+<!ATTLIST frustum type (rectangle) #REQUIRED>
+<!ATTLIST frustum farDistance CDATA #REQUIRED>
+<!ATTLIST frustum sideSize CDATA #REQUIRED>
+
+<!ELEMENT body EMPTY>
+<!ATTLIST body type CDATA #IMPLIED>
+<!ATTLIST body curvilineSize CDATA #IMPLIED>
+<!ATTLIST body lateralSize CDATA #IMPLIED>
+
+<!ELEMENT waypoints (waypoint+)>
+<!ATTLIST waypoints activate (true|false) "true">
+
+<!ELEMENT waypoint EMPTY>
+<!ATTLIST waypoint activate (true|false) "true">
+<!ATTLIST waypoint name CDATA #IMPLIED>
+<!ATTLIST waypoint place IDREF "">
+<!ATTLIST waypoint road CDATA #REQUIRED>
+<!ATTLIST waypoint x CDATA "0">
+<!ATTLIST waypoint y CDATA "0">
+<!ATTLIST waypoint direction (segment|reverse|both) "both">
+<!ATTLIST waypoint velocity CDATA #IMPLIED>
+<!ATTLIST waypoint time CDATA #IMPLIED>
+
+<!ELEMENT goals (goal+)>
+<!ATTLIST goals activate (true|false) "true">
+
+<!ELEMENT goal EMPTY>
+<!ATTLIST goal activate (true|false) "true">
+<!ATTLIST goal name CDATA "">
+<!ATTLIST goal place IDREF "">
+<!ATTLIST goal road CDATA #REQUIRED>
+<!ATTLIST goal x CDATA "0">
+<!ATTLIST goal y CDATA "0">
+<!ATTLIST goal direction (segment|reverse|both) "both">
+<!ATTLIST goal time CDATA #IMPLIED>
+
+<!ELEMENT generationLaw (lawParam*)>
+<!ATTLIST generationLaw class CDATA #REQUIRED>
+
+<!ELEMENT lawParam EMPTY>
+<!ATTLIST lawParam name CDATA #REQUIRED>
+<!ATTLIST lawParam value CDATA #REQUIRED>
+
+<!ELEMENT attributes (attr+)>
+<!ATTLIST attributes activate (true|false) "true">
+
+<!ELEMENT attr EMPTY>
+<!ATTLIST attr activate (true|false) "true">
+<!ATTLIST attr name CDATA #REQUIRED>
+<!ATTLIST attr value CDATA #REQUIRED>
+
+<!ELEMENT probes (probe+)>
+<!ATTLIST probes activate (true|false) "true">
+
+<!ELEMENT probe EMPTY>
+<!ATTLIST probe activate (true|false) "true">
+<!ATTLIST probe name ID #REQUIRED>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<!-- $Id$
+
+     DTD definition for a JaSim configuration file for 3D simulation.
+     Version 7.0
+
+     Copyright (c) 2004-09, laboratory Systems and Transport - Computer Science Team.
+     All rights reserved.
+
+     http://set.utbm.fr/
+-->
+
+<!ELEMENT simulation (time?,environment,spawners?)>
+<!ATTLIST simulation dtdversion CDATA #FIXED "7.0">
+<!ATTLIST simulation id ID #REQUIRED>
+<!ATTLIST simulation name CDATA #IMPLIED>
+<!ATTLIST simulation date CDATA #IMPLIED>
+<!ATTLIST simulation authors CDATA #IMPLIED>
+<!ATTLIST simulation version CDATA #IMPLIED>
+<!ATTLIST simulation description CDATA #IMPLIED>
+
+<!ELEMENT time EMPTY>
+<!ATTLIST time type (step|realtime) "realtime">
+<!ATTLIST time unit (millisecond|second|minute|hour) "second">
+<!ATTLIST time timeStep CDATA "1">
+
+<!ELEMENT environment (places,portals?)>
+<!ATTLIST environment dimension CDATA #FIXED "3d">
+
+<!ELEMENT places (place+)>
+
+<!ELEMENT place (groundEnvironment,staticEnvironment?,dynamicEnvironment?,environmentProbes?)>
+<!ATTLIST place activate (true|false) "true">
+<!ATTLIST place id ID #REQUIRED>
+<!ATTLIST place name CDATA #IMPLIED>
+
+<!ELEMENT groundEnvironment (heightmap|indoorGround)>
+<!ATTLIST groundEnvironment type (constant|simple|repulsion|any) "any">
+<!ATTLIST groundEnvironment id CDATA #REQUIRED>
+<!ATTLIST groundEnvironment prebuildResource CDATA #IMPLIED>
+
+<!ELEMENT staticEnvironment EMPTY>
+<!ATTLIST staticEnvironment class CDATA #REQUIRED>
+<!ATTLIST staticEnvironment prebuildResource CDATA #IMPLIED>
+
+<!ELEMENT dynamicEnvironment (agent*)>
+<!ATTLIST dynamicEnvironment class CDATA #IMPLIED>
+<!ATTLIST dynamicEnvironment prebuildResource CDATA #IMPLIED>
+<!ATTLIST dynamicEnvironment agentType CDATA #IMPLIED>
+
+<!ELEMENT agent (agentSemantic*)>
+<!ATTLIST agent activate (true|false) "true">
+<!ATTLIST agent class CDATA #REQUIRED>
+<!ATTLIST agent type CDATA #REQUIRED>
+
+<!ELEMENT agentSemantics (agentSemantic+)>
+
+<!ELEMENT agentSemantic (#PCDATA)>
+
+<!ELEMENT environmentProbes (environmentProbe+)>
+<!ATTLIST environmentProbes activate (true|false) "true">
+
+<!ELEMENT environmentProbe EMPTY>
+<!ATTLIST environmentProbe activate (true|false) "true">
+<!ATTLIST environmentProbe x CDATA "0">
+<!ATTLIST environmentProbe y CDATA "0">
+<!ATTLIST environmentProbe z CDATA "0">
+<!ATTLIST environmentProbe name ID #REQUIRED>
+
+<!ELEMENT portals (portal+)>
+<!ATTLIST portals activate (true|false) "true">
+
+<!ELEMENT portal (portalSource,portalTarget)>
+<!ATTLIST portal activate (true|false) "true">
+
+<!ELEMENT portalSource EMPTY>
+<!ATTLIST portalSource place IDREF #REQUIRED>
+<!ATTLIST portalSource x1 CDATA "0">
+<!ATTLIST portalSource y1 CDATA "0">
+<!ATTLIST portalSource x2 CDATA "0">
+<!ATTLIST portalSource y2 CDATA "0">
+<!ATTLIST portalSource onleft (true|false) "true">
+
+<!ELEMENT portalTarget EMPTY>
+<!ATTLIST portalTarget place IDREF #REQUIRED>
+<!ATTLIST portalTarget x CDATA "0">
+<!ATTLIST portalTarget y CDATA "0">
+<!ATTLIST portalTarget dx CDATA "0">
+<!ATTLIST portalTarget dy CDATA "0">
+
+<!ELEMENT heightmap EMPTY>
+<!ATTLIST heightmap url CDATA #REQUIRED>
+<!ATTLIST heightmap minx CDATA #REQUIRED>
+<!ATTLIST heightmap miny CDATA #REQUIRED>
+<!ATTLIST heightmap minz CDATA #REQUIRED>
+<!ATTLIST heightmap maxx CDATA #REQUIRED>
+<!ATTLIST heightmap maxy CDATA #REQUIRED>
+<!ATTLIST heightmap maxz CDATA #REQUIRED>
+<!ATTLIST heightmap rawGroundZero CDATA "-127">
+<!ATTLIST heightmap groundZero CDATA #IMPLIED>
+<!ATTLIST heightmap semantic CDATA #IMPLIED>
+
+<!ELEMENT indoorGround EMPTY>
+<!ATTLIST indoorGround minx CDATA #REQUIRED>
+<!ATTLIST indoorGround miny CDATA #REQUIRED>
+<!ATTLIST indoorGround maxx CDATA #REQUIRED>
+<!ATTLIST indoorGround maxy CDATA #REQUIRED>
+<!ATTLIST indoorGround z CDATA #REQUIRED>
+<!ATTLIST indoorGround semantic CDATA #IMPLIED>
+
+<!ELEMENT spawners (spawner+)>
+<!ATTLIST spawners activate (true|false) "true">
+
+<!ELEMENT spawner (entity+)>
+<!ATTLIST spawner activate (true|false) "true">
+<!ATTLIST spawner type (point|area) "point">
+<!ATTLIST spawner id ID #REQUIRED>
+<!ATTLIST spawner name CDATA #IMPLIED>
+<!ATTLIST spawner place IDREF "">
+<!ATTLIST spawner x CDATA "0">
+<!ATTLIST spawner y CDATA #IMPLIED>
+<!ATTLIST spawner z CDATA #IMPLIED>
+<!ATTLIST spawner width CDATA "0">
+<!ATTLIST spawner height CDATA "0">
+<!ATTLIST spawner startAngle CDATA "0">
+<!ATTLIST spawner endAngle CDATA "6.283185308">
+<!ATTLIST spawner startDate CDATA "0">
+<!ATTLIST spawner endDate CDATA #IMPLIED>
+
+<!ELEMENT entity (frustums,body?,agentSemantics?,waypoints?,goals?,generationLaw,attributes?,probes?)>
+<!ATTLIST entity activate (true|false) "true">
+<!ATTLIST entity agentType CDATA #REQUIRED>
+<!ATTLIST entity budget CDATA #IMPLIED>
+
+<!ELEMENT frustums (frustum+)>
+
+<!ELEMENT frustum EMPTY>
+<!ATTLIST frustum type (rectangle|sphere|pyramid|pedestrian) #REQUIRED>
+<!ATTLIST frustum eyePosition CDATA #IMPLIED>
+<!ATTLIST frustum farDistance CDATA #REQUIRED>
+<!ATTLIST frustum sideSize CDATA "0.0">
+<!ATTLIST frustum verticalSize CDATA "0.0">
+<!ATTLIST frustum nearDistance CDATA "0.0">
+<!ATTLIST frustum fieldOfViewHAngle CDATA "0.785398164">
+<!ATTLIST frustum fieldOfViewVAngle CDATA "0.785398164">
+
+<!ELEMENT body EMPTY>
+<!ATTLIST body type CDATA #IMPLIED>
+<!ATTLIST body height CDATA #IMPLIED>
+<!ATTLIST body radius CDATA #IMPLIED>
+
+<!ELEMENT waypoints (waypoint+)>
+<!ATTLIST waypoints activate (true|false) "true">
+
+<!ELEMENT waypoint EMPTY>
+<!ATTLIST waypoint activate (true|false) "true">
+<!ATTLIST waypoint name CDATA #IMPLIED>
+<!ATTLIST waypoint place IDREF "">
+<!ATTLIST waypoint x CDATA "0">
+<!ATTLIST waypoint y CDATA "0">
+<!ATTLIST waypoint z CDATA "0">
+<!ATTLIST waypoint tangentX CDATA #IMPLIED>
+<!ATTLIST waypoint tangentY CDATA #IMPLIED>
+<!ATTLIST waypoint tangentZ CDATA #IMPLIED>
+<!ATTLIST waypoint velocity CDATA #IMPLIED>
+<!ATTLIST waypoint time CDATA #IMPLIED>
+
+<!ELEMENT goals (goal+)>
+<!ATTLIST goals activate (true|false) "true">
+
+<!ELEMENT goal EMPTY>
+<!ATTLIST goal activate (true|false) "true">
+<!ATTLIST goal name CDATA #IMPLIED>
+<!ATTLIST goal place IDREF "">
+<!ATTLIST goal x CDATA "0">
+<!ATTLIST goal y CDATA "0">
+<!ATTLIST goal z CDATA "0">
+<!ATTLIST goal tangentX CDATA #IMPLIED>
+<!ATTLIST goal tangentY CDATA #IMPLIED>
+<!ATTLIST goal tangentZ CDATA #IMPLIED>
+<!ATTLIST goal time CDATA #IMPLIED>
+
+<!ELEMENT generationLaw (lawParam*)>
+<!ATTLIST generationLaw class CDATA #REQUIRED>
+
+<!ELEMENT lawParam EMPTY>
+<!ATTLIST lawParam name CDATA #REQUIRED>
+<!ATTLIST lawParam value CDATA #REQUIRED>
+
+<!ELEMENT attributes (attr+)>
+<!ATTLIST attributes activate (true|false) "true">
+
+<!ELEMENT attr EMPTY>
+<!ATTLIST attr activate (true|false) "true">
+<!ATTLIST attr name CDATA #REQUIRED>
+<!ATTLIST attr value CDATA #REQUIRED>
+
+<!ELEMENT probes (probe+)>
+<!ATTLIST probes activate (true|false) "true">
+
+<!ELEMENT probe EMPTY>
+<!ATTLIST probe activate (true|false) "true">
+<!ATTLIST probe name ID #REQUIRED>

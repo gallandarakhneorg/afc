@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>fr.utbm.set.jasim</groupId>
+		<artifactId>jasim-launcher</artifactId>
+		<version>3.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>jasim-launcher3d</artifactId>
+	<name>JaSIM Launchers for 3D environment</name>
+
+	<build>
+		<plugins>
+			<plugin><!-- to create a runnable jar with source files -->
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>bin.xml</descriptor>
+					</descriptors>
+					<archive>
+						<manifest>
+							<mainClass>fr.utbm.set.jasim.launcher.JasimNetworkServer3D</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attached</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>fr.utbm.set.jasim</groupId>
+			<artifactId>jasim-network-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.utbm.set.jasim</groupId>
+			<artifactId>jasim-controller3d</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.utbm.set.jasim</groupId>
+			<artifactId>jasim-janus</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

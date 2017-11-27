@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>fr.utbm.set.jasim</groupId>
+		<artifactId>jasim-controller</artifactId>
+		<version>3.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>jasim-controller1d5</artifactId>
+	<name>JaSIM 1.5D Controller</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>fr.utbm.set.jasim</groupId>
+			<artifactId>jasim-controller-base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.utbm.set.jasim</groupId>
+			<artifactId>jasim-environment1d5</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.utbm.set.jasim</groupId>
+			<artifactId>jasim-io1d5</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.utbm.set.gis</groupId>
+			<artifactId>gisroadio</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>
