@@ -24,9 +24,16 @@ import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.ImmutableVector2D;
-import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
+import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /**
@@ -142,31 +149,17 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 		return 2;
 	}
 
-	/** Convert the specified point from the current coordinate system
+	/** Convert the specified point/vector from the current coordinate system
 	 * to the specified coordinate system.
 	 *
-	 * @param point is the point to convert
+	 * @param tuple is the point/vector to convert
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
-	public void toSystem(Point2D<?, ?> point, CoordinateSystem2D targetCoordinateSystem) {
-        assert point != null : AssertMessages.notNullParameter(0);
+	public void toSystem(Tuple2D<?> tuple, CoordinateSystem2D targetCoordinateSystem) {
+        assert tuple != null : AssertMessages.notNullParameter(0);
 		assert targetCoordinateSystem != null : AssertMessages.notNullParameter(1);
 		if (this != targetCoordinateSystem) {
-			point.setY(-point.getY());
-		}
-	}
-
-	/** Convert the specified point from the current coordinate system
-	 * to the specified coordinate system.
-	 *
-	 * @param point is the point to convert
-	 * @param targetCoordinateSystem is the target coordinate system.
-	 */
-	public void toSystem(Vector2D<?, ?> point, CoordinateSystem2D targetCoordinateSystem) {
-        assert point != null : AssertMessages.notNullParameter(0);
-        assert targetCoordinateSystem != null : AssertMessages.notNullParameter(1);
-		if (this != targetCoordinateSystem) {
-			point.setY(-point.getY());
+			tuple.setY(-tuple.getY());
 		}
 	}
 
@@ -202,23 +195,13 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 		}
 	}
 
-	/** Convert the specified point into the default coordinate system.
+	/** Convert the specified point/vector into the default coordinate system.
 	 *
-	 * @param point is the point to convert
+	 * @param tuple is the point/vector to convert
 	 */
-	public void toDefault(Point2D<?, ?> point) {
+	public void toDefault(Tuple2D<?> tuple) {
 		if (this != getDefaultCoordinateSystem()) {
-			point.setY(-point.getY());
-		}
-	}
-
-	/** Convert the specified vector from the default coordinate system.
-	 *
-	 * @param vector is the vector to convert
-	 */
-	public void toDefault(Vector2D<?, ?> vector) {
-		if (this != getDefaultCoordinateSystem()) {
-			vector.setY(-vector.getY());
+			tuple.setY(-tuple.getY());
 		}
 	}
 
@@ -247,23 +230,13 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 		return rotation;
 	}
 
-	/** Convert the specified point from the default coordinate system.
+	/** Convert the specified point/vector from the default coordinate system.
 	 *
-	 * @param point is the point to convert
+	 * @param tuple is the point/vector to convert
 	 */
-	public void fromDefault(Point2D<?, ?> point) {
+	public void fromDefault(Tuple2D<?> tuple) {
 		if (this != getDefaultCoordinateSystem()) {
-			point.setY(-point.getY());
-		}
-	}
-
-	/** Convert the specified vector from the default coordinate system.
-	 *
-	 * @param vector is the vector to convert
-	 */
-	public void fromDefault(Vector2D<?, ?> vector) {
-		if (this != getDefaultCoordinateSystem()) {
-			vector.setY(-vector.getY());
+			tuple.setY(-tuple.getY());
 		}
 	}
 
@@ -442,5 +415,54 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 */
 	@Pure
 	public abstract CoordinateSystem3D toCoordinateSystem3D();
+
+	/** Convert the specified point into from the current coordinate system
+	 * to the 3D coordinate system.
+	 *
+	 * @param point is the point to convert
+	 * @param result the 3D point.
+	 * @since 15.0
+	 */
+	@Pure
+	public void toCoordinateSystem3D(Tuple2D<?> point, Tuple3D<?> result) {
+		final CoordinateSystem3D cs = toCoordinateSystem3D();
+		CoordinateSystem3D.setView(result, point.getX());
+		cs.setSide(result, point.getY());
+		cs.setHeight(result, 0);
+	}
+
+	/** Convert the specified rotation axis into from the current coordinate system
+	 * to the 3D coordinate system.
+	 *
+	 * @param rotation is the rotation to convert
+	 * @param result the 3D rotation.
+	 * @since 15.0
+	 */
+	@Pure
+	public void toCoordinateSystem3D(double rotation, Quaternion result) {
+		final CoordinateSystem3D cs = toCoordinateSystem3D();
+		final Vector3D<?, ?> up = cs.getUpVector();
+		result.setAxisAngle(up.getX(), up.getY(), up.getZ(), rotation);
+	}
+
+	/** Convert the specified transformation into from the current coordinate system
+	 * to the 3D coordinate system.
+	 *
+	 * @param transformation is the transformation to convert
+	 * @param result the 3D transformation
+	 * @since 15.0
+	 */
+	@Pure
+	public void toCoordinateSystem3D(Transform2D transformation, Transform3D result) {
+		final double angle = transformation.getRotation();
+		final Quaternion4d quat = new Quaternion4d();
+		toCoordinateSystem3D(angle, quat);
+		result.makeRotationMatrix(quat);
+		final Vector2d translation2d = new Vector2d();
+		final Vector3d translation3d = new Vector3d();
+		transformation.getTranslationVector(translation2d);
+		toCoordinateSystem3D(translation2d, translation3d);
+		result.setTranslation(translation3d);
+	}
 
 }

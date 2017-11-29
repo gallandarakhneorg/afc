@@ -31,6 +31,9 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
+import org.arakhne.afc.math.geometry.d3.d.Point3d;
+import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
 
 /**
  * Unit test for {@link CoordinateSystem2D}.
@@ -131,6 +134,65 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	public void toCoordinateSystem3D() {
 		assertSame(CoordinateSystem3D.XYZ_RIGHT_HAND, CoordinateSystem2D.XY_RIGHT_HAND.toCoordinateSystem3D());
 		assertSame(CoordinateSystem3D.XYZ_LEFT_HAND, CoordinateSystem2D.XY_LEFT_HAND.toCoordinateSystem3D());
+	}
+
+	@Test
+	public void toCoordinateSystem3DTuple2DTuple3D() {
+		Point2d source = new Point2d(2, 3);
+		Point3d result = new Point3d();
+
+		CoordinateSystem2D.XY_LEFT_HAND.toCoordinateSystem3D(source, result);
+		assertEpsilonEquals(new Point3d(2, 3, 0), result);
+
+		CoordinateSystem2D.XY_RIGHT_HAND.toCoordinateSystem3D(source, result);
+		assertEpsilonEquals(new Point3d(2, 3, 0), result);
+	}
+
+	@Test
+	public void toCoordinateSystem3DTransform2DTransform3D() {
+		// http://www.andre-gaschler.com/rotationconverter/
+		Transform2D source = new Transform2D();
+		Transform3D result = new Transform3D();
+		source.set(-0.8293098, -0.5587891,  3, 0.5587891, -0.8293098,  6);
+		CoordinateSystem2D.XY_LEFT_HAND.toCoordinateSystem3D(source, result);
+		assertEpsilonEquals(new Transform3D(
+				-0.8293098, -0.5587891,  0, 3,
+				0.5587891, -0.8293098,  0, 6,
+				0, 0, 1, 0), result);
+
+		//
+
+		CoordinateSystem2D.XY_RIGHT_HAND.toCoordinateSystem3D(source, result);
+		assertEpsilonEquals(new Transform3D(
+				-0.8293098, -0.5587891,  0, 3,
+				0.5587891, -0.8293098,  0, 6,
+				0, 0, 1, 0), result);
+	}
+
+	@Test
+	public void toCoordinateSystem2DDoubleQuaternion() {
+		// http://www.andre-gaschler.com/rotationconverter/
+		Quaternion4d result = new Quaternion4d();
+
+		CoordinateSystem2D.XY_LEFT_HAND.toCoordinateSystem3D(Math.PI, result);
+		assertEpsilonEquals(new Quaternion4d(0, 0, 1, 0), result);
+
+		CoordinateSystem2D.XY_LEFT_HAND.toCoordinateSystem3D(-54, result);
+		assertEpsilonEquals(new Quaternion4d(0, 0, -0.9563759, -0.2921388), result);
+
+		CoordinateSystem2D.XY_LEFT_HAND.toCoordinateSystem3D(-Math.PI/3., result);
+		assertEpsilonEquals(new Quaternion4d(0, 0, -0.5, 0.8660254), result);
+
+		//
+
+		CoordinateSystem2D.XY_RIGHT_HAND.toCoordinateSystem3D(Math.PI, result);
+		assertEpsilonEquals(new Quaternion4d(0, 0, 1, 0), result);
+
+		CoordinateSystem2D.XY_RIGHT_HAND.toCoordinateSystem3D(-54, result);
+		assertEpsilonEquals(new Quaternion4d(0, 0, -0.9563759, -0.2921388), result);
+
+		CoordinateSystem2D.XY_RIGHT_HAND.toCoordinateSystem3D(-Math.PI/3., result);
+		assertEpsilonEquals(new Quaternion4d(0, 0, -0.5, 0.8660254), result);
 	}
 
 	@Test(expected = AssertionError.class)
