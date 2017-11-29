@@ -275,7 +275,7 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 	@Pure
 	@Override
 	public int ix() {
-		return (int) this.x;
+		return (int) Math.round(this.x);
 	}
 
 	@Override
@@ -297,7 +297,7 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 	@Pure
 	@Override
 	public int iy() {
-		return (int) this.y;
+		return (int) Math.round(this.y);
 	}
 
 	@Override
@@ -319,7 +319,7 @@ public class Tuple3d<RT extends Tuple3d<? super RT>> implements Tuple3D<RT> {
 	@Pure
 	@Override
 	public int iz() {
-		return (int) this.z;
+		return (int) Math.round(this.z);
 	}
 
 	@Override
