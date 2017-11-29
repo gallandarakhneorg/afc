@@ -238,7 +238,7 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 	@Pure
 	@Override
 	public int ix() {
-		return (int) this.x;
+		return (int) Math.round(this.x);
 	}
 
 	@Override
@@ -260,7 +260,7 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 	@Pure
 	@Override
 	public int iy() {
-		return (int) this.y;
+		return (int) Math.round(this.y);
 	}
 
 	@Override
