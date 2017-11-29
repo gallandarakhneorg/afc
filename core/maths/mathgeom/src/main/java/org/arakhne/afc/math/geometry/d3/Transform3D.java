@@ -22,6 +22,9 @@ package org.arakhne.afc.math.geometry.d3;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
+import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.Matrix4d;
 
 /** A 3D transformation.
@@ -46,11 +49,11 @@ import org.arakhne.afc.math.matrix.Matrix4d;
  */
 public class Transform3D extends Matrix4d {
 
-    /** This is the identifity transformation.
-     */
-    public static final Transform3D IDENTITY = new Transform3D();
+	/** This is the identifity transformation.
+	 */
+	public static final Transform3D IDENTITY = new Transform3D();
 
-    private static final long serialVersionUID = -8427812783666663224L;
+	private static final long serialVersionUID = -8427812783666663224L;
 
 	/**
 	 * Constructs a new Transform3D object and sets it to the identity transformation.
@@ -88,25 +91,25 @@ public class Transform3D extends Matrix4d {
 	 *            the [2][3] element
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
-    public Transform3D(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20,
-            double m21, double m22, double m23) {
+	public Transform3D(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20,
+			double m21, double m22, double m23) {
 		super(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, 0f, 0f, 0f, 1f);
 	}
 
-    /**
-     * Constructs a new Transform2D object and initializes it from the
-     * specified transform.
-     *
-     * @param transform the transformation to copy.
-     */
-    public Transform3D(Transform3D transform) {
-        super(transform);
-    }
+	/**
+	 * Constructs a new Transform2D object and initializes it from the
+	 * specified transform.
+	 *
+	 * @param transform the transformation to copy.
+	 */
+	public Transform3D(Transform3D transform) {
+		super(transform);
+	}
 
 	/** Constructor by copy.
-     *
-     * @param matrix the matrix to copy.
-     */
+	 *
+	 * @param matrix the matrix to copy.
+	 */
 	public Transform3D(Matrix4d matrix) {
 		super(matrix);
 	}
@@ -134,7 +137,7 @@ public class Transform3D extends Matrix4d {
 	 *
 	 * @param x x translation.
 	 * @param y y translation.
-     * @param z z translation.
+	 * @param z z translation.
 	 * @see #makeTranslationMatrix(double, double, double)
 	 */
 	public void setTranslation(double x, double y, double z) {
@@ -232,8 +235,8 @@ public class Transform3D extends Matrix4d {
 		return this.m23;
 	}
 
-    /**
-     * Set the rotation for the object but do not change the translation.
+	/**
+	 * Set the rotation for the object but do not change the translation.
 	 *
 	 * <p>This function changes only the elements of
 	 * the matrix related to the rotation.
@@ -248,33 +251,44 @@ public class Transform3D extends Matrix4d {
 	 *          [   r   r   r   ?   ]
 	 *          [   ?   ?   ?   ?   ]
 	 * </pre>
-     *
-     * @param rotation the rotation
-     * @see #makeRotationMatrix(Quaternion)
-     */
-    public void setRotation(Quaternion rotation) {
-        this.m00 = 1.0f - 2.0f * rotation.getY() * rotation.getY() - 2.0f * rotation.getZ() * rotation.getZ();
-        this.m10 = 2.0f * (rotation.getX() * rotation.getY() + rotation.getW() * rotation.getZ());
-        this.m20 = 2.0f * (rotation.getX() * rotation.getZ() - rotation.getW() * rotation.getY());
+	 *
+	 * @param rotation the rotation
+	 * @see #makeRotationMatrix(Quaternion)
+	 */
+	public void setRotation(Quaternion rotation) {
+		this.m00 = 1.0f - 2.0f * rotation.getY() * rotation.getY() - 2.0f * rotation.getZ() * rotation.getZ();
+		this.m10 = 2.0f * (rotation.getX() * rotation.getY() + rotation.getW() * rotation.getZ());
+		this.m20 = 2.0f * (rotation.getX() * rotation.getZ() - rotation.getW() * rotation.getY());
 
-        this.m01 = 2.0f * (rotation.getX() * rotation.getY() - rotation.getW() * rotation.getZ());
-        this.m11 = 1.0f - 2.0f * rotation.getX() * rotation.getX() - 2.0f * rotation.getZ() * rotation.getZ();
-        this.m21 = 2.0f * (rotation.getY() * rotation.getZ() + rotation.getW() * rotation.getX());
+		this.m01 = 2.0f * (rotation.getX() * rotation.getY() - rotation.getW() * rotation.getZ());
+		this.m11 = 1.0f - 2.0f * rotation.getX() * rotation.getX() - 2.0f * rotation.getZ() * rotation.getZ();
+		this.m21 = 2.0f * (rotation.getY() * rotation.getZ() + rotation.getW() * rotation.getX());
 
-        this.m02 = 2.0f * (rotation.getX() * rotation.getZ() + rotation.getW() * rotation.getY());
-        this.m12 = 2.0f * (rotation.getY() * rotation.getZ() - rotation.getW() * rotation.getX());
-        this.m22 = 1.0f - 2.0f * rotation.getX() * rotation.getX() - 2.0f * rotation.getY() * rotation.getY();
-    }
+		this.m02 = 2.0f * (rotation.getX() * rotation.getZ() + rotation.getW() * rotation.getY());
+		this.m12 = 2.0f * (rotation.getY() * rotation.getZ() - rotation.getW() * rotation.getX());
+		this.m22 = 1.0f - 2.0f * rotation.getX() * rotation.getX() - 2.0f * rotation.getY() * rotation.getY();
+	}
 
-    /** Set this transform's rotation.
-     * @param angle the rotation angle.
-     */
-    public void setRotation(double angle) {
-        // TODO
-    }
+	/**
+	 * Convenient method for setting an rotation on the horizontal plane.
+	 *
+	 * <p>This function changes only the elements of
+	 * the matrix related to the rotation.
+	 * The translation is not changed.
+	 *
+	 * @param rotation the rotation
+	 * @see #setRotation(Quaternion)
+	 */
+	public final void setRotation(double rotation) {
+		final Quaternion4d quat = new Quaternion4d();
+		final CoordinateSystem3D cs = CoordinateSystem3D.getDefaultCoordinateSystem();
+		final Vector3D<?, ?> up = cs.getUpVector();
+		quat.setAxisAngle(up.getX(), up.getY(), up.getZ(), rotation);
+		setRotation(quat);
+	}
 
-    /**
-     * Rotate the object.
+	/**
+	 * Rotate the object.
 	 *
 	 * <p>This function is equivalent to (where r is the translation
 	 * of the quaternion as a 3x3 matrix):
@@ -284,86 +298,93 @@ public class Transform3D extends Matrix4d {
 	 *                [   r    r     r     0   ]
 	 *                [   0    0     0     1   ]
 	 * </pre>
-     *
-     * @param rotation the rotationi
-     */
-    public void rotate(Quaternion rotation) {
-    	final Transform3D m = new Transform3D();
-    	m.makeRotationMatrix(rotation);
-    	mul(m);
-    }
-
-    /**
-     * Sets the value of this matrix to a rotation matrix, and no translation.
-     *
-     * <p>This function changes all the elements of
-     * the matrix, including the translation.
-     *
-     * <p>After a call to this function, the matrix will
-     * contains (? means any value, and r a value from
-     * the quaternion):
-     * <pre>
-     *          [   r  r  r  0   ]
-     *          [   r  r  r  0   ]
-     *          [   r  r  r  0   ]
-     *          [   0  0  0  1   ]
-     * </pre>
-     *
-     * @param rotation the rotation
-     * @see #setRotation(Quaternion)
-     */
-    public final void makeRotationMatrix(Quaternion rotation) {
-        this.m00 = 1.0f - 2.0f * rotation.getY() * rotation.getY() - 2.0f * rotation.getZ() * rotation.getZ();
-        this.m10 = 2.0f * (rotation.getX() * rotation.getY() + rotation.getW() * rotation.getZ());
-        this.m20 = 2.0f * (rotation.getX() * rotation.getZ() - rotation.getW() * rotation.getY());
-
-        this.m01 = 2.0f * (rotation.getX() * rotation.getY() - rotation.getW() * rotation.getZ());
-        this.m11 = 1.0f - 2.0f * rotation.getX() * rotation.getX() - 2.0f * rotation.getZ() * rotation.getZ();
-        this.m21 = 2.0f * (rotation.getY() * rotation.getZ() + rotation.getW() * rotation.getX());
-
-        this.m02 = 2.0f * (rotation.getX() * rotation.getZ() + rotation.getW() * rotation.getY());
-        this.m12 = 2.0f * (rotation.getY() * rotation.getZ() - rotation.getW() * rotation.getX());
-        this.m22 = 1.0f - 2.0f * rotation.getX() * rotation.getX() - 2.0f * rotation.getY() * rotation.getY();
-
-        this.m03 = 0.0;
-        this.m13 = 0.0;
-        this.m23 = 0.0;
-
-        this.m30 = 0.0;
-        this.m31 = 0.0;
-        this.m32 = 0.0;
-        this.m33 = 1.0;
+	 *
+	 * @param rotation the rotationi
+	 */
+	public void rotate(Quaternion rotation) {
+		final Transform3D m = new Transform3D();
+		m.makeRotationMatrix(rotation);
+		mul(m);
 	}
 
-    /** Sets the value of this matrix to a rotation matrix, and no translation.
-     * @param angle the angle of the rotation
-     */
-    public void makeRotationMatrix(double angle) {
-        // TODO
-    }
+	/**
+	 * Sets the value of this matrix to a rotation matrix, and no translation.
+	 *
+	 * <p>This function changes all the elements of
+	 * the matrix, including the translation.
+	 *
+	 * <p>After a call to this function, the matrix will
+	 * contains (? means any value, and r a value from
+	 * the quaternion):
+	 * <pre>
+	 *          [   r  r  r  0   ]
+	 *          [   r  r  r  0   ]
+	 *          [   r  r  r  0   ]
+	 *          [   0  0  0  1   ]
+	 * </pre>
+	 *
+	 * @param rotation the rotation
+	 * @see #setRotation(Quaternion)
+	 */
+	public void makeRotationMatrix(Quaternion rotation) {
+		this.m00 = 1.0f - 2.0f * rotation.getY() * rotation.getY() - 2.0f * rotation.getZ() * rotation.getZ();
+		this.m10 = 2.0f * (rotation.getX() * rotation.getY() + rotation.getW() * rotation.getZ());
+		this.m20 = 2.0f * (rotation.getX() * rotation.getZ() - rotation.getW() * rotation.getY());
 
-    /**
-     * Sets the value of this matrix to the given translation, without rotation.
-     *
-     * <p>This function changes all the elements of
-     * the matrix including the scaling and the shearing.
-     *
-     * <p>After a call to this function, the matrix will
-     * contains (? means any value):
-     * <pre>
-     *          [   1    0    0    dx   ]
-     *          [   0    1    0    dy   ]
-     *          [   0    0    1    dz   ]
-     *          [   0    0    0    1    ]
-     * </pre>
-     *
-     * @param dx is the position to put in the matrix.
-     * @param dy is the position to put in the matrix.
-     * @param dz is the position to put in the matrix.
-     * @see #setTranslation(double, double, double)
-     * @see #setTranslation(Tuple3D)
-     */
-    public final void makeTranslationMatrix(double dx, double dy, double dz) {
+		this.m01 = 2.0f * (rotation.getX() * rotation.getY() - rotation.getW() * rotation.getZ());
+		this.m11 = 1.0f - 2.0f * rotation.getX() * rotation.getX() - 2.0f * rotation.getZ() * rotation.getZ();
+		this.m21 = 2.0f * (rotation.getY() * rotation.getZ() + rotation.getW() * rotation.getX());
+
+		this.m02 = 2.0f * (rotation.getX() * rotation.getZ() + rotation.getW() * rotation.getY());
+		this.m12 = 2.0f * (rotation.getY() * rotation.getZ() - rotation.getW() * rotation.getX());
+		this.m22 = 1.0f - 2.0f * rotation.getX() * rotation.getX() - 2.0f * rotation.getY() * rotation.getY();
+
+		this.m03 = 0.0;
+		this.m13 = 0.0;
+		this.m23 = 0.0;
+
+		this.m30 = 0.0;
+		this.m31 = 0.0;
+		this.m32 = 0.0;
+		this.m33 = 1.0;
+	}
+
+	/**
+	 * Convenient method for setting a rotation on the horizontal plane.
+	 *
+	 * @param rotation the rotation
+	 * @see #setRotation(Quaternion)
+	 */
+	public final void makeRotationMatrix(double rotation) {
+		final Quaternion4d quat = new Quaternion4d();
+		final CoordinateSystem3D cs = CoordinateSystem3D.getDefaultCoordinateSystem();
+		final Vector3D<?, ?> up = cs.getUpVector();
+		quat.setAxisAngle(up.getX(), up.getY(), up.getZ(), rotation);
+		makeRotationMatrix(quat);
+	}
+
+	/**
+	 * Sets the value of this matrix to the given translation, without rotation.
+	 *
+	 * <p>This function changes all the elements of
+	 * the matrix including the scaling and the shearing.
+	 *
+	 * <p>After a call to this function, the matrix will
+	 * contains (? means any value):
+	 * <pre>
+	 *          [   1    0    0    dx   ]
+	 *          [   0    1    0    dy   ]
+	 *          [   0    0    1    dz   ]
+	 *          [   0    0    0    1    ]
+	 * </pre>
+	 *
+	 * @param dx is the position to put in the matrix.
+	 * @param dy is the position to put in the matrix.
+	 * @param dz is the position to put in the matrix.
+	 * @see #setTranslation(double, double, double)
+	 * @see #setTranslation(Tuple3D)
+	 */
+	public final void makeTranslationMatrix(double dx, double dy, double dz) {
 		this.m00 = 1f;
 		this.m01 = 0f;
 		this.m02 = 0f;
@@ -445,8 +466,78 @@ public class Transform3D extends Matrix4d {
 	 */
 	@SuppressWarnings("checkstyle:parameternumber")
 	public void set(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13,
-            double m20, double m21, double m22, double m23) {
+			double m20, double m21, double m22, double m23) {
 		set(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, 0f, 0f, 0f, 1f);
+	}
+
+	/**
+	 * Replies the rotation within the matrix.
+	 *
+	 * <p>Performs an SVD normalization of this matrix in order to acquire
+	 * the normalized rotational component.
+	 *
+	 * @param quaternion the rotation to set.
+	 */
+	@SuppressWarnings("checkstyle:magicnumber")
+	public void getRotation(Quaternion quaternion) {
+		// scratch matrices
+		final double[] tmpRotation = new double[9];
+		final double[] tmpScale = new double[3];
+
+		getScaleRotate(tmpScale, tmpRotation);
+
+		double ww = .25 * (1. + tmpRotation[0] + tmpRotation[4] + tmpRotation[8]);
+		if ((ww < 0. ? -ww : ww) >= 1.e-30) {
+			quaternion.setW(Math.sqrt(ww));
+			ww = .25 / quaternion.getW();
+			quaternion.setX((tmpRotation[7] - tmpRotation[5]) * ww);
+			quaternion.setY((tmpRotation[2] - tmpRotation[6]) * ww);
+			quaternion.setZ((tmpRotation[3] - tmpRotation[1]) * ww);
+		} else {
+			quaternion.setW(0.);
+			ww = -.5 * (tmpRotation[4] + tmpRotation[8]);
+			if ((ww < 0. ? -ww : ww) >= 1.e-30) {
+				quaternion.setX(Math.sqrt(ww));
+				ww = .5 / quaternion.getX();
+				quaternion.setY(tmpRotation[3] * ww);
+				quaternion.setZ(tmpRotation[6] * ww);
+			} else {
+				quaternion.setX(0.);
+				ww = .5 * (1. - tmpRotation[8]);
+				if ((ww < 0 ? -ww : ww) >= 1.e-30) {
+					quaternion.setY(Math.sqrt(ww));
+					quaternion.setZ(tmpRotation[7] / (2. * quaternion.getY()));
+				} else {
+					quaternion.setY(0.);
+					quaternion.setZ(1.);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Perform SVD on the 3x3 matrix containing the rotation and scaling factors.
+	 *
+	 * @param scales the scaling factors.
+	 * @param rots the rotation factors.
+	 */
+	@SuppressWarnings("checkstyle:magicnumber")
+	protected final void getScaleRotate(double[] scales, double[] rots) {
+		// scratch matrix
+		final double[] tmp = new double[9];
+		tmp[0] = getM00();
+		tmp[1] = getM01();
+		tmp[2] = getM02();
+
+		tmp[3] = getM10();
+		tmp[4] = getM11();
+		tmp[5] = getM12();
+
+		tmp[6] = getM20();
+		tmp[7] = getM21();
+		tmp[8] = getM22();
+
+		Matrix3d.computeSVD(tmp, scales, rots);
 	}
 
 }

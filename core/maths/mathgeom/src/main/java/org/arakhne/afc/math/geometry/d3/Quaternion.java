@@ -24,10 +24,15 @@ import java.io.Serializable;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.Matrix4d;
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.arakhne.afc.vmutil.json.JsonableObject;
 
 /** A 4 element unit quaternion represented by x, y, z, w coordinates.
  * The quaternion is always normalized.
@@ -64,7 +69,28 @@ import org.arakhne.afc.math.matrix.Matrix4d;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Quaternion extends Cloneable, Serializable {
+public interface Quaternion extends Cloneable, Serializable, JsonableObject {
+
+	/**
+	 * Returns true if all of the data members of Quaternion quat are
+	 * equal to the corresponding data members in this Quaternion.
+	 * @param quat the quaternnion with which the comparison is made
+	 * @return {@code true} if equal.
+	 */
+	@Pure
+	default boolean equals(Quaternion quat) {
+		try {
+			return getX() == quat.getX() && getY() == quat.getY() && getZ() == quat.getZ() && getW() == quat.getW();
+		} catch (Throwable exception) {
+			return false;
+		}
+	}
+
+	/** Clone this quaternion.
+	 *
+	 * @return the clone.
+	 */
+	Quaternion clone();
 
 	/** Replies the X coordinate.
 	 *
@@ -72,6 +98,19 @@ public interface Quaternion extends Cloneable, Serializable {
 	 */
 	@Pure
 	double getX();
+
+	/** Replies the X coordinate.
+	 *
+	 * @return x
+	 */
+	@Pure
+	int ix();
+
+	/** Set the X coordinate.
+	 *
+	 * @param x x coordinate.
+	 */
+	void setX(int x);
 
 	/** Set the X coordinate.
 	 *
@@ -86,6 +125,19 @@ public interface Quaternion extends Cloneable, Serializable {
 	@Pure
 	double getY();
 
+	/** Replies the Y coordinate.
+	 *
+	 * @return y
+	 */
+	@Pure
+	int iy();
+
+	/** Set the Y coordinate.
+	 *
+	 * @param y y coordinate.
+	 */
+	void setY(int y);
+
 	/** Set the Y coordinate.
 	 *
 	 * @param y y coordinate.
@@ -98,6 +150,19 @@ public interface Quaternion extends Cloneable, Serializable {
 	 */
 	@Pure
 	double getZ();
+
+	/** Replies the Z coordinate.
+	 *
+	 * @return z
+	 */
+	@Pure
+	int iz();
+
+	/** Set the Z coordinate.
+	 *
+	 * @param z z coordinate.
+	 */
+	void setZ(int z);
 
 	/** Set the Z coordinate.
 	 *
@@ -112,6 +177,19 @@ public interface Quaternion extends Cloneable, Serializable {
 	@Pure
 	double getW();
 
+	/** Replies the W coordinate.
+	 *
+	 * @return w
+	 */
+	@Pure
+	int iw();
+
+	/** Set the W coordinate.
+	 *
+	 * @param w w coordinate.
+	 */
+	void setW(int w);
+
 	/** Set the W coordinate.
 	 *
 	 * @param w w coordinate.
@@ -123,93 +201,287 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * and tuple t1 is less than or equal to the epsilon parameter,
 	 * otherwise returns false.  The L-infinite
 	 * distance is equal to MAX[abs(x1-x2), abs(y1-y2)].
-	 * @param t1  the tuple to be compared to this tuple
+	 * @param quat  the tuple to be compared to this tuple
 	 * @param epsilon  the threshold value
 	 * @return  true or false
 	 */
 	@Pure
-	boolean epsilonEquals(Quaternion t1, double epsilon);
+	default boolean epsilonEquals(Quaternion quat, double epsilon) {
+		return (Math.abs(quat.getX() - getX()) <= epsilon)
+			    && (Math.abs(quat.getY() - getY()) <= epsilon)
+			    && (Math.abs(quat.getZ() - getZ()) <= epsilon)
+			    && (Math.abs(quat.getW() - getW()) <= epsilon);
+	}
+
+	/** Replies the norm of the quaternion.
+	 *
+	 * <p>The norm is {@code x*x + y*y + z*z + w*w}.
+	 *
+	 * @return the norm.
+	 */
+	default double norm() {
+		final double x = getX();
+		final double y = getY();
+		final double z = getZ();
+		final double w = getW();
+		return x * x + y * y + z * z + w * w;
+	}
 
 	/**
-	 * Sets the value of this quaternion to the conjugate of quaternion q1.
-	 * @param q1 the source vector
+	 * Sets the value of this quaternion to the conjugate of quaternion q1, i.e. the negation of quat, except w.
+	 *
+	 * <p>The result is: {@code this = (-quat.x, -quat.y, -quat.z, quat.w)}.
+	 *
+	 * @param quat the source vector
+	 * @see #inverse(Quaternion)
 	 */
-	void conjugate(Quaternion q1);
+	default void conjugate(Quaternion quat) {
+		setX(-quat.getX());
+		setY(-quat.getY());
+		setZ(-quat.getZ());
+		setW(quat.getW());
+	}
 
 	/**
-	 * Sets the value of this quaternion to the conjugate of itself.
+	 * Sets the value of this quaternion to the conjugate of itself, i.e. the negation of itself, except w.
+	 *
+	 * <p>The result is: {@code this = (-this.x, -this.y, -this.z, this.w)}.
+	 *
+	 * @see #inverse()
 	 */
-	void conjugate();
+	default void conjugate() {
+		conjugate(this);
+	}
 
 	/**
 	 * Sets the value of this quaternion to the quaternion product of
-	 * quaternions q1 and q2 (this = q1 * q2).
-	 * Note that this is safe for aliasing (e.g. this can be q1 or q2).
-	 * @param q1 the first quaternion
-	 * @param q2 the second quaternion
+	 * quaternions q1 and q2.
+	 *
+	 * <p>{@code this = quat1 * quat2}.
+	 *
+	 * <p>Note that this is safe for aliasing (e.g. this can be q1 or q2).
+	 *
+	 * @param quat1 the first quaternion
+	 * @param quat2 the second quaternion
 	 */
-	void mul(Quaternion q1, Quaternion q2);
+	default void mul(Quaternion quat1, Quaternion quat2) {
+		final double x1 = quat1.getX();
+		final double y1 = quat1.getY();
+		final double z1 = quat1.getZ();
+		final double w1 = quat1.getW();
+		final double x2 = quat2.getX();
+		final double y2 = quat2.getY();
+		final double z2 = quat2.getZ();
+		final double w2 = quat2.getW();
+		set(
+				x1 * w2 + w1 * x2 + y1 * z2 - z1 * y2,
+				y1 * w2 + w1 * y2 + z1 * x2 - x1 * z2,
+				z1 * w2 + w1 * z2 + x1 * y2 - y1 * x2,
+				w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2);
+	}
 
 	/**
 	 * Sets the value of this quaternion to the quaternion product of
-	 * itself and q1 (this = this * q1).
-	 * @param q1 the other quaternion
+	 * itself and q1.
+	 *
+	 * <p>{@code this = this * quat}.
+	 *
+	 * @param quat the other quaternion
 	 */
-	void mul(Quaternion q1);
+	default void mul(Quaternion quat) {
+		mul(this, quat);
+	}
 
 	/**
 	 * Multiplies quaternion q1 by the inverse of quaternion q2 and places
 	 * the value into this quaternion.  The value of both argument quaternions
-	 * is preservered (this = q1 * q2^-1).
-	 * @param q1 the first quaternion
-	 * @param q2 the second quaternion
+	 * is preservered.
+	 *
+	 * <p>{@code this = quat1 * (quat2)^(-1)}.
+	 *
+	 * @param quat1 the first quaternion
+	 * @param quat2 the second quaternion
 	 */
-	void mulInverse(Quaternion q1, Quaternion q2);
+	default void mulInverse(Quaternion quat1, Quaternion quat2) {
+		final double x1 = quat1.getX();
+		final double y1 = quat1.getY();
+		final double z1 = quat1.getZ();
+		final double w1 = quat1.getW();
+		final double x2 = quat2.getX();
+		final double y2 = quat2.getY();
+		final double z2 = quat2.getZ();
+		final double w2 = quat2.getW();
+		double norm = norm();
+		// zero-div may occur.
+		norm = norm == 0. ? norm : 1. / norm;
+		// store on stack once for aliasing-safty
+		set(
+				(x1 * w2 - w1 * x2 - y1 * z2 + z1 * y2) * norm,
+				(y1 * w2 - w1 * y2 - z1 * x2 + x1 * z2) * norm,
+				(z1 * w2 - w1 * z2 - x1 * y2 + y1 * x2) * norm,
+				(w1 * w2 + x1 * x2 + y1 * y2 + z1 * z2) * norm);
+	}
 
 	/**
 	 * Multiplies this quaternion by the inverse of quaternion q1 and places
 	 * the value into this quaternion.  The value of the argument quaternion
-	 * is preserved (this = this * q^-1).
-	 * @param q1 the other quaternion
+	 * is preserved.
+	 *
+	 * <p>{@code this = this * (quat)^(-1)}.
+	 *
+	 * @param quat the other quaternion
 	 */
-	void mulInverse(Quaternion q1);
+	default void mulInverse(Quaternion quat) {
+		mulInverse(this, quat);
+	}
 
 	/**
-	 * Sets the value of this quaternion to quaternion inverse of quaternion q1.
-	 * @param q1 the quaternion to be inverted
+	 * Sets the value of this quaternion to quaternion inverse of quaternion quat.
+	 *
+	 * <p>{@code this = (-quat.x, -quat.y, -quat.z, quat.w) / quat.norm()}.
+	 *
+	 * @param quat the quaternion to be inverted
+	 * @see #conjugate(Quaternion)
 	 */
-	void inverse(Quaternion q1);
+	default void inverse(Quaternion quat) {
+		final double n = quat.norm();
+		// zero-div may occur.
+		set(
+				-quat.getX() / n,
+				-quat.getY() / n,
+				-quat.getZ() / n,
+				quat.getW() / n);
+	}
 
 	/**
 	 * Sets the value of this quaternion to the quaternion inverse of itself.
+	 *
+	 * <p>{@code this = (-this.x, -this.y, -this.z, this.w) / this.norm()}.
+	 *
+	 * @see #conjugate()
 	 */
-	void inverse();
+	default void inverse() {
+		inverse(this);
+	}
 
 	/**
 	 * Sets the value of this quaternion to the normalized value
-	 * of quaternion q1.
-	 * @param q1 the quaternion to be normalized.
+	 * of quaternion quat.
+	 *
+	 * <p>{@code this = (quat.x, quat.y, quat.z, quat.w) / sqrt(quat.norm()}.
+	 *
+	 * @param quat the quaternion to be normalized.
 	 */
-	void normalize(Quaternion q1);
+	default void normalize(Quaternion quat) {
+		final double n = Math.sqrt(quat.norm());
+		// zero-div may occur.
+		set(
+				quat.getX() / n,
+				quat.getY() / n,
+				quat.getZ() / n,
+				quat.getW() / n);
+	}
 
 	/**
 	 * Normalizes the value of this quaternion in place.
+	 *
+	 * <p>{@code this = (this.x, this.y, this.z, this.w) / sqrt(this.norm()}.
 	 */
-	void normalize();
+	default void normalize() {
+		normalize(this);
+	}
+
+	/** Sets the value of this quaternion to the rotational component of
+	 * the passed matrix.
+	 *
+	 * @param m00
+	 *           the [0][0] element
+	 * @param m01
+	 *           the [0][1] element
+	 * @param m02
+	 *           the [0][2] element
+	 * @param m10
+	 *           the [1][0] element
+	 * @param m11
+	 *           the [1][1] element
+	 * @param m12
+	 *           the [1][2] element
+	 * @param m20
+	 *           the [2][0] element
+	 * @param m21
+	 *           the [2][1] element
+	 * @param m22
+	 *           the [2][2] element
+	 */
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
+	default void setFromMatrix(double m00, double m01, double m02,
+			double m10, double m11, double m12,
+			double m20, double m21, double m22) {
+		// From Ken Shoemake
+		// (ftp://ftp.cis.upenn.edu/pub/graphics/shoemake)
+		final double x;
+		final double y;
+		final double z;
+		final double w;
+		final double tr = m00 + m11 + m22;
+		if (tr >= 0.) {
+			double scale = Math.sqrt(tr + 1.);
+			w = scale * .5;
+			scale = .5 / scale;
+			x = (m21 - m12) * scale;
+			y = (m02 - m20) * scale;
+			z = (m10 - m01) * scale;
+		} else {
+			final double max = Math.max(Math.max(m00, m11), m22);
+			if (max == m00) {
+				double scale = Math.sqrt(m00 - (m11 + m22) + 1.);
+				x = scale * .5;
+				scale = .5 / scale;
+				y = (m01 + m10) * scale;
+				z = (m20 + m02) * scale;
+				w = (m21 - m12) * scale;
+			} else if (max == m11) {
+				double scale = Math.sqrt(m11 - (m22 + m00) + 1.);
+				y = scale * .5;
+				scale = .5 / scale;
+				z = (m12 + m21) * scale;
+				x = (m01 + m10) * scale;
+				w = (m02 - m20) * scale;
+			} else {
+				double scale = Math.sqrt(m22 - (m00 + m11) + 1.);
+				z = scale * .5;
+				scale = .5 / scale;
+				x = (m20 + m02) * scale;
+				y = (m12 + m21) * scale;
+				w = (m10 - m01) * scale;
+			}
+		}
+		set(x, y,  z, w);
+	}
 
 	/**
 	 * Sets the value of this quaternion to the rotational component of
 	 * the passed matrix.
-	 * @param m1 the Matrix4f
+	 * @param mat the matrix
 	 */
-	void setFromMatrix(Matrix4d m1);
+	default void setFromMatrix(Matrix4d mat) {
+		setFromMatrix(
+				mat.getM00(), mat.getM01(), mat.getM02(),
+				mat.getM10(), mat.getM11(), mat.getM12(),
+				mat.getM20(), mat.getM21(), mat.getM22());
+	}
 
 	/**
 	 * Sets the value of this quaternion to the rotational component of
 	 * the passed matrix.
 	 * @param m1 the Matrix3f
 	 */
-	void setFromMatrix(Matrix3d m1);
+	default void setFromMatrix(Matrix3d m1) {
+		setFromMatrix(
+				m1.getM00(), m1.getM01(), m1.getM02(),
+				m1.getM10(), m1.getM11(), m1.getM12(),
+				m1.getM20(), m1.getM21(), m1.getM22());
+	}
 
 	/** Set the quaternion coordinates.
 	 *
@@ -218,38 +490,85 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @param z z coordinate.
 	 * @param w w coordinate.
 	 */
-	void set(double x, double y, double z, double w);
+	default void set(double x, double y, double z, double w) {
+		setX(x);
+		setY(y);
+		setZ(z);
+		setW(w);
+	}
 
 	/** Set the quaternion coordinates.
 	 *
 	 * @param quat the quaternion to copy.
 	 */
-	void set(Quaternion quat);
+	default void set(Quaternion quat) {
+		assert quat != null : AssertMessages.notNullParameter();
+		set(quat.getX(), quat.getY(), quat.getZ(), quat.getW());
+	}
 
 	/**
 	 * Sets the value of this quaternion to the equivalent rotation
 	 * of the Axis-Angle arguments.
+	 *
+	 * <p>{@code n = sqrt(axis.x*axis.x+axis.y*axis.y+axis.z*axis.z)}<br/>
+	 * {@code this = (axis.x*sin(angle/2)*n, axis.y*sin(angle/2)*n, axis.z*sin(angle/2)*n, cos(angle/2))}
+	 *
+	 * @param axisAngle is the axis of rotation and the the rotation angle around the axis.
+	 */
+	default void setAxisAngle(AxisAngle axisAngle) {
+		assert axisAngle != null : AssertMessages.notNullParameter(0);
+		setAxisAngle(axisAngle.getX(), axisAngle.getY(), axisAngle.getZ(), axisAngle.getAngle());
+	}
+
+	/**
+	 * Sets the value of this quaternion to the equivalent rotation
+	 * of the Axis-Angle arguments.
+	 *
+	 * <p>{@code n = sqrt(axis.x*axis.x+axis.y*axis.y+axis.z*axis.z)}<br/>
+	 * {@code this = (axis.x*sin(angle/2)*n, axis.y*sin(angle/2)*n, axis.z*sin(angle/2)*n, cos(angle/2))}
+	 *
 	 * @param axis is the axis of rotation.
 	 * @param angle is the rotation around the axis.
 	 */
-	void setAxisAngle(Vector3D<?, ?> axis, double angle);
+	default void setAxisAngle(Vector3D<?, ?> axis, double angle) {
+		assert axis != null : AssertMessages.notNullParameter(0);
+		setAxisAngle(axis.getX(), axis.getY(), axis.getZ(), angle);
+	}
 
 	/**
 	 * Sets the value of this quaternion to the equivalent rotation
 	 * of the Axis-Angle arguments.
-	 * @param x1 is the x coordinate of the rotation axis
-	 * @param y1 is the y coordinate of the rotation axis
-	 * @param z1 is the z coordinate of the rotation axis
+	 *
+	 * <p>{@code n = sqrt(x*x+y*y+z*z)}<br/>
+	 * {@code this = (x*sin(angle/2)*n, y*sin(angle/2)*n, z*sin(angle/2)*n, cos(angle/2))}
+	 *
+	 * @param x is the x coordinate of the rotation axis
+	 * @param y is the y coordinate of the rotation axis
+	 * @param z is the z coordinate of the rotation axis
 	 * @param angle is the rotation around the axis.
 	 */
-	void setAxisAngle(double x1, double y1, double z1, double angle);
+	@SuppressWarnings("checkstyle:magicnumber")
+	default void setAxisAngle(double x, double y, double z, double angle) {
+		double nx = x;
+		double ny = y;
+		double nz = z;
+		final double norm = Math.sqrt(nx * nx + ny * ny + nz * nz);
+		// zero-div may occur.
+		final double scale = Math.sin(.5 * angle) / norm;
+		nx *= scale;
+		ny *= scale;
+		nz *= scale;
+		set(nx, ny, nz, Math.cos(.5 * angle));
+	}
 
 	/** Replies the rotation axis-angle represented by this quaternion.
 	 *
 	 * @return the rotation axis-angle.
 	 */
 	@Pure
-	Vector3D<?, ?> getAxis();
+	default Vector3D<?, ?> getAxis() {
+		return getAxisAngle().getAxis();
+	}
 
 	/** Replies the rotation angle represented by this quaternion.
 	 *
@@ -259,7 +578,9 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @see #getAxis()
 	 */
 	@Pure
-	double getAngle();
+	default double getAngle() {
+		return getAxisAngle().getAngle();
+	}
 
 	/** Replies the rotation axis represented by this quaternion.
 	 *
@@ -269,33 +590,98 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @see #getAngle()
 	 */
 	@Pure
-	AxisAngle getAxisAngle();
+	default AxisAngle getAxisAngle() {
+		final double x = getX();
+		final double y = getY();
+		final double z = getZ();
+		final double w = getW();
+		// |sin a/2|, w = cos a/2
+		final double sina2 = Math.sqrt(x * x + y * y + z * z);
+		// 0 <= angle <= PI , because 0 < sin_a2
+		final double angle = 2. * Math.atan2(sina2, w);
+		return new AxisAngle(x, y, z, angle);
+	}
 
 	/**
-	 *  Performs a great circle interpolation between this quaternion
-	 *  and the quaternion parameter and places the result into this
-	 *  quaternion.
-	 *  @param q1  the other quaternion
-	 *  @param alpha  the alpha interpolation parameter
+	 * Performs a great circle interpolation between this quaternion
+	 * and the quaternion parameter and places the result into this
+	 * quaternion.
+	 *
+	 * <p>{@code this = this + (quat - this) * alpha}
+	 *
+	 * @param quat  the other quaternion
+	 * @param alpha  the alpha interpolation parameter
 	 */
-	void interpolate(Quaternion q1, double alpha);
+	default void interpolate(Quaternion quat, double alpha) {
+		interpolate(this, quat, alpha);
+	}
 
 	/**
-	 *  Performs a great circle interpolation between quaternion q1
-	 *  and quaternion q2 and places the result into this quaternion.
-	 *  @param q1  the first quaternion
-	 *  @param q2  the second quaternion
-	 *  @param alpha  the alpha interpolation parameter
+	 * Performs a great circle interpolation between quaternion quat1
+	 * and quaternion quat2 and places the result into this quaternion.
+	 *
+	 * <p>{@code this = quat1 + (quat2 - quat1) * alpha}
+	 *
+	 * @param quat1  the first quaternion
+	 * @param quat2  the second quaternion
+	 * @param alpha  the alpha interpolation parameter
 	 */
-	void interpolate(Quaternion q1, Quaternion q2, double alpha);
+	default void interpolate(Quaternion quat1, Quaternion quat2, double alpha) {
+		// zero-div may occur.
+		final double n1 = Math.sqrt(quat1.norm());
+		final double x1 = quat1.getX() / n1;
+		final double y1 = quat1.getY() / n1;
+		final double z1 = quat1.getZ() / n1;
+		final double w1 = quat1.getW() / n1;
+		// zero-div may occur.
+		final double n2 = Math.sqrt(quat2.norm());
+		final double x2 = quat2.getX() / n2;
+		final double y2 = quat2.getY() / n2;
+		final double z2 = quat2.getZ() / n2;
+		final double w2 = quat2.getW() / n2;
+
+		// t is cosine (dot product)
+		double t = x1 * x2 + y1 * y2 + z1 * z2 + w1 * w2;
+
+		// same quaternion (avoid domain error)
+		if (1. <= Math.abs(t)) {
+		    return;
+		}
+
+		// t is now theta
+		t = Math.acos(t);
+
+		final double sint = Math.sin(t);
+
+		// same quaternion (avoid zero-div)
+		if (sint == 0.) {
+		    return;
+		}
+
+		final double s = Math.sin((1. - alpha) * t) / sint;
+		t = Math.sin(alpha * t) / sint;
+
+		// set values
+		set(
+				s * x1 + t * x2,
+				s * y1 + t * y2,
+				s * z1 + t * z2,
+				s * w1 + t * w2);
+	}
 
 	/** Set the quaternion with the Euler angles.
+	 * The {@link CoordinateSystem3D#getDefaultCoordinateSystem() default coordinate system}
+	 * is used from applying the Euler angles.
 	 *
 	 * @param angles the Euler angles.
+	 * @see CoordinateSystem3D#getDefaultCoordinateSystem()
 	 * @see <a href="http://en.wikipedia.org/wiki/Euler_angles">Euler Angles</a>
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm">Euler to Quaternion</a>
 	 */
-	void setEulerAngles(EulerAngles angles);
+	default void setEulerAngles(EulerAngles angles) {
+		assert angles != null : AssertMessages.notNullParameter();
+		setEulerAngles(angles.getAttitude(), angles.getBank(), angles.getHeading(), CoordinateSystem3D.getDefaultCoordinateSystem());
+	}
 
 	/** Set the quaternion with the Euler angles.
 	 * The {@link CoordinateSystem3D#getDefaultCoordinateSystem() default coordinate system}
@@ -308,7 +694,9 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @see <a href="http://en.wikipedia.org/wiki/Euler_angles">Euler Angles</a>
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm">Euler to Quaternion</a>
 	 */
-	void setEulerAngles(double attitude, double bank, double heading);
+	default void setEulerAngles(double attitude, double bank, double heading) {
+		setEulerAngles(attitude, bank, heading, CoordinateSystem3D.getDefaultCoordinateSystem());
+	}
 
 	/** Set the quaternion with the Euler angles.
 	 *
@@ -319,7 +707,28 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @see <a href="http://en.wikipedia.org/wiki/Euler_angles">Euler Angles</a>
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm">Euler to Quaternion</a>
 	 */
-	void setEulerAngles(double attitude, double bank, double heading, CoordinateSystem3D system);
+	default void setEulerAngles(double attitude, double bank, double heading, CoordinateSystem3D system) {
+		assert system != null : AssertMessages.notNullParameter(3);
+
+		final double c1 = Math.cos(heading / 2.);
+		final double s1 = Math.sin(heading / 2.);
+		final double c2 = Math.cos(attitude / 2.);
+		final double s2 = Math.sin(attitude / 2.);
+		final double c3 = Math.cos(bank / 2.);
+		final double s3 = Math.sin(bank / 2.);
+
+		// Source: http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm
+		// Standard used: XZY_RIGHT_HAND
+		final double c1c2 = c1 * c2;
+		final double s1s2 = s1 * s2;
+		final double w = c1c2 * c3 - s1s2 * s3;
+		final double x = c1c2 * s3 + s1s2 * c3;
+		final double y = s1 * c2 * c3 + c1 * s2 * s3;
+		final double z = c1 * s2 * c3 - s1 * c2 * s3;
+
+		set(x, y, z, w);
+		CoordinateSystem3D.XZY_RIGHT_HAND.toSystem(this, system);
+	}
 
 	/**
 	 * Replies the Euler's angles that corresponds to the quaternion.
@@ -332,7 +741,9 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm">Quaternion to Euler</a>
 	 */
 	@Pure
-	EulerAngles getEulerAngles();
+	default EulerAngles getEulerAngles() {
+		return getEulerAngles(CoordinateSystem3D.getDefaultCoordinateSystem());
+	}
 
 	/**
 	 * Replies the Euler's angles that corresponds to the quaternion.
@@ -343,7 +754,52 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm">Quaternion to Euler</a>
 	 */
 	@Pure
-	EulerAngles getEulerAngles(CoordinateSystem3D system);
+	@SuppressWarnings("checkstyle:magicnumber")
+	default EulerAngles getEulerAngles(CoordinateSystem3D system) {
+		assert system != null : AssertMessages.notNullParameter();
+
+		// See http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
+		// Standard used: XZY_RIGHT_HAND
+		final Quaternion quat = clone();
+		system.toSystem(quat, CoordinateSystem3D.XZY_RIGHT_HAND);
+
+		final double sqw = quat.getW() * quat.getW();
+		final double sqx = quat.getX() * quat.getX();
+		final double sqy = quat.getY() * quat.getY();
+		final double sqz = quat.getZ() * quat.getZ();
+		// if normalised is one, otherwise is correction factor
+		final double unit = sqx + sqy + sqz + sqw;
+		final double test = quat.getX() * quat.getY() + quat.getZ() * quat.getW();
+
+		if (MathUtil.compareEpsilon(test, .5 * unit) >= 0) {
+			// singularity at north pole
+			return new EulerAngles(
+					2. * Math.atan2(quat.getX(), quat.getW()),
+					MathConstants.DEMI_PI,
+					0.,
+					system);
+		}
+		if (MathUtil.compareEpsilon(test, -.5 * unit) <= 0) {
+			// singularity at south pole
+			return new EulerAngles(
+					-2. * Math.atan2(quat.getX(), quat.getW()),
+					-MathConstants.DEMI_PI,
+					0.,
+					system);
+		}
+		return new EulerAngles(
+				Math.atan2(2. * quat.getY() * quat.getW() - 2. * quat.getX() * quat.getZ(), sqx - sqy - sqz + sqw),
+				Math.asin(2. * test / unit), Math.atan2(2. * quat.getX() * quat.getW() - 2. * quat.getY() * quat.getZ(), -sqx + sqy - sqz + sqw),
+				system);
+	}
+
+	@Override
+	default void toJson(JsonBuffer buffer) {
+		buffer.add("x", getX()); //$NON-NLS-1$
+		buffer.add("y", getY()); //$NON-NLS-1$
+		buffer.add("z", getZ()); //$NON-NLS-1$
+		buffer.add("w", getW()); //$NON-NLS-1$
+	}
 
 	/** A representation of Euler Angles.
 	 * The term "Euler Angle" is used for any representation of 3 dimensional
@@ -368,7 +824,7 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	final class EulerAngles implements Cloneable, Serializable {
+	final class EulerAngles implements Cloneable, Serializable, JsonableObject {
 
 		private static final long serialVersionUID = -1532832128836084395L;
 
@@ -380,11 +836,18 @@ public interface Quaternion extends Cloneable, Serializable {
 
 		private final CoordinateSystem3D system;
 
-		private EulerAngles(double attitude1, double bank1, double heading1, CoordinateSystem3D system1) {
-			this.attitude = attitude1;
-			this.bank = bank1;
-			this.heading = heading1;
-			this.system = system1;
+		/** Constructor.
+		 *
+		 * @param attitude the attitude angle.
+		 * @param bank the bank angle.
+		 * @param heading the heading angle.
+		 * @param system the coordinate system that indicate the up direction.
+		 */
+		public EulerAngles(double attitude, double bank, double heading, CoordinateSystem3D system) {
+			this.attitude = attitude;
+			this.bank = bank;
+			this.heading = heading;
+			this.system = system;
 		}
 
 		/** Replies the attitude, the rotation around left vector.
@@ -419,8 +882,52 @@ public interface Quaternion extends Cloneable, Serializable {
 		 * @return the coordinate system.
 		 */
 		@Pure
-		private CoordinateSystem3D getSystem() {
+		public CoordinateSystem3D getCoordinateSystem() {
 			return this.system;
+		}
+
+		@Override
+		public EulerAngles clone() {
+			try {
+				return (EulerAngles) super.clone();
+			} catch (CloneNotSupportedException e) {
+				throw new Error(e);
+			}
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof EulerAngles) {
+				final EulerAngles ea = (EulerAngles) obj;
+				return this.attitude == ea.attitude && this.heading == ea.heading
+						&& this.bank == ea.bank && this.system == ea.system;
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			int bits = 1;
+			bits = 31 * bits + Double.hashCode(this.heading);
+			bits = 31 * bits + Double.hashCode(this.bank);
+			bits = 31 * bits + Double.hashCode(this.attitude);
+			bits = 31 * bits + (this.system == null ? 0 : this.system.hashCode());
+			return bits ^ (bits >> 31);
+		}
+
+		@Override
+		public String toString() {
+			final JsonBuffer buffer = new JsonBuffer();
+			toJson(buffer);
+			return buffer.toString();
+		}
+
+		@Override
+		public void toJson(JsonBuffer buffer) {
+			buffer.add("attitude", getAttitude()); //$NON-NLS-1$
+			buffer.add("bank", getBank()); //$NON-NLS-1$
+			buffer.add("heading", getHeading()); //$NON-NLS-1$
+			buffer.add("coordinateSystem", getCoordinateSystem()); //$NON-NLS-1$
 		}
 
 	}
@@ -440,7 +947,7 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	final class AxisAngle implements Cloneable, Serializable {
+	final class AxisAngle implements Cloneable, Serializable, JsonableObject {
 
 		private static final long serialVersionUID = -7228694369177792159L;
 
@@ -452,11 +959,18 @@ public interface Quaternion extends Cloneable, Serializable {
 
 		private final double angle;
 
-		private AxisAngle(double x1, double y1, double z1, double angle1) {
-			this.x = x1;
-			this.y = y1;
-			this.z = z1;
-			this.angle = angle1;
+		/** Constructor.
+		 *
+		 * @param x x coordinate of the axis.
+		 * @param y y coordinate of the axis.
+		 * @param z z coordinate of the axis.
+		 * @param angle rotation angle around the axis.
+		 */
+		public AxisAngle(double x, double y, double z, double angle) {
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.angle = angle;
 		}
 
 		/** Replies the rotation axis.
@@ -468,6 +982,33 @@ public interface Quaternion extends Cloneable, Serializable {
 			return new Vector3d(this.x, this.y, this.z);
 		}
 
+		/** Replies the x coordinate of the rotation axis.
+		 *
+		 * @return x coordinate of the rotation axis.
+		 */
+		@Pure
+		public double getX() {
+			return this.x;
+		}
+
+		/** Replies the y coordinate of the rotation axis.
+		 *
+		 * @return y coordinate of the rotation axis.
+		 */
+		@Pure
+		public double getY() {
+			return this.y;
+		}
+
+		/** Replies the z coordinate of the rotation axis.
+		 *
+		 * @return z coordinate of the rotation axis.
+		 */
+		@Pure
+		public double getZ() {
+			return this.z;
+		}
+
 		/** Replies the rotation angle.
 		 *
 		 * @return the rotation angle.
@@ -475,6 +1016,49 @@ public interface Quaternion extends Cloneable, Serializable {
 		@Pure
 		public double getAngle() {
 			return this.angle;
+		}
+
+		@Override
+		public AxisAngle clone() {
+			try {
+				return (AxisAngle) super.clone();
+			} catch (CloneNotSupportedException e) {
+				throw new Error(e);
+			}
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof AxisAngle) {
+				final AxisAngle aa = (AxisAngle) obj;
+				return this.x == aa.x && this.y == aa.y && this.z == aa.z && this.angle == aa.angle;
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			int bits = 1;
+			bits = 31 * bits + Double.hashCode(this.x);
+			bits = 31 * bits + Double.hashCode(this.y);
+			bits = 31 * bits + Double.hashCode(this.z);
+			bits = 31 * bits + Double.hashCode(this.angle);
+			return bits ^ (bits >> 31);
+		}
+
+		@Override
+		public String toString() {
+			final JsonBuffer buffer = new JsonBuffer();
+			toJson(buffer);
+			return buffer.toString();
+		}
+
+		@Override
+		public void toJson(JsonBuffer buffer) {
+			buffer.add("x", this.x); //$NON-NLS-1$
+			buffer.add("y", this.y); //$NON-NLS-1$
+			buffer.add("z", this.z); //$NON-NLS-1$
+			buffer.add("angle", this.angle); //$NON-NLS-1$
 		}
 
 	}

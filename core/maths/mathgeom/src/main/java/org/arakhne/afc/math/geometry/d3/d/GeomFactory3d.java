@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3.d;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.AbstractGeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
@@ -174,16 +175,12 @@ public class GeomFactory3d extends AbstractGeomFactory3D<Vector3d, Point3d>
 
 	@Override
 	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
-		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$
-		//TODO
+		assert axis != null : AssertMessages.notNullParameter(0);
+		return new Quaternion4d(new Quaternion.AxisAngle(axis.getX(), axis.getY(), axis.getZ(), angle));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.arakhne.afc.math.geometry.d3.GeomFactory3D#newQuaternion(double, double, double)
-	 */
 	@Override
 	public Quaternion newQuaternion(double attitude, double bank, double heading) {
-		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$
-		// TODO
+		return new Quaternion4d(new Quaternion.EulerAngles(attitude, bank, heading, CoordinateSystem3D.getDefaultCoordinateSystem()));
 	}
 }
