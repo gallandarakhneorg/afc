@@ -26,10 +26,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.extensions.xtext.MatrixExtensions;
-import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.arakhne.afc.vmutil.json.JsonableObject;
 
 /**
  * Is represented internally as a 4x4 floating point matrix. The mathematical
@@ -41,7 +42,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings({"checkstyle:methodcount", "checkstyle:magicnumber"})
-public class Matrix4d implements Serializable, Cloneable {
+public class Matrix4d implements Serializable, Cloneable, JsonableObject {
 
     private static final long serialVersionUID = 7216873052550769543L;
 
@@ -277,16 +278,39 @@ public class Matrix4d implements Serializable, Cloneable {
         this.m33 = 0.;
     }
 
-    /**
-     * Returns a string that contains the values of this Matrix4f.
-     *
-     * @return the String representation
-     */
     @Pure
     @Override
-    public String toString() {
-        return ReflectionUtil.toString(this);
+    public final String toString() {
+    	final JsonBuffer buffer = new JsonBuffer();
+    	toJson(buffer);
+    	return buffer.toString();
+    }
 
+    @Override
+    @SuppressWarnings("checkstyle:linelength")
+    public void toJson(JsonBuffer buffer) {
+    	buffer.add("m00", this.m00); //$NON-NLS-1$
+    	buffer.add("m01", this.m01); //$NON-NLS-1$
+    	buffer.add("m02", this.m02); //$NON-NLS-1$
+    	buffer.add("m03", this.m03); //$NON-NLS-1$
+    	buffer.add("m10", this.m10); //$NON-NLS-1$
+    	buffer.add("m11", this.m11); //$NON-NLS-1$
+    	buffer.add("m12", this.m12); //$NON-NLS-1$
+    	buffer.add("m13", this.m13); //$NON-NLS-1$
+    	buffer.add("m20", this.m20); //$NON-NLS-1$
+    	buffer.add("m21", this.m21); //$NON-NLS-1$
+    	buffer.add("m22", this.m22); //$NON-NLS-1$
+    	buffer.add("m23", this.m23); //$NON-NLS-1$
+    	buffer.add("m30", this.m30); //$NON-NLS-1$
+    	buffer.add("m31", this.m31); //$NON-NLS-1$
+    	buffer.add("m32", this.m32); //$NON-NLS-1$
+    	buffer.add("m33", this.m33); //$NON-NLS-1$
+    	final StringBuffer m = new StringBuffer();
+    	m.append(this.m00).append("\t").append(this.m01).append("\t").append(this.m02).append("\t").append(this.m03).append("\n"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+    	m.append(this.m10).append("\t").append(this.m11).append("\t").append(this.m12).append("\t").append(this.m13).append("\n"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+    	m.append(this.m20).append("\t").append(this.m21).append("\t").append(this.m22).append("\t").append(this.m23).append("\n"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+    	m.append(this.m30).append("\t").append(this.m31).append("\t").append(this.m32).append("\t").append(this.m33).append("\n"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+    	buffer.add("m", m.toString()); //$NON-NLS-1$
     }
 
     /**

@@ -32,10 +32,11 @@ import org.arakhne.afc.math.extensions.xtext.MatrixExtensions;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.arakhne.afc.vmutil.json.JsonableObject;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
@@ -48,7 +49,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings({"checkstyle:magicnumber", "checkstyle:methodcount"})
-public class Matrix3d implements Serializable, Cloneable {
+public class Matrix3d implements Serializable, Cloneable, JsonableObject {
 
     private static final long serialVersionUID = -7386754038391115819L;
 
@@ -188,15 +189,30 @@ public class Matrix3d implements Serializable, Cloneable {
         this.m22 = 0.;
     }
 
-    /**
-     * Returns a string that contains the values of this Matrix3f.
-     *
-     * @return the String representation
-     */
     @Pure
     @Override
-    public String toString() {
-        return ReflectionUtil.toString(this);
+    public final String toString() {
+    	final JsonBuffer buffer = new JsonBuffer();
+    	toJson(buffer);
+    	return buffer.toString();
+    }
+
+    @Override
+    public void toJson(JsonBuffer buffer) {
+    	buffer.add("m00", this.m00); //$NON-NLS-1$
+    	buffer.add("m01", this.m01); //$NON-NLS-1$
+    	buffer.add("m02", this.m02); //$NON-NLS-1$
+    	buffer.add("m10", this.m10); //$NON-NLS-1$
+    	buffer.add("m11", this.m11); //$NON-NLS-1$
+    	buffer.add("m12", this.m12); //$NON-NLS-1$
+    	buffer.add("m20", this.m20); //$NON-NLS-1$
+    	buffer.add("m21", this.m21); //$NON-NLS-1$
+    	buffer.add("m22", this.m22); //$NON-NLS-1$
+    	final StringBuffer m = new StringBuffer();
+    	m.append(this.m00).append("\t").append(this.m01).append("\t").append(this.m02).append("\n"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+    	m.append(this.m10).append("\t").append(this.m11).append("\t").append(this.m12).append("\n"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+    	m.append(this.m20).append("\t").append(this.m21).append("\t").append(this.m22).append("\n"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+    	buffer.add("m", m.toString()); //$NON-NLS-1$
     }
 
     /**
@@ -1953,7 +1969,7 @@ public class Matrix3d implements Serializable, Cloneable {
      * @param outRot is set with the rotation factors.
      */
     @SuppressWarnings({"checkstyle:methodlength", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
-    protected static void computeSVD(double[] matrix, double[] outScale, double[] outRot) {
+    public static void computeSVD(double[] matrix, double[] outScale, double[] outRot) {
         assert matrix != null : AssertMessages.notNullParameter(0);
         assert matrix.length >= 9 : AssertMessages.tooSmallArrayParameter(0, matrix.length, 9);
         assert outScale != null : AssertMessages.notNullParameter(1);
