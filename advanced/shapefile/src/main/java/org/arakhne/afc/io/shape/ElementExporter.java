@@ -43,7 +43,7 @@ import org.arakhne.afc.attrs.collection.AttributeProvider;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-interface ElementExporter<E> {
+public interface ElementExporter<E> {
 
 	/** Replies all the attribute containers of the given elements.
 	 * The attributes will be put in a DBase file header as columns.
