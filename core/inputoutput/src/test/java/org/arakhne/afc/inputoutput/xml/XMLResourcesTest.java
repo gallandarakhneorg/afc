@@ -239,7 +239,12 @@ public class XMLResourcesTest extends AbstractTestCase {
 		assertEquals(new URL("http://www.arakhne.org"), e.getURL()); //$NON-NLS-1$
 		assertNull(e.getFile());
 		assertNull(e.getEmbeddedData());
-		assertEquals(MimeName.MIME_HTML.getMimeConstant(), e.getMimeType());
+		// If internet connection is up, is should be HTML mime type.
+		// Otherwise it should be Octet-stream.
+		String type = e.getMimeType();
+		assertTrue(
+			type.equals(MimeName.MIME_HTML.getMimeConstant())
+			|| type.equals(MimeName.MIME_OCTET_STREAM.getMimeConstant()));
 	}
 
 	@Test
