@@ -133,6 +133,21 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		return pathFactory;
 	}
 
+	@Override
+	public RoadPath solve(RoadConnection startPoint, RoadConnection endPoint) {
+		if (endPoint instanceof VirtualPoint) {
+			return super.solve(startPoint, endPoint);
+		}
+		if (endPoint.getConnectedSegmentCount() > 0) {
+			final RoadSegment segment = endPoint.getConnectedSegment(0);
+			if (segment != null) {
+				final VirtualPoint pts = new VirtualPoint(endPoint.getPoint(), segment);
+				return super.solve(startPoint, pts);
+			}
+		}
+		return null;
+	}
+
 	/** Run the A* algorithm from the nearest segment to
 	 * <var>startPoint</var> to the nearest segment to
 	 * <var>endPoint</var>.
