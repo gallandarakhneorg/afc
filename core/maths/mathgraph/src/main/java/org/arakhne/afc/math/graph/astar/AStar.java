@@ -412,7 +412,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * @return the found path, or <code>null</code> if none found.
 	 */
 	@Pure
-	public final GP solve(PT startPoint, PT endPoint) {
+	public GP solve(PT startPoint, PT endPoint) {
 		return solve(
 				node(startPoint,
 						0f,
