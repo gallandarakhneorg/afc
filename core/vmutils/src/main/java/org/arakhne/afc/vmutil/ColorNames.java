@@ -40,6 +40,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * <p>The supported color names are listing is the table below. The given colors are defined within
  * the <a href="http://www.falkhausen.de/JavaFX-9/scene.paint/Color-table.html">JavaFX CSS Color Standard</a>.
  * <table border="1">
+ * <caption>Supported colors</caption>
  * <thead>
  * <tr><th>Color Name</th><th>RGB Color</th><th>R, G, B, A Components</th><th>Example</th></tr>
  * </thead>
