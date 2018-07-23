@@ -1,0 +1,3 @@
+org.arakhne.afc.bootique.log4j.configs.AppenderConfig
+org.arakhne.afc.bootique.log4j.configs.ConsoleAppenderConfig
+org.arakhne.afc.bootique.log4j.configs.FileAppenderConfig

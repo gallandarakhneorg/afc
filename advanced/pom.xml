@@ -21,6 +21,7 @@
 		<module>nodefx</module>
 		<module>gis</module>
 		<module>slf4j</module>
+		<module>bootique</module>
 	</modules>
 
 	<build>

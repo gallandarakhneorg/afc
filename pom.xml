@@ -176,8 +176,25 @@
 				<version>${afc.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.arakhne.afc.bootique</groupId>
+				<artifactId>bootique-variables</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.arakhne.afc.bootique</groupId>
+				<artifactId>bootique-applicatationdata2</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+
 			<!-- ################################################## Third-Party Libraries 
 				################################################## -->
+			<dependency>
+				<groupId>io.bootique</groupId>
+				<artifactId>bootique</artifactId>
+				<version>0.25</version>
+			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
