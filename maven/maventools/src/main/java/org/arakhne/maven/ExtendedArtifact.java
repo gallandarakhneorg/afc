@@ -52,7 +52,7 @@ import org.apache.maven.plugin.logging.Log;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"deprecation", "checkstyle:methodcount"})
+@SuppressWarnings({"checkstyle:methodcount"})
 public final class ExtendedArtifact implements Artifact {
 
 	/** Empty string constant.

@@ -89,7 +89,7 @@ public class OrientedPoint3ifx extends Point3ifx implements OrientedPoint3D<Poin
      * @param z z coordinate of the point.
      */
     public OrientedPoint3ifx(int x, int y, int z) {
-       super(x, y, z);
+    	super(x, y, z);
     }
 
     /** Construct an oriented point from the three given coordinates.
