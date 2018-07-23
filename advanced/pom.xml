@@ -20,6 +20,7 @@
 		<module>shapefile</module>
 		<module>nodefx</module>
 		<module>gis</module>
+		<module>slf4j</module>
 	</modules>
 
 	<build>

@@ -26,6 +26,8 @@
 		<!-- Version of Mockito library -->
 		<mockito.version>2.12.0</mockito.version>
 		<mockito.version.osgi>2.12.0</mockito.version.osgi>
+		<!-- Version of SLF4J library -->
+		<slf4j.version>1.7.25</slf4j.version>
 		<!-- URL of the deployment server base -->
 		<afc.deployment.server>org.arakhne-ftp</afc.deployment.server>
 		<afc.deployment.base>ftp://ftp.tuxfamily.org/arakhne/arakhne-repository</afc.deployment.base>
@@ -176,6 +178,21 @@
 
 			<!-- ################################################## Third-Party Libraries 
 				################################################## -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jul-to-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>javafx</groupId>
 				<artifactId>jfxrt</artifactId>
