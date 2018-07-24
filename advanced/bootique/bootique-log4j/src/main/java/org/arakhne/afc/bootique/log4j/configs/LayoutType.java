@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.bootique.log4j.configs;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.common.base.Strings;
 import org.apache.log4j.HTMLLayout;
 import org.apache.log4j.Layout;
@@ -122,5 +124,29 @@ public enum LayoutType {
 	 * @return the layout.
 	 */
 	public abstract Layout createLayout(String defaultLogFormat);
+
+	/** Parse a case insensitive string for obtaining the layout type.
+	 *
+	 * @param name the name to parse.
+	 * @return the layout type.
+	 * @since 16.0
+	 */
+	@JsonCreator
+	public static LayoutType valueOfCaseInsensitive(String name) {
+		if (Strings.isNullOrEmpty(name)) {
+			throw new NullPointerException("Name is null"); //$NON-NLS-1$
+		}
+		return valueOf(name.toUpperCase());
+	}
+
+	/** Replies the preferred string representation of the layout type within a Json stream.
+	 *
+	 * @return the string representation of the layout type.
+	 * @since 16.0
+	 */
+	@JsonValue
+	public String toJsonString() {
+		return name().toLowerCase();
+	}
 
 }

@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.bootique.log4j.configs;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.common.base.Strings;
 import org.apache.log4j.ConsoleAppender;
 
 /**
@@ -60,5 +63,29 @@ public enum ConsoleTarget {
 	 * @return the target representation.
 	 */
 	public abstract String toLog4j();
+
+	/** Parse a case insensitive string for obtaining the console target.
+	 *
+	 * @param name the name to parse.
+	 * @return the console target.
+	 * @since 16.0
+	 */
+	@JsonCreator
+	public static ConsoleTarget valueOfCaseInsensitive(String name) {
+		if (Strings.isNullOrEmpty(name)) {
+			throw new NullPointerException("Name is null"); //$NON-NLS-1$
+		}
+		return valueOf(name.toUpperCase());
+	}
+
+	/** Replies the preferred string representation of the console target within a Json stream.
+	 *
+	 * @return the string representation of the console target.
+	 * @since 16.0
+	 */
+	@JsonValue
+	public String toJsonString() {
+		return name().toLowerCase();
+	}
 
 }

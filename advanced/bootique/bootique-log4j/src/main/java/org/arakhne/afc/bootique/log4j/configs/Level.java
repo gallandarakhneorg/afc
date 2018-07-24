@@ -20,6 +20,10 @@
 
 package org.arakhne.afc.bootique.log4j.configs;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.common.base.Strings;
+
 /**
  * Enumeration of the Log4j levels.
  *
@@ -63,6 +67,30 @@ public enum Level {
 
 	Level(org.apache.log4j.Level log4j) {
 		this.log4j = log4j;
+	}
+
+	/** Parse a case insensitive string for obtaining the level.
+	 *
+	 * @param name the name to parse.
+	 * @return the level.
+	 * @since 16.0
+	 */
+	@JsonCreator
+	public static Level valueOfCaseInsensitive(String name) {
+		if (Strings.isNullOrEmpty(name)) {
+			throw new NullPointerException("Name is null"); //$NON-NLS-1$
+		}
+		return valueOf(name.toUpperCase());
+	}
+
+	/** Replies the preferred string representation of the level within a Json stream.
+	 *
+	 * @return the string representation of the level.
+	 * @since 16.0
+	 */
+	@JsonValue
+	public String toJsonString() {
+		return name().toLowerCase();
 	}
 
 	/** Replies the log4j level.
