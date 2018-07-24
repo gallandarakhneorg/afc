@@ -21,6 +21,10 @@
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>vmutils</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
