@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>p2</artifactId>
 		<groupId>org.arakhne.afc.p2</groupId>
-		<version>15.0-SNAPSHOT</version>
+		<version>16.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>p2-repository</artifactId>
@@ -27,31 +27,37 @@
 							<artifacts>
 								<!-- Last stable version -->
 								<artifact>
-									<id>org.arakhne.afc.core:vmutils:14.0</id>
+									<id>org.arakhne.afc.core:vmutils:15.0</id>
 									<override>true</override>
 								</artifact>
 								<artifact>
-									<id>org.arakhne.afc.core:util:14.0</id>
+									<id>org.arakhne.afc.core:util:15.0</id>
 									<override>true</override>
 								</artifact>
 								<artifact>
-									<id>org.arakhne.afc.core:text:14.0</id>
+									<id>org.arakhne.afc.core:text:15.0</id>
 									<override>true</override>
 								</artifact>
 								<artifact>
-									<id>org.arakhne.afc.core:references:14.0</id>
+									<id>org.arakhne.afc.core:references:15.0</id>
 									<override>true</override>
 								</artifact>
 								<artifact>
-									<id>org.arakhne.afc.core:inputoutput:14.0</id>
+									<id>org.arakhne.afc.core:inputoutput:15.0</id>
 									<override>true</override>
+									<excludes>
+										<exclude>javafx:jfxrt:*</exclude>
+									</excludes>
 								</artifact>
 								<artifact>
-									<id>org.arakhne.afc.core:math:14.0</id>
+									<id>org.arakhne.afc.core:math:15.0</id>
 									<override>true</override>
+									<excludes>
+										<exclude>javafx:jfxrt:*</exclude>
+									</excludes>
 								</artifact>
 								<artifact>
-									<id>org.arakhne.afc.advanced:agentmotion:14.0</id>
+									<id>org.arakhne.afc.advanced:agentmotion:15.0</id>
 									<override>true</override>
 								</artifact>
 
@@ -121,6 +127,34 @@
 											*
 										</Import-Package>
 									</instructions>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:vmutils:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:util:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:text:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:references:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:inputoutput:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.core:math:14.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.advanced:agentmotion:14.0</id>
+									<override>true</override>
 								</artifact>
 							</artifacts>
 						</configuration>

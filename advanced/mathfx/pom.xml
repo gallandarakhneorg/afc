@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>advanced</artifactId>
 		<groupId>org.arakhne.afc.advanced</groupId>
-		<version>15.0-SNAPSHOT</version>
+		<version>16.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>mathfx</artifactId>
