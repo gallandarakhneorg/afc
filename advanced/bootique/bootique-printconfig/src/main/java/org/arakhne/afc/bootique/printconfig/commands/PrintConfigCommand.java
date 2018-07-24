@@ -20,13 +20,14 @@
 
 package org.arakhne.afc.bootique.printconfig.commands;
 
-import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.fasterxml.jackson.dataformat.yaml.snakeyaml.DumperOptions;
-import com.fasterxml.jackson.dataformat.yaml.snakeyaml.Yaml;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import io.bootique.cli.Cli;
@@ -79,18 +80,25 @@ public class PrintConfigCommand extends CommandWithMetadata {
 
 	@Override
 	public CommandOutcome run(Cli cli) {
-		final Map<String, Object> yaml = new TreeMap<>();
-		extractYaml(yaml, Configs.extractConfigs(this.modulesMetadata.get()));
-		this.bootLogger.get().stdout(generateYaml(yaml));
+		final Map<String, Object> values = new TreeMap<>();
+		extractConfigValues(values, Configs.extractConfigs(this.modulesMetadata.get()));
+		// Generate the output
+		final String content;
+		try {
+				content = generateYaml(values);
+		} catch (JsonProcessingException exception) {
+			return CommandOutcome.failed(ERROR_CODE, exception.getLocalizedMessage(), exception);
+		}
+		this.bootLogger.get().stdout(content);
 		return CommandOutcome.succeeded();
 	}
 
-	/** Extract the Yaml definition from the given configurations.
+	/** Extract the definition from the given configurations.
 	 *
-	 * @param yaml the Yaml to fill out.
+	 * @param yaml the to fill out.
 	 * @param configs the configurations.
 	 */
-	protected void extractYaml(Map<String, Object> yaml, List<ConfigMetadataNode> configs) {
+	protected void extractConfigValues(Map<String, Object> yaml, List<ConfigMetadataNode> configs) {
 		for (final ConfigMetadataNode config : configs) {
 			Configs.defineConfig(yaml, config, this.injector);
 		}
@@ -98,18 +106,18 @@ public class PrintConfigCommand extends CommandWithMetadata {
 
 	/** Generate the Yaml representation of the given map.
 	 *
-	 * @param yaml the Yaml to print out.
+	 * @param map the map to print out.
 	 * @return the Yaml representation.
+	 * @throws JsonProcessingException when the Json cannot be processed.
 	 */
 	@SuppressWarnings("static-method")
-	protected String generateYaml(Map<String, Object> yaml) {
-		final DumperOptions options = new DumperOptions();
-		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-		options.setDefaultScalarStyle(DumperOptions.ScalarStyle.PLAIN);
-		final Yaml yamlObj = new Yaml(options);
-		final StringWriter writer = new StringWriter();
-		yamlObj.dump(yaml, writer);
-		return writer.toString();
+	protected String generateYaml(Map<String, Object> map) throws JsonProcessingException {
+		final YAMLFactory yamlFactory = new YAMLFactory();
+		yamlFactory.configure(Feature.WRITE_DOC_START_MARKER, false);
+		final ObjectMapper mapper = new ObjectMapper(yamlFactory);
+		return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
+	}
+
 	}
 
 }
