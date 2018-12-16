@@ -37,36 +37,44 @@ public enum Level {
 
 	/** No logging.
 	 */
-	OFF(org.apache.log4j.Level.OFF),
+	OFF(org.apache.log4j.Level.OFF, java.util.logging.Level.OFF),
 
 	/** Error.
 	 */
-	ERROR(org.apache.log4j.Level.ERROR),
+	ERROR(org.apache.log4j.Level.ERROR, java.util.logging.Level.SEVERE),
 
 	/** Warning.
 	 */
-	WARNING(org.apache.log4j.Level.WARN),
+	WARNING(org.apache.log4j.Level.WARN, java.util.logging.Level.WARNING),
 
 	/** Information.
 	 */
-	INFO(org.apache.log4j.Level.INFO),
+	INFO(org.apache.log4j.Level.INFO, java.util.logging.Level.INFO),
 
 	/** Debug.
 	 */
-	DEBUG(org.apache.log4j.Level.DEBUG),
+	DEBUG(org.apache.log4j.Level.DEBUG, java.util.logging.Level.FINE),
 
 	/** Trace.
 	 */
-	TRACE(org.apache.log4j.Level.TRACE),
+	TRACE(org.apache.log4j.Level.TRACE, java.util.logging.Level.FINEST),
 
 	/** All.
 	 */
-	ALL(org.apache.log4j.Level.ALL);
+	ALL(org.apache.log4j.Level.ALL, java.util.logging.Level.ALL);
 
 	private final org.apache.log4j.Level log4j;
 
-	Level(org.apache.log4j.Level log4j) {
+	private final java.util.logging.Level jul;
+
+	/** Constructor.
+	 *
+	 * @param log4j the Log4J equivalent level.
+	 * @param jul the JUL  equivalent level.
+	 */
+	Level(org.apache.log4j.Level log4j, java.util.logging.Level jul) {
 		this.log4j = log4j;
+		this.jul = jul;
 	}
 
 	/** Parse a case insensitive string for obtaining the level.
@@ -99,6 +107,51 @@ public enum Level {
 	 */
 	public org.apache.log4j.Level toLog4j() {
 		return this.log4j;
+	}
+
+	/** Replies the JUL level.
+	 *
+	 * @return the JUL level.
+	 * @since 16.0
+	 */
+	public java.util.logging.Level toJul() {
+		return this.jul;
+	}
+
+	/** Replies the level that is equivalent to the given Log4J level.
+	 *
+	 * @param level the Log4J level.
+	 * @return the equivalent level.
+	 * @since 16.0
+	 */
+	public static Level valueOf(org.apache.log4j.Level level) {
+		if (level != null) {
+			final int idx = level.toInt();
+			for (final Level lvl : values()) {
+				if (lvl.toLog4j().toInt() <= idx) {
+					return lvl;
+				}
+			}
+		}
+		throw new IllegalArgumentException();
+	}
+
+	/** Replies the level that is equivalent to the given JUL level.
+	 *
+	 * @param level the JUL level.
+	 * @return the equivalent level.
+	 * @since 16.0
+	 */
+	public static Level valueOf(java.util.logging.Level level) {
+		if (level != null) {
+			final int idx = level.intValue();
+			for (final Level lvl : values()) {
+				if (lvl.toJul().intValue() <= idx) {
+					return lvl;
+				}
+			}
+		}
+		throw new IllegalArgumentException();
 	}
 
 	/** Replies the string representation of all the labels.
