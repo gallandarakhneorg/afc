@@ -21,7 +21,7 @@ matrix:
           - oracle-java8-installer
           - xvfb
       env:
-      - M2_HOME: "$HOME/.binaries/apache-maven-3.5.3"
+      - M2_HOME: "$HOME/.binaries/apache-maven-3.6.0"
       - PATH: "$M2_HOME/bin:$PATH"
       - DISPLAY: ":99.0"
       before_install:
