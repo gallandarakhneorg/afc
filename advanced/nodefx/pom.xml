@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>advanced</artifactId>
 		<groupId>org.arakhne.afc.advanced</groupId>
-		<version>16.0-SNAPSHOT</version>
+		<version>15.2</version>
 	</parent>
 
 	<artifactId>nodefx</artifactId>
