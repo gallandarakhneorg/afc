@@ -25,7 +25,6 @@ import java.util.Iterator;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-
 /**
  * Sized iterator on a collection that can be changed through the iterator.
  *

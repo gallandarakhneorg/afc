@@ -26,7 +26,6 @@ import java.util.Map;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-
 /**
  * Class that map the values of a Map to an unmodifiable sized iterator.
  *

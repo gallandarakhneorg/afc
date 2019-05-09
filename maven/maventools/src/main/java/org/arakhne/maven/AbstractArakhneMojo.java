@@ -937,10 +937,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 		return new ExtendedArtifact(a, name, url, organization, scmRevision, scm, developers, contributors, licenses);
 	}
 
-
-
-	/**
-	 * Create an Jar runtime artifact from the given values.
+	/** Create an Jar runtime artifact from the given values.
 	 *
 	 * @param groupId group id.
 	 * @param artifactId artifact id.
