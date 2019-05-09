@@ -42,7 +42,7 @@ import org.arakhne.afc.util.InformedIterable;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class GisPane<T extends GISContainer<? super T>> extends ZoomablePane<T> {
+public class GisPane<T extends GISContainer<?>> extends ZoomablePane<T> {
 
 	/** Constructor. The renderer is detected with the type replied by
 	 * {@link InformedIterable#getElementType()} on the model.
