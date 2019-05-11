@@ -41,7 +41,7 @@ public abstract class AbstractMapCircleDrawer<T extends MapCircle> extends Abstr
 	 */
 	protected void stroke(ZoomableGraphicsContext gc, T element) {
 		final double radius = element.getRadius();
-		final double diameter = radius * radius;
+		final double diameter = radius + radius;
 		final double minx = element.getX() - radius;
 		final double miny = element.getY() - radius;
 		gc.strokeOval(minx, miny, diameter, diameter);
@@ -54,7 +54,7 @@ public abstract class AbstractMapCircleDrawer<T extends MapCircle> extends Abstr
 	 */
 	protected void fill(ZoomableGraphicsContext gc, T element) {
 		final double radius = element.getRadius();
-		final double diameter = radius * radius;
+		final double diameter = radius + radius;
 		final double minx = element.getX() - radius;
 		final double miny = element.getY() - radius;
 		gc.fillOval(minx, miny, diameter, diameter);
