@@ -507,7 +507,7 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 */
 	void clearUserData();
 
-	/** Remove an user data associated to this segment.
+	/** Replies an user data associated to this segment.
 	 *
 	 * <p>The user data are not stored as attributes because
 	 * they are assumed as transient.
@@ -519,7 +519,7 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	@Pure
 	<T> T getUserData(String id);
 
-	/** Remove an user data associated to this segment.
+	/** Replies the user data associated to this segment.
 	 *
 	 * <p>The user data are not stored as attributes because
 	 * they are assumed as transient.
