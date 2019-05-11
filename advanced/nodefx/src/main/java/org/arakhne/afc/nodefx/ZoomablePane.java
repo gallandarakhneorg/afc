@@ -172,6 +172,14 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 
 	/** Constructor with the model to be displayed.
 	 *
+	 * @since 16.0
+	 */
+	public ZoomablePane() {
+		this(new ZoomableCanvas<>());
+	}
+
+	/** Constructor with the model to be displayed.
+	 *
 	 * @param model the source of the elements.
 	 */
 	public ZoomablePane(T model) {

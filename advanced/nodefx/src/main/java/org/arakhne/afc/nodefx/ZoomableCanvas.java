@@ -128,6 +128,15 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 		this(model, null);
 	}
 
+	/** Constructor. The renderer is detected with the type replied by
+	 * {@link InformedIterable#getElementType()} on the model.
+	 *
+	 * @since 16.0
+	 */
+	public ZoomableCanvas() {
+		endConstructor();
+	}
+
 	/** Constructor.
 	 *
 	 * @param model the source of the elements.
@@ -139,6 +148,10 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 		if (drawer != null) {
 			documentDrawerProperty().set(drawer);
 		}
+		endConstructor();
+	}
+
+	private void endConstructor() {
 		// Add listener on initialization
 		widthProperty().addListener(this.initializationListener);
 		heightProperty().addListener(this.initializationListener);
