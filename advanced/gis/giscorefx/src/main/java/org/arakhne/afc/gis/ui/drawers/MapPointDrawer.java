@@ -47,6 +47,7 @@ public class MapPointDrawer extends AbstractMapPointDrawer<MapPoint> {
 		final Color color = gc.rgb(getDrawingColor(element));
 		gc.setFill(color);
 		gc.setStroke(color.darker());
+		gc.beginPath();
 		if (element.isDoubleFramed()) {
 			defineBigRectangle(gc, element);
 			gc.fill();
