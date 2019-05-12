@@ -46,6 +46,7 @@ import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /**
@@ -304,6 +305,22 @@ public class ZoomableGraphicsContext {
 		return Color.rgb(red, green, blue, opacity);
 	}
 
+	/** Parse the given RGBA color. The opacity component of the given color is replaced by the given opacity.
+	 *
+	 * @param rgb the color.
+	 * @param opacity the opacity, 0 for fully transparent, 1 for fully opaque.
+	 * @return the JavaFX color.
+	 * @since 16.0
+	 */
+	@SuppressWarnings({ "checkstyle:magicnumber", "static-method" })
+	@Pure
+	public Color rgba(Color rgb, double opacity) {
+		final int red = (int) (rgb.getRed() * 255) & 0xFF;
+		final int green = (int) (rgb.getGreen() * 255) & 0xFF;
+		final int blue = (int) (rgb.getBlue() * 255) & 0xFF;
+		return Color.rgb(red, green, blue, opacity);
+	}
+
 	/** Transform a document x coordinate to its JavaFX equivalent.
 	 *
 	 * @param x the document x coordinate.
@@ -398,6 +415,58 @@ public class ZoomableGraphicsContext {
 		return angle;
 	}
 
+	/** Transform a document rectangle's minimum point to its JavaFX equivalent.
+	 *
+	 * @param x the document x coordinate.
+	 * @param y the document y coordinate.
+	 * @param width the document width.
+	 * @param height the document height.
+	 * @return the rectangle's minimum point into the JavaFX coordinates.
+	 * @since 16.0
+	 */
+	@Pure
+	public Point2d doc2fxRectBase(double x, double y, double width, double height) {
+		final double rx;
+		if (this.centeringTransform.isInvertedAxisX()) {
+			rx = x + width;
+		} else {
+			rx = x;
+		}
+		final double ry;
+		if (this.centeringTransform.isInvertedAxisY()) {
+			ry = y + height;
+		} else {
+			ry = y;
+		}
+		return new Point2d(doc2fxX(rx), doc2fxY(ry));
+	}
+
+	/** Transform a JavaFX rectangle's minimum point to its document equivalent.
+	 *
+	 * @param x the JavaFX x coordinate.
+	 * @param y the JavaFX  y coordinate.
+	 * @param width the JavaFX width.
+	 * @param height the JavaFX height.
+	 * @return the rectangle's minimum point into the document FX coordinates.
+	 * @since 16.0
+	 */
+	@Pure
+	public Point2d fx2docRectBase(double x, double y, double width, double height) {
+		final double rx;
+		if (this.centeringTransform.isInvertedAxisX()) {
+			rx = x + width;
+		} else {
+			rx = x;
+		}
+		final double ry;
+		if (this.centeringTransform.isInvertedAxisY()) {
+			ry = y + height;
+		} else {
+			ry = y;
+		}
+		return new Point2d(fx2docX(rx), fx2docY(ry));
+	}
+
 	/**
 	 * Saves the following attributes onto a stack.
 	 * <ul>
@@ -475,7 +544,7 @@ public class ZoomableGraphicsContext {
 	 * @param y value to translate along the y axis.
 	 */
 	public void translate(double x, double y) {
-		this.gc.translate(doc2fxX(x), doc2fxY(y));
+		this.gc.translate(doc2fxSize(x), doc2fxSize(y));
 	}
 
 	/**
@@ -1372,8 +1441,9 @@ public class ZoomableGraphicsContext {
 	 * @param height height of the rectangle.
 	 */
 	public void rect(double x, double y, double width, double height) {
+		final Point2d base = doc2fxRectBase(x, y, width, height);
 		this.gc.rect(
-				doc2fxX(x), doc2fxY(y),
+				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
 	}
 
@@ -1452,8 +1522,9 @@ public class ZoomableGraphicsContext {
 	 * @param height height of the rectangle.
 	 */
 	public void clearRect(double x, double y, double width, double height) {
+		final Point2d base = doc2fxRectBase(x, y, width, height);
 		this.gc.clearRect(
-				doc2fxX(x), doc2fxY(y),
+				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
 	}
 
@@ -1470,8 +1541,9 @@ public class ZoomableGraphicsContext {
 	 * @param height the height of the rectangle.
 	 */
 	public void fillRect(double x, double y, double width, double height) {
+		final Point2d base = doc2fxRectBase(x, y, width, height);
 		this.gc.fillRect(
-				doc2fxX(x), doc2fxY(y),
+				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
 	}
 
@@ -1488,8 +1560,9 @@ public class ZoomableGraphicsContext {
 	 * @param height the height of the rectangle.
 	 */
 	public void strokeRect(double x, double y, double width, double height) {
+		final Point2d base = doc2fxRectBase(x, y, width, height);
 		this.gc.strokeRect(
-				doc2fxX(x), doc2fxY(y),
+				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
 	}
 
@@ -1506,8 +1579,9 @@ public class ZoomableGraphicsContext {
 	 * @param height the height at the center of the oval.
 	 */
 	public void fillOval(double x, double y, double width, double height) {
+		final Point2d base = doc2fxRectBase(x, y, width, height);
 		this.gc.fillOval(
-				doc2fxX(x), doc2fxY(y),
+				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
 	}
 
@@ -1525,8 +1599,9 @@ public class ZoomableGraphicsContext {
 	 * @param height the height at the center of the oval.
 	 */
 	public void strokeOval(double x, double y, double width, double height) {
+		final Point2d base = doc2fxRectBase(x, y, width, height);
 		this.gc.strokeOval(
-				doc2fxX(x), doc2fxY(y),
+				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
 	}
 
@@ -1549,8 +1624,9 @@ public class ZoomableGraphicsContext {
 	 */
 	public void fillArc(double x, double y, double width, double height,
 			double startAngle, double arcExtent, ArcType closure) {
+		final Point2d base = doc2fxRectBase(x, y, width, height);
 		this.gc.fillArc(
-				doc2fxX(x), doc2fxY(y),
+				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height),
 				doc2fxAngle(Math.toDegrees(startAngle)),
 				doc2fxAngle(Math.toDegrees(arcExtent)),
@@ -1575,8 +1651,9 @@ public class ZoomableGraphicsContext {
 	 */
 	public void strokeArc(double x, double y, double width, double height,
 			double startAngle, double arcExtent, ArcType closure) {
+		final Point2d base = doc2fxRectBase(x, y, width, height);
 		this.gc.strokeArc(
-				doc2fxX(x), doc2fxY(y),
+				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height),
 				doc2fxAngle(Math.toDegrees(startAngle)),
 				doc2fxAngle(Math.toDegrees(arcExtent)),
@@ -1598,8 +1675,9 @@ public class ZoomableGraphicsContext {
 	 * @param arcHeight the arc height of the rectangle corners.
 	 */
 	public void fillRoundRect(double x, double y, double width, double height, double arcWidth, double arcHeight) {
+		final Point2d base = doc2fxRectBase(x, y, width, height);
 		this.gc.fillRoundRect(
-				doc2fxX(x), doc2fxY(y),
+				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height),
 				doc2fxSize(arcWidth), doc2fxSize(arcHeight));
 	}
@@ -1620,8 +1698,9 @@ public class ZoomableGraphicsContext {
 	 */
 	public void strokeRoundRect(double x, double y, double width, double height,
 			double arcWidth, double arcHeight) {
+		final Point2d base = doc2fxRectBase(x, y, width, height);
 		this.gc.strokeRoundRect(
-				doc2fxX(x), doc2fxY(y),
+				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height),
 				doc2fxSize(arcWidth), doc2fxSize(arcHeight));
 	}
@@ -1658,7 +1737,8 @@ public class ZoomableGraphicsContext {
 	 * @param y the Y coordinate on the destination for the upper left of the image.
 	 */
 	public void drawImage(Image img, double x, double y) {
-		this.gc.drawImage(img, doc2fxX(x), doc2fxY(y));
+		final Point2d base = doc2fxRectBase(x, y, fx2docSize(img.getWidth()), fx2docSize(img.getHeight()));
+		this.gc.drawImage(img, base.getX(), base.getY());
 	}
 
 	/**
@@ -1677,8 +1757,9 @@ public class ZoomableGraphicsContext {
 	 * @param height the height of the destination rectangle.
 	 */
 	public void drawImage(Image img, double x, double y, double width, double height) {
+		final Point2d base = doc2fxRectBase(x, y, width, height);
 		this.gc.drawImage(img,
-				doc2fxX(x), doc2fxY(y),
+				base.getX(), base.getY(),
 				doc2fxSize(width), doc2fxSize(height));
 	}
 
@@ -1705,10 +1786,10 @@ public class ZoomableGraphicsContext {
 	public void drawImage(Image img,
 			double sx, double sy, double sw, double sh,
 			double dx, double dy, double dw, double dh) {
+		final Point2d base = doc2fxRectBase(dx, dy, dw, dh);
 		this.gc.drawImage(img,
-				doc2fxX(sx), doc2fxY(sy),
-				doc2fxSize(sw), doc2fxSize(sh),
-				doc2fxX(dx), doc2fxY(dy),
+				sx, sy, sw, sh,
+				base.getX(), base.getY(),
 				doc2fxSize(dw), doc2fxSize(dh));
 	}
 
