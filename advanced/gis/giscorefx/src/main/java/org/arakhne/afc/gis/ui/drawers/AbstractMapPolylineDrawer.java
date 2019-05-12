@@ -40,6 +40,8 @@ public abstract class AbstractMapPolylineDrawer<T extends MapPolyline> extends A
 
 	/** Draw the polyline path.
 	 *
+	 * <p>Caution: this function calls {@link ZoomableGraphicsContext#beginPath()}.
+	 *
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
 	 */

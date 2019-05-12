@@ -40,6 +40,8 @@ public abstract class AbstractMapPolygonDrawer<T extends MapPolygon> extends Abs
 
 	/** Draw the polygon path.
 	 *
+	 * <p>Caution: this function calls {@link ZoomableGraphicsContext#beginPath()}.
+	 *
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
 	 */

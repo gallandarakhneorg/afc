@@ -38,6 +38,9 @@ public abstract class AbstractMapMultiPointDrawer<T extends MapMultiPoint> exten
 
 	/** Define a path that corresponds to the small rectangles around the points.
 	 *
+	 * <p>Caution: this function does not call {@link ZoomableGraphicsContext#beginPath()}.
+	 * You must call it yourself before the first call to this function.
+	 *
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
 	 */
@@ -60,6 +63,9 @@ public abstract class AbstractMapMultiPointDrawer<T extends MapMultiPoint> exten
 	}
 
 	/** Define a path that corresponds to the big rectangles around a points.
+	 *
+	 * <p>Caution: this function does not call {@link ZoomableGraphicsContext#beginPath()}.
+	 * You must call it yourself before the first call to this function.
 	 *
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.

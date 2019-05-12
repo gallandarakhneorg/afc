@@ -36,6 +36,9 @@ public abstract class AbstractMapPointDrawer<T extends MapPoint> extends Abstrac
 
 	/** Define a path that corresponds to the small rectangle around a point.
 	 *
+	 * <p>Caution: this function does not call {@link ZoomableGraphicsContext#beginPath()}.
+	 * You must call it yourself before the first call to this function.
+	 *
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
 	 */
@@ -53,6 +56,9 @@ public abstract class AbstractMapPointDrawer<T extends MapPoint> extends Abstrac
 	}
 
 	/** Define a path that corresponds to the big rectangle around a point.
+	 *
+	 * <p>Caution: this function does not call {@link ZoomableGraphicsContext#beginPath()}.
+	 * You must call it yourself before the first call to this function.
 	 *
 	 * @param gc the graphics context that must be used for drawing.
 	 * @param element the map element.
