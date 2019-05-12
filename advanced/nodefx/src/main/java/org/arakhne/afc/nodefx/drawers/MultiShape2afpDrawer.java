@@ -46,7 +46,7 @@ public class MultiShape2afpDrawer implements Drawer<MultiShape2afp<?, ?, ?, ?, ?
 	@Override
 	public void draw(ZoomableGraphicsContext gc, MultiShape2afp<?, ?, ?, ?, ?, ?, ?> element) {
 		for (final Shape2afp<?, ?, ?, ?, ?, ?> shape : element) {
-			final Drawer drawer = Drawers.getDrawerFor(shape.getClass());
+			final Drawer drawer = Drawers.getDrawerFor(shape);
 			if (drawer != null) {
 				drawer.draw(gc, shape);
 			}

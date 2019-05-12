@@ -79,30 +79,89 @@ public class DrawersTest {
 	}
 
 	@Test
-	public void getDrawerFor_01() {
+	public void getDrawerForClass_01() {
 		Drawer<String> d1 = Drawers.getDrawerFor(String.class);
 		assertNotNull(d1);
 		assertTrue(d1 instanceof MyDrawer1);
 	}
 
 	@Test
-	public void getDrawerFor_02() {
+	public void getDrawerForClass_02() {
 		Drawer<? extends Number> d1 = Drawers.getDrawerFor(Integer.class);
 		assertNotNull(d1);
 		assertTrue(d1 instanceof MyDrawer2);
 	}
 
 	@Test
-	public void getDrawerFor_03() {
+	public void getDrawerForClass_03() {
 		Drawer<? extends Number> d1 = Drawers.getDrawerFor(Double.class);
 		assertNotNull(d1);
 		assertTrue(d1 instanceof MyDrawer3);
 	}
 
 	@Test
-	public void getDrawerFor_04() {
+	public void getDrawerForClass_04() {
 		Drawer d1 = Drawers.getDrawerFor(Number.class);
 		assertNull(d1);
 	}
 
+	@Test
+	public void getDrawerForObject_01() {
+		Drawer<? super String> d1 = Drawers.getDrawerFor(""); //$NON-NLS-1$
+		assertNotNull(d1);
+		assertTrue(d1 instanceof MyDrawer1);
+	}
+
+	@Test
+	public void getDrawerForObject_02() {
+		Drawer<? super Integer> d1 = Drawers.getDrawerFor(1);
+		assertNotNull(d1);
+		assertTrue(d1 instanceof MyDrawer2);
+	}
+
+	@Test
+	public void getDrawerForObject_03() {
+		Drawer<? super Double> d1 = Drawers.getDrawerFor(1d);
+		assertNotNull(d1);
+		assertTrue(d1 instanceof MyDrawer3);
+	}
+
+	@Test
+	public void getDrawerForObject_04() {
+		Drawer d1 = Drawers.getDrawerFor(1f);
+		assertNull(d1);
+	}
+
+	@Test
+	public void getDrawerForObject_05() {
+		DrawableObject obj = new DrawableObject();
+		Drawer d1 = Drawers.getDrawerFor(obj);
+		assertNull(d1);
+
+		obj.setDrawer(new MyDrawer1());
+		d1 = Drawers.getDrawerFor(obj);
+		assertNotNull(d1);
+		assertTrue(d1 instanceof MyDrawer1);
+	}
+
+	private static class DrawableObject implements DrawerReference<String> {
+
+		private Drawer<? super String> drawer;
+	
+		DrawableObject() {
+			//
+		}
+
+		@Override
+		public Drawer<? super String> getDrawer() {
+			return this.drawer;
+		}
+
+		@Override
+		public void setDrawer(Drawer<? super String> drawer) {
+			this.drawer = drawer;
+		}
+
+	}
+	
 }

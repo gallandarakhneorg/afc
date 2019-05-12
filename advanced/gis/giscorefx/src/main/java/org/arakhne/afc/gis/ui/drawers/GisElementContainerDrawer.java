@@ -27,6 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.DrawerReference;
 import org.arakhne.afc.nodefx.Drawers;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
@@ -39,7 +40,7 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class GisElementContainerDrawer<T extends MapElement> implements Drawer<GISElementContainer<T>> {
+public class GisElementContainerDrawer<T extends MapElement> implements Drawer<GISElementContainer<T>>, DrawerReference<T> {
 
 	private Drawer<? super T> drawer;
 
@@ -58,8 +59,18 @@ public class GisElementContainerDrawer<T extends MapElement> implements Drawer<G
 	}
 
 	@Override
+	public Drawer<? super T> getDrawer() {
+		return this.drawer;
+	}
+
+	@Override
+	public void setDrawer(Drawer<? super T> drawer) {
+		this.drawer = drawer;
+	}
+
+	@Override
 	public final void draw(ZoomableGraphicsContext gc, GISElementContainer<T> primitive) {
-		this.drawer = draw(gc, primitive, this.drawer);
+		draw(gc, primitive, getDrawer());
 	}
 
 	/** Draw the primitive with the given drawer.
@@ -67,7 +78,7 @@ public class GisElementContainerDrawer<T extends MapElement> implements Drawer<G
 	 * @param gc the graphics context to draw with.
 	 * @param primitive the primitive to draw.
 	 * @param drawer the drawer, or {@code null} to use the default.
-	 * @return the drawer to use.
+	 * @return the used drawer.
 	 */
 	protected Drawer<? super T> draw(ZoomableGraphicsContext gc, GISElementContainer<T> primitive, Drawer<? super T> drawer) {
 		Drawer<? super T> drw = drawer;
@@ -75,7 +86,7 @@ public class GisElementContainerDrawer<T extends MapElement> implements Drawer<G
 		while (iterator.hasNext()) {
 			final T mapelement = iterator.next();
 			if (drw == null) {
-				drw = Drawers.getDrawerFor(mapelement.getClass());
+				drw = Drawers.getDrawerFor(mapelement);
 				if (drw != null) {
 					gc.save();
 					drw.draw(gc, mapelement);

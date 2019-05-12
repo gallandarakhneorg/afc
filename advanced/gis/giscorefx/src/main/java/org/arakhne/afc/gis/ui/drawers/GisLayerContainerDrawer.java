@@ -25,6 +25,7 @@ import java.util.Iterator;
 import org.arakhne.afc.gis.maplayer.GISLayerContainer;
 import org.arakhne.afc.gis.maplayer.MapLayer;
 import org.arakhne.afc.nodefx.Drawer;
+import org.arakhne.afc.nodefx.DrawerReference;
 import org.arakhne.afc.nodefx.Drawers;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
@@ -37,7 +38,7 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class GisLayerContainerDrawer<T extends MapLayer> implements Drawer<GISLayerContainer<T>> {
+public class GisLayerContainerDrawer<T extends MapLayer> implements Drawer<GISLayerContainer<T>>, DrawerReference<T> {
 
 	private Drawer<? super T> drawer;
 
@@ -55,6 +56,16 @@ public class GisLayerContainerDrawer<T extends MapLayer> implements Drawer<GISLa
 		this.drawer = drawer;
 	}
 
+	@Override
+	public Drawer<? super T> getDrawer() {
+		return this.drawer;
+	}
+
+	@Override
+	public void setDrawer(Drawer<? super T> drawer) {
+		this.drawer = drawer;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Class<? extends GISLayerContainer<T>> getPrimitiveType() {
@@ -64,12 +75,13 @@ public class GisLayerContainerDrawer<T extends MapLayer> implements Drawer<GISLa
 	@Override
 	public void draw(ZoomableGraphicsContext gc, GISLayerContainer<T> primitive) {
 		final Iterator<T> iterator = primitive.getBottomUpIterator();
-		if (this.drawer != null) {
+		final Drawer<? super T> drw = getDrawer();
+		if (drw != null) {
 			while (iterator.hasNext()) {
 				final T layer = iterator.next();
 				if (layer.isVisible()) {
 					gc.save();
-					this.drawer.draw(gc, layer);
+					drw.draw(gc, layer);
 					gc.restore();
 				}
 			}
@@ -77,7 +89,7 @@ public class GisLayerContainerDrawer<T extends MapLayer> implements Drawer<GISLa
 			while (iterator.hasNext()) {
 				final T layer = iterator.next();
 				if (layer.isVisible()) {
-					final Drawer<? super T> drawer = Drawers.getDrawerFor(layer.getClass());
+					final Drawer<? super T> drawer = Drawers.getDrawerFor(layer);
 					if (drawer != null) {
 						gc.save();
 						drawer.draw(gc, layer);

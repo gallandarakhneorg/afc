@@ -404,16 +404,14 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public ObjectProperty<Drawer<? super T>> documentDrawerProperty() {
 		if (this.drawer == null) {
-			final Drawer<? super T> defaultDrawer = Drawers.getDrawerFor((Class<? extends T>) getDocumentModel().getClass());
+			final Drawer<? super T> defaultDrawer = Drawers.getDrawerFor(getDocumentModel());
 			this.drawer = new SimpleObjectProperty<Drawer<? super T>>(this, DOCUMENT_DRAWER_PROPERTY, defaultDrawer) {
 				@Override
 				protected void invalidated() {
 					if (get() == null) {
-						final Class<? extends T> type =  (Class<? extends T>) getDocumentModel().getClass();
-						final Drawer<? super T> defaultDrawer = Drawers.getDrawerFor(type);
+						final Drawer<? super T> defaultDrawer = Drawers.getDrawerFor(getDocumentModel());
 						set(defaultDrawer);
 					}
 				}

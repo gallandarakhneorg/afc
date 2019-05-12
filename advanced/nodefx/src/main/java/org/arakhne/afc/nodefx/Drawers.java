@@ -111,4 +111,30 @@ public final class Drawers {
 		return defaultChoice;
 	}
 
+	/** Replies the first registered document drawer that is supporting the given instance.
+	 *
+	 * @param <T> the type of the element.
+	 * @param instance the element to drawer.
+	 * @return the drawer, or {@code null} if none.
+	 * @since 16.0
+	 */
+	@Pure
+	@SuppressWarnings("unchecked")
+	public static <T> Drawer<? super T> getDrawerFor(T instance) {
+		if (instance != null) {
+			if (instance instanceof DrawerReference) {
+				final DrawerReference<T> drawable = (DrawerReference<T>) instance;
+				Drawer<? super T> drawer = drawable.getDrawer();
+				if (drawer != null) {
+					return drawer;
+				}
+				drawer = getDrawerFor(instance.getClass());
+				drawable.setDrawer(drawer);
+				return drawer;
+			}
+			return getDrawerFor(instance.getClass());
+		}
+		return null;
+	}
+
 }
