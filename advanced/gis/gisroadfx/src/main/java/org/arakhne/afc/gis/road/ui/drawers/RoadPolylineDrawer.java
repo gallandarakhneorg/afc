@@ -65,17 +65,18 @@ public class RoadPolylineDrawer extends AbstractMapPolylineDrawer<RoadPolyline> 
 		switch (gc.getState()) {
 		case RoadNetworkDrawerConstants.DRAWING_STATE_ROAD_BORDERS:
 			setupRoadBorders(gc, element);
+			gc.stroke();
 			break;
 		case RoadNetworkDrawerConstants.DRAWING_STATE_ROAD_INTERIOR:
 			setupRoadInterior(gc, element);
+			gc.stroke();
 			break;
 		case RoadNetworkDrawerConstants.DRAWING_STATE_ROAD_DETAILS:
 			setupRoadDetails(gc, element);
+			gc.stroke();
 			break;
 		default:
 		}
-
-		gc.stroke();
 	}
 
 	/** Setup for drawing the road borders.
