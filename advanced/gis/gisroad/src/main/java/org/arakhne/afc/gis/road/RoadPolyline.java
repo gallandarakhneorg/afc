@@ -522,7 +522,6 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	}
 
 	@Override
-	@Pure
 	public void projectsOnPlane(double positionOnSegment, Point2D<?, ?> position,
 			Vector2D<?, ?> tangent) {
 		final Point2d p;
@@ -537,7 +536,6 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	}
 
 	@Override
-	@Pure
 	public void projectsOnPlane(double positionOnSegment, double shiftDistance,
 			Point2D<?, ?> position, Vector2D<?, ?> tangent) {
 		final Point2d p;
