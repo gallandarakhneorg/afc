@@ -115,7 +115,7 @@ public final class MeasureUnitUtil {
 	 * @return the given value rounded to the nearest integer.
 	 */
 	@Pure
-	@Inline(value = "(int) Math.round($1)", imported = {Math.class})
+	@Inline(value = "(int) $2.round($1)", imported = {Math.class})
 	public static int pix2pix(double pixelCoord) {
 		return (int) Math.round(pixelCoord);
 	}
@@ -137,7 +137,7 @@ public final class MeasureUnitUtil {
 	 * @return the given value rounded to the nearest integer.
 	 */
 	@Pure
-	@Inline(value = "Math.round($1)", imported = {Math.class})
+	@Inline(value = "$2.round($1)", imported = {Math.class})
 	public static int pix2pix(float pixel_coord) {
 		return Math.round(pixel_coord);
 	}
@@ -357,7 +357,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code ft} * 12
 	 */
 	@Pure
-	@Inline(value = "($1) * 12.")
+	@Inline(value = "($1) * 12.0")
 	public static double ft2in(double ft) {
 		return ft * 12;
 	}
@@ -539,7 +539,7 @@ public final class MeasureUnitUtil {
 	 * @return the result of the convertion.
 	 */
 	@Pure
-	@Inline(value = "MeasureUnitUtil.fromSeconds(MeasureUnitUtil.toSeconds(($1), ($2)), ($3))",
+	@Inline(value = "$4.fromSeconds(MeasureUnitUtil.toSeconds(($1), ($2)), ($3))",
 	        imported = {MeasureUnitUtil.class})
 	public static double convert(long value, TimeUnit inputUnit, TimeUnit outputUnit) {
 		final double v = toSeconds(value, inputUnit);
@@ -555,7 +555,7 @@ public final class MeasureUnitUtil {
 	 * @return the result of the convertion.
 	 */
 	@Pure
-	@Inline(value = "MeasureUnitUtil.fromSeconds(MeasureUnitUtil.toSeconds(($1), ($2)), ($3))",
+	@Inline(value = "$4.fromSeconds(MeasureUnitUtil.toSeconds(($1), ($2)), ($3))",
 	        imported = {MeasureUnitUtil.class})
 	public static double convert(double value, TimeUnit inputUnit, TimeUnit outputUnit) {
 		final double v = toSeconds(value, inputUnit);
@@ -571,7 +571,7 @@ public final class MeasureUnitUtil {
 	 * @return the result of the convertion.
 	 */
 	@Pure
-	@Inline(value = "MeasureUnitUtil.fromMetersPerSecond(MeasureUnitUtil.toMetersPerSecond(($1), ($2)), ($3))",
+	@Inline(value = "$4.fromMetersPerSecond(MeasureUnitUtil.toMetersPerSecond(($1), ($2)), ($3))",
 			imported = {MeasureUnitUtil.class})
 	public static double convert(double value, SpeedUnit inputUnit, SpeedUnit outputUnit) {
 		final double v = toMetersPerSecond(value, inputUnit);
@@ -587,7 +587,7 @@ public final class MeasureUnitUtil {
 	 * @return the result of the convertion.
 	 */
 	@Pure
-	@Inline(value = "MeasureUnitUtil.fromRadiansPerSecond(MeasureUnitUtil.toRadiansPerSecond(($1), ($2)), ($3))",
+	@Inline(value = "$4.fromRadiansPerSecond(MeasureUnitUtil.toRadiansPerSecond(($1), ($2)), ($3))",
 			imported = {MeasureUnitUtil.class})
 	public static double convert(double value, AngularUnit inputUnit, AngularUnit outputUnit) {
 		final double v = toRadiansPerSecond(value, inputUnit);
@@ -604,7 +604,7 @@ public final class MeasureUnitUtil {
 	 * @return the result of the convertion.
 	 */
 	@Pure
-	@Inline(value = "MeasureUnitUtil.fromMeters(MeasureUnitUtil.toMeters(($1), ($2)), ($3))",
+	@Inline(value = "$4.fromMeters(MeasureUnitUtil.toMeters(($1), ($2)), ($3))",
 			imported = {MeasureUnitUtil.class})
 	public static double convert(double value, SpaceUnit inputUnit, SpaceUnit outputUnit) {
 		final double v = toMeters(value, inputUnit);
