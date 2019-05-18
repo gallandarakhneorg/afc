@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.math.physics.kinematic.angular;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.physics.AngularUnit;
 
@@ -43,7 +46,11 @@ public interface AngularInstantVelocityKinematic {
 	 *
 	 * @return the angular speed of this object in r/s.
 	 */
-	double getAngularSpeed();
+	@Pure
+	@Inline(value = "getAngularSpeed($1.RADIANS_PER_SECOND)", imported = {AngularUnit.class})
+	default double getAngularSpeed() {
+		return getAngularSpeed(AngularUnit.RADIANS_PER_SECOND);
+	}
 
 	/**
 	 * Returns the angular speed of this object.
@@ -54,6 +61,7 @@ public interface AngularInstantVelocityKinematic {
 	 * @param unit the unit in which the speed will be given.
 	 * @return the angular speed of this object in the given unit.
 	 */
+	@Pure
 	double getAngularSpeed(AngularUnit unit);
 
 
@@ -65,7 +73,10 @@ public interface AngularInstantVelocityKinematic {
 	 *
 	 * @return the velocity of the object.
 	 */
-	Quaternion getAngularVelocity3D();
+	@Pure
+	default Quaternion getAngularVelocity3D() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length
@@ -75,7 +86,10 @@ public interface AngularInstantVelocityKinematic {
 	 *
 	 * @return the velocity of the object.
 	 */
-	double getAngularVelocity2D();
+	@Pure
+	default double getAngularVelocity2D() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length
@@ -85,7 +99,10 @@ public interface AngularInstantVelocityKinematic {
 	 *
 	 * @return the velocity of the object.
 	 */
-	double getAngularVelocity1D5();
+	@Pure
+	default double getAngularVelocity1D5() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length
@@ -95,6 +112,9 @@ public interface AngularInstantVelocityKinematic {
 	 *
 	 * @return the velocity of the object.
 	 */
-	double getAngularVelocity1D();
+	@Pure
+	default double getAngularVelocity1D() {
+		return getAngularSpeed();
+	}
 
 }

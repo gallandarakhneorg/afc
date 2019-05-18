@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.math.physics.kinematic.angular;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.physics.AngularUnit;
 
 /**
@@ -40,7 +43,11 @@ public interface AngularVelocityKinematic extends AngularInstantVelocityKinemati
 	 * @return the maximal angular speed of this object in r/s,
 	 *     always &gt;= 0.
 	 */
-	double getMaxAngularSpeed();
+	@Pure
+	@Inline(value = "getMaxAngularSpeed($1.RADIANS_PER_SECOND)", imported = {AngularUnit.class})
+	default double getMaxAngularSpeed() {
+		return getMaxAngularSpeed(AngularUnit.RADIANS_PER_SECOND);
+	}
 
 	/**
 	 * Returns the maximal angular speed of this object.
@@ -49,6 +56,7 @@ public interface AngularVelocityKinematic extends AngularInstantVelocityKinemati
 	 * @return the maximal angular speed of this object in the given unit,
 	 *     always &gt;= 0.
 	 */
+	@Pure
 	double getMaxAngularSpeed(AngularUnit unit);
 
 }

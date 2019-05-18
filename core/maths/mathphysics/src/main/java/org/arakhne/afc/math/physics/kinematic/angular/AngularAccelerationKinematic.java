@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.math.physics.kinematic.angular;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.physics.AngularUnit;
 
 /**
@@ -35,12 +38,16 @@ import org.arakhne.afc.math.physics.AngularUnit;
  */
 public interface AngularAccelerationKinematic extends AngularInstantAccelerationKinematic, AngularVelocityKinematic {
 
-	/** Returns the maximal angular acceleration of this object in m/s^2.
+	/** Returns the maximal angular acceleration of this object in r/s^2.
 	 *
-	 * @return the maximal angular acceleration of this object in m/s^2,
+	 * @return the maximal angular acceleration of this object in r/s^2,
 	 *     always &gt;= 0.
 	 */
-	double getMaxAngularAcceleration();
+	@Pure
+	@Inline(value = "getMaxAngularAcceleration($1.RADIANS_PER_SECOND)", imported = {AngularUnit.class})
+	default double getMaxAngularAcceleration() {
+		return getMaxAngularAcceleration(AngularUnit.RADIANS_PER_SECOND);
+	}
 
 	/** Returns the maximal angular acceleration of this object in the given unit.
 	 *
@@ -48,14 +55,19 @@ public interface AngularAccelerationKinematic extends AngularInstantAcceleration
 	 * @return the maximal angular acceleration of this object in the given unit,
 	 *     always &gt;= 0.
 	 */
+	@Pure
 	double getMaxAngularAcceleration(AngularUnit unit);
 
-	/** Returns the maximal angular deceleration of this object in m/s^2.
+	/** Returns the maximal angular deceleration of this object in r/s^2.
 	 *
-	 * @return the maximal angular deceleration of this object in m/s^2,
+	 * @return the maximal angular deceleration of this object in r/s^2,
 	 *     always &gt;= 0.
 	 */
-	double getMaxAngularDeceleration();
+	@Pure
+	@Inline(value = "getMaxAngularDeceleration($1.RADIANS_PER_SECOND)", imported = {AngularUnit.class})
+	default double getMaxAngularDeceleration() {
+		return getMaxAngularDeceleration(AngularUnit.RADIANS_PER_SECOND);
+	}
 
 	/** Returns the maximal angular deceleration of this object the given unit.
 	 *
@@ -63,6 +75,7 @@ public interface AngularAccelerationKinematic extends AngularInstantAcceleration
 	 * @return the maximal angular deceleration of this object in the given unit,
 	 *     always &gt;= 0.
 	 */
+	@Pure
 	double getMaxAngularDeceleration(AngularUnit unit);
 
 }

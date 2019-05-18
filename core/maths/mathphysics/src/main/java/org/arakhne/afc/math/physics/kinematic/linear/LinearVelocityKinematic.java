@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.math.physics.kinematic.linear;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.physics.SpeedUnit;
 
 /**
@@ -41,7 +44,11 @@ public interface LinearVelocityKinematic extends LinearInstantVelocityKinematic 
 	 * @return the maximal linear speed of this object in m/s,
 	 *     always &gt;= 0.
 	 */
-	double getMaxLinearSpeed();
+	@Pure
+	@Inline(value = "getMaxLinearSpeed($1.METERS_PER_SECOND)", imported = {SpeedUnit.class})
+	default double getMaxLinearSpeed() {
+		return getMaxLinearSpeed(SpeedUnit.METERS_PER_SECOND);
+	}
 
 	/**
 	 * Returns the maximal linear speed of this object.
@@ -50,6 +57,7 @@ public interface LinearVelocityKinematic extends LinearInstantVelocityKinematic 
 	 * @return the maximal linear speed of this object in the given unit,
 	 *     always &gt;= 0.
 	 */
+	@Pure
 	double getMaxLinearSpeed(SpeedUnit unit);
 
 }

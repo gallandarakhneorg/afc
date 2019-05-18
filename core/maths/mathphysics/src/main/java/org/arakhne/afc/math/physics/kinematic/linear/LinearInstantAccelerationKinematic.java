@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.math.physics.kinematic.linear;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.physics.SpeedUnit;
 
 /**
@@ -50,7 +53,11 @@ public interface LinearInstantAccelerationKinematic
 	 *
 	 * @return the linear acceleration of this object in m/s^2.
 	 */
-	double getLinearAcceleration();
+	@Pure
+	@Inline(value = "getLinearAcceleration($1.METERS_PER_SECOND)", imported = {SpeedUnit.class})
+	default double getLinearAcceleration() {
+		return getLinearAcceleration(SpeedUnit.METERS_PER_SECOND);
+	}
 
 	/**
 	 * Returns the linear acceleration of this object in the acceleration corresponding to the given speed unit
@@ -67,8 +74,9 @@ public interface LinearInstantAccelerationKinematic
 	 * </ul>
 	 *
 	 * @param unit the unit in which the speed will be given.
-	 * @return the lineat acceleration of this object in the given unit.
+	 * @return the linear acceleration of this object in the given unit.
 	 */
+	@Pure
 	double getLinearAcceleration(SpeedUnit unit);
 
 }

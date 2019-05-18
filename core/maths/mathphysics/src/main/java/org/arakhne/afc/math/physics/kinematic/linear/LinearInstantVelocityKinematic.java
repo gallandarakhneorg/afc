@@ -20,6 +20,10 @@
 
 package org.arakhne.afc.math.physics.kinematic.linear;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.physics.SpeedUnit;
@@ -44,7 +48,11 @@ public interface LinearInstantVelocityKinematic {
 	 *
 	 * @return the linear speed of this object in m/s.
 	 */
-	double getLinearSpeed();
+	@Pure
+	@Inline(value = "getLinearSpeed($1.METERS_PER_SECOND)", imported = {SpeedUnit.class})
+	default double getLinearSpeed() {
+		return getLinearSpeed(SpeedUnit.METERS_PER_SECOND);
+	}
 
 	/**
 	 * Returns the Linear speed of this object.
@@ -55,6 +63,7 @@ public interface LinearInstantVelocityKinematic {
 	 * @param unit the unit in which the speed will be given.
 	 * @return the linear speed of this object in the given unit.
 	 */
+	@Pure
 	double getLinearSpeed(SpeedUnit unit);
 
 
@@ -66,7 +75,10 @@ public interface LinearInstantVelocityKinematic {
 	 *
 	 * @return the velocity of the object.
 	 */
-	Vector3D<?, ?> getLinearVelocity3D();
+	@Pure
+	default Vector3D<?, ?> getLinearVelocity3D() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length
@@ -76,7 +88,10 @@ public interface LinearInstantVelocityKinematic {
 	 *
 	 * @return the velocity of the object.
 	 */
-	Vector2D<?, ?> getLinearVelocity2D();
+	@Pure
+	default Vector2D<?, ?> getLinearVelocity2D() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length
@@ -86,7 +101,10 @@ public interface LinearInstantVelocityKinematic {
 	 *
 	 * @return the velocity of the object.
 	 */
-	Vector2D<?, ?> getLinearVelocity1D5();
+	@Pure
+	default Vector1D<?, ?, ?> getLinearVelocity1D5() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length
@@ -96,6 +114,9 @@ public interface LinearInstantVelocityKinematic {
 	 *
 	 * @return the velocity of the object.
 	 */
-	double getLinearVelocity1D();
+	@Pure
+	default double getLinearVelocity1D() {
+		return getLinearSpeed();
+	}
 
 }

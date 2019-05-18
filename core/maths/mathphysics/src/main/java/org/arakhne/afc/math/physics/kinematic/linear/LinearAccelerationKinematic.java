@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.math.physics.kinematic.linear;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.physics.SpeedUnit;
 
 /**
@@ -40,7 +43,11 @@ public interface LinearAccelerationKinematic extends LinearVelocityKinematic, Li
 	 * @return the maximal linear acceleration of this object in m/s^2,
 	 *     always &gt;= 0.
 	 */
-	double getMaxLinearAcceleration();
+	@Pure
+	@Inline(value = "getMaxLinearAcceleration($1.METERS_PER_SECOND)", imported = {SpeedUnit.class})
+	default double getMaxLinearAcceleration() {
+		return getMaxLinearAcceleration(SpeedUnit.METERS_PER_SECOND);
+	}
 
 	/** Returns the maximal linear acceleration of this object in the given unit.
 	 *
@@ -48,6 +55,7 @@ public interface LinearAccelerationKinematic extends LinearVelocityKinematic, Li
 	 * @return the maximal linear acceleration of this object in the given unit,
 	 *     always &gt;= 0.
 	 */
+	@Pure
 	double getMaxLinearAcceleration(SpeedUnit unit);
 
 	/** Returns the maximal linear deceleration of this object in m/s^2.
@@ -55,7 +63,11 @@ public interface LinearAccelerationKinematic extends LinearVelocityKinematic, Li
 	 * @return the maximal linear deceleration of this object in m/s^2,
 	 *     always &gt;= 0.
 	 */
-	double getMaxLinearDeceleration();
+	@Pure
+	@Inline(value = "getMaxLinearDeceleration($1.METERS_PER_SECOND)", imported = {SpeedUnit.class})
+	default double getMaxLinearDeceleration() {
+		return getMaxLinearDeceleration(SpeedUnit.METERS_PER_SECOND);
+	}
 
 	/** Returns the maximal linear deceleration of this object the given unit.
 	 *
@@ -63,6 +75,7 @@ public interface LinearAccelerationKinematic extends LinearVelocityKinematic, Li
 	 * @return the maximal linear deceleration of this object in the given unit,
 	 *     always &gt;= 0.
 	 */
+	@Pure
 	double getMaxLinearDeceleration(SpeedUnit unit);
 
 }

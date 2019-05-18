@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.math.physics.kinematic.angular;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.physics.AngularUnit;
 
 /**
@@ -49,7 +52,11 @@ public interface AngularInstantAccelerationKinematic extends AngularInstantVeloc
 	 *
 	 * @return the angular acceleration of this object in r/s^2.
 	 */
-	double getAngularAcceleration();
+	@Pure
+	@Inline(value = "getAngularAcceleration($1.RADIANS_PER_SECOND)", imported = {AngularUnit.class})
+	default double getAngularAcceleration() {
+		return getAngularAcceleration(AngularUnit.RADIANS_PER_SECOND);
+	}
 
 	/**
 	 * Returns the angular acceleration of this object in the acceleration corresponding to the given speed unit
@@ -68,6 +75,7 @@ public interface AngularInstantAccelerationKinematic extends AngularInstantVeloc
 	 * @param unit the unit in which the speed will be given.
 	 * @return the angular acceleration of this object in the given unit.
 	 */
+	@Pure
 	double getAngularAcceleration(AngularUnit unit);
 
 }
