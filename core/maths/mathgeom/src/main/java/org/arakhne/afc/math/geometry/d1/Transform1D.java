@@ -465,7 +465,7 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	 *     or <code>-1</code> if the segment of the point is not the first segment in the path.
 	 */
 	@Inline(value = "transform($1, null)")
-	public int transform(Point1D<?, ?, S> point) {
+	public int transform(Point1D<?, ?, ? super S> point) {
 		return transform(point, null);
 	}
 
@@ -480,22 +480,22 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	 *      or <code>-1</code> if the segment of the point is not the first segment in the path.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth"})
-	public int transform(Point1D<?, ?, S> point, Tuple2D<?> appliedTranslation) {
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth", "rawtypes", "unchecked"})
+	public int transform(Point1D<?, ?, ? super S> point, Tuple2D<?> appliedTranslation) {
 		assert point != null : AssertMessages.notNullParameter(0);
 		assert point.getSegment() != null;
 
 		int idx;
 		double distanceToSegmentEnd;
 		Direction1D direction;
-		S previousSegment;
+		Segment1D<?, ?> previousSegment;
 		double shift = point.getY();
 		double curviline = point.getCurvilineCoordinate();
-		S segment = point.getSegment();
+		Segment1D<?, ?> segment = point.getSegment();
 		double distance = 0;
 
 		// Ensure the path is valid
-		final List<S> rpath;
+		final List<? extends Segment1D<?, ?>> rpath;
 		if (this.path == null || this.path.isEmpty()) {
 			rpath = Collections.singletonList(segment);
 		} else {
@@ -600,7 +600,8 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 					Math.abs(this.shiftTranslation));
 		}
 
-		point.set(segment, curviline, shift);
+		final Point1D fake = point;
+		fake.set(segment, curviline, shift);
 
 		return idx;
 	}
