@@ -72,7 +72,7 @@ public final class Drawers {
 	 *
 	 * <p>If multiple drawers handles the given type, the ones handling the top most type
 	 * within the type hierarchy are selected. If there is more than one drawer selected,
-	 * the first encountered is chosen. In this case, there is no warranty about the
+	 * the one that is the lowest into the class hierarchy is chosen. In this case, there is no warranty about the
 	 * order of the drawers; and the replied drawer may be any of the selected drawers.
 	 * The only assumption that could be done on the order of the drawers is:
 	 * if only one Jar library provides drawers' implementation, then the order of
@@ -96,8 +96,11 @@ public final class Drawers {
 				final Drawer<?> drawer = iterator.next();
 				final Class<?> drawerType = drawer.getPrimitiveType();
 				if (drawerType.equals(type)) {
-					defaultChoice = (Drawer<T>) drawer;
-					break;
+					if (defaultChoice == null
+						|| !defaultChoice.getPrimitiveType().equals(type)
+						|| defaultChoice.getClass().isAssignableFrom(drawer.getClass())) {
+						defaultChoice = (Drawer<T>) drawer;
+					}
 				} else  if (drawerType.isAssignableFrom(type)
 					&& (defaultChoice == null
 						|| drawerType.isAssignableFrom(defaultChoice.getPrimitiveType()))) {

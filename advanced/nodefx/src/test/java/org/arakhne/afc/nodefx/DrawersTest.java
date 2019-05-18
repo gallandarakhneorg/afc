@@ -35,6 +35,7 @@ import org.arakhne.afc.nodefx.tests.ContDrawer1;
 import org.arakhne.afc.nodefx.tests.MyDrawer1;
 import org.arakhne.afc.nodefx.tests.MyDrawer2;
 import org.arakhne.afc.nodefx.tests.MyDrawer3;
+import org.arakhne.afc.nodefx.tests.MyDrawer4;
 
 /**
  * @author $Author: sgalland$
@@ -59,23 +60,28 @@ public class DrawersTest {
 		Drawer<?> d3 = iterator1.next();
 		assertTrue(iterator1.hasNext());
 		Drawer<?> d4 = iterator1.next();
+		assertTrue(iterator1.hasNext());
+		Drawer<?> d5 = iterator1.next();
 		assertFalse(iterator1.hasNext());
 
 		assertNotNull(d1);
 		assertNotNull(d2);
 		assertNotNull(d3);
 		assertNotNull(d4);
+		assertNotNull(d5);
 		
 		Set<Class<? extends Drawer<?>>> types = new HashSet<>();
 		types.add(MyDrawer1.class);
 		types.add(MyDrawer2.class);
 		types.add(MyDrawer3.class);
+		types.add(MyDrawer4.class);
 		types.add(ContDrawer1.class);
 		
 		assertTrue(types.remove(d1.getClass()));
 		assertTrue(types.remove(d2.getClass()));
 		assertTrue(types.remove(d3.getClass()));
 		assertTrue(types.remove(d4.getClass()));
+		assertTrue(types.remove(d5.getClass()));
 	}
 
 	@Test
