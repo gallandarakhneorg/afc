@@ -23,6 +23,7 @@ package org.arakhne.afc.math.physics;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
@@ -89,7 +90,7 @@ public final class PhysicsUtil {
 	 * @return a motion
 	 */
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw(($1), ($2), ($3))",
+	@Inline(value = "$4.getPhysicsEngine().motionNewtonLaw(($1), ($2), ($3))",
 			imported = {PhysicsUtil.class})
 	public static double motionNewtonLaw(
 			double speed,
@@ -121,7 +122,7 @@ public final class PhysicsUtil {
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw1D(($1), ($2), ($3), ($4), ($5), ($6), ($7))",
+	@Inline(value = "$8.getPhysicsEngine().motionNewtonLaw1D(($1), ($2), ($3), ($4), ($5), ($6), ($7))",
 			imported = {PhysicsUtil.class})
 	public static double motionNewtonLaw1D(
 			double velocity,
@@ -156,9 +157,11 @@ public final class PhysicsUtil {
 	 * @param dt is the time.
 	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
+	 * @deprecated since 16.0, see {@link #motionNewtonLaw1D5(Vector1D, double, double, Vector1D, double, double, double, Vector1D)}
 	 */
+	@Deprecated
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw1D5(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
+	@Inline(value = "$9.getPhysicsEngine().motionNewtonLaw1D5(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonLaw1D5(
 			Vector2D<?, ?> velocity,
@@ -169,6 +172,46 @@ public final class PhysicsUtil {
 			double maxAcceleration,
 			double dt,
 			Vector2D<?, ?> result) {
+		engine.motionNewtonLaw1D5(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt, result);
+	}
+
+	/** Compute and replies a motion according
+	 * to high school physics Newton's equations for motion.
+	 *
+	 * <p>This function allows to clamp acceleration and velocity.
+	 *
+	 * <p><code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
+	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
+	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
+	 * <code>motion = clamped_velocity * dt</code><br>
+	 *
+	 * <p>Caution: The resulting vector has the same segment as the provided vector.
+	 *
+	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
+	 * @param minSpeed is the minimal speed allowed.
+	 * @param maxSpeed is the maximal speed allowed.
+	 * @param acceleration is the current acceleration of the object. Norm of vector is acceleration
+	 *     amount in m/s<sup>2</sup> for example.
+	 * @param minAcceleration is the minimal acceleration allowed.
+	 * @param maxAcceleration is the maximal  acceleration allowed.
+	 *     Length of this vector is the acceleration amount. Direction of this
+	 *     vector becomes movement direction.
+	 * @param dt is the time.
+	 * @param result the motion.
+	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
+	 */
+	@Pure
+	@Inline(value = "$9.getPhysicsEngine().motionNewtonLaw1D5(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
+			imported = {PhysicsUtil.class})
+	public static void motionNewtonLaw1D5(
+			Vector1D<?, ?, ?> velocity,
+			double minSpeed,
+			double maxSpeed,
+			Vector1D<?, ?, ?> acceleration,
+			double minAcceleration,
+			double maxAcceleration,
+			double dt,
+			Vector1D<?, ?, ?> result) {
 		engine.motionNewtonLaw1D5(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt, result);
 	}
 
@@ -196,7 +239,7 @@ public final class PhysicsUtil {
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw2D(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
+	@Inline(value = "$9.getPhysicsEngine().motionNewtonLaw2D(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonLaw2D(
 			Vector2D<?, ?> velocity,
@@ -234,7 +277,7 @@ public final class PhysicsUtil {
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw2D5(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
+	@Inline(value = "$9.getPhysicsEngine().motionNewtonLaw2D5(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonLaw2D5(
 			Vector3D<?, ?> velocity,
@@ -272,7 +315,7 @@ public final class PhysicsUtil {
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw3D(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
+	@Inline(value = "$9.getPhysicsEngine().motionNewtonLaw3D(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonLaw3D(
 			Vector3D<?, ?> velocity,
@@ -296,7 +339,7 @@ public final class PhysicsUtil {
 	 * @return a motion
 	 */
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law(($1), ($2))",
+	@Inline(value = "$3.getPhysicsEngine().motionNewtonEuler1Law(($1), ($2))",
 			imported = {PhysicsUtil.class})
 	public static double motionNewtonEuler1Law(
 			double speed,
@@ -316,7 +359,7 @@ public final class PhysicsUtil {
 	 * @return a motion
 	 */
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law1D(($1), ($2), ($3), ($4))",
+	@Inline(value = "$5.getPhysicsEngine().motionNewtonEuler1Law1D(($1), ($2), ($3), ($4))",
 			imported = {PhysicsUtil.class})
 	public static double motionNewtonEuler1Law1D(
 			double velocity,
@@ -336,9 +379,11 @@ public final class PhysicsUtil {
 	 * @param maxSpeed is the maximal speed allowed.
 	 * @param dt is the time
 	 * @param result a motion
+	 * @deprecated since 16.0, see {@link #motionNewtonEuler1Law1D5(Vector1D, double, double, double, Vector1D)}
 	 */
+	@Deprecated
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law1D5(($1), ($2), ($3), ($4), ($5))",
+	@Inline(value = "$6.getPhysicsEngine().motionNewtonEuler1Law1D5(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonEuler1Law1D5(
 			Vector2D<?, ?> velocity,
@@ -354,6 +399,8 @@ public final class PhysicsUtil {
 	 *
 	 * <p><code>movement = clamp(velocity) * dt</code>
 	 *
+	 * <p>Caution: The resulting vector has the same segment as the provided vector.
+	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
 	 * @param maxSpeed is the maximal speed allowed.
@@ -361,7 +408,30 @@ public final class PhysicsUtil {
 	 * @param result a motion
 	 */
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law2D(($1), ($2), ($3), ($4), ($5))",
+	@Inline(value = "$6.getPhysicsEngine().motionNewtonEuler1Law1D5(($1), ($2), ($3), ($4), ($5))",
+			imported = {PhysicsUtil.class})
+	public static void motionNewtonEuler1Law1D5(
+			Vector1D<?, ?, ?> velocity,
+			double minSpeed,
+			double maxSpeed,
+			double dt,
+			Vector1D<?, ?, ?> result) {
+		engine.motionNewtonEuler1Law1D5(velocity, minSpeed, maxSpeed, dt, result);
+	}
+
+	/** Compute and replies a motion according
+	 * to Newton-Euler-1 equations for motion.
+	 *
+	 * <p><code>movement = clamp(velocity) * dt</code>
+	 *
+	 * @param velocity is the current  velocity of the object.
+	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
+	 * @param maxSpeed is the maximal speed allowed.
+	 * @param dt is the time
+	 * @param result a motion
+	 */
+	@Pure
+	@Inline(value = "$6.getPhysicsEngine().motionNewtonEuler1Law2D(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonEuler1Law2D(
 			Vector2D<?, ?> velocity,
@@ -384,7 +454,7 @@ public final class PhysicsUtil {
 	 * @param result a motion
 	 */
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law2D5(($1), ($2), ($3), ($4), ($5))",
+	@Inline(value = "$6.getPhysicsEngine().motionNewtonEuler1Law2D5(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonEuler1Law2D5(
 			Vector3D<?, ?> velocity,
@@ -407,7 +477,7 @@ public final class PhysicsUtil {
 	 * @param result a motion
 	 */
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law3D(($1), ($2), ($3), ($4), ($5))",
+	@Inline(value = "$6.getPhysicsEngine().motionNewtonEuler1Law3D(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonEuler1Law3D(
 			Vector3D<?, ?> velocity,
@@ -428,7 +498,7 @@ public final class PhysicsUtil {
 	 * @return a new speed
 	 */
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().speed(($1), ($2))",
+	@Inline(value = "$3.getPhysicsEngine().speed(($1), ($2))",
 			imported = {PhysicsUtil.class})
 	public static double speed(double movement, double dt) {
 		return engine.speed(movement, dt);
@@ -445,7 +515,7 @@ public final class PhysicsUtil {
 	 * @return a new acceleration
 	 */
 	@Pure
-	@Inline(value = "PhysicsUtil.getPhysicsEngine().acceleration(($1), ($2), ($3))",
+	@Inline(value = "$4.getPhysicsEngine().acceleration(($1), ($2), ($3))",
 			imported = {PhysicsUtil.class})
 	public static double acceleration(
 			double previousSpeed,

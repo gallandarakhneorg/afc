@@ -23,6 +23,7 @@ package org.arakhne.afc.math.physics;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
@@ -83,8 +84,14 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		return sign * velocityNorm * dt;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated since 16.0
+	 */
 	@Pure
 	@Override
+	@Deprecated
 	public void motionNewtonLaw1D5(
 			Vector2D<?, ?> velocity,
 			double minSpeed,
@@ -106,6 +113,61 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		if (olength != 0.) {
 			a = MathUtil.clamp(
 					(acceleration.dot(velocity) < 0.) ? -olength : olength,
+							minAcceleration,
+							maxAcceleration);
+
+			a = Math.abs(a) / olength;
+			vx = a * acceleration.getX();
+			vy = a * acceleration.getY();
+
+			a = .5f * dt;
+
+			vx = velocity.getX() + a * vx;
+			vy = velocity.getY() + a * vy;
+		} else {
+			vx = velocity.getX();
+			vy = velocity.getY();
+		}
+
+		olength = Math.hypot(vx, vy);
+		if (olength != 0.) {
+			a = MathUtil.clamp(
+					(Vector2D.dotProduct(vx, vy, velocity.getX(), velocity.getY()) < 0.) ? -olength : olength,
+							minSpeed,
+							maxSpeed);
+
+			a = dt * Math.abs(a) / olength;
+
+			result.set(a * vx, a * vy);
+		} else {
+			result.set(0., 0.);
+		}
+	}
+
+	@Pure
+	@Override
+	public void motionNewtonLaw1D5(
+			Vector1D<?, ?, ?> velocity,
+			double minSpeed,
+			double maxSpeed,
+			Vector1D<?, ?, ?> acceleration,
+			double minAcceleration,
+			double maxAcceleration,
+			double dt,
+			Vector1D<?, ?, ?> result) {
+		assert velocity != null;
+		assert acceleration != null;
+		assert minSpeed >= 0.;
+
+		double olength = acceleration.getLength();
+		double vx;
+		double vy;
+		double a;
+
+		if (olength != 0.) {
+			a = MathUtil.clamp(
+					(Vector2D.dotProduct(acceleration.getX(), acceleration.getY(),
+							velocity.getX(), velocity.getY()) < 0.) ? -olength : olength,
 							minAcceleration,
 							maxAcceleration);
 
@@ -289,14 +351,38 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		return MathUtil.sign(speed) * MathUtil.clamp(Math.abs(speed), minSpeed, maxSpeed) * dt;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @deprecated since 16.0
+	 */
 	@Pure
 	@Override
+	@Deprecated
 	public void motionNewtonEuler1Law1D5(
 			Vector2D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
 			Vector2D<?, ?> result) {
+		assert minSpeed >= 0.;
+		final double length = velocity.getLength();
+		if (length != 0.) {
+			final double acc = dt * MathUtil.clamp(length, minSpeed, maxSpeed) / length;
+			result.set(velocity.getX() * acc, velocity.getY() * acc);
+		} else {
+			result.set(0., 0.);
+		}
+	}
+
+	@Pure
+	@Override
+	public void motionNewtonEuler1Law1D5(
+			Vector1D<?, ?, ?> velocity,
+			double minSpeed,
+			double maxSpeed,
+			double dt,
+			Vector1D<?, ?, ?> result) {
 		assert minSpeed >= 0.;
 		final double length = velocity.getLength();
 		if (length != 0.) {

@@ -24,6 +24,7 @@ import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParamete
 
 import org.junit.Test;
 
+import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.testtools.AbstractTestCase;
@@ -48,9 +49,16 @@ public class PhysicsUtilTest extends AbstractTestCase {
 	}
 
 	@Test
+	@Deprecated
 	public void motionNewtonEuler1Law1D5Vector2D() {
 		assertInlineParameterUsage(PhysicsUtil.class, "motionNewtonEuler1Law1D5", //$NON-NLS-1$
 				Vector2D.class, double.class, double.class, double.class, Vector2D.class);
+	}
+
+	@Test
+	public void motionNewtonEuler1Law1D5Vector1D() {
+		assertInlineParameterUsage(PhysicsUtil.class, "motionNewtonEuler1Law1D5", //$NON-NLS-1$
+				Vector1D.class, double.class, double.class, double.class, Vector1D.class);
 	}
 
 	@Test
@@ -83,9 +91,16 @@ public class PhysicsUtilTest extends AbstractTestCase {
 	}
 
 	@Test
-	public void motionNewtonLaw1D5() {
+	@Deprecated
+	public void motionNewtonLaw1D5_deprecated() {
 		assertInlineParameterUsage(PhysicsUtil.class, "motionNewtonLaw1D5", //$NON-NLS-1$
 				Vector2D.class, double.class, double.class, Vector2D.class, double.class, double.class, double.class, Vector2D.class);
+	}
+
+	@Test
+	public void motionNewtonLaw1D5() {
+		assertInlineParameterUsage(PhysicsUtil.class, "motionNewtonLaw1D5", //$NON-NLS-1$
+				Vector1D.class, double.class, double.class, Vector1D.class, double.class, double.class, double.class, Vector1D.class);
 	}
 
 	@Test
