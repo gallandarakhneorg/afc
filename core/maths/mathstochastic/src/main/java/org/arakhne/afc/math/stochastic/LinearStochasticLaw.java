@@ -25,6 +25,8 @@ import java.util.Random;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+
 /**
  * Law that representes a linear density.
  *
@@ -43,146 +45,146 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class LinearStochasticLaw extends StochasticLaw {
 
-    private final boolean ascendent;
+	private static final String ASCENDENT_NAME = "ascendent"; //$NON-NLS-1$
 
-    private final double minX;
+	private static final String MINX_NAME = "minX"; //$NON-NLS-1$
 
-    private final double maxX;
+	private static final String MAXX_NAME = "maxX"; //$NON-NLS-1$
 
-    private final double delta;
+	private static final String DELTA_NAME = "delta"; //$NON-NLS-1$
 
-    /**
-     * Construct a law with the following parameters.
-     * <ul>
-     * <li><code>ascendent</code></li>
-     * <li><code>minX</code></li>
-     * <li><code>maxY</code></li>
-     * <li><code>delta</code></li>
-     * </ul>
-     *
-     * @param parameters is the set of accepted paramters.
-     * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
-     */
-    public LinearStochasticLaw(Map<String, String> parameters) throws LawParameterNotFoundException {
-        this.ascendent = paramBoolean("ascendent", parameters); //$NON-NLS-1$
-        this.minX = paramFloat("maxX", parameters); //$NON-NLS-1$
-        this.maxX = paramFloat("maxX", parameters); //$NON-NLS-1$
-        this.delta = paramFloat("delta", parameters); //$NON-NLS-1$
-    }
+	private final boolean ascendent;
 
-    /** Create a ascendent linear distribution.
-     *
-     * @param minX is the lower bound of the distribution
-     * @param maxX is the upper bound of the distribution
-     */
-    public LinearStochasticLaw(double minX, double maxX) {
-        this(minX, maxX, true);
-    }
+	private final double minX;
 
-    /** Create a linear distribution.
-     * @param minX is the lower bound of the distribution
-     * @param maxX is the upper bound of the distribution
-     * @param ascendent indicates of the distribution function is ascendent or not
-     */
-    public LinearStochasticLaw(double minX, double maxX, boolean ascendent) {
-        double i = minX;
-        double a = maxX;
-        if (i > a) {
-            final double t = i;
-            i = a;
-            a = t;
-        }
+	private final double maxX;
 
-        this.ascendent = ascendent;
-        this.minX = i;
-        this.maxX = a;
+	private final double delta;
 
-        this.delta = this.ascendent ? (this.maxX - this.minX) : (this.minX - this.maxX);
-    }
+	/**
+	 * Construct a law with the following parameters.
+	 * <ul>
+	 * <li><code>ascendent</code></li>
+	 * <li><code>minX</code></li>
+	 * <li><code>maxY</code></li>
+	 * <li><code>delta</code></li>
+	 * </ul>
+	 *
+	 * @param parameters is the set of accepted paramters.
+	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
+	 */
+	public LinearStochasticLaw(Map<String, String> parameters) throws LawParameterNotFoundException {
+		this.ascendent = paramBoolean(ASCENDENT_NAME, parameters);
+		this.minX = paramDouble(MINX_NAME, parameters);
+		this.maxX = paramDouble(MAXX_NAME, parameters);
+		this.delta = paramDouble(DELTA_NAME, parameters);
+	}
 
-    /** Replies a random value that respect
-     * the current stochastic law.
-     *
-     * @param minX is the lower bound of the distribution
-     * @param maxX is the upper bound of the distribution
-     * @param ascendent indicates of the distribution function is ascendent or not
-     * @return a value depending of the stochastic law parameters
-     * @throws MathException when error in the math definition.
-     */
-    @Pure
-    public static double random(double minX, double maxX, boolean ascendent) throws MathException {
-        return StochasticGenerator.generateRandomValue(new LinearStochasticLaw(minX, maxX, ascendent));
-    }
+	/** Create a ascendent linear distribution.
+	 *
+	 * @param minX is the lower bound of the distribution
+	 * @param maxX is the upper bound of the distribution
+	 */
+	public LinearStochasticLaw(double minX, double maxX) {
+		this(minX, maxX, true);
+	}
 
-    /** Replies a random value that respect
-     * the current stochastic law.
-     *
-     * <p>The used stochastic law is the ascendent linear distribution.
-     *
-     * @param minX is the lower bound of the distribution
-     * @param maxX is the upper bound of the distribution
-     * @return a value depending of the stochastic law parameters
-     * @throws MathException when error in the math definition.
-     */
-    @Pure
-    public static double random(double minX, double maxX) throws MathException {
-        return StochasticGenerator.generateRandomValue(new LinearStochasticLaw(minX, maxX));
-    }
+	/** Create a linear distribution.
+	 * @param minX is the lower bound of the distribution
+	 * @param maxX is the upper bound of the distribution
+	 * @param ascendent indicates of the distribution function is ascendent or not
+	 */
+	public LinearStochasticLaw(double minX, double maxX, boolean ascendent) {
+		double i = minX;
+		double a = maxX;
+		if (i > a) {
+			final double t = i;
+			i = a;
+			a = t;
+		}
 
-    @Pure
-    @Override
-    public String toString() {
-        final StringBuilder b = new StringBuilder();
-        b.append("LINEAR(["); //$NON-NLS-1$
-        b.append(this.minX);
-        b.append(';');
-        b.append(this.maxX);
-        b.append(';');
-        if (this.ascendent) {
-            b.append("asc"); //$NON-NLS-1$
-        } else {
-            b.append("desc"); //$NON-NLS-1$
-        }
-        b.append("])"); //$NON-NLS-1$
-        return b.toString();
-    }
+		this.ascendent = ascendent;
+		this.minX = i;
+		this.maxX = a;
 
-    @Pure
-    @Override
-    public double f(double x)  throws MathException {
-        if ((x < this.minX) || (x > this.maxX)) {
-            throw new OutsideDomainException(x);
-        }
-        final double a = 2. / (this.delta * this.delta);
-        final double b;
-        if (this.ascendent) {
-            b = -a * this.minX;
-        } else {
-            b = -a * this.maxX;
-        }
-        return a * x + b;
-    }
+		this.delta = this.ascendent ? (this.maxX - this.minX) : (this.minX - this.maxX);
+	}
 
-    @Pure
-    @Override
-    public MathFunctionRange[] getRange() {
-        return MathFunctionRange.createSet(this.minX, this.maxX);
-    }
+	/** Replies a random value that respect
+	 * the current stochastic law.
+	 *
+	 * @param minX is the lower bound of the distribution
+	 * @param maxX is the upper bound of the distribution
+	 * @param ascendent indicates of the distribution function is ascendent or not
+	 * @return a value depending of the stochastic law parameters
+	 * @throws MathException when error in the math definition.
+	 */
+	@Pure
+	public static double random(double minX, double maxX, boolean ascendent) throws MathException {
+		return StochasticGenerator.generateRandomValue(new LinearStochasticLaw(minX, maxX, ascendent));
+	}
 
-    /** Replies the x according to the value of the distribution function.
-     *
-     * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
-     * @return {@code F<sup>-1</sup>(u)}
-     * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
-     */
-    @Override
-    @Pure
-    public double inverseF(double u) throws MathException {
-        if (this.ascendent) {
-            return this.delta * Math.sqrt(u) + this.minX;
-        }
+	/** Replies a random value that respect
+	 * the current stochastic law.
+	 *
+	 * <p>The used stochastic law is the ascendent linear distribution.
+	 *
+	 * @param minX is the lower bound of the distribution
+	 * @param maxX is the upper bound of the distribution
+	 * @return a value depending of the stochastic law parameters
+	 * @throws MathException when error in the math definition.
+	 */
+	@Pure
+	public static double random(double minX, double maxX) throws MathException {
+		return StochasticGenerator.generateRandomValue(new LinearStochasticLaw(minX, maxX));
+	}
 
-        return this.delta * Math.sqrt(u) + this.maxX;
-    }
+	@Pure
+	@Override
+	public double f(double x)  throws MathException {
+		if ((x < this.minX) || (x > this.maxX)) {
+			throw new OutsideDomainException(x);
+		}
+		final double a = 2. / (this.delta * this.delta);
+		final double b;
+		if (this.ascendent) {
+			b = -a * this.minX;
+		} else {
+			b = -a * this.maxX;
+		}
+		return a * x + b;
+	}
+
+	@Pure
+	@Override
+	public MathFunctionRange[] getRange() {
+		return MathFunctionRange.createSet(this.minX, this.maxX);
+	}
+
+	/** Replies the x according to the value of the distribution function.
+	 *
+	 * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
+	 * @return {@code F<sup>-1</sup>(u)}
+	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
+	 */
+	@Override
+	@Pure
+	public double inverseF(double u) throws MathException {
+		if (this.ascendent) {
+			return this.delta * Math.sqrt(u) + this.minX;
+		}
+
+		return this.delta * Math.sqrt(u) + this.maxX;
+	}
+
+	@Pure
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add(NAME_NAME, getLawName());
+		buffer.add(ASCENDENT_NAME, this.ascendent);
+		buffer.add(MINX_NAME, this.minX);
+		buffer.add(MAXX_NAME, this.maxX);
+		buffer.add(DELTA_NAME, this.delta);
+	}
 
 }

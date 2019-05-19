@@ -25,6 +25,8 @@ import java.util.Random;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+
 /**
  * Law that representes a Pareto density.
  *
@@ -42,98 +44,98 @@ import org.eclipse.xtext.xbase.lib.Pure;
 @SuppressWarnings({"checkstyle:parametername", "checkstyle:membername"})
 public class ParetoStochasticLaw extends StochasticLaw {
 
-    private final double xmin;
+	private static final String XMIN_NAME = "xmin"; //$NON-NLS-1$
 
-    private final double k;
+	private static final String K_NAME = "k"; //$NON-NLS-1$
 
-    /**
-     * Construct a law with the following parameters.
-     * <ul>
-     * <li><code>xmin</code></li>
-     * <li><code>k</code></li>
-     * </ul>
-     *
-     * @param parameters is the set of accepted paramters.
-     * @throws OutsideDomainException when xmin or k is negative or nul.
-     * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
-     */
-    public ParetoStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
-        this.xmin = paramFloat("xmin", parameters); //$NON-NLS-1$
-        this.k = paramFloat("k", parameters); //$NON-NLS-1$
-        if (this.xmin <= 0) {
-            throw new OutsideDomainException(this.xmin);
-        }
-        if (this.k <= 0) {
-            throw new OutsideDomainException(this.k);
-        }
-    }
+	private final double xmin;
 
-    /** Constructor.
-     * @param k1 represents the shape of the distribution
-     * @param xmin1 is the minimum value of the distribution
-     * @throws OutsideDomainException when xmin or k is negative or nul.
-     */
-    public ParetoStochasticLaw(double k1, double xmin1) throws OutsideDomainException {
-        if (xmin1 <= 0) {
-            throw new OutsideDomainException(xmin1);
-        }
-        if (k1 <= 0) {
-            throw new OutsideDomainException(k1);
-        }
-        this.xmin = xmin1;
-        this.k = k1;
-    }
+	private final double k;
 
-    /** Replies a random value that respect
-     * the current stochastic law.
-     *
-     * @param k represents the shape of the distribution
-     * @param xmin is the minimum value of the distribution
-     * @return a value depending of the stochastic law parameters
-     * @throws MathException when error in math definition.
-     */
-    @Pure
-    public static double random(double k, double xmin) throws MathException {
-        return StochasticGenerator.generateRandomValue(new ParetoStochasticLaw(k, xmin));
-    }
+	/**
+	 * Construct a law with the following parameters.
+	 * <ul>
+	 * <li><code>xmin</code></li>
+	 * <li><code>k</code></li>
+	 * </ul>
+	 *
+	 * @param parameters is the set of accepted paramters.
+	 * @throws OutsideDomainException when xmin or k is negative or nul.
+	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
+	 */
+	public ParetoStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
+		this.xmin = paramDouble(XMIN_NAME, parameters);
+		this.k = paramDouble(K_NAME, parameters);
+		if (this.xmin <= 0) {
+			throw new OutsideDomainException(this.xmin);
+		}
+		if (this.k <= 0) {
+			throw new OutsideDomainException(this.k);
+		}
+	}
 
-    @Pure
-    @Override
-    public String toString() {
-        final StringBuilder b = new StringBuilder();
-        b.append("PARETO(k="); //$NON-NLS-1$
-        b.append(this.k);
-        b.append(", xmin="); //$NON-NLS-1$
-        b.append(this.xmin);
-        b.append(')');
-        return b.toString();
-    }
+	/** Constructor.
+	 * @param k1 represents the shape of the distribution
+	 * @param xmin1 is the minimum value of the distribution
+	 * @throws OutsideDomainException when xmin or k is negative or nul.
+	 */
+	public ParetoStochasticLaw(double k1, double xmin1) throws OutsideDomainException {
+		if (xmin1 <= 0) {
+			throw new OutsideDomainException(xmin1);
+		}
+		if (k1 <= 0) {
+			throw new OutsideDomainException(k1);
+		}
+		this.xmin = xmin1;
+		this.k = k1;
+	}
 
-    @Pure
-    @Override
-    public double f(double x)  throws MathException {
-        if (x < this.xmin) {
-            throw new OutsideDomainException(x);
-        }
-        return this.k * ((Math.pow(this.xmin, this.k)) / (Math.pow(x, this.k + 1)));
-    }
+	/** Replies a random value that respect
+	 * the current stochastic law.
+	 *
+	 * @param k represents the shape of the distribution
+	 * @param xmin is the minimum value of the distribution
+	 * @return a value depending of the stochastic law parameters
+	 * @throws MathException when error in math definition.
+	 */
+	@Pure
+	public static double random(double k, double xmin) throws MathException {
+		return StochasticGenerator.generateRandomValue(new ParetoStochasticLaw(k, xmin));
+	}
 
-    @Pure
-    @Override
-    public MathFunctionRange[] getRange() {
-        return MathFunctionRange.createSet(this.xmin, Double.POSITIVE_INFINITY);
-    }
+	@Pure
+	@Override
+	public double f(double x)  throws MathException {
+		if (x < this.xmin) {
+			throw new OutsideDomainException(x);
+		}
+		return this.k * ((Math.pow(this.xmin, this.k)) / (Math.pow(x, this.k + 1)));
+	}
 
-    /** Replies the x according to the value of the distribution function.
-     *
-     * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
-     * @return {@code F<sup>-1</sup>(u)}
-     * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
-     */
-    @Pure
-    @Override
-    public double inverseF(double u) throws MathException {
-        return this.xmin / Math.pow(u, 1. / this.k);
-    }
+	@Pure
+	@Override
+	public MathFunctionRange[] getRange() {
+		return MathFunctionRange.createSet(this.xmin, Double.POSITIVE_INFINITY);
+	}
+
+	/** Replies the x according to the value of the distribution function.
+	 *
+	 * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
+	 * @return {@code F<sup>-1</sup>(u)}
+	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
+	 */
+	@Pure
+	@Override
+	public double inverseF(double u) throws MathException {
+		return this.xmin / Math.pow(u, 1. / this.k);
+	}
+
+	@Pure
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add(NAME_NAME, getLawName());
+		buffer.add(XMIN_NAME, this.xmin);
+		buffer.add(K_NAME, this.k);
+	}
 
 }

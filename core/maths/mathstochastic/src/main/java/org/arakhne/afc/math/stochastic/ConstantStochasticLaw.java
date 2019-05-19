@@ -20,9 +20,12 @@
 
 package org.arakhne.afc.math.stochastic;
 
+import java.util.Map;
 import java.util.Random;
 
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
  * Law that representes an uniform density with as its upper and lower bounds
@@ -39,6 +42,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class ConstantStochasticLaw extends StochasticLaw {
 
+	private static final String VALUE_NAME = "value"; //$NON-NLS-1$
+
 	private final double value;
 
 	/** Create a constant stochastic law.
@@ -47,6 +52,20 @@ public class ConstantStochasticLaw extends StochasticLaw {
 	 */
 	public ConstantStochasticLaw(double value1) {
 		this.value = value1;
+	}
+
+	/**
+	 * Construct a law with the following parameters.
+	 * <ul>
+	 * <li><code>value</code></li>
+	 * </ul>
+	 *
+	 * @param parameters is the set of accepted paramters.
+	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
+	 * @throws OutsideDomainException when lambda is outside its domain
+	 */
+	public ConstantStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
+		this.value = paramDouble(VALUE_NAME, parameters);
 	}
 
 	@Pure
@@ -67,6 +86,13 @@ public class ConstantStochasticLaw extends StochasticLaw {
 		return new MathFunctionRange[] {
 			new MathFunctionRange(this.value),
 		};
+	}
+
+	@Pure
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add(NAME_NAME, getLawName());
+		buffer.add(VALUE_NAME, this.value);
 	}
 
 }

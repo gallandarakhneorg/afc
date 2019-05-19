@@ -25,6 +25,8 @@ import java.util.Random;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+
 /**
  * Law that representes a triangular density.
  *
@@ -41,92 +43,92 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class ExponentialStochasticLaw extends StochasticLaw {
 
-    private final double lambda;
+	private static final String LAMBDA_NAME = "lambda"; //$NON-NLS-1$
 
-    private final double xmin;
+	private static final String XMIN_NAME = "xmin"; //$NON-NLS-1$
 
-    /**
-     * Construct a law with the following parameters.
-     * <ul>
-     * <li><code>lambda</code></li>
-     * <li><code>xmin</code></li>
-     * </ul>
-     *
-     * @param parameters is the set of accepted paramters.
-     * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
-     * @throws OutsideDomainException when lambda is outside its domain
-     */
-    public ExponentialStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
-        this.lambda = paramFloat("lambda", parameters); //$NON-NLS-1$
-        this.xmin = paramFloat("xmin", parameters); //$NON-NLS-1$
-        if (this.lambda <= 0) {
-            throw new OutsideDomainException(this.lambda);
-        }
-    }
+	private final double lambda;
 
-    /** Constructor.
-     * @param lambda must be positive or nul.
-     * @param xmin the xmin parameter.
-     * @throws OutsideDomainException when lambda is outside its domain
-     */
-    public ExponentialStochasticLaw(double lambda, double xmin) throws OutsideDomainException {
-        if (lambda <= 0) {
-            throw new OutsideDomainException(lambda);
-        }
-        this.lambda = lambda;
-        this.xmin = xmin;
-    }
+	private final double xmin;
 
-    /** Replies a random value that respect
-     * the current stochastic law.
-     *
-     * @param lambda is the parameter of the distribution.
-     * @param xmin is the x coordinate where {@code f(x)=lambda}
-     * @return a value depending of the stochastic law parameters
-     * @throws MathException when error in the math definition.
-     */
-    @Pure
-    public static double random(double lambda, double xmin) throws MathException {
-        return StochasticGenerator.generateRandomValue(new ExponentialStochasticLaw(lambda, xmin));
-    }
+	/**
+	 * Construct a law with the following parameters.
+	 * <ul>
+	 * <li><code>lambda</code></li>
+	 * <li><code>xmin</code></li>
+	 * </ul>
+	 *
+	 * @param parameters is the set of accepted paramters.
+	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
+	 * @throws OutsideDomainException when lambda is outside its domain
+	 */
+	public ExponentialStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
+		this.lambda = paramDouble(LAMBDA_NAME, parameters);
+		this.xmin = paramDouble(XMIN_NAME, parameters);
+		if (this.lambda <= 0) {
+			throw new OutsideDomainException(this.lambda);
+		}
+	}
 
-    @Pure
-    @Override
-    public String toString() {
-        final StringBuilder b = new StringBuilder();
-        b.append("EXPONENTIAL(lambda="); //$NON-NLS-1$
-        b.append(this.lambda);
-        b.append(";["); //$NON-NLS-1$
-        b.append(this.xmin);
-        b.append(";+inf)"); //$NON-NLS-1$
-        return b.toString();
-    }
+	/** Constructor.
+	 * @param lambda must be positive or nul.
+	 * @param xmin the xmin parameter.
+	 * @throws OutsideDomainException when lambda is outside its domain
+	 */
+	public ExponentialStochasticLaw(double lambda, double xmin) throws OutsideDomainException {
+		if (lambda <= 0) {
+			throw new OutsideDomainException(lambda);
+		}
+		this.lambda = lambda;
+		this.xmin = xmin;
+	}
 
-    @Pure
-    @Override
-    public double f(double x)  throws MathException {
-        if (x < this.xmin) {
-            throw new OutsideDomainException(x);
-        }
-        return this.lambda * Math.exp(-this.lambda * (x - this.xmin));
-    }
+	/** Replies a random value that respect
+	 * the current stochastic law.
+	 *
+	 * @param lambda is the parameter of the distribution.
+	 * @param xmin is the x coordinate where {@code f(x)=lambda}
+	 * @return a value depending of the stochastic law parameters
+	 * @throws MathException when error in the math definition.
+	 */
+	@Pure
+	public static double random(double lambda, double xmin) throws MathException {
+		return StochasticGenerator.generateRandomValue(new ExponentialStochasticLaw(lambda, xmin));
+	}
 
-    @Pure
-    @Override
-    public MathFunctionRange[] getRange() {
-        return MathFunctionRange.createSet(this.xmin, Double.POSITIVE_INFINITY);
-    }
+	@Pure
+	@Override
+	public double f(double x)  throws MathException {
+		if (x < this.xmin) {
+			throw new OutsideDomainException(x);
+		}
+		return this.lambda * Math.exp(-this.lambda * (x - this.xmin));
+	}
 
-    /** Replies the x according to the value of the distribution function.
-     *
-     * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
-     * @return {@code F<sup>-1</sup>(u)}
-     * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
-     */
-    @Override
-    @Pure
-    public double inverseF(double u) throws MathException {
-        return this.xmin - (Math.log(u) / this.lambda);
-    }
+	@Pure
+	@Override
+	public MathFunctionRange[] getRange() {
+		return MathFunctionRange.createSet(this.xmin, Double.POSITIVE_INFINITY);
+	}
+
+	/** Replies the x according to the value of the distribution function.
+	 *
+	 * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
+	 * @return {@code F<sup>-1</sup>(u)}
+	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
+	 */
+	@Override
+	@Pure
+	public double inverseF(double u) throws MathException {
+		return this.xmin - (Math.log(u) / this.lambda);
+	}
+
+	@Pure
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add(NAME_NAME, getLawName());
+		buffer.add(LAMBDA_NAME, this.lambda);
+		buffer.add(XMIN_NAME, this.xmin);
+	}
 
 }

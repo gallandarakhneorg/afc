@@ -25,6 +25,8 @@ import java.util.Random;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+
 /**
  * Law that representes a gaussian density.
  *
@@ -41,108 +43,108 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class GaussianStochasticLaw extends StochasticLaw {
 
-    private static final double SQRT2PI = Math.sqrt(2. * Math.PI);
+	private static final String MEAN_NAME = "mean"; //$NON-NLS-1$
 
-    private double mean;
+	private static final String STANDARDDEVIATION_NAME = "standardDeviation"; //$NON-NLS-1$
 
-    private double standardDeviation;
+	private static final double SQRT2PI = Math.sqrt(2. * Math.PI);
 
-    /**
-     * Construct a law with the following parameters.
-     * <ul>
-     * <li><code>mean</code></li>
-     * <li><code>standardDeviation</code></li>
-     * </ul>
-     *
-     * @param parameters is the set of accepted paramters.
-     * @throws OutsideDomainException when standardDeviation is not positive or nul.
-     * @throws LawParameterNotFoundException when a mandatory parameter was not found.
-     */
-    public GaussianStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
-        this.mean = paramFloat("mean", parameters); //$NON-NLS-1$
-        this.standardDeviation = paramFloat("standardDeviation", parameters); //$NON-NLS-1$
-        if (this.standardDeviation <= 0) {
-            throw new OutsideDomainException(this.standardDeviation);
-        }
-    }
+	private double mean;
 
-    /** Constructor.
-     * @param mean is the mean of the normal distribution.
-     * @param standardDeviation is the standard deviation associated to the nromal distribution.
-     * @throws OutsideDomainException when standardDeviation is not positive or nul.
-     */
-    public GaussianStochasticLaw(double mean, double standardDeviation) throws OutsideDomainException {
-        if (standardDeviation <= 0) {
-            throw new OutsideDomainException(standardDeviation);
-        }
-        this.mean = mean;
-        this.standardDeviation = standardDeviation;
-    }
+	private double standardDeviation;
 
-    /** Replies a random value that respect
-     * the current stochastic law.
-     *
-     * @param mean is the mean of the normal distribution.
-     * @param standardDeviation is the standard deviation associated to the nromal distribution.
-     * @return a value depending of the stochastic law parameters
-     * @throws MathException when error in mah definition.
-     */
-    @Pure
-    public static double random(double mean, double standardDeviation) throws MathException {
-        return StochasticGenerator.generateRandomValue(new GaussianStochasticLaw(mean, standardDeviation));
-    }
+	/**
+	 * Construct a law with the following parameters.
+	 * <ul>
+	 * <li><code>mean</code></li>
+	 * <li><code>standardDeviation</code></li>
+	 * </ul>
+	 *
+	 * @param parameters is the set of accepted paramters.
+	 * @throws OutsideDomainException when standardDeviation is not positive or nul.
+	 * @throws LawParameterNotFoundException when a mandatory parameter was not found.
+	 */
+	public GaussianStochasticLaw(Map<String, String> parameters) throws OutsideDomainException, LawParameterNotFoundException {
+		this.mean = paramDouble(MEAN_NAME, parameters);
+		this.standardDeviation = paramDouble(STANDARDDEVIATION_NAME, parameters);
+		if (this.standardDeviation <= 0) {
+			throw new OutsideDomainException(this.standardDeviation);
+		}
+	}
 
-    @Pure
-    @Override
-    public String toString() {
-        final StringBuilder b = new StringBuilder();
-        b.append("NORMAL(mean="); //$NON-NLS-1$
-        b.append(this.mean);
-        b.append(";deviation="); //$NON-NLS-1$
-        b.append(this.standardDeviation);
-        b.append(')');
-        return b.toString();
-    }
+	/** Constructor.
+	 * @param mean is the mean of the normal distribution.
+	 * @param standardDeviation is the standard deviation associated to the nromal distribution.
+	 * @throws OutsideDomainException when standardDeviation is not positive or nul.
+	 */
+	public GaussianStochasticLaw(double mean, double standardDeviation) throws OutsideDomainException {
+		if (standardDeviation <= 0) {
+			throw new OutsideDomainException(standardDeviation);
+		}
+		this.mean = mean;
+		this.standardDeviation = standardDeviation;
+	}
 
-    @Pure
-    @Override
-    public double f(double x)  throws MathException {
-        double xm = x - this.mean;
-        xm = xm * xm;
-        return (1. / (this.standardDeviation * SQRT2PI)) * Math.exp((-xm) / (2.
-                * this.standardDeviation * this.standardDeviation));
-    }
+	/** Replies a random value that respect
+	 * the current stochastic law.
+	 *
+	 * @param mean is the mean of the normal distribution.
+	 * @param standardDeviation is the standard deviation associated to the nromal distribution.
+	 * @return a value depending of the stochastic law parameters
+	 * @throws MathException when error in mah definition.
+	 */
+	@Pure
+	public static double random(double mean, double standardDeviation) throws MathException {
+		return StochasticGenerator.generateRandomValue(new GaussianStochasticLaw(mean, standardDeviation));
+	}
 
-    @Pure
-    @Override
-    public MathFunctionRange[] getRange() {
-        return MathFunctionRange.createInfinitySet();
-    }
+	@Pure
+	@Override
+	public double f(double x)  throws MathException {
+		double xm = x - this.mean;
+		xm = xm * xm;
+		return (1. / (this.standardDeviation * SQRT2PI)) * Math.exp((-xm) / (2.
+				* this.standardDeviation * this.standardDeviation));
+	}
 
-    /** Replies the x according to the value of the distribution function.
-     *
-     * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
-     * @return {@code F<sup>-1</sup>(u)}
-     * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
-     */
-    @Pure
-    @Override
-    public double inverseF(double u) throws MathException {
-        return this.standardDeviation * u + this.mean;
-    }
+	@Pure
+	@Override
+	public MathFunctionRange[] getRange() {
+		return MathFunctionRange.createInfinitySet();
+	}
 
-    /** Replies the x according to the value of the inverted
-     * cummulative distribution function {@code F<sup>-1</sup>(u)}
-     * where {@code u = U(0, 1)}.
-     *
-     * @param rnd is the uniform random variable generator {@code U(0, 1)}.
-     * @return {@code F<sup>-1</sup>(u)}
-     * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
-     */
-    @Override
-    protected final double inverseF(Random rnd) throws MathException {
-        final double u = (rnd.nextGaussian() + 1) / 2.;
-        return inverseF(u);
-    }
+	/** Replies the x according to the value of the distribution function.
+	 *
+	 * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
+	 * @return {@code F<sup>-1</sup>(u)}
+	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
+	 */
+	@Pure
+	@Override
+	public double inverseF(double u) throws MathException {
+		return this.standardDeviation * u + this.mean;
+	}
+
+	/** Replies the x according to the value of the inverted
+	 * cummulative distribution function {@code F<sup>-1</sup>(u)}
+	 * where {@code u = U(0, 1)}.
+	 *
+	 * @param rnd is the uniform random variable generator {@code U(0, 1)}.
+	 * @return {@code F<sup>-1</sup>(u)}
+	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
+	 */
+	@Override
+	protected final double inverseF(Random rnd) throws MathException {
+		final double u = (rnd.nextGaussian() + 1) / 2.;
+		return inverseF(u);
+	}
+
+	@Pure
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add(NAME_NAME, getLawName());
+		buffer.add(MEAN_NAME, this.mean);
+		buffer.add(STANDARDDEVIATION_NAME, this.standardDeviation);
+	}
 
 }

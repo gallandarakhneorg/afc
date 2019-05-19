@@ -26,6 +26,8 @@ import java.util.Random;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+
 /**
  * Law that representes an uniform density.
  *
@@ -48,6 +50,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class UniformStochasticLaw extends StochasticLaw {
 
+	private static final String MINX_NAME = "minX"; //$NON-NLS-1$
+
+	private static final String MAXX_NAME = "maxX"; //$NON-NLS-1$
+
 	private final double minX;
 
 	private final double maxX;
@@ -61,12 +67,12 @@ public class UniformStochasticLaw extends StochasticLaw {
 	 * <li><code>maxX</code></li>
 	 * </ul>
 	 *
-	 * @param parameters is the set of accepted paramters.
+	 * @param parameters is the set of accepted parameters.
 	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
 	 */
 	public UniformStochasticLaw(Map<String, String> parameters) throws LawParameterNotFoundException {
-		this(paramFloat("minX", parameters), //$NON-NLS-1$
-			paramFloat("maxX", parameters)); //$NON-NLS-1$
+		this(paramDouble(MINX_NAME, parameters),
+				paramDouble(MAXX_NAME, parameters));
 	}
 
 	/** Create a uniform stochastic law.
@@ -96,7 +102,7 @@ public class UniformStochasticLaw extends StochasticLaw {
 	 */
 	@Pure
 	@Inline(value = "StochasticGenerator.generateRandomValue(new UniformStochasticLaw(($1), ($2)))",
-			imported = {StochasticGenerator.class, UniformStochasticLaw.class})
+		imported = {StochasticGenerator.class, UniformStochasticLaw.class})
 	public static double random(double minX, double maxX) throws MathException {
 		return StochasticGenerator.generateRandomValue(new UniformStochasticLaw(minX, maxX));
 	}
@@ -126,6 +132,14 @@ public class UniformStochasticLaw extends StochasticLaw {
 	@Override
 	public double inverseF(double u) throws MathException {
 		return this.delta * u + this.minX;
+	}
+
+	@Pure
+	@Override
+	public void toJson(JsonBuffer buffer) {
+		buffer.add(NAME_NAME, getLawName());
+		buffer.add(MINX_NAME, this.minX);
+		buffer.add(MAXX_NAME, this.maxX);
 	}
 
 }

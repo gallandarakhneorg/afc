@@ -25,6 +25,9 @@ import java.util.Random;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.arakhne.afc.vmutil.json.JsonableObject;
+
 /**
  * Abstract implementation of a stochastic law that
  * provides the bounds of a law.
@@ -35,12 +38,24 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public abstract class StochasticLaw implements MathInversableFunction {
+public abstract class StochasticLaw implements MathInversableFunction, JsonableObject {
+
+	/** Name of the property that contains the law's name.
+	 */
+	protected static final String NAME_NAME = "name"; //$NON-NLS-1$
 
 	/** Construct a stochastic law.
 	 */
 	public StochasticLaw() {
 		//
+	}
+
+	/** Replies the name of the law.
+	 *
+	 * @return the name.
+	 */
+	protected String getLawName() {
+		return getClass().getSimpleName().replace("StochasticLaw", ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/** Extract a parameter value from a map of parameters.
@@ -51,8 +66,8 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a double.
 	 */
 	@Pure
-	protected static double paramFloat(String paramName, Map<String, String> parameters)
-		throws LawParameterNotFoundException {
+	protected static double paramDouble(String paramName, Map<String, String> parameters)
+			throws LawParameterNotFoundException {
 		final String svalue = parameters.get(paramName);
 		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
 			try {
@@ -75,7 +90,7 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	 */
 	@Pure
 	protected static boolean paramBoolean(String paramName, Map<String, String> parameters)
-		throws LawParameterNotFoundException {
+			throws LawParameterNotFoundException {
 		final String svalue = parameters.get(paramName);
 		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
 			try {
@@ -122,5 +137,13 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	@Pure
 	@Override
 	public abstract double inverseF(double u) throws MathException;
+
+	@Pure
+	@Override
+	public final String toString() {
+		final JsonBuffer buffer = new JsonBuffer();
+		toJson(buffer);
+		return buffer.toString();
+	}
 
 }
