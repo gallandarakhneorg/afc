@@ -22,6 +22,7 @@ package org.arakhne.afc.nodefx;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -44,13 +45,28 @@ public final class Drawers {
 
 	private static SoftValueTreeMap<Class<?>, Drawer<?>> buffer = new SoftValueTreeMap<>(ClassComparator.SINGLETON);
 
+	private static final AtomicBoolean LOCK = new AtomicBoolean();
+
 	private Drawers() {
 		//
 	}
 
+	private static boolean getLock() {
+		if (LOCK.getAndSet(true)) {
+			throw new IllegalStateException(Drawers.class.getName()
+					+ " is not reentrant. Please do not call it from drawer's constructor."); //$NON-NLS-1$
+		}
+		return true;
+	}
+
+	private static boolean releaseLock() {
+		LOCK.set(false);
+		return true;
+	}
+
 	/** Reload the drawers' definition.
 	 */
-	public static void reload() {
+	public static synchronized void reload() {
 		buffer.clear();
 		services.reload();
 	}
@@ -61,7 +77,7 @@ public final class Drawers {
 	 */
 	@SuppressWarnings("unchecked")
 	@Pure
-	public static Iterator<Drawer<?>> getAllDrawers() {
+	public static synchronized Iterator<Drawer<?>> getAllDrawers() {
 		if (services == null) {
 			services = ServiceLoader.load(Drawer.class);
 		}
@@ -70,9 +86,9 @@ public final class Drawers {
 
 	/** Replies the first registered document drawer that is supporting the given type.
 	 *
-	 * <p>If multiple drawers handles the given type, the ones handling the top most type
-	 * within the type hierarchy are selected. If there is more than one drawer selected,
-	 * the one that is the lowest into the class hierarchy is chosen. In this case, there is no warranty about the
+	 * <p>If multiple drawers handles the given type, the ones handling the bottom most type
+	 * within the type hierarchy are selected.
+	 * In the case there is multiple drawers exactly handling the type, there is no warranty about the
 	 * order of the drawers; and the replied drawer may be any of the selected drawers.
 	 * The only assumption that could be done on the order of the drawers is:
 	 * if only one Jar library provides drawers' implementation, then the order of
@@ -84,34 +100,55 @@ public final class Drawers {
 	 */
 	@SuppressWarnings("unchecked")
 	@Pure
-	public static <T> Drawer<T> getDrawerFor(Class<? extends T> type) {
+	public static synchronized <T> Drawer<T> getDrawerFor(Class<? extends T> type) {
 		assert type != null : AssertMessages.notNullParameter();
-		final Drawer<?> bufferedType = buffer.get(type);
-		Drawer<T> defaultChoice = null;
-		if (bufferedType != null) {
-			defaultChoice = (Drawer<T>) bufferedType;
-		} else {
-			final Iterator<Drawer<?>> iterator = getAllDrawers();
-			while (iterator.hasNext()) {
-				final Drawer<?> drawer = iterator.next();
-				final Class<?> drawerType = drawer.getPrimitiveType();
-				if (drawerType.equals(type)) {
-					if (defaultChoice == null
-						|| !defaultChoice.getPrimitiveType().equals(type)
-						|| defaultChoice.getClass().isAssignableFrom(drawer.getClass())) {
-						defaultChoice = (Drawer<T>) drawer;
+		try {
+			assert getLock();
+			final Drawer<?> bufferedType = buffer.get(type);
+			Drawer<T> choice = null;
+			if (bufferedType != null) {
+				choice = (Drawer<T>) bufferedType;
+			} else {
+				final Iterator<Drawer<?>> iterator = getAllDrawers();
+				Drawer<?> exactMatcherDrawer = null;
+				Drawer<?> superMatcherDrawer = null;
+				while (iterator.hasNext()) {
+					final Drawer<?> drawer = iterator.next();
+					final Class<?> drawerType = drawer.getPrimitiveType();
+					if (exactMatcherDrawer != null) {
+						// Drawer that is exactly matching the element type is already found.
+						// If the new drawer is a subtype of the previous one, the new drawer is used.
+						if (drawerType.equals(type)
+							&& exactMatcherDrawer.getClass().isAssignableFrom(drawer.getClass())) {
+							exactMatcherDrawer = drawer;
+						}
+					} else if (drawerType.equals(type)) {
+						// First time a drawer that is exactly matching the element type was found.
+						exactMatcherDrawer = drawer;
+					} else if (drawerType.isAssignableFrom(type)) {
+						// The new drawer is able to support the element type because it could
+						// draw elements with a super type of the expected element type.
+						// The best choice is the drawer that supports the lowest type into the type hierarchy.
+						if (superMatcherDrawer == null
+							|| (superMatcherDrawer.getPrimitiveType().isAssignableFrom(drawerType))) {
+							superMatcherDrawer = drawer;
+						}
 					}
-				} else  if (drawerType.isAssignableFrom(type)
-					&& (defaultChoice == null
-						|| drawerType.isAssignableFrom(defaultChoice.getPrimitiveType()))) {
-					defaultChoice = (Drawer<T>) drawer;
+				}
+				if (exactMatcherDrawer != null) {
+					choice = (Drawer<T>) exactMatcherDrawer;
+				} else if (superMatcherDrawer != null) {
+					choice = (Drawer<T>) superMatcherDrawer;
+				}
+				// Memorize for further use.
+				if (choice != null) {
+					buffer.put(type, choice);
 				}
 			}
-			if (defaultChoice != null) {
-				buffer.put(type, defaultChoice);
-			}
+			return choice;
+		} finally {
+			assert releaseLock();
 		}
-		return defaultChoice;
 	}
 
 	/** Replies the first registered document drawer that is supporting the given instance.
@@ -123,7 +160,7 @@ public final class Drawers {
 	 */
 	@Pure
 	@SuppressWarnings("unchecked")
-	public static <T> Drawer<? super T> getDrawerFor(T instance) {
+	public static synchronized <T> Drawer<? super T> getDrawerFor(T instance) {
 		if (instance != null) {
 			if (instance instanceof DrawerReference) {
 				final DrawerReference<T> drawable = (DrawerReference<T>) instance;

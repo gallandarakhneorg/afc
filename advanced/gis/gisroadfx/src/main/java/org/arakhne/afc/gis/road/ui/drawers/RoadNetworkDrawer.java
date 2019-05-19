@@ -25,6 +25,7 @@ import org.arakhne.afc.gis.mapelement.MapPolyline;
 import org.arakhne.afc.gis.road.RoadPolyline;
 import org.arakhne.afc.gis.road.layer.RoadNetworkLayer;
 import org.arakhne.afc.gis.ui.drawers.GisElementContainerDrawer;
+import org.arakhne.afc.nodefx.DeferredDrawer;
 import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.Drawers;
 import org.arakhne.afc.nodefx.LevelOfDetails;
@@ -45,7 +46,7 @@ public class RoadNetworkDrawer extends GisElementContainerDrawer<RoadPolyline> {
 	/** Constructor.
 	 */
 	public RoadNetworkDrawer() {
-		this(Drawers.getDrawerFor(RoadPolyline.class));
+		this(DeferredDrawer.of(RoadPolyline.class));
 	}
 
 	/** Constructor.
