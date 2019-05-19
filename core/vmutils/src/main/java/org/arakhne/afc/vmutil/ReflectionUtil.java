@@ -22,6 +22,8 @@ package org.arakhne.afc.vmutil;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -885,6 +887,42 @@ public final class ReflectionUtil {
 			return firstLetter + post.substring(1);
 		}
 		return firstLetter;
+	}
+
+	/** Create an instance of the given type with the given arguments for the constructor.
+	 *
+	 * @param <T> the type of the instance to create.
+	 * @param type the type of the instance to create.
+	 * @param arguments the arguments to pass to the constructor.
+	 * @return the instance.
+     * @exception IllegalAccessException    if this {@code Constructor} object
+     *              is enforcing Java language access control and the underlying
+     *              constructor is inaccessible.
+     * @exception IllegalArgumentException  if the number of actual
+     *              and formal parameters differ; if an unwrapping
+     *              conversion for primitive arguments fails; or if,
+     *              after possible unwrapping, a parameter value
+     *              cannot be converted to the corresponding formal
+     *              parameter type by a method invocation conversion; if
+     *              this constructor pertains to an enum type.
+     * @exception InstantiationException    if the class that declares the
+     *              underlying constructor represents an abstract class.
+     * @exception InvocationTargetException if the underlying constructor
+     *              throws an exception.
+     * @exception ExceptionInInitializerError if the initialization provoked
+     *              by this method fails.
+	 * @since 16.0
+	 */
+	public static <T> T newInstance(Class<T> type, Object... arguments)
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		if (type != null) {
+			for (final Constructor<?> cons : type.getConstructors()) {
+				if (matchesParameters(cons.getParameterTypes(), arguments)) {
+					return type.cast(cons.newInstance(arguments));
+				}
+			}
+		}
+		throw new ExceptionInInitializerError();
 	}
 
 }
