@@ -21,6 +21,7 @@
 package org.arakhne.afc.gis.road.path;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -46,6 +47,15 @@ import org.arakhne.afc.math.graph.GraphPath;
  * @see ClusteredRoadPath
  */
 public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
+
+	/** Constructor of road path that is backed to the given list.
+	 *
+	 * @param original the list to be the backend.
+	 * @since 16.0
+	 */
+	protected RoadPath(List<RoadSegment> original) {
+		super(original);
+	}
 
 	/** Constructor.
 	 */
@@ -78,7 +88,6 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 		super();
 		addAll(path);
 	}
-
 
 	/** Add the elements stored inside a road path into a road path.
 	 * This function takes care about the two ends to the path to insert into.
@@ -113,6 +122,16 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 			}
 		}
 		return true;
+	}
+
+	/** Create a road path that is backed to the given list.
+	 *
+	 * @param original the backend list.
+	 * @return the road path.
+	 * @since 16.0
+	 */
+	public static RoadPath of(List<RoadSegment> original) {
+		return new RoadPath(original);
 	}
 
 	@Override

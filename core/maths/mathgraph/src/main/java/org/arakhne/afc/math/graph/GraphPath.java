@@ -49,7 +49,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 	/** Package access to avoid comiplation error.
 	 */
-	List<ST> segmentList = new LinkedList<>();
+	List<ST> segmentList;
 
 	private PT startingPoint;
 
@@ -59,9 +59,19 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 	private double length;
 
+	/** Constructor of graph path that is backed to the given list.
+	 *
+	 * @param original the list to be the backend.
+	 * @since 16.0
+	 */
+	protected GraphPath(List<ST> original) {
+		this.segmentList = original;
+	}
+
 	/** Construct a path.
 	 */
 	public GraphPath() {
+		this.segmentList = new LinkedList<>();
 		this.isReversable = true;
 	}
 
@@ -70,6 +80,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * @param startingPoint1 is the segment's point indicating the direction.
 	 */
 	public GraphPath(ST segment, PT startingPoint1) {
+		this.segmentList = new LinkedList<>();
 		this.segmentList.add(segment);
 		this.startingPoint = startingPoint1;
 		this.endingPoint = segment.getOtherSidePoint(startingPoint1);
