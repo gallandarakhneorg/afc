@@ -370,6 +370,17 @@ public interface ZoomableViewer<T extends InformedIterable<?> & BoundedElement2a
 		setScaleValue(1.0);
 	}
 
+	/** Reset the viewer center to match the center of the document.
+	 *
+	 * @since 16.0
+	 */
+	default void resetViewportCenter() {
+		final Point2D<?, ?> center = getDocumentBounds().getCenter();
+		if (center != null) {
+			setViewportCenter(center.getX(), center.getY());
+		}
+	}
+
 	/** Zoom out.
 	 */
 	default void zoomOut() {
