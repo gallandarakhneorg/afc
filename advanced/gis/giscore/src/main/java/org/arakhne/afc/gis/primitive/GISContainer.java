@@ -64,4 +64,11 @@ public interface GISContainer<T extends GISElement> extends InformedIterable<T>,
 	@Pure
 	int getColor();
 
+	/** Bind the given listener to this container.
+	 *
+	 * @param listener the listener.
+	 * @since 16.0
+	 */
+	void bindChangeListener(ChangeListener listener);
+
 }

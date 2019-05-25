@@ -43,6 +43,7 @@ import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.gis.maplayer.MapElementLayer;
+import org.arakhne.afc.gis.primitive.ChangeListener;
 import org.arakhne.afc.gis.road.RoadPolyline;
 import org.arakhne.afc.gis.road.StandardRoadNetwork;
 import org.arakhne.afc.gis.road.primitive.RoadNetwork;
@@ -380,6 +381,11 @@ public final class XMLRoadUtil {
 		@Override
 		public Iterator<RoadPolyline> iterator(Rectangle2afp<?, ?, ?, ?, ?, ?> bounds) {
 			return Iterators.filter(this.container.iterator(bounds), RoadPolyline.class);
+		}
+
+		@Override
+		public void bindChangeListener(ChangeListener listener) {
+			throw new UnsupportedOperationException();
 		}
 
 	}

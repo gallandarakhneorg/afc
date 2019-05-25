@@ -29,6 +29,7 @@ import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
 import org.arakhne.afc.gis.mapelement.MapElement;
+import org.arakhne.afc.gis.primitive.ChangeListener;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /**
@@ -61,6 +62,8 @@ public abstract class MapElementLayer<E extends MapElement> extends MapLayer imp
 
 	private static final long serialVersionUID = -398027492247194045L;
 
+	private transient volatile ChangeListener listener;
+
 	/** Create a new layer with the specified attribute source.
 	 *
 	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
@@ -80,6 +83,23 @@ public abstract class MapElementLayer<E extends MapElement> extends MapLayer imp
 	 */
 	public MapElementLayer(UUID id, AttributeCollection attributeSource, boolean isTemp) {
 		super(id, attributeSource, isTemp);
+	}
+
+	@Override
+	public void bindChangeListener(ChangeListener listener) {
+		this.listener = listener;
+	}
+
+	private void fireChangeListener() {
+		if (this.listener != null) {
+			this.listener.changed(this);
+		}
+	}
+
+	@Override
+	public void fireElementChanged() {
+		super.fireElementChanged();
+		fireChangeListener();
 	}
 
 	@Override

@@ -30,6 +30,7 @@ import java.util.Random;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.collection.AttributeProvider;
 import org.arakhne.afc.gis.location.GeoLocation;
+import org.arakhne.afc.gis.primitive.ChangeListener;
 import org.arakhne.afc.gis.primitive.GISElement;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.util.InformedArrayList;
@@ -474,6 +475,11 @@ class GISLayerContainerStub extends AbstractAttributeCollectionStub implements G
 
 	@Override
 	public Class<? extends MapLayer> getElementType() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void bindChangeListener(ChangeListener listener) {
 		throw new UnsupportedOperationException();
 	}
 

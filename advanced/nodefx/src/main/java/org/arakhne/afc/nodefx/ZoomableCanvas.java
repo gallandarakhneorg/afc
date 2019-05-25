@@ -389,6 +389,18 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 					assert get() != null;
 				}
 			};
+			final ChangeListener<? super T> listener = new ChangeListener<T>() {
+				@Override
+				public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
+					if (oldValue != null) {
+						unbindModel(oldValue);
+					}
+					if (newValue != null) {
+						bindModel(newValue);
+					}
+				}
+			};
+			this.model.addListener(listener);
 		}
 		return this.model;
 	}
@@ -401,6 +413,31 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 	@Override
 	public final void setDocumentModel(T model) {
 		documentModelProperty().set(model);
+	}
+
+	/** Invoked when the given model is binded to this canvas.
+	 *
+	 * <p>This function is defined in order to be overridden by sub-classes for
+	 * adding observers on the model.
+	 *
+	 * @param model the model that is binded to this canvas.
+	 * @since 16.0
+	 */
+	protected void bindModel(T model) {
+		//
+	}
+
+
+	/** Invoked when the given model is unbinded from this canvas.
+	 *
+	 * <p>This function is defined in order to be overridden by sub-classes for
+	 * removing observers on the model.
+	 *
+	 * @param model the model that is unbinded to this canvas.
+	 * @since 16.0
+	 */
+	protected void unbindModel(T model) {
+		//
 	}
 
 	@Override

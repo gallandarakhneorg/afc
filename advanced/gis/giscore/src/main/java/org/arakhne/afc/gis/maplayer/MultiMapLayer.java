@@ -33,6 +33,7 @@ import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.collection.AttributeChangeEvent;
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.maplayer.MapLayerHierarchyEvent.Type;
+import org.arakhne.afc.gis.primitive.ChangeListener;
 import org.arakhne.afc.gis.primitive.GISTreeBrowsable;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
@@ -66,6 +67,8 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 	/** List of contained sub-layers.
 	 */
 	private InformedArrayList<L> subLayers = new InformedArrayList<>();
+
+	private transient volatile ChangeListener listener;
 
 	/** Create a new layer with the specified attribute source.
 	 */
@@ -136,6 +139,35 @@ public class MultiMapLayer<L extends MapLayer> extends MapLayer implements GISTr
 	 */
 	public MultiMapLayer(UUID id, AttributeCollection attributeSource, boolean isTemp) {
 		super(id, attributeSource, isTemp);
+	}
+
+	@Override
+	public void bindChangeListener(ChangeListener listener) {
+		this.listener = listener;
+	}
+
+	private void fireChangeListener() {
+		if (this.listener != null) {
+			this.listener.changed(this);
+		}
+	}
+
+	@Override
+	public void fireLayerContentChangedEvent(MapLayerContentEvent event) {
+		super.fireLayerContentChangedEvent(event);
+		fireChangeListener();
+	}
+
+	@Override
+	public void fireLayerHierarchyChangedEvent(MapLayerHierarchyEvent event) {
+		super.fireLayerHierarchyChangedEvent(event);
+		fireChangeListener();
+	}
+
+	@Override
+	public void fireElementChanged() {
+		super.fireElementChanged();
+		fireChangeListener();
 	}
 
 	@SuppressWarnings("unchecked")

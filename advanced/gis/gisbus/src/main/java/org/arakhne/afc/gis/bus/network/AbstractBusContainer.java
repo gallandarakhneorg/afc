@@ -25,6 +25,7 @@ import java.util.UUID;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.gis.bus.network.BusChangeEvent.BusChangeEventType;
+import org.arakhne.afc.gis.primitive.ChangeListener;
 
 /**
  * This object stands for bus primitives which are also containers of bus primitives.
@@ -42,6 +43,8 @@ public abstract class AbstractBusContainer<CONTAINER extends BusContainer<?>, EL
 
 	private static final long serialVersionUID = -1555006589205326227L;
 
+	private transient volatile ChangeListener listener;
+
 	/** Constructor.
 	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
 	 * @param attributeProvider is the provider of attributes used by this bus stop.
@@ -49,6 +52,29 @@ public abstract class AbstractBusContainer<CONTAINER extends BusContainer<?>, EL
 	 */
 	AbstractBusContainer(UUID id, AttributeCollection attributeProvider) {
 		super(id, attributeProvider);
+	}
+
+	@Override
+	public void bindChangeListener(ChangeListener listener) {
+		this.listener = listener;
+	}
+
+	private void fireChangeListener() {
+		if (this.listener != null) {
+			this.listener.changed(this);
+		}
+	}
+
+	@Override
+	public void fireShapeChanged(BusChangeEvent event) {
+		super.fireShapeChanged(event);
+		fireChangeListener();
+	}
+
+	@Override
+	public void fireGraphicalAttributeChanged(BusChangeEvent event) {
+		super.fireGraphicalAttributeChanged(event);
+		fireChangeListener();
 	}
 
 	@Override

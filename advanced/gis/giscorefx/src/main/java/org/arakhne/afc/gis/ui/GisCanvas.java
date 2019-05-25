@@ -67,4 +67,14 @@ public class GisCanvas<T extends GISContainer<?>> extends ZoomableCanvas<T> {
 		setInvertedAxisY(DEFAULT_INVERTED_Y_AXIS);
 	}
 
+	@Override
+	protected void bindModel(T model) {
+		model.bindChangeListener(it -> drawContent());
+	}
+
+	@Override
+	protected void unbindModel(T model) {
+		model.bindChangeListener(null);
+	}
+
 }
