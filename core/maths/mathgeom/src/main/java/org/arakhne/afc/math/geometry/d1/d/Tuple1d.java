@@ -166,7 +166,9 @@ public class Tuple1d<RT extends Tuple1d<? super RT>> implements Tuple2D<RT> {
 	@Override
 	public RT clone() {
 		try {
-			return (RT) super.clone();
+			final RT clone = (RT) super.clone();
+			clone.segment = new WeakReference<>(this.segment.get());
+			return clone;
 		} catch (CloneNotSupportedException e) {
 			throw new InternalError(e);
 		}
