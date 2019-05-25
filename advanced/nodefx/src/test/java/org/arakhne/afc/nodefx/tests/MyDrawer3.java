@@ -23,13 +23,6 @@ package org.arakhne.afc.nodefx.tests;
 import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 
-/**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 15.0
- */
 @SuppressWarnings("all")
 public class MyDrawer3 implements Drawer<Number> {
 

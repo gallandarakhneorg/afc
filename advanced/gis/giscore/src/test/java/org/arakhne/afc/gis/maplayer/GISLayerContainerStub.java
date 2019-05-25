@@ -35,14 +35,6 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.util.InformedArrayList;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
-/** Stub for GISLayerContainer.
- *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 14.0
- */
 @SuppressWarnings("all")
 class GISLayerContainerStub extends AbstractAttributeCollectionStub implements GISLayerContainer<MapLayer> {
 

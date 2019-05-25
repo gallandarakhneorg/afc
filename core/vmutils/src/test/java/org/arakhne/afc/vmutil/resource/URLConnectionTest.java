@@ -29,17 +29,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import org.arakhne.afc.vmutil.URLHandlerUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid org.arakhne.afc
- * @mavenartifactid arakhneVmutils
- */
+import org.arakhne.afc.vmutil.URLHandlerUtil;
+
 @SuppressWarnings("all")
 public class URLConnectionTest {
 

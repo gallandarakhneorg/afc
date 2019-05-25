@@ -32,13 +32,6 @@ import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.testtools.AbstractTestCase;
 
-/**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 15.0
- */
 @SuppressWarnings("all")
 public class CenteredTransformTest extends AbstractTestCase {
 

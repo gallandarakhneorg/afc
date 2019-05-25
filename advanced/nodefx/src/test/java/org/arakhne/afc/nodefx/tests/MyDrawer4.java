@@ -20,13 +20,6 @@
 
 package org.arakhne.afc.nodefx.tests;
 
-/**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 15.0
- */
 @SuppressWarnings("all")
 public class MyDrawer4 extends MyDrawer3 {
 	//

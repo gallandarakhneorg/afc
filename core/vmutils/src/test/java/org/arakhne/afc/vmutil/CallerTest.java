@@ -26,12 +26,6 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.After;
 import org.junit.Before;
 
-/**
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid org.arakhne.afc
- * @mavenartifactid arakhneVmutils
- */
 @SuppressWarnings("all")
 public class CallerTest {
 

@@ -33,12 +33,6 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-/**
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid org.arakhne.afc
- * @mavenartifactid arakhneVmutils
- */
 @SuppressWarnings("all")
 public class ResourcesTest {
 

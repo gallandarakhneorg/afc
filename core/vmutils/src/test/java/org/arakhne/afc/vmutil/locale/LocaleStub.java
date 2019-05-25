@@ -20,16 +20,9 @@
 
 package org.arakhne.afc.vmutil.locale;
 
-/**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
+@SuppressWarnings("all")
 class LocaleStub {
 
-	/**
-	 */
 	public LocaleStub() {
 		//
 	}

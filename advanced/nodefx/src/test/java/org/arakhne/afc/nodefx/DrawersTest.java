@@ -37,13 +37,6 @@ import org.arakhne.afc.nodefx.tests.MyDrawer2;
 import org.arakhne.afc.nodefx.tests.MyDrawer3;
 import org.arakhne.afc.nodefx.tests.MyDrawer4;
 
-/**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 15.0
- */
 @SuppressWarnings("all")
 public class DrawersTest {
 

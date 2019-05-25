@@ -42,13 +42,6 @@ import org.arakhne.afc.testtools.jfx.JfxRunner;
 import org.arakhne.afc.testtools.jfx.TestInJfxThread;
 import org.arakhne.afc.util.InformedIterable;
 
-/**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 15.0
- */
 @SuppressWarnings("all")
 @RunWith(JfxRunner.class)
 public class ZoomableCanvasTest extends AbstractTestCase {
