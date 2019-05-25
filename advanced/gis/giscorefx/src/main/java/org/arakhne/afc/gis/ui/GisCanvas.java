@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.gis.ui;
 
+import javafx.application.Platform;
+
 import org.arakhne.afc.gis.primitive.GISContainer;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystemConstants;
 import org.arakhne.afc.nodefx.Drawer;
@@ -69,7 +71,9 @@ public class GisCanvas<T extends GISContainer<?>> extends ZoomableCanvas<T> {
 
 	@Override
 	protected void bindModel(T model) {
-		model.bindChangeListener(it -> drawContent());
+		model.bindChangeListener(it -> {
+			Platform.runLater(() -> drawContent());
+		});
 	}
 
 	@Override
