@@ -60,9 +60,9 @@ public final class MathUtil {
 	 * @return the sign of the argument
 	 */
 	@Pure
-	@Inline(value = "($1 == 0.) ? 0 : (($1 < -0.) ? -1 : 1)")
+	@Inline(value = "($1 == 0. || Double.isNaN($1)) ? 0 : (($1 < -0.) ? -1 : 1)")
 	public static int sign(double value) {
-		return (value == 0.) ? 0 : ((value < -0.) ? -1 : 1);
+		return (value == 0. || Double.isNaN(value)) ? 0 : ((value < -0.) ? -1 : 1);
 	}
 
 
