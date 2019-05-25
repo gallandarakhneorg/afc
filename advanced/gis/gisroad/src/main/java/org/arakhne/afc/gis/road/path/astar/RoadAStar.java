@@ -894,8 +894,8 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		}
 
 		@Override
-		public Point1d getNearestPosition(Point2D<?, ?> pos) {
-			return getVirtualizedSegment().getNearestPosition(pos);
+		public Point1d getNearestPosition(Point2D<?, ?> pos, double lateralDistance) {
+			return getVirtualizedSegment().getNearestPosition(pos, lateralDistance);
 		}
 
 		@Override

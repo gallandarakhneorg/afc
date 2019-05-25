@@ -141,6 +141,16 @@ public interface RoadNetwork extends BoundedGISElement, RoadSegmentContainer {
 	@Pure
 	Point1d getNearestPosition(Point2D<?, ?> pos);
 
+	/**
+	 * Return the nearest point 1.5D on the road borders from a 2D position.
+	 *
+	 * @param pos is the testing position.
+	 * @return the nearest 1.5D position on the road network.
+	 * @since 16.0
+	 */
+	@Pure
+	Point1d getNearestPositionOnRoadBorder(Point2D<?, ?> pos);
+
 	//-------------------------------------------------
 	// Updating functions
 	//-------------------------------------------------

@@ -24,6 +24,7 @@ import java.lang.ref.SoftReference;
 import java.util.Iterator;
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
@@ -268,38 +269,79 @@ public class MapPolyline extends MapComposedElement {
 	 * Return the nearest point 1.5D from a 2D position.
 	 *
 	 * @param pos is the testing position.
-	 * @return the nearest 1.5D position on the road network.
+	 * @return the nearest 1.5D position on the polyline.
+	 * @see #getNearestPosition(Point2D, double)
 	 */
 	@Pure
+	@Inline(value = "getNearestPosition($1, 0.0)")
 	public Point1d getNearestPosition(Point2D<?, ?> pos) {
+		return getNearestPosition(pos, 0.);
+	}
+
+	/**
+	 * Return the nearest point 1.5D from a 2D position.
+	 *
+	 * @param pos is the testing position.
+	 * @param lateralDistance the lateral distance to put into the point. The sign of the given value is ignored.
+	 *     The replied point {@code p} will have a lateral distance such that {@code abs(lateralDistance) == abs(p.getLateralDistance())}.
+	 * @return the nearest 1.5D position on the polyline.
+	 * @since 16.0
+	 * @see #getNearestPosition(Point2D)
+	 */
+	@Pure
+	public Point1d getNearestPosition(Point2D<?, ?> pos, double lateralDistance) {
 		Point2d pp = null;
 		final Vector2d v = new Vector2d();
 		double currentPosition = 0.;
 		double bestPosition = Double.NaN;
 		double bestDistance = Double.POSITIVE_INFINITY;
+		final double baseLateralDistance = -Math.abs(lateralDistance);
+		double bestLateralDistance = 0.;
 		for (final Point2d p : points()) {
 			if (pp != null) {
-				double position = Segment2afp.findsProjectedPointPointLine(
+				final double rawPosition = Segment2afp.findsProjectedPointPointLine(
 						pos.getX(), pos.getY(),
 						pp.getX(), pp.getY(),
 						p.getX(), p.getY());
-				if (position < 0.) {
+				final double position;
+				double dist;
+				final int sign;
+				if (rawPosition < 0.) {
 					position = 0.;
-				}
-				if (position > 1.) {
+					dist = Point2D.getDistanceSquaredPointPoint(
+							pos.getX(), pos.getY(),
+							pp.getX(), pp.getY());
+					sign = Segment2afp.findsSideLinePoint(
+							pp.getX(), pp.getY(),
+							p.getX(), p.getY(),
+							pos.getX(), pos.getY(),
+							0.);
+				} else if (rawPosition > 1.) {
 					position = 1.;
+					dist = Point2D.getDistanceSquaredPointPoint(
+							pos.getX(), pos.getY(),
+							p.getX(), p.getY());
+					sign = Segment2afp.findsSideLinePoint(
+							pp.getX(), pp.getY(),
+							p.getX(), p.getY(),
+							pos.getX(), pos.getY(),
+							0.);
+				} else {
+					position = rawPosition;
+					dist = Segment2afp.calculatesRelativeDistanceLinePoint(
+							pp.getX(), pp.getY(),
+							p.getX(), p.getY(),
+							pos.getX(), pos.getY());
+					sign = MathUtil.sign(dist);
+					dist = Math.abs(dist);
 				}
 				v.sub(p, pp);
 				final double t = v.getLength();
 				v.scale(position);
-				final double dist = Point2D.getDistanceSquaredPointPoint(
-						pos.getX(),
-						pos.getY(),
-						pp.getX() + v.getX(),
-						pp.getY() + v.getY());
 				if (dist < bestDistance) {
 					bestDistance = dist;
 					bestPosition = currentPosition + v.getLength();
+					bestLateralDistance = baseLateralDistance * sign;
 				}
 				currentPosition += t;
 			}
@@ -308,7 +350,7 @@ public class MapPolyline extends MapComposedElement {
 		if (Double.isNaN(bestPosition)) {
 			return null;
 		}
-		return new Point1d(toSegment1D(), bestPosition, 0.);
+		return new Point1d(toSegment1D(), bestPosition, bestLateralDistance);
 	}
 
 	/** Clear the current bounding box to force the computation of it at

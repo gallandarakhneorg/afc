@@ -65,7 +65,6 @@ public final class MathUtil {
 		return (value == 0. || Double.isNaN(value)) ? 0 : ((value < -0.) ? -1 : 1);
 	}
 
-
 	/** Clamp the given value to the given range.
 	 *
 	 * <p>If the value is outside the {@code [min;max]}

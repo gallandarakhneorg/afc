@@ -123,11 +123,10 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 
 	/** Replies the distance to the road border according to the driving side on the road.
 	 *
-	 * <p>This function is equivalent to calls to {@link #getLaneCenter(int)} and
-	 * {@link #getLaneSize(int)}:
-	 * <pre><code>
-	 * getLaneCenter(0) - getLaneSize(0) / 2
-	 * </code></pre>
+	 * <p>This function is similar to calls to {@code {@link #getWidth()} / 2} but with
+	 * a big difference: the previous expression is always positive, the value returned
+	 * by {@code getRoadBorderDistance()} has a positive or negative sign depending on
+	 * the {@link RoadNetwork#isRightSidedTrafficDirection() side where cars are running}.
 	 *
 	 * @return shift distance from the segment's center to the road border.
 	 * @since 14.0
@@ -774,9 +773,40 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 *
 	 * @param pos is the testing position.
 	 * @return the nearest 1.5D position on the road network.
+	 * @see #getNearestPosition(Point2D, double)
+	 * @see #getNearestPositionOnBorder(Point2D)
 	 */
 	@Pure
-	Point1d getNearestPosition(Point2D<?, ?> pos);
+	@Inline(value = "getNearestPosition($1, 0.0)")
+	default Point1d getNearestPosition(Point2D<?, ?> pos) {
+		return getNearestPosition(pos, 0.);
+	}
+
+	/**
+	 * Return the nearest point 1.5D from a 2D position.
+	 *
+	 * @param pos is the testing position.
+	 * @param lateralDistance the lateral distance to put into the replied point, if any.
+	 * @return the nearest 1.5D position on the road network.
+	 * @since 16.0
+	 * @see #getNearestPosition(Point2D)
+	 */
+	@Pure
+	Point1d getNearestPosition(Point2D<?, ?> pos, double lateralDistance);
+
+	/**
+	 * Return the nearest point 1.5D on the border of the road segment from a 2D position.
+	 *
+	 * @param pos is the testing position.
+	 * @return the nearest 1.5D position on the road segment's border.
+	 * @since 16.0
+	 * @see #getNearestPosition(Point2D)
+	 */
+	@Pure
+	@Inline(value = "getNearestPosition($1, $0getRoadBorderDistance())")
+	default Point1d getNearestPositionOnBorder(Point2D<?, ?> pos) {
+		return getNearestPosition(pos, getRoadBorderDistance());
+	}
 
 	/** Replies the number of the road segment.
 	 *

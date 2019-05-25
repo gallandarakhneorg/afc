@@ -425,6 +425,16 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 		return segment.getNearestPosition(pos);
 	}
 
+	@Override
+	@Pure
+	public Point1d getNearestPositionOnRoadBorder(Point2D<?, ?> pos) {
+		final RoadSegment segment = this.roadSegments.getNearest(pos);
+		if (segment == null) {
+			return null;
+		}
+		return segment.getNearestPositionOnBorder(pos);
+	}
+
 	//-------------------------------------------------
 	// Updating functions
 	//-------------------------------------------------

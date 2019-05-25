@@ -1261,8 +1261,8 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 		@Override
 		@Pure
-		public Point1d getNearestPosition(Point2D<?, ?> pos) {
-			return this.segment.get().getNearestPosition(pos);
+		public Point1d getNearestPosition(Point2D<?, ?> pos, double lateralDistance) {
+			return this.segment.get().getNearestPosition(pos, lateralDistance);
 		}
 
 		@Override

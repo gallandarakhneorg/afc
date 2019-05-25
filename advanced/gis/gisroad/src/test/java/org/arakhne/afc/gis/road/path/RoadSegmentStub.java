@@ -949,7 +949,7 @@ class RoadSegmentStub implements RoadSegment {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Point1d getNearestPosition(Point2D<?, ?> pos) {
+	public Point1d getNearestPosition(Point2D<?, ?> pos, double lateralDistance) {
 		throw new UnsupportedOperationException();
 	}
 
