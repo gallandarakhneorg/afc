@@ -81,6 +81,21 @@ public class GisElementContainerDrawer<T extends MapElement> implements Drawer<G
 	 * @return the used drawer.
 	 */
 	protected Drawer<? super T> draw(ZoomableGraphicsContext gc, GISElementContainer<T> primitive, Drawer<? super T> drawer) {
+		return drawPrimitives(gc, primitive, drawer);
+	}
+
+	/** Draw the primitives.
+	 *
+	 * <p>This function calls the drawers on each primitive inside the given container. It is not expected to be
+	 * overridden into the sub-classes.
+	 *
+	 * @param gc the graphics context to draw with.
+	 * @param primitive the primitive to draw.
+	 * @param drawer the drawer, or {@code null} to use the default.
+	 * @return the used drawer.
+	 * @since 16.0
+	 */
+	protected Drawer<? super T> drawPrimitives(ZoomableGraphicsContext gc, GISElementContainer<T> primitive, Drawer<? super T> drawer) {
 		Drawer<? super T> drw = drawer;
 		final Iterator<T> iterator = primitive.iterator(gc.getVisibleArea());
 		while (iterator.hasNext()) {

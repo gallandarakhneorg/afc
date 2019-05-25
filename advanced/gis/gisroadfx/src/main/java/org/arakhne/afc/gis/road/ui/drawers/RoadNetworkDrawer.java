@@ -72,20 +72,20 @@ public class RoadNetworkDrawer extends GisElementContainerDrawer<RoadPolyline> {
 			if (this.mappolylineDrawer == null) {
 				this.mappolylineDrawer = Drawers.getDrawerFor(MapPolyline.class);
 			}
-			super.draw(gc, primitive, this.mappolylineDrawer);
+			drawPrimitives(gc, primitive, this.mappolylineDrawer);
 		} else {
 			gc.save();
 			gc.setState(RoadNetworkDrawerConstants.DRAWING_STATE_ROAD_BORDERS);
-			drw = super.draw(gc, primitive, drw);
+			drw = drawPrimitives(gc, primitive, drw);
 			gc.restore();
 			gc.save();
 			gc.setState(RoadNetworkDrawerConstants.DRAWING_STATE_ROAD_INTERIOR);
-			drw = super.draw(gc, primitive, drw);
+			drw = drawPrimitives(gc, primitive, drw);
 			gc.restore();
 			/*TODO Draw road details
 			gc.save();
 			gc.setState(RoadNetworkDrawerConstants.DRAWING_STATE_ROAD_DETAILS);
-			super.draw(gc, element);
+			drawPrimitives(gc, primitive, drw);
 			gc.restore();
 			*/
 		}
