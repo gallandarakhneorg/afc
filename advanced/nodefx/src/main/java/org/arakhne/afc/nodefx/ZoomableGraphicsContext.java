@@ -558,7 +558,7 @@ public class ZoomableGraphicsContext {
 	}
 
 	/**
-	 * Rotates the current transform in degrees.
+	 * Rotates the current transform in radians.
 	 *
 	 * @param radians value in radians to rotate the current transform.
 	 */
@@ -1399,7 +1399,7 @@ public class ZoomableGraphicsContext {
 
 	/**
 	 * Adds path elements to the current path to make an arc that uses Euclidean
-	 * degrees. This Euclidean orientation sweeps from East to North, then West,
+	 * radians. This Euclidean orientation sweeps from East to North, then West,
 	 * then South, then back to East.
 	 * The coordinates are transformed by the current transform as they are
 	 * added to the path and unaffected by subsequent changes to the transform.
@@ -1645,8 +1645,8 @@ public class ZoomableGraphicsContext {
 	 * @param y the Y coordinate of the arc.
 	 * @param width the width of the arc.
 	 * @param height the height of the arc.
-	 * @param startAngle the starting angle of the arc in degrees.
-	 * @param arcExtent arcExtent the angular extent of the arc in degrees.
+	 * @param startAngle the starting angle of the arc in radians.
+	 * @param arcExtent arcExtent the angular extent of the arc in radians.
 	 * @param closure closure type (Round, Chord, Open) or null
 	 */
 	public void strokeArc(double x, double y, double width, double height,
