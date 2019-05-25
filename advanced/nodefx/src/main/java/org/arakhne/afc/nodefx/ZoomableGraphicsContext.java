@@ -707,7 +707,7 @@ public class ZoomableGraphicsContext {
 	 *     being ignored and leaving the value unchanged.
 	 * @see #setLineWidthInPixels(double)
 	 */
-	@Inline(value = "setLinewidthInPixels(($0).doc2fxSize($1))")
+	@Inline(value = "setLineWidthInPixels($0doc2fxSize($1))")
 	public void setLineWidthInMeters(double lw) {
 		setLineWidthInPixels(doc2fxSize(lw));
 	}
@@ -736,7 +736,7 @@ public class ZoomableGraphicsContext {
 	 * @return metric value between 0 and infinity.
 	 * @see #getLineWidthInPixels()
 	 */
-	@Inline(value = "fx2docSize(($0).getLineWidthInPixels())")
+	@Inline(value = "fx2docSize($0getLineWidthInPixels())")
 	public double getLineWidthInMeters() {
 		return fx2docSize(getLineWidthInPixels());
 	}
@@ -825,7 +825,7 @@ public class ZoomableGraphicsContext {
 	 *     any other value being ignored and leaving the value unchanged.
 	 * @see #setMiterLimitInPixels(double)
 	 */
-	@Inline(value = "setMiterLimitInPixels(($0).doc2fxSize($1))")
+	@Inline(value = "setMiterLimitInPixels($0doc2fxSize($1))")
 	public void setMiterLimitInMeters(double ml) {
 		setMiterLimitInPixels(doc2fxSize(ml));
 	}
@@ -853,7 +853,7 @@ public class ZoomableGraphicsContext {
 	 *
 	 * @return the metric miter limit value in the range {@code 0.0-positive infinity}
 	 */
-	@Inline(value = "fx2docSize(($0).getMiterLimitInPixels())")
+	@Inline(value = "fx2docSize($0getMiterLimitInPixels())")
 	public double getMiterLimitInMeters() {
 		return fx2docSize(getMiterLimitInPixels());
 	}
@@ -981,7 +981,7 @@ public class ZoomableGraphicsContext {
 	 * @param dashOffset the line dash offset in the range {@code (-inf, +inf)}
 	 * @see #setLineDashOffsetInPixels(double)
 	 */
-	@Inline(value = "setLineDashOffsetInPixels(($0).doc2fxSize($1))")
+	@Inline(value = "setLineDashOffsetInPixels($0doc2fxSize($1))")
 	public void setLineDashOffsetInMeters(double dashOffset) {
 		setLineDashOffsetInPixels(doc2fxSize(dashOffset));
 	}
@@ -1010,7 +1010,7 @@ public class ZoomableGraphicsContext {
 	 * @return the line dash offset in the range {@code (-inf, +inf)}
 	 * @see #getLineDashOffsetInPixels()
 	 */
-	@Inline(value = "fx2docSize(($0).getLineDashOffsetInPixels())")
+	@Inline(value = "fx2docSize($0getLineDashOffsetInPixels())")
 	public double getLineDashOffsetInMeters() {
 		return fx2docSize(getLineDashOffsetInPixels());
 	}
