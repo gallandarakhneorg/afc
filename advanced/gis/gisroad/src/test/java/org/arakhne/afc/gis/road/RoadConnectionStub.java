@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.gis.road;
 
-import org.arakhne.afc.gis.road.StandardRoadConnection;
-
 /** Stub for RoadConnection.
  *
  * @author $Author: sgalland$
@@ -30,6 +28,7 @@ import org.arakhne.afc.gis.road.StandardRoadConnection;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
+@SuppressWarnings("all")
 class RoadConnectionStub extends StandardRoadConnection {
 
 	private final String label;

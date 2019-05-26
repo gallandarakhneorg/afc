@@ -28,7 +28,7 @@ import org.arakhne.afc.math.graph.GraphPoint;
 
 /**
  * This interface representes a graph's point.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

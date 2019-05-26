@@ -20,12 +20,6 @@
 
 package org.arakhne.afc.math.graph.astar;
 
-/**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
 @SuppressWarnings("all")
 public class AStarHeuristicStub implements AStarHeuristic<AStarNodeStub> {
 

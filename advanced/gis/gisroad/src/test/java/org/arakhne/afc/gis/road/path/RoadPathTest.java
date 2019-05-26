@@ -27,12 +27,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.arakhne.afc.gis.road.AbstractGisTest;
-import org.arakhne.afc.gis.road.path.CrossRoad;
-import org.arakhne.afc.gis.road.path.RoadPath;
 import org.arakhne.afc.math.geometry.d1.Direction1D;
 
-/**
- * Unit test for RoadPath
+/** Unit test for RoadPath.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

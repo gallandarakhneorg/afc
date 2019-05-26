@@ -32,7 +32,8 @@ import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
 import org.arakhne.afc.testtools.AbstractTestCase;
 
-/**
+/** Abstract test for GIS features.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

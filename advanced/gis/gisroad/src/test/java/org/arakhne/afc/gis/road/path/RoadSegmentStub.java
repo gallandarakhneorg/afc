@@ -57,6 +57,7 @@ import org.arakhne.afc.math.geometry.d2.d.Path2d;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.GraphIterator;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
@@ -172,7 +173,8 @@ class RoadSegmentStub implements RoadSegment {
 	public GraphIterator<RoadSegment, RoadConnection> depthIterator(
 			double depth, double positionFromStartingPoint,
 			RoadConnection startingPoint, boolean allowManyReplies,
-			boolean assumeOrientedSegments) {
+			boolean assumeOrientedSegments,
+			DynamicDepthUpdater<?, RoadSegment, RoadConnection> dynamicDepthUpdater) {
 		throw new UnsupportedOperationException();
 	}
 

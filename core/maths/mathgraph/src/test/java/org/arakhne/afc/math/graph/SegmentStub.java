@@ -21,13 +21,14 @@
 package org.arakhne.afc.math.graph;
 
 /** This interface representes a graph's segment.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class SegmentStub implements GraphSegment<SegmentStub,ConnectionStub> {
+@SuppressWarnings("all")
+class SegmentStub implements GraphSegment<SegmentStub, ConnectionStub> {
 
 	/**
 	 */

@@ -24,14 +24,14 @@ import org.arakhne.afc.math.graph.GraphPath;
 
 /**
  * This interface representes a graph's point.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-class AStarPathStub extends GraphPath<AStarPathStub,AStarEdgeStub,AStarNodeStub> {
+class AStarPathStub extends GraphPath<AStarPathStub, AStarEdgeStub, AStarNodeStub> {
 
 	/**
 	 */

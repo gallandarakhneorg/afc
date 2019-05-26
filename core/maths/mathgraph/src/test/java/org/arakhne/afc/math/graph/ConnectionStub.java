@@ -26,13 +26,14 @@ import java.util.List;
 
 /**
  * This interface representes a graph's point.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class ConnectionStub implements GraphPoint<ConnectionStub,SegmentStub> {
+@SuppressWarnings("all")
+class ConnectionStub implements GraphPoint<ConnectionStub, SegmentStub> {
 
 	/**
 	 */

@@ -23,7 +23,7 @@ package org.arakhne.afc.math.graph.astar;
 import org.arakhne.afc.math.graph.GraphSegment;
 
 /** This interface representes a graph's segment.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

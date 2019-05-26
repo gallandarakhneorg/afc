@@ -31,12 +31,6 @@ import org.junit.Test;
 import org.arakhne.afc.math.graph.astar.AStar.CloseComparator;
 import org.arakhne.afc.testtools.AbstractTestCase;
 
-/**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
 @SuppressWarnings("all")
 public class AStarNotOrientedTest extends AbstractTestCase {
 

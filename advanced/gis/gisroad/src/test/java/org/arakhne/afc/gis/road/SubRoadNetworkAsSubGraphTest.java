@@ -35,8 +35,7 @@ import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.graph.GraphIterator;
 
-/**
- * Unit test for SubRoadNetwork as a SubGraph
+/** Unit test for SubRoadNetwork as a SubGraph.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

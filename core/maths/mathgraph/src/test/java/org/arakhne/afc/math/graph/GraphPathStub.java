@@ -21,13 +21,14 @@
 package org.arakhne.afc.math.graph;
 
 /** Stub for graph path.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class GraphPathStub extends GraphPath<GraphPathStub,SegmentStub,ConnectionStub> {
+@SuppressWarnings("all")
+class GraphPathStub extends GraphPath<GraphPathStub, SegmentStub, ConnectionStub> {
 
 	/**
 	 */

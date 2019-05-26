@@ -32,20 +32,18 @@ import org.junit.Test;
 
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
 import org.arakhne.afc.gis.location.GeoLocationUtil;
-import org.arakhne.afc.gis.road.RoadPolyline;
-import org.arakhne.afc.gis.road.StandardRoadNetwork;
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
+import org.arakhne.afc.gis.road.primitive.RoadConnection.ClockwiseBoundType;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.io.dbase.DBaseFileReader;
 import org.arakhne.afc.io.shape.ESRIBounds;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
-import org.arakhne.afc.gis.road.primitive.RoadConnection.ClockwiseBoundType;
 
 /** Unit test dedicated to
  * [counter] clockwise iterators on road segments..
- * <p>
- * This unit test is related to bug {@jira GIS-4}.
+ *
+ * <p>This unit test is related to bug {@jira GIS-4}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

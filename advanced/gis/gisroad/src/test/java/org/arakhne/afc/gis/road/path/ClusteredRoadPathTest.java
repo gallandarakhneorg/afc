@@ -27,13 +27,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.arakhne.afc.gis.road.AbstractGisTest;
-import org.arakhne.afc.gis.road.path.ClusteredRoadPath;
-import org.arakhne.afc.gis.road.path.RoadPath;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.math.geometry.d1.Direction1D;
 
-/**
- * Unit test for ClusteredRoadPath
+/** Unit test for ClusteredRoadPath.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
