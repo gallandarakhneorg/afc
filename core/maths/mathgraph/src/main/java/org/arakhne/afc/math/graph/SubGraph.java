@@ -274,13 +274,15 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 			ST startingSegment,
 			double depth, double positionFromStartingPoint,
 			PT startingPoint, boolean allowManyReplies,
-			boolean assumeOrientedSegments) {
+			boolean assumeOrientedSegments,
+			DynamicDepthUpdater<ST, PT> dynamicDepthUpdater) {
 		return new DepthSubGraphIterator(
 				filterSegment(startingSegment),
 				depth,
 				positionFromStartingPoint,
 				startingPoint,
-				allowManyReplies, assumeOrientedSegments);
+				allowManyReplies, assumeOrientedSegments,
+				dynamicDepthUpdater);
 	}
 
 	@Pure
@@ -319,14 +321,17 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 		 * @param allowManyReplies indicates if a segment could be reply many times.
 		 * @param assumedOrientedSegments indicates if the segments are assumed to be oriented,
 		 *     i.e. that are from their starting point to their ending points.
+		 * @param dynamicDepthUpdater if not {@code null}, it is used for updating dynamically the depth.
 		 */
 		DepthSubGraphIterator(ST startingSegment,
 				double depth, double positionFromStartingPoint, PT startingPoint,
 				boolean allowManyReplies,
-				boolean assumedOrientedSegments) {
+				boolean assumedOrientedSegments,
+				DynamicDepthUpdater<ST, PT> dynamicDepthUpdater) {
 			super(SubGraph.this, depth, positionFromStartingPoint,
 					startingSegment, startingPoint,
-					allowManyReplies, assumedOrientedSegments);
+					allowManyReplies, assumedOrientedSegments,
+					dynamicDepthUpdater);
 		}
 
 		@Override
@@ -335,11 +340,18 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 				PT point,
 				double distanceToReach,
 				double distanceToConsume) {
+			final double newDistanceToConsume;
+			if (this.dynamicDepthUpdater != null) {
+				newDistanceToConsume = this.dynamicDepthUpdater.updateDepth(
+						previousSegment, segment, point, distanceToReach, distanceToConsume);
+			} else {
+				newDistanceToConsume = distanceToConsume;
+			}
 			return new SubGraphIterationElement(
 					previousSegment, segment,
 					point,
 					distanceToReach,
-					distanceToConsume);
+					newDistanceToConsume);
 		}
 
 	}

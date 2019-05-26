@@ -61,6 +61,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Shape2d;
+import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.GraphIterator;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.math.tree.Tree;
@@ -803,10 +804,12 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	public GraphIterator<RoadSegment, RoadConnection> depthIterator(
 			RoadSegment startingSegment, double depth,
 			double position_from_starting_point, RoadConnection startingPoint,
-			boolean allowManyReplies, boolean assumeOrientedSegments) {
+			boolean allowManyReplies, boolean assumeOrientedSegments,
+			DynamicDepthUpdater<RoadSegment, RoadConnection> dynamicDepthUpdater) {
 		return startingSegment.depthIterator(
 				depth, position_from_starting_point, startingPoint,
-				allowManyReplies, assumeOrientedSegments);
+				allowManyReplies, assumeOrientedSegments,
+				dynamicDepthUpdater);
 	}
 
 	@Override

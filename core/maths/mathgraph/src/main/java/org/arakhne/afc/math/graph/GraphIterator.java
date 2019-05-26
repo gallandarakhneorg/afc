@@ -60,6 +60,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT, ST>>
 		implements Iterator<ST> {
 
+	/** The dynamic updater for the depth.
+	 * This reference is {@code null} if there is no need to dynamically update
+	 * the depth.
+	 */
+	protected final DynamicDepthUpdater<ST, PT> dynamicDepthUpdater;
+
 	private final boolean allowManyReplies;
 
 	private final boolean assumeOrientedSegments;
@@ -107,7 +113,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	public GraphIterator(Graph<ST, PT> graph1, GraphCourseModel<ST, PT> courseModel1, ST segment,
 			PT point, boolean allowManyReplies1, boolean assumeOrientedSegments1, double distanceToReachStartingPoint) {
 		this(graph1, courseModel1, segment, point, allowManyReplies1, assumeOrientedSegments1,
-				distanceToReachStartingPoint, Double.POSITIVE_INFINITY);
+				distanceToReachStartingPoint, Double.POSITIVE_INFINITY, null);
 	}
 
 	/** Constructor.
@@ -124,14 +130,17 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @param distanceToReachStartingPoint is the distance to reach the starting point.
 	 * @param distanceToConsumeAfter is the distance to consume after traversing the segment.
 	 *     It must be negative or nul.
+	 * @param dynamicDepthUpdater if not {@code null}, it is used to dynamically update the {@code distanceToConsumeAfter}.
 	 */
 	protected GraphIterator(
 			Graph<ST, PT> graph1, GraphCourseModel<ST, PT> courseModel1,
 			ST segment, PT point,
 			boolean allowManyReplies1, boolean assumeOrientedSegments1,
 			double distanceToReachStartingPoint,
-			double distanceToConsumeAfter) {
+			double distanceToConsumeAfter,
+			DynamicDepthUpdater<ST, PT> dynamicDepthUpdater) {
 		this.graph = new WeakReference<>(graph1);
+		this.dynamicDepthUpdater = dynamicDepthUpdater;
 		GraphCourseModel<ST, PT> courseM = courseModel1;
 		if (courseM == null) {
 			courseM = new BreadthFirstGraphCourseModel<>();
@@ -209,7 +218,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 				if (pts != null) {
 					final double distanceToReach = element.getDistanceToReachSegment() + segment.getLength();
 					GraphIterationElement<ST, PT> candidate;
-					final double restToConsume = element.distanceToConsume - segment.getLength();
+					final double restToConsume = element.getDistanceToConsume() - segment.getLength();
 					final List<GraphIterationElement<ST, PT>> list = new ArrayList<>();
 					for (final ST theSegment : pts.getConnectedSegmentsStartingFrom(segment)) {
 						if (!theSegment.equals(segment)) {
@@ -304,7 +313,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 
 	/** Create an instance of GraphIterationElement.
 	 *
-	 * @param previous_segment is the previous element that permits to reach this object during an iteration
+	 * @param previousSegment is the previous element that permits to reach this object during an iteration
 	 * @param segment is the current segment
 	 * @param point is the point on which the iteration arrived on the current segment.
 	 * @param distanceToReach is the distance that is already consumed to reach the segment.
@@ -312,15 +321,22 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @return a graph iteration element.
 	 */
 	protected GraphIterationElement<ST, PT> newIterationElement(
-			ST previous_segment, ST segment,
+			ST previousSegment, ST segment,
 			PT point,
 			double distanceToReach,
 			double distanceToConsume) {
+		final double newDistanceToConsume;
+		if (this.dynamicDepthUpdater != null) {
+			newDistanceToConsume = this.dynamicDepthUpdater.updateDepth(
+					previousSegment, segment, point, distanceToReach, distanceToConsume);
+		} else {
+			newDistanceToConsume = distanceToConsume;
+		}
 		return new GraphIterationElement<>(
-				previous_segment, segment,
+				previousSegment, segment,
 				point,
 				distanceToReach,
-				distanceToConsume);
+				newDistanceToConsume);
 	}
 
 	/** Replies if the specified element could be added into the list of futher elements.

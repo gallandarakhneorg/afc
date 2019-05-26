@@ -104,9 +104,41 @@ public interface Graph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT
 	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
 	 *     the end points of a segment are not distinguished.
 	 * @return the iterator.
+	 * @see #depthIterator(GraphSegment, double, double, GraphPoint, boolean, boolean, DynamicDepthUpdater)
+	 */
+	@Pure
+	default GraphIterator<ST, PT> depthIterator(ST startingSegment, double depth, double positionFromStartingPoint,
+			PT startingPoint, boolean allowManyReplies, boolean assumeOrientedSegments) {
+		return depthIterator(startingSegment, depth, positionFromStartingPoint, startingPoint, allowManyReplies, assumeOrientedSegments, null);
+	}
+
+	/** Replies an iterator that permits to move along the segment's graph
+	 * starting from the specified segment and from the specified starting point.
+	 * If the specified starting point is not one of the ends of the segment,
+	 * this function assumes to start from the point replied by
+	 * {@link GraphSegment#getBeginPoint()}.
+	 *
+	 * <p>This function does not allow the cycles during the iterations.
+	 *
+	 * @param startingSegment is the first segment to iterate.
+	 * @param depth is the maximal depth to reach.
+	 * @param positionFromStartingPoint is the starting position from
+	 *     the {@code startingPoint}.
+	 * @param startingPoint is the starting point of the iterations.
+	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the same
+	 *     segment, otherwhise <code>false</code>.
+	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
+	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
+	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
+	 *     the end points of a segment are not distinguished.
+	 * @param dynamicDepthUpdater if not {@code null}, it is a lambda that is used for dynamically updating the maximal depth.
+	 * @return the iterator.
+	 * @see #depthIterator(GraphSegment, double, double, GraphPoint, boolean, boolean)
+	 * @since 16.0
 	 */
 	@Pure
 	GraphIterator<ST, PT> depthIterator(ST startingSegment, double depth, double positionFromStartingPoint,
-			PT startingPoint, boolean allowManyReplies, boolean assumeOrientedSegments);
+			PT startingPoint, boolean allowManyReplies, boolean assumeOrientedSegments,
+			DynamicDepthUpdater<ST, PT> dynamicDepthUpdater);
 
 }

@@ -27,6 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.gis.location.GeoId;
 import org.arakhne.afc.gis.location.GeoLocation;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
+import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.Graph;
 import org.arakhne.afc.math.graph.GraphIterator;
 
@@ -103,10 +104,21 @@ public interface RoadSegmentContainer extends Graph<RoadSegment, RoadConnection>
 
 	@Override
 	@Pure
+	default GraphIterator<RoadSegment, RoadConnection> depthIterator(
+			RoadSegment startingSegment, double depth,
+			double positionFromStartingPoint, RoadConnection startingPoint,
+			boolean allowManyReplies, boolean assumeOrientedSegments) {
+		return depthIterator(startingSegment, depth, positionFromStartingPoint, startingPoint,
+				allowManyReplies, assumeOrientedSegments, null);
+	}
+
+	@Override
+	@Pure
 	GraphIterator<RoadSegment, RoadConnection> depthIterator(
 			RoadSegment startingSegment, double depth,
-			double position_from_starting_point, RoadConnection startingPoint,
-			boolean allowManyReplies, boolean assumeOrientedSegments);
+			double positionFromStartingPoint, RoadConnection startingPoint,
+			boolean allowManyReplies, boolean assumeOrientedSegments,
+			DynamicDepthUpdater<RoadSegment, RoadConnection> dynamicDepthUpdater);
 
 	@Override
 	@Pure

@@ -58,7 +58,9 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
 	 *     the end points of a segment are not distinguished.
+	 * @deprecated since 16.0
 	 */
+	@Deprecated
 	public DepthGraphIterator(
 			Graph<ST, PT> graph,
 			double depth,
@@ -69,7 +71,37 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 			boolean assumeOrientedSegments) {
 		this(graph, depth, segment, startingPoint, allowManyReplies,
 				assumeOrientedSegments,
-				-getStartingDistance(positionFromStartingPoint, segment));
+				-getStartingDistance(positionFromStartingPoint, segment), null);
+	}
+
+	/** Constructor.
+	 * @param graph is the graph associated to this iterator.
+	 * @param depth is the maximal depth to reach (in the metric coordiante system).
+	 * @param positionFromStartingPoint is the starting position from
+	 *     the {@code starting_point} (in meters).
+	 * @param segment is the segment from which to start.
+	 * @param startingPoint is the segment's point indicating the direction.
+	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the same
+	 *     segment, otherwhise <code>false</code>.
+	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
+	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
+	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
+	 *     the end points of a segment are not distinguished.
+	 * @param dynamicDepthUpdater if not {@code null}, it is used to dynamically update the depth.
+	 */
+	public DepthGraphIterator(
+			Graph<ST, PT> graph,
+			double depth,
+			double positionFromStartingPoint,
+			ST segment,
+			PT startingPoint,
+			boolean allowManyReplies,
+			boolean assumeOrientedSegments,
+			DynamicDepthUpdater<ST, PT> dynamicDepthUpdater) {
+		this(graph, depth, segment, startingPoint, allowManyReplies,
+				assumeOrientedSegments,
+				-getStartingDistance(positionFromStartingPoint, segment),
+				dynamicDepthUpdater);
 	}
 
 	/** Constructor.
@@ -87,6 +119,7 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	 *     the end points of a segment are not distinguished.
 	 * @param distanceToReachStartingPoint is the distance to reach the starting point.
 	 *     It must be negative or nul.
+	 * @param dynamicDepthUpdater if not {@code null}, it is used to dynamically update the depth.
 	 */
 	private DepthGraphIterator(
 			Graph<ST, PT> graph,
@@ -95,14 +128,16 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 			PT startingPoint,
 			boolean allowManyReplies,
 			boolean assumeOrientedSegments,
-			double distanceToReachStartingPoint) {
+			double distanceToReachStartingPoint,
+			DynamicDepthUpdater<ST, PT> dynamicDepthUpdater) {
 		super(graph,
 				new BreadthFirstGraphCourseModel<ST, PT>(),
 				segment, startingPoint,
 				allowManyReplies,
 				assumeOrientedSegments,
 				distanceToReachStartingPoint,
-				depth - distanceToReachStartingPoint);
+				depth - distanceToReachStartingPoint,
+				dynamicDepthUpdater);
 	}
 
 	/** Constructor.
@@ -116,7 +151,9 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
 	 *     the end points of a segment are not distinguished.
+	 * @deprecated since 16.0
 	 */
+	@Deprecated
 	public DepthGraphIterator(
 			Graph<ST, PT> graph,
 			double depth,
@@ -126,7 +163,33 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 			boolean assumeOrientedSegments) {
 		this(graph, depth, 0.f, segment,
 				startingPoint, allowManyReplies,
-				assumeOrientedSegments);
+				assumeOrientedSegments, null);
+	}
+
+	/** Constructor.
+	 * @param graph is the graph associated to this iterator.
+	 * @param depth is the maximal depth to reach (in the metric coordiante system).
+	 * @param segment is the segment from which to start.
+	 * @param startingPoint is the segment's point indicating the direction.
+	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the same
+	 *     segment, otherwhise <code>false</code>.
+	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
+	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
+	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
+	 *     the end points of a segment are not distinguished.
+	 * @param dynamicDepthUpdater if not {@code null}, it is used to dynamically update the depth.
+	 */
+	public DepthGraphIterator(
+			Graph<ST, PT> graph,
+			double depth,
+			ST segment,
+			PT startingPoint,
+			boolean allowManyReplies,
+			boolean assumeOrientedSegments,
+			DynamicDepthUpdater<ST, PT> dynamicDepthUpdater) {
+		this(graph, depth, 0.f, segment,
+				startingPoint, allowManyReplies,
+				assumeOrientedSegments, dynamicDepthUpdater);
 	}
 
 	private static double getStartingDistance(double positionFromStartingPoint, GraphSegment<?, ?> segment) {
@@ -145,7 +208,7 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	@Override
 	@Pure
 	protected boolean canGotoIntoElement(GraphIterationElement<ST, PT> element) {
-		return element.distanceToConsume > 0.;
+		return element.getDistanceToConsume() > 0.;
 	}
 
 }

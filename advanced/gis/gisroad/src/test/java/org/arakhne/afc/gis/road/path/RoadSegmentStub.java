@@ -174,7 +174,7 @@ class RoadSegmentStub implements RoadSegment {
 			double depth, double positionFromStartingPoint,
 			RoadConnection startingPoint, boolean allowManyReplies,
 			boolean assumeOrientedSegments,
-			DynamicDepthUpdater<?, RoadSegment, RoadConnection> dynamicDepthUpdater) {
+			DynamicDepthUpdater<RoadSegment, RoadConnection> dynamicDepthUpdater) {
 		throw new UnsupportedOperationException();
 	}
 

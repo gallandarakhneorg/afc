@@ -24,6 +24,7 @@ import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.gis.road.primitive.RoadSegmentContainer;
 import org.arakhne.afc.math.graph.DepthGraphIterator;
+import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.GraphIterationElementComparator;
 
 
@@ -52,7 +53,11 @@ final class DistanceBasedRoadNetworkIterator extends DepthGraphIterator<RoadSegm
 	 *     the orientation of the road segments. If <code>true</code> it assumes that
 	 *     a segment could be reached by both its end points. If <code>false</code> it
 	 *     assumes that a segment could be reach only one time.
+	 * @deprecated since 16.0,
+	 *     see {@link #DistanceBasedRoadNetworkIterator(RoadSegmentContainer, double, double, RoadSegment,
+	 *     RoadConnection, boolean, boolean, DynamicDepthUpdater)}.
 	 */
+	@Deprecated
 	DistanceBasedRoadNetworkIterator(
 			RoadSegmentContainer network,
 			double depth,
@@ -63,6 +68,36 @@ final class DistanceBasedRoadNetworkIterator extends DepthGraphIterator<RoadSegm
 			boolean assumeOrientedSegments) {
 		super(network, depth, position_from_starting_point, segment, starting_point,
 				allowManyReplies, assumeOrientedSegments);
+
+	}
+
+	/** Constructor.
+	 * @param network is the road network to iterator on.
+	 * @param depth is the maximal depth to reach (in the metric coordiante system).
+	 * @param position_from_starting_point is the starting position from
+	 *     the <var>starting_point</var> (in meters).
+	 * @param segment is the segment from which to start.
+	 * @param starting_point is the segment's point indicating the direction.
+	 * @param allowManyReplies may be <code>true</code> to allow to reply many times
+	 *     the same segment, otherwhise <code>false</code>.
+	 * @param assumeOrientedSegments indicates if the iterator is taking into account
+	 *     the orientation of the road segments. If <code>true</code> it assumes that
+	 *     a segment could be reached by both its end points. If <code>false</code> it
+	 *     assumes that a segment could be reach only one time.
+	 * @param dynamicDepthUpdate if not {@code null}, it is used to dynamically update the {@code depth}.
+	 * @since 16.0
+	 */
+	DistanceBasedRoadNetworkIterator(
+			RoadSegmentContainer network,
+			double depth,
+			double position_from_starting_point,
+			RoadSegment segment,
+			RoadConnection starting_point,
+			boolean allowManyReplies,
+			boolean assumeOrientedSegments,
+			DynamicDepthUpdater<RoadSegment, RoadConnection> dynamicDepthUpdate) {
+		super(network, depth, position_from_starting_point, segment, starting_point,
+				allowManyReplies, assumeOrientedSegments, dynamicDepthUpdate);
 
 	}
 

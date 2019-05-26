@@ -28,6 +28,7 @@ import java.util.Iterator;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.graph.DepthGraphIterator;
+import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.Graph;
 import org.arakhne.afc.math.graph.GraphIterator;
 
@@ -105,7 +106,8 @@ public class SGraph implements Graph<SGraphSegment, SGraphPoint> {
 	public GraphIterator<SGraphSegment, SGraphPoint> depthIterator(
 			SGraphSegment startingSegment, double depth,
 			double positionFromStartingPoint, SGraphPoint startingPoint,
-			boolean allowManyReplies, boolean assumeOrientedSegments) {
+			boolean allowManyReplies, boolean assumeOrientedSegments,
+			DynamicDepthUpdater<SGraphSegment, SGraphPoint> dynamicDepthUpdater) {
 		if (startingSegment.getGraph() != this
 				|| startingPoint.getGraph() != this) {
 			throw new IllegalArgumentException();
@@ -116,7 +118,8 @@ public class SGraph implements Graph<SGraphSegment, SGraphPoint> {
 				startingSegment,
 				startingPoint,
 				allowManyReplies,
-				assumeOrientedSegments);
+				assumeOrientedSegments,
+				dynamicDepthUpdater);
 	}
 
 	/** Add the given segment. The number of points

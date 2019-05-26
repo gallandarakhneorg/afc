@@ -67,6 +67,7 @@ import org.arakhne.afc.math.geometry.d2.d.Path2d;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.GraphIterator;
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
@@ -1283,12 +1284,13 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		public GraphIterator<RoadSegment, RoadConnection> depthIterator(
 				double depth, double position_from_starting_point,
 				RoadConnection starting_point, boolean allowManyReplies,
-				boolean assumeOrientedSegments) {
+				boolean assumeOrientedSegments,
+				DynamicDepthUpdater<RoadSegment, RoadConnection> dynamicDepthUpdater) {
 			return new DistanceBasedRoadNetworkIterator(
 					SubRoadNetwork.this,
 					depth, position_from_starting_point,
 					this, starting_point,
-					allowManyReplies, assumeOrientedSegments);
+					allowManyReplies, assumeOrientedSegments, dynamicDepthUpdater);
 		}
 
 		@Override

@@ -64,13 +64,13 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	 */
 	boolean lastReachableSegment;
 
-	/** Distance amount which was not consumed.
-	 */
-	final double distanceToConsume;
-
 	/** Indicates if this element was replied by the iterator.
 	 */
 	boolean replied;
+
+	/** Distance amount which was not consumed.
+	 */
+	private double distanceToConsume;
 
 	/** Constructor.
 	 * @param previousSegment1 is the previous element that permits to reach this object during an iteration
@@ -131,6 +131,16 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	@Pure
 	public final double getDistanceToReachSegment() {
 		return this.distanceToReach;
+	}
+
+	/** Replies the distance that is not yet consumed.
+	 *
+	 * @return the distance that could be consumed.
+	 * @since 16.0
+	 */
+	@Pure
+	public final double getDistanceToConsume() {
+		return this.distanceToConsume;
 	}
 
 	@Pure

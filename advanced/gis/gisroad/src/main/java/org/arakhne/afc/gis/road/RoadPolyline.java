@@ -50,6 +50,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.GraphIterator;
 import org.arakhne.afc.util.OutputParameter;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
@@ -772,7 +773,8 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	public GraphIterator<RoadSegment, RoadConnection> depthIterator(
 			double depth, double position_from_starting_point,
 			RoadConnection starting_point, boolean allowManyReplies,
-			boolean assumeOrientedSegments) {
+			boolean assumeOrientedSegments,
+			DynamicDepthUpdater<RoadSegment, RoadConnection> dynamicDepthUpdate) {
 		RoadConnection pt = starting_point.getWrappedRoadConnection();
 
 		if ((pt == null)
@@ -785,7 +787,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 				getRoadNetwork(),
 				depth, position_from_starting_point,
 				this, pt,
-				allowManyReplies, assumeOrientedSegments);
+				allowManyReplies, assumeOrientedSegments, dynamicDepthUpdate);
 	}
 
 	@Override

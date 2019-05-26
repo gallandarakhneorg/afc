@@ -42,6 +42,7 @@ import org.arakhne.afc.math.geometry.d2.d.Path2d;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.GraphIterator;
 import org.arakhne.afc.math.graph.GraphSegment;
 
@@ -420,12 +421,44 @@ public interface RoadSegment extends AttributeCollection, GISFlagContainer,
 	 *     If this parameter is <code>false</code> to assume that the end points of a segment
 	 *     are not distinguished.
 	 * @return an iterator
+	 * @see #depthIterator(double, double, RoadConnection, boolean, boolean, DynamicDepthUpdater)
+	 */
+	@Pure
+	default GraphIterator<RoadSegment, RoadConnection> depthIterator(
+			double depth, double position_from_starting_point,
+			RoadConnection starting_point,
+			boolean allowManyReplies, boolean assumeOrientedSegments) {
+		return depthIterator(depth, position_from_starting_point, starting_point, allowManyReplies, assumeOrientedSegments, null);
+	}
+
+	/** Replies an iterator that permits to move along the road segment's graph
+	 * starting from this road segment and from the specified starting point.
+	 * If the specified starting point is not one of the ends of th segment,
+	 * this function assumes to start from the point replied by
+	 * {@link #getBeginPoint()}.
+	 *
+	 * @param depth is the maximal depth to reach (in meters).
+	 * @param position_from_starting_point is the starting position from
+	 *     the <var>starting_point</var> (in meters).
+	 * @param starting_point is the point from which the iteration must start.
+	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the same
+	 *     segment, otherwise <code>false</code>.
+	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
+	 *     instances for graph iteration: the first instance is associated the first point of
+	 *     the segment and the second instance is associated to the last point of the segment.
+	 *     If this parameter is <code>false</code> to assume that the end points of a segment
+	 *     are not distinguished.
+	 * @param dynamicDepthUpdater if not {@code null}, it is invoked to dynamically update the {@code depth}.
+	 * @return an iterator
+	 * @since 16.0
+	 * @see #depthIterator(double, double, RoadConnection, boolean, boolean)
 	 */
 	@Pure
 	GraphIterator<RoadSegment, RoadConnection> depthIterator(
 			double depth, double position_from_starting_point,
 			RoadConnection starting_point,
-			boolean allowManyReplies, boolean assumeOrientedSegments);
+			boolean allowManyReplies, boolean assumeOrientedSegments,
+			DynamicDepthUpdater<RoadSegment, RoadConnection> dynamicDepthUpdater);
 
 	//-------------------------------------------------
 	// User data functions
