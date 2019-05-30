@@ -122,6 +122,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	}
 	
 	@Test
+	public void getDefaultCoordinateSystem() {
+		assertTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+	}
+
+	@Test
 	public void isRightHanded() {
 		assertTrue(CoordinateSystem2D.XY_RIGHT_HAND.isRightHanded());
 		assertFalse(CoordinateSystem2D.XY_LEFT_HAND.isRightHanded());
