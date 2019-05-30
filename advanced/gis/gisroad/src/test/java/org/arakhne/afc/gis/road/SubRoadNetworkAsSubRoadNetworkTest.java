@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.gis.road;
 
+import static org.junit.Assume.assumeTrue;
+
 import java.util.Iterator;
 
 import org.junit.After;
@@ -49,8 +51,6 @@ import org.arakhne.afc.math.graph.GraphIterator;
  */
 @SuppressWarnings("all")
 public class SubRoadNetworkAsSubRoadNetworkTest extends AbstractGisTest {
-
-	private static final String USER_DATA_TEST = "MY_USER_DATA_TEST"; //$NON-NLS-1$
 
 	private StandardRoadNetwork network;
 	private RoadSegmentStub segment1, segment2, segment3, segment4, segment5;
@@ -185,107 +185,9 @@ public class SubRoadNetworkAsSubRoadNetworkTest extends AbstractGisTest {
 		System.gc(); System.gc();
 	}
 
-	private static void assertShadowSegment(RoadSegment shadowed, RoadSegment shadow) {
-		assertNotNull("Shadow segment is null", shadow); //$NON-NLS-1$
-		assertNotSame("Shadow and real segments are same instance", shadowed, shadow); //$NON-NLS-1$
-		assertEquals("Shadow and real segments are not equal", shadowed, shadow); //$NON-NLS-1$
-		// User data should be inaccessible
-		assertNull("User date may be inaccessible", shadow.getUserData(USER_DATA_TEST)); //$NON-NLS-1$
-		shadow.addUserData(USER_DATA_TEST, 123);
-		assertNull("User date may be inaccessible", shadow.getUserData(USER_DATA_TEST)); //$NON-NLS-1$
-	}
-
-	private static void assertShadowConnection(RoadConnection shadowed, RoadConnection shadow, RoadSegment connectedSegment) {
-		assertNotNull("Shadow connection must not be null", shadow); //$NON-NLS-1$
-		assertNotSame("Shadow and real connections are same instance", shadowed, shadow); //$NON-NLS-1$
-		assertEquals("Shadow and real connections are not equal", shadowed, shadow); //$NON-NLS-1$
-
-		assertTrue(
-				"Real connection is not of valid type", //$NON-NLS-1$
-				shadowed instanceof RoadConnectionWithArrivalSegment || shadowed instanceof StandardRoadConnection);
-		assertFalse(
-				"Shadow connection is of invalid type, expecting different than: " //$NON-NLS-1$
-				+RoadConnectionWithArrivalSegment.class+"; actual: " //$NON-NLS-1$
-				+shadow.getClass(),
-				shadow instanceof StandardRoadConnection);
-		assertFalse(
-				"Shadow connection is of invalid type, expecting different than: " //$NON-NLS-1$
-				+RoadConnectionWithArrivalSegment.class+"; actual: " //$NON-NLS-1$
-				+shadow.getClass(),
-				shadow instanceof RoadConnectionWithArrivalSegment);
-
-		assertEquals(
-				"Shadow connection has not exactly one connected segment", //$NON-NLS-1$
-				1, shadow.getConnectedSegmentCount());
-		assertEquals(
-				"Unexpected connected segment", //$NON-NLS-1$
-				connectedSegment, shadow.getConnectedSegment(0));
-	}
-
-	private static void assertRealConnection(RoadConnection shadowed, RoadConnection shadow) {
-		assertNotNull("Shadow connection must not be null", shadow); //$NON-NLS-1$
-		assertNotSame("Shadow connection must not be the connection itself", shadowed, shadow); //$NON-NLS-1$
-		assertEquals("Shadown and real connections are not equal", shadowed, shadow); //$NON-NLS-1$
-
-		assertTrue(
-				"Real connection is not of valid type, expecting:" //$NON-NLS-1$
-				+"TaggedRoadConnection or StandardRoadConnection; actual: " //$NON-NLS-1$
-				+shadow.getClass(),
-				shadowed instanceof RoadConnectionWithArrivalSegment || shadowed instanceof StandardRoadConnection);
-		assertTrue(
-				"Shadow connection is not of valid type, expecting:" //$NON-NLS-1$
-				+"TaggedRoadConnection or StandardRoadConnection; actual: " //$NON-NLS-1$
-				+shadow.getClass(),
-				shadow instanceof RoadConnectionWithArrivalSegment || shadow instanceof StandardRoadConnection);
-
-		assertEquals(
-				"Not same connected segment count, expecting:" //$NON-NLS-1$
-				+shadowed.getConnectedSegmentCount()+"; actual: " //$NON-NLS-1$
-				+shadow.getConnectedSegmentCount(),
-				shadowed.getConnectedSegmentCount(), shadow.getConnectedSegmentCount());
-	}
-
-	/** Assert the given shadow segment is binded to the given shadowed segment
-	 * and assuming that the last end is not terminal and the start end
-	 * is terminal.
-	 */
-	private static void assertShadowSegmentEO(RoadSegment shadowed, RoadSegment shadow) {
-		assertShadowSegment(shadowed, shadow);
-		assertShadowConnection(shadowed.getBeginPoint(), shadow.getBeginPoint(), shadow);
-		assertRealConnection(shadowed.getEndPoint(), shadow.getEndPoint());
-	}
-
-	/** Assert the given shadow segment is binded to the given shadowed segment
-	 * and assuming that the start end is not terminal and the last end
-	 * is terminal.
-	 */
-	private static void assertShadowSegmentOE(RoadSegment shadowed, RoadSegment shadow) {
-		assertShadowSegment(shadowed, shadow);
-		assertRealConnection(shadowed.getBeginPoint(), shadow.getBeginPoint());
-		assertShadowConnection(shadowed.getEndPoint(), shadow.getEndPoint(), shadow);
-	}
-
-	/** Assert the given shadow segment is binded to the given shadowed segment
-	 * and assuming that the ends of the segments are terminal ends.
-	 */
-	private static void assertShadowSegmentEE(RoadSegment shadowed, RoadSegment shadow) {
-		assertShadowSegment(shadowed, shadow);
-		assertShadowConnection(shadowed.getBeginPoint(), shadow.getBeginPoint(), shadow);
-		assertShadowConnection(shadowed.getEndPoint(), shadow.getEndPoint(), shadow);
-	}
-
-	/** Assert the given shadow segment is binded to the given shadowed segment
-	 * and assuming that the ends of the segments are not terminal ends.
-	 */
-	private static void assertShadowSegmentOO(RoadSegment shadowed, RoadSegment shadow) {
-		assertShadowSegment(shadowed, shadow);
-		assertRealConnection(shadowed.getBeginPoint(), shadow.getBeginPoint());
-		assertRealConnection(shadowed.getEndPoint(), shadow.getEndPoint());
-	}
-
 	@Test
-	public void testIteratorWithWrappingTest() {
-		assertTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+	public void testIteratorWithWrappingTest_01() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 
 		GraphIterator<RoadSegment,RoadConnection> iterator;
 		Iterator<RoadSegment> iterator2;
@@ -295,7 +197,7 @@ public class SubRoadNetworkAsSubRoadNetworkTest extends AbstractGisTest {
 		this.subNetwork.build(iterator);
 		iterator2 = this.subNetwork.iterator();
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentEE(this.segment3, iterator2.next());
+		assertWrapSegment_T_T(this.segment3, iterator2.next());
 		assertFalse(iterator2.hasNext());
 
 		iterator = this.network.depthIterator(this.segment3, 400., 10.,
@@ -303,9 +205,9 @@ public class SubRoadNetworkAsSubRoadNetworkTest extends AbstractGisTest {
 		this.subNetwork.build(iterator);
 		iterator2 = this.subNetwork.iterator();
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentEO(this.segment3, iterator2.next());
+		assertWrapSegment_T_W(this.segment3, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOE(this.segment4, iterator2.next());
+		assertWrapSegment_W_T(this.segment4, iterator2.next());
 		assertFalse(iterator2.hasNext());
 
 		iterator = this.network.depthIterator(this.segment3, 690., 10.,
@@ -313,11 +215,11 @@ public class SubRoadNetworkAsSubRoadNetworkTest extends AbstractGisTest {
 		this.subNetwork.build(iterator);
 		iterator2 = this.subNetwork.iterator();
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentEO(this.segment3, iterator2.next());
+		assertWrapSegment_T_W(this.segment3, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment4, iterator2.next());
+		assertWrapSegment_W_W(this.segment4, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOE(this.segment1, iterator2.next());
+		assertWrapSegment_W_T(this.segment1, iterator2.next());
 		assertFalse(iterator2.hasNext());
 
 		iterator = this.network.depthIterator(this.segment3, 830, 10.,
@@ -325,13 +227,11 @@ public class SubRoadNetworkAsSubRoadNetworkTest extends AbstractGisTest {
 		this.subNetwork.build(iterator);
 		iterator2 = this.subNetwork.iterator();
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentEO(this.segment3, iterator2.next());
+		assertWrapSegment_T_W(this.segment3, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment4, iterator2.next());
+		assertWrapSegment_W_W(this.segment4, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment1, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertShadowSegmentEO(this.segment2, iterator2.next());
+		assertWrapSegment_W_T(this.segment1, iterator2.next());
 		assertFalse(iterator2.hasNext());
 
 		iterator = this.network.depthIterator(this.segment3, 920, 10.,
@@ -339,27 +239,11 @@ public class SubRoadNetworkAsSubRoadNetworkTest extends AbstractGisTest {
 		this.subNetwork.build(iterator);
 		iterator2 = this.subNetwork.iterator();
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment3, iterator2.next());
+		assertWrapSegment_T_W(this.segment3, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment4, iterator2.next());
+		assertWrapSegment_W_W(this.segment4, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment1, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment2, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOE(this.segment5, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOE(this.segment7, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment6, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertShadowSegmentEO(this.segment8, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment6, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertShadowSegmentEO(this.segment11, iterator2.next());
-		assertTrue(iterator2.hasNext());
-		assertShadowSegmentEO(this.segment9, iterator2.next());
+		assertWrapSegment_W_T(this.segment1, iterator2.next());
 		assertFalse(iterator2.hasNext());
 
 		iterator = this.network.depthIterator(this.segment3, 1020, 10.,
@@ -367,27 +251,142 @@ public class SubRoadNetworkAsSubRoadNetworkTest extends AbstractGisTest {
 		this.subNetwork.build(iterator);
 		iterator2 = this.subNetwork.iterator();
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment3, iterator2.next());
+		assertWrapSegment_T_W(this.segment3, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment4, iterator2.next());
+		assertWrapSegment_W_W(this.segment4, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment1, iterator2.next());
+		assertWrapSegment_W_T(this.segment1, iterator2.next());
+		assertFalse(iterator2.hasNext());
+	}
+
+	@Test
+	public void testIteratorWithWrappingTest_02() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+
+		GraphIterator<RoadSegment,RoadConnection> iterator;
+		Iterator<RoadSegment> iterator2;
+
+		iterator = this.network.depthIterator(this.segment8, 50., 10.,
+				this.segment8.getBeginPoint(),false,true);
+		this.subNetwork.build(iterator);
+		iterator2 = this.subNetwork.iterator();
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment2, iterator2.next());
+		assertWrapSegment_T_T(this.segment8, iterator2.next());
+		assertFalse(iterator2.hasNext());
+
+		iterator = this.network.depthIterator(this.segment8, 400., 10.,
+				this.segment8.getBeginPoint(),false,true);
+		this.subNetwork.build(iterator);
+		iterator2 = this.subNetwork.iterator();
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment5, iterator2.next());
+		assertWrapSegment_T_W(this.segment8, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOE(this.segment7, iterator2.next());
+		assertWrapSegment_W_T(this.segment2, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment6, iterator2.next());
+		assertWrapSegment_W_W(this.segment5, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentEO(this.segment8, iterator2.next());
+		assertWrapSegment_W_T(this.segment3, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment6, iterator2.next());
+		assertWrapSegment_W_T(this.segment7, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentOO(this.segment11, iterator2.next());
+		assertWrapSegment_W_W(this.segment6, iterator2.next());
 		assertTrue(iterator2.hasNext());
-		assertShadowSegmentEO(this.segment9, iterator2.next());
+		assertWrapSegment_W_W(this.segment11, iterator2.next());
+		assertFalse(iterator2.hasNext());
+
+		iterator = this.network.depthIterator(this.segment8, 690., 10.,
+				this.segment8.getBeginPoint(),false,true);
+		this.subNetwork.build(iterator);
+		iterator2 = this.subNetwork.iterator();
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_T_W(this.segment8, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_T(this.segment2, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment5, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment3, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_T(this.segment7, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment6, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment11, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_T(this.segment4, iterator2.next());
+		assertFalse(iterator2.hasNext());
+
+		iterator = this.network.depthIterator(this.segment8, 830, 10.,
+				this.segment8.getBeginPoint(),false,true);
+		this.subNetwork.build(iterator);
+		iterator2 = this.subNetwork.iterator();
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_T_W(this.segment8, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_T(this.segment2, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment5, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment3, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_T(this.segment7, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment6, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment11, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment4, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_T(this.segment1, iterator2.next());
+		assertFalse(iterator2.hasNext());
+		
+		iterator = this.network.depthIterator(this.segment8, 920, 10.,
+				this.segment8.getBeginPoint(),false,true);
+		this.subNetwork.build(iterator);
+		iterator2 = this.subNetwork.iterator();
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_T_W(this.segment8, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_T(this.segment2, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment5, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment3, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_T(this.segment7, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment6, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment11, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment4, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_T(this.segment1, iterator2.next());
+		assertFalse(iterator2.hasNext());
+
+		iterator = this.network.depthIterator(this.segment8, 1020, 10.,
+				this.segment8.getBeginPoint(),false,true);
+		this.subNetwork.build(iterator);
+		iterator2 = this.subNetwork.iterator();
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_T_W(this.segment8, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_T(this.segment2, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment5, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment3, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_T(this.segment7, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment6, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment11, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_W(this.segment4, iterator2.next());
+		assertTrue(iterator2.hasNext());
+		assertWrapSegment_W_T(this.segment1, iterator2.next());
+		assertFalse(iterator2.hasNext());
 	}
 
 }

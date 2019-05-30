@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.gis.road;
 
+import static org.junit.Assume.assumeTrue;
+
 import java.util.Iterator;
 
 import org.junit.After;
@@ -36,6 +38,8 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.graph.GraphIterator;
 
 /** Unit test for SubRoadNetwork as a SubGraph.
+ *
+ * <p>PICTURE: {@code testnetwork1.png}
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -169,7 +173,7 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 	}
 
 	@Test
-	public void testSize() {
+	public void testSize_01() {
 		GraphIterator<RoadSegment,RoadConnection> iterator;
 
 		iterator = this.network.depthIterator(
@@ -198,19 +202,59 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 				this.segment3.getBeginPoint(),
 				false,true);
 		this.subNetwork.build(iterator);
-		assertEquals(4, this.subNetwork.getSegmentCount());
+		assertEquals(3, this.subNetwork.getSegmentCount());
 
 		iterator = this.network.depthIterator(
 				this.segment3, 920, 10.,
 				this.segment3.getBeginPoint(),
 				false,true);
 		this.subNetwork.build(iterator);
-		assertEquals(11, this.subNetwork.getSegmentCount());
+		assertEquals(3, this.subNetwork.getSegmentCount());
 	}
 
 	@Test
-	public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection() {
-		assertTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+	public void testSize_02() {
+		GraphIterator<RoadSegment,RoadConnection> iterator;
+
+		iterator = this.network.depthIterator(
+				this.segment8, 10., 50.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		this.subNetwork.build(iterator);
+		assertEquals(1, this.subNetwork.getSegmentCount());
+
+		iterator = this.network.depthIterator(
+				this.segment8, 400., 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		this.subNetwork.build(iterator);
+		assertEquals(7, this.subNetwork.getSegmentCount());
+
+		iterator = this.network.depthIterator(
+				this.segment8, 690., 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		this.subNetwork.build(iterator);
+		assertEquals(8, this.subNetwork.getSegmentCount());
+
+		iterator = this.network.depthIterator(
+				this.segment8, 830, 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		this.subNetwork.build(iterator);
+		assertEquals(9, this.subNetwork.getSegmentCount());
+
+		iterator = this.network.depthIterator(
+				this.segment8, 920, 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		this.subNetwork.build(iterator);
+		assertEquals(9, this.subNetwork.getSegmentCount());
+	}
+
+	@Test
+	public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_01() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 
 		GraphIterator<RoadSegment,RoadConnection> mainIterator;
 		GraphIterator<RoadSegment,RoadConnection> iterator;
@@ -253,8 +297,6 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 		assertEquals(this.segment4, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment1, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
 		assertFalse(iterator.hasNext());
 
 		iterator = this.subNetwork.depthIterator(this.segment3, 920., 10.,
@@ -265,22 +307,6 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 		assertEquals(this.segment4, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment1, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next());
 		assertFalse(iterator.hasNext());
 
 		iterator = this.subNetwork.depthIterator(this.segment3, 1020., 10.,
@@ -291,32 +317,135 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 		assertEquals(this.segment4, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment1, iterator.next());
+		assertFalse(iterator.hasNext());
+	}
+
+	@Test
+	public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_02() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+
+		GraphIterator<RoadSegment,RoadConnection> mainIterator;
+		GraphIterator<RoadSegment,RoadConnection> iterator;
+
+		mainIterator = this.network.depthIterator(
+				this.segment8, 1020, 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		this.subNetwork.build(mainIterator);
+
+		iterator = this.subNetwork.depthIterator(this.segment8, 50., 10.,
+				this.segment8.getBeginPoint(),false,true);
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
+		assertFalse(iterator.hasNext());
+
+		iterator = this.subNetwork.depthIterator(this.segment8, 400., 10.,
+				this.segment8.getBeginPoint(),false,true);
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment2, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment5, iterator.next());
 		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
 		assertEquals(this.segment7, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment6, iterator.next());
 		assertTrue(iterator.hasNext());
+		assertEquals(this.segment11, iterator.next());
+		assertFalse(iterator.hasNext());
+		
+		iterator = this.subNetwork.depthIterator(this.segment8, 690., 10.,
+				this.segment8.getBeginPoint(),false,true);
+		assertTrue(iterator.hasNext());
 		assertEquals(this.segment8, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment2, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment5, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment7, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment6, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment11, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next());
+		assertEquals(this.segment4, iterator.next());
+		assertFalse(iterator.hasNext());
+
+		iterator = this.subNetwork.depthIterator(this.segment8, 830., 10.,
+				this.segment8.getBeginPoint(),false,true);
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment2, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment5, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment7, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment6, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment11, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment10, iterator.next());
+		assertEquals(this.segment4, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment1, iterator.next());
+		assertFalse(iterator.hasNext());
+
+		iterator = this.subNetwork.depthIterator(this.segment8, 920., 10.,
+				this.segment8.getBeginPoint(),false,true);
+		assertEquals(this.segment8, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment2, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment5, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment7, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment6, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment11, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment4, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment1, iterator.next());
+		assertFalse(iterator.hasNext());
+
+		iterator = this.subNetwork.depthIterator(this.segment8, 1020., 10.,
+				this.segment8.getBeginPoint(),false,true);
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment2, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment5, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment7, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment6, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment11, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment4, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment1, iterator.next());
 		assertFalse(iterator.hasNext());
 	}
 
 	@Test
-	public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_2() {
-		assertTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+	public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_03() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 
 		GraphIterator<RoadSegment,RoadConnection> mainIterator;
 		GraphIterator<RoadSegment,RoadConnection> iterator;
@@ -340,79 +469,8 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 	}
 
 	@Test
-	public void testDepthIteratorRoadSegmentDoubleDoubleRoadConnection_3() {
-		assertTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
-
-		GraphIterator<RoadSegment,RoadConnection> mainIterator;
-		GraphIterator<RoadSegment,RoadConnection> iterator;
-
-		mainIterator = this.network.depthIterator(
-				this.segment3, 1020, 10.,
-				this.segment3.getEndPoint(),false,true);
-		this.subNetwork.build(mainIterator);
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 50., 10.,
-				this.segment3.getEndPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 400., 10.,
-				this.segment3.getEndPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertFalse(iterator.hasNext());
-
-		iterator = this.subNetwork.depthIterator(this.segment3, 690., 10.,
-				this.segment3.getEndPoint(),false,true);
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment10, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertFalse(iterator.hasNext());
-	}
-
-	@Test
-	public void testDepthIteratorRoadSegmentDoubleDouble() {
-		assertTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+	public void testDepthIteratorRoadSegmentDoubleDouble_01() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 
 		GraphIterator<RoadSegment,RoadConnection> mainIterator;
 		GraphIterator<RoadSegment,RoadConnection> iterator;
@@ -459,8 +517,6 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 		assertEquals(this.segment4, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment1, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
 		assertFalse(iterator.hasNext());
 
 		iterator = this.subNetwork.depthIterator(this.segment3, 920., 10.,
@@ -472,22 +528,6 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 		assertEquals(this.segment4, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment1, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next());
 		assertFalse(iterator.hasNext());
 
 		iterator = this.subNetwork.depthIterator(this.segment3, 1020., 10.,
@@ -499,32 +539,142 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 		assertEquals(this.segment4, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment1, iterator.next());
+		assertFalse(iterator.hasNext());
+	}
+
+	@Test
+	public void testDepthIteratorRoadSegmentDoubleDouble_02() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+
+		GraphIterator<RoadSegment,RoadConnection> mainIterator;
+		GraphIterator<RoadSegment,RoadConnection> iterator;
+
+		mainIterator = this.network.depthIterator(
+				this.segment8, 1020, 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		this.subNetwork.build(mainIterator);
+
+		iterator = this.subNetwork.depthIterator(this.segment8, 50., 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
+		assertFalse(iterator.hasNext());
+
+		iterator = this.subNetwork.depthIterator(this.segment8, 400., 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment2, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment5, iterator.next());
 		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
 		assertEquals(this.segment7, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment6, iterator.next());
 		assertTrue(iterator.hasNext());
+		assertEquals(this.segment11, iterator.next());
+		assertFalse(iterator.hasNext());
+
+		iterator = this.subNetwork.depthIterator(this.segment8, 690., 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		assertTrue(iterator.hasNext());
 		assertEquals(this.segment8, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment2, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment5, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment7, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment6, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment11, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next());
+		assertEquals(this.segment4, iterator.next());
+		assertFalse(iterator.hasNext());
+
+		iterator = this.subNetwork.depthIterator(this.segment8, 830., 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment2, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment5, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment7, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment6, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment11, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment10, iterator.next());
+		assertEquals(this.segment4, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment1, iterator.next());
+		assertFalse(iterator.hasNext());
+
+		iterator = this.subNetwork.depthIterator(this.segment8, 920., 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment2, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment5, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment7, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment6, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment11, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment4, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment1, iterator.next());
+		assertFalse(iterator.hasNext());
+
+		iterator = this.subNetwork.depthIterator(this.segment8, 1020., 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment2, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment5, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment7, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment6, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment11, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment4, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment1, iterator.next());
 		assertFalse(iterator.hasNext());
 	}
 
 	@Test
 	public void testIteratorRoadSegmentRoadConnectionBoolean_disableCycles_notOriented() {
-		assertTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 
 		GraphIterator<RoadSegment,RoadConnection> mainIterator;
 		GraphIterator<RoadSegment,RoadConnection> iterator;
@@ -553,8 +703,6 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment8, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
 		assertEquals(this.segment11, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment9, iterator.next());
@@ -565,8 +713,8 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 	}
 
 	@Test
-	public void testIteratorRoadSegmentRoadConnectionBoolean_disableCycles_oriented() {
-		assertTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+	public void testIteratorRoadSegmentRoadConnectionBoolean_disableCycles_oriented_01() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 
 		GraphIterator<RoadSegment,RoadConnection> mainIterator;
 		GraphIterator<RoadSegment,RoadConnection> iterator;
@@ -584,43 +732,73 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 		assertEquals(this.segment4, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment1, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment10, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment1, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
 
 		assertFalse(iterator.hasNext());
 	}
 
 	@Test
-	public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_notOriented() {
-		assertTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+	public void testIteratorRoadSegmentRoadConnectionBoolean_disableCycles_oriented_02() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+
+		GraphIterator<RoadSegment,RoadConnection> mainIterator;
+		GraphIterator<RoadSegment,RoadConnection> iterator;
+
+		mainIterator = this.network.depthIterator(
+				this.segment8, 1020, 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		this.subNetwork.build(mainIterator);
+
+		iterator = this.subNetwork.iterator(this.segment3, this.segment3.getBeginPoint(), false, true);
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment4, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment1, iterator.next());
+
+		assertFalse(iterator.hasNext());
+	}
+
+	@Test
+	public void testIteratorRoadSegmentRoadConnectionBoolean_disableCycles_oriented_03() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+
+		GraphIterator<RoadSegment,RoadConnection> mainIterator;
+		GraphIterator<RoadSegment,RoadConnection> iterator;
+
+		mainIterator = this.network.depthIterator(
+				this.segment8, 1020, 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		this.subNetwork.build(mainIterator);
+
+		iterator = this.subNetwork.iterator(this.segment8, this.segment8.getBeginPoint(), false, true);
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment2, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment5, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment7, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment6, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment11, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment4, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment1, iterator.next());
+
+		assertFalse(iterator.hasNext());
+	}
+
+	@Test
+	public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_notOriented_01() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 
 		GraphIterator<RoadSegment,RoadConnection> mainIterator;
 		GraphIterator<RoadSegment,RoadConnection> iterator;
@@ -633,66 +811,72 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 		iterator = this.subNetwork.iterator(
 				this.segment3, this.segment3.getBeginPoint(),
 				true, false);
-		//3 4 1 2
+
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment3, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment4, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment1, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		//5
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next());
-		//3
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		//7 6
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		//8 6
+		assertFalse(iterator.hasNext());
+	}
+
+	@Test
+	public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_notOriented_02() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+
+		GraphIterator<RoadSegment,RoadConnection> mainIterator;
+		GraphIterator<RoadSegment,RoadConnection> iterator;
+
+		mainIterator = this.network.depthIterator(this.segment8, 1020, 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		this.subNetwork.build(mainIterator);
+
+		iterator = this.subNetwork.iterator(
+				this.segment8, this.segment8.getBeginPoint(),
+				true, false);
+
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment8, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment6, iterator.next());
-		//11
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next()); //
-		//9 11
+		assertEquals(this.segment11, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next()); //
+		assertEquals(this.segment9, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next()); //
-		//10 4
+		assertEquals(this.segment2, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment5, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment7, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment6, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment11, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment9, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment2, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment5, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment7, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment10, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment4, iterator.next());
-		//11
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next()); //
-		//9 2
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next()); //
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment2, iterator.next());
-		//5
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next()); //
-		//3
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
-		//7
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment7, iterator.next());
 	}
 
 	@Test
-	public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_oriented() {
-		assertTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+	public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_oriented_01() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 
 		GraphIterator<RoadSegment,RoadConnection> mainIterator;
 		GraphIterator<RoadSegment,RoadConnection> iterator;
@@ -710,6 +894,25 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 		assertEquals(this.segment4, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment1, iterator.next());
+		assertFalse(iterator.hasNext());
+	}
+
+	@Test
+	public void testIteratorRoadSegmentRoadConnectionBoolean_enableCycles_oriented_02() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+
+		GraphIterator<RoadSegment,RoadConnection> mainIterator;
+		GraphIterator<RoadSegment,RoadConnection> iterator;
+
+		mainIterator = this.network.depthIterator(this.segment8, 1020, 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		this.subNetwork.build(mainIterator);
+
+		iterator = this.subNetwork.iterator(this.segment8, this.segment8.getBeginPoint(),
+				true, true);
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment2, iterator.next());
 		assertTrue(iterator.hasNext());
@@ -721,34 +924,19 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment6, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next()); //
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next()); //
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next()); //
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment10, iterator.next());
+		assertEquals(this.segment11, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment4, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment11, iterator.next()); //
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next()); //
-		assertTrue(iterator.hasNext());
 		assertEquals(this.segment2, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment5, iterator.next()); //
+		assertEquals(this.segment5, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment3, iterator.next());
 	}
 
 	@Test
-	public void testIteratorVoid() {
-		assertTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+	public void testIteratorVoid_01() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 
 		GraphIterator<RoadSegment,RoadConnection> mainIterator;
 		Iterator<RoadSegment> iterator;
@@ -766,22 +954,41 @@ public class SubRoadNetworkAsSubGraphTest extends AbstractGisTest {
 		assertEquals(this.segment4, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment1, iterator.next());
+		assertFalse(iterator.hasNext());
+	}
+
+	@Test
+	public void testIteratorVoid_02() {
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+
+		GraphIterator<RoadSegment,RoadConnection> mainIterator;
+		Iterator<RoadSegment> iterator;
+
+		mainIterator = this.network.depthIterator(
+				this.segment8, 920, 10.,
+				this.segment8.getBeginPoint(),
+				false,true);
+		this.subNetwork.build(mainIterator);
+
+		iterator = this.subNetwork.iterator();
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment8, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment2, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment5, iterator.next());
 		assertTrue(iterator.hasNext());
+		assertEquals(this.segment3, iterator.next());
+		assertTrue(iterator.hasNext());
 		assertEquals(this.segment7, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment6, iterator.next());
-		assertTrue(iterator.hasNext());
-		assertEquals(this.segment8, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment6, iterator.next());
 		assertTrue(iterator.hasNext());
 		assertEquals(this.segment11, iterator.next());
 		assertTrue(iterator.hasNext());
-		assertEquals(this.segment9, iterator.next());
+		assertEquals(this.segment4, iterator.next());
+		assertTrue(iterator.hasNext());
+		assertEquals(this.segment1, iterator.next());
 		assertFalse(iterator.hasNext());
 	}
 

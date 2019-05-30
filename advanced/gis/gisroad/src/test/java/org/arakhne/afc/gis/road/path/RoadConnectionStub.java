@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 import org.arakhne.afc.gis.location.GeoLocationPoint;
 import org.arakhne.afc.gis.road.AbstractGisTest;
@@ -106,6 +107,11 @@ class RoadConnectionStub implements RoadConnection {
 	public Iterable<RoadSegment> getConnectedSegmentsStartingFrom(
 			RoadSegment startingSegment) {
 		return Iterables.filter(this.segments, RoadSegment.class);
+	}
+
+	@Override
+	public Iterable<RoadSegment> getConnectedSegmentsStartingFromInReverseOrder(RoadSegment startingPoint) {
+		return Iterables.filter(Lists.reverse(this.segments), RoadSegment.class);
 	}
 
 	@Override
@@ -326,6 +332,12 @@ class RoadConnectionStub implements RoadConnection {
 
 	@Override
 	public Iterable<? extends GraphPoint.GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFrom(
+			RoadSegment arg0) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Iterable<? extends GraphPoint.GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFromInReverseOrder(
 			RoadSegment arg0) {
 		throw new UnsupportedOperationException();
 	}

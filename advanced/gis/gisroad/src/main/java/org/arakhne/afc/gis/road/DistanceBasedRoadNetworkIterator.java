@@ -20,12 +20,14 @@
 
 package org.arakhne.afc.gis.road;
 
+import java.util.Comparator;
+
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.gis.road.primitive.RoadSegmentContainer;
 import org.arakhne.afc.math.graph.DepthGraphIterator;
 import org.arakhne.afc.math.graph.DynamicDepthUpdater;
-import org.arakhne.afc.math.graph.GraphIterationElementComparator;
+import org.arakhne.afc.math.graph.GraphIterationElement;
 
 
 /**
@@ -102,7 +104,7 @@ final class DistanceBasedRoadNetworkIterator extends DepthGraphIterator<RoadSegm
 	}
 
 	@Override
-	protected GraphIterationElementComparator<RoadSegment, RoadConnection> createVisitedSegmentComparator(
+	protected Comparator<GraphIterationElement<RoadSegment, RoadConnection>> createVisitedSegmentComparator(
 			boolean assumeOrientedSegments) {
 		return assumeOrientedSegments ? RoadSegmentIterationComparator.ORIENTED_SEGMENT_SINGLETON
 				: RoadSegmentIterationComparator.NOT_ORIENTED_SEGMENT_SINGLETON;

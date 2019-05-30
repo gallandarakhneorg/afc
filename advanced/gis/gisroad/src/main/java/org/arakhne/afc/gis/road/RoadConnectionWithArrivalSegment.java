@@ -176,9 +176,21 @@ final class RoadConnectionWithArrivalSegment implements RoadConnection, Iterable
 
 	@Override
 	@Pure
+	public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFromInReverseOrder(
+			RoadSegment startingPoint) {
+		return this.connection.get().getConnectionsStartingFromInReverseOrder(startingPoint);
+	}
+
+	@Override
+	@Pure
 	public Iterable<RoadSegment> getConnectedSegmentsStartingFrom(RoadSegment segment) {
-    	return new ConnectionBoundedListIterable(segment);
+    	return new ConnectionBoundedListIterable(segment, false);
     }
+
+	@Override
+	public Iterable<RoadSegment> getConnectedSegmentsStartingFromInReverseOrder(RoadSegment segment) {
+    	return new ConnectionBoundedListIterable(segment, true);
+	}
 
 	@Override
 	@Pure
@@ -463,17 +475,24 @@ final class RoadConnectionWithArrivalSegment implements RoadConnection, Iterable
 
     	private final RoadSegment startingSegment;
 
+    	private final boolean reverse;
+
     	/** Constructor.
     	 *
     	 * @param startingSegment the start segment.
+    	 * @param reverse indicates if the list is reverse or not.
     	 */
-    	ConnectionBoundedListIterable(RoadSegment startingSegment) {
+    	ConnectionBoundedListIterable(RoadSegment startingSegment, boolean reverse) {
     		this.startingSegment = startingSegment;
+    		this.reverse = reverse;
     	}
 
 		@Override
 		@Pure
 		public Iterator<RoadSegment> iterator() {
+			if (this.reverse) {
+				return toClockwiseIterator(this.startingSegment);
+			}
 			return toCounterclockwiseIterator(this.startingSegment);
 		}
 

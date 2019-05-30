@@ -20,11 +20,13 @@
 
 package org.arakhne.afc.gis.road;
 
+import java.util.Comparator;
+
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.gis.road.primitive.RoadSegmentContainer;
 import org.arakhne.afc.math.graph.BreadthFirstGraphCourseModel;
-import org.arakhne.afc.math.graph.GraphIterationElementComparator;
+import org.arakhne.afc.math.graph.GraphIterationElement;
 import org.arakhne.afc.math.graph.GraphIterator;
 
 /**
@@ -67,7 +69,7 @@ final class RoadNetworkIterator extends GraphIterator<RoadSegment, RoadConnectio
 	}
 
 	@Override
-	protected GraphIterationElementComparator<RoadSegment, RoadConnection> createVisitedSegmentComparator(
+	protected Comparator<GraphIterationElement<RoadSegment, RoadConnection>> createVisitedSegmentComparator(
 			boolean assumeOrientedSegments) {
 		return assumeOrientedSegments ? RoadSegmentIterationComparator.ORIENTED_SEGMENT_SINGLETON
 			: RoadSegmentIterationComparator.NOT_ORIENTED_SEGMENT_SINGLETON;

@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.gis.road;
 
+import static org.junit.Assume.assumeTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -793,7 +795,7 @@ public class StandardRoadNetworkTest extends AbstractGisTest {
 
 		// CAUTION: Remember that segment4 and segment6 were removed!
 
-		assertTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
 
 		Iterator<RoadSegment> iterator = this.segment1.getBeginPoint().toCounterclockwiseIterator(this.segment1);
 		assertTrue(iterator.hasNext());

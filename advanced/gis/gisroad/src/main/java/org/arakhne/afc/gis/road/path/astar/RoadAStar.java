@@ -379,7 +379,12 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 
 		@Override
 		public Iterable<RoadSegment> getConnectedSegmentsStartingFrom(RoadSegment startingSegment) {
-			return getConnectedSegments();
+			return Arrays.<RoadSegment>asList(this.segment1, this.segment2);
+		}
+
+		@Override
+		public Iterable<RoadSegment> getConnectedSegmentsStartingFromInReverseOrder(RoadSegment startingSegment) {
+			return Arrays.<RoadSegment>asList(this.segment2, this.segment1);
 		}
 
 		@Override
@@ -614,7 +619,13 @@ public class RoadAStar extends AStar<RoadPath, RoadSegment, RoadConnection> {
 		@Override
 		public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFrom(
 				RoadSegment startingPoint) {
-			return getConnections();
+			return Arrays.asList(this.connection1, this.connection2);
+		}
+
+		@Override
+		public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFromInReverseOrder(
+				RoadSegment startingPoint) {
+			return Arrays.asList(this.connection2, this.connection1);
 		}
 
 	} // class VirtualPoint

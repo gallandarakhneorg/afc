@@ -479,14 +479,26 @@ class StandardRoadConnection implements RoadConnection {
 	@Override
 	@Pure
 	public Iterable<RoadSegment> getConnectedSegmentsStartingFrom(RoadSegment startingSegment) {
-		return new ConnectionBoundedListWrapper(startingSegment);
+		return new ConnectionBoundedListWrapper(startingSegment, false);
+	}
+
+	@Override
+	public Iterable<RoadSegment> getConnectedSegmentsStartingFromInReverseOrder(RoadSegment startingPoint) {
+		return new ConnectionBoundedListWrapper(startingPoint, true);
 	}
 
 	@Override
 	@Pure
 	public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFrom(
 			RoadSegment startingSegment) {
-		return new ConnectionBoundedListIterable(startingSegment);
+		return new ConnectionBoundedListIterable(startingSegment, false);
+	}
+
+	@Override
+	@Pure
+	public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFromInReverseOrder(
+			RoadSegment startingSegment) {
+		return new ConnectionBoundedListIterable(startingSegment, true);
 	}
 
 	@SuppressWarnings("unlikely-arg-type")
@@ -1436,23 +1448,35 @@ class StandardRoadConnection implements RoadConnection {
 
 		private final RoadSegment startingSegment;
 
+		private final boolean reverse;
+
 		/** Constructor.
 		 *
 		 * @param startingSegment the wrapped element.
+		 * @param reverse indicates if the list is reverse or not.
 		 */
-		ConnectionBoundedListWrapper(RoadSegment startingSegment) {
+		ConnectionBoundedListWrapper(RoadSegment startingSegment, boolean reverse) {
 			this.startingSegment = startingSegment;
+			this.reverse = reverse;
 		}
 
 		@SuppressWarnings("synthetic-access")
 		@Override
 		@Pure
 		public Iterator<RoadSegment> iterator() {
-			return new ConnectionListWrappingIterator(
-					toCounterclockwiseConnectionIterator(
-							this.startingSegment, null, null, null,
-							DEFAULT_CLOCKWHISE_TYPE,
-							CoordinateSystem2D.getDefaultCoordinateSystem()));
+			final Iterator<Connection> source;
+			if (this.reverse) {
+				source = toClockwiseConnectionIterator(
+						this.startingSegment, null, null, null,
+						DEFAULT_CLOCKWHISE_TYPE,
+						CoordinateSystem2D.getDefaultCoordinateSystem());
+			} else {
+				source = toCounterclockwiseConnectionIterator(
+						this.startingSegment, null, null, null,
+						DEFAULT_CLOCKWHISE_TYPE,
+						CoordinateSystem2D.getDefaultCoordinateSystem());
+			}
+			return new ConnectionListWrappingIterator(source);
 		}
 
 	}
@@ -1470,18 +1494,28 @@ class StandardRoadConnection implements RoadConnection {
 
 		private final RoadSegment startingSegment;
 
+		private final boolean reverse;
+
 		/** Constructor.
 		 *
 		 * @param startingSegment the wrapped element.
+		 * @param reverse indicates if the connections should be replied in reverse order, or not.
 		 */
-		ConnectionBoundedListIterable(RoadSegment startingSegment) {
+		ConnectionBoundedListIterable(RoadSegment startingSegment, boolean reverse) {
 			this.startingSegment = startingSegment;
+			this.reverse = reverse;
 		}
 
 		@SuppressWarnings("synthetic-access")
 		@Override
 		@Pure
 		public Iterator<Connection> iterator() {
+			if (this.reverse) {
+				return toClockwiseConnectionIterator(
+						this.startingSegment, null, null, null,
+						DEFAULT_CLOCKWHISE_TYPE,
+						CoordinateSystem2D.getDefaultCoordinateSystem());
+			}
 			return toCounterclockwiseConnectionIterator(
 					this.startingSegment, null, null, null,
 					DEFAULT_CLOCKWHISE_TYPE,

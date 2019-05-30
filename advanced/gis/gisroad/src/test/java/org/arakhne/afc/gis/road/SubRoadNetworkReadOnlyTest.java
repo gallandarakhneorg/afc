@@ -196,46 +196,7 @@ public class SubRoadNetworkReadOnlyTest extends AbstractGisTest {
 		assertEquals(this.segment1, s);
 		s.setUserData("TOTO", new Object()); //$NON-NLS-1$
 		assertNull(s.getUserData("TOTO")); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		s = iterator.next();
-		assertEquals(this.segment2, s);
-		s.setUserData("TOTO", new Object()); //$NON-NLS-1$
-		assertNull(s.getUserData("TOTO")); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		s = iterator.next();
-		assertEquals(this.segment5, s);
-		s.setUserData("TOTO", new Object()); //$NON-NLS-1$
-		assertNull(s.getUserData("TOTO")); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		s = iterator.next();
-		assertEquals(this.segment7, s);
-		s.setUserData("TOTO", new Object()); //$NON-NLS-1$
-		assertNull(s.getUserData("TOTO")); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		s = iterator.next();
-		assertEquals(this.segment6, s);
-		s.setUserData("TOTO", new Object()); //$NON-NLS-1$
-		assertNull(s.getUserData("TOTO")); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		s = iterator.next();
-		assertEquals(this.segment8, s);
-		s.setUserData("TOTO", new Object()); //$NON-NLS-1$
-		assertNull(s.getUserData("TOTO")); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		s = iterator.next();
-		assertEquals(this.segment6, s);
-		s.setUserData("TOTO", new Object()); //$NON-NLS-1$
-		assertNull(s.getUserData("TOTO")); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		s = iterator.next();
-		assertEquals(this.segment11, s);
-		s.setUserData("TOTO", new Object()); //$NON-NLS-1$
-		assertNull(s.getUserData("TOTO")); //$NON-NLS-1$
-		assertTrue(iterator.hasNext());
-		s = iterator.next();
-		assertEquals(this.segment9, s);
-		s.setUserData("TOTO", new Object()); //$NON-NLS-1$
-		assertNull(s.getUserData("TOTO")); //$NON-NLS-1$
+		
 		assertFalse(iterator.hasNext());
 	}
 

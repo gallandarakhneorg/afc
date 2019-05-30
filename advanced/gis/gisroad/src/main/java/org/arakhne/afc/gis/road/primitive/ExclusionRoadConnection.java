@@ -71,10 +71,10 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 	@Override
 	@Pure
 	public RoadSegment getConnectedSegment(int index) throws ArrayIndexOutOfBoundsException {
-		final int max = this.connection.getConnectedSegmentCount();
+		final int max = this.connection.get().getConnectedSegmentCount();
 		RoadSegment seg = null;
 		for (int i = 0, j = 0; seg == null && i < max; ++i) {
-			final RoadSegment c = this.connection.getConnectedSegment(i);
+			final RoadSegment c = this.connection.get().getConnectedSegment(i);
 			if (!isExcludedRoadSegment(c)) {
 				if (j == index) {
 					seg = c;
@@ -88,32 +88,44 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 	@Override
 	@Pure
 	public int getConnectedSegmentCount() {
-		return this.connection.getConnectedSegmentCount() - this.excludes.size();
+		return this.connection.get().getConnectedSegmentCount() - this.excludes.size();
 	}
 
 	@Override
 	@Pure
 	public Iterable<RoadSegment> getConnectedSegments() {
-		return () -> new ExclusionIterator(this.connection.getConnectedSegments().iterator());
+		return () -> new ExclusionIterator(this.connection.get().getConnectedSegments().iterator());
 	}
 
 	@Override
 	@Pure
 	public Iterable<RoadSegment> getConnectedSegmentsStartingFrom(RoadSegment startingSegment) {
-		return () -> new ExclusionIterator(this.connection.getConnectedSegmentsStartingFrom(startingSegment).iterator());
+		return () -> new ExclusionIterator(this.connection.get().getConnectedSegmentsStartingFrom(startingSegment).iterator());
+	}
+
+	@Override
+	public Iterable<RoadSegment> getConnectedSegmentsStartingFromInReverseOrder(RoadSegment startingSegment) {
+		return () -> new ExclusionIterator(this.connection.get().getConnectedSegmentsStartingFromInReverseOrder(startingSegment).iterator());
 	}
 
 	@Override
 	@Pure
 	public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnections() {
-		return () -> new ExclusionIterator2(this.connection.getConnections().iterator());
+		return () -> new ExclusionIterator2(this.connection.get().getConnections().iterator());
 	}
 
 	@Override
 	@Pure
 	public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFrom(
 			RoadSegment startingPoint) {
-		return () -> new ExclusionIterator2(this.connection.getConnectionsStartingFrom(startingPoint).iterator());
+		return () -> new ExclusionIterator2(this.connection.get().getConnectionsStartingFrom(startingPoint).iterator());
+	}
+
+	@Override
+	@Pure
+	public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFromInReverseOrder(
+			RoadSegment startingPoint) {
+		return () -> new ExclusionIterator2(this.connection.get().getConnectionsStartingFromInReverseOrder(startingPoint).iterator());
 	}
 
 	@Override
@@ -122,7 +134,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 		if (isExcludedRoadSegment(refSegment)) {
 			return null;
 		}
-		final RoadSegment other = this.connection.getOtherSideSegment(refSegment);
+		final RoadSegment other = this.connection.get().getOtherSideSegment(refSegment);
 		if (isExcludedRoadSegment(other)) {
 			return null;
 		}
@@ -135,14 +147,14 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 		if (isExcludedRoadSegment(segment)) {
 			return false;
 		}
-		return this.connection.isConnectedSegment(segment);
+		return this.connection.get().isConnectedSegment(segment);
 	}
 
 	@Override
 	@Pure
 	public Iterator<RoadSegment> toClockwiseIterator(RoadSegment startSegment, RoadSegment endSegment) {
 		return new ExclusionIterator(
-				this.connection.toClockwiseIterator(startSegment, endSegment));
+				this.connection.get().toClockwiseIterator(startSegment, endSegment));
 	}
 
 	@Override
@@ -152,7 +164,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			Boolean startSegmentConnectedByItsStart,
 			RoadSegment endSegment, Boolean endSegmentConnectedByItsStart) {
 		return new ExclusionIterator(
-				this.connection.toClockwiseIterator(
+				this.connection.get().toClockwiseIterator(
 						startSegment,
 						startSegmentConnectedByItsStart,
 						endSegment,
@@ -165,7 +177,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment startSegment, RoadSegment endSegment,
 			ClockwiseBoundType boundType) {
 		return new ExclusionIterator(
-				this.connection.toClockwiseIterator(
+				this.connection.get().toClockwiseIterator(
 						startSegment,
 						endSegment,
 						boundType));
@@ -179,7 +191,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
 			ClockwiseBoundType boundType) {
 		return new ExclusionIterator(
-				this.connection.toClockwiseIterator(
+				this.connection.get().toClockwiseIterator(
 						startSegment,
 						startSegmentConnectedByItsStart,
 						endSegment,
@@ -192,7 +204,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 	public Iterator<RoadSegment> toClockwiseIterator(
 			RoadSegment startSegment) {
 		return new ExclusionIterator(
-				this.connection.toClockwiseIterator(
+				this.connection.get().toClockwiseIterator(
 						startSegment));
 	}
 
@@ -201,7 +213,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 	public Iterator<RoadSegment> toClockwiseIterator(
 			RoadSegment startSegment, ClockwiseBoundType boundType) {
 		return new ExclusionIterator(
-				this.connection.toClockwiseIterator(
+				this.connection.get().toClockwiseIterator(
 						startSegment,
 						boundType));
 	}
@@ -212,7 +224,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment startSegment, RoadSegment endSegment,
 			CoordinateSystem2D system) {
 		return new ExclusionIterator(
-				this.connection.toClockwiseIterator(
+				this.connection.get().toClockwiseIterator(
 						startSegment,
 						endSegment,
 						system));
@@ -226,7 +238,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
 			CoordinateSystem2D system) {
 		return new ExclusionIterator(
-				this.connection.toClockwiseIterator(
+				this.connection.get().toClockwiseIterator(
 						startSegment,
 						startSegmentConnectedByItsStart,
 						endSegment,
@@ -240,7 +252,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment startSegment, RoadSegment endSegment,
 			ClockwiseBoundType boundType, CoordinateSystem2D system) {
 		return new ExclusionIterator(
-				this.connection.toClockwiseIterator(
+				this.connection.get().toClockwiseIterator(
 						startSegment,
 						endSegment,
 						boundType,
@@ -255,7 +267,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
 			ClockwiseBoundType boundType, CoordinateSystem2D system) {
 		return new ExclusionIterator(
-				this.connection.toClockwiseIterator(
+				this.connection.get().toClockwiseIterator(
 						startSegment,
 						startSegmentConnectedByItsStart,
 						endSegment,
@@ -269,7 +281,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 	public Iterator<RoadSegment> toClockwiseIterator(
 			RoadSegment startSegment, CoordinateSystem2D system) {
 		return new ExclusionIterator(
-				this.connection.toClockwiseIterator(
+				this.connection.get().toClockwiseIterator(
 						startSegment,
 						system));
 	}
@@ -280,7 +292,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment startSegment, ClockwiseBoundType boundType,
 			CoordinateSystem2D system) {
 		return new ExclusionIterator(
-				this.connection.toClockwiseIterator(
+				this.connection.get().toClockwiseIterator(
 						startSegment,
 						boundType,
 						system));
@@ -291,7 +303,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 	public Iterator<RoadSegment> toCounterclockwiseIterator(
 			RoadSegment startSegment, RoadSegment endSegment) {
 		return new ExclusionIterator(
-				this.connection.toCounterclockwiseIterator(
+				this.connection.get().toCounterclockwiseIterator(
 						startSegment,
 						endSegment));
 	}
@@ -303,7 +315,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			Boolean startSegmentConnectedByItsStart,
 			RoadSegment endSegment, Boolean endSegmentConnectedByItsStart) {
 		return new ExclusionIterator(
-				this.connection.toCounterclockwiseIterator(
+				this.connection.get().toCounterclockwiseIterator(
 						startSegment,
 						startSegmentConnectedByItsStart,
 						endSegment,
@@ -316,7 +328,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment startSegment, RoadSegment endSegment,
 			ClockwiseBoundType boundType) {
 		return new ExclusionIterator(
-				this.connection.toCounterclockwiseIterator(
+				this.connection.get().toCounterclockwiseIterator(
 						startSegment,
 						endSegment,
 						boundType));
@@ -330,7 +342,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
 			ClockwiseBoundType boundType) {
 		return new ExclusionIterator(
-				this.connection.toCounterclockwiseIterator(
+				this.connection.get().toCounterclockwiseIterator(
 						startSegment,
 						startSegmentConnectedByItsStart,
 						endSegment,
@@ -343,7 +355,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 	public Iterator<RoadSegment> toCounterclockwiseIterator(
 			RoadSegment startSegment) {
 		return new ExclusionIterator(
-				this.connection.toCounterclockwiseIterator(
+				this.connection.get().toCounterclockwiseIterator(
 						startSegment));
 	}
 
@@ -352,7 +364,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 	public Iterator<RoadSegment> toCounterclockwiseIterator(
 			RoadSegment startSegment, ClockwiseBoundType boundType) {
 		return new ExclusionIterator(
-				this.connection.toCounterclockwiseIterator(
+				this.connection.get().toCounterclockwiseIterator(
 						startSegment,
 						boundType));
 	}
@@ -363,7 +375,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment startSegment, RoadSegment endSegment,
 			CoordinateSystem2D system) {
 		return new ExclusionIterator(
-				this.connection.toCounterclockwiseIterator(
+				this.connection.get().toCounterclockwiseIterator(
 						startSegment,
 						endSegment,
 						system));
@@ -377,7 +389,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
 			CoordinateSystem2D system) {
 		return new ExclusionIterator(
-				this.connection.toCounterclockwiseIterator(
+				this.connection.get().toCounterclockwiseIterator(
 						startSegment,
 						startSegmentConnectedByItsStart,
 						endSegment,
@@ -391,7 +403,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment startSegment, RoadSegment endSegment,
 			ClockwiseBoundType boundType, CoordinateSystem2D system) {
 		return new ExclusionIterator(
-				this.connection.toCounterclockwiseIterator(
+				this.connection.get().toCounterclockwiseIterator(
 						startSegment,
 						endSegment,
 						boundType,
@@ -406,7 +418,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
 			ClockwiseBoundType boundType, CoordinateSystem2D system) {
 		return new ExclusionIterator(
-				this.connection.toCounterclockwiseIterator(
+				this.connection.get().toCounterclockwiseIterator(
 						startSegment,
 						startSegmentConnectedByItsStart,
 						endSegment,
@@ -420,7 +432,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 	public Iterator<RoadSegment> toCounterclockwiseIterator(
 			RoadSegment startSegment, CoordinateSystem2D system) {
 		return new ExclusionIterator(
-				this.connection.toCounterclockwiseIterator(
+				this.connection.get().toCounterclockwiseIterator(
 						startSegment,
 						system));
 	}
@@ -431,7 +443,7 @@ public class ExclusionRoadConnection extends AbstractWrapRoadConnection {
 			RoadSegment startSegment, ClockwiseBoundType boundType,
 			CoordinateSystem2D system) {
 		return new ExclusionIterator(
-				this.connection.toCounterclockwiseIterator(
+				this.connection.get().toCounterclockwiseIterator(
 						startSegment,
 						boundType,
 						system));

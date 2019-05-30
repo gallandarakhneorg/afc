@@ -23,6 +23,8 @@ package org.arakhne.afc.gis.road;
 import org.arakhne.afc.gis.location.GeoLocationUtil;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.gis.maplayer.MapLayer;
+import org.arakhne.afc.gis.road.primitive.RoadConnection;
+import org.arakhne.afc.gis.road.primitive.RoadSegment;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -42,6 +44,8 @@ import org.arakhne.afc.testtools.AbstractTestCase;
  */
 @SuppressWarnings("all")
 public abstract class AbstractGisTest extends AbstractTestCase {
+
+	protected static final String USER_DATA_TEST = "MY_USER_DATA_TEST"; //$NON-NLS-1$
 
 	protected Point2d randomPoint2D() {
 		return new Point2d(getRandom().nextDouble() * 100, getRandom().nextDouble() * 100);
@@ -131,6 +135,101 @@ public abstract class AbstractGisTest extends AbstractTestCase {
 			return -1;
 		}
 		return 1;
+	}
+
+	protected static void assertWrapSegment(RoadSegment real, RoadSegment wrap) {
+		assertNotNull("Wrap segment is null", wrap); //$NON-NLS-1$
+		assertNotSame("Wrap and wrapped segments are the same instance", real, wrap); //$NON-NLS-1$
+		assertEquals("Wrap and real segments are not equal", real, wrap); //$NON-NLS-1$
+		// User data should be inaccessible
+		assertNull("User date may be inaccessible", wrap.getUserData(USER_DATA_TEST)); //$NON-NLS-1$
+		wrap.addUserData(USER_DATA_TEST, 123);
+		assertNull("User date may be inaccessible", wrap.getUserData(USER_DATA_TEST)); //$NON-NLS-1$
+	}
+
+	protected static void assertWrapConnection(RoadConnection real, RoadConnection wrap) {
+		assertNotNull("Wrap connection must not be null", wrap); //$NON-NLS-1$
+		assertNotSame("Wrap and real connections are the same instance", real, wrap); //$NON-NLS-1$
+		assertEquals("Wrap and real connections are not equal", real, wrap); //$NON-NLS-1$
+
+		assertInstanceOf(
+				"Real connection is not of valid type", //$NON-NLS-1$
+				real,
+				RoadConnectionWithArrivalSegment.class, RoadConnection.class);
+		assertInstanceOf(
+				"Wrap connection is of invalid type", //$NON-NLS-1$
+				wrap,
+				SubRoadNetwork.WrapConnection.class);
+
+		assertPositive(
+				"Wrap connection must have at least one connected segment", //$NON-NLS-1$
+				wrap.getConnectedSegmentCount());
+
+		assertEquals(
+				"Not same connected segment count, expecting:" //$NON-NLS-1$
+				+ real.getConnectedSegmentCount()+"; actual: " //$NON-NLS-1$
+				+ wrap.getConnectedSegmentCount(),
+				real.getConnectedSegmentCount(), wrap.getConnectedSegmentCount());
+	}
+
+	protected static void assertTerminalConnection(RoadConnection real, RoadConnection wrap, RoadSegment connectedSegment) {
+		assertNotNull("Wrap connection must not be null", wrap); //$NON-NLS-1$
+		assertNotSame("Wrap and real connections are the same instance", real, wrap); //$NON-NLS-1$
+		assertEquals("Wrap and real connections are not equal", real, wrap); //$NON-NLS-1$
+
+		assertInstanceOf(
+				"Real connection is not of valid type", //$NON-NLS-1$
+				real,
+				RoadConnectionWithArrivalSegment.class, RoadConnection.class);
+		assertInstanceOf(
+				"Wrap connection is of invalid type", //$NON-NLS-1$
+				wrap,
+				SubRoadNetwork.TerminalConnection.class);
+
+		assertEquals(
+				"Wrap connection has not exactly one connected segment", //$NON-NLS-1$
+				1, wrap.getConnectedSegmentCount());
+		assertEquals(
+				"Unexpected connected segment", //$NON-NLS-1$
+				connectedSegment, wrap.getConnectedSegment(0));
+	}
+
+	/** Assert the given wrap segment is binded to the given real segment
+	 * and assuming that the last end is not terminal and the start end
+	 * is terminal.
+	 */
+	protected static void assertWrapSegment_T_W(RoadSegment real, RoadSegment wrap) {
+		assertWrapSegment(real, wrap);
+		assertTerminalConnection(real.getBeginPoint(), wrap.getBeginPoint(), real);
+		assertWrapConnection(real.getEndPoint(), wrap.getEndPoint());
+	}
+
+	/** Assert the given wrap segment is binded to the given real segment
+	 * and assuming that the start end is not terminal and the last end
+	 * is terminal.
+	 */
+	protected static void assertWrapSegment_W_T(RoadSegment real, RoadSegment wrap) {
+		assertWrapSegment(real, wrap);
+		assertWrapConnection(real.getBeginPoint(), wrap.getBeginPoint());
+		assertTerminalConnection(real.getEndPoint(), wrap.getEndPoint(), real);
+	}
+
+	/** Assert the given wrap segment is binded to the given real segment
+	 * and assuming that the ends of the segments are terminal ends.
+	 */
+	protected static void assertWrapSegment_T_T(RoadSegment real, RoadSegment wrap) {
+		assertWrapSegment(real, wrap);
+		assertTerminalConnection(real.getBeginPoint(), wrap.getBeginPoint(), real);
+		assertTerminalConnection(real.getEndPoint(), wrap.getEndPoint(), real);
+	}
+
+	/** Assert the given wrap segment is binded to the given real segment
+	 * and assuming that the ends of the segments are not terminal ends.
+	 */
+	protected static void assertWrapSegment_W_W(RoadSegment real, RoadSegment wrap) {
+		assertWrapSegment(real, wrap);
+		assertWrapConnection(real.getBeginPoint(), wrap.getBeginPoint());
+		assertWrapConnection(real.getEndPoint(), wrap.getEndPoint());
 	}
 
 }

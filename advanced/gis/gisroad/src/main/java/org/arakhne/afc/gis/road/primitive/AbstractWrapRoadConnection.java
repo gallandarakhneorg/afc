@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.gis.road.primitive;
 
+import java.lang.ref.SoftReference;
 import java.util.UUID;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -42,57 +43,71 @@ public abstract class AbstractWrapRoadConnection implements RoadConnection {
 
 	/** Wrapped road connection.
 	 */
-	protected RoadConnection connection;
+	protected SoftReference<RoadConnection> connection;
 
 	/** Constructor.
 	 * @param con is the wrapped connection.
 	 */
 	public AbstractWrapRoadConnection(RoadConnection con) {
 		assert con != null;
-		this.connection = con;
+		this.connection = new SoftReference<>(con);
+	}
+
+	@Override
+	@Pure
+	public final int hashCode() {
+		return this.connection.get().hashCode();
+	}
+
+	@Override
+	@Pure
+	public final boolean equals(Object obj) {
+		if (obj instanceof AbstractWrapRoadConnection) {
+			return this.connection.get().equals(((AbstractWrapRoadConnection) obj).connection.get());
+		}
+		return this.connection.get().equals(obj);
 	}
 
 	@Override
 	@Pure
 	public final RoadConnection getWrappedRoadConnection() {
-		assert this.connection != null;
-		return this.connection.getWrappedRoadConnection();
+		return this.connection.get().getWrappedRoadConnection();
 	}
 
 	@Override
 	@Pure
 	public final Point2d getPoint() {
-		return this.connection.getPoint();
+		return this.connection.get().getPoint();
 	}
 
 	@Override
 	@Pure
 	public final GeoLocationPoint getGeoLocation() {
-		return this.connection.getGeoLocation();
+		return this.connection.get().getGeoLocation();
 	}
 
 	@Override
 	@Pure
 	public final UUID getUUID() {
-		return this.connection.getUUID();
+		return this.connection.get().getUUID();
 	}
 
 	@Override
 	@Pure
 	public final boolean isNearPoint(Point2D<?, ?> point) {
-		return this.connection.isNearPoint(point);
+		return this.connection.get().isNearPoint(point);
 	}
 
 	@Override
 	@Pure
 	public final int compareTo(GraphPoint<RoadConnection, RoadSegment> point) {
-		return this.connection.compareTo(point);
+		return this.connection.get().compareTo(point);
 	}
 
 	@Override
 	@Pure
 	public final int compareTo(Point2D<?, ?> pts) {
-		return this.connection.compareTo(pts);
+		return this.connection.get().compareTo(pts);
 	}
 
 	@Override
@@ -103,20 +118,20 @@ public abstract class AbstractWrapRoadConnection implements RoadConnection {
 
 	@Override
 	@Pure
-	public final boolean isFinalConnectionPoint() {
+	public boolean isFinalConnectionPoint() {
 		return getConnectedSegmentCount() <= 1;
 	}
 
 	@Override
 	@Pure
 	public final boolean isReallyCulDeSac() {
-		return this.connection.isReallyCulDeSac();
+		return this.connection.get().isReallyCulDeSac();
 	}
 
 	@Override
 	@Pure
 	public String toString() {
-		return this.connection.toString();
+		return this.connection.get().toString();
 	}
 
 }

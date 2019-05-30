@@ -20,7 +20,6 @@
 
 package org.arakhne.afc.gis.road;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -28,6 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
@@ -45,7 +45,7 @@ public class RoadSegmentStub extends RoadPolyline {
 	private static final long serialVersionUID = 2694567030815887510L;
 
 	private final String label;
-	private Rectangle2D theoriticalBounds;
+	private Rectangle2d theoriticalBounds;
 	private double theoriticalLength;
 	private final ArrayList<Point2d> points = new ArrayList<>();
 	private int[] groupIdx;
@@ -99,7 +99,7 @@ public class RoadSegmentStub extends RoadPolyline {
 			}
 		}
 
-		this.theoriticalBounds = new Rectangle2D.Double(minX, minY, maxX-minX, maxY-minY);
+		this.theoriticalBounds = new Rectangle2d(minX, minY, maxX-minX, maxY-minY);
 		this.theoriticalLength = length;
 	}
 
@@ -121,9 +121,9 @@ public class RoadSegmentStub extends RoadPolyline {
 		addPoint(pts);
 		this.points.add(pts);
 
-		this.theoriticalBounds = new Rectangle2D.Double(0,0,0,0);
-		this.theoriticalBounds.add(startX,startY);
-		this.theoriticalLength = Point2D.getDistancePointPoint(startX, startY, 0, 0);
+		this.theoriticalBounds = new Rectangle2d(0,0,0,0);
+		this.theoriticalBounds.setFromCorners(startX,startY,startX,startY);
+		this.theoriticalLength = 0;
 	}
 
 	/**
@@ -146,8 +146,8 @@ public class RoadSegmentStub extends RoadPolyline {
 		addPoint(pts);
 		this.points.add(pts);
 
-		this.theoriticalBounds = new Rectangle2D.Double(endX,endY,0,0);
-		this.theoriticalBounds.add(startX,startY);
+		this.theoriticalBounds = new Rectangle2d();
+		this.theoriticalBounds.setFromCorners(startX,startY,endX,endY);
 		this.theoriticalLength = Point2D.getDistancePointPoint(startX, startY, endX, endY);
 	}
 
@@ -183,7 +183,7 @@ public class RoadSegmentStub extends RoadPolyline {
 			y=  points[i+1];
 		}
 
-		this.theoriticalBounds = new Rectangle2D.Double(minX,minY,maxX-minX,maxY-minY);
+		this.theoriticalBounds = new Rectangle2d(minX,minY,maxX-minX,maxY-minY);
 		this.theoriticalLength = length;
 	}
 
@@ -217,7 +217,7 @@ public class RoadSegmentStub extends RoadPolyline {
 	/**
 	 * @return the original bounds
 	 */
-	public Rectangle2D getOriginalBounds() {
+	public Rectangle2d getOriginalBounds() {
 		return this.theoriticalBounds;
 	}
 
@@ -353,7 +353,7 @@ public class RoadSegmentStub extends RoadPolyline {
 		}
 
 		this.theoriticalLength = length;
-		this.theoriticalBounds = new Rectangle2D.Double(xmin,ymin,xmax-xmin,ymax-ymin);
+		this.theoriticalBounds = new Rectangle2d(xmin,ymin,xmax-xmin,ymax-ymin);
 
 	}
 

@@ -20,10 +20,13 @@
 
 package org.arakhne.afc.gis.road;
 
-import org.arakhne.afc.gis.primitive.GISPrimitive;
+import java.util.Comparator;
+
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
-import org.arakhne.afc.math.graph.GraphIterationElementComparator;
+import org.arakhne.afc.math.graph.GraphIterationElement;
 
 /**
  * This class permits to compare two road segments.
@@ -36,7 +39,7 @@ import org.arakhne.afc.math.graph.GraphIterationElementComparator;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-final class RoadSegmentIterationComparator extends GraphIterationElementComparator<RoadSegment, RoadConnection> {
+final class RoadSegmentIterationComparator implements Comparator<GraphIterationElement<RoadSegment, RoadConnection>> {
 
 	/** Singleton of a comparator which assumes oriented segments.
 	 *
@@ -50,6 +53,8 @@ final class RoadSegmentIterationComparator extends GraphIterationElementComparat
 	 */
 	public static final RoadSegmentIterationComparator NOT_ORIENTED_SEGMENT_SINGLETON = new RoadSegmentIterationComparator(false);
 
+	private final boolean isOrientedSegments;
+
 	/** Constructor.
 	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
@@ -57,19 +62,64 @@ final class RoadSegmentIterationComparator extends GraphIterationElementComparat
 	 *      the end points of a segment are not distinguished.
 	 */
 	private RoadSegmentIterationComparator(boolean assumeOrientedSegments) {
-		super(assumeOrientedSegments);
+		this.isOrientedSegments = assumeOrientedSegments;
 	}
 
+	@Pure
 	@Override
+	public int compare(
+			GraphIterationElement<RoadSegment, RoadConnection> o1,
+			GraphIterationElement<RoadSegment, RoadConnection> o2) {
+		assert o1 != null && o2 != null;
+		if (o1 == o2) {
+			return 0;
+		}
+		final int cmp = compareSegments(o1.getSegment(), o2.getSegment());
+		if (!this.isOrientedSegments || cmp != 0) {
+			return cmp;
+		}
+		return compareConnections(o1.getPoint(), o2.getPoint());
+	}
+
+	/** Compare the two given segments.
+	 *
+	 * @param s1 the first segment.
+	 * @param s2 the second segment.
+	 * @return <code>-1</code> if {@code s1} is lower than {@code s2},
+	 *     <code>1</code> if {@code s1} is greater than {@code s2},
+	 *     otherwise <code>0</code>.
+	 */
+	@SuppressWarnings("static-method")
+	@Pure
 	protected int compareSegments(RoadSegment s1, RoadSegment s2) {
 		assert s1 != null && s2 != null;
-		return GISPrimitive.COMPARATOR.compare(s1, s2);
+		return s1.getUUID().compareTo(s2.getUUID());
 	}
 
-	@Override
+	/** Compare the two given entry points.
+	 *
+	 * @param p1 the first connection.
+	 * @param p2 the second connection.
+	 * @return <code>-1</code> if {@code p1} is lower than {@code p2},
+	 *     <code>1</code> if {@code p1} is greater than {@code p2},
+	 *     otherwise <code>0</code>.
+	 */
+	@SuppressWarnings("static-method")
+	@Pure
 	protected int compareConnections(RoadConnection p1, RoadConnection p2) {
 		assert p1 != null && p2 != null;
-		return p1.compareTo(p2);
+		return p1.getUUID().compareTo(p2.getUUID());
+	}
+
+	/** Replies if this comparator is assuming that
+	 * segments are oriented.
+	 *
+	 * @return <code>true</code> if segments are oriented,
+	 *     otherwise <code>false</code>
+	 */
+	@Pure
+	public boolean isOrientedSegments() {
+		return this.isOrientedSegments;
 	}
 
 }

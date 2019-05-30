@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -45,8 +46,8 @@ import org.arakhne.afc.attrs.collection.AttributeChangeListener;
 import org.arakhne.afc.attrs.collection.AttributeProvider;
 import org.arakhne.afc.gis.location.GeoId;
 import org.arakhne.afc.gis.location.GeoLocation;
-import org.arakhne.afc.gis.location.GeoLocationPoint;
 import org.arakhne.afc.gis.road.path.RoadPath;
+import org.arakhne.afc.gis.road.primitive.AbstractWrapRoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadConnection;
 import org.arakhne.afc.gis.road.primitive.RoadNetwork;
 import org.arakhne.afc.gis.road.primitive.RoadNetworkConstants;
@@ -69,7 +70,6 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.GraphIterator;
-import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.math.graph.SubGraph;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
@@ -133,6 +133,11 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 	@Override
 	@Pure
 	protected RoadSegment wrapSegment(RoadSegment segment) {
+		assert segment != null;
+		if (segment instanceof WrapSegment) {
+			return segment;
+		}
+
 		final RoadSegment uwSegment = unwrap(segment);
 
 		RoadConnection con;
@@ -157,6 +162,37 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		return point;
 	}
 
+	/** Wrap the given connection.
+	 *
+	 * @param point the connection to wrap.
+	 * @return the wrapper.
+	 * @since 16.0
+	 */
+	@Pure
+	protected RoadConnection wrapPoint(RoadConnection point) {
+		assert point != null;
+		if (point instanceof AbstractWrapConnection) {
+			return point;
+		}
+		return new WrapConnection(point.getWrappedRoadConnection());
+	}
+
+	/** Wrap the given graph point connection.
+	 *
+	 * @param connection the graph point connection to wrap.
+	 * @return the wrapper.
+	 * @since 16.0
+	 */
+	@Pure
+	protected GraphPointConnection<RoadConnection, RoadSegment> wrapGraphPointConnection(
+			GraphPointConnection<RoadConnection, RoadSegment> connection) {
+		assert connection != null;
+		if (connection instanceof WrapGraphPointConnection) {
+			return connection;
+		}
+		return new WrapGraphPointConnection(connection);
+	}
+
 	/** Unwrap a connection.
 	 *
 	 * @param <O> the type of the object to unwrap.
@@ -165,12 +201,12 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 	 */
 	@SuppressWarnings({ "unchecked", "static-method" })
 	@Pure
-	final <O> O unwrap(O obj) {
+	protected final <O> O unwrap(O obj) {
 		O unwrapped = obj;
 		if (obj instanceof TerminalConnection) {
 			unwrapped = (O) ((TerminalConnection) obj).getWrappedRoadConnection();
 		} else if (obj instanceof WrapSegment) {
-			unwrapped = (O) ((WrapSegment) obj).getWrappedSegment();
+			unwrapped = (O) ((WrapSegment) obj).getWrappedRoadSegment();
 		}
 		assert unwrapped != null;
 		return unwrapped;
@@ -243,11 +279,39 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 16.0
+	 */
+	abstract class AbstractWrapConnection extends AbstractWrapRoadConnection {
+
+		/** Constructor.
+		 * @param connection the wrapped connection.
+		 */
+		AbstractWrapConnection(RoadConnection connection) {
+			super(connection);
+		}
+
+		@Override
+		@Pure
+		public RoadSegment getOtherSideSegment(RoadSegment refSegment) {
+			return wrapSegment(this.connection.get().getOtherSideSegment(unwrap(refSegment)));
+		}
+
+		@Override
+		@Pure
+		public String toString() {
+			return "WRAPPED//" + this.connection.get().toString(); //$NON-NLS-1$
+		}
+
+	}
+
+	/** Internal connection.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
 	 * @since 14.0
 	 */
-	private class TerminalConnection implements RoadConnection, GraphPointConnection<RoadConnection, RoadSegment> {
-
-		private final SoftReference<RoadConnection> connection;
+	class TerminalConnection extends AbstractWrapConnection implements GraphPointConnection<RoadConnection, RoadSegment> {
 
 		private final SoftReference<RoadSegment> segment;
 
@@ -259,43 +323,23 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		 * @param connectedToStart indicates if the segment is connected to its start.
 		 */
 		TerminalConnection(RoadConnection connection, RoadSegment segment, boolean connectedToStart) {
-			assert connection != null;
+			super(connection);
 			assert segment != null;
-			this.connection = new SoftReference<>(unwrap(connection));
 			this.segment = new SoftReference<>(unwrap(segment));
 			this.connectedToStart = connectedToStart;
 		}
 
-		@Override
-		@Pure
-		public final RoadConnection getWrappedRoadConnection() {
-			final RoadConnection c = this.connection.get();
-			if (c == null) {
-				return this;
-			}
-			return c.getWrappedRoadConnection();
-		}
-
-		@Override
-		@Pure
-		public final int hashCode() {
-			return this.connection.get().hashCode();
-		}
-
-		@Override
-		@Pure
-		public final boolean equals(Object obj) {
-			if (obj instanceof TerminalConnection) {
-				return this.connection.get().equals(((TerminalConnection) obj).connection.get());
-			}
-			return this.connection.get().equals(obj);
+		private RoadSegment wrapConnectedSegment() {
+			final TerminalConnection start = this.connectedToStart ? this : null;
+			final TerminalConnection end = this.connectedToStart ? null : this;
+			return new WrapSegment(this.segment.get(), start, end);
 		}
 
 		@Override
 		@Pure
 		public final RoadSegment getConnectedSegment(int index)
 				throws ArrayIndexOutOfBoundsException {
-			return this.segment.get();
+			return wrapSegment(this.segment.get());
 		}
 
 		@Override
@@ -307,13 +351,22 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public final List<RoadSegment> getConnectedSegments() {
-			return Collections.singletonList(this.segment.get());
+			return Collections.singletonList(wrapSegment(this.segment.get()));
 		}
 
 		@Override
 		@Pure
 		public final List<RoadSegment> getConnectedSegmentsStartingFrom(RoadSegment startingSegment) {
-			return Collections.singletonList(this.segment.get());
+			final RoadSegment sgmt = this.segment.get();
+			assert startingSegment != null && startingSegment.equals(sgmt);
+			return Collections.singletonList(wrapSegment(sgmt));
+		}
+
+		@Override
+		public Iterable<RoadSegment> getConnectedSegmentsStartingFromInReverseOrder(RoadSegment startingSegment) {
+			final RoadSegment sgmt = this.segment.get();
+			assert startingSegment != null && startingSegment.equals(sgmt);
+			return Collections.singletonList(wrapSegment(sgmt));
 		}
 
 		@Override
@@ -324,56 +377,14 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 		@Override
 		@Pure
-		public final Point2d getPoint() {
-			return this.connection.get().getPoint();
-		}
-
-		@Override
-		@Pure
-		public GeoLocationPoint getGeoLocation() {
-			return this.connection.get().getGeoLocation();
-		}
-
-		@Override
-		@Pure
-		public final UUID getUUID() {
-			return this.connection.get().getUUID();
-		}
-
-		@Override
-		@Pure
 		public final boolean isConnectedSegment(RoadSegment sgmt) {
 			return this.segment.get().equals(unwrap(sgmt));
 		}
 
 		@Override
 		@Pure
-		public final boolean isEmpty() {
-			return false;
-		}
-
-		@Override
-		@Pure
 		public final boolean isFinalConnectionPoint() {
 			return true;
-		}
-
-		@Override
-		@Pure
-		public boolean isReallyCulDeSac() {
-			return this.connection.get().isReallyCulDeSac();
-		}
-
-		@Override
-		@Pure
-		public final boolean isNearPoint(Point2D<?, ?> point) {
-			return this.connection.get().isNearPoint(point);
-		}
-
-		private RoadSegment wrap() {
-			final TerminalConnection start = this.connectedToStart ? this : null;
-			final TerminalConnection end = this.connectedToStart ? null : this;
-			return new WrapSegment(this.segment.get(), start, end);
 		}
 
 		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
@@ -399,7 +410,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 				ClockwiseBoundType boundType) {
 			return isValidSegment(startSegment, startSegmentConnectedByItsStart, endSegment,
 					endSegmentConnectedByItsStart, boundType)
-					? Iterators.singletonIterator(wrap()) : Collections.<RoadSegment>emptyIterator();
+					? Iterators.singletonIterator(wrapConnectedSegment()) : Collections.<RoadSegment>emptyIterator();
 		}
 
 		@Override
@@ -411,6 +422,17 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFrom(
+				RoadSegment startingPoint) {
+			final RoadSegment sgmt = this.segment.get();
+			if (sgmt.equals(unwrap(startingPoint))) {
+				return Collections.singleton(this);
+			}
+			return Collections.<GraphPointConnection<RoadConnection, RoadSegment>>emptyList();
+		}
+
+		@Override
+		@Pure
+		public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFromInReverseOrder(
 				RoadSegment startingPoint) {
 			final RoadSegment sgmt = this.segment.get();
 			if (sgmt.equals(unwrap(startingPoint))) {
@@ -691,18 +713,6 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 		@Override
 		@Pure
-		public final int compareTo(GraphPoint<RoadConnection, RoadSegment> other) {
-			return this.connection.get().compareTo(other);
-		}
-
-		@Override
-		@Pure
-		public final int compareTo(Point2D<?, ?> pts) {
-			return this.connection.get().compareTo(pts);
-		}
-
-		@Override
-		@Pure
 		public String toString() {
 			return "TERMINAL//" + this.connection.get().toString(); //$NON-NLS-1$
 		}
@@ -716,13 +726,357 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Override
 		@Pure
 		public RoadSegment getGraphSegment() {
-			return wrap();
+			return wrapConnectedSegment();
 		}
 
 		@Override
 		@Pure
 		public boolean isSegmentStartConnected() {
 			return this.connectedToStart;
+		}
+
+	}
+
+	/** Internal connection.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 16.0
+	 */
+	class WrapConnection extends AbstractWrapConnection {
+
+		/** Constructor.
+		 * @param connection the wrapped connection.
+		 */
+		WrapConnection(RoadConnection connection) {
+			super(connection);
+		}
+
+		@Override
+		@Pure
+		public final RoadSegment getConnectedSegment(int index)
+				throws ArrayIndexOutOfBoundsException {
+			return wrapSegment(this.connection.get().getConnectedSegment(index));
+		}
+
+		@Override
+		@Pure
+		public final int getConnectedSegmentCount() {
+			return this.connection.get().getConnectedSegmentCount();
+		}
+
+		@Override
+		@Pure
+		public final Iterable<RoadSegment> getConnectedSegments() {
+			return Iterables.transform(this.connection.get().getConnectedSegments(), it -> wrapSegment(it));
+		}
+
+		@Override
+		@Pure
+		public final Iterable<RoadSegment> getConnectedSegmentsStartingFrom(RoadSegment startingSegment) {
+			return Iterables.transform(this.connection.get().getConnectedSegmentsStartingFrom(startingSegment),
+					it -> wrapSegment(it));
+		}
+
+		@Override
+		public Iterable<RoadSegment> getConnectedSegmentsStartingFromInReverseOrder(RoadSegment startingSegment) {
+			return Iterables.transform(this.connection.get().getConnectedSegmentsStartingFromInReverseOrder(startingSegment),
+					it -> wrapSegment(it));
+		}
+
+		@Override
+		@Pure
+		public final boolean isConnectedSegment(RoadSegment sgmt) {
+			return this.connection.get().isConnectedSegment(unwrap(sgmt));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toClockwiseIterator(
+				RoadSegment startSegment, RoadSegment endSegment) {
+			return new WrapSegmentIterator(this.connection.get().toClockwiseIterator(startSegment, endSegment));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toClockwiseIterator(
+				RoadSegment startSegment,
+				Boolean startSegmentConnectedByItsStart,
+				RoadSegment endSegment, Boolean endSegmentConnectedByItsStart) {
+			return new WrapSegmentIterator(this.connection.get().toClockwiseIterator(
+					startSegment, startSegmentConnectedByItsStart,
+					endSegment, endSegmentConnectedByItsStart));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toClockwiseIterator(
+				RoadSegment startSegment, RoadSegment endSegment,
+				ClockwiseBoundType boundType) {
+			return new WrapSegmentIterator(this.connection.get().toClockwiseIterator(
+					startSegment, endSegment, boundType));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toClockwiseIterator(
+				RoadSegment startSegment,
+				Boolean startSegmentConnectedByItsStart,
+				RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
+				ClockwiseBoundType boundType) {
+			return new WrapSegmentIterator(this.connection.get().toClockwiseIterator(
+					startSegment, startSegmentConnectedByItsStart,
+					endSegment, endSegmentConnectedByItsStart,
+					boundType));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toClockwiseIterator(
+				RoadSegment startSegment) {
+			return new WrapSegmentIterator(this.connection.get().toClockwiseIterator(startSegment));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toClockwiseIterator(
+				RoadSegment startSegment, ClockwiseBoundType boundType) {
+			return new WrapSegmentIterator(this.connection.get().toClockwiseIterator(startSegment, boundType));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toClockwiseIterator(
+				RoadSegment startSegment, RoadSegment endSegment,
+				CoordinateSystem2D system) {
+			return new WrapSegmentIterator(this.connection.get().toClockwiseIterator(
+					startSegment, endSegment, system));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toClockwiseIterator(
+				RoadSegment startSegment,
+				Boolean startSegmentConnectedByItsStart,
+				RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
+				CoordinateSystem2D system) {
+			return new WrapSegmentIterator(this.connection.get().toClockwiseIterator(
+					startSegment, startSegmentConnectedByItsStart,
+					endSegment, endSegmentConnectedByItsStart,
+					system));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toClockwiseIterator(
+				RoadSegment startSegment, RoadSegment endSegment,
+				ClockwiseBoundType boundType, CoordinateSystem2D system) {
+			return new WrapSegmentIterator(this.connection.get().toClockwiseIterator(
+					startSegment, endSegment,
+					boundType, system));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toClockwiseIterator(
+				RoadSegment startSegment,
+				Boolean startSegmentConnectedByItsStart,
+				RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
+				ClockwiseBoundType boundType, CoordinateSystem2D system) {
+			return new WrapSegmentIterator(this.connection.get().toClockwiseIterator(
+					startSegment, startSegmentConnectedByItsStart,
+					endSegment, endSegmentConnectedByItsStart,
+					boundType, system));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toClockwiseIterator(
+				RoadSegment startSegment, CoordinateSystem2D system) {
+			return new WrapSegmentIterator(this.connection.get().toClockwiseIterator(startSegment, system));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toClockwiseIterator(
+				RoadSegment startSegment, ClockwiseBoundType boundType,
+				CoordinateSystem2D system) {
+			return new WrapSegmentIterator(this.connection.get().toClockwiseIterator(
+					startSegment, boundType, system));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toCounterclockwiseIterator(
+				RoadSegment startSegment, RoadSegment endSegment) {
+			return new WrapSegmentIterator(this.connection.get().toCounterclockwiseIterator(startSegment, endSegment));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toCounterclockwiseIterator(
+				RoadSegment startSegment,
+				Boolean startSegmentConnectedByItsStart,
+				RoadSegment endSegment, Boolean endSegmentConnectedByItsStart) {
+			return new WrapSegmentIterator(this.connection.get().toCounterclockwiseIterator(
+					startSegment, startSegmentConnectedByItsStart,
+					endSegment, endSegmentConnectedByItsStart));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toCounterclockwiseIterator(
+				RoadSegment startSegment, RoadSegment endSegment,
+				ClockwiseBoundType boundType) {
+			return new WrapSegmentIterator(this.connection.get().toCounterclockwiseIterator(
+					startSegment, endSegment, boundType));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toCounterclockwiseIterator(
+				RoadSegment startSegment,
+				Boolean startSegmentConnectedByItsStart,
+				RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
+				ClockwiseBoundType boundType) {
+			return new WrapSegmentIterator(this.connection.get().toCounterclockwiseIterator(
+					startSegment, startSegmentConnectedByItsStart,
+					endSegment, endSegmentConnectedByItsStart,
+					boundType));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toCounterclockwiseIterator(
+				RoadSegment startSegment) {
+			return new WrapSegmentIterator(this.connection.get().toCounterclockwiseIterator(startSegment));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toCounterclockwiseIterator(
+				RoadSegment startSegment, ClockwiseBoundType boundType) {
+			return new WrapSegmentIterator(this.connection.get().toCounterclockwiseIterator(startSegment, boundType));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toCounterclockwiseIterator(
+				RoadSegment startSegment, RoadSegment endSegment,
+				CoordinateSystem2D system) {
+			return new WrapSegmentIterator(this.connection.get().toCounterclockwiseIterator(
+					startSegment, endSegment, system));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toCounterclockwiseIterator(
+				RoadSegment startSegment,
+				Boolean startSegmentConnectedByItsStart,
+				RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
+				CoordinateSystem2D system) {
+			return new WrapSegmentIterator(this.connection.get().toCounterclockwiseIterator(
+					startSegment, startSegmentConnectedByItsStart,
+					endSegment, endSegmentConnectedByItsStart,
+					system));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toCounterclockwiseIterator(
+				RoadSegment startSegment, RoadSegment endSegment,
+				ClockwiseBoundType boundType, CoordinateSystem2D system) {
+			return new WrapSegmentIterator(this.connection.get().toCounterclockwiseIterator(
+					startSegment, endSegment,
+					boundType, system));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toCounterclockwiseIterator(
+				RoadSegment startSegment,
+				Boolean startSegmentConnectedByItsStart,
+				RoadSegment endSegment, Boolean endSegmentConnectedByItsStart,
+				ClockwiseBoundType boundType, CoordinateSystem2D system) {
+			return new WrapSegmentIterator(this.connection.get().toCounterclockwiseIterator(
+					startSegment, startSegmentConnectedByItsStart,
+					endSegment, endSegmentConnectedByItsStart,
+					boundType, system));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toCounterclockwiseIterator(
+				RoadSegment startSegment, CoordinateSystem2D system) {
+			return new WrapSegmentIterator(this.connection.get().toCounterclockwiseIterator(startSegment, system));
+		}
+
+		@Override
+		@Pure
+		public final Iterator<RoadSegment> toCounterclockwiseIterator(
+				RoadSegment startSegment, ClockwiseBoundType boundType,
+				CoordinateSystem2D system) {
+			return new WrapSegmentIterator(this.connection.get().toCounterclockwiseIterator(
+					startSegment, boundType, system));
+		}
+
+		@Override
+		public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnections() {
+			final Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> original = this.connection.get().getConnections();
+			return Iterables.transform(original, it -> wrapGraphPointConnection(it));
+		}
+
+		@Override
+		public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFrom(
+				RoadSegment startingPoint) {
+			final Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> original = this.connection.get()
+					.getConnectionsStartingFrom(startingPoint);
+			return Iterables.transform(original, it -> wrapGraphPointConnection(it));
+		}
+
+		@Override
+		public Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> getConnectionsStartingFromInReverseOrder(
+				RoadSegment startingPoint) {
+			final Iterable<? extends GraphPointConnection<RoadConnection, RoadSegment>> original = this.connection.get()
+					.getConnectionsStartingFromInReverseOrder(startingPoint);
+			return Iterables.transform(original, it -> wrapGraphPointConnection(it));
+		}
+
+	}
+
+	/** Internal graph point connection.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 16.0
+	 */
+	class WrapGraphPointConnection implements GraphPointConnection<RoadConnection, RoadSegment> {
+
+		private final GraphPointConnection<RoadConnection, RoadSegment> source;
+
+		/** Constructor.
+		 *
+		 * @param source the wrapped element.
+		 */
+		WrapGraphPointConnection(GraphPointConnection<RoadConnection, RoadSegment> source) {
+			this.source = source;
+		}
+
+		@Override
+		public RoadSegment getGraphSegment() {
+			return wrapSegment(this.source.getGraphSegment());
+		}
+
+		@Override
+		public RoadConnection getGraphPoint() {
+			return wrapPoint(this.source.getGraphPoint());
+		}
+
+		@Override
+		public boolean isSegmentStartConnected() {
+			return this.source.isSegmentStartConnected();
 		}
 
 	}
@@ -735,7 +1089,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 	 * @since 14.0
 	 */
 	@SuppressWarnings({"checkstyle:methodcount", "checkstyle:classfanoutcomplexity"})
-	private class WrapSegment implements RoadSegment {
+	class WrapSegment implements RoadSegment {
 
 		private static final long serialVersionUID = -3612626387290684475L;
 
@@ -785,18 +1139,9 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Pure
 		public final boolean equals(Object obj) {
 			if (obj instanceof WrapSegment) {
-				return this.segment.get().equals(((WrapSegment) obj).getWrappedSegment());
+				return this.segment.get().equals(((WrapSegment) obj).getWrappedRoadSegment());
 			}
 			return this.segment.get().equals(obj);
-		}
-
-		/** Replies the wrapped segment.
-		 *
-		 * @return the wrapped segment
-		 */
-		@Pure
-		public final RoadSegment getWrappedSegment() {
-			return this.segment.get();
 		}
 
 		/** Replies the terminal start point if it exists.
@@ -1126,14 +1471,14 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Pure
 		public final RoadConnection getBeginPoint() {
 			final RoadConnection terminated = getTerminalStart();
-			return terminated != null ? terminated : this.segment.get().getBeginPoint();
+			return terminated != null ? terminated : wrapPoint(this.segment.get().getBeginPoint());
 		}
 
 		@Override
 		@Pure
 		public final RoadConnection getEndPoint() {
 			final RoadConnection terminated = getTerminalEnd();
-			return terminated != null ? terminated : this.segment.get().getEndPoint();
+			return terminated != null ? terminated : wrapPoint(this.segment.get().getEndPoint());
 		}
 
 		@Override
@@ -1197,7 +1542,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 				RoadSegment currSegment = currPoint.getOtherSideSegment(this);
 
 				while (currSegment != null) {
-					chain.add(0, currSegment);
+					chain.add(0, wrapSegment(currSegment));
 					currPoint = currSegment.getOtherSidePoint(currPoint);
 					currSegment = currPoint.getOtherSideSegment(currSegment);
 				}
@@ -1209,7 +1554,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 				RoadSegment currSegment = currPoint.getOtherSideSegment(this);
 
 				while (currSegment != null) {
-					chain.add(chain.size(), currSegment);
+					chain.add(chain.size(), wrapSegment(currSegment));
 					currPoint = currSegment.getOtherSidePoint(currPoint);
 					currSegment = currPoint.getOtherSideSegment(currSegment);
 				}
@@ -1773,7 +2118,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 	 * @mavenartifactid $ArtifactId$
 	 * @since 14.0
 	 */
-	private class WrapSegmentIterator implements Iterator<RoadSegment> {
+	class WrapSegmentIterator implements Iterator<RoadSegment> {
 
 		private final Iterator<RoadSegment> iterator;
 
@@ -1809,7 +2154,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 	 * @mavenartifactid $ArtifactId$
 	 * @since 14.0
 	 */
-	private class WrapSegmentIterable implements Iterable<RoadSegment> {
+	class WrapSegmentIterable implements Iterable<RoadSegment> {
 
 		private final Iterable<RoadSegment> iterable;
 
