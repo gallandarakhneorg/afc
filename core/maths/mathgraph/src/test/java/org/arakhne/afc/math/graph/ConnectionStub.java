@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 /**
  * This interface representes a graph's point.
  *
@@ -91,6 +93,11 @@ class ConnectionStub implements GraphPoint<ConnectionStub, SegmentStub> {
 		return this.segments;
 	}
 
+	@Override
+	public Iterable<SegmentStub> getConnectedSegmentsStartingFromInReverseOrder(SegmentStub startingPoint) {
+		return Lists.reverse(this.segments);
+	}
+
 	/** {@inheritDoc}
 	 */
 	@Override
@@ -103,6 +110,11 @@ class ConnectionStub implements GraphPoint<ConnectionStub, SegmentStub> {
 	@Override
 	public Iterable<? extends GraphPointConnection<ConnectionStub,SegmentStub>> getConnectionsStartingFrom(SegmentStub startingPoint) {
 		return new GPCIterable();
+	}
+
+	@Override
+	public Iterable<? extends GraphPointConnection<ConnectionStub,SegmentStub>> getConnectionsStartingFromInReverseOrder(SegmentStub startingPoint) {
+		return new GPCIterableReverse();
 	}
 
 	/** {@inheritDoc}
@@ -140,7 +152,29 @@ class ConnectionStub implements GraphPoint<ConnectionStub, SegmentStub> {
 
 	}
 
-    /** 
+    /**
+     * @author $Author: sgalland$
+     * @version $FullVersion$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 16.0
+     */
+	private class GPCIterableReverse implements Iterable<GraphPointConnection<ConnectionStub,SegmentStub>> {
+
+		/**
+		 */
+		public GPCIterableReverse() {
+			//
+		}
+
+		@Override
+		public Iterator<GraphPoint.GraphPointConnection<ConnectionStub, SegmentStub>> iterator() {
+			return new GPCIterator(Lists.reverse(ConnectionStub.this.segments).iterator());
+		}
+
+	}
+
+	/** 
      * @author $Author: sgalland$
      * @version $FullVersion$
      * @mavengroupid $GroupId$

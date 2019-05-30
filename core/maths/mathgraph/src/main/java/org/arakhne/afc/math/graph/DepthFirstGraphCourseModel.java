@@ -21,7 +21,6 @@
 package org.arakhne.afc.math.graph;
 
 import java.util.ArrayDeque;
-import java.util.Collection;
 import java.util.Deque;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -86,8 +85,15 @@ public class DepthFirstGraphCourseModel<ST extends GraphSegment<ST, PT>, PT exte
 	}
 
 	@Override
-	public void removeIterationElements(Collection<GraphIterationElement<ST, PT>> elements) {
-		this.stack.removeAll(elements);
+	public void removeIterationElements(Iterable<GraphIterationElement<ST, PT>> elements) {
+		for (final GraphIterationElement<ST, PT> element : elements) {
+			this.stack.remove(element);
+		}
+	}
+
+	@Override
+	public String toString() {
+		return this.stack.toString();
 	}
 
 }

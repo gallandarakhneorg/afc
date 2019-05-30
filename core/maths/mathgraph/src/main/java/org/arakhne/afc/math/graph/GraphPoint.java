@@ -63,6 +63,21 @@ public interface GraphPoint<PT extends GraphPoint<PT, ST>, ST extends GraphSegme
 	@Pure
 	Iterable<ST> getConnectedSegmentsStartingFrom(ST startingPoint);
 
+	/** Replies the list of segments connected to this point in reverse order.
+	 *
+	 * <p>If the graph point implementation is supporting an ordered
+	 * list of segment, it will reply the segments starting from
+	 * the given segment. If the implementation does not
+	 * support any order, it will reply the same as
+	 * {@link #getConnectedSegments()} in reverse order.
+	 *
+	 * @param startingSegment the startint segment.
+	 * @return the list of segments connected to this point.
+	 * @since 16.0
+	 */
+	@Pure
+	Iterable<ST> getConnectedSegmentsStartingFromInReverseOrder(ST startingSegment);
+
 	/** Replies the list of segment connections for this point.
 	 *
 	 * @return the list of segments connected to this point.
@@ -83,6 +98,21 @@ public interface GraphPoint<PT extends GraphPoint<PT, ST>, ST extends GraphSegme
 	 */
 	@Pure
 	Iterable<? extends GraphPointConnection<PT, ST>> getConnectionsStartingFrom(ST startingPoint);
+
+	/** Replies the list of segment connections for this point in reverse order.
+	 *
+	 * <p>If the graph point implementation is supporting an ordered
+	 * list of segment, it will reply the segments starting from
+	 * the given segment. If the implementation does not
+	 * support any order, it will reply the same as
+	 * {@link #getConnections()}.
+	 *
+	 * @param startingPoint the starting point.
+	 * @return the list of segments connected to this point.
+	 * @since 16.0
+	 */
+	@Pure
+	Iterable<? extends GraphPointConnection<PT, ST>> getConnectionsStartingFromInReverseOrder(ST startingPoint);
 
 	/** Replies if the specified segment was connected to
 	 * this point.

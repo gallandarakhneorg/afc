@@ -25,6 +25,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import org.arakhne.afc.math.graph.GraphPoint;
 
 /**
@@ -117,6 +119,11 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 		return this.segments;
 	}
 
+	@Override
+	public Iterable<AStarEdgeStub> getConnectedSegmentsStartingFromInReverseOrder(AStarEdgeStub startingPoint) {
+		return Lists.reverse(this.segments);
+	}
+
 	/** {@inheritDoc}
 	 */
 	@Override
@@ -129,6 +136,11 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	@Override
 	public Iterable<? extends GraphPointConnection<AStarNodeStub,AStarEdgeStub>> getConnectionsStartingFrom(AStarEdgeStub startingPoint) {
 		return new GPCIterable();
+	}
+
+	@Override
+	public Iterable<? extends GraphPointConnection<AStarNodeStub,AStarEdgeStub>> getConnectionsStartingFromInReverseOrder(AStarEdgeStub startingPoint) {
+		return new GPCIterableReverse();
 	}
 
 	/** {@inheritDoc}
@@ -235,7 +247,29 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 
 	}
 
-    /** 
+	/**
+     * @author $Author: sgalland$
+     * @version $FullVersion$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 16.0
+     */
+	private class GPCIterableReverse implements Iterable<GraphPointConnection<AStarNodeStub,AStarEdgeStub>> {
+
+		/**
+		 */
+		public GPCIterableReverse() {
+			//
+		}
+
+		@Override
+		public Iterator<GraphPoint.GraphPointConnection<AStarNodeStub, AStarEdgeStub>> iterator() {
+			return new GPCIterator(Lists.reverse(AStarNodeStub.this.segments).iterator());
+		}
+
+	}
+
+	/** 
      * @author $Author: sgalland$
      * @version $FullVersion$
      * @mavengroupid $GroupId$

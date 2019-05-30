@@ -22,6 +22,7 @@ package org.arakhne.afc.math.graph;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -51,11 +52,11 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 
 	/** Comparator of graph iteration element on oriented segments.
 	 */
-	protected final GraphIterationElementComparator<ST, PT> iterationOrientedElementComparator;
+	protected final Comparator<GraphIterationElement<ST, PT>> iterationOrientedElementComparator;
 
 	/** Comparator of graph iteration element on not-oriented segments.
 	 */
-	protected final GraphIterationElementComparator<ST, PT> iterationNotOrientedElementComparator;
+	protected final Comparator<GraphIterationElement<ST, PT>> iterationNotOrientedElementComparator;
 
 	private final Set<ComparableWeakReference<PT>> terminalPoints = new TreeSet<>();
 
@@ -74,8 +75,8 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 	protected SubGraph(
 			Collection<ST> segments1,
 			int pointNumber1,
-			GraphIterationElementComparator<ST, PT> orientedIterator,
-			GraphIterationElementComparator<ST, PT> notOrientedIterator) {
+			Comparator<GraphIterationElement<ST, PT>> orientedIterator,
+			Comparator<GraphIterationElement<ST, PT>> notOrientedIterator) {
 		this.segments = segments1;
 		this.pointNumber = pointNumber1;
 		assert orientedIterator != null;
@@ -338,6 +339,7 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 		protected GraphIterationElement<ST, PT> newIterationElement(
 				ST previousSegment, ST segment,
 				PT point,
+				boolean fromStartPoint,
 				double distanceToReach,
 				double distanceToConsume) {
 			final double newDistanceToConsume;
@@ -350,6 +352,7 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 			return new SubGraphIterationElement(
 					previousSegment, segment,
 					point,
+					fromStartPoint,
 					distanceToReach,
 					newDistanceToConsume);
 		}
@@ -390,7 +393,7 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 		}
 
 		@Override
-		protected GraphIterationElementComparator<ST, PT> createVisitedSegmentComparator(boolean assumeOrientedSegments) {
+		protected Comparator<GraphIterationElement<ST, PT>> createVisitedSegmentComparator(boolean assumeOrientedSegments) {
 			if (assumeOrientedSegments) {
 				if (SubGraph.this.iterationOrientedElementComparator != null) {
 					return SubGraph.this.iterationOrientedElementComparator;
@@ -407,11 +410,13 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 		protected GraphIterationElement<ST, PT> newIterationElement(
 				ST previousSegment, ST segment,
 				PT point,
+				boolean fromStartPoint,
 				double distanceToReach,
 				double distanceToConsume) {
 			return new SubGraphIterationElement(
 					previousSegment, segment,
 					point,
+					fromStartPoint,
 					distanceToReach,
 					distanceToConsume);
 		}
@@ -438,11 +443,15 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 		 * @param previousSegment is the previous element that permits to reach this object during an iteration
 		 * @param segment is the current segment
 		 * @param point is the point on which the iteration arrived on the current segment.
+		 * @param fromStartPoint indicates if the current search is reached from its start point. This parameter is
+		 *     useful when the current segment is connected to the same road connected with its start point and its
+		 *     end point.
 		 * @param distanceToReach1 is the distance that is already consumed.
 		 * @param distanceToConsume1 is the distance to consume including the segment.
 		 */
-		SubGraphIterationElement(ST previousSegment, ST segment, PT point, double distanceToReach1, double distanceToConsume1) {
-			super(previousSegment, segment, point, distanceToReach1, distanceToConsume1);
+		SubGraphIterationElement(ST previousSegment, ST segment, PT point,
+				boolean fromStartPoint, double distanceToReach1, double distanceToConsume1) {
+			super(previousSegment, segment, point, fromStartPoint, distanceToReach1, distanceToConsume1);
 		}
 
 		@Override

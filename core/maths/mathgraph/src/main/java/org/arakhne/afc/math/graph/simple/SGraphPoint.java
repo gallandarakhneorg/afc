@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.collect.Lists;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.graph.GraphPoint;
@@ -129,9 +130,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint, SGraphSegment> {
 		return hashCode() - pt.hashCode();
 	}
 
-	@Pure
-	@Override
-	public Iterable<SGraphSegment> getConnectedSegmentsStartingFrom(SGraphSegment startingPoint) {
+	private List<SGraphSegment> computeConnectedSegmentsStartingFrom(SGraphSegment startingPoint) {
 		final List<SGraphSegment> list = new ArrayList<>(this.segments.size());
 		int idx = 0;
 		for (final SGraphSegment segment : this.segments) {
@@ -149,6 +148,17 @@ public class SGraphPoint implements GraphPoint<SGraphPoint, SGraphSegment> {
 
 	@Pure
 	@Override
+	public Iterable<SGraphSegment> getConnectedSegmentsStartingFrom(SGraphSegment startingPoint) {
+		return computeConnectedSegmentsStartingFrom(startingPoint);
+	}
+
+	@Override
+	public Iterable<SGraphSegment> getConnectedSegmentsStartingFromInReverseOrder(SGraphSegment startingPoint) {
+		return Lists.reverse(computeConnectedSegmentsStartingFrom(startingPoint));
+	}
+
+	@Pure
+	@Override
 	public Iterable<? extends GraphPointConnection<SGraphPoint, SGraphSegment>> getConnectionsStartingFrom(
 			SGraphSegment startingPoint) {
 		final List<PointConnection> list = new ArrayList<>(this.segments.size());
@@ -156,7 +166,6 @@ public class SGraphPoint implements GraphPoint<SGraphPoint, SGraphSegment> {
 		PointConnection connection;
 		for (final SGraphSegment segment : this.segments) {
 			if (segment != null) {
-
 				if (equals(segment.getBeginPoint())) {
 					connection = new PointConnection(segment, true);
 				} else if (equals(segment.getEndPoint())) {
@@ -169,6 +178,34 @@ public class SGraphPoint implements GraphPoint<SGraphPoint, SGraphSegment> {
 					if (idx > 0 || segment.equals(startingPoint)) {
 						list.add(idx, connection);
 						++idx;
+					} else {
+						list.add(connection);
+					}
+				}
+			}
+		}
+		return list;
+	}
+
+	@Pure
+	@Override
+	public Iterable<? extends GraphPointConnection<SGraphPoint, SGraphSegment>> getConnectionsStartingFromInReverseOrder(
+			SGraphSegment startingPoint) {
+		final List<PointConnection> list = new ArrayList<>(this.segments.size());
+		PointConnection connection;
+		for (final SGraphSegment segment : this.segments) {
+			if (segment != null) {
+				if (equals(segment.getBeginPoint())) {
+					connection = new PointConnection(segment, true);
+				} else if (equals(segment.getEndPoint())) {
+					connection = new PointConnection(segment, false);
+				} else {
+					connection = null;
+				}
+
+				if (connection != null) {
+					if (!list.isEmpty() || segment.equals(startingPoint)) {
+						list.add(0, connection);
 					} else {
 						list.add(connection);
 					}

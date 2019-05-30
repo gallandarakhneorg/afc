@@ -79,7 +79,18 @@ public interface GraphCourseModel<ST extends GraphSegment<ST, PT>, PT extends Gr
 	/** Remove the specified iteration elements.
 	 *
 	 * @param elements the elements to remove.
+	 * @deprecated see {@link #removeIterationElements(Iterable)}
 	 */
-	void removeIterationElements(Collection<GraphIterationElement<ST, PT>> elements);
+	@Deprecated
+	default void removeIterationElements(Collection<GraphIterationElement<ST, PT>> elements) {
+		removeIterationElements((Iterable<GraphIterationElement<ST, PT>>) elements);
+	}
+
+	/** Remove the specified iteration elements.
+	 *
+	 * @param elements the elements to remove.
+	 * @since 16.0
+	 */
+	void removeIterationElements(Iterable<GraphIterationElement<ST, PT>> elements);
 
 }

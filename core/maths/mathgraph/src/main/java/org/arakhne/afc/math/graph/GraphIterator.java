@@ -22,14 +22,17 @@ package org.arakhne.afc.math.graph;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.google.common.collect.Iterables;
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 
 /**
  * This class is an iterator on a graph.
@@ -118,12 +121,12 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 
 	/** Constructor.
 	 * @param graph1 is the graph associated to this iterator.
-	 * @param courseModel1 is the course model to use.
+	 * @param courseModel is the course model to use.
 	 * @param segment is the segment from which to start.
 	 * @param point is the segment's point indicating the direction.
-	 * @param allowManyReplies1 may be <code>true</code> to allow to reply many times the
+	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the
 	 *     same segment, otherwhise <code>false</code>.
-	 * @param assumeOrientedSegments1 may be <code>true</code> to assume that the same segment has two different
+	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
 	 *     the end points of a segment are not distinguished.
@@ -133,31 +136,32 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @param dynamicDepthUpdater if not {@code null}, it is used to dynamically update the {@code distanceToConsumeAfter}.
 	 */
 	protected GraphIterator(
-			Graph<ST, PT> graph1, GraphCourseModel<ST, PT> courseModel1,
+			Graph<ST, PT> graph1, GraphCourseModel<ST, PT> courseModel,
 			ST segment, PT point,
-			boolean allowManyReplies1, boolean assumeOrientedSegments1,
+			boolean allowManyReplies, boolean assumeOrientedSegments,
 			double distanceToReachStartingPoint,
 			double distanceToConsumeAfter,
 			DynamicDepthUpdater<ST, PT> dynamicDepthUpdater) {
 		this.graph = new WeakReference<>(graph1);
 		this.dynamicDepthUpdater = dynamicDepthUpdater;
-		GraphCourseModel<ST, PT> courseM = courseModel1;
+		GraphCourseModel<ST, PT> courseM = courseModel;
 		if (courseM == null) {
 			courseM = new BreadthFirstGraphCourseModel<>();
 		}
 
 		this.courseModel = courseM;
-		this.allowManyReplies = allowManyReplies1;
-		this.assumeOrientedSegments = assumeOrientedSegments1;
+		this.allowManyReplies = allowManyReplies;
+		this.assumeOrientedSegments = assumeOrientedSegments;
 
 		final GraphIterationElement<ST, PT> firstElement = newIterationElement(
 				null, segment, point,
+				segment.getBeginPoint().equals(point),
 				(distanceToReachStartingPoint > 0) ? 0 : distanceToReachStartingPoint,
 				distanceToConsumeAfter);
 
 		this.courseModel.addIterationElement(firstElement);
 		if (!this.allowManyReplies) {
-			final GraphIterationElementComparator<ST, PT> comparator = createVisitedSegmentComparator(
+			final Comparator<GraphIterationElement<ST, PT>> comparator = createVisitedSegmentComparator(
 					this.assumeOrientedSegments);
 			assert comparator != null;
 			this.visited = new TreeSet<>(comparator);
@@ -177,7 +181,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 *     default comparation behaviour of the <code>GraphIterationElement</code>.
 	 */
 	@Pure
-	protected GraphIterationElementComparator<ST, PT> createVisitedSegmentComparator(boolean assumeOrientedSegments1) {
+	protected Comparator<GraphIterationElement<ST, PT>> createVisitedSegmentComparator(boolean assumeOrientedSegments1) {
 		return new GraphIterationElementComparator<>(assumeOrientedSegments1);
 	}
 
@@ -207,7 +211,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @see #next()
 	 */
 	@SuppressWarnings("checkstyle:nestedifdepth")
-	protected final List<GraphIterationElement<ST, PT>> getNextSegments(boolean avoid_visited_segments,
+	protected final Iterable<GraphIterationElement<ST, PT>> getNextSegments(boolean avoid_visited_segments,
 			GraphIterationElement<ST, PT> element) {
 		assert this.allowManyReplies || this.visited != null;
 		if (element != null) {
@@ -217,25 +221,36 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 				final PT pts = segment.getOtherSidePoint(point);
 				if (pts != null) {
 					final double distanceToReach = element.getDistanceToReachSegment() + segment.getLength();
-					GraphIterationElement<ST, PT> candidate;
 					final double restToConsume = element.getDistanceToConsume() - segment.getLength();
-					final List<GraphIterationElement<ST, PT>> list = new ArrayList<>();
-					for (final ST theSegment : pts.getConnectedSegmentsStartingFrom(segment)) {
-						if (!theSegment.equals(segment)) {
-							candidate = newIterationElement(
-									segment, theSegment,
-									pts,
-									distanceToReach,
-									restToConsume);
-							if ((this.allowManyReplies)
-									|| (!avoid_visited_segments)
-									|| (!this.visited.contains(candidate))) {
-								list.add(candidate);
-							}
-						}
+					final Iterable<? extends GraphPointConnection<PT, ST>> source;
+					if (this.courseModel.isReversedRestitution()) {
+						source = pts.getConnectionsStartingFromInReverseOrder(segment);
+					} else {
+						source = pts.getConnectionsStartingFrom(segment);
 					}
-
-					return list;
+					final Iterable<? extends GraphPointConnection<PT, ST>> filteredSegments = Iterables.filter(source,
+							it -> !it.getGraphSegment().equals(segment));
+					final Iterable<GraphIterationElement<ST, PT>> candidates = Iterables.transform(filteredSegments,
+						it ->  newIterationElement(
+								segment,
+								it.getGraphSegment(),
+								pts,
+								it.isSegmentStartConnected(),
+								distanceToReach, restToConsume));
+					final Iterable<GraphIterationElement<ST, PT>> filteredCandidates = Iterables.filter(candidates,
+						it -> {
+							if (this.assumeOrientedSegments && !it.fromStartPoint) {
+								return false;
+							}
+							if (this.allowManyReplies) {
+								return true;
+							}
+							if (!avoid_visited_segments || !this.visited.contains(it)) {
+								return true;
+							}
+							return false;
+						});
+					return filteredCandidates;
 				}
 			}
 		}
@@ -275,28 +290,39 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 *
 	 * @return the next segment
 	 */
+	@SuppressWarnings("checkstyle:nestedifdepth")
 	public final GraphIterationElement<ST, PT> nextElement() {
 		if (!this.courseModel.isEmpty()) {
 			final GraphIterationElement<ST, PT> theElement = this.courseModel.removeNextIterationElement();
 			if (theElement != null) {
-				final List<GraphIterationElement<ST, PT>> list = getNextSegments(true, theElement);
-				final Iterator<GraphIterationElement<ST, PT>> iterator;
+				final Iterable<GraphIterationElement<ST, PT>> list = getNextSegments(true, theElement);
+				final Iterator<GraphIterationElement<ST, PT>> iterator = list.iterator();
 				boolean hasFollowingSegments = false;
-				GraphIterationElement<ST, PT> elt;
-
-				if (this.courseModel.isReversedRestitution()) {
-					iterator = new ReverseIterator<>(list);
+				if (isOrientedSegmentSupportEnabled()) {
+					final Collection<GraphIterationElement<ST, PT>> tmpVisited = new ArrayList<>();
+					while (iterator.hasNext()) {
+						final GraphIterationElement<ST, PT> elt = iterator.next();
+						if (canGotoIntoElement(elt)) {
+							hasFollowingSegments = true;
+							this.courseModel.addIterationElement(elt);
+							if (!this.allowManyReplies) {
+								tmpVisited.add(elt);
+							}
+						}
+					}
+					if (!this.allowManyReplies) {
+						assert this.visited != null;
+						this.visited.addAll(tmpVisited);
+					}
 				} else {
-					iterator = list.iterator();
-				}
-
-				while (iterator.hasNext()) {
-					elt = iterator.next();
-					if (canGotoIntoElement(elt)) {
-						hasFollowingSegments = true;
-						this.courseModel.addIterationElement(elt);
-						if (!this.allowManyReplies) {
-							this.visited.add(elt);
+					while (iterator.hasNext()) {
+						final GraphIterationElement<ST, PT> elt = iterator.next();
+						if (canGotoIntoElement(elt)) {
+							hasFollowingSegments = true;
+							this.courseModel.addIterationElement(elt);
+							if (!this.allowManyReplies) {
+								this.visited.add(elt);
+							}
 						}
 					}
 				}
@@ -316,6 +342,9 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @param previousSegment is the previous element that permits to reach this object during an iteration
 	 * @param segment is the current segment
 	 * @param point is the point on which the iteration arrived on the current segment.
+	 * @param fromStartPoint indicates if the current search is reached from its start point. This parameter is
+	 *     useful when the current segment is connected to the same road connected with its start point and its
+	 *     end point.
 	 * @param distanceToReach is the distance that is already consumed to reach the segment.
 	 * @param distanceToConsume is the rest of distance to consume including the segment.
 	 * @return a graph iteration element.
@@ -323,6 +352,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	protected GraphIterationElement<ST, PT> newIterationElement(
 			ST previousSegment, ST segment,
 			PT point,
+			boolean fromStartPoint,
 			double distanceToReach,
 			double distanceToConsume) {
 		final double newDistanceToConsume;
@@ -335,6 +365,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 		return new GraphIterationElement<>(
 				previousSegment, segment,
 				point,
+				fromStartPoint,
 				distanceToReach,
 				newDistanceToConsume);
 	}
@@ -354,7 +385,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @param element the reference element.
 	 */
 	public void ignoreElementsAfter(GraphIterationElement<ST, PT> element) {
-		final List<GraphIterationElement<ST, PT>> nexts = getNextSegments(false, element);
+		final Iterable<GraphIterationElement<ST, PT>> nexts = getNextSegments(false, element);
 		this.courseModel.removeIterationElements(nexts);
 	}
 
@@ -398,52 +429,6 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	@Pure
 	public final boolean isOrientedSegmentSupportEnabled() {
 		return this.assumeOrientedSegments;
-	}
-
-	/** Reverse iterator.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	private static class ReverseIterator<E> implements Iterator<E> {
-
-		private int savedSize;
-
-		private int index;
-
-		private final List<E> list;
-
-		ReverseIterator(List<E> list1) {
-			this.savedSize = (list1 == null) ? 0 : list1.size();
-			this.index = this.savedSize - 1;
-			this.list = list1;
-		}
-
-		@Pure
-		@Override
-		public boolean hasNext() {
-			return this.list != null && this.index >= 0 && this.index < this.list.size();
-		}
-
-		@Override
-		public E next() {
-			if (this.list == null) {
-				throw new NoSuchElementException();
-			}
-			if (this.savedSize != this.list.size()) {
-				throw new ConcurrentModificationException();
-			}
-			if (this.index >= this.list.size()) {
-				throw new NoSuchElementException();
-			}
-			final E elt = this.list.get(this.index);
-			--this.index;
-			return elt;
-		}
-
 	}
 
 }

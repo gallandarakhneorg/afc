@@ -25,6 +25,8 @@ import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.arakhne.afc.vmutil.json.JsonableObject;
 
 /** Describe an element of the graph during an iteration.
  *
@@ -36,7 +38,7 @@ import org.arakhne.afc.vmutil.ReflectionUtil;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT, ST>> implements Comparable<Object> {
+public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT, ST>> implements Comparable<Object>, JsonableObject {
 
 	/** Previous element in the iteration.
 	 */
@@ -49,6 +51,10 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	/** Connection point between the previous segment and the current segment.
 	 */
 	final PT connectionPoint;
+
+	/** Previous element in the iteration.
+	 */
+	final boolean fromStartPoint;
 
 	/** Distance that was consumed for reaching the connection point.
 	 */
@@ -76,16 +82,20 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	 * @param previousSegment1 is the previous element that permits to reach this object during an iteration
 	 * @param segment is the current segment
 	 * @param point is the point on which the iteration arrived on the current segment.
+	 * @param fromStartPoint indicates if the current search is reached from its start point. This parameter is
+	 *     useful when the current segment is connected to the same road connected with its start point and its
+	 *     end point.
 	 * @param distanceToReach1 is the distance that is already consumed to reach the segment.
 	 * @param distanceToConsume1 is the distance to consume including this segment length.
 	 */
-	GraphIterationElement(ST previousSegment1, ST segment, PT point, double distanceToReach1, double distanceToConsume1) {
+	GraphIterationElement(ST previousSegment1, ST segment, PT point, boolean fromStartPoint, double distanceToReach1, double distanceToConsume1) {
 		assert segment != null;
 		assert point != null;
 		this.previousSegment = previousSegment1;
 		this.currentSegment = segment;
 		this.connectionPoint = point;
 		this.distanceToReach = distanceToReach1;
+		this.fromStartPoint = fromStartPoint;
 
 		final PT otherPoint = segment.getOtherSidePoint(point);
 		this.culDeSac = (otherPoint != null) && (otherPoint != point) && otherPoint.isFinalConnectionPoint();
@@ -145,8 +155,16 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 
 	@Pure
 	@Override
+	public void toJson(JsonBuffer buffer) {
+		ReflectionUtil.toJson(this, buffer);
+	}
+
+	@Pure
+	@Override
 	public String toString() {
-		return ReflectionUtil.toString(this);
+		final JsonBuffer buffer = new JsonBuffer();
+		toJson(buffer);
+		return buffer.toString();
 	}
 
 	@Pure

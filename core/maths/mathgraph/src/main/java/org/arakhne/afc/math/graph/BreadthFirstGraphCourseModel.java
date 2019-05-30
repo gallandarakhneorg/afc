@@ -20,7 +20,6 @@
 
 package org.arakhne.afc.math.graph;
 
-import java.util.Collection;
 import java.util.LinkedList;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -85,8 +84,15 @@ public class BreadthFirstGraphCourseModel<ST extends GraphSegment<ST, PT>, PT ex
 	}
 
 	@Override
-	public void removeIterationElements(Collection<GraphIterationElement<ST, PT>> elements) {
-		this.list.removeAll(elements);
+	public void removeIterationElements(Iterable<GraphIterationElement<ST, PT>> elements) {
+		for (final GraphIterationElement<ST, PT> element : elements) {
+			this.list.remove(element);
+		}
+	}
+
+	@Override
+	public String toString() {
+		return this.list.toString();
 	}
 
 }
