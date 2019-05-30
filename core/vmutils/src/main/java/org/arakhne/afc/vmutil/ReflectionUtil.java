@@ -41,6 +41,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.arakhne.afc.vmutil.json.JsonableObject;
 
 /**
  * This utility class provides a way to extend the reflection API and
@@ -863,7 +864,7 @@ public final class ReflectionUtil {
 			try {
 				if (!method.isSynthetic() && !Modifier.isStatic(method.getModifiers()) && method.getParameterCount() == 0
 					&& (method.getReturnType().isPrimitive() || String.class.equals(method.getReturnType())
-						|| method.getReturnType().isEnum())) {
+						|| method.getReturnType().isEnum() || JsonableObject.class.isAssignableFrom(method.getReturnType()))) {
 					final String name = method.getName();
 					if (name.startsWith("get") && name.length() > 3) { //$NON-NLS-1$
 						output.add(makeName(name, 3), method.invoke(object));
