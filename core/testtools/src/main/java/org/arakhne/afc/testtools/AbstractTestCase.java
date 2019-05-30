@@ -1316,12 +1316,70 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param expected the expected value.
 	 * @param actual the actual value.
 	 */
-	@SuppressWarnings("static-method")
-	public void assertHexEquals(int expected, int actual) {
+	public static void assertHexEquals(int expected, int actual) {
 		if (expected != actual) {
 			fail("Not same value. Expected: " + Integer.toHexString(expected) //$NON-NLS-1$
 				+ "; Actual: " + Integer.toHexString(actual)); //$NON-NLS-1$
 		}
+	}
+
+	/** Replies if the given value is an instance of one of the givne types.
+	 *
+	 * @param value the object to test.
+	 * @param types the expected types.
+	 * @return {@code true} if the value is an instance of one of the types.
+	 * @since 16.0
+	 */
+	public static boolean isInstanceOf(Object value, @SuppressWarnings("rawtypes") Class... types) {
+		for (final Class<?> type : types) {
+			if (type.isInstance(value)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** Assert if the given value is an instance of one of the givne types.
+	 *
+	 * @param message the error message.
+	 * @param value the object to test.
+	 * @param types the expected types.
+	 * @since 16.0
+	 */
+	public static void assertInstanceOf(String message, Object value, @SuppressWarnings("rawtypes") Class... types) {
+		if (value == null) {
+			fail("Value cannot be null"); //$NON-NLS-1$
+		} else if (!isInstanceOf(value, types)) {
+			final StringBuilder typeMsg = new StringBuilder();
+			for (final Class<?> type : types) {
+				if (typeMsg.length() > 0) {
+					typeMsg.append(", "); //$NON-NLS-1$
+				}
+				typeMsg.append(type.getSimpleName());
+			}
+			final StringBuilder msg = new StringBuilder();
+			if (!Strings.isNullOrEmpty(message)) {
+				msg.append(message);
+				if (!message.trim().endsWith(".")) { //$NON-NLS-1$
+					msg.append(". "); //$NON-NLS-1$
+				}
+			}
+			msg.append("Actual: "); //$NON-NLS-1$
+			msg.append(value.getClass().getSimpleName());
+			msg.append("; Expected: "); //$NON-NLS-1$
+			msg.append(typeMsg);
+			fail(msg.toString());
+		}
+	}
+
+	/** Assert if the given value is an instance of one of the givne types.
+	 *
+	 * @param value the object to test.
+	 * @param types the expected types.
+	 * @since 16.0
+	 */
+	public static void assertInstanceOf(Object value, @SuppressWarnings("rawtypes") Class... types) {
+		assertInstanceOf(null, value, types);
 	}
 
 }
