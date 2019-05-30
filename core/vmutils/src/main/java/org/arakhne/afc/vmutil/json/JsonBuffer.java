@@ -20,10 +20,14 @@
 
 package org.arakhne.afc.vmutil.json;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.arakhne.afc.vmutil.StringEscaper;
 
@@ -99,6 +103,32 @@ public class JsonBuffer {
 		if (value != null && value != this && !value.isEmpty()) {
 			this.content.put(name, value);
 		}
+	}
+
+	/** Keep the specified keys into the Json and remove the other keys.
+	 *
+	 * @param keys the names of the keys.
+	 * @since 16.0
+	 */
+	public void retainAll(String... keys) {
+		if (keys != null && keys.length > 0) {
+			final Set<String> kk = new TreeSet<>(Arrays.asList(keys));
+			final Iterator<Entry<String, Object>> iterator = this.content.entrySet().iterator();
+			while (iterator.hasNext()) {
+				final Entry<String, Object> entry = iterator.next();
+				if (!kk.contains(entry.getKey())) {
+					iterator.remove();
+				}
+			}
+		}
+	}
+
+	/** Remove all the keys.
+	 *
+	 * @since 16.0
+	 */
+	public void clear() {
+		this.content.clear();
 	}
 
 	/** Build the Json string representation of the given pairs.
