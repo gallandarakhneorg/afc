@@ -130,38 +130,6 @@
 								</artifact>
 
 								<artifact>
-									<id>org.arakhne.afc.core:vmutils:15.0</id>
-									<override>true</override>
-								</artifact>
-								<artifact>
-									<id>org.arakhne.afc.core:util:15.0</id>
-									<override>true</override>
-								</artifact>
-								<artifact>
-									<id>org.arakhne.afc.core:text:15.0</id>
-									<override>true</override>
-								</artifact>
-								<artifact>
-									<id>org.arakhne.afc.core:references:15.0</id>
-									<override>true</override>
-								</artifact>
-								<artifact>
-									<id>org.arakhne.afc.core:inputoutput:15.0</id>
-									<override>true</override>
-									<excludes>
-										<exclude>javafx:jfxrt:*</exclude>
-									</excludes>
-								</artifact>
-								<artifact>
-									<id>org.arakhne.afc.core:math:15.0</id>
-									<override>true</override>
-								</artifact>
-								<artifact>
-									<id>org.arakhne.afc.advanced:agentmotion:15.0</id>
-									<override>true</override>
-								</artifact>
-
-								<artifact>
 									<id>org.arakhne.afc.core:vmutils:14.0</id>
 									<override>true</override>
 								</artifact>

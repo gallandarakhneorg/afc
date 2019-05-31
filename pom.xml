@@ -13,8 +13,8 @@
 
 	<properties>
 		<afc.version>16.0-SNAPSHOT</afc.version>
-		<afc.p2.stable.version>15.1</afc.p2.stable.version>
-		<afc.plugins.version>15.1</afc.plugins.version>
+		<afc.p2.stable.version>15.2</afc.p2.stable.version>
+		<afc.plugins.version>15.2</afc.plugins.version>
 		<min.java.version>1.8</min.java.version>
 		<year>2019</year>
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
