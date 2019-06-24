@@ -25,8 +25,8 @@
 		<!-- Absolute path to the JDT compiler configuration -->
 		<jdtcompilerconfpath>${mainbasedir}/build-tools/src/main/resources/maven/maven-jdt-conf.properties</jdtcompilerconfpath>
 		<!-- Version of Mockito library -->
-		<mockito.version>2.23.4</mockito.version>
-		<mockito.version.osgi>2.23.4</mockito.version.osgi>
+		<mockito.version>2.28.2</mockito.version>
+		<mockito.version.osgi>2.28.2</mockito.version.osgi>
 		<!-- Version of SLF4J library -->
 		<slf4j.version>1.7.26</slf4j.version>
 		<!-- URL of the deployment server base -->

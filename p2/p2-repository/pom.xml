@@ -87,6 +87,27 @@
 
 								<!-- OLD VERSIONS -->
 								<artifact>
+									<id>org.mockito:mockito-core:2.23.4</id>
+									<override>true</override>
+									<instructions>
+										<Bundle-SymbolicName>org.mockito.mockito-core</Bundle-SymbolicName>
+										<Embed-Dependency>mockito-core</Embed-Dependency>
+										<Export-Package>
+											!mockito-core-2.23.4.beta.jar,
+											!asm-license.txt,
+											!cglib-license.txt,
+											!LICENSE,
+											!NOTICE,
+											*
+										</Export-Package>
+										<Import-Package>
+											org.hamcrest;core=split,
+											!org.apache.tools.ant.*,
+											*
+										</Import-Package>
+									</instructions>
+								</artifact>
+								<artifact>
 									<id>org.mockito:mockito-core:2.0.73-beta</id>
 									<override>true</override>
 									<instructions>
