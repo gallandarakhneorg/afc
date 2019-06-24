@@ -49,6 +49,8 @@ import org.arakhne.afc.vmutil.locale.Locale;
  */
 public class Log4jIntegrationModule extends AbstractModule {
 
+	private static final String LOG_CLI = "log"; //$NON-NLS-1$
+
 	@Override
 	protected void configure() {
 		// Binding a dummy class to trigger eager init of Log4j as
@@ -57,11 +59,11 @@ public class Log4jIntegrationModule extends AbstractModule {
 
 		VariableDecls.extend(binder()).declareVar(LEVEL);
 		extend(binder()).addOption(OptionMetadata.builder(
-				"log", //$NON-NLS-1$
+				LOG_CLI,
 				Locale.getString("LOG_OPT", Level.getLabels())) //$NON-NLS-1$
-				.configPath(LEVEL)
 				.valueRequired(Locale.getString("LEVEL")) //$NON-NLS-1$
-				.build());
+				.build())
+			.mapConfigPath(LOG_CLI, LEVEL);
 	}
 
 
