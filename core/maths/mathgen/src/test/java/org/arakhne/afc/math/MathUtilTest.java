@@ -49,6 +49,19 @@ public class MathUtilTest extends AbstractTestCase {
 	}
 	
 	@Test
+	public void signNoZero() {
+		assertEquals(-1, MathUtil.signNoZero(-145.25));
+		assertEquals(-1, MathUtil.signNoZero(-0.25));
+		assertEquals(1, MathUtil.signNoZero(-0.));
+		assertEquals(1, MathUtil.signNoZero(0.));
+		assertEquals(1, MathUtil.signNoZero(+0.));
+		assertEquals(1, MathUtil.signNoZero(145.25));
+		assertEquals(1, MathUtil.signNoZero(0.25));
+		//
+		assertInlineParameterUsage(MathUtil.class, "sign", double.class); //$NON-NLS-1$
+	}
+
+	@Test
 	public void clampDoubleDoubleDouble() {
 		// NaN is lower than all the other floating-point values 
 		

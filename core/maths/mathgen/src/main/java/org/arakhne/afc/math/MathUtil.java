@@ -56,13 +56,36 @@ public final class MathUtil {
 	 * <p>This function differs from {@link Math#signum(double)} because it
 	 * is returning a integer value.
 	 *
+	 * <p>If you would like to treat the zero value as a positive number, see {@link #signNoZero(double)}.
+	 *
 	 * @param value the floating-point value whose sign is to be returned
-	 * @return the sign of the argument
+	 * @return the sign of the argument, {@code -1}, {@code 0} or {@code 1}.
+	 * @see #signNoZero(double)
+	 * @see Math#signum(double)
 	 */
 	@Pure
 	@Inline(value = "($1 == 0. || Double.isNaN($1)) ? 0 : (($1 < -0.) ? -1 : 1)")
 	public static int sign(double value) {
 		return (value == 0. || Double.isNaN(value)) ? 0 : ((value < -0.) ? -1 : 1);
+	}
+
+	/**
+	 * Returns the sign of the argument; 1 if the argument is greater than or equal to zero, -1 if the
+	 * argument is less than zero.
+	 *
+	 * <p>This function differs from {@link #sign(double)} because it
+	 * assumes the zero value has a positive sign.
+	 *
+	 * @param value the floating-point value whose sign is to be returned
+	 * @return the sign of the argument, {@code -1} or {@code 1}.
+	 * @see #sign(double)
+	 * @see Math#signum(double)
+	 * @since 16.0
+	 */
+	@Pure
+	@Inline(value = "(($1 < -0.) ? -1 : 1)")
+	public static int signNoZero(double value) {
+		return (value < -0.) ? -1 : 1;
 	}
 
 	/** Clamp the given value to the given range.
