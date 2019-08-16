@@ -75,7 +75,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			double dt) {
 		assert minSpeed >= 0.;
 		final double acc = MathUtil.clamp(acceleration, minAcceleration, maxAcceleration);
-		int sign = MathUtil.sign(velocity);
+		int sign = MathUtil.signNoZero(velocity);
 		double velocityNorm = Math.abs(velocity) + .5f * acc * dt;
 		if (velocityNorm < 0) {
 			sign = -sign;
@@ -348,7 +348,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			double maxSpeed,
 			double dt) {
 		assert minSpeed >= 0.;
-		return MathUtil.sign(speed) * MathUtil.clamp(Math.abs(speed), minSpeed, maxSpeed) * dt;
+		return MathUtil.signNoZero(speed) * MathUtil.clamp(Math.abs(speed), minSpeed, maxSpeed) * dt;
 	}
 
 	/**
