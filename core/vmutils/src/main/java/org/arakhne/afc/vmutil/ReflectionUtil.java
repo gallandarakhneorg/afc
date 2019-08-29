@@ -26,6 +26,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -416,9 +417,26 @@ public final class ReflectionUtil {
 	 * @return the list of subclasses.
 	 */
 	@Pure
+	@Inline("getSubClasses($1, null)")
 	public static <T> Collection<Class<? extends T>> getSubClasses(Class<T> className) {
+		return getSubClasses(className, null);
+	}
+
+	/**
+	 * Replies the list of all the subclasses of the given class
+	 * in the current classpath.
+	 *
+	 * @param <T> is the type of the superclass.
+	 * @param className is the name of the class to explore.
+	 * @param classLoader the class loader that is used for exploring the class path. If {@code null}, the default
+	 *     class path is explored.
+	 * @return the list of subclasses.
+	 * @since 16.0
+	 */
+	@Pure
+	public static <T> Collection<Class<? extends T>> getSubClasses(Class<T> className, DynamicURLClassLoader classLoader) {
 		final Collection<Class<? extends T>> list = new ArrayList<>();
-		getSubClasses(className, true, true, true, list);
+		getSubClasses(className, true, true, true, list, classLoader);
 		return list;
 	}
 
@@ -435,16 +453,44 @@ public final class ReflectionUtil {
 	 */
 	public static <T> void getSubClasses(Class<T> className, boolean allowAbstract, boolean allowInterface,
 			boolean allowEnum, Collection<Class<? extends T>> result) {
-		final String[] entries = System.getProperty("java.class.path") //$NON-NLS-1$
-				.split(Pattern.quote(System.getProperty("path.separator"))); //$NON-NLS-1$
+		getSubClasses(className, allowAbstract, allowInterface, allowEnum, result, null);
+	}
+
+	/**
+	 * Replies the list of all the subclasses of the given class
+	 * in the current classpath.
+	 *
+	 * @param <T> is the type of the superclass.
+	 * @param className is the name of the class to explore.
+	 * @param allowAbstract is <code>true</code> to allow abstract classes to be put in the replied list
+	 * @param allowInterface is <code>true</code> to allow interfaces to be put in the replied list.
+	 * @param allowEnum is <code>true</code> to allow enumeration to be put in the replied list.
+	 * @param classLoader the class loader that is used for exploring the class path. If {@code null}, the default
+	 *     class path is explored.
+	 * @param result is the list of subclasses which will be filled by this function.
+	 */
+	public static <T> void getSubClasses(Class<T> className, boolean allowAbstract, boolean allowInterface,
+			boolean allowEnum, Collection<Class<? extends T>> result, DynamicURLClassLoader classLoader) {
+		final String[] entries;
+		if (classLoader != null) {
+			final URL[] urls = classLoader.getURLs();
+			entries = new String[urls.length];
+			for (int i = 0; i < entries.length; ++i) {
+				entries[i] = FileSystem.convertURLToFile(urls[i]).getPath();
+			}
+		} else {
+			entries = System.getProperty("java.class.path") //$NON-NLS-1$
+					.split(Pattern.quote(System.getProperty("path.separator"))); //$NON-NLS-1$
+		}
+
 		String lentry;
 
 		for (final String path : entries) {
 			lentry = path.toLowerCase();
 			if (lentry.endsWith(".jar") || lentry.endsWith(".war")) { //$NON-NLS-1$ //$NON-NLS-2$
-				getSubClassesFromJar(result, path, className, allowAbstract, allowInterface, allowEnum);
+				getSubClassesFromJar(result, path, className, allowAbstract, allowInterface, allowEnum, classLoader);
 			} else {
-				getSubClassesFromFileSystem(result, path, className, allowAbstract, allowInterface, allowEnum);
+				getSubClassesFromFileSystem(result, path, className, allowAbstract, allowInterface, allowEnum, classLoader);
 			}
 
 		}
@@ -452,7 +498,8 @@ public final class ReflectionUtil {
 
 	@SuppressWarnings({"unchecked", "checkstyle:magicnumber"})
 	private static <T> void getSubClassesFromJar(Collection<Class<? extends T>> classes, String jarFilename,
-			Class<T> className, boolean allowAbstract, boolean allowInterface, boolean allowEnum) {
+			Class<T> className, boolean allowAbstract, boolean allowInterface, boolean allowEnum,
+			DynamicURLClassLoader classLoader) {
 		try (JarFile jarFile = new JarFile(jarFilename)) {
 			final String classN = className.getCanonicalName();
 			if (classN != null) {
@@ -471,7 +518,12 @@ public final class ReflectionUtil {
 						entryClassname = entryPath.substring(0, entryPath.length() - 6).replaceAll(
 								Pattern.quote(File.separator), "."); //$NON-NLS-1$
 						try {
-							final Class<?> clazz = Class.forName(entryClassname);
+							final Class<?> clazz;
+							if (classLoader != null) {
+								clazz = forName(entryClassname, classLoader);
+							} else {
+								clazz = forName(entryClassname);
+							}
 							if ((className.isAssignableFrom(clazz))
 									&& (allowAbstract || !Modifier.isAbstract(clazz.getModifiers()))
 									&& (allowInterface || !clazz.isInterface())
@@ -493,7 +545,8 @@ public final class ReflectionUtil {
 
 	@SuppressWarnings({"unchecked", "checkstyle:cyclomaticcomplexity"})
 	private static <T> void getSubClassesFromFileSystem(Collection<Class<? extends T>> classes, String directory,
-			Class<T> className, boolean allowAbstract, boolean allowInterface, boolean allowEnum) {
+			Class<T> className, boolean allowAbstract, boolean allowInterface, boolean allowEnum,
+			DynamicURLClassLoader classLoader) {
 		final String classN = className.getCanonicalName();
 		if (classN != null) {
 			final List<String> directories = new ArrayList<>();
@@ -526,7 +579,12 @@ public final class ReflectionUtil {
 									Pattern.quote(File.separator), ".") //$NON-NLS-1$
 									+ "." + FileSystem.shortBasename(entryPath); //$NON-NLS-1$
 							try {
-								final Class<?> clazz = Class.forName(entryClassname);
+								final Class<?> clazz;
+								if (classLoader != null) {
+									clazz = forName(entryClassname, classLoader);
+								} else {
+									clazz = forName(entryClassname);
+								}
 								if ((className.isAssignableFrom(clazz))
 										&& (allowAbstract || !Modifier.isAbstract(clazz.getModifiers()))
 										&& (allowInterface || !clazz.isInterface())
