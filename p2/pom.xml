@@ -14,7 +14,6 @@
 
 	<modules>
 		<module>p2-repository</module>
-		<!-- <module>p2-dev-repository</module> -->
 	</modules>
 
 	<build>
