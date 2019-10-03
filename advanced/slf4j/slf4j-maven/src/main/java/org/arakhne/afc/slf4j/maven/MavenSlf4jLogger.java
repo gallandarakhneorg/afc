@@ -31,7 +31,7 @@ import org.slf4j.helpers.MarkerIgnoringBase;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @since 16.0
  */
 public class MavenSlf4jLogger extends MarkerIgnoringBase {
 

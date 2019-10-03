@@ -32,7 +32,7 @@ import org.slf4j.spi.MarkerFactoryBinder;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @since 16.0
  */
 public final class StaticMarkerBinder implements MarkerFactoryBinder {
 

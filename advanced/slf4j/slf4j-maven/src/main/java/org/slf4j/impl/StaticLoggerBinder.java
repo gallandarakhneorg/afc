@@ -34,7 +34,7 @@ import org.arakhne.afc.slf4j.maven.MavenSlf4jLoggerFactory;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @since 16.0
  */
 public final class StaticLoggerBinder implements LoggerFactoryBinder {
 

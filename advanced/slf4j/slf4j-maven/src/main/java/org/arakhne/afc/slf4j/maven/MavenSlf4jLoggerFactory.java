@@ -30,7 +30,7 @@ import org.slf4j.Logger;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 0.8
+ * @since 16.0
  */
 public class MavenSlf4jLoggerFactory implements ILoggerFactory {
 
