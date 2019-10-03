@@ -32,6 +32,8 @@
 		<!-- URL of the deployment server base -->
 		<afc.deployment.server>org.arakhne-ftp</afc.deployment.server>
 		<afc.deployment.base>ftp://ftp.tuxfamily.org/arakhne/arakhne-repository</afc.deployment.base>
+		<!-- Path of the openjfx library on a standard/recent Linux Ubuntu -->
+		<default.openjfx.base.linux.path>/usr/share/openjfx/lib/javafx.base.jar</default.openjfx.base.linux.path>
 	</properties>
 
 	<!-- ======================================= -->
@@ -221,13 +223,6 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>jul-to-slf4j</artifactId>
 				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>javafx</groupId>
-				<artifactId>jfxrt</artifactId>
-				<version>${java.version}</version>
-				<scope>system</scope>
-				<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
@@ -848,6 +843,92 @@
 	</build>
 
 	<profiles>
+		<profile>
+			<id>openhfx-with-env-var</id>
+			<activation>
+				<property>
+					<name>env.OPENJFX_LIB_PATH</name>
+				</property>
+			</activation>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>io.openjfx</groupId>
+						<artifactId>javafx-all</artifactId>
+						<version>${java.version}</version>
+						<scope>system</scope>
+						<systemPath>${env.OPENJFX_LIB_PATH}</systemPath>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+		</profile>
+		<profile>
+			<id>openjfx-on-linux-box</id>
+			<activation>
+				<property>
+					<name>!env.OPENJFX_LIB_PATH</name>
+				</property>
+				<os>
+					<family>unix</family> 
+	                   		<name>linux</name>
+				</os>
+			</activation>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>io.openjfx</groupId>
+						<artifactId>javafx-base</artifactId>
+						<version>${java.version}</version>
+						<scope>system</scope>
+						<systemPath>${default.openjfx.base.linux.path}</systemPath>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+		</profile>
+		<profile>
+			<id>openjfx-on-mac-box</id>
+			<activation>
+				<property>
+					<name>!env.OPENJFX_LIB_PATH</name>
+				</property>
+				<os>
+					<family>mac</family> 
+				</os>
+			</activation>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>io.openjfx</groupId>
+						<artifactId>javafx-all</artifactId>
+						<version>${java.version}</version>
+						<scope>system</scope>
+						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+		</profile>
+		<profile>
+			<id>openjfx-on-windows-box</id>
+			<activation>
+				<property>
+					<name>!env.OPENJFX_LIB_PATH</name>
+				</property>
+				<os>
+					<family>windows</family> 
+				</os>
+			</activation>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>io.openjfx</groupId>
+						<artifactId>javafx-all</artifactId>
+						<version>${java.version}</version>
+						<scope>system</scope>
+						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+		</profile>
 		<profile>
 			<id>sonar</id>
 			<build>

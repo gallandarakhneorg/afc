@@ -3,15 +3,23 @@
 mkdir -p $HOME/.binaries
 cd $HOME/.binaries
 
-if [ '!' -d apache-maven-3.6.0 ]
+MAVEN_VERSION="$1"
+
+if [ -z "$MAVEN_VERSION" ]
 then
-  if [ '!' -f apache-maven-3.6.0-bin.zip ]
+	echo "Unspecified Maven version" >&2
+	exit 255
+fi
+
+if [ '!' -d "apache-maven-${MAVEN_VERSION}" ]
+then
+  if [ '!' -f "apache-maven-${MAVEN_VERSION}-bin.zip" ]
   then 
-    wget https://archive.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.zip || exit 1
+    wget "https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.zip" || exit 1
   fi
-  echo "Installing maven 3.6.0"
-  unzip -qq apache-maven-3.6.0-bin.zip || exit 1
-  rm -f apache-maven-3.6.0-bin.zip
+  echo "Installing maven ${MAVEN_VERSION}"
+  unzip -qq "apache-maven-${MAVEN_VERSION}-bin.zip" || exit 1
+  rm -f "apache-maven-${MAVEN_VERSION}-bin.zip"
 fi
 
 exit 0

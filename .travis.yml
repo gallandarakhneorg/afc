@@ -6,6 +6,7 @@ sudo: required
 
 env:
   global:
+    - MAVEN_VERSION: "3.6.2"
     - MAVEN_OPTS: "-XX:+CMSClassUnloadingEnabled -Xmx1g" #-Dorg.slf4j.simpleLogger.defaultLogLevel=warn 
     - MAVEN_COMPILATION_OPTS: "\"-e\""
     - secure: "akKEf27hEycPBpOjfQQ6O3Gt92IlgQCl+fRnmN2kZxBE7Gnm/BqDHQbM/IbixzfWWthvaIgI85BTljNRH2qNq5W/GSPixUd9bfqKI9WL8b1uvv00OxOXsPOcqbEjxBVP0zivxpPDWNX1Fefu7W4Lb/Yaa2ju5uCMBxTl1r2ug5U="
@@ -14,21 +15,21 @@ env:
 matrix:
   include:
     - os: linux
-      jdk: oraclejdk8
       addons:
         apt:
           packages:
-          - oracle-java8-installer
+          - openjfx
           - xvfb
+      jdk: openjdk8
       env:
-      - M2_HOME: "$HOME/.binaries/apache-maven-3.6.0"
+      - OPENJFX_LIB_PATH: "/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar"
+      - M2_HOME: "$HOME/.binaries/apache-maven-${MAVEN_VERSION}"
       - PATH: "$M2_HOME/bin:$PATH"
-      - DISPLAY: ":99.0"
+      services:
+      - xvfb
       before_install:
       - echo "MAVEN_OPTS=\"$MAVEN_OPTS\"" > $HOME/.mavenrc
-      - ./build-tools/src/main/resources/bash/travis-download-maven.sh
-      - "sh -e /etc/init.d/xvfb start"
-      - sleep 3 # give xvfb some time to start
+      - ./build-tools/src/main/resources/bash/travis-download-maven.sh "$MAVEN_VERSION"
     - os: osx
       osx_image: xcode8.3 # see https://docs.travis-ci.com/user/osx-ci-environment/
       env:
