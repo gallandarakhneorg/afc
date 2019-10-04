@@ -25,10 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.sun.javafx.css.converters.BooleanConverter;
-import com.sun.javafx.css.converters.EnumConverter;
-import com.sun.javafx.css.converters.SizeConverter;
-import com.sun.javafx.util.Utils;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -67,6 +63,7 @@ import javafx.scene.shape.StrokeType;
 import javafx.util.Duration;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d2.afp.BoundedElement2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.util.InformedIterable;
@@ -389,7 +386,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 					if (Math.abs(deltaX) > PAN_THRESHOLD) {
 						final double delta = getDocumentCanvas().getDocumentGraphicsContext2D().fx2docSize(deltaX) * sensitivity;
 						double newHVal = this.hbarValue + delta;
-						newHVal = Utils.clamp(this.hbar.getMin(), newHVal, this.hbar.getMax());
+						newHVal = MathUtil.clamp(this.hbar.getMin(), newHVal, this.hbar.getMax());
 						this.hbar.setValue(newHVal);
 					}
 				}
@@ -402,7 +399,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 					if (Math.abs(deltaY) >= PAN_THRESHOLD) {
 						final double delta = getDocumentCanvas().getDocumentGraphicsContext2D().fx2docSize(deltaY) * sensitivity;
 						double newVVal = this.vbarValue + delta;
-						newVVal = Utils.clamp(this.vbar.getMin(), newVVal, this.vbar.getMax());
+						newVVal = MathUtil.clamp(this.vbar.getMin(), newVVal, this.vbar.getMax());
 						this.vbar.setValue(newVVal);
 					}
 				}
@@ -543,7 +540,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		if (!isInvertedAxisX()) {
 			inc = -inc;
 		}
-		this.hbar.setValue(Utils.clamp(this.hbar.getMin(), this.hbar.getValue() + inc, this.hbar.getMax()));
+		this.hbar.setValue(MathUtil.clamp(this.hbar.getMin(), this.hbar.getValue() + inc, this.hbar.getMax()));
 	}
 
 	/** Move the viewport right.
@@ -560,7 +557,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		if (isInvertedAxisX()) {
 			inc = -inc;
 		}
-		this.hbar.setValue(Utils.clamp(this.hbar.getMin(), this.hbar.getValue() + inc, this.hbar.getMax()));
+		this.hbar.setValue(MathUtil.clamp(this.hbar.getMin(), this.hbar.getValue() + inc, this.hbar.getMax()));
 	}
 
 	/** Move the viewport up.
@@ -577,7 +574,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		if (!isInvertedAxisY()) {
 			inc = -inc;
 		}
-		this.vbar.setValue(Utils.clamp(this.vbar.getMin(), this.vbar.getValue() + inc, this.vbar.getMax()));
+		this.vbar.setValue(MathUtil.clamp(this.vbar.getMin(), this.vbar.getValue() + inc, this.vbar.getMax()));
 	}
 
 	/** Move the viewport down.
@@ -594,7 +591,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		if (isInvertedAxisY()) {
 			inc = -inc;
 		}
-		this.vbar.setValue(Utils.clamp(this.vbar.getMin(), this.vbar.getValue() + inc, this.vbar.getMax()));
+		this.vbar.setValue(MathUtil.clamp(this.vbar.getMin(), this.vbar.getValue() + inc, this.vbar.getMax()));
 	}
 
 	/** Replies the property that contains the logger.

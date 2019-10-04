@@ -27,13 +27,16 @@
 		<!-- Version of Mockito library -->
 		<mockito.version>2.28.2</mockito.version>
 		<mockito.version.osgi>2.28.2</mockito.version.osgi>
+		<!-- Version for Java FX libs -->
+		<openjfx.version>8</openjfx.version>
+		<openjfx.base.linux.path>/usr/lib/jvm/java-8-oracle/jre/lib/ext/jfxrt.jar</openjfx.base.linux.path>
+		<openjfx.graphics.linux.path>/usr/lib/jvm/java-8-oracle/jre/lib/ext/jfxrt.jar</openjfx.graphics.linux.path>
+		<openjfx.fxml.linux.path>/usr/lib/jvm/java-8-oracle/jre/lib/ext/jfxrt.jar</openjfx.fxml.linux.path>
 		<!-- Version of SLF4J library -->
 		<slf4j.version>2.0.0-alpha1</slf4j.version>
 		<!-- URL of the deployment server base -->
 		<afc.deployment.server>org.arakhne-ftp</afc.deployment.server>
 		<afc.deployment.base>ftp://ftp.tuxfamily.org/arakhne/arakhne-repository</afc.deployment.base>
-		<!-- Path of the openjfx library on a standard/recent Linux Ubuntu -->
-		<default.openjfx.base.linux.path>/usr/share/openjfx/lib/javafx.base.jar</default.openjfx.base.linux.path>
 	</properties>
 
 	<!-- ======================================= -->
@@ -853,9 +856,23 @@
 			<dependencyManagement>
 				<dependencies>
 					<dependency>
-						<groupId>io.openjfx</groupId>
-						<artifactId>javafx-all</artifactId>
-						<version>${java.version}</version>
+						<groupId>org.openjfx</groupId>
+						<artifactId>javafx-base</artifactId>
+						<version>${openjfx.version}</version>
+						<scope>system</scope>
+						<systemPath>${env.OPENJFX_LIB_PATH}</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.openjfx</groupId>
+						<artifactId>javafx-graphics</artifactId>
+						<version>${openjfx.version}</version>
+						<scope>system</scope>
+						<systemPath>${env.OPENJFX_LIB_PATH}</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.openjfx</groupId>
+						<artifactId>javafx-fxml</artifactId>
+						<version>${openjfx.version}</version>
 						<scope>system</scope>
 						<systemPath>${env.OPENJFX_LIB_PATH}</systemPath>
 					</dependency>
@@ -876,11 +893,25 @@
 			<dependencyManagement>
 				<dependencies>
 					<dependency>
-						<groupId>io.openjfx</groupId>
+						<groupId>org.openjfx-jre8</groupId>
 						<artifactId>javafx-base</artifactId>
-						<version>${java.version}</version>
+						<version>${openjfx.version}</version>
 						<scope>system</scope>
-						<systemPath>${default.openjfx.base.linux.path}</systemPath>
+						<systemPath>${openjfx.base.linux.path}</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.openjfx-jre8</groupId>
+						<artifactId>javafx-graphics</artifactId>
+						<version>${openjfx.version}</version>
+						<scope>system</scope>
+						<systemPath>${openjfx.graphics.linux.path}</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.openjfx-jre8</groupId>
+						<artifactId>javafx-fxml</artifactId>
+						<version>${openjfx.version}</version>
+						<scope>system</scope>
+						<systemPath>${openjfx.fxml.linux.path}</systemPath>
 					</dependency>
 				</dependencies>
 			</dependencyManagement>
@@ -898,9 +929,23 @@
 			<dependencyManagement>
 				<dependencies>
 					<dependency>
-						<groupId>io.openjfx</groupId>
-						<artifactId>javafx-all</artifactId>
-						<version>${java.version}</version>
+						<groupId>org.openjfx-jre8</groupId>
+						<artifactId>javafx-base</artifactId>
+						<version>${openjfx.version}</version>
+						<scope>system</scope>
+						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.openjfx-jre8</groupId>
+						<artifactId>javafx-graphics</artifactId>
+						<version>${openjfx.version}</version>
+						<scope>system</scope>
+						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.openjfx-jre8</groupId>
+						<artifactId>javafx-fxml</artifactId>
+						<version>${openjfx.version}</version>
 						<scope>system</scope>
 						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
 					</dependency>
@@ -920,9 +965,23 @@
 			<dependencyManagement>
 				<dependencies>
 					<dependency>
-						<groupId>io.openjfx</groupId>
-						<artifactId>javafx-all</artifactId>
-						<version>${java.version}</version>
+						<groupId>org.openjfx-jre8</groupId>
+						<artifactId>javafx-base</artifactId>
+						<version>${openjfx.version}</version>
+						<scope>system</scope>
+						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.openjfx-jre8</groupId>
+						<artifactId>javafx-graphics</artifactId>
+						<version>${openjfx.version}</version>
+						<scope>system</scope>
+						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.openjfx-jre8</groupId>
+						<artifactId>javafx-fxml</artifactId>
+						<version>${openjfx.version}</version>
 						<scope>system</scope>
 						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
 					</dependency>

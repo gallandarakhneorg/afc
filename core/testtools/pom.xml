@@ -29,8 +29,8 @@
 			<artifactId>mockito-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javafx</groupId>
-			<artifactId>jfxrt</artifactId>
+			<groupId>org.openjfx-jre8</groupId>
+			<artifactId>javafx-graphics</artifactId>
 		</dependency>
 	</dependencies>
 
