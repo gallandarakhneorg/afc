@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>p2</artifactId>
 		<groupId>org.arakhne.afc.p2</groupId>
-		<version>16.0-SNAPSHOT</version>
+		<version>16.0</version>
 	</parent>
 
 	<artifactId>p2-repository</artifactId>
@@ -46,14 +46,14 @@
 									<id>org.arakhne.afc.core:inputoutput:${afc.p2.stable.version}</id>
 									<override>true</override>
 									<excludes>
-										<exclude>javafx:jfxrt:*</exclude>
+										<exclude>org.openjfx-jre8:javafx-graphics:*</exclude>
 									</excludes>
 								</artifact>
 								<artifact>
 									<id>org.arakhne.afc.core:math:${afc.p2.stable.version}</id>
 									<override>true</override>
 									<excludes>
-										<exclude>javafx:jfxrt:*</exclude>
+										<exclude>org.openjfx-jre8:javafx-base:*</exclude>
 									</excludes>
 								</artifact>
 								<artifact>
@@ -155,31 +155,37 @@
 								</artifact>
 
 								<artifact>
-									<id>org.arakhne.afc.core:vmutils:14.0</id>
+									<id>org.arakhne.afc.core:vmutils:15.2</id>
 									<override>true</override>
 								</artifact>
 								<artifact>
-									<id>org.arakhne.afc.core:util:14.0</id>
+									<id>org.arakhne.afc.core:util:15.2</id>
 									<override>true</override>
 								</artifact>
 								<artifact>
-									<id>org.arakhne.afc.core:text:14.0</id>
+									<id>org.arakhne.afc.core:text:15.2</id>
 									<override>true</override>
 								</artifact>
 								<artifact>
-									<id>org.arakhne.afc.core:references:14.0</id>
+									<id>org.arakhne.afc.core:references:15.2</id>
 									<override>true</override>
 								</artifact>
 								<artifact>
-									<id>org.arakhne.afc.core:inputoutput:14.0</id>
+									<id>org.arakhne.afc.core:inputoutput:15.2</id>
 									<override>true</override>
+									<excludes>
+										<exclude>javafx:jfxrt:*</exclude>
+									</excludes>
 								</artifact>
 								<artifact>
-									<id>org.arakhne.afc.core:math:14.0</id>
+									<id>org.arakhne.afc.core:math:15.2</id>
 									<override>true</override>
+									<excludes>
+										<exclude>javafx:jfxrt:*</exclude>
+									</excludes>
 								</artifact>
 								<artifact>
-									<id>org.arakhne.afc.advanced:agentmotion:14.0</id>
+									<id>org.arakhne.afc.advanced:agentmotion:15.2</id>
 									<override>true</override>
 								</artifact>
 							</artifacts>

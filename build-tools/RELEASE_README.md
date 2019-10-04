@@ -12,7 +12,7 @@ The steps for releasing AFC are:
      $> mvn clean install
 
 
-## B) PHASE 3: RELEASE
+## B) PHASE 2: RELEASE
 
 1. Remove `-SNAPSHOT` in all the poms.
 2. Change the flags for `bytecode.optimize` and `bytecode.debug` in `pom.xm`l 
