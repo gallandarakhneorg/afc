@@ -1,67 +1,66 @@
-
-RELEASE AFC
-===========
+# RELEASE AFC
 
 The steps for releasing AFC are:
 
-A) PHASE 1: RELEASE VERSION
+## A) PHASE 1: PREPARATION
 
-A.1) Remove "-SNAPSHOT" in all the poms, and AndroidManifest.xml.
-
-A.2) Change the flags "bytecode.optimize" and "bytecode.debug" in pom.xml 
-
-A.3) Change the P2 configuration. 
-
-A.4) Updgrade Maven dependencies and plugins.
-
-A.5) Compiling locally without error.
+1. Change the P2 configuration. 
+2. Updgrade Maven dependencies and plugins.
+3. Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
      $> mvn clean install
 
-A.6) Create the aggregated documentation, and copy the generated archive file into a safe folder:
 
-     $> ./build-tools/src/main/resources/bash/generate_aggregate_javadoc.sh
+## B) PHASE 3: RELEASE
 
-A.7) Prepare the bundles for Maven Central, and copy the generated archive files into a safe folder:
+1. Remove `-SNAPSHOT` in all the poms.
+2. Change the flags for `bytecode.optimize` and `bytecode.debug` in `pom.xm`l 
+3. Create the aggregated documentation, and copy the generated archive file into a safe folder:
 
-     $> ./build-tools/src/main/resources/bash/prepare-bundles-for-central.sh
+```sh
+$> ./build-tools/src/main/resources/bash/generate_aggregate_javadoc.sh
+```
 
-A.8) Commit, Tag and push to Github:
+4. Prepare the bundles for Maven Central, and copy the generated archive files into a safe folder:
 
-     $> git commit
-     $> git tag "vX.Y.Z"
-     $> git push --tags
-     $> git push --all
+```sh
+$> ./build-tools/src/main/resources/bash/prepare-bundles-for-central.sh
+```
 
-B) PHASE 2: DISSEMINATION OF THE RELEASE VERSION
+5. Commit, Tag and push to Github:
 
-B.1) Updload the Maven Bundle on Maven Central with
-     [http://oss.sonatype.org](http://oss.sonatype.org)
+```sh
+$> git commit
+$> git tag "vX.Y.Z"
+$> git push --tags
+$> git push --all
+```
 
-B.2) Update the  Arakhne.org website (including the Javadoc).
+## C) PHASE 3: DISSEMINATION OF THE RELEASE VERSION
 
-B.3) Move all the remaining issues on Github to the following version.
+1. Updload the Maven Bundle on Maven Central with [http://oss.sonatype.org](http://oss.sonatype.org).
+2. Update the [Arakhne.org website](http://www.arakhne.org) (including the Javadoc).
+3. Move all the remaining issues on Github to the following version.
+4. Close the released milestone on Github.
+5. Generate the changelog from Git and put in the milestone's description.
+6. Announce the new version of AFC on the mailing lists.
 
-B.4) Close the released milestone on Github.
+## D) PHASE 4: NEW DEVELOPMENT VERSION
 
-B.5) Generate the changelog from Git and put in the milestone's description.
+1. Revert step B.1 and B.2.
+2. Compiling locally without error.
 
-B.6) Announce the new version of AFC on the mailing lists.
+```sh
+$> rm -rf $HOME/.m2/repository
+$> mvn clean install deploy
+```
 
-C) PHASE 3: DEVELOPMENT VERSION
+3. Commit and push to Github:
 
-C.1) Revert step A.1 to A.3.
-
-C.2) Compiling locally without error.
-
-     $> rm -rf $HOME/.m2/repository
-     $> mvn clean install deploy
-
-C.3) Commit and push to Github:
-
-     $> git commit
-     $> git push --all
-
+```sh
+$> git commit
+$> git push --all
+```
 
 
