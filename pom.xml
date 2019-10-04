@@ -856,21 +856,21 @@
 			<dependencyManagement>
 				<dependencies>
 					<dependency>
-						<groupId>org.openjfx</groupId>
+						<groupId>org.openjfx-jre8</groupId>
 						<artifactId>javafx-base</artifactId>
 						<version>${openjfx.version}</version>
 						<scope>system</scope>
 						<systemPath>${env.OPENJFX_LIB_PATH}</systemPath>
 					</dependency>
 					<dependency>
-						<groupId>org.openjfx</groupId>
+						<groupId>org.openjfx-jre8</groupId>
 						<artifactId>javafx-graphics</artifactId>
 						<version>${openjfx.version}</version>
 						<scope>system</scope>
 						<systemPath>${env.OPENJFX_LIB_PATH}</systemPath>
 					</dependency>
 					<dependency>
-						<groupId>org.openjfx</groupId>
+						<groupId>org.openjfx-jre8</groupId>
 						<artifactId>javafx-fxml</artifactId>
 						<version>${openjfx.version}</version>
 						<scope>system</scope>
