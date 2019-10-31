@@ -25,6 +25,11 @@
 						</goals>
 						<configuration>
 							<artifacts>
+								<!-- Last development version -->
+								<artifact>
+									<id>org.arakhne.afc.slf4j:slf4j-log4j:${afc.version}</id>
+									<override>true</override>
+								</artifact>
 								<!-- Last stable version -->
 								<artifact>
 									<id>org.arakhne.afc.core:vmutils:${afc.p2.stable.version}</id>
