@@ -70,6 +70,7 @@
 								<artifact>
 									<id>org.slf4j:slf4j-api:${slf4j.version}</id>
 									<override>false</override>
+									<source>true</source>
 								</artifact>
 								<artifact>
 									<id>org.mockito:mockito-core:${mockito.version}</id>
