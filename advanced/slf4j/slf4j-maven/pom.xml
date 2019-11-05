@@ -11,7 +11,9 @@
 	<groupId>org.arakhne.afc.slf4j</groupId>
 	<artifactId>slf4j-maven</artifactId>
 	<name>SLF4J Maven Binding</name>
-	<description>SLF4J Maven Binding</description>
+	<description>
+		Provide a binding of the Maven logger in order to be used as the implementation for SLF4J logging system
+	</description>
 
 	<dependencies>
 		<dependency>

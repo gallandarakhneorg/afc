@@ -9,25 +9,17 @@
 	</parent>
 
 	<groupId>org.arakhne.afc.slf4j</groupId>
-	<artifactId>slf4j-log4j</artifactId>
-	<name>Log4j for SLF4J</name>
-	<packaging>pom</packaging>
+	<artifactId>slf4j-backwardcompat</artifactId>
+	<name>Static binder for SLF4J services</name>
 	<description>
-		Provide all the artifact for using Log4j as the SLF4J implementation
+		Provide a static binding implementation that is used by the old versions of SLF4J (before 2.0)
+		that retreives the logger based on the service provider that is is is newer versions of SLF4J (after 2.0)
 	</description>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.arakhne.afc.slf4j</groupId>
-			<artifactId>slf4j-backwardcompat</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jul-to-slf4j</artifactId>
+			<artifactId>slf4j-api</artifactId>
 		</dependency>
 	</dependencies>
 

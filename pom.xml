@@ -184,6 +184,11 @@
 
 			<dependency>
 				<groupId>org.arakhne.afc.slf4j</groupId>
+				<artifactId>slf4j-backwardcompat</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.slf4j</groupId>
 				<artifactId>slf4j-log4j</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
