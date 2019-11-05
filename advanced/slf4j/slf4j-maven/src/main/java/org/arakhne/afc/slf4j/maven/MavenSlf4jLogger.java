@@ -23,7 +23,9 @@ package org.arakhne.afc.slf4j.maven;
 import java.text.MessageFormat;
 
 import org.apache.maven.plugin.logging.Log;
-import org.slf4j.helpers.MarkerIgnoringBase;
+import org.slf4j.Marker;
+import org.slf4j.event.Level;
+import org.slf4j.helpers.LegacyAbstractLogger;
 
 /** Apache logger that is wrapping a Maven logger.
  *
@@ -33,9 +35,9 @@ import org.slf4j.helpers.MarkerIgnoringBase;
  * @mavenartifactid $ArtifactId$
  * @since 16.0
  */
-public class MavenSlf4jLogger extends MarkerIgnoringBase {
+public class MavenSlf4jLogger extends LegacyAbstractLogger {
 
-	private static final long serialVersionUID = 937126994481217789L;
+	private static final long serialVersionUID = -5538811471324622933L;
 
 	private final Log mavenLogger;
 
@@ -55,58 +57,8 @@ public class MavenSlf4jLogger extends MarkerIgnoringBase {
 	}
 
 	@Override
-	public void trace(String msg) {
-		this.mavenLogger.debug(msg);
-	}
-
-	@Override
-	public void trace(String format, Object arg) {
-		this.mavenLogger.debug(MessageFormat.format(format, arg));
-	}
-
-	@Override
-	public void trace(String format, Object arg1, Object arg2) {
-		this.mavenLogger.debug(MessageFormat.format(format, arg1, arg2));
-	}
-
-	@Override
-	public void trace(String format, Object... arguments) {
-		this.mavenLogger.debug(MessageFormat.format(format, arguments));
-	}
-
-	@Override
-	public void trace(String msg, Throwable t) {
-		this.mavenLogger.debug(msg, t);
-	}
-
-	@Override
 	public boolean isDebugEnabled() {
 		return this.mavenLogger.isDebugEnabled();
-	}
-
-	@Override
-	public void debug(String msg) {
-		this.mavenLogger.debug(msg);
-	}
-
-	@Override
-	public void debug(String format, Object arg) {
-		this.mavenLogger.debug(MessageFormat.format(format, arg));
-	}
-
-	@Override
-	public void debug(String format, Object arg1, Object arg2) {
-		this.mavenLogger.debug(MessageFormat.format(format, arg1, arg2));
-	}
-
-	@Override
-	public void debug(String format, Object... arguments) {
-		this.mavenLogger.debug(MessageFormat.format(format, arguments));
-	}
-
-	@Override
-	public void debug(String msg, Throwable t) {
-		this.mavenLogger.debug(msg, t);
 	}
 
 	@Override
@@ -115,58 +67,8 @@ public class MavenSlf4jLogger extends MarkerIgnoringBase {
 	}
 
 	@Override
-	public void info(String msg) {
-		this.mavenLogger.info(msg);
-	}
-
-	@Override
-	public void info(String format, Object arg) {
-		this.mavenLogger.info(MessageFormat.format(format, arg));
-	}
-
-	@Override
-	public void info(String format, Object arg1, Object arg2) {
-		this.mavenLogger.info(MessageFormat.format(format, arg1, arg2));
-	}
-
-	@Override
-	public void info(String format, Object... arguments) {
-		this.mavenLogger.info(MessageFormat.format(format, arguments));
-	}
-
-	@Override
-	public void info(String msg, Throwable t) {
-		this.mavenLogger.info(msg, t);
-	}
-
-	@Override
 	public boolean isWarnEnabled() {
 		return this.mavenLogger.isWarnEnabled();
-	}
-
-	@Override
-	public void warn(String msg) {
-		this.mavenLogger.warn(msg);
-	}
-
-	@Override
-	public void warn(String format, Object arg) {
-		this.mavenLogger.warn(MessageFormat.format(format, arg));
-	}
-
-	@Override
-	public void warn(String format, Object... arguments) {
-		this.mavenLogger.warn(MessageFormat.format(format, arguments));
-	}
-
-	@Override
-	public void warn(String format, Object arg1, Object arg2) {
-		this.mavenLogger.warn(MessageFormat.format(format, arg1, arg2));
-	}
-
-	@Override
-	public void warn(String msg, Throwable t) {
-		this.mavenLogger.warn(msg, t);
 	}
 
 	@Override
@@ -175,28 +77,49 @@ public class MavenSlf4jLogger extends MarkerIgnoringBase {
 	}
 
 	@Override
-	public void error(String msg) {
-		this.mavenLogger.error(msg);
+	protected String getFullyQualifiedCallerName() {
+		return null;
 	}
 
 	@Override
-	public void error(String format, Object arg) {
-		this.mavenLogger.error(MessageFormat.format(format, arg));
-	}
-
-	@Override
-	public void error(String format, Object arg1, Object arg2) {
-		this.mavenLogger.error(MessageFormat.format(format, arg1, arg2));
-	}
-
-	@Override
-	public void error(String format, Object... arguments) {
-		this.mavenLogger.error(MessageFormat.format(format, arguments));
-	}
-
-	@Override
-	public void error(String msg, Throwable t) {
-		this.mavenLogger.error(msg,  t);
+	protected void handleNormalizedLoggingCall(Level level, Marker marker, String msg, Object[] arguments,
+			Throwable throwable) {
+		final String expandedMessage = MessageFormat.format(msg, arguments);
+		if (level != null) {
+			switch (level) {
+			case INFO:
+				if (throwable != null) {
+					this.mavenLogger.info(expandedMessage, throwable);
+				} else {
+					this.mavenLogger.info(expandedMessage);
+				}
+				break;
+			case WARN:
+				if (throwable != null) {
+					this.mavenLogger.warn(expandedMessage, throwable);
+				} else {
+					this.mavenLogger.warn(expandedMessage);
+				}
+				break;
+			case ERROR:
+				if (throwable != null) {
+					this.mavenLogger.error(expandedMessage, throwable);
+				} else {
+					this.mavenLogger.error(expandedMessage);
+				}
+				break;
+			case DEBUG:
+			case TRACE:
+				if (throwable != null) {
+					this.mavenLogger.debug(expandedMessage, throwable);
+				} else {
+					this.mavenLogger.debug(expandedMessage);
+				}
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 }
