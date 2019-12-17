@@ -60,7 +60,6 @@ then
 
 	if [ '!' -z "$PASSPHRASE" ]
 	then
-		echo "Assuming 'org.arakhne.afc.maven:tag-replacer:generatereplacesrc' is activated"
 		echo "Assuming 'maven-javadoc-plugin:jar' is activated"
 		echo "Assuming 'maven-sources-plugin:jar' is activated"
 		echo "Have you activated the released profile? -DperformRelease=true"

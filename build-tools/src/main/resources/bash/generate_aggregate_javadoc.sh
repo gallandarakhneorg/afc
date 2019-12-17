@@ -14,6 +14,6 @@
 #		SOURCE_PATH="${SOURCE_PATH}:${module_path}"
 #	fi
 #done
-#exec mvn "$@" -Dmaven.test.skip=true -Dcheckstyle.skip=true -Dsourcepath=${SOURCE_PATH} clean generate-sources org.arakhne.afc.maven:tag-replacer:generatereplacesrc compile javadoc:aggregate
+#exec mvn "$@" -Dmaven.test.skip=true -Dcheckstyle.skip=true -Dsourcepath=${SOURCE_PATH} clean generate-sources compile javadoc:aggregate
 
-exec mvn "$@" -Dmaven.test.skip=true -Dcheckstyle.skip=true clean generate-sources org.arakhne.afc.maven:tag-replacer:generatereplacesrc compile javadoc:aggregate
+exec mvn "$@" -Dmaven.test.skip=true -Dcheckstyle.skip=true clean generate-sources compile javadoc:aggregate
