@@ -27,7 +27,6 @@ import java.util.TreeSet;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -792,7 +791,7 @@ public interface Circle2ai<
      *
      * @return the iterator on the approximation.
      * @see #getPathIterator()
-     * @see MathConstants#SPLINE_APPROXIMATION_RATIO
+     * @see GeomConstants#SPLINE_APPROXIMATION_RATIO
      */
     @Pure
     default PathIterator2ai<IE> getFlatteningPathIterator() {

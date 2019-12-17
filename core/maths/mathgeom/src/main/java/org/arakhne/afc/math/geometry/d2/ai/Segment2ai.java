@@ -333,7 +333,7 @@ public interface Segment2ai<
      * @param y0 is the first point of the line.
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+     * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @Pure
     static int calculatesCrossingsCircleShadowSegment(
@@ -416,7 +416,7 @@ public interface Segment2ai<
      * @param y0 is the first point of the line.
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+     * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
@@ -510,7 +510,7 @@ public interface Segment2ai<
      * extending to the right of the rectangle.
      *
      * <p>When the line (x0;y0) to (x1;y1) is intersecting the rectangle,
-     * the value {@link MathConstants#SHAPE_INTERSECTS} is returned.
+     * the value {@link GeomConstants#SHAPE_INTERSECTS} is returned.
      * When the line (x0;y0) to (x1;y1) is crossing one of the up or
      * bottom borders of the shadow of the rectangle, the crossings
      * count is increased or decreased, depending if the line is
@@ -530,7 +530,7 @@ public interface Segment2ai<
      * @param y0 is the first point of the line.
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+     * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
@@ -719,7 +719,7 @@ public interface Segment2ai<
      * @param y0 is the first point of the line.
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
-     * @return the crossing, {@link MathConstants#SHAPE_INTERSECTS}
+     * @return the crossing, {@link GeomConstants#SHAPE_INTERSECTS}
      */
     @Pure
     static int calculatesCrossingsPointShadowSegment(
@@ -755,7 +755,7 @@ public interface Segment2ai<
      * @param enableTopBorder indicates if the top border must be enabled in the crossing computation.
      * @param enableBottomBorder indicates if the bottom border must be enabled in the crossing computation.
      * @param xCoordinate output parameter for the x coordinate that is intersecting.
-     * @return the crossing; or {@link MathConstants#SHAPE_INTERSECTS} if the segment is on the point.
+     * @return the crossing; or {@link GeomConstants#SHAPE_INTERSECTS} if the segment is on the point.
      */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
             "checkstyle:npathcomplexity"})

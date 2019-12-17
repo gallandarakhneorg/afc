@@ -54,14 +54,14 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * <p>Due to the precision on floating-point computations, the test of unit-vector
 	 * must consider that the norm of the given vector is approximatively equal
 	 * to 1. The precision (i.e. the number of significant decimals) is given
-	 * by {@link MathConstants#UNIT_VECTOR_EPSILON}.
+	 * by {@link GeomConstants#UNIT_VECTOR_EPSILON}.
 	 *
 	 * @param x is the X coordinate of the vector.
 	 * @param y is the Y coordinate of the vector.
 	 * @return <code>true</code> if the two given vectors are colinear.
 	 * @since 13.0
 	 * @see MathUtil#isEpsilonEqual(double, double, double)
-	 * @see MathConstants#UNIT_VECTOR_EPSILON
+	 * @see GeomConstants#UNIT_VECTOR_EPSILON
 	 * @see #isUnitVector(double, double, double)
 	 */
 	@Pure
@@ -109,7 +109,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * Replies if the vectors are orthogonal vectors.
 	 *
 	 * <p>Due to the precision on floating-point computations, the test of orthogonality
-	 * is approximated. The default epsilon is {@link MathConstants#ORTHOGONAL_VECTOR_EPSILON}.
+	 * is approximated. The default epsilon is {@link GeomConstants#ORTHOGONAL_VECTOR_EPSILON}.
 	 *
 	 * @param x1 is the X coordinate of the first unit vector.
 	 * @param y1 is the Y coordinate of the first unit vector.
@@ -118,7 +118,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @return <code>true</code> if the two given vectors are colinear.
 	 * @since 13.0
 	 * @see MathUtil#isEpsilonEqual(double, double, double)
-	 * @see MathConstants#ORTHOGONAL_VECTOR_EPSILON
+	 * @see GeomConstants#ORTHOGONAL_VECTOR_EPSILON
 	 * @see #isUnitVector(double, double, double)
 	 */
 	@Pure

@@ -24,7 +24,6 @@ import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
@@ -812,7 +811,7 @@ public interface Ellipse2afp<
      *
      * @return the iterator on the approximation.
      * @see #getPathIterator()
-     * @see MathConstants#SPLINE_APPROXIMATION_RATIO
+     * @see GeomConstants#SPLINE_APPROXIMATION_RATIO
      */
     @Pure
     default PathIterator2afp<IE> getFlatteningPathIterator() {

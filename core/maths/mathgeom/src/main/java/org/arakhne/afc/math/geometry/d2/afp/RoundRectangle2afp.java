@@ -801,7 +801,7 @@ public interface RoundRectangle2afp<
      *
      * @return the iterator on the approximation.
      * @see #getPathIterator()
-     * @see MathConstants#SPLINE_APPROXIMATION_RATIO
+     * @see GeomConstants#SPLINE_APPROXIMATION_RATIO
      */
     @Pure
     @SuppressWarnings("checkstyle:magicnumber")

@@ -20,7 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d3.ai;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -130,7 +129,7 @@ public class BasicPathShadow3ai {
      * @param x1 is the second point of the segment.
      * @param y1 is the second point of the segment.
      * @param z1 is the second point of the segment.
-     * @return the crossings or {@link MathConstants#SHAPE_INTERSECTS}.
+     * @return the crossings or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     public int computeCrossings(
             int crossings,

@@ -24,7 +24,6 @@ import java.util.Iterator;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -69,7 +68,7 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 	 * @param x1 is the second point of the segment.
 	 * @param y1 is the second point of the segment.
 	 * @param z1 is the second point of the segment.
-	 * @return the crossings or {@link MathConstants#SHAPE_INTERSECTS}.
+	 * @return the crossings or {@link GeomConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
 	public int computeCrossings(

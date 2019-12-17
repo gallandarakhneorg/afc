@@ -26,8 +26,8 @@ import java.util.List;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.MultiShape2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -242,7 +242,7 @@ public interface MultiShape2ai<
      *
      * @return the iterator on the approximation.
      * @see #getPathIterator()
-     * @see MathConstants#SPLINE_APPROXIMATION_RATIO
+     * @see GeomConstants#SPLINE_APPROXIMATION_RATIO
      */
     @Pure
     default PathIterator2ai<IE> getFlatteningPathIterator() {

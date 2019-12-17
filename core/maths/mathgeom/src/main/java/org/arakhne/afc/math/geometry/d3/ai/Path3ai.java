@@ -26,7 +26,6 @@ import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
@@ -769,7 +768,7 @@ public interface Path3ai<
 	 * @param pz is the reference point to test.
 	 * @param type is the type of special computation to apply. If <code>null</code>, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
-	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
+	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}
 	 */
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
     static int computeCrossingsFromPoint(int crossings, PathIterator3ai<?> pi, int px, int py, int pz,

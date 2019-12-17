@@ -542,7 +542,7 @@ public interface Segment2afp<
      * @param y0 is the first point of the line.
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+     * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @Pure
     static int calculatesCrossingsCircleShadowSegment(
@@ -610,7 +610,7 @@ public interface Segment2afp<
      * @param y0 is the first point of the line.
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+     * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
@@ -764,7 +764,7 @@ public interface Segment2afp<
     /**
      * Accumulate the number of times the line crosses the shadow
      * extending to the right of the rectangle.  See the comment
-     * for the {@link MathConstants#SHAPE_INTERSECTS} constant for more complete details.
+     * for the {@link GeomConstants#SHAPE_INTERSECTS} constant for more complete details.
      *
      * @param crossings is the initial value for the number of crossings.
      * @param rxmin is the first corner of the rectangle.
@@ -775,7 +775,7 @@ public interface Segment2afp<
      * @param y0 is the first point of the line.
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+     * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
@@ -880,7 +880,7 @@ public interface Segment2afp<
     /**
      * Accumulate the number of times the line crosses the shadow
      * extending to the right of the round rectangle.  See the comment
-     * for the {@link MathConstants#SHAPE_INTERSECTS} constant for more complete details.
+     * for the {@link GeomConstants#SHAPE_INTERSECTS} constant for more complete details.
      *
      * @param crossings is the initial value for the number of crossings.
      * @param rxmin is the first corner of the rectangle.
@@ -893,7 +893,7 @@ public interface Segment2afp<
      * @param y0 is the first point of the line.
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+     * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
@@ -978,7 +978,7 @@ public interface Segment2afp<
      * @param y0 is the first point of the line.
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
+     * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}
      */
     @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
@@ -1053,7 +1053,7 @@ public interface Segment2afp<
     /**
      * Accumulate the number of times the line crosses the shadow
      * extending to the right of the triangle.  See the comment
-     * for the {@link MathConstants#SHAPE_INTERSECTS} constant for more complete details.
+     * for the {@link GeomConstants#SHAPE_INTERSECTS} constant for more complete details.
      *
      * @param crossings is the initial value for the number of crossings.
      * @param tx1 is the first point of the triangle.
@@ -1066,7 +1066,7 @@ public interface Segment2afp<
      * @param y0 is the first point of the line.
      * @param x1 is the second point of the line.
      * @param y1 is the secondpoint of the line.
-     * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+     * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @Pure
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",

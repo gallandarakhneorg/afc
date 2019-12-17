@@ -20,7 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -111,7 +110,7 @@ public class BasicPathShadow2afp {
      * @param y0 is the first point of the segment.
      * @param x1 is the second point of the segment.
      * @param y1 is the second point of the segment.
-     * @return the crossings or {@link MathConstants#SHAPE_INTERSECTS}.
+     * @return the crossings or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @SuppressWarnings("checkstyle:npathcomplexity")
     public int computeCrossings(

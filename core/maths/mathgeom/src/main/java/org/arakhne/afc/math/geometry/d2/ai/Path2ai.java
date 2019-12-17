@@ -749,7 +749,7 @@ public interface Path2ai<
 	 * @param py is the reference point to test.
 	 * @param type is the type of special computation to apply. If <code>null</code>, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
-	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
+	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
 			"checkstyle:returncount"})
@@ -2355,7 +2355,7 @@ public interface Path2ai<
 	 *
 	 * @return the iterator on the approximation.
 	 * @see #getPathIterator()
-	 * @see MathConstants#SPLINE_APPROXIMATION_RATIO
+	 * @see GeomConstants#SPLINE_APPROXIMATION_RATIO
 	 */
 	@Pure
 	default PathIterator2ai<IE> getFlatteningPathIterator() {

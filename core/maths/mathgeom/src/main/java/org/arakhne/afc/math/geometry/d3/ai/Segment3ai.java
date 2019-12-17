@@ -445,7 +445,7 @@ public interface Segment3ai<
 	 * @param x1 is the second point of the line.
 	 * @param y1 is the secondpoint of the line.
 	 * @param z1 is the secondpoint of the line.
-	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
@@ -535,7 +535,7 @@ public interface Segment3ai<
 	 * @param x1 is the second point of the line.
 	 * @param y1 is the secondpoint of the line.
 	 * @param z1 is the secondpoint of the line.
-	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
@@ -627,7 +627,7 @@ public interface Segment3ai<
 	 * extending to the right of the rectangle.
 	 *
 	 * <p>When the line (x0;y0) to (x1;y1) is intersecting the rectangle,
-	 * the value {@link MathConstants#SHAPE_INTERSECTS} is returned.
+	 * the value {@link GeomConstants#SHAPE_INTERSECTS} is returned.
 	 * When the line (x0;y0) to (x1;y1) is crossing one of the up or
 	 * bottom borders of the shadow of the rectangle, the crossings
 	 * count is increased or decreased, depending if the line is
@@ -651,7 +651,7 @@ public interface Segment3ai<
 	 * @param x1 is the second point of the line.
 	 * @param y1 is the secondpoint of the line.
 	 * @param z1 is the secondpoint of the line.
-	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
 	@SuppressWarnings({ "checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
@@ -843,7 +843,7 @@ public interface Segment3ai<
 	 * @param x1 is the second point of the line.
 	 * @param y1 is the secondpoint of the line.
 	 * @param z1 is the secondpoint of the line.
-	 * @return the crossing, {@link MathConstants#SHAPE_INTERSECTS}
+	 * @return the crossing, {@link GeomConstants#SHAPE_INTERSECTS}
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:parameternumber")
@@ -882,7 +882,7 @@ public interface Segment3ai<
 	 * @param z1 is the second point of the line.
 	 * @param enableTopBorder indicates if the top border must be enabled in the crossing computation.
 	 * @param enableBottomBorder indicates if the bottom border must be enabled in the crossing computation.
-	 * @return the crossing; or {@link MathConstants#SHAPE_INTERSECTS} if the segment is on the point.
+	 * @return the crossing; or {@link GeomConstants#SHAPE_INTERSECTS} if the segment is on the point.
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})

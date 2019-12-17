@@ -821,7 +821,7 @@ public interface Path2afp<
 	 * @param eh is the height of the ellipse.
 	 * @param type is the type of special computation to apply. If <code>null</code>, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
-	 * @return the crossing or {@link MathConstants#SHAPE_INTERSECTS}
+	 * @return the crossing or {@link GeomConstants#SHAPE_INTERSECTS}
 	 */
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
 		"checkstyle:npathcomplexity", "checkstyle:magicnumber"})
@@ -990,7 +990,7 @@ public interface Path2afp<
 	 * @param arcHeight is the width of the arc.
 	 * @param type is the type of special computation to apply. If <code>null</code>, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
-	 * @return the crossing or {@link MathConstants#SHAPE_INTERSECTS}
+	 * @return the crossing or {@link GeomConstants#SHAPE_INTERSECTS}
 	 */
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
 		"checkstyle:npathcomplexity", "checkstyle:magicnumber"})
@@ -2914,7 +2914,7 @@ public interface Path2afp<
 	 *
 	 * @return the iterator on the approximation.
 	 * @see #getPathIterator()
-	 * @see MathConstants#SPLINE_APPROXIMATION_RATIO
+	 * @see GeomConstants#SPLINE_APPROXIMATION_RATIO
 	 */
 	@Pure
 	default PathIterator2afp<IE> getFlatteningPathIterator() {

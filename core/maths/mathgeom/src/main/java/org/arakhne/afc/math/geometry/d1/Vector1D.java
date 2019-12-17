@@ -82,14 +82,14 @@ public interface Vector1D<
 	 * <p>Due to the precision on floating-point computations, the test of unit-vector
 	 * must consider that the norm of the given vector is approximatively equal
 	 * to 1. The precision (i.e. the number of significant decimals) is given
-	 * by {@link MathConstants#UNIT_VECTOR_EPSILON}.
+	 * by {@link GeomConstants#UNIT_VECTOR_EPSILON}.
 	 *
 	 * @param x is the X coordinate of the vector.
 	 * @param y is the Y coordinate of the vector.
 	 * @return <code>true</code> if the two given vectors are colinear.
 	 * @since 13.0
 	 * @see MathUtil#isEpsilonEqual(double, double, double)
-	 * @see MathConstants#UNIT_VECTOR_EPSILON
+	 * @see GeomConstants#UNIT_VECTOR_EPSILON
 	 * @see #isUnitVector(double, double, double)
 	 */
 	@Pure
