@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -666,22 +667,25 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void joinURLStringArray() throws Exception {
+	public void joinURLStringArray_all() throws Exception {
 		assertEquals(new URL("http://toto:titi@www.arakhne.org/path/to/file.x.z.z/a/b/c?toto#frag"), FileSystem.join(createHttpUrl(), "a", "b", "c"));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), FileSystem.join(createFileInJarUrl(), "a", "b", "c"));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		assertEquals(new URL("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), FileSystem.join(createFileInJarInJarUrl(), "a", "b", "c"));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		assertEquals(new URL("file:/the%20path/to/file%20with%20space.toto/a/b/c"), FileSystem.join(createFileUrlWithSpacesHardCoded(), "a", "b", "c"));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		assertEquals(new URL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), FileSystem.join(createFileInJarUrlWithSpaces(), "a", "b", "c"));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
 	@Test
-	public void joinURLFileArray() throws Exception {
+	public void joinURLStringArray_notMacOs() throws Exception {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertEquals(new URL("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), FileSystem.join(createFileInJarInJarUrl(), "a", "b", "c"));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	}
+
+	@Test
+	public void joinURLFileArray_all() throws Exception {
 		assertEquals(new URL("http://toto:titi@www.arakhne.org/path/to/file.x.z.z/a/b/c?toto#frag"), //$NON-NLS-1$
 				FileSystem.join(createHttpUrl(), new File("a"), new File("b"), new File("c")));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), //$NON-NLS-1$
 				FileSystem.join(createFileInJarUrl(), new File("a"), new File("b"), new File("c")));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertEquals(new URL("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), //$NON-NLS-1$
-				FileSystem.join(createFileInJarInJarUrl(), new File("a"), new File("b"), new File("c")));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		assertEquals(new URL("file:/the%20path/to/file%20with%20space.toto/a/b/c"), //$NON-NLS-1$
 				FileSystem.join(createFileUrlWithSpacesHardCoded(), new File("a"), new File("b"), new File("c")));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		assertEquals(new URL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), //$NON-NLS-1$
@@ -689,10 +693,16 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void splitURL() throws Exception {
+	public void joinURLFileArray_notMacOs() throws Exception {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertEquals(new URL("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z/a/b/c"), //$NON-NLS-1$
+				FileSystem.join(createFileInJarInJarUrl(), new File("a"), new File("b"), new File("c")));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	}
+
+	@Test
+	public void splitURL_all() throws Exception {
 		assertArrayEquals(new String[] {"", "path", "to", "file.x.z.z"}, FileSystem.split(createHttpUrl()));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		assertArrayEquals(new String[] {"", "org", "arakhne", "afc", "vmutil", "file.x.z.z"}, FileSystem.split(createFileInJarUrl()));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		assertArrayEquals(new String[] {"", "org", "arakhne", "afc", "vmutil", "file.x.z.z"}, FileSystem.split(createFileInJarInJarUrl()));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		assertArrayEquals(new String[] {"", "the path", "to", "file with space.toto"}, FileSystem.split(createFileUrlWithSpacesHardCoded()));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		assertArrayEquals(new String[] {"", "org", "arakhne", "afc", "vmutil", "file.x.z.z"}, FileSystem.split(createFileInJarUrlWithSpaces()));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		assertArrayEquals(new String[] {"", "a.b.c"}, FileSystem.split(new URL("file:///a.b.c/")));   //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -700,14 +710,25 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void extensionsURL() throws MalformedURLException {
+	public void splitURL_notMacOs() throws Exception {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertArrayEquals(new String[] {"", "org", "arakhne", "afc", "vmutil", "file.x.z.z"}, FileSystem.split(createFileInJarInJarUrl()));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	}
+
+	@Test
+	public void extensionsURL_all() throws MalformedURLException {
 		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createHttpUrl()));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createFileInJarUrl()));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createFileInJarInJarUrl()));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		assertArrayEquals(new String[] {"toto"}, FileSystem.extensions(createFileUrlWithSpacesHardCoded()));  //$NON-NLS-1$
 		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createFileInJarUrlWithSpaces()));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		assertArrayEquals(new String[] {"b", "c"}, FileSystem.extensions(new URL("file:///a.b.c/")));   //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		assertArrayEquals(new String[0], FileSystem.extensions(new URL("file://")));   //$NON-NLS-1$
+	}
+
+	@Test
+	public void extensionsURL_notMacOs() throws MalformedURLException {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertArrayEquals(new String[] {"x", "z", "z"}, FileSystem.extensions(createFileInJarInJarUrl()));  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	@Test
@@ -728,14 +749,19 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void extensionURL() throws MalformedURLException {
+	public void extensionURL_all() throws MalformedURLException {
 		assertEquals(".z", FileSystem.extension(createHttpUrl()));  //$NON-NLS-1$
 		assertEquals(".z", FileSystem.extension(createFileInJarUrl()));  //$NON-NLS-1$
-		assertEquals(".z", FileSystem.extension(createFileInJarInJarUrl()));  //$NON-NLS-1$
 		assertEquals(".toto", FileSystem.extension(createFileUrlWithSpacesHardCoded()));  //$NON-NLS-1$
 		assertEquals(".z", FileSystem.extension(createFileInJarUrlWithSpaces()));  //$NON-NLS-1$
 		assertEquals(".c", FileSystem.extension(new URL("file:///a.b.c/")));   //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals("", FileSystem.extension(new URL("file://")));   //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void extensionURL_notMacOs() throws MalformedURLException {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertEquals(".z", FileSystem.extension(createFileInJarInJarUrl()));  //$NON-NLS-1$
 	}
 
 	@Test
@@ -756,16 +782,13 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void hasExtensionURL() throws MalformedURLException {
+	public void hasExtensionURL_all() throws MalformedURLException {
 		assertTrue(FileSystem.hasExtension(createHttpUrl(), ".z"));  //$NON-NLS-1$
 		assertTrue(FileSystem.hasExtension(createHttpUrl(), "z"));  //$NON-NLS-1$
 		assertFalse(FileSystem.hasExtension(createHttpUrl(), ".c"));  //$NON-NLS-1$
 		assertTrue(FileSystem.hasExtension(createFileInJarUrl(), ".z"));  //$NON-NLS-1$
 		assertTrue(FileSystem.hasExtension(createFileInJarUrl(), "z"));  //$NON-NLS-1$
 		assertFalse(FileSystem.hasExtension(createFileInJarUrl(), ".c"));  //$NON-NLS-1$
-		assertTrue(FileSystem.hasExtension(createFileInJarInJarUrl(), ".z"));  //$NON-NLS-1$
-		assertTrue(FileSystem.hasExtension(createFileInJarInJarUrl(), "z"));  //$NON-NLS-1$
-		assertFalse(FileSystem.hasExtension(createFileInJarInJarUrl(), ".c"));  //$NON-NLS-1$
 		assertTrue(FileSystem.hasExtension(createFileUrlWithSpacesHardCoded(), ".toto"));  //$NON-NLS-1$
 		assertTrue(FileSystem.hasExtension(createFileUrlWithSpacesHardCoded(), "toto"));  //$NON-NLS-1$
 		assertFalse(FileSystem.hasExtension(createFileUrlWithSpacesHardCoded(), ".zip"));  //$NON-NLS-1$
@@ -776,6 +799,14 @@ public class FileSystemTest {
 		assertTrue(FileSystem.hasExtension(new URL("file:///a.b.c/"), "c"));   //$NON-NLS-1$ //$NON-NLS-2$
 		assertFalse(FileSystem.hasExtension(new URL("file:///a.b.c/"), ".zip"));   //$NON-NLS-1$ //$NON-NLS-2$
 		assertFalse(FileSystem.hasExtension(new URL("file://"), ".c"));   //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void hasExtensionURL_notMacOs() throws MalformedURLException {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertTrue(FileSystem.hasExtension(createFileInJarInJarUrl(), ".z"));  //$NON-NLS-1$
+		assertTrue(FileSystem.hasExtension(createFileInJarInJarUrl(), "z"));  //$NON-NLS-1$
+		assertFalse(FileSystem.hasExtension(createFileInJarInJarUrl(), ".c"));  //$NON-NLS-1$
 	}
 
 	@Test
@@ -818,10 +849,9 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void removeExtensionURL() throws MalformedURLException {
+	public void removeExtensionURL_all() throws MalformedURLException {
 		assertEquals(new URL("http://toto:titi@www.arakhne.org/path/to/file.x.z?toto#frag"), FileSystem.removeExtension(createHttpUrl()));  //$NON-NLS-1$
 		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z"), FileSystem.removeExtension(createFileInJarUrl()));  //$NON-NLS-1$
-		assertEquals(new URL("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z"), FileSystem.removeExtension(createFileInJarInJarUrl()));  //$NON-NLS-1$
 		assertEquals(new URL("file:/the%20path/to/file%20with%20space"), FileSystem.removeExtension(createFileUrlWithSpacesHardCoded()));  //$NON-NLS-1$
 		assertEquals(new URL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z"), FileSystem.removeExtension(createFileInJarUrlWithSpaces()));  //$NON-NLS-1$
 		assertEquals(new URL("file:///a.b"), FileSystem.removeExtension(new URL("file:///a.b.c/")));   //$NON-NLS-1$ //$NON-NLS-2$
@@ -829,10 +859,15 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void replaceExtensionURLString() throws MalformedURLException {
+	public void removeExtensionURL_notMacOs() throws MalformedURLException {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertEquals(new URL("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z"), FileSystem.removeExtension(createFileInJarInJarUrl()));  //$NON-NLS-1$
+	}
+	
+	@Test
+	public void replaceExtensionURLString_all() throws MalformedURLException {
 		assertEquals(new URL("http://toto:titi@www.arakhne.org/path/to/file.x.z.xyz?toto#frag"), FileSystem.replaceExtension(createHttpUrl(), ".xyz"));  //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.xyz"), FileSystem.replaceExtension(createFileInJarUrl(), ".xyz"));  //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(new URL("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.xyz"), FileSystem.replaceExtension(createFileInJarInJarUrl(), ".xyz"));  //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(new URL("file:/the%20path/to/file%20with%20space.xyz"), FileSystem.replaceExtension(createFileUrlWithSpacesHardCoded(), ".xyz"));  //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(new URL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.xyz"), FileSystem.replaceExtension(createFileInJarUrlWithSpaces(), ".xyz"));  //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(new URL("file:///a.b.xyz"), FileSystem.replaceExtension(new URL("file:///a.b.c/"), ".xyz"));   //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -840,10 +875,15 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void addExtensionURLString() throws MalformedURLException {
+	public void replaceExtensionURLString_notMacOs() throws MalformedURLException {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertEquals(new URL("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.xyz"), FileSystem.replaceExtension(createFileInJarInJarUrl(), ".xyz"));  //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void addExtensionURLString_all() throws MalformedURLException {
 		assertEquals(new URL("http://toto:titi@www.arakhne.org/path/to/file.x.z.z.xyz?toto#frag"), FileSystem.addExtension(createHttpUrl(), ".xyz"));  //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z.xyz"), FileSystem.addExtension(createFileInJarUrl(), ".xyz"));  //$NON-NLS-1$ //$NON-NLS-2$
-		assertEquals(new URL("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z.xyz"), FileSystem.addExtension(createFileInJarInJarUrl(), ".xyz"));  //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(new URL("file:/the%20path/to/file%20with%20space.toto.xyz"), FileSystem.addExtension(createFileUrlWithSpacesHardCoded(), ".xyz"));  //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(new URL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/file.x.z.z.xyz"), FileSystem.addExtension(createFileInJarUrlWithSpaces(), ".xyz"));  //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(new URL("file:///a.b.c.xyz"), FileSystem.addExtension(new URL("file:///a.b.c/"), ".xyz"));   //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -851,10 +891,15 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void basenameURL() throws MalformedURLException {
+	public void addExtensionURLString_notMacOs() throws MalformedURLException {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertEquals(new URL("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z.xyz"), FileSystem.addExtension(createFileInJarInJarUrl(), ".xyz"));  //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void basenameURL_all() throws MalformedURLException {
 		assertEquals("file.x.z", FileSystem.basename(createHttpUrl()));  //$NON-NLS-1$
 		assertEquals("file.x.z", FileSystem.basename(createFileInJarUrl()));  //$NON-NLS-1$
-		assertEquals("file.x.z", FileSystem.basename(createFileInJarInJarUrl()));  //$NON-NLS-1$
 		assertEquals("file with space", FileSystem.basename(createFileUrlWithSpacesHardCoded()));  //$NON-NLS-1$
 		assertEquals("file.x.z", FileSystem.basename(createFileInJarUrlWithSpaces()));  //$NON-NLS-1$
 		assertEquals("a.b", FileSystem.basename(new URL("file:///a.b.c/")));   //$NON-NLS-1$ //$NON-NLS-2$
@@ -868,6 +913,12 @@ public class FileSystemTest {
 		catch(AssertionError exception) {
 			//
 		}
+	}
+
+	@Test
+	public void basenameURL_notMacOs() throws MalformedURLException {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertEquals("file.x.z", FileSystem.basename(createFileInJarInJarUrl()));  //$NON-NLS-1$
 	}
 
 	@Test
@@ -888,14 +939,19 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void largeBasenameURL() throws MalformedURLException {
+	public void largeBasenameURL_all() throws MalformedURLException {
 		assertEquals("file.x.z.z", FileSystem.largeBasename(createHttpUrl()));  //$NON-NLS-1$
 		assertEquals("file.x.z.z", FileSystem.largeBasename(createFileInJarUrl()));  //$NON-NLS-1$
-		assertEquals("file.x.z.z", FileSystem.largeBasename(createFileInJarInJarUrl()));  //$NON-NLS-1$
 		assertEquals("file with space.toto", FileSystem.largeBasename(createFileUrlWithSpacesHardCoded()));  //$NON-NLS-1$
 		assertEquals("file.x.z.z", FileSystem.largeBasename(createFileInJarUrlWithSpaces()));  //$NON-NLS-1$
 		assertEquals("a.b.c", FileSystem.largeBasename(new URL("file:///a.b.c/")));   //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals("", FileSystem.largeBasename(new URL("file://")));   //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void largeBasenameURL_notMacOs() throws MalformedURLException {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertEquals("file.x.z.z", FileSystem.largeBasename(createFileInJarInJarUrl()));  //$NON-NLS-1$
 	}
 
 	@Test
@@ -916,14 +972,19 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void shortBasenameURL() throws MalformedURLException {
+	public void shortBasenameURL_all() throws MalformedURLException {
 		assertEquals("file", FileSystem.shortBasename(createHttpUrl()));  //$NON-NLS-1$
 		assertEquals("file", FileSystem.shortBasename(createFileInJarUrl()));  //$NON-NLS-1$
-		assertEquals("file", FileSystem.shortBasename(createFileInJarInJarUrl()));  //$NON-NLS-1$
 		assertEquals("file with space", FileSystem.shortBasename(createFileUrlWithSpacesHardCoded()));  //$NON-NLS-1$
 		assertEquals("file", FileSystem.shortBasename(createFileInJarUrlWithSpaces()));  //$NON-NLS-1$
 		assertEquals("a", FileSystem.shortBasename(new URL("file:///a.b.c/")));   //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals("", FileSystem.shortBasename(new URL("file://")));   //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	@Test
+	public void shortBasenameURL_notMacOs() throws MalformedURLException {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertEquals("file", FileSystem.shortBasename(createFileInJarInJarUrl()));  //$NON-NLS-1$
 	}
 
 	@Test
@@ -1003,7 +1064,7 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void makeCanonicalURL() throws MalformedURLException {
+	public void makeCanonicalURL_all() throws MalformedURLException {
 		assertEquals(
 				createHttpUrl(), 
 				FileSystem.makeCanonicalURL(createHttpUrl()));
@@ -1011,10 +1072,6 @@ public class FileSystemTest {
 		assertEquals(
 				createFileInJarUrl(), 
 				FileSystem.makeCanonicalURL(createFileInJarUrl()));
-
-		assertEquals(
-				createFileInJarInJarUrl(), 
-				FileSystem.makeCanonicalURL(createFileInJarInJarUrl()));
 
 		assertEquals(
 				new URL("file:/a/b/c/d/e"),  //$NON-NLS-1$
@@ -1035,6 +1092,14 @@ public class FileSystemTest {
 		assertEquals(
 				new URL("file:../a/c/d/e"),  //$NON-NLS-1$
 				FileSystem.makeCanonicalURL(new URL("file:../a/b/../c/./d/e")));  //$NON-NLS-1$
+	}
+
+	@Test
+	public void makeCanonicalURL_notMacOs() throws MalformedURLException {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertEquals(
+				createFileInJarInJarUrl(), 
+				FileSystem.makeCanonicalURL(createFileInJarInJarUrl()));
 	}
 
 	private String readInputStream(InputStream is) throws IOException {
@@ -1274,48 +1339,68 @@ public class FileSystemTest {
 	}
 
 	@Test
-	public void isJarURLURL() throws Exception {
+	public void isJarURLURL_all() throws Exception {
 		assertFalse(FileSystem.isJarURL(createHttpUrl()));
 		assertTrue(FileSystem.isJarURL(createFileInJarUrl()));
-		assertTrue(FileSystem.isJarURL(createFileInJarInJarUrl()));
 		assertFalse(FileSystem.isJarURL(createFileUrlWithSpacesHardCoded()));  
 
 		assertInlineParameterUsage(FileSystem.class, "isJarURL", URL.class); //$NON-NLS-1$
 	}
 
 	@Test
-	public void getJarURLURL() throws Exception {
+	public void isJarURLURL_notMacOs() throws Exception {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertTrue(FileSystem.isJarURL(createFileInJarInJarUrl()));
+	}
+
+	@Test
+	public void getJarURLURL_all() throws Exception {
 		assertNull(FileSystem.getJarURL(createHttpUrl()));
 		assertEquals(new URL("file:" + createJarFilenameForUrl()), FileSystem.getJarURL(createFileInJarUrl())); //$NON-NLS-1$
-		assertEquals(new URL("jar:file:" //$NON-NLS-1$
-				+ createJarFilenameForUrl() + "!" //$NON-NLS-1$
-				+ createJarInJarFilenameForUrl()),
-				FileSystem.getJarURL(createFileInJarInJarUrl()));
 
 		assertEquals(new URL("file:" + createJarFilenameForUrlWithSpaces()), FileSystem.getJarURL(createFileInJarUrlWithSpaces()));   //$NON-NLS-1$
 		assertNull(FileSystem.getJarFile(createFileUrlWithSpacesHardCoded()));
 	}
 
 	@Test
-	public void getJarFileURL() throws Exception {
+	public void getJarURLURL_notMacOs() throws Exception {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertEquals(new URL("jar:file:" //$NON-NLS-1$
+				+ createJarFilenameForUrl() + "!" //$NON-NLS-1$
+				+ createJarInJarFilenameForUrl()),
+				FileSystem.getJarURL(createFileInJarInJarUrl()));
+	}
+
+	@Test
+	public void getJarFileURL_all() throws Exception {
 		assertNull(FileSystem.getJarFile(createHttpUrl()));
 		assertNormedFile(createInJarFilename(), FileSystem.getJarFile(createFileInJarUrl()));
-		assertNormedFile(createInJarFilename(), FileSystem.getJarFile(createFileInJarInJarUrl()));
 
 		assertNormedFile(createInJarFilename(), FileSystem.getJarFile(createFileInJarUrlWithSpaces()));  
 		assertNull(FileSystem.getJarFile(createFileUrlWithSpacesHardCoded()));
 	}
 
 	@Test
-	public void dirnameURL() throws Exception {
+	public void getJarFileURL_notMacOs() throws Exception {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertNormedFile(createInJarFilename(), FileSystem.getJarFile(createFileInJarInJarUrl()));
+	}
+
+	@Test
+	public void dirnameURL_all() throws Exception {
 		assertEquals(new URL("http://toto:titi@www.arakhne.org/path/to/"), //$NON-NLS-1$
 				FileSystem.dirname(createHttpUrl()));
 		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/"), //$NON-NLS-1$
 				FileSystem.dirname(createFileInJarUrl()));
-		assertEquals(new URL("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/"), //$NON-NLS-1$
-				FileSystem.dirname(createFileInJarInJarUrl()));
 		assertEquals(new URL("jar:file:/the path/to/file with space.toto!/org/arakhne/afc/vmutil/"), //$NON-NLS-1$
 				FileSystem.dirname(createFileInJarUrlWithSpaces()));
+	}
+
+	@Test
+	public void dirnameURL_notMacOs() throws Exception {
+		assumeFalse(OperatingSystem.MACOSX.isCurrentOS());
+		assertEquals(new URL("jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/"), //$NON-NLS-1$
+				FileSystem.dirname(createFileInJarInJarUrl()));
 	}
 
 	private static abstract class AbstractFileSystemTest {
