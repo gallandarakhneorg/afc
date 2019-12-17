@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2018 The original authors, and other authors.
+ * Copyright (c) 2013-2019 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -155,7 +155,6 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	@SuppressWarnings("checkstyle:parameternumber")
 	E newCurvePathElement(int startX, int startY, int startZ, int controlX1, int controlY1, int controlZ1,
 			int controlX2, int controlY2, int controlZ2, int targetX, int targetY, int targetZ);
-
 
     /** Replies the {@link PathIterator3ai} that is corresponding to the given element.
      *

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2018 The original authors, and other authors.
+ * Copyright (c) 2013-2019 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,6 @@ package org.arakhne.afc.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.vmutil.ReflectionUtil;
 
@@ -170,18 +167,6 @@ public class InformedArrayList<E> extends ArrayList<E> implements InformedIterab
 	protected final void updateComponentType(Collection<? extends E> newElements) {
 		final Class<? extends E> lclazz = extractClassFrom(newElements);
 		this.clazz = (Class<? extends E>) ReflectionUtil.getCommonType(this.clazz, lclazz);
-	}
-
-	/** Replies the class of the components in this list.
-	 *
-	 * @return the top most type of the array's elements.
-	 * @deprecated since 15.0, replaced by {@link #getElementType()}.
-	 */
-	@Deprecated
-	@Pure
-	@Inline(value = "getElementType()")
-	public Class<? extends E> getComponentType() {
-		return getElementType();
 	}
 
 	@Override

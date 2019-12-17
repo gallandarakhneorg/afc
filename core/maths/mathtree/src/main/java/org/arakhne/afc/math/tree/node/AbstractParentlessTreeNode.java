@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2018 The original authors, and other authors.
+ * Copyright (c) 2013-2019 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,9 +38,7 @@ import org.arakhne.afc.math.tree.TreeNodeListener;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 import org.arakhne.afc.vmutil.json.JsonableObject;
 
-
-/**
- * This is the very generic implementation of a tree node which
+/** This is the very generic implementation of a tree node which
  * does not made any implementation choice about how this
  * node is related to its parent node.
  *

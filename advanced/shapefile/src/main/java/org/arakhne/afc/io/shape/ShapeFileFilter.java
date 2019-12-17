@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2018 The original authors, and other authors.
+ * Copyright (c) 2013-2019 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * This class permits to filter the files to show only
- * the SHAPE files. It could be used by a {@link javax.swing.JFileChooser}.
+ * the SHAPE files. It could be used by a {@code javax.swing.JFileChooser}.
  *
  * @author $Author: sgalland$
  * @author $Author: olamotte$
