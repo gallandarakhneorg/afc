@@ -20,7 +20,9 @@
 
 package org.arakhne.afc.attrs.attr;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.testtools.AbstractTestCase;
 
@@ -107,25 +109,25 @@ public class AttributeComparatorTest extends AbstractTestCase {
 			Attribute attr3 = new AttributeImpl(name1,1);
 			Attribute attr4 = new AttributeImpl(name1,2);
 			
-			assertEquals(msg,0,comp.compare(attr1, attr1));
-			assertEquals(msg,cmpResult,comp.compare(attr1, attr2));
-			assertEquals(msg,0,comp.compare(attr1, attr3));
-			assertStrictlyNegative(msg,comp.compare(attr1, attr4));
+			assertEquals(0,comp.compare(attr1, attr1), msg);
+			assertEquals(cmpResult,comp.compare(attr1, attr2), msg);
+			assertEquals(0,comp.compare(attr1, attr3), msg);
+			assertStrictlyNegative(comp.compare(attr1, attr4), msg);
 			
-			assertEquals(msg,-cmpResult,comp.compare(attr2, attr1));
-			assertEquals(msg,0,comp.compare(attr2, attr2));
-			assertEquals(msg,-cmpResult,comp.compare(attr2, attr3));
-			assertEquals(msg,-cmpResult,comp.compare(attr2, attr4));
+			assertEquals(-cmpResult,comp.compare(attr2, attr1), msg);
+			assertEquals(0,comp.compare(attr2, attr2), msg);
+			assertEquals(-cmpResult,comp.compare(attr2, attr3), msg);
+			assertEquals(-cmpResult,comp.compare(attr2, attr4), msg);
 
-			assertEquals(msg,0,comp.compare(attr3, attr1));
-			assertEquals(msg,cmpResult,comp.compare(attr3, attr2));
-			assertEquals(msg,0,comp.compare(attr3, attr3));
-			assertStrictlyNegative(msg,comp.compare(attr3, attr4));
+			assertEquals(0,comp.compare(attr3, attr1), msg);
+			assertEquals(cmpResult,comp.compare(attr3, attr2), msg);
+			assertEquals(0,comp.compare(attr3, attr3), msg);
+			assertStrictlyNegative(comp.compare(attr3, attr4), msg);
 
-			assertStrictlyPositive(msg,comp.compare(attr4, attr1));
-			assertEquals(msg,cmpResult,comp.compare(attr4, attr2));
-			assertStrictlyPositive(msg,comp.compare(attr4, attr3));
-			assertEquals(msg,0,comp.compare(attr4, attr4));
+			assertStrictlyPositive(comp.compare(attr4, attr1), msg);
+			assertEquals(cmpResult,comp.compare(attr4, attr2), msg);
+			assertStrictlyPositive(comp.compare(attr4, attr3), msg);
+			assertEquals(0,comp.compare(attr4, attr4), msg);
 		}
 	}
 

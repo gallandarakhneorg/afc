@@ -20,8 +20,8 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import org.arakhne.afc.math.geometry.d2.AbstractUnmodifiableVector2DTest;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.test.geometry.d2.AbstractUnmodifiableVector2DTest;
 
 @SuppressWarnings("all")
 public class UnmodifiableVector2ifxTest extends AbstractUnmodifiableVector2DTest<Vector2ifx, Point2ifx> {

@@ -20,13 +20,18 @@
 
 package org.arakhne.afc.io.dbase.attr;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.net.URL;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.testtools.AbstractTestCase;
@@ -48,7 +53,7 @@ public class DBaseFileAttributeAccessorTest extends AbstractTestCase {
 	
 	private static final String TEST_FILENAME = "org/arakhne/afc/io/dbase/test.dbf"; //$NON-NLS-1$
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.resource = Resources.getResource(TEST_FILENAME);
 		assertNotNull(this.resource);
@@ -57,7 +62,7 @@ public class DBaseFileAttributeAccessorTest extends AbstractTestCase {
 		this.accessor = this.pool.getAccessor(4);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.pool.close();
 		this.accessor = null;

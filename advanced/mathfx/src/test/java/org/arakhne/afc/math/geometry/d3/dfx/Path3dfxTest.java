@@ -20,19 +20,28 @@
 
 package org.arakhne.afc.math.geometry.d3.dfx;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyListProperty;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d3.afp.AbstractPath3afpTest;
-
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.test.geometry.d3.afp.AbstractPath3afpTest;
 
 @SuppressWarnings("all")
+@Disabled("temporary")
 public class Path3dfxTest extends AbstractPath3afpTest<Path3dfx, RectangularPrism3dfx> {
 
 	@Override
@@ -40,9 +49,11 @@ public class Path3dfxTest extends AbstractPath3afpTest<Path3dfx, RectangularPris
 		return TestShapeFactory3dfx.SINGLETON;
 	}
 
-	@Test
-	@Ignore
-	public void boundingBoxProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	@Disabled
+	public void boundingBoxProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<RectangularPrism3dfx> property = this.shape.boundingBoxProperty();
 		assertNotNull(property);
 		RectangularPrism3dfx box = property.get();
@@ -53,8 +64,10 @@ public class Path3dfxTest extends AbstractPath3afpTest<Path3dfx, RectangularPris
 		assertEpsilonEquals(3, box.getMaxY());
 	}
 	
-	@Test
-	public void controlPointBoundingBoxProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void controlPointBoundingBoxProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<RectangularPrism3dfx> property = this.shape.controlPointBoundingBoxProperty();
 		assertNotNull(property);
 		RectangularPrism3dfx box = property.get();
@@ -65,9 +78,11 @@ public class Path3dfxTest extends AbstractPath3afpTest<Path3dfx, RectangularPris
 		assertEpsilonEquals(5, box.getMaxY());
 	}
 	
-	@Test
-	@Ignore
-	public void coordinatesProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	@Disabled
+	public void coordinatesProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		ReadOnlyListProperty<Point3dfx> property = this.shape.coordinatesProperty();
 		assertNotNull(property);
 		assertEquals(7, property.size());
@@ -87,51 +102,65 @@ public class Path3dfxTest extends AbstractPath3afpTest<Path3dfx, RectangularPris
 		assertEpsilonEquals(-5, property.get(6).getY());
 	}
 	
-	@Test
-	public void isCurvedProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void isCurvedProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isCurvedProperty();
 		assertNotNull(property);
 		assertTrue(property.get());
 	}
 	
-	@Test
-	public void isEmptyProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void isEmptyProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isEmptyProperty();
 		assertNotNull(property);
 		assertFalse(property.get());
 	}
 	
-	@Test
-	public void isMultiPartsProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void isMultiPartsProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isMultiPartsProperty();
 		assertNotNull(property);
 		assertFalse(property.get());
 	}
 	
-	@Test
-	public void isPolygonProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void isPolygonProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isPolygonProperty();
 		assertNotNull(property);
 		assertFalse(property.get());
 	}
 	
-	@Test
-	public void isPolylineProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void isPolylineProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isPolylineProperty();
 		assertNotNull(property);
 		assertFalse(property.get());
 	}
 	
-	@Test
-	@Ignore
-	public void lengthProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	@Disabled
+	public void lengthProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		DoubleProperty property = this.shape.lengthProperty();
 		assertNotNull(property);
 		assertEpsilonEquals(14.71628, property.get());
 	}
 	
-	@Test
-	public void typesProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void typesProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		ReadOnlyListProperty<PathElementType> property = this.shape.typesProperty();
 		assertNotNull(property);
 		assertEquals(4, property.size());
@@ -144,8 +173,10 @@ public class Path3dfxTest extends AbstractPath3afpTest<Path3dfx, RectangularPris
 		assertSame(PathElementType.CLOSE, property.get(4));
 	}
 	
-	@Test
-	public void windingRuleProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void windingRuleProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<PathWindingRule> property = this.shape.windingRuleProperty();
 		assertNotNull(property);
 		assertSame(PathWindingRule.NON_ZERO, property.get());

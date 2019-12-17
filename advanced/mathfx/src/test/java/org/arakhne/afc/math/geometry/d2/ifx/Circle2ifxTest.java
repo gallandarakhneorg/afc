@@ -20,10 +20,18 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import javafx.beans.property.IntegerProperty;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.arakhne.afc.math.geometry.d2.ai.AbstractCircle2aiTest;
+import javafx.beans.property.IntegerProperty;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.test.geometry.d2.ai.AbstractCircle2aiTest;
 
 @SuppressWarnings("all")
 public class Circle2ifxTest extends AbstractCircle2aiTest<Circle2ifx, Rectangle2ifx> {
@@ -33,8 +41,10 @@ public class Circle2ifxTest extends AbstractCircle2aiTest<Circle2ifx, Rectangle2
 		return TestShapeFactory2ifx.SINGLETON;
 	}
 	
-	@Test
-	public void xProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void xProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.xProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.xProperty();
@@ -42,8 +52,10 @@ public class Circle2ifxTest extends AbstractCircle2aiTest<Circle2ifx, Rectangle2
 		assertEquals(5, property.get());
 	}
 
-	@Test
-	public void yProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void yProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.yProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.yProperty();
@@ -51,8 +63,10 @@ public class Circle2ifxTest extends AbstractCircle2aiTest<Circle2ifx, Rectangle2
 		assertEquals(8, property.get());
 	}
 
-	@Test
-	public void radiusProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void radiusProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.radiusProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.radiusProperty();
@@ -60,8 +74,10 @@ public class Circle2ifxTest extends AbstractCircle2aiTest<Circle2ifx, Rectangle2
 		assertEquals(5, property.get());
 	}
 
-	@Test
-	public void xPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void xPropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getX());
 		assertEquals(8, this.shape.getY());
 		assertEquals(5, this.shape.getRadius());
@@ -72,8 +88,10 @@ public class Circle2ifxTest extends AbstractCircle2aiTest<Circle2ifx, Rectangle2
 		assertEquals(5, this.shape.getRadius());
 	}
 
-	@Test
-	public void yPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void yPropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getX());
 		assertEquals(8, this.shape.getY());
 		assertEquals(5, this.shape.getRadius());
@@ -84,8 +102,10 @@ public class Circle2ifxTest extends AbstractCircle2aiTest<Circle2ifx, Rectangle2
 		assertEquals(5, this.shape.getRadius());
 	}
 
-	@Test
-	public void radiusPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void radiusPropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getX());
 		assertEquals(8, this.shape.getY());
 		assertEquals(5, this.shape.getRadius());
@@ -96,10 +116,11 @@ public class Circle2ifxTest extends AbstractCircle2aiTest<Circle2ifx, Rectangle2
 		assertEquals(345, this.shape.getRadius());
 	}
 
-	@Test
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
 	@Override
-	public void testClone() {
-		super.testClone();
+	public void testClone(CoordinateSystem2D cs) {
+		super.testClone(cs);
 		Circle2ifx clone = this.shape.clone();
 		assertNotSame(this.shape.xProperty(), clone.xProperty());
 		assertNotSame(this.shape.yProperty(), clone.yProperty());

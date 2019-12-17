@@ -20,17 +20,26 @@
 
 package org.arakhne.afc.gis.bus.network;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.arakhne.afc.gis.bus.network.BusItinerary;
-import org.arakhne.afc.gis.bus.network.BusItineraryHalt;
-import org.arakhne.afc.gis.bus.network.BusLine;
-import org.arakhne.afc.gis.bus.network.BusNetwork;
-import org.arakhne.afc.gis.bus.network.BusStop;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import org.arakhne.afc.gis.bus.network.BusChangeEvent.BusChangeEventType;
+import org.arakhne.afc.gis.bus.network.BusItineraryHalt.BusItineraryHaltType;
 import org.arakhne.afc.gis.location.GeoLocationPoint;
 import org.arakhne.afc.gis.road.RoadPolyline;
 import org.arakhne.afc.gis.road.StandardRoadNetwork;
@@ -40,13 +49,6 @@ import org.arakhne.afc.math.geometry.d1.Direction1D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.testtools.AbstractTestCase;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import org.arakhne.afc.gis.bus.network.BusChangeEvent.BusChangeEventType;
-import org.arakhne.afc.gis.bus.network.BusItineraryHalt.BusItineraryHaltType;
 
 /**
  * @author $Author: sgalland$
@@ -73,7 +75,7 @@ public class BusItineraryTest extends AbstractTestCase {
 	private RoadPolyline segment2;
 	private RoadPolyline segment3;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.network = new StandardRoadNetwork(new Rectangle2d(-2000, -2000, 4000, 4000));
 		this.busNetwork = new BusNetwork(this.network);
@@ -106,7 +108,7 @@ public class BusItineraryTest extends AbstractTestCase {
 		this.eventHandler.clear();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.itinerary.removeBusChangeListener(this.eventHandler);
 		this.network = null;

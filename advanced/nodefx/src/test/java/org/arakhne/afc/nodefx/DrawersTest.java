@@ -20,16 +20,24 @@
 
 package org.arakhne.afc.nodefx;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ServiceLoader;
 import java.util.Set;
 
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.nodefx.tests.ContDrawer1;
 import org.arakhne.afc.nodefx.tests.MyDrawer1;
@@ -40,6 +48,43 @@ import org.arakhne.afc.nodefx.tests.MyDrawer4;
 @SuppressWarnings("all")
 public class DrawersTest {
 
+	private static List<Drawer<?>> drawers;
+
+	public static Class<Drawer<?>>[] DRAWERS = new Class[] {
+			ContDrawer1.class,
+			MyDrawer1.class,
+			MyDrawer2.class,
+			MyDrawer3.class,
+			MyDrawer4.class,
+	};
+	
+	private static List<Drawer<?>> createDrawers() {
+		List<Drawer<?>> drawers = new ArrayList<>();
+
+		for(final Class<Drawer<?>> type : DRAWERS) {
+			try {
+				final Drawer<?> drawer = (Drawer<?>) type.getConstructor().newInstance();
+				drawers.add(drawer);
+			} catch (Exception ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+
+		return drawers;
+	}
+	
+	@BeforeAll
+	public static void setUp() {
+		drawers = createDrawers();
+		Drawers.setBackedDrawers(drawers);
+	}
+
+	@AfterAll
+	public static void tearDown() {
+		Drawers.setBackedDrawers(null);
+		drawers = null;
+	}
+	
 	@Test
 	public void getAllDrawers() {
 		Iterator<Drawer<?>> iterator1 = Drawers.getAllDrawers();

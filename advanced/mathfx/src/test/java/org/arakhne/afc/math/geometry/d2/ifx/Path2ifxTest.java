@@ -20,14 +20,23 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyListProperty;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.ai.AbstractPath2aiTest;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.test.geometry.d2.ai.AbstractPath2aiTest;
 
 @SuppressWarnings("all")
 public class Path2ifxTest extends AbstractPath2aiTest<Path2ifx, Rectangle2ifx> {
@@ -37,10 +46,11 @@ public class Path2ifxTest extends AbstractPath2aiTest<Path2ifx, Rectangle2ifx> {
 		return TestShapeFactory2ifx.SINGLETON;
 	}
 
-	@Test
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
 	@Override
-	public void testClone() {
-		super.testClone();
+	public void testClone(CoordinateSystem2D cs) {
+		super.testClone(cs);
 		Path2ifx clone = this.shape.clone();
 		for (int i = 0; i < this.shape.size() * 2; ++i) {
 			assertEquals(this.shape.getCoordAt(i), clone.getCoordAt(i));
@@ -50,8 +60,10 @@ public class Path2ifxTest extends AbstractPath2aiTest<Path2ifx, Rectangle2ifx> {
 		}
 	}
 
-	@Test
-	public void boundingBoxProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void boundingBoxProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<Rectangle2ifx> property = this.shape.boundingBoxProperty();
 		assertNotNull(property);
 		Rectangle2ifx box = property.get();
@@ -62,8 +74,10 @@ public class Path2ifxTest extends AbstractPath2aiTest<Path2ifx, Rectangle2ifx> {
 		assertEquals(3, box.getMaxY());
 	}
 	
-	@Test
-	public void controlPointBoundingBoxProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void controlPointBoundingBoxProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<Rectangle2ifx> property = this.shape.controlPointBoundingBoxProperty();
 		assertNotNull(property);
 		Rectangle2ifx box = property.get();
@@ -74,8 +88,10 @@ public class Path2ifxTest extends AbstractPath2aiTest<Path2ifx, Rectangle2ifx> {
 		assertEquals(5, box.getMaxY());
 	}
 	
-	@Test
-	public void coordinatesProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void coordinatesProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ReadOnlyListProperty<Point2ifx> property = this.shape.coordinatesProperty();
 		assertNotNull(property);
 		assertEquals(7, property.size());
@@ -95,43 +111,55 @@ public class Path2ifxTest extends AbstractPath2aiTest<Path2ifx, Rectangle2ifx> {
 		assertEquals(-5, property.get(6).iy());
 	}
 	
-	@Test
-	public void isCurvedProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void isCurvedProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isCurvedProperty();
 		assertNotNull(property);
 		assertTrue(property.get());
 	}
 	
-	@Test
-	public void isEmptyProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void isEmptyProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isEmptyProperty();
 		assertNotNull(property);
 		assertFalse(property.get());
 	}
 	
-	@Test
-	public void isMultiPartsProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void isMultiPartsProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isMultiPartsProperty();
 		assertNotNull(property);
 		assertFalse(property.get());
 	}
 	
-	@Test
-	public void isPolygonProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void isPolygonProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isPolygonProperty();
 		assertNotNull(property);
 		assertTrue(property.get());
 	}
 	
-	@Test
-	public void isPolylineProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void isPolylineProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isPolylineProperty();
 		assertNotNull(property);
 		assertFalse(property.get());
 	}
 	
-	@Test
-	public void typesProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void typesProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ReadOnlyListProperty<PathElementType> property = this.shape.typesProperty();
 		assertNotNull(property);
 		assertEquals(5, property.size());
@@ -142,8 +170,10 @@ public class Path2ifxTest extends AbstractPath2aiTest<Path2ifx, Rectangle2ifx> {
 		assertSame(PathElementType.CLOSE, property.get(4));
 	}
 	
-	@Test
-	public void windingRuleProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void windingRuleProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<PathWindingRule> property = this.shape.windingRuleProperty();
 		assertNotNull(property);
 		assertSame(PathWindingRule.NON_ZERO, property.get());

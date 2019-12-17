@@ -20,13 +20,13 @@
 
 package org.arakhne.afc.math.geometry.d3.dfx;
 
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 
-import org.arakhne.afc.math.geometry.AbstractUnmodifiableVector3DTest;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.test.geometry.AbstractUnmodifiableVector3DTest;
 
 @SuppressWarnings("all")
-@Ignore("temporary")
+@Disabled("temporary")
 public class UnmodifiableVector3dfxTest extends AbstractUnmodifiableVector3DTest<Vector3dfx, Point3dfx> {
 
 	@Override

@@ -20,16 +20,24 @@
 
 package org.arakhne.afc.io.dbase;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.AttributeProvider;
 import org.arakhne.afc.testtools.AbstractTestCase;
@@ -74,17 +82,19 @@ public class DBaseFileReaderTest extends AbstractTestCase {
 	private DBaseFileReader reader;
 	
 	private static InputStream openTestStream() throws IOException {
-		InputStream is = Resources.getResourceAsStream(TEST_FILENAME);
-		if (is==null) throw new FileNotFoundException(TEST_FILENAME);
+		final URL url = Resources.getResource(TEST_FILENAME);
+		if (url == null) throw new FileNotFoundException(TEST_FILENAME);
+		final InputStream is = url.openStream();
 		return is;
 	}
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		this.reader = new DBaseFileReader(openTestStream());
+		final InputStream is = openTestStream();
+		this.reader = new DBaseFileReader(is);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.reader.close();
 		this.reader = null;

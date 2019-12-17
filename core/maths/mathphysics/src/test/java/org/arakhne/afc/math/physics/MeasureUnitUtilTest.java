@@ -24,7 +24,7 @@ import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParamete
 
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.testtools.AbstractTestCase;
 

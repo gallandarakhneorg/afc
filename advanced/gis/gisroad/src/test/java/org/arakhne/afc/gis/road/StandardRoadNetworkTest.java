@@ -20,7 +20,13 @@
 
 package org.arakhne.afc.gis.road;
 
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,9 +35,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.gis.location.GeoLocationUtil;
@@ -57,7 +63,7 @@ public class StandardRoadNetworkTest extends AbstractGisTest {
 	private RoadSegmentStub segment1, segment2, segment3, segment4, segment5;
 	private RoadSegmentStub segment6, segment7, segment8, segment9;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		try {
 			GeoLocationUtil.setGISCoordinateSystemAsDefault();
@@ -100,7 +106,7 @@ public class StandardRoadNetworkTest extends AbstractGisTest {
 		}
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.segment1 = this.segment2 = this.segment3 = this.segment4 = this.segment5 = null;
 		this.segment6 = this.segment7 = this.segment8 = this.segment9 = null;

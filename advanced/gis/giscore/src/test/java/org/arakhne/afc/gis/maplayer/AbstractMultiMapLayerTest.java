@@ -20,6 +20,10 @@
 
 package org.arakhne.afc.gis.maplayer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
@@ -36,8 +40,8 @@ import java.util.Random;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
@@ -86,7 +90,7 @@ public abstract class AbstractMultiMapLayerTest<L extends MultiMapLayer<MapLayer
 	private final Map<String, Object> expectedAttributes = new TreeMap<>();
 	private final Map<String, AttributeType> expectedAttributeTypes = new TreeMap<>();
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		int elementCount = 5;//(int)(Math.random() * 20)+1;
 		this.expectedBounds = new Rectangle2d();
@@ -666,10 +670,10 @@ public abstract class AbstractMultiMapLayerTest<L extends MultiMapLayer<MapLayer
 		assertEpsilonEquals(this.expectedAttributes.size(), clone.getAttributeCount());
 		for(Entry<String, Object> expectedAttr : this.expectedAttributes.entrySet()) {
 			AttributeValue val = clone.getAttribute(expectedAttr.getKey());
-			assertNotNull("name="+expectedAttr.getKey(), val); //$NON-NLS-1$
+			assertNotNull(val, "name="+expectedAttr.getKey()); //$NON-NLS-1$
 			AttributeType expectedType = this.expectedAttributeTypes.get(expectedAttr.getKey());
 			AttributeValue v = new AttributeValueImpl(expectedType, expectedAttr.getValue());
-			assertEquals("name="+expectedAttr.getKey(), v, val); //$NON-NLS-1$
+			assertEquals(v, val, "name="+expectedAttr.getKey()); //$NON-NLS-1$
 		}
 
 		LinkedList<MapLayerStub> childList = new LinkedList<>();
@@ -688,7 +692,7 @@ public abstract class AbstractMultiMapLayerTest<L extends MultiMapLayer<MapLayer
 					found = true;
 				}
 			}
-			assertTrue("#"+i, found); //$NON-NLS-1$
+			assertTrue(found, "#"+i); //$NON-NLS-1$
 		}
 		assertTrue(childList.isEmpty());
 	}

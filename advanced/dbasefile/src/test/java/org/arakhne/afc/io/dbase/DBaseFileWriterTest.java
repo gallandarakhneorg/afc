@@ -20,6 +20,11 @@
 
 package org.arakhne.afc.io.dbase;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,9 +32,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.collection.AttributeProvider;
@@ -68,7 +73,7 @@ public class DBaseFileWriterTest extends AbstractTestCase {
 		return alist;
 	}
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.list = readFile(openTestStream());
 	}
@@ -86,7 +91,7 @@ public class DBaseFileWriterTest extends AbstractTestCase {
 	}
 
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.list.clear();
 		this.list = null;
@@ -104,9 +109,10 @@ public class DBaseFileWriterTest extends AbstractTestCase {
 				String name = attr.getName();
 				assertNotNull(name);
 				assertFalse("".equals(name)); //$NON-NLS-1$
-				assertTrue("for attribute '"+name+"' with type '"+ //$NON-NLS-1$ //$NON-NLS-2$
-						attr.getType().toString()+"'", //$NON-NLS-1$
-						(attr.isNullAllowed())||(attr.isAssigned()));
+				assertTrue(
+						(attr.isNullAllowed())||(attr.isAssigned()),
+						"for attribute '"+name+"' with type '"+ //$NON-NLS-1$ //$NON-NLS-2$
+								attr.getType().toString()+"'"); //$NON-NLS-1$
 				if (first) columns.add(name);
 				else myList.add(name);
 			}

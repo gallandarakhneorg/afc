@@ -20,12 +20,14 @@
 
 package org.arakhne.afc.inputoutput.path;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.net.URL;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.vmutil.FileSystem;
@@ -45,13 +47,13 @@ public class SimplePathBuilderTest extends AbstractTestCase {
 
 	private SimplePathBuilder builder;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.builder = new SimplePathBuilder();
 		this.userHome = FileSystem.getUserHomeDirectory();
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.userHome = null;
 		this.builder = null;

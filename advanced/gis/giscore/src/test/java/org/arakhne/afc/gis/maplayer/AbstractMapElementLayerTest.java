@@ -20,6 +20,11 @@
 
 package org.arakhne.afc.gis.maplayer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
@@ -36,8 +41,8 @@ import java.util.Random;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
@@ -86,7 +91,7 @@ public abstract class AbstractMapElementLayerTest<L extends MapElementLayer<MapP
 	private final Map<String, Object> expectedAttributes = new TreeMap<>();
 	private final Map<String, AttributeType> expectedAttributeTypes = new TreeMap<>();
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		int elementCount = getRandom().nextInt(20)+5;
 		this.expectedBounds = new Rectangle2d();
@@ -264,7 +269,7 @@ public abstract class AbstractMapElementLayerTest<L extends MapElementLayer<MapP
 		for(int i=0; i<TEST_COUNT; ++i) {
 			int index = rnd.nextInt(layer.size());
 			MapPolylineStub elt = getExpectedChildAt(index);
-			assertSame("#"+i+"|"+elt, elt, layer.getMapElementAt(index)); //$NON-NLS-1$ //$NON-NLS-2$
+			assertSame(elt, layer.getMapElementAt(index), "#"+i+"|"+elt); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -371,10 +376,10 @@ public abstract class AbstractMapElementLayerTest<L extends MapElementLayer<MapP
 		assertEpsilonEquals(this.expectedAttributes.size(), clone.getAttributeCount());
 		for(Entry<String, Object> expectedAttr : this.expectedAttributes.entrySet()) {
 			AttributeValue val = clone.getAttribute(expectedAttr.getKey());
-			assertNotNull("name="+expectedAttr.getKey(), val); //$NON-NLS-1$
+			assertNotNull(val, "name="+expectedAttr.getKey()); //$NON-NLS-1$
 			AttributeType expectedType = this.expectedAttributeTypes.get(expectedAttr.getKey());
 			AttributeValue v = new AttributeValueImpl(expectedType, expectedAttr.getValue());
-			assertEquals("name="+expectedAttr.getKey(), v, val); //$NON-NLS-1$
+			assertEquals(v, val, "name="+expectedAttr.getKey()); //$NON-NLS-1$
 		}
 
 		LinkedList<MapPolylineStub> childList = new LinkedList<>();

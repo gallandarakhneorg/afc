@@ -20,9 +20,16 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import org.arakhne.afc.math.geometry.d2.AbstractUnmodifiablePoint2DTest;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.test.geometry.d2.AbstractUnmodifiablePoint2DTest;
 
 @SuppressWarnings("all")
 public class UnmodifiablePoint2ifxTest extends AbstractUnmodifiablePoint2DTest<Point2ifx, Vector2ifx> {
@@ -48,7 +55,10 @@ public class UnmodifiablePoint2ifxTest extends AbstractUnmodifiablePoint2DTest<P
 	}
 
 	@Override
-	public void operator_andShape2D() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void operator_andShape2D(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Shape2D shape = new Circle2ifx(5, 8, 5);
 		assertFalse(createPoint(0,0).operator_and(shape));
 		assertFalse(createPoint(11,10).operator_and(shape));
@@ -62,7 +72,10 @@ public class UnmodifiablePoint2ifxTest extends AbstractUnmodifiablePoint2DTest<P
 	}
 	
 	@Override
-	public void operator_upToShape2D() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void operator_upToShape2D(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Shape2D shape = new Circle2ifx(5, 8, 5);
 		assertEpsilonEquals(0f, createPoint(5,8).operator_upTo(shape));
 		assertEpsilonEquals(0f, createPoint(10,10).operator_upTo(shape));

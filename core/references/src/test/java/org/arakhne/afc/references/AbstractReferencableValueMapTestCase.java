@@ -25,6 +25,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -52,19 +55,15 @@ public abstract class AbstractReferencableValueMapTestCase extends AbstractMapTe
 		this.looseReferences = looseReferences;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
+	@BeforeEach
 	public void setUp() throws Exception {
 		super.setUp();
 		this.loosedKeys = new TreeSet<>();
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.loosedKeys = null;
 		super.tearDown();

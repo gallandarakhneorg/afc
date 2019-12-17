@@ -22,9 +22,9 @@ package org.arakhne.afc.math.geometry.d2.ifx;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import org.arakhne.afc.math.geometry.d2.AbstractVector2DTest;
+import org.arakhne.afc.math.test.geometry.d2.AbstractVector2DTest;
 
 @SuppressWarnings("all")
 public class Vector2ifxTest extends AbstractVector2DTest<Vector2ifx, Point2ifx, Vector2ifx> {

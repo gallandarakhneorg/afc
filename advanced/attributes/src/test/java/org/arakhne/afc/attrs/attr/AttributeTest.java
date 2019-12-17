@@ -20,6 +20,13 @@
 
 package org.arakhne.afc.attrs.attr;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
@@ -27,7 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -246,9 +253,10 @@ public class AttributeTest extends AbstractTestCase {
 
 			assertFalse(attr.isAssigned());
 			assertEquals(type.isBaseType(),attr.isBaseType());
-			assertEquals("on type "+type,  //$NON-NLS-1$
+			assertEquals(
 					!type.isBaseType(),
-					attr.isObjectValue());
+					attr.isObjectValue(),
+					"on type "+type);  //$NON-NLS-1$
 			
 			if (type.isNullAllowed()) {
 				assertAttributeException(attr, "getBoolean");  //$NON-NLS-1$

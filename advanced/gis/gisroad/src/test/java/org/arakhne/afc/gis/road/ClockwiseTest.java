@@ -20,15 +20,20 @@
 
 package org.arakhne.afc.gis.road;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
 import org.arakhne.afc.gis.location.GeoLocationUtil;
@@ -57,7 +62,7 @@ public class ClockwiseTest extends AbstractGisTest {
 	private Rectangle2d bounds;
 	private StandardRoadNetwork network;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		GeoLocationUtil.setGISCoordinateSystemAsDefault();
 		URL shapeFile = ClockwiseTest.class.getResource("/org/arakhne/afc/gis/road/Export_Output_Bug26.shp"); //$NON-NLS-1$
@@ -81,7 +86,7 @@ public class ClockwiseTest extends AbstractGisTest {
 		}
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.bounds = null;
 		this.network = null;
@@ -132,8 +137,8 @@ public class ClockwiseTest extends AbstractGisTest {
 			actualSegments.add(it.next());
 			++count;
 		}
-		assertEquals("count|DEFAULT|"+segmentIdx, con.getConnectedSegmentCount(), count); //$NON-NLS-1$
-		assertEpsilonEquals("segments|DEFAULT|"+segmentIdx, expectedSegments, actualSegments); //$NON-NLS-1$
+		assertEquals(con.getConnectedSegmentCount(), count, "count|DEFAULT|"+segmentIdx); //$NON-NLS-1$
+		assertEpsilonEquals(expectedSegments, actualSegments, "segments|DEFAULT|"+segmentIdx); //$NON-NLS-1$
 
 		it = con.toClockwiseIterator(source, ClockwiseBoundType.INCLUDE_BOTH);
 		count = 0;
@@ -143,8 +148,8 @@ public class ClockwiseTest extends AbstractGisTest {
 			actualSegments.add(it.next());
 			++count;
 		}
-		assertEquals("count|INCLUDE_BOTH|"+segmentIdx, con.getConnectedSegmentCount(), count); //$NON-NLS-1$
-		assertEpsilonEquals("segments|INCLUDE_BOTH|"+segmentIdx, expectedSegments, actualSegments); //$NON-NLS-1$
+		assertEquals(con.getConnectedSegmentCount(), count, "count|INCLUDE_BOTH|"+segmentIdx); //$NON-NLS-1$
+		assertEpsilonEquals(expectedSegments, actualSegments, "segments|INCLUDE_BOTH|"+segmentIdx); //$NON-NLS-1$
 
 		it = con.toClockwiseIterator(source, ClockwiseBoundType.EXCLUDE_START_SEGMENT);
 		count = 0;
@@ -161,8 +166,8 @@ public class ClockwiseTest extends AbstractGisTest {
 			expectedSegments.remove(source);
 			expectedCount = con.getConnectedSegmentCount()-1;
 		}
-		assertEquals("count|EXCLUDE_START_SEGMENT|"+segmentIdx, expectedCount, count); //$NON-NLS-1$
-		assertEpsilonEquals("segments|EXCLUDE_START_SEGMENT|"+segmentIdx, expectedSegments, actualSegments); //$NON-NLS-1$
+		assertEquals(expectedCount, count, "count|EXCLUDE_START_SEGMENT|"+segmentIdx); //$NON-NLS-1$
+		assertEpsilonEquals(expectedSegments, actualSegments, "segments|EXCLUDE_START_SEGMENT|"+segmentIdx); //$NON-NLS-1$
 
 		it = con.toClockwiseIterator(source, ClockwiseBoundType.EXCLUDE_END_SEGMENT);
 		count = 0;
@@ -181,8 +186,8 @@ public class ClockwiseTest extends AbstractGisTest {
 			expectedSegments.remove(rr);
 			expectedCount = con.getConnectedSegmentCount()-1;
 		}
-		assertEquals("count|EXCLUDE_END_SEGMENT|"+segmentIdx, expectedCount, count); //$NON-NLS-1$
-		assertEpsilonEquals("segments|EXCLUDE_END_SEGMENT|"+segmentIdx, expectedSegments, actualSegments); //$NON-NLS-1$
+		assertEquals(expectedCount, count, "count|EXCLUDE_END_SEGMENT|"+segmentIdx); //$NON-NLS-1$
+		assertEpsilonEquals(expectedSegments, actualSegments, "segments|EXCLUDE_END_SEGMENT|"+segmentIdx); //$NON-NLS-1$
 
 		it = con.toClockwiseIterator(source, ClockwiseBoundType.EXCLUDE_BOTH);
 		count = 0;
@@ -203,8 +208,8 @@ public class ClockwiseTest extends AbstractGisTest {
 			expectedSegments.remove(rr);
 			expectedCount = con.getConnectedSegmentCount()-2;
 		}
-		assertEquals("count|EXCLUDE_BOTH|"+segmentIdx, expectedCount, count); //$NON-NLS-1$
-		assertEpsilonEquals("segments|EXCLUDE_BOTH|"+segmentIdx, expectedSegments, actualSegments); //$NON-NLS-1$
+		assertEquals(expectedCount, count, "count|EXCLUDE_BOTH|"+segmentIdx); //$NON-NLS-1$
+		assertEpsilonEquals(expectedSegments, actualSegments, "segments|EXCLUDE_BOTH|"+segmentIdx); //$NON-NLS-1$
 	}
 
 	@Test
@@ -252,8 +257,8 @@ public class ClockwiseTest extends AbstractGisTest {
 			actualSegments.add(it.next());
 			++count;
 		}
-		assertEquals("count|DEFAULT|"+segmentIdx, con.getConnectedSegmentCount(), count); //$NON-NLS-1$
-		assertEpsilonEquals("segments|DEFAULT|"+segmentIdx, expectedSegments, actualSegments); //$NON-NLS-1$
+		assertEquals(con.getConnectedSegmentCount(), count, "count|DEFAULT|"+segmentIdx); //$NON-NLS-1$
+		assertEpsilonEquals(expectedSegments, actualSegments, "segments|DEFAULT|"+segmentIdx); //$NON-NLS-1$
 
 		it = con.toCounterclockwiseIterator(source, ClockwiseBoundType.INCLUDE_BOTH);
 		count = 0;
@@ -263,8 +268,8 @@ public class ClockwiseTest extends AbstractGisTest {
 			actualSegments.add(it.next());
 			++count;
 		}
-		assertEquals("count|INCLUDE_BOTH|"+segmentIdx, con.getConnectedSegmentCount(), count); //$NON-NLS-1$
-		assertEpsilonEquals("segments|INCLUDE_BOTH|"+segmentIdx, expectedSegments, actualSegments); //$NON-NLS-1$
+		assertEquals(con.getConnectedSegmentCount(), count, "count|INCLUDE_BOTH|"+segmentIdx); //$NON-NLS-1$
+		assertEpsilonEquals(expectedSegments, actualSegments, "segments|INCLUDE_BOTH|"+segmentIdx); //$NON-NLS-1$
 
 		it = con.toCounterclockwiseIterator(source, ClockwiseBoundType.EXCLUDE_START_SEGMENT);
 		count = 0;
@@ -281,8 +286,8 @@ public class ClockwiseTest extends AbstractGisTest {
 			expectedSegments.remove(source);
 			expectedCount = con.getConnectedSegmentCount()-1;
 		}
-		assertEquals("count|EXCLUDE_START_SEGMENT|"+segmentIdx, expectedCount, count); //$NON-NLS-1$
-		assertEpsilonEquals("segments|EXCLUDE_START_SEGMENT|"+segmentIdx, expectedSegments, actualSegments); //$NON-NLS-1$
+		assertEquals(expectedCount, count, "count|EXCLUDE_START_SEGMENT|"+segmentIdx); //$NON-NLS-1$
+		assertEpsilonEquals(expectedSegments, actualSegments, "segments|EXCLUDE_START_SEGMENT|"+segmentIdx); //$NON-NLS-1$
 
 		it = con.toCounterclockwiseIterator(source, ClockwiseBoundType.EXCLUDE_END_SEGMENT);
 		count = 0;
@@ -301,8 +306,8 @@ public class ClockwiseTest extends AbstractGisTest {
 			expectedSegments.remove(rr);
 			expectedCount = con.getConnectedSegmentCount()-1;
 		}
-		assertEquals("count|EXCLUDE_END_SEGMENT|"+segmentIdx, expectedCount, count); //$NON-NLS-1$
-		assertEpsilonEquals("segments|EXCLUDE_END_SEGMENT|"+segmentIdx, expectedSegments, actualSegments); //$NON-NLS-1$
+		assertEquals(expectedCount, count, "count|EXCLUDE_END_SEGMENT|"+segmentIdx); //$NON-NLS-1$
+		assertEpsilonEquals(expectedSegments, actualSegments, "segments|EXCLUDE_END_SEGMENT|"+segmentIdx); //$NON-NLS-1$
 
 		it = con.toCounterclockwiseIterator(source, ClockwiseBoundType.EXCLUDE_BOTH);
 		count = 0;
@@ -323,8 +328,8 @@ public class ClockwiseTest extends AbstractGisTest {
 			expectedSegments.remove(rr);
 			expectedCount = con.getConnectedSegmentCount()-2;
 		}
-		assertEquals("count|EXCLUDE_BOTH|"+segmentIdx, expectedCount, count); //$NON-NLS-1$
-		assertEpsilonEquals("segments|EXCLUDE_BOTH|"+segmentIdx, expectedSegments, actualSegments); //$NON-NLS-1$
+		assertEquals(expectedCount, count, "count|EXCLUDE_BOTH|"+segmentIdx); //$NON-NLS-1$
+		assertEpsilonEquals(expectedSegments, actualSegments, "segments|EXCLUDE_BOTH|"+segmentIdx); //$NON-NLS-1$
 	}
 
 	@Test

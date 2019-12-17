@@ -20,12 +20,16 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractEllipse2afpTest;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.test.geometry.d2.afp.AbstractEllipse2afpTest;
 
 @SuppressWarnings("all")
 public class Ellipse2dfxTest extends AbstractEllipse2afpTest<Ellipse2dfx, Rectangle2dfx> {
@@ -35,8 +39,10 @@ public class Ellipse2dfxTest extends AbstractEllipse2afpTest<Ellipse2dfx, Rectan
 		return TestShapeFactory2dfx.SINGLETON;
 	}
 	
-	@Test
-	public void minXProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void minXProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(5, this.shape.getMinX());
 		
 		DoubleProperty property = this.shape.minXProperty();
@@ -49,8 +55,10 @@ public class Ellipse2dfxTest extends AbstractEllipse2afpTest<Ellipse2dfx, Rectan
 		assertEpsilonEquals(456.159, this.shape.getMaxX());
 	}
 
-	@Test
-	public void maxXProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void maxXProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(10, this.shape.getMaxX());
 		
 		DoubleProperty property = this.shape.maxXProperty();
@@ -63,8 +71,10 @@ public class Ellipse2dfxTest extends AbstractEllipse2afpTest<Ellipse2dfx, Rectan
 		assertEpsilonEquals(5, this.shape.getMinX());
 	}
 
-	@Test
-	public void minYProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void minYProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(8, this.shape.getMinY());
 		
 		DoubleProperty property = this.shape.minYProperty();
@@ -77,8 +87,10 @@ public class Ellipse2dfxTest extends AbstractEllipse2afpTest<Ellipse2dfx, Rectan
 		assertEpsilonEquals(456.159, this.shape.getMaxY());
 	}
 
-	@Test
-	public void maxYProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void maxYProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(18, this.shape.getMaxY());
 		
 		DoubleProperty property = this.shape.maxYProperty();
@@ -91,8 +103,10 @@ public class Ellipse2dfxTest extends AbstractEllipse2afpTest<Ellipse2dfx, Rectan
 		assertEpsilonEquals(8, this.shape.getMinY());
 	}
 
-	@Test
-	public void widthProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void widthProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(5, this.shape.getWidth());
 
 		ReadOnlyDoubleProperty property = this.shape.widthProperty();
@@ -109,7 +123,8 @@ public class Ellipse2dfxTest extends AbstractEllipse2afpTest<Ellipse2dfx, Rectan
 		assertEpsilonEquals(5, property.get());
 	}
 
-	@Test
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
 	public void heightProperty() {
 		assertEpsilonEquals(10, this.shape.getHeight());
 
@@ -127,7 +142,8 @@ public class Ellipse2dfxTest extends AbstractEllipse2afpTest<Ellipse2dfx, Rectan
 		assertEpsilonEquals(5, property.get());
 	}
 
-	@Test
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
 	public void boundingBoxProperty() {
 		ObjectProperty<Rectangle2dfx> property = this.shape.boundingBoxProperty();
 		assertNotNull(property);

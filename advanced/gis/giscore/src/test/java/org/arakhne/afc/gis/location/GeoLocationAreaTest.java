@@ -20,11 +20,15 @@
 
 package org.arakhne.afc.gis.location;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.UUID;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.AbstractGisTest;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -57,7 +61,7 @@ public class GeoLocationAreaTest extends AbstractGisTest {
 	private GeoLocationArea location22;
 	private GeoLocationArea location23;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		// build test data
 
@@ -109,7 +113,7 @@ public class GeoLocationAreaTest extends AbstractGisTest {
 		swap(this.coords22m, this.coords22x);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.location11 = null;
 		this.location12 = null;

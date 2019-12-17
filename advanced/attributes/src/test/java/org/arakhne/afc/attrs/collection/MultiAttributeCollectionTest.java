@@ -20,15 +20,19 @@
 
 package org.arakhne.afc.attrs.collection;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
@@ -46,7 +50,7 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 	private HeapAttributeCollection subprovider3;
 	private AttributeContainerStub subcontainer4;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.provider = new MultiAttributeCollection();
 		this.subprovider1 = new HeapAttributeCollection();
@@ -82,7 +86,7 @@ public class MultiAttributeCollectionTest extends AbstractTestCase {
 		this.provider.addAttributeContainer(this.subcontainer4);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.provider = null;
 		this.subprovider1 = this.subprovider2 = this.subprovider3 = null;

@@ -20,11 +20,16 @@
 
 package org.arakhne.afc.gis.road;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Iterator;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.gis.location.GeoLocationUtil;
@@ -53,7 +58,7 @@ public class SubRoadNetworkReadOnlyTest extends AbstractGisTest {
 
 	private SubRoadNetwork subNetwork;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		GeoLocationUtil.setGISCoordinateSystemAsDefault();
 		try {
@@ -104,7 +109,7 @@ public class SubRoadNetworkReadOnlyTest extends AbstractGisTest {
 		}
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.subNetwork = null;
 

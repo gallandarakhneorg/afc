@@ -20,28 +20,28 @@
 
 package org.arakhne.afc.vmutil.json;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
 public class JsonBufferTest {
 
 	private JsonBuffer buffer;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.buffer = new JsonBuffer();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.buffer = null;
 	}

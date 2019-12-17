@@ -20,14 +20,16 @@
 
 package org.arakhne.afc.math.geometry.d3.dfx;
 
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.arakhne.afc.math.geometry.AbstractVector3DTest;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import org.arakhne.afc.math.test.geometry.AbstractVector3DTest;
 
 @SuppressWarnings("all")
-@Ignore("temporary")
+@Disabled("temporary")
 public class Vector3dfxTest extends AbstractVector3DTest<Vector3dfx, Point3dfx, Vector3dfx> {
 
 	@Override
@@ -51,7 +53,7 @@ public class Vector3dfxTest extends AbstractVector3DTest<Vector3dfx, Point3dfx, 
 	}
 
 	@Test
-	@Ignore
+	@Disabled
 	public void lengthProperty() {
 		Vector3dfx vector = new Vector3dfx(1, 2, 3);
 		assertEpsilonEquals(2.23607, vector.getLength());

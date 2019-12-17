@@ -20,14 +20,14 @@
 
 package org.arakhne.afc.agentmotion.common;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.agentmotion.kinematic.AligningKinematicAlgorithm;
-import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
 public class FacingAlgorithmTest extends AbstractMathTestCase {
@@ -36,13 +36,13 @@ public class FacingAlgorithmTest extends AbstractMathTestCase {
 	
 	private FacingAlgorithm face;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.align = new AligningKinematicAlgorithm(.5);
 		this.face = new FacingAlgorithm(this.align);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.face = null;
 		this.align = null;

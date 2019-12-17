@@ -20,18 +20,19 @@
 
 package org.arakhne.afc.gis.grid;
 
-import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.google.common.collect.Iterables;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.AbstractGisTest;
-import org.arakhne.afc.gis.grid.AroundCellIterable;
-import org.arakhne.afc.gis.grid.AroundCellIterator;
-import org.arakhne.afc.gis.grid.Grid;
-import org.arakhne.afc.gis.grid.GridCell;
 import org.arakhne.afc.gis.mapelement.MapPoint;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
@@ -51,7 +52,7 @@ public class GridTest extends AbstractGisTest {
 	private Rectangle2d bounds = null;
 	private Grid<MapPoint> grid = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.reference = new ArrayList<>();
         this.reference.add(new MapPoint(1000,1000));
@@ -62,9 +63,13 @@ public class GridTest extends AbstractGisTest {
         this.reference.add(new MapPoint(100,800));
         this.reference.add(new MapPoint(800,0));
 
+        List<Point2d> transformed = new ArrayList<>();
+        for (final MapPoint it : this.reference) {
+        	transformed.add(it.getPoint());
+        }
+        
         this.bounds = new Rectangle2d();
-        this.bounds.setFromPointCloud(Iterables.transform(this.reference,
-        		(it) -> it.getPoint()));
+        this.bounds.setFromPointCloud(transformed);
 
         this.grid = new Grid<>(10, 10, this.bounds);
         for(MapPoint p : this.reference) {
@@ -72,7 +77,7 @@ public class GridTest extends AbstractGisTest {
         }
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.reference.clear();
 		this.reference = null;

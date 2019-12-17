@@ -20,10 +20,14 @@
 
 package org.arakhne.afc.agentmotion;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.arakhne.afc.math.AbstractMathTestCase;
+import org.junit.jupiter.api.Test;
+
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
 public class AgentMotionTest extends AbstractMathTestCase {

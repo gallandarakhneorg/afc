@@ -20,7 +20,9 @@
 
 package org.arakhne.afc.gis.coordinate;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.AbstractGisTest;
 

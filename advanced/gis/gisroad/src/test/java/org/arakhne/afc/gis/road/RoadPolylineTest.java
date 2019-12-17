@@ -20,11 +20,16 @@
 
 package org.arakhne.afc.gis.road;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Random;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.location.GeoLocationUtil;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -56,7 +61,7 @@ public class RoadPolylineTest extends AbstractGisTest {
 	private RoadConnectionStub culDeSac3;
 	private RoadConnectionStub connection3;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		GeoLocationUtil.setGISCoordinateSystemAsDefault();
 
@@ -96,7 +101,7 @@ public class RoadPolylineTest extends AbstractGisTest {
 		getLogger().info("done"); //$NON-NLS-1$
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.firstNeighbour = null;
 		this.secondNeighbour = null;

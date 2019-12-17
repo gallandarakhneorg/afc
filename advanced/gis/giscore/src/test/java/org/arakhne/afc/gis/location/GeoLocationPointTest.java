@@ -20,12 +20,15 @@
 
 package org.arakhne.afc.gis.location;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.UUID;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.AbstractGisTest;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -56,7 +59,7 @@ public class GeoLocationPointTest extends AbstractGisTest {
 	private GeoLocationPoint location22;
 	private GeoLocationPoint location23;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		// build test data
 
@@ -87,7 +90,7 @@ public class GeoLocationPointTest extends AbstractGisTest {
 		this.location23 = new GeoLocationPoint(this.coords23.getX(), this.coords23.getY());
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.location11 = null;
 		this.location12 = null;
@@ -320,7 +323,7 @@ public class GeoLocationPointTest extends AbstractGisTest {
 		assertNotEquals(this.location23.toUUID(), this.location11.toUUID());
 
 		assertEquals(this.location11.toUUID(), this.location12.toUUID());
-		Assert.assertEquals(this.location12.toUUID(), this.location12.toUUID());
+		assertEquals(this.location12.toUUID(), this.location12.toUUID());
 		assertNotEquals(this.location13.toUUID(), this.location12.toUUID());
 		assertNotEquals(this.location21.toUUID(), this.location12.toUUID());
 		assertNotEquals(this.location22.toUUID(), this.location12.toUUID());
@@ -328,7 +331,7 @@ public class GeoLocationPointTest extends AbstractGisTest {
 
 		assertNotEquals(this.location11.toUUID(), this.location13.toUUID());
 		assertNotEquals(this.location12.toUUID(), this.location13.toUUID());
-		Assert.assertEquals(this.location13.toUUID(), this.location13.toUUID());
+		assertEquals(this.location13.toUUID(), this.location13.toUUID());
 		assertNotEquals(this.location21.toUUID(), this.location13.toUUID());
 		assertNotEquals(this.location22.toUUID(), this.location13.toUUID());
 		assertNotEquals(this.location23.toUUID(), this.location13.toUUID());
@@ -336,15 +339,15 @@ public class GeoLocationPointTest extends AbstractGisTest {
 		assertNotEquals(this.location11.toUUID(), this.location21.toUUID());
 		assertNotEquals(this.location12.toUUID(), this.location21.toUUID());
 		assertNotEquals(this.location13.toUUID(), this.location21.toUUID());
-		Assert.assertEquals(this.location21.toUUID(), this.location21.toUUID());
-		Assert.assertEquals(this.location22.toUUID(), this.location21.toUUID());
+		assertEquals(this.location21.toUUID(), this.location21.toUUID());
+		assertEquals(this.location22.toUUID(), this.location21.toUUID());
 		assertNotEquals(this.location23.toUUID(), this.location21.toUUID());
 
 		assertNotEquals(this.location11.toUUID(), this.location22.toUUID());
 		assertNotEquals(this.location12.toUUID(), this.location22.toUUID());
 		assertNotEquals(this.location13.toUUID(), this.location22.toUUID());
-		Assert.assertEquals(this.location21.toUUID(), this.location22.toUUID());
-		Assert.assertEquals(this.location22.toUUID(), this.location22.toUUID());
+		assertEquals(this.location21.toUUID(), this.location22.toUUID());
+		assertEquals(this.location22.toUUID(), this.location22.toUUID());
 		assertNotEquals(this.location23.toUUID(), this.location22.toUUID());
 
 		assertNotEquals(this.location11.toUUID(), this.location23.toUUID());
@@ -352,7 +355,7 @@ public class GeoLocationPointTest extends AbstractGisTest {
 		assertNotEquals(this.location13.toUUID(), this.location23.toUUID());
 		assertNotEquals(this.location21.toUUID(), this.location23.toUUID());
 		assertNotEquals(this.location22.toUUID(), this.location23.toUUID());
-		Assert.assertEquals(this.location23.toUUID(), this.location23.toUUID());
+		assertEquals(this.location23.toUUID(), this.location23.toUUID());
 	}
 
 	@Test

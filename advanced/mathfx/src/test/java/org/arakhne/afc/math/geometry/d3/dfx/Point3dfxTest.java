@@ -20,13 +20,16 @@
 
 package org.arakhne.afc.math.geometry.d3.dfx;
 
-import org.junit.Ignore;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.arakhne.afc.math.geometry.AbstractPoint3DTest;
+import org.junit.jupiter.api.Disabled;
+
 import org.arakhne.afc.math.geometry.d3.Shape3D;
+import org.arakhne.afc.math.test.geometry.AbstractPoint3DTest;
 
 @SuppressWarnings("all")
-@Ignore("temporary")
+@Disabled("temporary")
 public class Point3dfxTest extends AbstractPoint3DTest<Point3dfx, Vector3dfx, Point3dfx> {
 
 	@Override

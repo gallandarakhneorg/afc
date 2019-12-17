@@ -20,9 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d3.dfx;
 
-import org.arakhne.afc.math.geometry.d3.afp.AbstractPathWindingRule3afpTest;
+import org.junit.jupiter.api.Disabled;
+
+import org.arakhne.afc.math.test.geometry.d3.afp.AbstractPathWindingRule3afpTest;
 
 @SuppressWarnings("all")
+@Disabled("temporary")
 public class PathWindingRule3dfxTest extends AbstractPathWindingRule3afpTest<Point3dfx, Vector3dfx, RectangularPrism3dfx> {
 
 	@Override

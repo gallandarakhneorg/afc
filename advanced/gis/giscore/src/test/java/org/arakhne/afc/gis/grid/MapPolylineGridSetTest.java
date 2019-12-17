@@ -20,18 +20,23 @@
 
 package org.arakhne.afc.gis.grid;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.junit.After;
-import org.junit.AssumptionViolatedException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.AbstractGisTest;
 import org.arakhne.afc.gis.TestGISReader;
-import org.arakhne.afc.gis.grid.MapPolylineGridSet;
 import org.arakhne.afc.gis.mapelement.MapElement;
 import org.arakhne.afc.gis.mapelement.MapPolyline;
 import org.arakhne.afc.io.shape.ShapeFileFormatException;
@@ -57,7 +62,7 @@ public class MapPolylineGridSetTest extends AbstractGisTest {
 	private ArrayList<MapPolyline> reference = null;
 	private Rectangle2d bounds = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.reference = new ArrayList<>();
 
@@ -90,11 +95,11 @@ public class MapPolylineGridSetTest extends AbstractGisTest {
 			if (!first) this.bounds = abounds;
 			else this.bounds = null;
 		} catch (ShapeFileFormatException ex) {
-			throw new AssumptionViolatedException("The test Shape file cannot be read", ex); //$NON-NLS-1$
+			assumeFalse(true, "The test Shape file cannot be read" + ex); //$NON-NLS-1$
 		}
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.reference.clear();
 		this.reference = null;

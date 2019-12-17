@@ -20,13 +20,16 @@
 
 package org.arakhne.afc.nodefx;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
@@ -45,7 +48,7 @@ public class CenteredTransformTest extends AbstractTestCase {
 
 	private ReadOnlyObjectProperty<Rectangle2afp<?, ?, ?, ?, ?, ?>> vizProp;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.trueProp = new SimpleBooleanProperty(true);
 		this.falseProp = new SimpleBooleanProperty(false);
@@ -59,7 +62,7 @@ public class CenteredTransformTest extends AbstractTestCase {
 		};
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.trueProp = null;
 		this.falseProp = null;

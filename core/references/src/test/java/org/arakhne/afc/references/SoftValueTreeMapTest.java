@@ -22,8 +22,6 @@ package org.arakhne.afc.references;
 
 import java.util.Map;
 
-import org.arakhne.afc.references.SoftValueTreeMap;
-
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -38,9 +36,6 @@ public class SoftValueTreeMapTest extends AbstractReferencableValueMapTestCase {
 		super(false);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected Map<String,String> createMap() {
 		return new SoftValueTreeMap<>();

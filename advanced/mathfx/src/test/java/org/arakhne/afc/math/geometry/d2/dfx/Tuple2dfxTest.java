@@ -20,10 +20,15 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
-import javafx.beans.property.DoubleProperty;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.arakhne.afc.math.geometry.d2.AbstractTuple2DTest;
+import javafx.beans.property.DoubleProperty;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.test.geometry.d2.AbstractTuple2DTest;
 
 @SuppressWarnings("all")
 public class Tuple2dfxTest extends AbstractTuple2DTest<Tuple2dfx> {
@@ -38,8 +43,10 @@ public class Tuple2dfxTest extends AbstractTuple2DTest<Tuple2dfx> {
 		return new Tuple2dfx(x, y);
 	}
 	
-	@Test
-	public void xProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void xProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		DoubleProperty property = this.t.xProperty();
 		assertNotNull(property);
 		DoubleProperty property2 = this.t.xProperty();
@@ -47,8 +54,10 @@ public class Tuple2dfxTest extends AbstractTuple2DTest<Tuple2dfx> {
 		assertEpsilonEquals(1, property.get());
 	}
 
-	@Test
-	public void yProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void yProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		DoubleProperty property = this.t.yProperty();
 		assertNotNull(property);
 		DoubleProperty property2 = this.t.yProperty();
@@ -56,8 +65,10 @@ public class Tuple2dfxTest extends AbstractTuple2DTest<Tuple2dfx> {
 		assertEpsilonEquals(-2, property.get());
 	}
 
-	@Test
-	public void xPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void xPropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(1, this.t.getX());
 		assertEpsilonEquals(-2, this.t.getY());
 		DoubleProperty property = this.t.xProperty();
@@ -66,8 +77,10 @@ public class Tuple2dfxTest extends AbstractTuple2DTest<Tuple2dfx> {
 		assertEpsilonEquals(-2, this.t.getY());
 	}
 
-	@Test
-	public void yPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void yPropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(1, this.t.getX());
 		assertEpsilonEquals(-2, this.t.getY());
 		DoubleProperty property = this.t.yProperty();

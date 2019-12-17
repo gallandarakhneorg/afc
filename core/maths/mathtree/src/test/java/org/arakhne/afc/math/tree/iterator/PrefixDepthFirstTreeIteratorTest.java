@@ -20,18 +20,19 @@
 
 package org.arakhne.afc.math.tree.iterator;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.arakhne.afc.math.tree.node.BinaryTreeNode.DefaultBinaryTreeNode;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author $Author: sgalland$
@@ -44,14 +45,14 @@ public class PrefixDepthFirstTreeIteratorTest extends AbstractTreeIteratorTest {
 
 	private PrefixDepthFirstTreeIterator<DefaultBinaryTreeNode<Object>> iterator;
 
-	@Before
+	@BeforeEach
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		this.iterator = new PrefixDepthFirstTreeIterator<>(this.tree);
 	}
 
-	@After
+	@AfterEach
 	@Override
 	public void tearDown() throws Exception {
 		this.iterator = null;

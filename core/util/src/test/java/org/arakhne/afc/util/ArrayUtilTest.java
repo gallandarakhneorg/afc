@@ -22,7 +22,7 @@ package org.arakhne.afc.util;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
 public class ArrayUtilTest {

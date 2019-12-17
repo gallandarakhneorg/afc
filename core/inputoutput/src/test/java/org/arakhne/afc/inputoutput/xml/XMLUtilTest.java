@@ -20,6 +20,15 @@
 
 package org.arakhne.afc.inputoutput.xml;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,10 +53,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.google.common.io.Files;
-import com.google.common.io.Resources;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
@@ -60,6 +68,7 @@ import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.text.TextUtil;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.OperatingSystem;
+import org.arakhne.afc.vmutil.Resources;
 
 @SuppressWarnings("all")
 public class XMLUtilTest extends AbstractTestCase {
@@ -74,9 +83,9 @@ public class XMLUtilTest extends AbstractTestCase {
 
 	private Document document;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		assertNotNull("testing resource not found", url); //$NON-NLS-1$
+		assertNotNull(url, "testing resource not found"); //$NON-NLS-1$
 		final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		final DocumentBuilder builder = factory.newDocumentBuilder();
 		try (InputStream is = url.openStream()) {
@@ -84,7 +93,7 @@ public class XMLUtilTest extends AbstractTestCase {
 		}
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.document = null;
 	}
@@ -107,19 +116,19 @@ public class XMLUtilTest extends AbstractTestCase {
 		assertHexEquals(0x0423194C, XMLUtil.parseColor("hsla(70%, 50%, 0.2, 4)")); //$NON-NLS-1$
 	}
 
-	@Test(expected = ColorFormatException.class)
+	@Test
 	public void parseColor_invalid01() throws Exception {
-		assertHexEquals(0, XMLUtil.parseColor("0x00FF01")); //$NON-NLS-1$
+		assertThrows(ColorFormatException.class, () -> assertHexEquals(0, XMLUtil.parseColor("0x00FF01"))); //$NON-NLS-1$
 	}
 
-	@Test(expected = ColorFormatException.class)
+	@Test
 	public void parseColor_invalid02() throws Exception {
-		assertHexEquals(0, XMLUtil.parseColor("0xFF00FF01")); //$NON-NLS-1$
+		assertThrows(ColorFormatException.class, () -> assertHexEquals(0, XMLUtil.parseColor("0xFF00FF01"))); //$NON-NLS-1$
 	}
 
-	@Test(expected = ColorFormatException.class)
+	@Test
 	public void parseColor_invalid03() throws Exception {
-		assertHexEquals(0, XMLUtil.parseColor("1")); //$NON-NLS-1$
+		assertThrows(ColorFormatException.class, () -> assertHexEquals(0, XMLUtil.parseColor("1"))); //$NON-NLS-1$
 	}
 
 	@Test

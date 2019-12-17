@@ -20,9 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d3.dfx;
 
-import org.arakhne.afc.math.geometry.d3.afp.AbstractPath3afpPointCollectionTest;
+import org.junit.jupiter.api.Disabled;
+
+import org.arakhne.afc.math.test.geometry.d3.afp.AbstractPath3afpPointCollectionTest;
 
 @SuppressWarnings("all")
+@Disabled("temporary")
 public class Path3dfxPointCollectionTest extends AbstractPath3afpPointCollectionTest<Point3dfx, Vector3dfx, RectangularPrism3dfx> {
 
 	@Override

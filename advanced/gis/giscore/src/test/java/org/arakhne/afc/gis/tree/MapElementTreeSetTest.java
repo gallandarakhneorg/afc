@@ -20,14 +20,18 @@
 
 package org.arakhne.afc.gis.tree;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.junit.After;
-import org.junit.AssumptionViolatedException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.AbstractGisTest;
 import org.arakhne.afc.gis.TestGISReader;
@@ -56,7 +60,7 @@ public class MapElementTreeSetTest extends AbstractGisTest {
 	private ArrayList<MapPolyline> reference = null;
 	private Rectangle2d bounds = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.reference = new ArrayList<>();
 
@@ -88,11 +92,11 @@ public class MapElementTreeSetTest extends AbstractGisTest {
 			if (!first) this.bounds = abounds;
 			else this.bounds = null;
 		} catch (ShapeFileFormatException ex) {
-			throw new AssumptionViolatedException("Cannot read the Shape file", ex); //$NON-NLS-1$
+			assumeFalse(true, "Cannot read the Shape file" + ex); //$NON-NLS-1$
 		}
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.reference.clear();
 		this.reference = null;
@@ -166,10 +170,10 @@ public class MapElementTreeSetTest extends AbstractGisTest {
         	y = this.bounds.getMinY() + rnd.nextDouble() * this.bounds.getHeight();
 	        newElement.addPoint(x, y);
 	        assertTrue(this.reference.add(newElement));
-	        assertTrue(msg,test.add(newElement));
-	        assertEquals(msg,this.reference.size(), test.size());
-	        assertTrue(msg,test.slowContains(newElement));
-	    	assertEpsilonEquals(msg,this.reference.toArray(),test.toArray());
+	        assertTrue(test.add(newElement), msg);
+	        assertEquals(this.reference.size(), test.size(), msg);
+	        assertTrue(test.slowContains(newElement), msg);
+	    	assertEpsilonEquals(this.reference.toArray(),test.toArray(), msg);
 	    	getLogger().info("done"); //$NON-NLS-1$
         }
 	}

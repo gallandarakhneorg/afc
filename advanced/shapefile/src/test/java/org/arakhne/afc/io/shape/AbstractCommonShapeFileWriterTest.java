@@ -20,13 +20,15 @@
 
 package org.arakhne.afc.io.shape;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author $Author: sgalland$
@@ -41,14 +43,14 @@ public class AbstractCommonShapeFileWriterTest extends AbstractIoShapeTest {
 	private AbstractCommonShapeFileWriterStub writer;
 	private File outputFile;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.outputFile = File.createTempFile("test", "."+ShapeFileIndexFilter.EXTENSION_SHX);  //$NON-NLS-1$//$NON-NLS-2$
 		this.outputFile.deleteOnExit();
 		this.writer = new AbstractCommonShapeFileWriterStub(this.outputFile, ShapeElementType.POLYGON);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.writer.close();
 		this.writer = null;

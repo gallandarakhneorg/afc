@@ -20,15 +20,19 @@
 
 package org.arakhne.afc.gis.io.shape;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.net.URL;
 import java.util.Iterator;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.mapelement.MapElement;
@@ -52,13 +56,6 @@ import org.arakhne.afc.vmutil.Resources;
  * @since 14.0
  */
 @SuppressWarnings("all")
-@RunWith(Suite.class)
-@SuiteClasses({
-	GISShapeFileReaderTest.WithoutDbfWithoutShx.class,
-	GISShapeFileReaderTest.WithDbfWithoutShx.class,
-	GISShapeFileReaderTest.WithoutDbfWithShx.class,
-	GISShapeFileReaderTest.WithDbfWithShx.class,
-})
 public class GISShapeFileReaderTest {
 
 	static final URL shpUrl = Resources.getResource(GISShapeFileReaderTest.class, "test.shp"); //$NON-NLS-1$
@@ -116,16 +113,18 @@ public class GISShapeFileReaderTest {
 
 	};
 
-	public static class WithoutDbfWithoutShx extends AbstractTestCase {
+	@Nested
+	@DisplayName("-DBF-SHX")
+	public class WithoutDbfWithoutShx extends AbstractTestCase {
 
 		private GISShapeFileReader reader;
 
-		@Before
+		@BeforeEach
 		public void setUp() throws Exception {
 			this.reader = new GISShapeFileReader(shpUrl);
 		}
 
-		@After
+		@AfterEach
 		public void tearDown() throws Exception {
 			this.reader.close();
 			this.reader = null;
@@ -198,8 +197,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -216,8 +215,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -234,8 +233,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -258,8 +257,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -273,26 +272,28 @@ public class GISShapeFileReaderTest {
 			
 		}
 
-		@Test(expected = SeekOperationDisabledException.class)
+		@Test
 		public void seek() throws Exception {
-			this.reader.seek(4);
+			assertThrows(SeekOperationDisabledException.class, () -> this.reader.seek(4));
 		}
 		
 	}
 
-	public static class WithDbfWithoutShx extends AbstractTestCase {
+	@Nested
+	@DisplayName("+DBF-SHX")
+	public class WithDbfWithoutShx extends AbstractTestCase {
 
 		private DBaseFileReader dbaseReader;
 
 		private GISShapeFileReader reader;
 
-		@Before
+		@BeforeEach
 		public void setUp() throws Exception {
 			this.dbaseReader = new DBaseFileReader(dbfUrl);
 			this.reader = new GISShapeFileReader(shpUrl, this.dbaseReader);
 		}
 
-		@After
+		@AfterEach
 		public void tearDown() throws Exception {
 			this.dbaseReader.close();
 			this.dbaseReader = null;
@@ -367,8 +368,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -385,8 +386,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -403,8 +404,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -427,8 +428,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -442,26 +443,28 @@ public class GISShapeFileReaderTest {
 			
 		}
 
-		@Test(expected = SeekOperationDisabledException.class)
+		@Test
 		public void seek() throws Exception {
-			this.reader.seek(4);
+			assertThrows(SeekOperationDisabledException.class, () -> this.reader.seek(4));
 		}
 
 	}
 
-	public static class WithoutDbfWithShx extends AbstractTestCase {
+	@Nested
+	@DisplayName("-DBF+SHX")
+	public class WithoutDbfWithShx extends AbstractTestCase {
 
 		private ShapeFileIndexReader shxReader;
 
 		private GISShapeFileReader reader;
 
-		@Before
+		@BeforeEach
 		public void setUp() throws Exception {
 			this.shxReader = new ShapeFileIndexReader(shxUrl);
 			this.reader = new GISShapeFileReader(shpUrl, this.shxReader);
 		}
 
-		@After
+		@AfterEach
 		public void tearDown() throws Exception {
 			this.shxReader.close();
 			this.shxReader = null;
@@ -536,8 +539,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -554,8 +557,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -572,8 +575,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -596,8 +599,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -630,7 +633,9 @@ public class GISShapeFileReaderTest {
 		
 	}
 
-	public static class WithDbfWithShx extends AbstractTestCase {
+	@Nested
+	@DisplayName("+DBF+SHX")
+	public class WithDbfWithShx extends AbstractTestCase {
 
 		private DBaseFileReader dbaseReader;
 
@@ -638,14 +643,14 @@ public class GISShapeFileReaderTest {
 
 		private GISShapeFileReader reader;
 
-		@Before
+		@BeforeEach
 		public void setUp() throws Exception {
 			this.dbaseReader = new DBaseFileReader(dbfUrl);
 			this.shxReader = new ShapeFileIndexReader(shxUrl);
 			this.reader = new GISShapeFileReader(shpUrl, this.dbaseReader, this.shxReader);
 		}
 
-		@After
+		@AfterEach
 		public void tearDown() throws Exception {
 			this.dbaseReader.close();
 			this.dbaseReader = null;
@@ -722,8 +727,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -740,8 +745,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -758,8 +763,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}
@@ -782,8 +787,8 @@ public class GISShapeFileReaderTest {
 				Iterator<Point2d> iterator2 = poly.pointIterator();
 				for (int i = 0; i < ALL_XS[j].length; ++i) {
 					p = iterator2.next();
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; X", ALL_XS[j][i], p.getX()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					assertEpsilonEquals("Polygon #" + j + "; Point #" + i + "; Y", ALL_YS[j][i], p.getY()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_XS[j][i], p.getX(), "Polygon #" + j + "; Point #" + i + "; X"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					assertEpsilonEquals(ALL_YS[j][i], p.getY(), "Polygon #" + j + "; Point #" + i + "; Y"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				assertFalse(iterator2.hasNext());
 			}

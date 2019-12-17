@@ -20,14 +20,14 @@
 
 package org.arakhne.afc.math.tree.iterator;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.arakhne.afc.math.tree.LinkedTree;
 import org.arakhne.afc.math.tree.node.BinaryTreeNode.BinaryTreeZone;
 import org.arakhne.afc.math.tree.node.BinaryTreeNode.DefaultBinaryTreeNode;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * <pre><code>
@@ -110,7 +110,7 @@ public abstract class AbstractTreeIteratorTest {
 	/**
 	 * @throws Exception
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.root = new NodeStub("root");  //$NON-NLS-1$
 		this.child1 = new NodeStub("child1");  //$NON-NLS-1$
@@ -149,7 +149,7 @@ public abstract class AbstractTreeIteratorTest {
 	/**
 	 * @throws Exception
 	 */
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.root = null;
 		this.child1 = null;

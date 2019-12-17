@@ -20,13 +20,13 @@
 
 package org.arakhne.afc.agentmotion.common;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
 public class EvadingAlgorithmTest extends AbstractMathTestCase {
@@ -35,13 +35,13 @@ public class EvadingAlgorithmTest extends AbstractMathTestCase {
 	
 	private EvadingAlgorithm evade;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.flee = new FleeingAlgorithm();
 		this.evade = new EvadingAlgorithm(this.flee, 2);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.evade = null;
 		this.flee = null;

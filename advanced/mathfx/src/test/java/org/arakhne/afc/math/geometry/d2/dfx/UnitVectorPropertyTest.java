@@ -20,12 +20,15 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.arakhne.afc.math.AbstractMathTestCase;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
 public class UnitVectorPropertyTest extends AbstractMathTestCase {
@@ -37,16 +40,16 @@ public class UnitVectorPropertyTest extends AbstractMathTestCase {
 	
 	private UnitVectorProperty property;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.property = new UnitVectorProperty(this, "test", new GeomFactory2dfx()); //$NON-NLS-1$
 		double length = Math.hypot(ox, oy);
 		this.property.set(ox / length, oy / length);
 	}
 	
-	@Test(expected = AssertionError.class)
+	@Test
 	public void setDoubleDouble_notUnitVector() {
-		this.property.set(ox, oy);
+		assertThrows(AssertionError.class, () -> this.property.set(ox, oy));
 	}
 	
 	@Test
@@ -56,9 +59,9 @@ public class UnitVectorPropertyTest extends AbstractMathTestCase {
 		assertEpsilonEquals(-0.999501, this.property.getY());
 	}
 
-	@Test(expected = AssertionError.class)
+	@Test
 	public void setVector2fx_notUnitVector() {
-		this.property.set(new Vector2dfx(ox, oy));
+		assertThrows(AssertionError.class, () -> this.property.set(new Vector2dfx(ox, oy)));
 	}
 	
 	@Test
@@ -68,16 +71,20 @@ public class UnitVectorPropertyTest extends AbstractMathTestCase {
 		assertEpsilonEquals(-0.999501, this.property.getY());
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test
 	public void setVector2D_onVector() {
-		Vector2D v = this.property.get();
-		v.set(new Vector2dfx(0.031598, -0.999501));
+		assertThrows(RuntimeException.class, () -> {
+			Vector2D v = this.property.get();
+			v.set(new Vector2dfx(0.031598, -0.999501));
+		});
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test
 	public void setDoubleDouble_onVector() {
-		Vector2D v = this.property.get();
-		v.set(0.031598, -0.999501);
+		assertThrows(RuntimeException.class, () -> {
+			Vector2D v = this.property.get();
+			v.set(0.031598, -0.999501);
+		});
 	}
 
 	@Test

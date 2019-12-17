@@ -20,14 +20,12 @@
 
 package org.arakhne.afc.gis.bus.network;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.AssertionFailedError;
-
-import org.arakhne.afc.gis.bus.network.BusChangeEvent;
-import org.arakhne.afc.gis.bus.network.BusChangeListener;
 import org.arakhne.afc.gis.bus.network.BusChangeEvent.BusChangeEventType;
 
 /**
@@ -181,7 +179,7 @@ public class TestEventHandler implements BusChangeListener {
 			m.append(Boolean.TRUE);
 			m.append("; actual: "); //$NON-NLS-1$
 			m.append(value);
-			throw new AssertionFailedError(message);
+			fail(message);
 		}
 	}
 
@@ -192,7 +190,7 @@ public class TestEventHandler implements BusChangeListener {
 			m.append(Boolean.TRUE);
 			m.append("; actual: "); //$NON-NLS-1$
 			m.append(value);
-			throw new AssertionFailedError(message);
+			fail(message);
 		}
 	}
 
@@ -202,7 +200,7 @@ public class TestEventHandler implements BusChangeListener {
 			m.append("; no null expected"); //$NON-NLS-1$
 			m.append("; actual: "); //$NON-NLS-1$
 			m.append(actual);
-			throw new AssertionFailedError(m.toString());
+			fail(m.toString());
 		}
 	}
 

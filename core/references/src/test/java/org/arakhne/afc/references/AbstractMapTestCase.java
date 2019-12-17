@@ -20,6 +20,12 @@
 
 package org.arakhne.afc.references;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +33,9 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.testtools.AbstractTestCase;
 
@@ -59,10 +64,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
 	 */
 	protected Map<K,V> map;
 	
-	/**
-	 * @throws Exception
-	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		int count = this.RANDOM.nextInt(400)+100;
 		this.reference = new HashMap<>(count);
@@ -114,7 +116,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
 	/**
 	 * @throws Exception
 	 */
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.map = null;
 		this.unreference = null;
@@ -155,18 +157,18 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
      */
 	@Test
     public void testSize() {
-        Assert.assertEquals(0, this.map.size());
+        assertEquals(0, this.map.size());
         initMapWith(this.reference);        
-        Assert.assertEquals(this.reference.size(), this.map.size());
+        assertEquals(this.reference.size(), this.map.size());
     }
 
     /**
      */
 	@Test
     public void testIsEmpty() {
-		Assert.assertTrue(this.map.isEmpty());
+		assertTrue(this.map.isEmpty());
         initMapWith(this.reference);        
-        Assert.assertFalse(this.map.isEmpty());
+        assertFalse(this.map.isEmpty());
     }
 
     /**
@@ -176,12 +178,12 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
     	Set<Entry<K,V>> entries;
     	
     	entries = this.map.entrySet();
-    	Assert.assertTrue(entries.isEmpty());
+    	assertTrue(entries.isEmpty());
     	
     	initMapWith(this.reference);
 
     	entries = this.map.entrySet();
-    	Assert.assertFalse(entries.isEmpty());
+    	assertFalse(entries.isEmpty());
     	assertEpsilonEquals(this.reference.entrySet(), entries);
     }
 
@@ -193,7 +195,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         int count = this.RANDOM.nextInt(50)+50;
         for(int idx=0; idx<count; idx++) {
         	int index = this.RANDOM.nextInt(this.reference.size());
-        	Assert.assertTrue("#"+idx, this.map.containsKey(key(this.reference,index)));  //$NON-NLS-1$
+        	assertTrue(this.map.containsKey(key(this.reference,index)),"#"+idx);  //$NON-NLS-1$
         }
         count = this.RANDOM.nextInt(5)+5;
         int index;
@@ -201,7 +203,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         	elt = key(this.unreference, index);
-        	Assert.assertFalse("#"+idx, this.map.containsKey(elt));  //$NON-NLS-1$
+        	assertFalse(this.map.containsKey(elt),"#"+idx);  //$NON-NLS-1$
         }
     }
 
@@ -213,7 +215,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         int count = this.RANDOM.nextInt(50)+50;
         for(int idx=0; idx<count; idx++) {
         	int index = this.RANDOM.nextInt(this.reference.size());
-        	Assert.assertTrue("#"+idx, this.map.containsValue(value(this.reference,index)));  //$NON-NLS-1$
+        	assertTrue(this.map.containsValue(value(this.reference,index)),"#"+idx);  //$NON-NLS-1$
         }
         count = this.RANDOM.nextInt(5)+5;
         int index;
@@ -221,7 +223,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         	elt = value(this.unreference, index);
-        	Assert.assertFalse("#"+idx, this.map.containsValue(elt));  //$NON-NLS-1$
+        	assertFalse(this.map.containsValue(elt),"#"+idx);  //$NON-NLS-1$
         }
     }
 
@@ -232,7 +234,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         int count = this.RANDOM.nextInt(50)+50;
         for(int idx=0; idx<count; idx++) {
         	int index = this.RANDOM.nextInt(this.reference.size());
-        	Assert.assertNull("#"+idx, this.map.get(key(this.reference,index)));  //$NON-NLS-1$
+        	assertNull(this.map.get(key(this.reference,index)), "#"+idx);  //$NON-NLS-1$
         }
         count = this.RANDOM.nextInt(5)+5;
         int index;
@@ -240,7 +242,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         	elt = key(this.unreference, index);
-        	Assert.assertNull("#"+idx, this.map.get(elt));  //$NON-NLS-1$
+        	assertNull(this.map.get(elt), "#"+idx);  //$NON-NLS-1$
         }
         
         initMapWith(this.reference);
@@ -249,13 +251,13 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.reference.size());
         	elt = key(this.reference, index);
-        	Assert.assertEquals("#"+idx, this.reference.get(elt), this.map.get(elt));  //$NON-NLS-1$
+        	assertEquals(this.reference.get(elt), this.map.get(elt), "#"+idx);  //$NON-NLS-1$
         }
         count = this.RANDOM.nextInt(5)+5;
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         	elt = key(this.unreference, index);
-        	Assert.assertNull("#"+idx, this.map.get(elt));  //$NON-NLS-1$
+        	assertNull(this.map.get(elt), "#"+idx);  //$NON-NLS-1$
         }
     }
 
@@ -268,7 +270,7 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         	K key = createKeyInstance("tmp/");  //$NON-NLS-1$
         	V value = createValueInstance("tmp/");  //$NON-NLS-1$
         	this.map.put(key, value);
-        	Assert.assertSame(value, this.map.get(key));
+        	assertSame(value, this.map.get(key));
         }
     }
 
@@ -285,15 +287,15 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         for(int idx=0; !this.reference.isEmpty() && idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.reference.size());
         	elt = key(this.reference, index);
-        	Assert.assertSame("#"+idx, this.reference.get(elt), this.map.remove(elt));  //$NON-NLS-1$
+        	assertSame(this.reference.get(elt), this.map.remove(elt), "#"+idx);  //$NON-NLS-1$
         	this.reference.remove(elt);
-        	Assert.assertNull("#"+idx, this.map.get(elt));  //$NON-NLS-1$
+        	assertNull(this.map.get(elt), "#"+idx);  //$NON-NLS-1$
         }
         count = this.RANDOM.nextInt(5)+5;
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         	elt = key(this.unreference, index);
-        	Assert.assertNull("#"+idx, this.map.remove(elt));  //$NON-NLS-1$
+        	assertNull(this.map.remove(elt), "#"+idx);  //$NON-NLS-1$
         }
     }
 
@@ -310,13 +312,13 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.reference.size());
         	elt = key(this.reference, index);
-        	Assert.assertEquals("#"+idx, this.reference.get(elt), this.map.get(elt));  //$NON-NLS-1$
+        	assertEquals(this.reference.get(elt), this.map.get(elt), "#"+idx);  //$NON-NLS-1$
         }
         count = this.RANDOM.nextInt(5)+5;
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         	elt = key(this.unreference, index);
-        	Assert.assertNull("#"+idx, this.map.get(elt));  //$NON-NLS-1$
+        	assertNull(this.map.get(elt), "#"+idx);  //$NON-NLS-1$
         }
     }
 
@@ -324,17 +326,17 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
      */
 	@Test
     public void testClear() {
-		Assert.assertEquals(0, this.map.size());
-		Assert.assertTrue(this.map.isEmpty());
+		assertEquals(0, this.map.size());
+		assertTrue(this.map.isEmpty());
     	
     	initMapWith(this.reference);
-    	Assert.assertEquals(this.reference.size(), this.map.size());
-    	Assert.assertFalse(this.map.isEmpty());
+    	assertEquals(this.reference.size(), this.map.size());
+    	assertFalse(this.map.isEmpty());
     	
     	this.map.clear();
     	
-    	Assert.assertEquals(0, this.map.size());
-    	Assert.assertTrue(this.map.isEmpty());
+    	assertEquals(0, this.map.size());
+    	assertTrue(this.map.isEmpty());
     }
 
     /**
@@ -344,12 +346,12 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
     	Set<K> keys;
     	
     	keys = this.map.keySet();
-    	Assert.assertTrue(keys.isEmpty());
+    	assertTrue(keys.isEmpty());
     	
     	initMapWith(this.reference);
 
     	keys = this.map.keySet();
-    	Assert.assertFalse(keys.isEmpty());
+    	assertFalse(keys.isEmpty());
     	assertEpsilonEquals(this.reference.keySet(), keys);
     }
 
@@ -360,12 +362,12 @@ public abstract class AbstractMapTestCase<K,V> extends AbstractTestCase {
     	Collection<V> values;
     	
     	values = this.map.values();
-    	Assert.assertTrue(values.isEmpty());
+    	assertTrue(values.isEmpty());
     	
     	initMapWith(this.reference);
 
     	values = this.map.values();
-    	Assert.assertFalse(values.isEmpty());
+    	assertFalse(values.isEmpty());
     	assertEpsilonEquals(this.reference.values(), values);
     }
 

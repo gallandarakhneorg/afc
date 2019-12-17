@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.io.shape;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,8 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
@@ -73,7 +76,7 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 	private List<TestingAttributeProvider> attributes;
 	private Point3dExporter exporter;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.data = new Point3d[10];
 		for(int i=0; i<this.data.length; ++i) {
@@ -86,7 +89,7 @@ public class GlobalWriteTest extends AbstractIoShapeTest {
 		this.exporter = new Point3dExporter();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.exporter = null;
 		this.attributes.clear();

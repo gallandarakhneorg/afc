@@ -20,15 +20,19 @@
 
 package org.arakhne.afc.math.geometry.d3.dfx;
 
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.arakhne.afc.math.AbstractMathTestCase;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
+@Disabled("temporary")
 public class UnitVectorProperty3dfxTest extends AbstractMathTestCase {
 
 	private static final double ox = 123.456;
@@ -40,20 +44,20 @@ public class UnitVectorProperty3dfxTest extends AbstractMathTestCase {
 	
 	private UnitVectorProperty3dfx property;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.property = new UnitVectorProperty3dfx(this, "test", new GeomFactory3dfx()); //$NON-NLS-1$
 		double length = Math.sqrt(ox * ox + oy * oy + oz * oz);
 		this.property.set(ox / length, oy / length, oz / length);
 	}
 	
-	@Test(expected = AssertionError.class)
+	@Test
 	public void setDoubleDouble_notUnitVector() {
-		this.property.set(ox, oy, oz);
+		assertThrows(AssertionError.class, () -> this.property.set(ox, oy, oz));
 	}
 	
 	@Test
-	@Ignore
+	@Disabled
 	public void setDoubleDouble_unitVector() {
 		this.property.set(0.031598, -0.999501, 0.417652);
 		assertEpsilonEquals(0.031598, this.property.getX());
@@ -61,13 +65,13 @@ public class UnitVectorProperty3dfxTest extends AbstractMathTestCase {
 		assertEpsilonEquals(0.417652, this.property.getZ());
 	}
 
-	@Test(expected = AssertionError.class)
+	@Test
 	public void setVector3fx_notUnitVector() {
-		this.property.set(new Vector3dfx(ox, oy, oz));
+		assertThrows(AssertionError.class, () -> this.property.set(new Vector3dfx(ox, oy, oz)));
 	}
 	
 	@Test
-	@Ignore
+	@Disabled
 	public void setVector3fx_unitVector() {
 		this.property.set(new Vector3dfx(0.031598, -0.999501, 0.417652));
 		assertEpsilonEquals(0.031598, this.property.getX());
@@ -75,20 +79,24 @@ public class UnitVectorProperty3dfxTest extends AbstractMathTestCase {
 		assertEpsilonEquals(0.417652, this.property.getZ());
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test
 	public void setVector3D_onVector() {
-		Vector3D v = this.property.get();
-		v.set(new Vector3dfx(0.031598, -0.999501, 0.417652));
-	}
-
-	@Test(expected = RuntimeException.class)
-	public void setDoubleDouble_onVector() {
-		Vector3D v = this.property.get();
-		v.set(0.031598, -0.999501, 0.417652);
+		assertThrows(RuntimeException.class, () -> {
+			Vector3D v = this.property.get();
+			v.set(new Vector3dfx(0.031598, -0.999501, 0.417652));
+		});
 	}
 
 	@Test
-	@Ignore
+	public void setDoubleDouble_onVector() {
+		assertThrows(RuntimeException.class, () -> {
+			Vector3D v = this.property.get();
+			v.set(0.031598, -0.999501, 0.417652);
+		});
+	}
+
+	@Test
+	@Disabled
 	public void get() {
 		Vector3D v = this.property.get();
 		assertNotNull(v);

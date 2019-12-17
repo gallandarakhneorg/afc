@@ -20,17 +20,17 @@
 
 package org.arakhne.afc.math.tree.node;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.math.tree.node.OctTreeNode.DefaultOctTreeNode;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 
 /**
@@ -55,7 +55,7 @@ public class OctTreeNodeTest {
 	 * 
 	 * @throws Exception
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.root = new NodeStub("root");  //$NON-NLS-1$
 		this.child1 = new NodeStub("child1");  //$NON-NLS-1$
@@ -75,7 +75,7 @@ public class OctTreeNodeTest {
 	 * 
 	 * @throws Exception
 	 */
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.root.removeTreeNodeListener(this.listener);
 		this.root.clear();

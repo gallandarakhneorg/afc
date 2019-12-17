@@ -20,14 +20,21 @@
 
 package org.arakhne.afc.attrs.collection;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
@@ -44,7 +51,7 @@ public class MultiAttributeProviderTest extends AbstractTestCase {
 	private HeapAttributeCollection subcontainer2;
 	private HeapAttributeCollection subcontainer3;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.container = new MultiAttributeProvider();
 		this.subcontainer1 = new HeapAttributeCollection();
@@ -75,7 +82,7 @@ public class MultiAttributeProviderTest extends AbstractTestCase {
 		this.container.addAttributeContainer(this.subcontainer3);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.container = null;
 		this.subcontainer1 = this.subcontainer2 = this.subcontainer3 = null;

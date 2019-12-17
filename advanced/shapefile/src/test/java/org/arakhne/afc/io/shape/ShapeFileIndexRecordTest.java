@@ -20,9 +20,13 @@
 
 package org.arakhne.afc.io.shape;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author $Author: sgalland$
@@ -37,14 +41,14 @@ public class ShapeFileIndexRecordTest extends AbstractIoShapeTest {
 	private int offset, length;
 	private ShapeFileIndexRecord record;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.offset = 10;
 		this.length = 16;
 		this.record = new ShapeFileIndexRecord(this.offset, this.length, false, -1);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.record = null;
 	}

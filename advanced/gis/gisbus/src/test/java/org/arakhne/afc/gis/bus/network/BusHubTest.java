@@ -20,22 +20,26 @@
 
 package org.arakhne.afc.gis.bus.network;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Iterator;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.arakhne.afc.gis.bus.network.BusHub;
-import org.arakhne.afc.gis.bus.network.BusNetwork;
-import org.arakhne.afc.gis.bus.network.BusStop;
+import org.arakhne.afc.gis.bus.network.BusChangeEvent.BusChangeEventType;
 import org.arakhne.afc.gis.location.GeoLocationPoint;
 import org.arakhne.afc.gis.road.RoadPolyline;
 import org.arakhne.afc.gis.road.StandardRoadNetwork;
 import org.arakhne.afc.gis.road.primitive.RoadNetwork;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.testtools.AbstractTestCase;
-import org.arakhne.afc.gis.bus.network.BusChangeEvent.BusChangeEventType;
 
 /**
  * @author $Author: sgalland$
@@ -66,7 +70,7 @@ public class BusHubTest extends AbstractTestCase {
 		return network;
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.busNetwork = new BusNetwork(readRoadNetwork());
 		this.hub = new BusHub(this.busNetwork, "STATION"); //$NON-NLS-1$
@@ -75,7 +79,7 @@ public class BusHubTest extends AbstractTestCase {
 		this.eventHandler.clear();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.hub.removeBusChangeListener(this.eventHandler);
 		this.hub = null;

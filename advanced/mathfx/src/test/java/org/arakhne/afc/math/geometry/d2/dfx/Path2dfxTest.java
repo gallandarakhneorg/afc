@@ -20,15 +20,23 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyListProperty;
-import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.afp.AbstractPath2afpTest;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.test.geometry.d2.afp.AbstractPath2afpTest;
 
 @SuppressWarnings("all")
 public class Path2dfxTest extends AbstractPath2afpTest<Path2dfx, Rectangle2dfx> {
@@ -38,8 +46,10 @@ public class Path2dfxTest extends AbstractPath2afpTest<Path2dfx, Rectangle2dfx> 
 		return TestShapeFactory2dfx.SINGLETON;
 	}
 
-	@Test
-	public void boundingBoxProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void boundingBoxProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<Rectangle2dfx> property = this.shape.boundingBoxProperty();
 		assertNotNull(property);
 		Rectangle2dfx box = property.get();
@@ -50,8 +60,10 @@ public class Path2dfxTest extends AbstractPath2afpTest<Path2dfx, Rectangle2dfx> 
 		assertEpsilonEquals(3, box.getMaxY());
 	}
 	
-	@Test
-	public void controlPointBoundingBoxProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void controlPointBoundingBoxProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<Rectangle2dfx> property = this.shape.controlPointBoundingBoxProperty();
 		assertNotNull(property);
 		Rectangle2dfx box = property.get();
@@ -62,8 +74,10 @@ public class Path2dfxTest extends AbstractPath2afpTest<Path2dfx, Rectangle2dfx> 
 		assertEpsilonEquals(5, box.getMaxY());
 	}
 	
-	@Test
-	public void coordinatesProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void coordinatesProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ReadOnlyListProperty<Point2dfx> property = this.shape.coordinatesProperty();
 		assertNotNull(property);
 		assertEquals(7, property.size());
@@ -83,50 +97,64 @@ public class Path2dfxTest extends AbstractPath2afpTest<Path2dfx, Rectangle2dfx> 
 		assertEpsilonEquals(-5, property.get(6).getY());
 	}
 	
-	@Test
-	public void isCurvedProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void isCurvedProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isCurvedProperty();
 		assertNotNull(property);
 		assertTrue(property.get());
 	}
 	
-	@Test
-	public void isEmptyProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void isEmptyProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isEmptyProperty();
 		assertNotNull(property);
 		assertFalse(property.get());
 	}
 	
-	@Test
-	public void isMultiPartsProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void isMultiPartsProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isMultiPartsProperty();
 		assertNotNull(property);
 		assertFalse(property.get());
 	}
 	
-	@Test
-	public void isPolygonProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void isPolygonProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isPolygonProperty();
 		assertNotNull(property);
 		assertFalse(property.get());
 	}
 	
-	@Test
-	public void isPolylineProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void isPolylineProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		BooleanProperty property = this.shape.isPolylineProperty();
 		assertNotNull(property);
 		assertFalse(property.get());
 	}
 	
-	@Test
-	public void lengthProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void lengthProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		DoubleProperty property = this.shape.lengthProperty();
 		assertNotNull(property);
 		assertEpsilonEquals(14.71628, property.get());
 	}
 	
-	@Test
-	public void typesProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void typesProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ReadOnlyListProperty<PathElementType> property = this.shape.typesProperty();
 		assertNotNull(property);
 		assertEquals(4, property.size());
@@ -139,8 +167,10 @@ public class Path2dfxTest extends AbstractPath2afpTest<Path2dfx, Rectangle2dfx> 
 		assertSame(PathElementType.CLOSE, property.get(4));
 	}
 	
-	@Test
-	public void windingRuleProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void windingRuleProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<PathWindingRule> property = this.shape.windingRuleProperty();
 		assertNotNull(property);
 		assertSame(PathWindingRule.NON_ZERO, property.get());

@@ -20,13 +20,16 @@
 
 package org.arakhne.afc.gis.mapelement;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.arakhne.afc.gis.AbstractGisTest;
-import org.arakhne.afc.gis.mapelement.MapComposedElement;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 
 /** Abstract unit test for all composed map elements.

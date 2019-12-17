@@ -20,14 +20,17 @@
 
 package org.arakhne.afc.math.geometry.d3.dfx;
 
-import javafx.beans.property.DoubleProperty;
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.arakhne.afc.math.geometry.AbstractTuple3DTest;
+import javafx.beans.property.DoubleProperty;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import org.arakhne.afc.math.test.geometry.AbstractTuple3DTest;
 
 @SuppressWarnings("all")
-@Ignore("temporary")
+@Disabled("temporary")
 public class Tuple3dfxTest extends AbstractTuple3DTest<Tuple3dfx> {
 
 	@Override

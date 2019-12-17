@@ -20,11 +20,16 @@
 
 package org.arakhne.afc.io.shape;
 
-import java.awt.geom.Rectangle2D;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 
 /**
  * @author $Author: sgalland$
@@ -40,7 +45,7 @@ public class ESRIBoundsTest extends AbstractIoShapeTest {
 	private double maxx, maxy, maxz, maxm;
 	private ESRIBounds bounds;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.minx = -getRandom().nextDouble();
 		this.miny = -getRandom().nextDouble();
@@ -55,7 +60,7 @@ public class ESRIBoundsTest extends AbstractIoShapeTest {
 				this.minm, this.maxm);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.bounds = null;
 	}
@@ -230,7 +235,7 @@ public class ESRIBoundsTest extends AbstractIoShapeTest {
 
 	@Test
 	public void testToRectangle2D() {
-		Rectangle2D expected = new Rectangle2D.Double(
+		Rectangle2d expected = new Rectangle2d(
 				this.minx, this.miny,
 				this.maxx - this.minx,
 				this.maxy - this.miny);

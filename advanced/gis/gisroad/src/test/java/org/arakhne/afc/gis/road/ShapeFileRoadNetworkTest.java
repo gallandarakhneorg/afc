@@ -20,11 +20,17 @@
 
 package org.arakhne.afc.gis.road;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
 import org.arakhne.afc.gis.location.GeoLocationUtil;
@@ -49,7 +55,7 @@ public class ShapeFileRoadNetworkTest extends AbstractGisTest {
 
 	private static final String SHP_RESOURCE = "/org/arakhne/afc/gis/road/test.shp"; //$NON-NLS-1$
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		GeoLocationUtil.setGISCoordinateSystemAsDefault();
 	}

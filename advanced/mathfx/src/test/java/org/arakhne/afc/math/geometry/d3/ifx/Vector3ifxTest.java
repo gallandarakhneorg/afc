@@ -20,12 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d3.ifx;
 
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 
-import org.arakhne.afc.math.geometry.AbstractVector3DTest;
+import org.arakhne.afc.math.test.geometry.AbstractVector3DTest;
 
 @SuppressWarnings("all")
-@Ignore("temporary")
+@Disabled("temporary")
 public class Vector3ifxTest extends AbstractVector3DTest<Vector3ifx, Point3ifx, Vector3ifx> {
 
 	@Override

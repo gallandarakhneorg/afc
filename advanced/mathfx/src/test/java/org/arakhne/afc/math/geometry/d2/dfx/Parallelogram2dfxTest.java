@@ -20,11 +20,16 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractParallelogram2afpTest;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.test.geometry.d2.afp.AbstractParallelogram2afpTest;
 
 @SuppressWarnings("all")
 public class Parallelogram2dfxTest extends AbstractParallelogram2afpTest<Parallelogram2dfx, Rectangle2dfx> {
@@ -34,8 +39,10 @@ public class Parallelogram2dfxTest extends AbstractParallelogram2afpTest<Paralle
 		return TestShapeFactory2dfx.SINGLETON;
 	}
 
-	@Test
-	public void centerXProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void centerXProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(this.cx, this.shape.getCenterX());
 		
 		DoubleProperty property = this.shape.centerXProperty();
@@ -46,8 +53,10 @@ public class Parallelogram2dfxTest extends AbstractParallelogram2afpTest<Paralle
 		assertEpsilonEquals(456.159, property.get());
 	}
 
-	@Test
-	public void centerYProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void centerYProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(this.cy, this.shape.getCenterY());
 		
 		DoubleProperty property = this.shape.centerYProperty();
@@ -58,8 +67,10 @@ public class Parallelogram2dfxTest extends AbstractParallelogram2afpTest<Paralle
 		assertEpsilonEquals(456.159, property.get());
 	}
 
-	@Test
-	public void firstAxisProperty_setObject() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void firstAxisProperty_setObject(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
 		assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
 		
@@ -73,8 +84,10 @@ public class Parallelogram2dfxTest extends AbstractParallelogram2afpTest<Paralle
 		assertEpsilonEquals(0.865824, property.getY());
 	}
 
-	@Test
-	public void firstAxisProperty_setProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void firstAxisProperty_setProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(this.ux, this.shape.getFirstAxisX());
 		assertEpsilonEquals(this.uy, this.shape.getFirstAxisY());
 		
@@ -88,14 +101,20 @@ public class Parallelogram2dfxTest extends AbstractParallelogram2afpTest<Paralle
 		assertEpsilonEquals(0.865824, property.getY());
 	}
 
-	@Test(expected = AssertionError.class)
-	public void firstAxisProperty_setProperty_notUnitVector() {
-		UnitVectorProperty property = this.shape.firstAxisProperty();
-		property.set(456.159, 789.357);
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void firstAxisProperty_setProperty_notUnitVector(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+		assertThrows(AssertionError.class, () -> {
+			UnitVectorProperty property = this.shape.firstAxisProperty();
+			property.set(456.159, 789.357);
+		});
 	}
 
-	@Test
-	public void firstAxisExtentProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void firstAxisExtentProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(this.e1, this.shape.getFirstAxisExtent());
 		
 		DoubleProperty property = this.shape.firstAxisExtentProperty();
@@ -106,8 +125,10 @@ public class Parallelogram2dfxTest extends AbstractParallelogram2afpTest<Paralle
 		assertEpsilonEquals(456.159, property.get());
 	}
 
-	@Test
-	public void secondAxisProperty_setObject() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void secondAxisProperty_setObject(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
 		assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
 		
@@ -121,8 +142,10 @@ public class Parallelogram2dfxTest extends AbstractParallelogram2afpTest<Paralle
 		assertEpsilonEquals(0.865824, property.getY());
 	}
 
-	@Test
-	public void secondAxisProperty_setProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void secondAxisProperty_setProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(this.vx, this.shape.getSecondAxisX());
 		assertEpsilonEquals(this.vy, this.shape.getSecondAxisY());
 		
@@ -136,14 +159,20 @@ public class Parallelogram2dfxTest extends AbstractParallelogram2afpTest<Paralle
 		assertEpsilonEquals(0.865824, property.getY());
 	}
 
-	@Test(expected = AssertionError.class)
-	public void secondAxisProperty_setProperty_notUnitVector() {
-		UnitVectorProperty property = this.shape.secondAxisProperty();
-		property.set(456.159, 789.357);
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void secondAxisProperty_setProperty_notUnitVector(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+		assertThrows(AssertionError.class, () -> {
+			UnitVectorProperty property = this.shape.secondAxisProperty();
+			property.set(456.159, 789.357);
+		});
 	}
 
-	@Test
-	public void secondAxisExtentProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void secondAxisExtentProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(this.e2, this.shape.getSecondAxisExtent());
 		
 		DoubleProperty property = this.shape.secondAxisExtentProperty();
@@ -154,8 +183,10 @@ public class Parallelogram2dfxTest extends AbstractParallelogram2afpTest<Paralle
 		assertEpsilonEquals(456.159, property.get());
 	}
 
-	@Test
-	public void boundingBoxProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void boundingBoxProperty(CoordinateSystem2D cs) {
+    	CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<Rectangle2dfx> property = this.shape.boundingBoxProperty();
 		assertNotNull(property);
 		Rectangle2dfx box = property.get();

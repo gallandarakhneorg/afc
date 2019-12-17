@@ -20,16 +20,18 @@
 
 package org.arakhne.afc.gis.io.shape;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.coordinate.MapMetricProjection;
 import org.arakhne.afc.gis.mapelement.MapPolygon;
@@ -49,11 +51,6 @@ import org.arakhne.afc.vmutil.FileSystem;
  * @since 14.0
  */
 @SuppressWarnings("all")
-@RunWith(Suite.class)
-@SuiteClasses({
-	GISShapeFileWriterTest.WithoutDbfWithoutShx.class,
-	GISShapeFileWriterTest.WithDbfWithoutShx.class,
-})
 public class GISShapeFileWriterTest {
 
 	static final double[][] ALL_XS = new double[][] {
@@ -105,20 +102,22 @@ public class GISShapeFileWriterTest {
 
 	};
 
-	public static class WithoutDbfWithoutShx extends AbstractTestCase {
+	@Nested
+	@DisplayName("-DBG-SHX")
+	public class WithoutDbfWithoutShx extends AbstractTestCase {
 
 		private File file;
 	
 		private GISShapeFileWriter writer;
 
-		@Before
+		@BeforeEach
 		public void setUp() throws Exception {
 			ESRIBounds bounds = new ESRIBounds(936456.7, 941093.9, 2300653.7, 2308847.4);
 			this.file = File.createTempFile("unittest", ".shp"); //$NON-NLS-1$ //$NON-NLS-2$
 			this.writer = new GISShapeFileWriter(this.file, ShapeElementType.POLYGON, bounds.toRectangle2d());
 		}
 
-		@After
+		@AfterEach
 		public void tearDown() throws Exception {
 			this.writer.close();
 			this.writer = null;
@@ -190,7 +189,9 @@ public class GISShapeFileWriterTest {
 
 	}
 
-	public static class WithDbfWithoutShx extends AbstractTestCase {
+	@Nested
+	@DisplayName("+DBG-SHX")
+	public class WithDbfWithoutShx extends AbstractTestCase {
 
 		private File file;
 		
@@ -200,7 +201,7 @@ public class GISShapeFileWriterTest {
 
 		private GISShapeFileWriter writer;
 
-		@Before
+		@BeforeEach
 		public void setUp() throws Exception {
 			ESRIBounds bounds = new ESRIBounds(936456.7, 941093.9, 2300653.7, 2308847.4);
 			this.file = File.createTempFile("unittest", ".shp"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -210,7 +211,7 @@ public class GISShapeFileWriterTest {
 					this.dbfWriter);
 		}
 
-		@After
+		@AfterEach
 		public void tearDown() throws Exception {
 			this.writer.close();
 			this.writer = null;

@@ -20,9 +20,9 @@
 
 package org.arakhne.afc.io.shape;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author $Author: sgalland$
@@ -37,7 +37,7 @@ public class ESRIPointTest extends AbstractIoShapeTest {
 	private double x, y, z, m;
 	private ESRIPoint pts;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.x = getRandom().nextDouble();
 		this.y = getRandom().nextDouble();
@@ -46,7 +46,7 @@ public class ESRIPointTest extends AbstractIoShapeTest {
 		this.pts = new ESRIPoint(this.x, this.y, this.z, this.m);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.pts = null;
 	}

@@ -20,20 +20,27 @@
 
 package org.arakhne.afc.gis.grid;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 
-import com.google.common.collect.Iterables;
-import org.junit.After;
-import org.junit.AssumptionViolatedException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.AbstractGisTest;
 import org.arakhne.afc.gis.TestGISReader;
@@ -70,7 +77,7 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 	private Point2d center = null;
 	private Rectangle2d worldBounds = null;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		try {
 			getLogger().info("Reading reference shape file..."); //$NON-NLS-1$
@@ -107,13 +114,13 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 
 			this.center = new Point2d(x,y);
 		} catch (ShapeFileFormatException ex) {
-			throw new AssumptionViolatedException("Cannot read Shape file", ex); //$NON-NLS-1$
+			assumeTrue(false, "Cannot read Shape file: " + ex); //$NON-NLS-1$
 		} finally {
 			getLogger().info("finished"); //$NON-NLS-1$
 		}
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.reference.clear();
 		this.reference = null;
@@ -133,8 +140,13 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 		this.reference.add(new MapPoint(800,0));
 
 		Rectangle2d bounds = new Rectangle2d();
-		bounds.setFromPointCloud(Iterables.transform(this.reference,
-				(it) -> ((MapPoint)it).getPoint()));
+		
+		List<Point2d> transformed = new ArrayList<>();
+		for (final GISPrimitive it : this.reference) {
+			transformed.add(((MapPoint) it).getPoint());
+		}
+		
+		bounds.setFromPointCloud(transformed);
 
 		StandardGISGridSet<GISPrimitive> test = new StandardGISGridSet<>(100, 100, bounds);
 		assertTrue(test.addAll(this.reference));
@@ -329,7 +341,7 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 		Iterator<GISPrimitive> iter = test.iterator();
 		while (iter.hasNext()) {
 			s = iter.next();
-			assertTrue(s.toString(), this.reference.remove(s));
+			assertTrue(this.reference.remove(s), s.toString());
 		}
 
 		assertTrue(this.reference.isEmpty());
@@ -408,10 +420,10 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 			double y = this.worldBounds.getMinY() + rnd.nextDouble() * this.worldBounds.getHeight();
 			GISPrimitive newElement = new MapPoint(x,y);
 			assertTrue(this.reference.add(newElement));
-			assertTrue(msg,test.add(newElement));
-			assertEquals(msg,this.reference.size(), test.size());
-			assertTrue(msg,test.slowContains(newElement));
-			assertEpsilonEquals(msg,this.reference.toArray(),test.toArray());
+			assertTrue(test.add(newElement), msg);
+			assertEquals(this.reference.size(), test.size(), msg);
+			assertTrue(test.slowContains(newElement), msg);
+			assertEpsilonEquals(this.reference.toArray(),test.toArray(), msg);
 			getLogger().info("done"); //$NON-NLS-1$
 		}
 	}
@@ -430,18 +442,18 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 			removalIndex = rnd.nextInt(this.reference.size());
 
 			StandardGISGridSet<GISPrimitive> test = new StandardGISGridSet<>(100,100,this.worldBounds);
-			assertTrue(msg,test.addAll(this.reference));
-			assertEquals(msg,this.reference.size(), test.size());
+			assertTrue(test.addAll(this.reference), msg);
+			assertEquals(this.reference.size(), test.size(), msg);
 
 			GISPrimitive toRemove = this.reference.get(removalIndex);
-			assertTrue(msg,test.slowContains(toRemove));
+			assertTrue(test.slowContains(toRemove), msg);
 
 			// Remove elements
-			assertTrue(msg,test.remove(toRemove));
+			assertTrue(test.remove(toRemove), msg);
 
-			assertFalse(msg,test.slowContains(toRemove));
-			assertTrue(msg, this.reference.remove(toRemove));
-			assertEpsilonEquals(msg,this.reference.toArray(),test.toArray());
+			assertFalse(test.slowContains(toRemove), msg);
+			assertTrue(this.reference.remove(toRemove), msg);
+			assertEpsilonEquals(this.reference.toArray(),test.toArray(), msg);
 			getLogger().info("done"); //$NON-NLS-1$
 		}
 	}
@@ -493,7 +505,7 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 			GISPrimitive primitive;
 			while (iter.hasNext()) {
 				primitive = iter.next();
-				assertTrue(msg, inter.remove(primitive));
+				assertTrue(inter.remove(primitive), msg);
 			}
 
 			if (!inter.isEmpty()) {
@@ -507,7 +519,7 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 				iter = test.iterator(bounds);
 				while (iter.hasNext()) {
 					primitive = iter.next();
-					assertTrue(msg, inter.remove(primitive));
+					assertTrue(inter.remove(primitive), msg);
 				}
 			}
 
@@ -539,7 +551,7 @@ public class StandardGISGridSetTest extends AbstractGisTest {
 			actual = test.get(p.getGeoLocation());
 			try {
 				assertNotNull(actual);
-				assertSame((idx+1)+"/"+count, p, actual); //$NON-NLS-1$
+				assertSame(p, actual, (idx+1)+"/"+count); //$NON-NLS-1$
 			}
 			catch(Throwable exception) {
 				actual = test.get(p.getGeoLocation());

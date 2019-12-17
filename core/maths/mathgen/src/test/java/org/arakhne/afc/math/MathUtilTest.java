@@ -21,8 +21,14 @@
 package org.arakhne.afc.math;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.testtools.AbstractTestCase;
 
@@ -103,14 +109,14 @@ public class MathUtilTest extends AbstractTestCase {
 		assertEpsilonEquals(50, MathUtil.clampCyclic(130, min, max));
 	}
 
-	@Test(expected = AssertionError.class)
+	@Test
 	public void clampCyclic_2() {
-		MathUtil.clampCyclic(100, 123, 56);
+		assertThrows(AssertionError.class, () -> MathUtil.clampCyclic(100, 123, 56));
 	}
 
-	@Test(expected = AssertionError.class)
+	@Test
 	public void clampCyclic_3() {
-		MathUtil.clampCyclic(-100, -56, -123);
+		assertThrows(AssertionError.class, () -> MathUtil.clampCyclic(-100, -56, -123));
 	}
 
 	@Test

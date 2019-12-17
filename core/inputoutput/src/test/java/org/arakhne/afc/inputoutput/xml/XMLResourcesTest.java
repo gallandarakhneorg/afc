@@ -20,13 +20,20 @@
 
 package org.arakhne.afc.inputoutput.xml;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.net.URL;
 import java.util.Map;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.inputoutput.mime.MimeName;
 import org.arakhne.afc.inputoutput.path.SimplePathBuilder;
@@ -40,7 +47,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 	private XMLResources xml;
 	private byte[] data;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.data = new byte[] {1, 2, 3};
 		this.path = new SimplePathBuilder();
@@ -49,7 +56,7 @@ public class XMLResourcesTest extends AbstractTestCase {
 		fillResources();
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.data = null;
 		this.path = null;

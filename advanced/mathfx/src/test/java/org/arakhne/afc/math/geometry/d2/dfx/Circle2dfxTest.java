@@ -20,11 +20,15 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractCircle2afpTest;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.test.geometry.d2.afp.AbstractCircle2afpTest;
 
 @SuppressWarnings("all")
 public class Circle2dfxTest extends AbstractCircle2afpTest<Circle2dfx, Rectangle2dfx> {
@@ -34,8 +38,10 @@ public class Circle2dfxTest extends AbstractCircle2afpTest<Circle2dfx, Rectangle
 		return TestShapeFactory2dfx.SINGLETON;
 	}
 
-	@Test
-	public void xProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void xProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(5, this.shape.getX());
 		
 		DoubleProperty property = this.shape.xProperty();
@@ -46,8 +52,10 @@ public class Circle2dfxTest extends AbstractCircle2afpTest<Circle2dfx, Rectangle
 		assertEpsilonEquals(456.159, property.get());
 	}
 
-	@Test
-	public void yProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void yProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(8, this.shape.getY());
 		
 		DoubleProperty property = this.shape.yProperty();
@@ -58,8 +66,10 @@ public class Circle2dfxTest extends AbstractCircle2afpTest<Circle2dfx, Rectangle
 		assertEpsilonEquals(456.159, property.get());
 	}
 
-	@Test
-	public void radiusProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void radiusProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(5, this.shape.getRadius());
 		
 		DoubleProperty property = this.shape.radiusProperty();
@@ -70,8 +80,10 @@ public class Circle2dfxTest extends AbstractCircle2afpTest<Circle2dfx, Rectangle
 		assertEpsilonEquals(456.159, property.get());
 	}
 
-	@Test
-	public void boundingBoxProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void boundingBoxProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<Rectangle2dfx> property = this.shape.boundingBoxProperty();
 		assertNotNull(property);
 		Rectangle2dfx box = property.get();

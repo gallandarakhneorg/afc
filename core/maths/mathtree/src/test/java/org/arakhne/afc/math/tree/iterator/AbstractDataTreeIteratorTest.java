@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.tree.iterator;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * <pre><code>
@@ -51,7 +51,7 @@ import org.junit.Before;
 @SuppressWarnings("all")
 public abstract class AbstractDataTreeIteratorTest extends AbstractTreeIteratorTest {
 	
-	@Before
+	@BeforeEach
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();

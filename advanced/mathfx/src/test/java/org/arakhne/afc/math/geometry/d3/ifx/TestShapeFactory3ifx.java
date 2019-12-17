@@ -20,14 +20,17 @@
 
 package org.arakhne.afc.math.geometry.d3.ifx;
 
+import org.junit.jupiter.api.Disabled;
+
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.ai.MultiShape3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Segment3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Sphere3ai;
-import org.arakhne.afc.math.geometry.d3.ai.TestShapeFactory3ai;
+import org.arakhne.afc.math.test.geometry.d3.ai.TestShapeFactory3ai;
 
 @SuppressWarnings("all")
+@Disabled("temporary")
 public class TestShapeFactory3ifx implements TestShapeFactory3ai<Point3ifx, Vector3ifx, RectangularPrism3ifx> {
 	
 	public static final TestShapeFactory3ifx SINGLETON = new TestShapeFactory3ifx();

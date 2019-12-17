@@ -20,11 +20,12 @@
 
 package org.arakhne.afc.vmutil;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
 public class CallerTest {
@@ -34,7 +35,7 @@ public class CallerTest {
 	/**
 	 * @throws Exception
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.caller = new InnerCallerTest();
 	}
@@ -42,7 +43,7 @@ public class CallerTest {
 	/**
 	 * @throws Exception
 	 */
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.caller = null;
 	}
@@ -86,8 +87,18 @@ public class CallerTest {
 	}
 
 	/**
+	 * @return caller
+	 */
+	static Class<?> innerFindClassForFirstCallerOutsideVmutilModule() {
+		Class<?> c = Caller.findClassForFirstCallerOutsideVmutilModule();
+		assertNotNull(c);
+		return c;
+	}
+
+	/**
 	 * @throws Exception
 	 */
+	@Test
 	public void getCallerMethod() throws Exception {
     	assertEquals("innerinnerTestGetCallerMethod",  //$NON-NLS-1$
     			this.caller.innerinnerTestGetCallerMethod());
@@ -96,6 +107,7 @@ public class CallerTest {
 	/**
 	 * @throws Exception
 	 */
+	@Test
 	public void getCallerClass() throws Exception {
     	assertEquals(InnerCallerTest.class, this.caller.innerinnerTestGetCallerClass());
 	}
@@ -103,6 +115,7 @@ public class CallerTest {
 	/**
 	 * @throws Exception
 	 */
+	@Test
 	public void getCallerClassInt() throws Exception {
     	assertEquals(CallerTest.class, this.caller.innerinnerTestGetCallerClass(0));
     	assertEquals(InnerCallerTest.class, this.caller.innerinnerTestGetCallerClass(1));
@@ -112,15 +125,23 @@ public class CallerTest {
 	/**
 	 * @throws Exception
 	 */
+	@Test
 	public void getCallerMethodInt() throws Exception {
     	assertEquals("innerTestGetCallerMethod",  //$NON-NLS-1$
     			this.caller.innerinnerTestGetCallerMethod(0));
     	assertEquals("innerinnerTestGetCallerMethod",  //$NON-NLS-1$
     			this.caller.innerinnerTestGetCallerMethod(1));
-    	assertEquals("testGetCallerMethodInt",  //$NON-NLS-1$
+    	assertEquals("getCallerMethodInt",  //$NON-NLS-1$
     			this.caller.innerinnerTestGetCallerMethod(2));
 	}
 	
+	@Test
+	public void findClassForFirstCallerOutsideVmutilModule() throws Exception {
+		Class<?> expected = Caller.getCallerClass();
+		Class<?> c = innerFindClassForFirstCallerOutsideVmutilModule();
+		assertEquals(expected, c);
+	}
+
 	/**
 	 * @author StephanStephanStephane GALLAND
 	 * @version $Name$ $Revision$ $Date$

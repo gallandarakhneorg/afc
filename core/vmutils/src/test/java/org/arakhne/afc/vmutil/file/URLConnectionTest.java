@@ -20,9 +20,9 @@
 
 package org.arakhne.afc.vmutil.file;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -37,9 +37,9 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.vmutil.Resources;
 import org.arakhne.afc.vmutil.URLHandlerUtil;
@@ -54,7 +54,7 @@ public class URLConnectionTest {
 	/**
 	 * @throws Exception
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		URLHandlerUtil.installArakhneHandlers();
 		URL resourceUrl = Resources.getResource(RESOURCE_URL);
@@ -65,7 +65,7 @@ public class URLConnectionTest {
 	/**
 	 * @throws Exception
 	 */
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.connection = null;
 		URLHandlerUtil.uninstallArakhneHandlers();

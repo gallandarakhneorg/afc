@@ -20,13 +20,18 @@
 
 package org.arakhne.afc.io.shape;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.URL;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.vmutil.Resources;
 
@@ -47,14 +52,14 @@ public class ShapeFileIndexReaderTest extends AbstractIoShapeTest {
 	private URL resource;
 	private ShapeFileIndexReader reader;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.resource = Resources.getResource(TEST_FILE);
 		assertNotNull(this.resource);
 		this.reader = new ShapeFileIndexReader(this.resource);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.reader.close();
 		this.reader = null;

@@ -20,13 +20,22 @@
 
 package org.arakhne.afc.math.geometry.d3.ifx;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
-import org.arakhne.afc.math.geometry.d3.ai.AbstractRectangularPrism3aiTest;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.test.geometry.d3.ai.AbstractRectangularPrism3aiTest;
 
 @SuppressWarnings("all")
+@Disabled("temporary")
 public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<RectangularPrism3ifx> {
 
 	@Override
@@ -34,8 +43,10 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 		return TestShapeFactory3ifx.SINGLETON;
 	}
 
-	@Test
-	public void minXProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void minXProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.minXProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.minXProperty();
@@ -43,8 +54,10 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 		assertEquals(5, property.get());
 	}
 
-	@Test
-	public void minYProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void minYProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.minYProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.minYProperty();
@@ -52,8 +65,10 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 		assertEquals(8, property.get());
 	}
 
-	@Test
-	public void maxXProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void maxXProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.maxXProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.maxXProperty();
@@ -61,8 +76,10 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 		assertEquals(15, property.get());
 	}
 
-	@Test
-	public void maxYProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void maxYProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.maxYProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.maxYProperty();
@@ -70,8 +87,10 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 		assertEquals(13, property.get());
 	}
 
-	@Test
-	public void minXPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void minXPropertySetter(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getMinX());
 		assertEquals(8, this.shape.getMinY());
 		assertEquals(15, this.shape.getMaxX());
@@ -84,8 +103,10 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 		assertEquals(13, this.shape.getMaxY());
 	}
 
-	@Test
-	public void minYPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void minYPropertySetter(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getMinX());
 		assertEquals(8, this.shape.getMinY());
 		assertEquals(15, this.shape.getMaxX());
@@ -98,8 +119,10 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 		assertEquals(345, this.shape.getMaxY());
 	}
 
-	@Test
-	public void maxXPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void maxXPropertySetter(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getMinX());
 		assertEquals(8, this.shape.getMinY());
 		assertEquals(15, this.shape.getMaxX());
@@ -112,8 +135,10 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 		assertEquals(13, this.shape.getMaxY());
 	}
 
-	@Test
-	public void maxYPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void maxYPropertySetter(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getMinX());
 		assertEquals(8, this.shape.getMinY());
 		assertEquals(15, this.shape.getMaxX());
@@ -126,10 +151,11 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 		assertEquals(345, this.shape.getMaxY());
 	}
 
-	@Test
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
 	@Override
-	public void testClone() {
-		super.testClone();
+	public void testClone(CoordinateSystem3D cs) {
+		super.testClone(cs);
 		RectangularPrism3ifx clone = this.shape.clone();
 		assertNotSame(this.shape.minXProperty(), clone.minXProperty());
 		assertNotSame(this.shape.maxXProperty(), clone.maxXProperty());
@@ -137,8 +163,10 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 		assertNotSame(this.shape.maxYProperty(), clone.maxYProperty());
 	}
 
-	@Test
-	public void widthProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void widthProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(10, this.shape.getWidth());
 
 		ReadOnlyIntegerProperty property = this.shape.widthProperty();
@@ -155,8 +183,10 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 		assertEpsilonEquals(5, property.get());
 	}
 
-	@Test
-	public void heightProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void heightProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(5, this.shape.getHeight());
 
 		ReadOnlyIntegerProperty property = this.shape.heightProperty();

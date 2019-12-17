@@ -20,11 +20,18 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
-import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
-import org.arakhne.afc.math.geometry.d2.ai.AbstractRectangle2aiTest;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.test.geometry.d2.ai.AbstractRectangle2aiTest;
 
 @SuppressWarnings("all")
 public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
@@ -34,8 +41,10 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 		return TestShapeFactory2ifx.SINGLETON;
 	}
 
-	@Test
-	public void minXProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void minXProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.minXProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.minXProperty();
@@ -43,8 +52,10 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 		assertEquals(5, property.get());
 	}
 
-	@Test
-	public void minYProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void minYProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.minYProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.minYProperty();
@@ -52,8 +63,10 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 		assertEquals(8, property.get());
 	}
 
-	@Test
-	public void maxXProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void maxXProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.maxXProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.maxXProperty();
@@ -61,8 +74,10 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 		assertEquals(15, property.get());
 	}
 
-	@Test
-	public void maxYProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void maxYProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.maxYProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.maxYProperty();
@@ -70,8 +85,10 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 		assertEquals(13, property.get());
 	}
 
-	@Test
-	public void minXPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void minXPropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getMinX());
 		assertEquals(8, this.shape.getMinY());
 		assertEquals(15, this.shape.getMaxX());
@@ -84,8 +101,10 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 		assertEquals(13, this.shape.getMaxY());
 	}
 
-	@Test
-	public void minYPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void minYPropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getMinX());
 		assertEquals(8, this.shape.getMinY());
 		assertEquals(15, this.shape.getMaxX());
@@ -98,8 +117,10 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 		assertEquals(345, this.shape.getMaxY());
 	}
 
-	@Test
-	public void maxXPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void maxXPropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getMinX());
 		assertEquals(8, this.shape.getMinY());
 		assertEquals(15, this.shape.getMaxX());
@@ -112,8 +133,10 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 		assertEquals(13, this.shape.getMaxY());
 	}
 
-	@Test
-	public void maxYPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void maxYPropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getMinX());
 		assertEquals(8, this.shape.getMinY());
 		assertEquals(15, this.shape.getMaxX());
@@ -126,10 +149,11 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 		assertEquals(345, this.shape.getMaxY());
 	}
 
-	@Test
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
 	@Override
-	public void testClone() {
-		super.testClone();
+	public void testClone(CoordinateSystem2D cs) {
+		super.testClone(cs);
 		Rectangle2ifx clone = this.shape.clone();
 		assertNotSame(this.shape.minXProperty(), clone.minXProperty());
 		assertNotSame(this.shape.maxXProperty(), clone.maxXProperty());
@@ -137,8 +161,10 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 		assertNotSame(this.shape.maxYProperty(), clone.maxYProperty());
 	}
 
-	@Test
-	public void widthProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void widthProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(10, this.shape.getWidth());
 
 		ReadOnlyIntegerProperty property = this.shape.widthProperty();
@@ -155,8 +181,10 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 		assertEpsilonEquals(5, property.get());
 	}
 
-	@Test
-	public void heightProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void heightProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(5, this.shape.getHeight());
 
 		ReadOnlyIntegerProperty property = this.shape.heightProperty();

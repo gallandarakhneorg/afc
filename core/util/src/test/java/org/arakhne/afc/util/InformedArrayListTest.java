@@ -20,10 +20,17 @@
 
 package org.arakhne.afc.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
 import java.util.Collections;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author $Author: sgalland$
@@ -33,23 +40,22 @@ import junit.framework.TestCase;
  * @since 14.0
  */
 @SuppressWarnings("all")
-public class InformedArrayListTest extends TestCase {
+public class InformedArrayListTest {
 
 	private InformedArrayList<Object> list;
 	
-	@Override
+	@BeforeEach
 	public void setUp() throws Exception {
-		super.setUp();
 		this.list = new InformedArrayList<>();
 	}
 	
-	@Override
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.list = null;
-		super.tearDown();
 	}
-	
-	public void testExtractClassFromCollection() {
+
+	@Test
+	public void extractClassFromCollection() {
 		for(int i=0; i<10; ++i) {
 			this.list.add(Integer.valueOf(i));
 		}
@@ -66,7 +72,8 @@ public class InformedArrayListTest extends TestCase {
 		assertEquals(Object.class, InformedArrayList.extractClassFrom(this.list));
 	}
 	
-	public void testUpdateComponentTypeE() {
+	@Test
+	public void updateComponentTypeE() {
 		assertNull(this.list.getElementType());
 		this.list.updateComponentType(Integer.valueOf(1));
 		assertEquals(Integer.class, this.list.getElementType());
@@ -76,7 +83,8 @@ public class InformedArrayListTest extends TestCase {
 		assertEquals(Object.class, this.list.getElementType());
 	}
 
-	public void testUpdateComponentTypeCollection() {
+	@Test
+	public void updateComponentTypeCollection() {
 		assertNull(this.list.getElementType());
 		this.list.updateComponentType(Arrays.asList(
 				Integer.valueOf(1),
@@ -86,11 +94,13 @@ public class InformedArrayListTest extends TestCase {
 		assertEquals(Object.class, this.list.getElementType());
 	}
 
-	public void testgetElementType() {
+	@Test
+	public void getElementType() {
 		assertNull(this.list.getElementType());
 	}
 	
-	public void testAddE() {
+	@Test
+	public void addE() {
 		assertNull(this.list.getElementType());
 		
 		assertTrue(this.list.add(Integer.valueOf(1)));
@@ -112,7 +122,8 @@ public class InformedArrayListTest extends TestCase {
 		assertEquals(toString(), this.list.get(2));
 	}
 
-	public void testAddIntE() {
+	@Test
+	public void addIntE() {
 		assertNull(this.list.getElementType());
 		
 		this.list.add(0, Integer.valueOf(1));
@@ -134,7 +145,8 @@ public class InformedArrayListTest extends TestCase {
 		assertEquals(Integer.valueOf(1), this.list.get(2));
 	}
 
-	public void testAddAllCollection() {
+	@Test
+	public void addAllCollection() {
 		assertNull(this.list.getElementType());
 
 		assertTrue(this.list.addAll(Arrays.asList(
@@ -152,7 +164,8 @@ public class InformedArrayListTest extends TestCase {
 		assertEquals(toString(), this.list.get(2));
 	}
 
-	public void testAddAllIntCollection() {
+	@Test
+	public void addAllIntCollection() {
 		assertNull(this.list.getElementType());
 
 		assertTrue(this.list.addAll(0, Arrays.asList(
@@ -170,7 +183,8 @@ public class InformedArrayListTest extends TestCase {
 		assertEquals(Float.valueOf(2f), this.list.get(2));
 	}
 
-	public void testClear() {
+	@Test
+	public void clear() {
 		this.list.add(Integer.valueOf(1));
 		this.list.add(Float.valueOf(2f));
 		assertEquals(Number.class, this.list.getElementType());
@@ -181,7 +195,8 @@ public class InformedArrayListTest extends TestCase {
 		assertEquals(0, this.list.size());
 	}
 
-	public void testSetIntE() {
+	@Test
+	public void setIntE() {
 		this.list.add(Integer.valueOf(1));
 		this.list.add(Float.valueOf(2f));
 		assertEquals(Number.class, this.list.getElementType());
@@ -203,7 +218,8 @@ public class InformedArrayListTest extends TestCase {
 		assertEquals(Double.valueOf(3.), this.list.get(1));
 	}
 
-	public void testRemoveInt_noUpdate() {
+	@Test
+	public void removeInt_noUpdate() {
 		assertFalse(this.list.isTypeRecomputedAfterRemoval());
 		this.list.add(Integer.valueOf(1));
 		this.list.add(Float.valueOf(2f));
@@ -220,7 +236,8 @@ public class InformedArrayListTest extends TestCase {
 		assertNull(this.list.getElementType());
 	}
 	
-	public void testRemoveInt_update() {
+	@Test
+	public void removeInt_update() {
 		this.list.setTypeRecomputedAfterRemoval(true);
 		assertTrue(this.list.isTypeRecomputedAfterRemoval());
 		this.list.add(Integer.valueOf(1));
@@ -238,7 +255,8 @@ public class InformedArrayListTest extends TestCase {
 		assertNull(this.list.getElementType());
 	}
 	
-	public void testRemoveObject_noUpdate() {
+	@Test
+	public void removeObject_noUpdate() {
 		assertFalse(this.list.isTypeRecomputedAfterRemoval());
 		this.list.add(Integer.valueOf(1));
 		this.list.add(Float.valueOf(2f));
@@ -255,7 +273,8 @@ public class InformedArrayListTest extends TestCase {
 		assertNull(this.list.getElementType());
 	}
 	
-	public void testRemoveObject_update() {
+	@Test
+	public void removeObject_update() {
 		this.list.setTypeRecomputedAfterRemoval(true);
 		assertTrue(this.list.isTypeRecomputedAfterRemoval());
 		this.list.add(Integer.valueOf(1));
@@ -273,7 +292,8 @@ public class InformedArrayListTest extends TestCase {
 		assertNull(this.list.getElementType());
 	}
 	
-	public void testRemoveRangeIntInt_noUpdate() {
+	@Test
+	public void removeRangeIntInt_noUpdate() {
 		assertFalse(this.list.isTypeRecomputedAfterRemoval());
 		this.list.add(Integer.valueOf(1));
 		this.list.add(Float.valueOf(2f));
@@ -290,7 +310,8 @@ public class InformedArrayListTest extends TestCase {
 		assertNull(this.list.getElementType());
 	}
 
-	public void testRemoveRangeIntInt_update() {
+	@Test
+	public void removeRangeIntInt_update() {
 		this.list.setTypeRecomputedAfterRemoval(true);
 		assertTrue(this.list.isTypeRecomputedAfterRemoval());
 		this.list.add(Integer.valueOf(1));

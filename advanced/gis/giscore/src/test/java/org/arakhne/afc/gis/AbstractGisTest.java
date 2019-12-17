@@ -20,9 +20,10 @@
 
 package org.arakhne.afc.gis;
 
-import java.util.Objects;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import junit.framework.ComparisonFailure;
+import java.util.Objects;
 
 import org.arakhne.afc.gis.location.GeoLocationUtil;
 import org.arakhne.afc.gis.mapelement.MapElement;
@@ -108,38 +109,38 @@ public class AbstractGisTest extends AbstractTestCase {
 
 	protected void assertEpsilonEquals(MapLayer expected, MapLayer actual) {
 		if (!Objects.equals(expected.getClass(), actual.getClass())) {
-			throw new ComparisonFailure("Not same type", expected.getClass().toString(), //$NON-NLS-1$
+			failCompare("Not same type", expected.getClass().toString(), //$NON-NLS-1$
 					actual.getClass().toString());
 		}
 		if (!Objects.equals(actual.getGeoId(), expected.getGeoId())) {
-			throw new ComparisonFailure("Not same GeoId", expected.getGeoId().toString(), //$NON-NLS-1$
+			failCompare("Not same GeoId", expected.getGeoId().toString(), //$NON-NLS-1$
 					actual.getGeoId().toString());
 		}
 		if (!Objects.equals(expected.getClass(), actual.getClass())) {
-			throw new ComparisonFailure("Not same hashCode", expected.hashKey().toString(), //$NON-NLS-1$
+			failCompare("Not same hashCode", expected.hashKey().toString(), //$NON-NLS-1$
 					actual.getClass().toString());
 		}
 		if (!Objects.equals(expected, actual)) {
-			throw new ComparisonFailure("Not same objects", expected.toString(), //$NON-NLS-1$
+			failCompare("Not same objects", expected.toString(), //$NON-NLS-1$
 					actual.toString());
 		}
 	}
 
 	protected void assertEpsilonEquals(MapElement expected, MapElement actual) {
 		if (!Objects.equals(expected.getClass(), actual.getClass())) {
-			throw new ComparisonFailure("Not same type", expected.getClass().toString(), //$NON-NLS-1$
+			failCompare("Not same type", expected.getClass().toString(), //$NON-NLS-1$
 					actual.getClass().toString());
 		}
 		if (!Objects.equals(actual.getGeoId(), expected.getGeoId())) {
-			throw new ComparisonFailure("Not same GeoId", expected.getGeoId().toString(), //$NON-NLS-1$
+			failCompare("Not same GeoId", expected.getGeoId().toString(), //$NON-NLS-1$
 					actual.getGeoId().toString());
 		}
 		if (!Objects.equals(expected.getClass(), actual.getClass())) {
-			throw new ComparisonFailure("Not same hashCode", expected.hashKey().toString(), //$NON-NLS-1$
+			failCompare("Not same hashCode", expected.hashKey().toString(), //$NON-NLS-1$
 					actual.getClass().toString());
 		}
 		if (!Objects.equals(expected, actual)) {
-			throw new ComparisonFailure("Not same objects", expected.toString(), //$NON-NLS-1$
+			failCompare("Not same objects", expected.toString(), //$NON-NLS-1$
 					actual.toString());
 		}
 	}

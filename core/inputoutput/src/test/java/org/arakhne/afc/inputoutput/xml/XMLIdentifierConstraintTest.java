@@ -20,18 +20,18 @@
 
 package org.arakhne.afc.inputoutput.xml;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
 @SuppressWarnings("all")
@@ -41,13 +41,13 @@ public class XMLIdentifierConstraintTest {
 
 	private XMLIdentifierConstraint constraint;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.id = UUID.randomUUID();
 		this.constraint = new XMLIdentifierConstraint(this.id);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.constraint = null;
 		this.id = null;

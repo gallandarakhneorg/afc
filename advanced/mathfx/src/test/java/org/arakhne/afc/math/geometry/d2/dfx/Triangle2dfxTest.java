@@ -20,11 +20,16 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractTriangle2afpTest;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.test.geometry.d2.afp.AbstractTriangle2afpTest;
 
 @SuppressWarnings("all")
 public class Triangle2dfxTest extends AbstractTriangle2afpTest<Triangle2dfx, Rectangle2dfx> {
@@ -34,8 +39,10 @@ public class Triangle2dfxTest extends AbstractTriangle2afpTest<Triangle2dfx, Rec
 		return TestShapeFactory2dfx.SINGLETON;
 	}
 
-	@Test
-	public void x1Property() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void x1Property(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(5, this.shape.getX1());
 		
 		DoubleProperty property = this.shape.x1Property();
@@ -48,8 +55,10 @@ public class Triangle2dfxTest extends AbstractTriangle2afpTest<Triangle2dfx, Rec
 		assertEpsilonEquals(456.159, this.shape.getX1());
 	}
 
-	@Test
-	public void y1Property() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void y1Property(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(8, this.shape.getY1());
 		
 		DoubleProperty property = this.shape.y1Property();
@@ -62,8 +71,10 @@ public class Triangle2dfxTest extends AbstractTriangle2afpTest<Triangle2dfx, Rec
 		assertEpsilonEquals(456.159, this.shape.getY1());
 	}
 
-	@Test
-	public void x2Property() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void x2Property(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(-10, this.shape.getX2());
 		
 		DoubleProperty property = this.shape.x2Property();
@@ -76,8 +87,10 @@ public class Triangle2dfxTest extends AbstractTriangle2afpTest<Triangle2dfx, Rec
 		assertEpsilonEquals(456.159, this.shape.getX2());
 	}
 
-	@Test
-	public void y2Property() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void y2Property(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(1, this.shape.getY2());
 		
 		DoubleProperty property = this.shape.y2Property();
@@ -90,8 +103,10 @@ public class Triangle2dfxTest extends AbstractTriangle2afpTest<Triangle2dfx, Rec
 		assertEpsilonEquals(456.159, this.shape.getY2());
 	}
 
-	@Test
-	public void x3Property() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void x3Property(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(-1, this.shape.getX3());
 		
 		DoubleProperty property = this.shape.x3Property();
@@ -104,8 +119,10 @@ public class Triangle2dfxTest extends AbstractTriangle2afpTest<Triangle2dfx, Rec
 		assertEpsilonEquals(456.159, this.shape.getX3());
 	}
 
-	@Test
-	public void y3Property() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void y3Property(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(-2, this.shape.getY3());
 		
 		DoubleProperty property = this.shape.y3Property();
@@ -118,8 +135,10 @@ public class Triangle2dfxTest extends AbstractTriangle2afpTest<Triangle2dfx, Rec
 		assertEpsilonEquals(456.159, this.shape.getY3());
 	}
 
-	@Test
-	public void boundingBoxProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void boundingBoxProperty(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<Rectangle2dfx> property = this.shape.boundingBoxProperty();
 		assertNotNull(property);
 		Rectangle2dfx box = property.get();

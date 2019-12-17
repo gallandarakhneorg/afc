@@ -20,14 +20,19 @@
 
 package org.arakhne.afc.io.shape;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.vmutil.Resources;
 
@@ -47,14 +52,14 @@ public class AbstractCommonShapeFileReaderTest extends AbstractIoShapeTest {
 	private URL resource;
 	private AbstractCommonShapeFileReader<Object> reader;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.resource = Resources.getResource(TEST_FILE);
 		assertNotNull(this.resource);
 		this.reader = new AbstractCommonShapeFileReaderStub(this.resource);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.reader.close();
 		this.reader = null;
@@ -159,10 +164,10 @@ public class AbstractCommonShapeFileReaderTest extends AbstractIoShapeTest {
 		SubNumberStub obj;
 		
 		for(int i=0, j=1; i<recordCount/2; ++i, j+=2) {
-			assertTrue("record #"+Integer.toString(i),iterator.hasNext()); //$NON-NLS-1$
+			assertTrue(iterator.hasNext(), "record #"+Integer.toString(i)); //$NON-NLS-1$
 			obj = iterator.next();
-			assertNotNull("record #"+Integer.toString(i), obj); //$NON-NLS-1$
-			assertEquals("record #"+Integer.toString(i), j, obj.intValue()); //$NON-NLS-1$
+			assertNotNull(obj, "record #"+Integer.toString(i)); //$NON-NLS-1$
+			assertEquals(j, obj.intValue(), "record #"+Integer.toString(i)); //$NON-NLS-1$
 		}
 		
 		assertFalse(iterator.hasNext());

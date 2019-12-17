@@ -20,8 +20,11 @@
 
 package org.arakhne.afc.gis.maplayer;
 
-import org.junit.After;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.AbstractGisTest;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -91,7 +94,7 @@ public abstract class AbstractMapLayerTest<L extends MapLayer> extends AbstractG
 	 */
 	protected abstract L createLayer(Rectangle2d bounds);
 
-	@After
+	@AfterEach
 	public final void tearDown() {
 		tearDownTest(this.layer);
 		this.layer = null;

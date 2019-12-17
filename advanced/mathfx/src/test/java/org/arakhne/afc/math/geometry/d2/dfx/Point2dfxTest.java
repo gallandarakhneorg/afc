@@ -20,8 +20,15 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
-import org.arakhne.afc.math.geometry.d2.AbstractPoint2DTest;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.test.geometry.d2.AbstractPoint2DTest;
 
 @SuppressWarnings("all")
 public class Point2dfxTest extends AbstractPoint2DTest<Point2dfx, Vector2dfx, Point2dfx> {
@@ -47,7 +54,10 @@ public class Point2dfxTest extends AbstractPoint2DTest<Point2dfx, Vector2dfx, Po
 	}
 
 	@Override
-	public void operator_andShape2D() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void operator_andShape2D(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Shape2D shape = new Circle2dfx(5, 8, 5);
 		assertFalse(createPoint(0,0).operator_and(shape));
 		assertFalse(createPoint(11,10).operator_and(shape));
@@ -61,7 +71,10 @@ public class Point2dfxTest extends AbstractPoint2DTest<Point2dfx, Vector2dfx, Po
 	}
 
 	@Override
-	public void operator_upToShape2D() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void operator_upToShape2D(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Shape2D shape = new Circle2dfx(5, 8, 5);
 		assertEpsilonEquals(3.74643, createPoint(.5,.5).operator_upTo(shape));
 		assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4).operator_upTo(shape));

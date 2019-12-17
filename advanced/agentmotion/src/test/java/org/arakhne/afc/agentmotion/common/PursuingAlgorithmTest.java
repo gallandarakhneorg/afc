@@ -20,13 +20,13 @@
 
 package org.arakhne.afc.agentmotion.common;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
 public class PursuingAlgorithmTest extends AbstractMathTestCase {
@@ -35,13 +35,13 @@ public class PursuingAlgorithmTest extends AbstractMathTestCase {
 	
 	private PursuingAlgorithm pursue;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.seek = new SeekingAlgorithm();
 		this.pursue = new PursuingAlgorithm(this.seek, 2);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.pursue = null;
 		this.seek = null;

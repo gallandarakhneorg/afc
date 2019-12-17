@@ -20,16 +20,12 @@
 
 package org.arakhne.afc.vmutil;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
 public class ColorNamesTest {
@@ -189,7 +185,7 @@ public class ColorNamesTest {
 	public void getColorNames() {
 		Set<String> names = new TreeSet<>(ColorNames.getColorNames());
 		for (String nm : NAMES) {
-			assertTrue("Missed name: " + nm, names.remove(nm)); //$NON-NLS-1$
+			assertTrue(names.remove(nm), "Missed name: " + nm); //$NON-NLS-1$
 		}
 		assertEquals(0, names.size());
 	}
@@ -197,14 +193,14 @@ public class ColorNamesTest {
 	@Test
 	public void getColorFromNameStringInt() {
 		for (String nm : NAMES) {
-			assertNotEquals("Invalid color: " + nm, 0xFFFFFF, ColorNames.getColorFromName(nm, 0xFFFFFF)); //$NON-NLS-1$
+			assertNotEquals(0xFFFFFF, ColorNames.getColorFromName(nm, 0xFFFFFF), "Invalid color: " + nm); //$NON-NLS-1$
 		}
 	}
 
 	@Test
 	public void getColorFromNameString() {
 		for (String nm : NAMES) {
-			assertNotNull("Invalid color: " + nm, ColorNames.getColorFromName(nm)); //$NON-NLS-1$
+			assertNotNull(ColorNames.getColorFromName(nm), "Invalid color: " + nm); //$NON-NLS-1$
 		}
 	}
 

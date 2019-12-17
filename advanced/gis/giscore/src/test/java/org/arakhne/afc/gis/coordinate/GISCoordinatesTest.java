@@ -20,9 +20,11 @@
 
 package org.arakhne.afc.gis.coordinate;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.AbstractGisTest;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -48,7 +50,7 @@ public class GISCoordinatesTest extends AbstractGisTest {
 	private Point2d lambertIIe_1, lambertIIe_2, lambertIIe_3, lambertIIe_4;
 	private Point2d lambertIIe_5;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		setDecimalPrecision(3);
 		// -------------------
@@ -112,7 +114,7 @@ public class GISCoordinatesTest extends AbstractGisTest {
 		this.lambertIIe_5 = new Point2d(939295.736, 2301730.451);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.wsg1 = this.wsg2 = this.wsg3 = this.wsg4 = this.wsg5 = null;
 		this.lambertIIe_1 = this.lambertIIe_2 = this.lambertIIe_3 = this.lambertIIe_4 = this.lambertIIe_5 = null;

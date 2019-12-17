@@ -20,12 +20,21 @@
 
 package org.arakhne.afc.math.geometry.d3.ifx;
 
-import javafx.beans.property.IntegerProperty;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.arakhne.afc.math.geometry.d3.ai.AbstractSphere3aiTest;
+import javafx.beans.property.IntegerProperty;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.test.geometry.d3.ai.AbstractSphere3aiTest;
 
 @SuppressWarnings("all")
+@Disabled("temporary")
 public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, RectangularPrism3ifx> {
 
 	@Override
@@ -33,8 +42,10 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 		return TestShapeFactory3ifx.SINGLETON;
 	}
 	
-	@Test
-	public void xProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void xProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.xProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.xProperty();
@@ -42,8 +53,10 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 		assertEquals(5, property.get());
 	}
 	
-	@Test
-	public void yProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void yProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 	    IntegerProperty property = this.shape.yProperty();
 	    assertNotNull(property);
 	    IntegerProperty property2 = this.shape.yProperty();
@@ -51,8 +64,10 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 	    assertEquals(8, property.get());
 	}
 
-	@Test
-	public void zProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void zProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.zProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.zProperty();
@@ -60,8 +75,10 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 		assertEquals(0, property.get());
 	}
 
-	@Test
-	public void radiusProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void radiusProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.radiusProperty();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.radiusProperty();
@@ -69,8 +86,10 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 		assertEquals(5, property.get());
 	}
 
-	@Test
-	public void xPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void xPropertySetter(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getX());
 		assertEquals(8, this.shape.getY());
 		assertEquals(0, this.shape.getZ());
@@ -83,8 +102,10 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 		assertEquals(5, this.shape.getRadius());
 	}
 	
-	@Test
-	public void yPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void yPropertySetter(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 	    assertEquals(5, this.shape.getX());
 	    assertEquals(8, this.shape.getY());
 	    assertEquals(0, this.shape.getZ());
@@ -97,8 +118,10 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 	    assertEquals(5, this.shape.getRadius());
 	}
 
-	@Test
-	public void zPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void zPropertySetter(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getX());
 		assertEquals(8, this.shape.getY());
 		assertEquals(0, this.shape.getZ());
@@ -111,8 +134,10 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 		assertEquals(5, this.shape.getRadius());
 	}
 
-	@Test
-	public void radiusPropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void radiusPropertySetter(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEquals(5, this.shape.getX());
 		assertEquals(8, this.shape.getY());
 		assertEquals(0, this.shape.getZ());
@@ -125,10 +150,11 @@ public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, Rectangula
 		assertEquals(345, this.shape.getRadius());
 	}
 
-	@Test
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
 	@Override
-	public void testClone() {
-		super.testClone();
+	public void testClone(CoordinateSystem3D cs) {
+		super.testClone(cs);
 		Sphere3ifx clone = this.shape.clone();
 		assertNotSame(this.shape.xProperty(), clone.xProperty());
 		assertNotSame(this.shape.yProperty(), clone.yProperty());

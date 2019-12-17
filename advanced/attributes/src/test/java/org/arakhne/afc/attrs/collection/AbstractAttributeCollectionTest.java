@@ -20,12 +20,17 @@
 
 package org.arakhne.afc.attrs.collection;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
@@ -44,7 +49,7 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 	}
 	
 	@Override
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		super.setUp();
 		
@@ -59,7 +64,7 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 	}
 	
 	@Override
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.newValues = null;
 		this.listenerStub.reset();
@@ -79,12 +84,12 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		Method method = this.testData.getClass().getMethod("setAttribute", types);  //$NON-NLS-1$
 		Object o = method.invoke(this.testData, parameters);
 
-		assertTrue(this.id, o instanceof Attribute);
-		assertEquals(this.id, attr,o);
+		assertTrue(o instanceof Attribute);
+		assertEquals(attr,o);
 		
-		assertNotNull(this.id, this.testData.getAttribute(name));
-		assertEquals(this.id, attr.getType(),this.testData.getAttribute(name).getType());
-		assertEquals(this.id, attr,this.testData.getAttribute(name));
+		assertNotNull(this.testData.getAttribute(name));
+		assertEquals(attr.getType(),this.testData.getAttribute(name).getType());
+		assertEquals(attr,this.testData.getAttribute(name));
 		
 		// Test events
 		String message = this.id+": set attribute "+name;  //$NON-NLS-1$
@@ -220,13 +225,13 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 	public void removeAttributeString() {
 		String message;
 		
-		assertFalse(this.id, this.testData.removeAttribute("Y"));  //$NON-NLS-1$
+		assertFalse(this.testData.removeAttribute("Y"));  //$NON-NLS-1$
 		// Testing events
 		message = this.id+": removing Y";  //$NON-NLS-1$
 		this.listenerStub.assertEmpty(message);
 		this.listenerStub.reset();
 		
-		assertTrue(this.id, this.testData.removeAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.testData.removeAttribute("C"));  //$NON-NLS-1$
 		// Testing events
 		message = "removing C";  //$NON-NLS-1$
 		this.listenerStub.assertTypes(message, AttributeChangeEvent.Type.REMOVAL);
@@ -236,21 +241,21 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		this.listenerStub.assertOldValues(message, new AttributeValueImpl(true));
 		this.listenerStub.reset();
 
-		assertFalse(this.id, this.testData.removeAttribute("X"));  //$NON-NLS-1$
+		assertFalse(this.testData.removeAttribute("X"));  //$NON-NLS-1$
 		// Testing events
 		message = this.id+": removing X";  //$NON-NLS-1$
 		this.listenerStub.assertEmpty(message);
 		this.listenerStub.reset();
 		
-		assertTrue(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("F"));  //$NON-NLS-1$
 		
 	}
 
@@ -258,17 +263,17 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 	public void removeAllAttributes() {
 		String message;
 		
-		assertTrue(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("F"));  //$NON-NLS-1$
 
-		assertTrue(this.id, this.testData.removeAllAttributes());
+		assertTrue(this.testData.removeAllAttributes());
 		message = this.id+": removing all attributes";  //$NON-NLS-1$
 		this.listenerStub.assertTypes(message, AttributeChangeEvent.Type.REMOVE_ALL);
 		this.listenerStub.assertNames(message, new String[]{null});
@@ -277,48 +282,48 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		this.listenerStub.assertOldValues(message, new AttributeValue[]{null});
 		this.listenerStub.reset();
 
-		assertFalse(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("F"));  //$NON-NLS-1$
 
-		assertFalse(this.id, this.testData.removeAllAttributes());
+		assertFalse(this.testData.removeAllAttributes());
 		this.listenerStub.assertEmpty(message);
 		this.listenerStub.reset();
 
-		assertFalse(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("F"));  //$NON-NLS-1$
 	}
 	
 	@Test
 	public void renameAttribute() {
 		String message;
 		
-		assertTrue(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("F"));  //$NON-NLS-1$
 		
 		AttributeValue oldValue = this.testData.getAttribute("B");  //$NON-NLS-1$
 
-		assertTrue(this.id, this.testData.renameAttribute("B", "ZZZ", false));   //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(this.testData.renameAttribute("B", "ZZZ", false));   //$NON-NLS-1$ //$NON-NLS-2$
 		// Testing events
 		message = this.id+": renaming B to ZZZ";  //$NON-NLS-1$
 		this.listenerStub.assertTypes(message, AttributeChangeEvent.Type.RENAME);
@@ -328,77 +333,77 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		this.listenerStub.assertOldValues(message, oldValue);
 		this.listenerStub.reset();
 
-		assertTrue(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("ZZZ"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("ZZZ"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("F"));  //$NON-NLS-1$
 		
-		assertEquals(this.id, oldValue, this.testData.getAttribute("ZZZ"));  //$NON-NLS-1$
+		assertEquals(oldValue, this.testData.getAttribute("ZZZ"));  //$NON-NLS-1$
 
-		assertFalse(this.id, this.testData.renameAttribute("toto", "XXX", false));   //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse(this.testData.renameAttribute("toto", "XXX", false));   //$NON-NLS-1$ //$NON-NLS-2$
 		// Testing events
 		message = this.id+": renaming toto to XXX";  //$NON-NLS-1$
 		this.listenerStub.assertEmpty(message);
 		this.listenerStub.reset();
 
-		assertTrue(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("ZZZ"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("ZZZ"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("F"));  //$NON-NLS-1$
 		
 		oldValue = this.testData.getAttribute("F");  //$NON-NLS-1$
 		AttributeValue oldValue2 = this.testData.getAttribute("A");  //$NON-NLS-1$
 
-		assertFalse(this.id, this.testData.renameAttribute("F", "A", false));   //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse(this.testData.renameAttribute("F", "A", false));   //$NON-NLS-1$ //$NON-NLS-2$
 		// Testing events
 		message = this.id+": renaming F to A";  //$NON-NLS-1$
 		this.listenerStub.assertEmpty(message);
 		this.listenerStub.reset();
 
-		assertTrue(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("ZZZ"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("ZZZ"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("F"));  //$NON-NLS-1$
 		
-		assertEquals(this.id, oldValue, this.testData.getAttribute("F"));  //$NON-NLS-1$
-		assertEquals(this.id, oldValue2, this.testData.getAttribute("A"));  //$NON-NLS-1$
+		assertEquals(oldValue, this.testData.getAttribute("F"));  //$NON-NLS-1$
+		assertEquals(oldValue2, this.testData.getAttribute("A"));  //$NON-NLS-1$
 	}
 	
 	@Test
 	public void renameAttributeOverwrite() {
 		String message;
 		
-		assertTrue(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("F"));  //$NON-NLS-1$
 		
 		AttributeValue oldValue = this.testData.getAttribute("B");  //$NON-NLS-1$
 
-		assertTrue(this.id, this.testData.renameAttribute("B", "ZZZ", true));   //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(this.testData.renameAttribute("B", "ZZZ", true));   //$NON-NLS-1$ //$NON-NLS-2$
 		// Testing events
 		message = this.id+": renaming B to ZZZ";  //$NON-NLS-1$
 		this.listenerStub.assertTypes(message, AttributeChangeEvent.Type.RENAME);
@@ -408,40 +413,40 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		this.listenerStub.assertOldValues(message, oldValue);
 		this.listenerStub.reset();
 
-		assertTrue(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("ZZZ"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("ZZZ"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("F"));  //$NON-NLS-1$
 		
-		assertEquals(this.id, oldValue, this.testData.getAttribute("ZZZ"));  //$NON-NLS-1$
+		assertEquals(oldValue, this.testData.getAttribute("ZZZ"));  //$NON-NLS-1$
 
-		assertFalse(this.id, this.testData.renameAttribute("toto", "XXX", true));   //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse(this.testData.renameAttribute("toto", "XXX", true));   //$NON-NLS-1$ //$NON-NLS-2$
 		// Testing events
 		message = this.id+": renaming toto to XXX";  //$NON-NLS-1$
 		this.listenerStub.assertEmpty(message);
 		this.listenerStub.reset();
 
-		assertTrue(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("ZZZ"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("ZZZ"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("F"));  //$NON-NLS-1$
 		
 		oldValue = this.testData.getAttribute("F");  //$NON-NLS-1$
 		AttributeValue oldValue2 = this.testData.getAttribute("A");  //$NON-NLS-1$
 
-		assertTrue(this.id, this.testData.renameAttribute("F", "A", true));   //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(this.testData.renameAttribute("F", "A", true));   //$NON-NLS-1$ //$NON-NLS-2$
 		// Testing events
 		message = this.id+": renaming F to A";  //$NON-NLS-1$
 		this.listenerStub.assertTypes(message, AttributeChangeEvent.Type.REMOVAL, AttributeChangeEvent.Type.RENAME);
@@ -451,18 +456,18 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		this.listenerStub.assertOldValues(message, oldValue2, oldValue);
 		this.listenerStub.reset();
 
-		assertTrue(this.id, this.testData.hasAttribute("A"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("X"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("B"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("ZZZ"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Y"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("C"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("D"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("Z"));  //$NON-NLS-1$
-		assertTrue(this.id, this.testData.hasAttribute("E"));  //$NON-NLS-1$
-		assertFalse(this.id, this.testData.hasAttribute("F"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("A"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("X"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("B"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("ZZZ"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Y"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("C"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("D"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("Z"));  //$NON-NLS-1$
+		assertTrue(this.testData.hasAttribute("E"));  //$NON-NLS-1$
+		assertFalse(this.testData.hasAttribute("F"));  //$NON-NLS-1$
 		
-		assertEquals(this.id, oldValue, this.testData.getAttribute("A"));  //$NON-NLS-1$
+		assertEquals(oldValue, this.testData.getAttribute("A"));  //$NON-NLS-1$
 	}
 	
 	protected class ListenerStub implements AttributeChangeListener {
@@ -479,48 +484,48 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		}
 		
 		public void assertEmpty(String message) {
-			assertEquals(message, 0,this.eventList.size());
+			assertEquals(0,this.eventList.size(), message);
 		}
 
 		public void assertTypes(String message, AttributeChangeEvent.Type... desiredTypes) {
-			assertEquals(message, desiredTypes.length, this.eventList.size());
+			assertEquals(desiredTypes.length, this.eventList.size(), message);
 			for(int i=0; i<desiredTypes.length; ++i) {
-				assertEquals(message+" at index "+i, desiredTypes[i], this.eventList.get(i).getType());  //$NON-NLS-1$
+				assertEquals(desiredTypes[i], this.eventList.get(i).getType(), message+" at index "+i);  //$NON-NLS-1$
 			}
 		}
 
 		public void assertNames(String message, String... desiredNames) {
-			assertEquals(message, desiredNames.length, this.eventList.size());
+			assertEquals(desiredNames.length, this.eventList.size(), message);
 			for(int i=0; i<desiredNames.length; ++i) {
-				assertEquals(message+" at index "+i, desiredNames[i], this.eventList.get(i).getName());  //$NON-NLS-1$
+				assertEquals(desiredNames[i], this.eventList.get(i).getName(), message+" at index "+i);  //$NON-NLS-1$
 			}
 		}
 
 		public void assertOldNames(String message, String... desiredNames) {
-			assertEquals(message, desiredNames.length, this.eventList.size());
+			assertEquals(desiredNames.length, this.eventList.size(), message);
 			for(int i=0; i<desiredNames.length; ++i) {
-				assertEquals(message+" at index "+i, desiredNames[i], this.eventList.get(i).getOldName());  //$NON-NLS-1$
+				assertEquals(desiredNames[i], this.eventList.get(i).getOldName(), message+" at index "+i);  //$NON-NLS-1$
 			}
 		}
 
 		public void assertValues(String message, AttributeValue... desiredValues) {
-			assertEquals(message, desiredValues.length, this.eventList.size());
+			assertEquals(desiredValues.length, this.eventList.size(), message);
 			for(int i=0; i<desiredValues.length; ++i) {
-				assertEquals(message+" at index "+i, desiredValues[i], this.eventList.get(i).getValue());  //$NON-NLS-1$
+				assertEquals(desiredValues[i], this.eventList.get(i).getValue(), message+" at index "+i);  //$NON-NLS-1$
 			}
 		}
 
 		public void assertOldValues(String message, AttributeValue... desiredValues) {
-			assertEquals(message, desiredValues.length, this.eventList.size());
+			assertEquals(desiredValues.length, this.eventList.size(), message);
 			for(int i=0; i<desiredValues.length; ++i) {
-				assertEquals(message+" at index "+i, desiredValues[i], this.eventList.get(i).getOldValue());  //$NON-NLS-1$
+				assertEquals(desiredValues[i], this.eventList.get(i).getOldValue(), message+" at index "+i);  //$NON-NLS-1$
 			}
 		}
 
 		public void assertAttributes(String message, Attribute... desiredAttributes) {
-			assertEquals(message, desiredAttributes.length, this.eventList.size());
+			assertEquals(desiredAttributes.length, this.eventList.size(), message);
 			for(int i=0; i<desiredAttributes.length; ++i) {
-				assertEquals(message+" at index "+i, desiredAttributes[i], this.eventList.get(i).getAttribute());  //$NON-NLS-1$
+				assertEquals(desiredAttributes[i], this.eventList.get(i).getAttribute(), message+" at index "+i);  //$NON-NLS-1$
 			}
 		}
 

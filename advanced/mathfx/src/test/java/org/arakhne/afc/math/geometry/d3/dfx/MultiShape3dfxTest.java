@@ -20,14 +20,21 @@
 
 package org.arakhne.afc.math.geometry.d3.dfx;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
-import org.arakhne.afc.math.geometry.d3.afp.AbstractMultiShape3afpTest;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.test.geometry.d3.afp.AbstractMultiShape3afpTest;
 
 @SuppressWarnings("all")
+@Disabled("temporary")
 public class MultiShape3dfxTest extends AbstractMultiShape3afpTest<MultiShape3dfx<Shape3dfx<?>>, Shape3dfx<?>, RectangularPrism3dfx> {
 
 	@Override
@@ -35,9 +42,11 @@ public class MultiShape3dfxTest extends AbstractMultiShape3afpTest<MultiShape3df
 		return TestShapeFactory3dfx.SINGLETON;
 	}
 
-	@Test
-	@Ignore
-	public void boundingBoxProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	@Disabled
+	public void boundingBoxProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		ObjectProperty<RectangularPrism3dfx> property = this.shape.boundingBoxProperty();
 		assertNotNull(property);
 		RectangularPrism3dfx box = property.get();
@@ -50,8 +59,10 @@ public class MultiShape3dfxTest extends AbstractMultiShape3afpTest<MultiShape3df
 		assertEpsilonEquals(20, box.getMaxZ());
 	}
 	
-	@Test
-	public void elementsProperty() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void elementsProperty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		ListProperty<Shape3dfx<?>> property = this.shape.elementsProperty();
 		assertNotNull(property);
 		assertEquals(2, property.size());

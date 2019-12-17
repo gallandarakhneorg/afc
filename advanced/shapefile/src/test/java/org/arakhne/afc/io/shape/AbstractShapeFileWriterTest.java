@@ -20,14 +20,16 @@
 
 package org.arakhne.afc.io.shape;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.AttributeProvider;
 
@@ -44,14 +46,14 @@ public class AbstractShapeFileWriterTest extends AbstractIoShapeTest {
 	private File outputFile;
 	private AbstractShapeFileWriterStub writer;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.outputFile = File.createTempFile("unittest", ".shx"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.outputFile.deleteOnExit();
 		this.writer = new AbstractShapeFileWriterStub(this.outputFile, ShapeElementType.POLYLINE);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.outputFile.delete();
 		this.writer.close();

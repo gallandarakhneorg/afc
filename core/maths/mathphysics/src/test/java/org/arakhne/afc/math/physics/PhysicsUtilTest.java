@@ -22,7 +22,7 @@ package org.arakhne.afc.math.physics;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.math.geometry.d1.Vector1D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
@@ -46,13 +46,6 @@ public class PhysicsUtilTest extends AbstractTestCase {
 	public void motionNewtonEuler1Law1D() {
 		assertInlineParameterUsage(PhysicsUtil.class, "motionNewtonEuler1Law1D", //$NON-NLS-1$
 				double.class, double.class, double.class, double.class);
-	}
-
-	@Test
-	@Deprecated
-	public void motionNewtonEuler1Law1D5Vector2D() {
-		assertInlineParameterUsage(PhysicsUtil.class, "motionNewtonEuler1Law1D5", //$NON-NLS-1$
-				Vector2D.class, double.class, double.class, double.class, Vector2D.class);
 	}
 
 	@Test
@@ -88,13 +81,6 @@ public class PhysicsUtilTest extends AbstractTestCase {
 	public void motionNewtonLaw1D() {
 		assertInlineParameterUsage(PhysicsUtil.class, "motionNewtonLaw1D", //$NON-NLS-1$
 				double.class, double.class, double.class, double.class, double.class, double.class, double.class);
-	}
-
-	@Test
-	@Deprecated
-	public void motionNewtonLaw1D5_deprecated() {
-		assertInlineParameterUsage(PhysicsUtil.class, "motionNewtonLaw1D5", //$NON-NLS-1$
-				Vector2D.class, double.class, double.class, Vector2D.class, double.class, double.class, double.class, Vector2D.class);
 	}
 
 	@Test

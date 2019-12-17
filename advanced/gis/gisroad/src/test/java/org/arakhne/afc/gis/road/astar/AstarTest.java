@@ -20,12 +20,15 @@
 
 package org.arakhne.afc.gis.road.astar;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
 import java.lang.ref.SoftReference;
 import java.net.URL;
 
-import org.junit.AssumptionViolatedException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
 import org.arakhne.afc.gis.location.GeoId;
@@ -112,7 +115,7 @@ public class AstarTest extends AbstractGisTest {
 		}
 	};
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		GeoLocationUtil.setGISCoordinateSystemAsDefault();
 	}
@@ -142,7 +145,7 @@ public class AstarTest extends AbstractGisTest {
 						getLogger().info("done"); //$NON-NLS-1$
 					}
 				} catch (ShapeFileFormatException ex) {
-					throw new AssumptionViolatedException("Cannot read the Shape file", ex); //$NON-NLS-1$
+					assumeTrue(false, "Cannot read the Shape file" + ex); //$NON-NLS-1$
 				} catch(RuntimeException e) {
 					throw e;
 				} catch(Exception e) {
@@ -169,7 +172,7 @@ public class AstarTest extends AbstractGisTest {
 		GeoId geoid = GeoId.valueOf(s);
 		assertNotNull(geoid);
 		RoadSegment segment = getRoadNetwork().getRoadSegment(geoid);
-		assertNotNull("road segment "+s+ "not found", segment); //$NON-NLS-1$ //$NON-NLS-2$
+		assertNotNull(segment, "road segment "+s+ "not found"); //$NON-NLS-1$ //$NON-NLS-2$
 		return segment;
 	}
 
@@ -192,20 +195,20 @@ public class AstarTest extends AbstractGisTest {
 		long index = 0;
 		for(Object[] o : this.DATA_SET) {
 			start = parsePoint((String)o[0]);
-			assertNotNull("On data #"+index, start); //$NON-NLS-1$
+			assertNotNull(start, "On data #"+index); //$NON-NLS-1$
 
 			start2d = toPoint2D(start);
-			assertNotNull("On data #"+index, start2d); //$NON-NLS-1$
+			assertNotNull(start2d, "On data #"+index); //$NON-NLS-1$
 
 			end = parsePoint((String)o[1]);
-			assertNotNull("On data #"+index, end); //$NON-NLS-1$
+			assertNotNull(end, "On data #"+index); //$NON-NLS-1$
 
 			end2d = toPoint2D(end);
-			assertNotNull("On data #"+index, end2d); //$NON-NLS-1$
+			assertNotNull(end2d, "On data #"+index); //$NON-NLS-1$
 
 			if (o[2]!=null) {
 				rawInvertedPath = parsePath((String)o[2]);
-				assertNotNull("On data #"+index, rawInvertedPath); //$NON-NLS-1$
+				assertNotNull(rawInvertedPath, "On data #"+index); //$NON-NLS-1$
 
 				assertEquals(start.getSegment(), rawInvertedPath[rawInvertedPath.length-1]);
 				assertEquals(end.getSegment(), rawInvertedPath[0]);
@@ -213,7 +216,7 @@ public class AstarTest extends AbstractGisTest {
 
 			if (o[3]!=null) {
 				rawPath = parsePath((String)o[3]);
-				assertNotNull("On data #"+index, rawPath); //$NON-NLS-1$
+				assertNotNull(rawPath, "On data #"+index); //$NON-NLS-1$
 
 				assertEquals(start.getSegment(), rawPath[0]);
 				assertEquals(end.getSegment(), rawPath[rawPath.length-1]);
@@ -247,23 +250,25 @@ public class AstarTest extends AbstractGisTest {
 
 			RoadAStar astar = new RoadAStar(heuristic);
 			RoadPath path = astar.solve(start2d, end2d, getRoadNetwork());
-			assertNotNull("On data #"+index+": no path found",path);  //$NON-NLS-1$//$NON-NLS-2$
+			assertNotNull(path, "On data #"+index+": no path found");  //$NON-NLS-1$//$NON-NLS-2$
 
 			if (o[2]!=null) {
 				rawInvertedPath = parsePath((String)o[2]);
 				for(int i=0, j=rawInvertedPath.length-1; j>0; ++i, --j) {
-					assertEquals("On data #"+index+": not same path element at position "+i,  //$NON-NLS-1$//$NON-NLS-2$
+					assertEquals(
 							rawInvertedPath[j],
-							path.get(i));
+							path.get(i),
+							"On data #"+index+": not same path element at position "+i);  //$NON-NLS-1$//$NON-NLS-2$
 				}
 			}
 
 			if (o[3]!=null) {
 				rawPath = parsePath((String)o[3]);
 				for(int i=0; i<rawPath.length; ++i) {
-					assertEquals("On data #"+index+": not same path element at position "+i,  //$NON-NLS-1$//$NON-NLS-2$
+					assertEquals(
 							rawPath[i],
-							path.get(i));
+							path.get(i),
+							"On data #"+index+": not same path element at position "+i);  //$NON-NLS-1$//$NON-NLS-2$
 				}
 			}
 

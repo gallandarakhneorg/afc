@@ -20,26 +20,28 @@
 
 package org.arakhne.afc.agentmotion.kinematic;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.agentmotion.AgentMotion;
-import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
 public class RandomKinematicAlgorithmTest extends AbstractMathTestCase {
 
 	private RandomKinematicAlgorithm random;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.random = new RandomKinematicAlgorithm();
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.random = null;
 	}

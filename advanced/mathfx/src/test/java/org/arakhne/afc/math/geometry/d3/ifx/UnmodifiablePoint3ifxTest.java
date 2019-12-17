@@ -20,14 +20,17 @@
 
 package org.arakhne.afc.math.geometry.d3.ifx;
 
-import org.junit.Ignore;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.arakhne.afc.math.geometry.AbstractUnmodifiablePoint3DTest;
+import org.junit.jupiter.api.Disabled;
+
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
+import org.arakhne.afc.math.test.geometry.AbstractUnmodifiablePoint3DTest;
 
 @SuppressWarnings("all")
-@Ignore("temporary")
+@Disabled("temporary")
 public class UnmodifiablePoint3ifxTest extends AbstractUnmodifiablePoint3DTest<Point3ifx, Vector3ifx> {
 
 	@Override

@@ -20,14 +20,19 @@
 
 package org.arakhne.afc.gis.io.shape;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.mapelement.MapCircle;
 import org.arakhne.afc.gis.mapelement.MapElement;
@@ -57,7 +62,7 @@ public class MapElementGroupTest extends AbstractTestCase {
 
 	private MapElementGroup group;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.point = new MapPoint(0, 0);
 		this.multiPoint = new MapMultiPoint();
@@ -73,7 +78,7 @@ public class MapElementGroupTest extends AbstractTestCase {
 		this.group = new MapElementGroup();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.group = null;
 	}

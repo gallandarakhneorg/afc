@@ -20,11 +20,14 @@
 
 package org.arakhne.afc.gis.location;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
+
 import java.util.UUID;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.AbstractGisTest;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -66,7 +69,7 @@ public class GeoLocationPointListTest extends AbstractGisTest {
 	private GeoLocationPointList location22;
 	private GeoLocationPointList location23;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		// build test data
 
@@ -145,7 +148,7 @@ public class GeoLocationPointListTest extends AbstractGisTest {
 		this.location23 = new GeoLocationPointList(this.coords23);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.location11 = null;
 		this.location12 = null;
@@ -157,13 +160,6 @@ public class GeoLocationPointListTest extends AbstractGisTest {
 		this.coords21 = this.coords22 = this.coords23 = null;
 		this.b11 = this.b12 = this.b13 = null;
 		this.b21 = this.b22 = this.b23 = null;
-	}
-
-	private void assertEquals(double[] expected, float[] actual) {
-		assertEquals(expected.length, actual.length);
-		for(int i=0; i<expected.length; ++i) {
-			assertEpsilonEquals(GeoLocationUtil.castDistance(expected[i]), actual[i]);
-		}
 	}
 
 	private static double[] reverse(double[] t) {
@@ -486,12 +482,12 @@ public class GeoLocationPointListTest extends AbstractGisTest {
 
 	@Test
 	public void testToArray() {
-		assertEquals(this.coords11, this.location11.toArray());
-		assertEquals(reverse(this.coords12), this.location12.toArray());
-		assertEquals(this.coords13, this.location13.toArray());
-		assertEquals(this.coords21, this.location21.toArray());
-		assertEquals(reverse(this.coords22), this.location22.toArray());
-		assertEquals(this.coords23, this.location23.toArray());
+		assertEpsilonArrayEquals(this.coords11, this.location11.toArray());
+		assertEpsilonArrayEquals(reverse(this.coords12), this.location12.toArray());
+		assertEpsilonArrayEquals(this.coords13, this.location13.toArray());
+		assertEpsilonArrayEquals(this.coords21, this.location21.toArray());
+		assertEpsilonArrayEquals(reverse(this.coords22), this.location22.toArray());
+		assertEpsilonArrayEquals(this.coords23, this.location23.toArray());
 	}
 
 	@Test

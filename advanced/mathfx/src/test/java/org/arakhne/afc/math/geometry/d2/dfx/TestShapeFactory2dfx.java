@@ -30,8 +30,8 @@ import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
+import org.arakhne.afc.math.test.geometry.d2.afp.TestShapeFactory;
 
 @SuppressWarnings("all")
 public class TestShapeFactory2dfx implements TestShapeFactory<Point2dfx, Vector2dfx, Rectangle2dfx> {

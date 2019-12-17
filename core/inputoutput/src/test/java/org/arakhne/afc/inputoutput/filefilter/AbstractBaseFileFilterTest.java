@@ -20,16 +20,16 @@
 
 package org.arakhne.afc.inputoutput.filefilter;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.net.URL;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.vmutil.FileSystem;
 import org.arakhne.afc.vmutil.Resources;
@@ -44,15 +44,22 @@ public abstract class AbstractBaseFileFilterTest {
 	
 	protected abstract AbstractFileFilter getFilter();
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
+		URL tmp1 = Thread.currentThread().getContextClassLoader().getResource("org/arakhne/afc/inputoutput/filefilter/test" + getExtension());
+		URL tmp2 = Thread.currentThread().getContextClassLoader().getResource("/org/arakhne/afc/inputoutput/filefilter/test" + getExtension());
+		URL tmp3 = getClass().getResource("org/arakhne/afc/inputoutput/filefilter/test" + getExtension());
+		URL tmp4 = getClass().getResource("/org/arakhne/afc/inputoutput/filefilter/test" + getExtension());
+		URL tmp5 = getClass().getClassLoader().getResource("org/arakhne/afc/inputoutput/filefilter/test" + getExtension());
+		URL tmp6 = getClass().getClassLoader().getResource("/org/arakhne/afc/inputoutput/filefilter/test" + getExtension());
+		URL tmp7 = getClass().getResource("/org/arakhne/afc/inputoutput/filefilter/test.obj");
 		this.resource = Resources.getResource(getClass(), "test" + getExtension()); //$NON-NLS-1$
-		assertNotNull("Resource not found: " + "test" + getExtension(), this.resource); //$NON-NLS-1$ //$NON-NLS-2$
+		assertNotNull(this.resource, "Resource not found: " + "test" + getExtension()); //$NON-NLS-1$ //$NON-NLS-2$
 		this.nothing = Resources.getResource(getClass(), "nothing.bin"); //$NON-NLS-1$
-		assertNotNull("Resource not found: nothing.bin", this.nothing); //$NON-NLS-1$
+		assertNotNull(this.nothing, "Resource not found: nothing.bin"); //$NON-NLS-1$
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.resource = null;
 		this.nothing = null;

@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.dfx;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractPointCollectionTest;
+import org.arakhne.afc.math.test.geometry.d2.afp.AbstractPointCollectionTest;
 
 @SuppressWarnings("all")
 public class Path2dfxPointCollectionTest extends AbstractPointCollectionTest<Point2dfx, Vector2dfx, Rectangle2dfx> {

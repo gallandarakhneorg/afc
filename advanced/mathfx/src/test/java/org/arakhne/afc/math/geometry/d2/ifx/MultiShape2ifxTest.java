@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import org.arakhne.afc.math.geometry.d2.ai.AbstractMultiShape2aiTest;
+import org.arakhne.afc.math.test.geometry.d2.ai.AbstractMultiShape2aiTest;
 
 @SuppressWarnings("all")
 public class MultiShape2ifxTest extends AbstractMultiShape2aiTest<MultiShape2ifx<Shape2ifx<?>>, Shape2ifx<?>, Rectangle2ifx> {

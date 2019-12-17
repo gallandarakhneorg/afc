@@ -20,18 +20,15 @@
 
 package org.arakhne.afc.vmutil;
 
-import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Locale;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
 public class ResourcesTest {
@@ -81,58 +78,6 @@ public class ResourcesTest {
 	}
 
 	@Test
-	public void getResourcePackageString() {
-		ClassLoader l = ResourcesTest.class.getClassLoader();
-		Package p = Package.getPackage(PACKAGE_NAME);
-		assertNull(Resources.getResource(ResourcesTest.class, null));
-
-		URL u1 = Resources.getResource(l, p, TEST_NAME_1);
-		assertNull(u1);
-
-		URL u2 = Resources.getResource(l, p, TEST_NAME_2);
-		assertNull(u2);
-
-		URL u3 = Resources.getResource(l, p, TEST_NAME_3);
-		assertNotNull(u3);
-
-		URL u4 = Resources.getResource(l, p, TEST_NAME_4);
-		assertNotNull(u4);
-
-		assertEquals(u3, u4);
-
-		assertNull(Resources.getResource(l, (Package)null, null));
-
-		u1 = Resources.getResource(l, (Package)null, TEST_NAME_3);
-		assertNull(u1);
-
-		u2 = Resources.getResource(l, (Package)null, TEST_NAME_4);
-		assertNull(u2);
-	}
-
-	@Test
-	public void getResourceClassLoaderString() {
-		assertNull(Resources.getResource(ResourcesTest.class.getClassLoader(), null));    	
-
-		URL u1 = Resources.getResource(ResourcesTest.class.getClassLoader(), TEST_NAME_1);
-		assertNotNull(u1);
-
-		URL u2 = Resources.getResource(ResourcesTest.class.getClassLoader(), TEST_NAME_2);
-		assertNotNull(u2);
-
-		assertEquals(u1,u2);
-
-		assertNull(Resources.getResource((ClassLoader)null, null));    	
-
-		u1 = Resources.getResource((ClassLoader)null, TEST_NAME_1);
-		assertNotNull(u1);
-
-		u2 = Resources.getResource((ClassLoader)null, TEST_NAME_2);
-		assertNotNull(u2);
-
-		assertEquals(u1,u2);
-	}
-
-	@Test
 	public void getResourceAsStreamString() throws IOException {
 		assertNull(Resources.getResourceAsStream(null));
 
@@ -178,71 +123,6 @@ public class ResourcesTest {
 		try (InputStream is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_3)) {
 			assertNull(is);
 		}
-	}
-
-	@Test
-	public void getResourceAsStreamPackageString() throws IOException {
-		ClassLoader l = ResourcesTest.class.getClassLoader();
-		Package p = Package.getPackage(PACKAGE_NAME);
-		assertNull(Resources.getResourceAsStream(ResourcesTest.class, null));
-
-		try (InputStream is = Resources.getResourceAsStream(l, p, TEST_NAME_1)) {
-			assertNull(is);
-		}
-
-		try (InputStream is = Resources.getResourceAsStream(l, p, TEST_NAME_2)) {
-			assertNull(is);
-		}
-
-		try (InputStream is = Resources.getResourceAsStream(l, p, TEST_NAME_3)) {
-			assertNotNull(is);
-		}
-
-		try (InputStream is = Resources.getResourceAsStream(l, p, TEST_NAME_4)) {
-			assertNotNull(is);
-		}
-
-		assertNull(Resources.getResourceAsStream(l, (Package)null, null));
-
-		try (InputStream is = Resources.getResourceAsStream(l, (Package)null, TEST_NAME_1)) {
-			assertNull(is);
-		}
-
-		try (InputStream is = Resources.getResourceAsStream(l, (Package)null, TEST_NAME_2)) {
-			assertNull(is);
-		}
-
-		try (InputStream is = Resources.getResourceAsStream(l, (Package)null, TEST_NAME_3)) {
-			assertNull(is);
-		}
-	}
-
-	@Test
-	public void getResourceAsStreamClassLoaderString() throws IOException {
-		assertNull(Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), null));
-
-		try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), TEST_NAME_1)) {
-			assertNotNull(is);
-		}
-
-		try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), TEST_NAME_2)) {
-			assertNotNull(is);
-		}
-
-		assertNull(Resources.getResourceAsStream((ClassLoader)null, null));
-
-		try (InputStream is = Resources.getResourceAsStream((ClassLoader)null, TEST_NAME_1)) {
-			assertNotNull(is);
-		}
-
-		try (InputStream is = Resources.getResourceAsStream((ClassLoader)null, TEST_NAME_2)) {
-			assertNotNull(is);
-		}
-	}
-
-	@Test
-	public void getPropertyFileClassLocale() {
-		assertInlineParameterUsage(Resources.class, "getPropertyFile", Class.class, Locale.class); //$NON-NLS-1$
 	}
 
 }

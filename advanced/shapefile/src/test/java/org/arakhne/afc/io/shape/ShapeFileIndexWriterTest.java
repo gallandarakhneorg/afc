@@ -20,12 +20,17 @@
 
 package org.arakhne.afc.io.shape;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import java.io.File;
 import java.util.Arrays;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author $Author: sgalland$
@@ -43,7 +48,7 @@ public class ShapeFileIndexWriterTest extends AbstractIoShapeTest {
 	private ShapeFileIndexWriter writer;
 	private int fileSize;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.records = new ShapeFileIndexRecord[10];
 		int offset = ESRIFileUtil.HEADER_BYTES;
@@ -65,7 +70,7 @@ public class ShapeFileIndexWriterTest extends AbstractIoShapeTest {
 		this.writer = new ShapeFileIndexWriter(this.outputFile, ShapeElementType.POLYGON, this.bounds);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.writer.close();
 		this.outputFile.delete();

@@ -20,14 +20,17 @@
 
 package org.arakhne.afc.gis.location;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.UUID;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.AbstractGisTest;
-import org.arakhne.afc.gis.location.GeoLocationNowhere;
 
 /** Unit for for GeoLocation.
  *
@@ -55,7 +58,7 @@ public class GeoLocationNowhereTest extends AbstractGisTest {
 	private GeoLocationNowhere location22;
 	private GeoLocationNowhere location23;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		// build test data
 
@@ -77,7 +80,7 @@ public class GeoLocationNowhereTest extends AbstractGisTest {
 		this.location23 = new GeoLocationNowhere(this.uuid23);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.location11 = null;
 		this.location12 = null;

@@ -20,14 +20,18 @@
 
 package org.arakhne.afc.io.shape;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.attrs.collection.AttributeProvider;
@@ -49,7 +53,7 @@ public class ShapeFileWriterTest extends AbstractIoShapeTest {
 	private Point3d[] points;
 	private int fileSize;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.points = randomPoints3D();
 		
@@ -84,7 +88,7 @@ public class ShapeFileWriterTest extends AbstractIoShapeTest {
 		this.fileSize = ESRIFileUtil.HEADER_BYTES + this.points.length * (8+20);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.outputFile.delete();
 		this.writer.close();

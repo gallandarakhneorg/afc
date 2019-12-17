@@ -20,6 +20,15 @@
 
 package org.arakhne.afc.attrs.attr;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
@@ -29,7 +38,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
@@ -44,11 +53,15 @@ import org.arakhne.afc.testtools.AbstractTestCase;
 public class AttributeTypeTest extends AbstractTestCase {
 
 	protected static void assertCastException(AttributeType type, Object value) {
-		assertException(ClassCastException.class, type, "cast", new Class<?>[] {Object.class}, new Object[] {value});  //$NON-NLS-1$
+		assertThrows(ClassCastException.class, () -> {
+			type.cast(value);
+		});
 	}
 
 	protected static void assertNullException(AttributeType type, Object value) {
-		assertException(NullPointerException.class, type, "cast", new Class<?>[] {Object.class}, new Object[] {value});  //$NON-NLS-1$
+		assertThrows(NullPointerException.class, () -> {
+			type.cast(value);
+		});
 	}
 
 	@Test
@@ -986,7 +999,7 @@ public class AttributeTypeTest extends AbstractTestCase {
 	public void getLocalizedName() {
 		for (AttributeType type : AttributeType.values()) {
 			String name = type.getLocalizedName();
-			assertNotEquals("Invalid attribute name for " + type.name(), "OTHER", name); //$NON-NLS-1$ //$NON-NLS-2$
+			assertNotEquals("OTHER", name, () -> "Invalid attribute name for " + type.name()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 	

@@ -21,13 +21,17 @@
 package org.arakhne.afc.text;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.vmutil.locale.Locale;
@@ -45,40 +49,40 @@ public class TextUtilTest extends AbstractTestCase {
 		res = Locale.getString("A_RESULT").split("\n");   //$NON-NLS-1$ //$NON-NLS-2$
 		actual = TextUtil.cutStringAsArray(src, 80);
 		assertNotNull(actual);
-		Assert.assertEquals(res.length, actual.length);
+		assertEquals(res.length, actual.length);
 		for(int i=0; i<res.length; i++) {
-			assertTrue("A:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80);    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			Assert.assertEquals("A:Line "+(i+1), res[i], actual[i]);  //$NON-NLS-1$
+			assertTrue(actual[i].length()<=80, "A:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length());    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			assertEquals(res[i], actual[i], "A:Line "+(i+1));  //$NON-NLS-1$
 		}
 
 		src = Locale.getString("B_SOURCE");  //$NON-NLS-1$
 		res = Locale.getString("B_RESULT").split("\n");   //$NON-NLS-1$ //$NON-NLS-2$
 		actual = TextUtil.cutStringAsArray(src, 80);
 		assertNotNull(actual);
-		Assert.assertEquals(res.length, actual.length);
+		assertEquals(res.length, actual.length);
 		for(int i=0; i<res.length; i++) {
-			assertTrue("B:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80);    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			Assert.assertEquals("B:Line "+(i+1), res[i], actual[i]);  //$NON-NLS-1$
+			assertTrue(actual[i].length()<=80, "B:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length());    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			assertEquals(res[i], actual[i]," B:Line "+(i+1));  //$NON-NLS-1$
 		}
 
 		src = Locale.getString("C_SOURCE");  //$NON-NLS-1$
 		res = Locale.getString("C_RESULT").split("\n");   //$NON-NLS-1$ //$NON-NLS-2$
 		actual = TextUtil.cutStringAsArray(src, 80);
 		assertNotNull(actual);
-		Assert.assertEquals(res.length, actual.length);
+		assertEquals(res.length, actual.length);
 		for(int i=0; i<res.length; i++) {
-			assertTrue("C:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80);    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			Assert.assertEquals("C:Line "+(i+1), res[i], actual[i]);  //$NON-NLS-1$
+			assertTrue(actual[i].length()<=80, "C:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length());    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			assertEquals(res[i], actual[i], "C:Line "+(i+1));  //$NON-NLS-1$
 		}
 
 		src = Locale.getString("D_SOURCE");  //$NON-NLS-1$
 		res = Locale.getString("D_RESULT").split("\n");   //$NON-NLS-1$ //$NON-NLS-2$
 		actual = TextUtil.cutStringAsArray(src, 80);
 		assertNotNull(actual);
-		Assert.assertEquals(res.length, actual.length);
+		assertEquals(res.length, actual.length);
 		for(int i=0; i<res.length; i++) {
-			assertTrue("D:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80);    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			Assert.assertEquals("D:Line "+(i+1), res[i], actual[i]);  //$NON-NLS-1$
+			assertTrue(actual[i].length()<=80, "D:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length());    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			assertEquals(res[i], actual[i], "D:Line "+(i+1));  //$NON-NLS-1$
 		}
 	}
 
@@ -90,25 +94,25 @@ public class TextUtilTest extends AbstractTestCase {
 		res = Locale.getString("A_RESULT");  //$NON-NLS-1$
 		actual = TextUtil.cutString(src, 80);
 		assertNotNull(actual);
-		Assert.assertEquals("A:", res, actual);  //$NON-NLS-1$
+		assertEquals(res, actual, "A:");  //$NON-NLS-1$
 
 		src = Locale.getString("B_SOURCE");  //$NON-NLS-1$
 		res = Locale.getString("B_RESULT");  //$NON-NLS-1$
 		actual = TextUtil.cutString(src, 80);
 		assertNotNull(actual);
-		Assert.assertEquals("B:", res, actual);  //$NON-NLS-1$
+		assertEquals(res, actual, "B:");  //$NON-NLS-1$
 
 		src = Locale.getString("C_SOURCE");  //$NON-NLS-1$
 		res = Locale.getString("C_RESULT");  //$NON-NLS-1$
 		actual = TextUtil.cutString(src, 80);
 		assertNotNull(actual);
-		Assert.assertEquals("C:", res, actual);  //$NON-NLS-1$
+		assertEquals(res, actual, "C:");  //$NON-NLS-1$
 
 		src = Locale.getString("D_SOURCE");  //$NON-NLS-1$
 		res = Locale.getString("D_RESULT");  //$NON-NLS-1$
 		actual = TextUtil.cutString(src, 80);
 		assertNotNull(actual);
-		Assert.assertEquals("D:", res, actual);  //$NON-NLS-1$
+		assertEquals(res, actual, "D:");  //$NON-NLS-1$
 	}
 	
 	@Test
@@ -349,7 +353,7 @@ public class TextUtilTest extends AbstractTestCase {
 		assertNull(TextUtil.parseHTML(null));
 		
 		actual = TextUtil.parseHTML(source);
-		Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 
 	@Test
@@ -362,7 +366,7 @@ public class TextUtilTest extends AbstractTestCase {
 		assertNull(TextUtil.toHTML(null));
 		
 		actual = TextUtil.toHTML(source);
-		Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 
 	@Test

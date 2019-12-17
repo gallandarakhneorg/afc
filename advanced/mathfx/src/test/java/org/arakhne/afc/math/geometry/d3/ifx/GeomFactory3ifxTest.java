@@ -20,12 +20,15 @@
 
 package org.arakhne.afc.math.geometry.d3.ifx;
 
+import org.junit.jupiter.api.Disabled;
+
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.ai.AbstractGeomFactory3aiTest;
 import org.arakhne.afc.math.geometry.d3.ai.GeomFactory3ai;
+import org.arakhne.afc.math.test.geometry.d3.ai.AbstractGeomFactory3aiTest;
 
 @SuppressWarnings("all")
+@Disabled("temporary")
 public class GeomFactory3ifxTest extends AbstractGeomFactory3aiTest {
 
 	@Override

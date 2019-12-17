@@ -20,11 +20,19 @@
 
 package org.arakhne.afc.gis.road.path;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Iterator;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.road.AbstractGisTest;
 import org.arakhne.afc.gis.road.primitive.RoadSegment;
@@ -58,7 +66,7 @@ public class ClusteredRoadPathTest extends AbstractGisTest {
 	private RoadPath path3;
 	private ClusteredRoadPath cPath;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.connection1 = new RoadConnectionStub("connection1(1,4)", 0., 0.); //$NON-NLS-1$
 		this.connection2 = new RoadConnectionStub("connection2(1,2)",100.,100.); //$NON-NLS-1$
@@ -134,7 +142,7 @@ public class ClusteredRoadPathTest extends AbstractGisTest {
 		this.cPath = new ClusteredRoadPath();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.cPath = null;
 		this.path1 = this.path2 = this.path3 = null;
@@ -433,7 +441,7 @@ public class ClusteredRoadPathTest extends AbstractGisTest {
 		p = this.cPath.first();
 		assertEquals(inverted.size(), p.size());
 		for(int i=0; i<inverted.size(); ++i) {
-			assertEquals(Integer.toString(i), inverted.get(i), p.get(i));
+			assertEquals(inverted.get(i), p.get(i), Integer.toString(i));
 		}
 	}
 

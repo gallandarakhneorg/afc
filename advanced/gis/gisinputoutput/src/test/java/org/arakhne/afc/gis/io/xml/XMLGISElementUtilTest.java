@@ -20,6 +20,9 @@
 
 package org.arakhne.afc.gis.io.xml;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -29,9 +32,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.google.common.io.Resources;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -69,9 +72,9 @@ public class XMLGISElementUtilTest extends AbstractTestCase {
 
 	private Document document;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		assertNotNull("testing resource not found", url); //$NON-NLS-1$
+		assertNotNull(url, "testing resource not found"); //$NON-NLS-1$
 		final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		final DocumentBuilder builder = factory.newDocumentBuilder();
 		try (InputStream is = url.openStream()) {
@@ -79,7 +82,7 @@ public class XMLGISElementUtilTest extends AbstractTestCase {
 		}
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.document = null;
 	}

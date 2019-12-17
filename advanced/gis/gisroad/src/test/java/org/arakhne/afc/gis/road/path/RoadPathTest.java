@@ -20,11 +20,18 @@
 
 package org.arakhne.afc.gis.road.path;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Iterator;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.gis.road.AbstractGisTest;
 import org.arakhne.afc.math.geometry.d1.Direction1D;
@@ -53,7 +60,7 @@ public class RoadPathTest extends AbstractGisTest {
 	private RoadConnectionStub connection8;
 	private RoadConnectionStub connection9;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.connection1 = new RoadConnectionStub("connection1(1,4)", 0., 0.); //$NON-NLS-1$
 		this.connection2 = new RoadConnectionStub("connection2(1,2)",100.,100.); //$NON-NLS-1$
@@ -110,7 +117,7 @@ public class RoadPathTest extends AbstractGisTest {
 		this.connection3.addSegment(this.segment11);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.segment1 = this.segment2 = this.segment3 = this.segment4 = this.segment5 = null;
 		this.segment6 = this.segment7 = this.segment8 = this.segment9 = null;

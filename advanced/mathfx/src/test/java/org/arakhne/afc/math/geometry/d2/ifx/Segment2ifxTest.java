@@ -20,10 +20,18 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import javafx.beans.property.IntegerProperty;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.arakhne.afc.math.geometry.d2.ai.AbstractSegment2aiTest;
+import javafx.beans.property.IntegerProperty;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.test.geometry.d2.ai.AbstractSegment2aiTest;
 
 @SuppressWarnings("all")
 public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectangle2ifx> {
@@ -33,8 +41,10 @@ public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectang
 		return TestShapeFactory2ifx.SINGLETON;
 	}
 
-	@Test
-	public void x1Property() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void x1Property(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.x1Property();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.x1Property();
@@ -42,8 +52,10 @@ public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectang
 		assertEquals(0, property.get());
 	}
 
-	@Test
-	public void y1Property() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void y1Property(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.y1Property();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.y1Property();
@@ -51,8 +63,10 @@ public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectang
 		assertEquals(0, property.get());
 	}
 
-	@Test
-	public void x2Property() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void x2Property(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.x2Property();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.x2Property();
@@ -60,8 +74,10 @@ public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectang
 		assertEquals(10, property.get());
 	}
 
-	@Test
-	public void y2Property() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void y2Property(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		IntegerProperty property = this.shape.y2Property();
 		assertNotNull(property);
 		IntegerProperty property2 = this.shape.y2Property();
@@ -69,8 +85,10 @@ public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectang
 		assertEquals(5, property.get());
 	}
 
-	@Test
-	public void x1PropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void x1PropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEquals(0, this.shape.getX1());
 		assertEquals(0, this.shape.getY1());
 		assertEquals(10, this.shape.getX2());
@@ -83,8 +101,10 @@ public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectang
 		assertEquals(5, this.shape.getY2());
 	}
 
-	@Test
-	public void y1PropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void y1PropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEquals(0, this.shape.getX1());
 		assertEquals(0, this.shape.getY1());
 		assertEquals(10, this.shape.getX2());
@@ -97,8 +117,10 @@ public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectang
 		assertEquals(5, this.shape.getY2());
 	}
 
-	@Test
-	public void x2PropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void x2PropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEquals(0, this.shape.getX1());
 		assertEquals(0, this.shape.getY1());
 		assertEquals(10, this.shape.getX2());
@@ -111,8 +133,10 @@ public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectang
 		assertEquals(5, this.shape.getY2());
 	}
 
-	@Test
-	public void y2PropertySetter() {
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void y2PropertySetter(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		assertEquals(0, this.shape.getX1());
 		assertEquals(0, this.shape.getY1());
 		assertEquals(10, this.shape.getX2());
@@ -125,10 +149,11 @@ public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectang
 		assertEquals(345, this.shape.getY2());
 	}
 
-	@Test
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem2D.class)
 	@Override
-	public void testClone() {
-		super.testClone();
+	public void testClone(CoordinateSystem2D cs) {
+		super.testClone(cs);
 		Segment2ifx clone = this.shape.clone();
 		assertNotSame(this.shape.x1Property(), clone.x1Property());
 		assertNotSame(this.shape.y1Property(), clone.y1Property());

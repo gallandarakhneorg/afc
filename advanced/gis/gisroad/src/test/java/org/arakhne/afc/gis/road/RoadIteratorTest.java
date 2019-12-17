@@ -20,11 +20,14 @@
 
 package org.arakhne.afc.gis.road;
 
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
 import org.arakhne.afc.gis.location.GeoLocationUtil;
@@ -53,7 +56,7 @@ public class RoadIteratorTest extends AbstractGisTest {
 	private RoadSegmentStub segment1, segment2, segment3, segment4, segment5;
 	private RoadSegmentStub segment6, segment7, segment8, segment9;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		GeoLocationUtil.setGISCoordinateSystemAsDefault();
 		try {
@@ -97,7 +100,7 @@ public class RoadIteratorTest extends AbstractGisTest {
 		}
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.segment1 = this.segment2 = this.segment3 = this.segment4 = this.segment5 = null;
 		this.segment6 = this.segment7 = this.segment8 = this.segment9 = null;

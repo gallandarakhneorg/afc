@@ -21,12 +21,12 @@
 package org.arakhne.afc.vmutil;
 
 import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,10 +40,10 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ComparisonFailure;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 
 @SuppressWarnings("all")
 public class FileSystemTest {
@@ -52,7 +52,7 @@ public class FileSystemTest {
 
 	public static void assertEquals(Object a, Object b) {
 		if (!Objects.equals(a, b)) {
-			throw new ComparisonFailure("not equal", Objects.toString(a), Objects.toString(b)); //$NON-NLS-1$
+			fail("not equal"); //$NON-NLS-1$
 		}
 	}
 
@@ -165,14 +165,14 @@ public class FileSystemTest {
 		return new URL("jar:file:" + createJarFilenameForUrlWithSpaces() + "!" + createInJarFilename()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		// Disable native library loading during unit tests
 		this.oldLibraryLoaderState = LibraryLoader.isEnable();
 		LibraryLoader.setEnable(false);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		// Restore library loading state
 		LibraryLoader.setEnable(this.oldLibraryLoaderState);

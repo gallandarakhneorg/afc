@@ -20,24 +20,24 @@
 
 package org.arakhne.afc.agentmotion.kinematic;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
 public class ArrivingKinematicAlgorithmTest extends AbstractMathTestCase {
 
 	private ArrivingKinematicAlgorithm arriving;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.arriving = new ArrivingKinematicAlgorithm(.5);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.arriving = null;
 	}

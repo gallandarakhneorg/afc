@@ -20,11 +20,13 @@
 
 package org.arakhne.afc.inputoutput.xml;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.net.URL;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.InputSource;
 
 import org.arakhne.afc.testtools.AbstractTestCase;
@@ -35,12 +37,12 @@ public class DefaultXMLEntityResolverTest extends AbstractTestCase {
 
 	private DefaultXMLEntityResolver resolver;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.resolver = new DefaultXMLEntityResolver();
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.resolver = null;
 	}
