@@ -6,7 +6,7 @@ sudo: required
 
 env:
   global:
-    - MAVEN_VERSION: "3.6.2"
+    - MAVEN_VERSION: "3.6.3"
     - MAVEN_OPTS: "-XX:+CMSClassUnloadingEnabled -Xmx1g" #-Dorg.slf4j.simpleLogger.defaultLogLevel=warn 
     - MAVEN_COMPILATION_OPTS: "\"-e\""
     - secure: "akKEf27hEycPBpOjfQQ6O3Gt92IlgQCl+fRnmN2kZxBE7Gnm/BqDHQbM/IbixzfWWthvaIgI85BTljNRH2qNq5W/GSPixUd9bfqKI9WL8b1uvv00OxOXsPOcqbEjxBVP0zivxpPDWNX1Fefu7W4Lb/Yaa2ju5uCMBxTl1r2ug5U="
@@ -20,7 +20,7 @@ matrix:
           packages:
           - openjfx
           - xvfb
-      jdk: openjdk8
+      jdk: openjdk11
       env:
       - OPENJFX_LIB_PATH: "/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar"
       - M2_HOME: "$HOME/.binaries/apache-maven-${MAVEN_VERSION}"
@@ -31,7 +31,7 @@ matrix:
       - echo "MAVEN_OPTS=\"$MAVEN_OPTS\"" > $HOME/.mavenrc
       - ./build-tools/src/main/resources/bash/travis-download-maven.sh "$MAVEN_VERSION"
     - os: osx
-      osx_image: xcode8.3 # see https://docs.travis-ci.com/user/osx-ci-environment/
+      osx_image: xcode10.1 # see https://docs.travis-ci.com/user/osx-ci-environment/
       env:
       - _JAVA_OPTIONS="-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500"
       before_install:
@@ -47,6 +47,6 @@ cache:
   - $HOME/.m2
   - $HOME/.binaries
 
-after_success:
-  - "[[ ${TRAVIS_OS_NAME} == 'linux' ]] && [[ ${TRAVIS_PULL_REQUEST} == 'false' ]] && [[ ${TRAVIS_TAG} == '' ]] && [[ ${TRAVIS_BRANCH} == 'master' ]] && mvn -B deploy -DskipTests -Dcheckstyle.skip=true --settings build-tools/src/main/resources/maven/deploy-settings.xml"
+#after_success:
+#  - "[[ ${TRAVIS_OS_NAME} == 'linux' ]] && [[ ${TRAVIS_PULL_REQUEST} == 'false' ]] && [[ ${TRAVIS_TAG} == '' ]] && [[ ${TRAVIS_BRANCH} == 'master' ]] && mvn -B deploy -DskipTests -Dcheckstyle.skip=true --settings build-tools/src/main/resources/maven/deploy-settings.xml"
 
