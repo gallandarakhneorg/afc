@@ -25,11 +25,11 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 
-import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 3D Vector with 3 double precision floating-point FX properties.
@@ -195,7 +195,7 @@ public class Vector3dfx extends Tuple3dfx<Vector3dfx> implements Vector3D<Vector
 
 	@Override
 	public UnmodifiableVector3D<Vector3dfx, Point3dfx> toUnmodifiable() {
-		return new UnmodifiableVector3D<Vector3dfx, Point3dfx>() {
+		return new UnmodifiableVector3D<>() {
 
 			private static final long serialVersionUID = 1638306005394957111L;
 

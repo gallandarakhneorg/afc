@@ -33,7 +33,7 @@ import org.arakhne.afc.math.geometry.d1.Vector1D;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-final class InnerComputationGeomFactory extends AbstractGeomFactory1D<InnerComputationVector1afp, InnerComputationPoint1afp> {
+public final class InnerComputationGeomFactory extends AbstractGeomFactory1D<InnerComputationVector1afp, InnerComputationPoint1afp> {
 
 	/** Singleton of the factory.
 	 */

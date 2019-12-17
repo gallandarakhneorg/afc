@@ -20,15 +20,17 @@
 
 package org.arakhne.afc.gis.bus.io.xml;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.StringWriter;
 import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -68,7 +70,7 @@ public class XMLBusNetworkUtilTest extends AbstractTestCase {
 
 	private StandardRoadNetwork network;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		try (GISShapeFileReader reader = new GISShapeFileReader(shpUrl, RoadPolyline.class)) {
 			this.network = new StandardRoadNetwork(reader.getBoundsFromHeader().toRectangle2d());
@@ -80,7 +82,7 @@ public class XMLBusNetworkUtilTest extends AbstractTestCase {
 		}
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.network = null;
 	}

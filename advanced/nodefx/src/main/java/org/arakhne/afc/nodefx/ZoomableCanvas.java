@@ -350,10 +350,14 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 									docgc.setStroke(Color.RED);
 									docgc.setLineWidthInPixels(5);
 									docgc.beginPath();
-									docgc.moveTo(viewport.getMinX() + fifteenPixels, viewport.getMinY() + fifteenPixels);
-									docgc.lineTo(viewport.getMaxX() - fifteenPixels, viewport.getMinY() + fifteenPixels);
-									docgc.lineTo(viewport.getMaxX() - fifteenPixels, viewport.getMaxY() - fifteenPixels);
-									docgc.lineTo(viewport.getMinX() + fifteenPixels, viewport.getMaxY() - fifteenPixels);
+									docgc.moveTo(viewport.getMinX() + fifteenPixels,
+										viewport.getMinY() + fifteenPixels);
+									docgc.lineTo(viewport.getMaxX() - fifteenPixels,
+										viewport.getMinY() + fifteenPixels);
+									docgc.lineTo(viewport.getMaxX() - fifteenPixels,
+										viewport.getMaxY() - fifteenPixels);
+									docgc.lineTo(viewport.getMinX() + fifteenPixels,
+										viewport.getMaxY() - fifteenPixels);
 									docgc.closePath();
 									docgc.stroke();*/
 								}
@@ -383,13 +387,13 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 	@Override
 	public ObjectProperty<T> documentModelProperty() {
 		if (this.model == null) {
-			this.model = new SimpleObjectProperty<T>(this, DOCUMENT_MODEL_PROPERTY) {
+			this.model = new SimpleObjectProperty<>(this, DOCUMENT_MODEL_PROPERTY) {
 				@Override
 				protected void invalidated() {
 					assert get() != null;
 				}
 			};
-			final ChangeListener<? super T> listener = new ChangeListener<T>() {
+			final ChangeListener<? super T> listener = new ChangeListener<>() {
 				@Override
 				public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
 					if (oldValue != null) {
@@ -427,7 +431,6 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 		//
 	}
 
-
 	/** Invoked when the given model is unbinded from this canvas.
 	 *
 	 * <p>This function is defined in order to be overridden by sub-classes for
@@ -444,7 +447,7 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 	public ObjectProperty<Drawer<? super T>> documentDrawerProperty() {
 		if (this.drawer == null) {
 			final Drawer<? super T> defaultDrawer = Drawers.getDrawerFor(getDocumentModel());
-			this.drawer = new SimpleObjectProperty<Drawer<? super T>>(this, DOCUMENT_DRAWER_PROPERTY, defaultDrawer) {
+			this.drawer = new SimpleObjectProperty<>(this, DOCUMENT_DRAWER_PROPERTY, defaultDrawer) {
 				@Override
 				protected void invalidated() {
 					if (get() == null) {

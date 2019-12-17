@@ -555,7 +555,6 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 			//
 		}
 
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public void onAttributeChangeEvent(AttributeChangeEvent event) {
 			if (MultiAttributeCollection.this.runProviderEvents.get()) {

@@ -29,9 +29,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.tree.TreeNode;
 
-
-/**
- * This is the generic implementation of a n-ary
+/** This is the generic implementation of a n-ary
  * tree. This node has a constant count of children.
  * Indeed when a child node was removed, the count of children
  * is not changed. It also means that a child node could be
@@ -331,7 +329,7 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {
-			heights.add(new Integer(currentHeight));
+			heights.add(Integer.valueOf(currentHeight));
 		} else {
 			for (final N child : this.children) {
 				if (child != null) {

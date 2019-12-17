@@ -22,6 +22,7 @@ package org.arakhne.afc.vmutil;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -42,7 +43,7 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 
 	/** Prefix (or directory name) where resources may be located.
 	 */
-	public static final String RESOURCE_PREFIX = "resources/"; //$NON-NLS-1$
+	public static final String RESOURCE_PREFIX = "/resources"; //$NON-NLS-1$
 
 	/** Construct a wrapper.
 	 */
@@ -50,17 +51,32 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 		//
 	}
 
+	private static String ensurePathPrefix(String path) {
+		assert path != null;
+		if (!path.startsWith("/")) { //$NON-NLS-1$
+			return "/" + path; //$NON-NLS-1$
+		}
+		return path;
+	}
+
+	private static String makeRelativePath(Class<?> type, String path) {
+		assert type != null;
+		assert path != null;
+		final StringBuilder buffer = new StringBuilder();
+		buffer.append("/"); //$NON-NLS-1$
+		buffer.append(type.getPackageName().replaceAll(Pattern.quote("."), "/")); //$NON-NLS-1$//$NON-NLS-2$
+		buffer.append(path);
+		return buffer.toString();
+	}
+
 	@Override
 	@Pure
+	@Deprecated(since = "17.0")
 	public URL getResource(ClassLoader classLoader, String path) {
 		if (path == null) {
 			return null;
 		}
-		String resourcePath = path;
-		if (path.startsWith("/")) { //$NON-NLS-1$
-			resourcePath = path.substring(1);
-		}
-
+		final String resourcePath = ensurePathPrefix(path);
 		final ClassLoader loader = (classLoader == null)
 				? ClassLoaderFinder.findClassLoader()
 				: classLoader;
@@ -75,17 +91,43 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 		return url;
 	}
 
+	@Override
+	@Pure
+	public URL getResource(Class<?> clazz, String path) {
+		if (path == null) {
+			return null;
+		}
+		final String resourcePath = ensurePathPrefix(path);
+
+		assert clazz != null;
+
+		URL url = clazz.getResource(resourcePath);
+
+		if (url == null) {
+			// Try to find in ./resources sub directory
+			url = clazz.getResource(RESOURCE_PREFIX + resourcePath);
+			if (url == null) {
+				// Try to find in the class's package
+				final String resourcePath2 = makeRelativePath(clazz, resourcePath);
+				url = clazz.getResource(resourcePath2);
+				if (url == null) {
+					// Try to find in ./resources sub directory
+					url = clazz.getResource(RESOURCE_PREFIX + resourcePath2);
+				}
+			}
+		}
+		return url;
+	}
+
 	@SuppressWarnings("resource")
 	@Override
 	@Pure
+	@Deprecated(since = "17.0")
 	public InputStream getResourceAsStream(ClassLoader classLoader, String path) {
 		if (path == null) {
 			return null;
 		}
-		String resourcePath = path;
-		if (path.startsWith("/")) { //$NON-NLS-1$
-			resourcePath = path.substring(1);
-		}
+		final String resourcePath = ensurePathPrefix(path);
 		ClassLoader loader = classLoader;
 		if (loader == null) {
 			loader = ClassLoaderFinder.findClassLoader();
@@ -99,6 +141,32 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 		if (is == null) {
 			// Try to find in ./resources sub directory
 			is = loader.getResourceAsStream(RESOURCE_PREFIX + resourcePath);
+		}
+		return is;
+	}
+
+	@SuppressWarnings("resource")
+	@Override
+	@Pure
+	public InputStream getResourceAsStream(Class<?> clazz, String path) {
+		if (path == null) {
+			return null;
+		}
+		final String resourcePath = ensurePathPrefix(path);
+		assert clazz != null;
+		InputStream is = clazz.getResourceAsStream(resourcePath);
+		if (is == null) {
+			// Try to find in ./resources sub directory
+			is = clazz.getResourceAsStream(RESOURCE_PREFIX + resourcePath);
+			if (is == null) {
+				// Try to find in the class's package
+				final String resourcePath2 = makeRelativePath(clazz, resourcePath);
+				is = clazz.getResourceAsStream(resourcePath2);
+				if (is == null) {
+					// Try to find in ./resources sub directory
+					is = clazz.getResourceAsStream(RESOURCE_PREFIX + resourcePath2);
+				}
+			}
 		}
 		return is;
 	}

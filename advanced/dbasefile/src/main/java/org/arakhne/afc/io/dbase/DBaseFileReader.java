@@ -302,10 +302,12 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 									columnize(attr.getName(), 10),
 									attr.getValue(), attr.getType()));
 						} catch (InvalidAttributeTypeException e) {
-							System.out.println(Locale.getString(DBaseFileReader.class, "INVALID_ATTRIBUTE_TYPE",  //$NON-NLS-1$
+							System.out.println(Locale.getString(DBaseFileReader.class,
+									"INVALID_ATTRIBUTE_TYPE",  //$NON-NLS-1$
 									columnize(attr.getName(), 10), attr.getType()));
 						} catch (AttributeNotInitializedException e) {
-							System.out.println(Locale.getString(DBaseFileReader.class, "ATTRIBUTE_NOT_INITIALIZED", //$NON-NLS-1$
+							System.out.println(Locale.getString(DBaseFileReader.class,
+									"ATTRIBUTE_NOT_INITIALIZED", //$NON-NLS-1$
 									columnize(attr.getName(), 10)));
 						}
 					}
@@ -1125,7 +1127,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 		try {
 			final String b = buffer.trim();
 			if (b != null && b.length() > 0) {
-				value.set(new Double(b));
+				value.set(Double.valueOf(b));
 				return field.getLength();
 			}
 		} catch (NumberFormatException e) {
@@ -1178,7 +1180,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 			byte[] rawData, int rawOffset, OutputParameter<Integer> value) throws IOException {
 		final short rawNumber = EndianNumbers.toLEShort(rawData[rawOffset], rawData[rawOffset + 1]);
 		try {
-			value.set(new Integer(rawNumber));
+			value.set(Integer.valueOf(rawNumber));
 			return 2;
 		} catch (NumberFormatException exception) {
 			throw new InvalidRawDataFormatException(nrecord, nfield, Short.toString(rawNumber));
@@ -1203,7 +1205,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 				rawData[rawOffset], rawData[rawOffset + 1],
 				rawData[rawOffset + 2], rawData[rawOffset + 3]);
 		try {
-			value.set(new Long(rawNumber));
+			value.set(Long.valueOf(rawNumber));
 			return 4;
 		} catch (NumberFormatException exception) {
 			throw new InvalidRawDataFormatException(nrecord, nfield, Long.toString(rawNumber));
@@ -1230,7 +1232,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 				rawData[rawOffset + 4], rawData[rawOffset + 5],
 				rawData[rawOffset + 6], rawData[rawOffset + 7]);
 		try {
-			value.set(new Double(rawNumber));
+			value.set(Double.valueOf(rawNumber));
 			return 8;
 		} catch (NumberFormatException exception) {
 			throw new InvalidRawDataFormatException(nrecord, nfield, Double.toString(rawNumber));

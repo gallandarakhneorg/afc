@@ -26,7 +26,6 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -79,7 +78,10 @@ public final class Resources {
 	 * <p>You may use Unix-like syntax to write the resource path, ie.
 	 * you may use slashes to separate filenames.
 	 *
-	 * <p>The class loader replied by {@link ClassLoaderFinder} is used.
+	 * <p>This function tries to use the class loader of the {@link Caller#getCallerClass()} calling class}
+	 * for retrieving the resource.
+	 * If the calling class cannot be obtained or accessed, the class loader replied by
+	 * {@link ClassLoaderFinder} is used.
 	 * If it is <code>null</code>, the class loader of
 	 * the Resources class is used.
 	 *
@@ -89,6 +91,14 @@ public final class Resources {
 	 */
 	@Pure
 	public static URL getResource(String path) {
+		try {
+			final Class<?> type = Caller.getCallerClass(1);
+			if (type != null) {
+				return getResource(type, path);
+			}
+		} catch (Throwable exception) {
+			//
+		}
 		return getResource((ClassLoader) null, path);
 	}
 
@@ -105,7 +115,9 @@ public final class Resources {
 	 * Resources.getResources("org/arakhne/afc/a/b/c/d.png");
 	 * </code></pre>
 	 *
-	 * <p>If the {@code classLoader} parameter is <code>null</code>,
+	 * <p>This function tries to use the class loader of the {@link Caller#getCallerClass()} calling class}
+	 * for retrieving the resource.
+	 * If the calling class cannot be obtained or accessed,
 	 * the class loader replied by {@link ClassLoaderFinder} is used.
 	 * If this last is <code>null</code>, the class loader of
 	 * the Resources class is used.
@@ -117,8 +129,12 @@ public final class Resources {
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 *     not found in class paths.
 	 * @since 6.2
+	 * @deprecated since 17.0. According to the new module path management (since Java 9),
+	 *     it is preferable to use the class for searching a resource. See
+	 *     {@link #getResource(Class, String)}.
 	 */
 	@Pure
+	@Deprecated(since = "17.0")
 	public static URL getResource(ClassLoader classLoader, Package packagename, String path) {
 		if (packagename == null || path == null) {
 			return null;
@@ -147,8 +163,8 @@ public final class Resources {
 	 * <p>The name of {@code classname} is translated into a resource
 	 * path (by remove the name of the class and replacing the dots by slashes) and the given path
 	 * is append to. For example, the two following codes are equivalent:<pre><code>
-	 * Resources.getResources(Resources.class, "/a/b/c/d.png");
-	 * Resources.getResources("org/arakhne/vmutil/a/b/c/d.png");
+	 * Resources.getResource(Resources.class, "/a/b/c/d.png");
+	 * Resources.getResource("org/arakhne/vmutil/a/b/c/d.png");
 	 * </code></pre>
 	 *
 	 * <p>The class loader of the given class is used. If it is <code>null</code>,
@@ -166,11 +182,7 @@ public final class Resources {
 		if (classname == null) {
 			return null;
 		}
-		URL u = getResource(classname.getClassLoader(), classname.getPackage(), path);
-		if (u == null) {
-			u = getResource(classname.getClassLoader(), path);
-		}
-		return u;
+		return currentResourceInstance.getResource(classname, path);
 	}
 
 	/**
@@ -189,8 +201,12 @@ public final class Resources {
 	 * @param path is the absolute path of the resource.
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 *     not found in class paths.
+	 * @deprecated since 17.0. According to the new module path management (since Java 9),
+	 *     it is preferable to use the class for searching a resource. See
+	 *     {@link #getResource(Class, String)}.
 	 */
 	@Pure
+	@Deprecated(since = "17.0")
 	public static URL getResource(ClassLoader classLoader, String path) {
 		return currentResourceInstance.getResource(classLoader, path);
 	}
@@ -212,6 +228,14 @@ public final class Resources {
 	 */
 	@Pure
 	public static InputStream getResourceAsStream(String path) {
+		try {
+			final Class<?> type = Caller.getCallerClass(1);
+			if (type != null) {
+				return getResourceAsStream(type, path);
+			}
+		} catch (Throwable exception) {
+			//
+		}
 		return getResourceAsStream((ClassLoader) null, path);
 	}
 
@@ -240,8 +264,12 @@ public final class Resources {
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 *     not found in class paths.
 	 * @since 6.2
+	 * @deprecated since 17.0. According to the new module path management (since Java 9),
+	 *     it is preferable to use the class for searching a resource. See
+	 *     {@link #getResourceAsStream(Class, String)}.
 	 */
 	@Pure
+	@Deprecated(since = "17.0")
 	public static InputStream getResourceAsStream(ClassLoader classLoader, Package packagename, String path) {
 		if (packagename == null || path == null) {
 			return null;
@@ -285,16 +313,11 @@ public final class Resources {
 	 *     not found in class paths.
 	 */
 	@Pure
-	@SuppressWarnings("resource")
 	public static InputStream getResourceAsStream(Class<?> classname, String path) {
 		if (classname == null) {
 			return null;
 		}
-		InputStream is = getResourceAsStream(classname.getClassLoader(), classname.getPackage(), path);
-		if (is == null) {
-			is = getResourceAsStream(classname.getClassLoader(), path);
-		}
-		return is;
+		return currentResourceInstance.getResourceAsStream(classname, path);
 	}
 
 	/**
@@ -314,8 +337,12 @@ public final class Resources {
 	 * @param path is the absolute path of the resource.
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 *     not found in class paths.
+	 * @deprecated since 17.0. According to the new module path management (since Java 9),
+	 *     it is preferable to use the class for searching a resource. See
+	 *     {@link #getResourceAsStream(Class, String)}.
 	 */
 	@Pure
+	@Deprecated(since = "17.0")
 	public static InputStream getResourceAsStream(ClassLoader classLoader, String path) {
 		return currentResourceInstance.getResourceAsStream(classLoader, path);
 	}
@@ -331,9 +358,29 @@ public final class Resources {
 	 * @since 7.0
 	 */
 	@Pure
-	@Inline(value = "Resources.getPropertyFile(($1).getClassLoader(), ($1), ($2))", imported = {Resources.class})
 	public static URL getPropertyFile(Class<?> classname, Locale locale) {
-		return getPropertyFile(classname.getClassLoader(), classname, locale);
+		final StringBuilder name = new StringBuilder();
+
+		// Localized file
+		if (locale != null) {
+			final String country = locale.getCountry();
+			if (country != null && !country.isEmpty()) {
+				name.append(classname.getSimpleName());
+				name.append("_"); //$NON-NLS-1$
+				name.append(country);
+				name.append(".properties"); //$NON-NLS-1$
+				final URL url = getResource(classname, name.toString());
+				if (url != null) {
+					return url;
+				}
+			}
+		}
+
+		// Default property file
+		name.setLength(0);
+		name.append(classname.getSimpleName());
+		name.append(".properties"); //$NON-NLS-1$
+		return getResource(classname, name.toString());
 	}
 
 	/**
@@ -346,8 +393,12 @@ public final class Resources {
 	 *     for the default.
 	 * @return the url of the property resource or <code>null</code> if the resource was
 	 *     not found in class paths.
+	 * @deprecated since 17.0. According to the new module path management (since Java 9),
+	 *     it is preferable to use the class for searching a resource. See
+	 *     {@link #getPropertyFile(Class, Locale)}.
 	 */
 	@Pure
+	@Deprecated(since = "17.0")
 	public static URL getPropertyFile(ClassLoader classLoader, Class<?> classname, Locale locale) {
 		final StringBuilder name = new StringBuilder();
 

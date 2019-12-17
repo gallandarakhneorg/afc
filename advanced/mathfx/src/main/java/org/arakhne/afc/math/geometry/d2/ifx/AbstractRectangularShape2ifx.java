@@ -26,8 +26,8 @@ import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.ai.RectangularShape2ai;
+import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 
 /** A rectangular shape with 2 integer FX properties.
  *

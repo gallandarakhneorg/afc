@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import com.sun.javafx.collections.NonIterableChange.SimpleUpdateChange;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
@@ -37,8 +36,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ModifiableObservableListBase;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.MathFXAttributeNames;
+import org.arakhne.afc.javafx.changes.SimpleListUpdateChange;
 import org.arakhne.afc.math.geometry.d2.ai.MultiShape2ai;
+import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Container for grouping of shapes.
@@ -227,7 +227,7 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 		public void invalidated(Observable observable) {
 			final int position = indexOf(((Property<?>) observable).getBean());
 			if (position >= 0) {
-				fireChange(new SimpleUpdateChange<>(position, this));
+				fireChange(new SimpleListUpdateChange<>(position, this));
 			}
 		}
 

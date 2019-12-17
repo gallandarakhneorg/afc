@@ -44,12 +44,15 @@ class AndroidResourceWrapper implements ResourceWrapper {
 
 	private static String decodeResourceName(String resourceName) {
 		if (resourceName.startsWith("/")) { //$NON-NLS-1$
-			return resourceName.substring(1);
+			if (!resourceName.startsWith("/")) { //$NON-NLS-1$
+				return "/" + resourceName; //$NON-NLS-1$
+			}
 		}
 		return resourceName;
 	}
 
 	@Override
+	@Deprecated(since = "17.0")
     public URL getResource(ClassLoader classLoader, String path) {
 		final String resourceName = decodeResourceName(path);
 		final ClassLoader androidClassLoader;
@@ -70,6 +73,27 @@ class AndroidResourceWrapper implements ResourceWrapper {
     }
 
 	@Override
+    public URL getResource(Class<?> clazz, String path) {
+		final String resourceName = decodeResourceName(path);
+		final ClassLoader androidClassLoader;
+		try {
+			androidClassLoader = Android.getContextClassLoader();
+			assert androidClassLoader != null;
+			final URL url = androidClassLoader.getResource(resourceName);
+			if (url != null) {
+				return url;
+			}
+		} catch (AndroidException e) {
+			//
+		}
+		if (clazz != null) {
+			return clazz.getResource(resourceName);
+		}
+		return null;
+    }
+
+	@Override
+	@Deprecated(since = "17.0")
     public InputStream getResourceAsStream(ClassLoader classLoader, String path) {
 		final String resourceName = decodeResourceName(path);
 		final ClassLoader androidClassLoader;
@@ -85,6 +109,26 @@ class AndroidResourceWrapper implements ResourceWrapper {
 		}
 		if (classLoader != null) {
 			return classLoader.getResourceAsStream(resourceName);
+		}
+		return null;
+    }
+
+	@Override
+    public InputStream getResourceAsStream(Class<?> clazz, String path) {
+		final String resourceName = decodeResourceName(path);
+		final ClassLoader androidClassLoader;
+		try {
+			androidClassLoader = Android.getContextClassLoader();
+			assert androidClassLoader != null;
+			final InputStream stream = androidClassLoader.getResourceAsStream(resourceName);
+			if (stream != null) {
+				return stream;
+			}
+		} catch (AndroidException e) {
+			//
+		}
+		if (clazz != null) {
+			return clazz.getResourceAsStream(resourceName);
 		}
 		return null;
     }

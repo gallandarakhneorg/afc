@@ -127,7 +127,6 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 		this.emptyExternalResource = assumeEmptyExternalResource;
 	}
 
-	@SuppressWarnings("resource")
 	private static InputSource getInputSourceFromSystemUrl(URL systemUrl) {
 		if (systemUrl != null) {
 			try {
@@ -142,7 +141,6 @@ public class DefaultXMLEntityResolver implements EntityResolver {
 		return null;
 	}
 
-	@SuppressWarnings("resource")
 	private static InputSource getInputSourceFromResources(URL systemUrl, String systemId, URL containerPath) {
 		if (systemUrl != null && URISchemeType.getSchemeType(systemUrl).isFileBasedScheme()) {
 			final String file = systemUrl.getPath();

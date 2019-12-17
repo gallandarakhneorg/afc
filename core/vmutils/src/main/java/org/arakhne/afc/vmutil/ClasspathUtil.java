@@ -38,7 +38,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 5.0
+ * @deprecated since 17.0. No replacement because the classpath management in JDK 9 and later is totally different.
  */
+@Deprecated(since = "17.0", forRemoval = true)
 public final class ClasspathUtil {
 
 	private ClasspathUtil() {
@@ -61,6 +63,7 @@ public final class ClasspathUtil {
 	 * @since 6.0
 	 */
 	@Pure
+	@SuppressWarnings("resource")
 	public static Iterator<URL> getClasspath() {
 		Iterator<URL> iterator = getStartClasspath();
 

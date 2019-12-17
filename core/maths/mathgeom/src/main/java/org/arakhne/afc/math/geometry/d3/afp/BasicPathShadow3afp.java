@@ -38,7 +38,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-class BasicPathShadow3afp {
+public class BasicPathShadow3afp {
 
     private final PathIterator3afp<?> pathIterator;
 
@@ -69,7 +69,7 @@ class BasicPathShadow3afp {
     /** Construct new path shadow.
      * @param path the path that is constituting the shadow.
      */
-    BasicPathShadow3afp(Path3afp<?, ?, ?, ?, ?, ?> path) {
+    public BasicPathShadow3afp(Path3afp<?, ?, ?, ?, ?, ?> path) {
         this(path.getPathIterator(), path.toBoundingBox());
     }
 
@@ -77,7 +77,7 @@ class BasicPathShadow3afp {
      * @param pathIterator the iterator on the path that is constituting the shadow.
      * @param bounds the bounds of the shadow.
      */
-    BasicPathShadow3afp(PathIterator3afp<?> pathIterator, RectangularPrism3afp<?, ?, ?, ?, ?, ?> bounds) {
+    public BasicPathShadow3afp(PathIterator3afp<?> pathIterator, RectangularPrism3afp<?, ?, ?, ?, ?, ?> bounds) {
         assert pathIterator != null : AssertMessages.notNullParameter(0);
         assert bounds != null : AssertMessages.notNullParameter(1);
         this.pathIterator = pathIterator;
@@ -99,7 +99,7 @@ class BasicPathShadow3afp {
      * @param maxZ z coordinate of the upper corner of the shadow's bouding box.
      */
     @SuppressWarnings("checkstyle:magicnumber")
-    BasicPathShadow3afp(PathIterator3afp<?> pathIterator, double minX, double minY, double minZ, double maxX, double maxY,
+    public BasicPathShadow3afp(PathIterator3afp<?> pathIterator, double minX, double minY, double minZ, double maxX, double maxY,
             double maxZ) {
         assert pathIterator != null : AssertMessages.notNullParameter(0);
         assert minX <= maxX : AssertMessages.lowerEqualParameters(1, minX, 4, maxX);

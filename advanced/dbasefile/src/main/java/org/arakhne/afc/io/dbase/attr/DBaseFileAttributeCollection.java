@@ -103,6 +103,7 @@ public class DBaseFileAttributeCollection extends DBaseFileAttributeProvider imp
 
 	@Override
 	@SuppressWarnings("checkstyle:nofinalizer")
+	@Deprecated(since = "17.0", forRemoval = true)
 	public void finalize() throws Throwable {
 		this.listeners = null;
 		this.buffer = null;

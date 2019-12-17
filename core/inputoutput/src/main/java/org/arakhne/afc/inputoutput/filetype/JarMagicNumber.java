@@ -81,7 +81,6 @@ public class JarMagicNumber extends MagicNumber {
 	 * @param manifestContent is the content of the manifest
 	 * @return <code>true</code> if the manifest is matching, otherwise <code>false</code>
 	 */
-	@SuppressWarnings("static-method")
 	public boolean isManifestMatch(InputStream manifestContent) {
 		return true;
 	}

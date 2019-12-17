@@ -240,6 +240,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 
 	@Override
 	@SuppressWarnings("checkstyle:nofinalizer")
+	@Deprecated(since = "17.0", forRemoval = true)
 	protected void finalize() throws Throwable {
 		this.busItinerary.removeBusChangeListener(this.listener);
 		super.finalize();

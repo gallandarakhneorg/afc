@@ -131,7 +131,7 @@ public class Point2dfx extends Tuple2dfx<Point2dfx> implements Point2D<Point2dfx
 
 	@Override
 	public UnmodifiablePoint2D<Point2dfx, Vector2dfx> toUnmodifiable() {
-		return new UnmodifiablePoint2D<Point2dfx, Vector2dfx>() {
+		return new UnmodifiablePoint2D<>() {
 
 			private static final long serialVersionUID = 5419032367247268556L;
 

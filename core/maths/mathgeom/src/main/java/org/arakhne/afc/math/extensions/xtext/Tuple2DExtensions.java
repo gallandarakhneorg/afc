@@ -60,7 +60,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@XtextOperator("*")
-	public static <V extends Vector2D<? extends V, ?>> V operator_multiply(double left, V right) {
+	public static <V extends Vector2D<V, ?>> V operator_multiply(double left, V right) {
 		assert right != null : AssertMessages.notNullParameter(1);
 		return right.getGeomFactory().newVector(right.getX() * left, right.getY() * left);
 	}
@@ -83,7 +83,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@XtextOperator("*")
-	public static <V extends Vector1D<? extends V, ?, ?>> V operator_multiply(double left, V right) {
+	public static <V extends Vector1D<V, ?, ?>> V operator_multiply(double left, V right) {
 		assert right != null : AssertMessages.notNullParameter(1);
 		return right.getGeomFactory().newVector(right.getSegment(), right.getX() * left, right.getY() * left);
 	}
@@ -104,7 +104,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@XtextOperator("/")
-	public static <V extends Vector2D<? extends V, ?>> V operator_divide(double left, V right) {
+	public static <V extends Vector2D<V, ?>> V operator_divide(double left, V right) {
 		assert right != null : AssertMessages.notNullParameter(1);
 		return right.getGeomFactory().newVector(left / right.getX(), left / right.getY());
 	}
@@ -125,7 +125,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@XtextOperator("/")
-	public static <V extends Vector1D<? extends V, ?, ?>> V operator_divide(double left, V right) {
+	public static <V extends Vector1D<V, ?, ?>> V operator_divide(double left, V right) {
 		assert right != null : AssertMessages.notNullParameter(1);
 		return right.getGeomFactory().newVector(right.getSegment(), left / right.getX(), left / right.getY());
 	}
@@ -147,7 +147,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@XtextOperator("-")
-	public static <V extends Vector2D<? extends V, ?>> V operator_minus(double left, V right) {
+	public static <V extends Vector2D<V, ?>> V operator_minus(double left, V right) {
 		assert right != null : AssertMessages.notNullParameter(1);
 		return right.getGeomFactory().newVector(left - right.getX(), left - right.getY());
 	}
@@ -170,7 +170,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@XtextOperator("-")
-	public static <V extends Vector1D<? extends V, ?, ?>> V operator_minus(double left, V right) {
+	public static <V extends Vector1D<V, ?, ?>> V operator_minus(double left, V right) {
 		assert right != null : AssertMessages.notNullParameter(1);
 		return right.getGeomFactory().newVector(right.getSegment(), left - right.getX(), left - right.getY());
 	}
@@ -192,7 +192,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@XtextOperator("-")
-	public static <P extends Point2D<? extends P, ?>> P operator_minus(double left, P right) {
+	public static <P extends Point2D<P, ?>> P operator_minus(double left, P right) {
 		assert right != null : AssertMessages.notNullParameter(1);
 		return right.getGeomFactory().newPoint(left - right.getX(), left - right.getY());
 	}
@@ -214,7 +214,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@XtextOperator("+")
-	public static <V extends Vector2D<? extends V, ?>> V operator_plus(double left, V right) {
+	public static <V extends Vector2D<V, ?>> V operator_plus(double left, V right) {
 		assert right != null : AssertMessages.notNullParameter(1);
 		return right.getGeomFactory().newVector(left + right.getX(), left + right.getY());
 	}
@@ -237,7 +237,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@XtextOperator("+")
-	public static <V extends Vector1D<? extends V, ?, ?>> V operator_plus(double left, V right) {
+	public static <V extends Vector1D<V, ?, ?>> V operator_plus(double left, V right) {
 		assert right != null : AssertMessages.notNullParameter(1);
 		return right.getGeomFactory().newVector(right.getSegment(), left + right.getX(), left + right.getY());
 	}
@@ -259,7 +259,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@XtextOperator("+")
-	public static <P extends Point2D<? extends P, ?>> P operator_plus(double left, P right) {
+	public static <P extends Point2D<P, ?>> P operator_plus(double left, P right) {
 		assert right != null : AssertMessages.notNullParameter(1);
 		return right.getGeomFactory().newPoint(left + right.getX(), left + right.getY());
 	}

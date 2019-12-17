@@ -40,7 +40,8 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class GisElementContainerDrawer<T extends MapElement> implements Drawer<GISElementContainer<T>>, DrawerReference<T> {
+@SuppressWarnings("rawtypes")
+public class GisElementContainerDrawer<T extends MapElement> implements Drawer<GISElementContainer>, DrawerReference<T> {
 
 	private Drawer<? super T> drawer;
 
@@ -68,8 +69,9 @@ public class GisElementContainerDrawer<T extends MapElement> implements Drawer<G
 		this.drawer = drawer;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public final void draw(ZoomableGraphicsContext gc, GISElementContainer<T> primitive) {
+	public final void draw(ZoomableGraphicsContext gc, GISElementContainer primitive) {
 		draw(gc, primitive, getDrawer());
 	}
 
@@ -116,11 +118,10 @@ public class GisElementContainerDrawer<T extends MapElement> implements Drawer<G
 		return drw;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	@Pure
-	public Class<? extends GISElementContainer<T>> getPrimitiveType() {
-		return (Class<? extends GISElementContainer<T>>) GISElementContainer.class;
+	public Class<? extends GISElementContainer> getPrimitiveType() {
+		return GISElementContainer.class;
 	}
 
 }

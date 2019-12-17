@@ -322,6 +322,7 @@ public final class DBaseFileAttributePool {
 
 	@Override
 	@SuppressWarnings("checkstyle:nofinalizer")
+	@Deprecated(since = "17.0", forRemoval = true)
 	public void finalize() throws Throwable {
 		try {
 			close();

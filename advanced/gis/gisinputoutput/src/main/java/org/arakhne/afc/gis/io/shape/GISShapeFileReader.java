@@ -781,7 +781,7 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 			}
 			if (elt == null) {
 				try {
-					elt = elementType.newInstance();
+					elt = elementType.getDeclaredConstructor().newInstance();
 				} catch (Throwable exception) {
 					//
 				}

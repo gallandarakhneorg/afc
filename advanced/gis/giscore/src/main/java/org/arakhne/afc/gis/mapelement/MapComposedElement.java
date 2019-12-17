@@ -36,9 +36,7 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
-
-/**
- * Abstract class that contains a set of grouped points (aka. groups).
+/** Abstract class that contains a set of grouped points (aka. groups).
  * This class permits to implement polylines and polygons...
  *
  * @author $Author: sgalland$
@@ -314,7 +312,6 @@ public abstract class MapComposedElement extends MapElement {
 		return false;
 	}
 
-
 	/** Replies the starting index of a point in a group.
 	 *
 	 * @param groupIndex is the index of the desired group
@@ -501,12 +498,7 @@ public abstract class MapComposedElement extends MapElement {
 	 */
 	@Pure
 	public Iterable<PointGroup> groups() {
-		return new Iterable<PointGroup>() {
-			@Override
-			public Iterator<PointGroup> iterator() {
-				return MapComposedElement.this.groupIterator();
-			}
-		};
+		return () -> MapComposedElement.this.groupIterator();
 	}
 
 	/** Replies the iterator on the groups.
@@ -524,12 +516,7 @@ public abstract class MapComposedElement extends MapElement {
 	 */
 	@Pure
 	public Iterable<Point2d> points() {
-		return new Iterable<Point2d>() {
-			@Override
-			public Iterator<Point2d> iterator() {
-				return MapComposedElement.this.pointIterator();
-			}
-		};
+		return () -> MapComposedElement.this.pointIterator();
 	}
 
 	/** Replies the iterator on the points.
@@ -580,7 +567,6 @@ public abstract class MapComposedElement extends MapElement {
 
 		return pointIndex;
 	}
-
 
 	/** Add the specified point at the end of the specified group.
 	 *

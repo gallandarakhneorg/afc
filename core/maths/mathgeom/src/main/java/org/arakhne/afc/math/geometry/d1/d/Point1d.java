@@ -148,7 +148,7 @@ public class Point1d extends Tuple1d<Point1d> implements Point1D<Point1d, Vector
 
 	@Override
 	public UnmodifiablePoint1D<Point1d, Vector1d, Segment1D<?, ?>> toUnmodifiable() {
-		return new UnmodifiablePoint1D<Point1d, Vector1d, Segment1D<?, ?>>() {
+		return new UnmodifiablePoint1D<>() {
 
 			private static final long serialVersionUID = 7256619908484020358L;
 

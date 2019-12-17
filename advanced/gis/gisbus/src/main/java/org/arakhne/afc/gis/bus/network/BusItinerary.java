@@ -2452,12 +2452,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 */
 	@Pure
 	public Iterable<RoadSegment> roadSegments() {
-		return new Iterable<RoadSegment>() {
-			@Override
-			public Iterator<RoadSegment> iterator() {
-				return roadSegmentsIterator();
-			}
-		};
+		return () -> roadSegmentsIterator();
 	}
 
 	/** Replies a road path that is containing all road segments

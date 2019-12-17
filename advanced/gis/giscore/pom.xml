@@ -35,12 +35,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>testtools</artifactId>
 			<scope>test</scope>
@@ -56,15 +50,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<compilerArguments>
-						<properties>${jdtcompilerconfpath}</properties>
-					</compilerArguments>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>

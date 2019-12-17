@@ -38,7 +38,6 @@ import org.arakhne.afc.util.ListUtil;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.arakhne.afc.vmutil.locale.Locale;
 
-
 /** This class provides an implementation of the
  * famous A* algorithm.
  *
@@ -1011,11 +1010,11 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 		@Override
 		public GP newPath(PT startPoint, ST segment) {
 			try {
-				final GP path = this.type.newInstance();
+				final GP path = this.type.getDeclaredConstructor().newInstance();
 				path.add(segment, startPoint);
 				path.setFirstSegmentReversable(false);
 				return path;
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (Exception e) {
 				throw new IllegalArgumentException(e);
 			}
 		}

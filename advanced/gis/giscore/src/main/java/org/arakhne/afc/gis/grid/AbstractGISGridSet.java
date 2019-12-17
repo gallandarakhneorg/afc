@@ -405,23 +405,13 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 	@Override
 	@Pure
 	public Iterable<P> toIterable(final Rectangle2afp<?, ?, ?, ?, ?, ?> clipBounds) {
-		return new Iterable<P>() {
-			@Override
-			public Iterator<P> iterator() {
-				return AbstractGISGridSet.this.iterator(clipBounds);
-			}
-		};
+		return () -> AbstractGISGridSet.this.iterator(clipBounds);
 	}
 
 	@Override
 	@Pure
 	public Iterable<P> toIterable(final Rectangle2afp<?, ?, ?, ?, ?, ?> clipBounds, final int budget) {
-		return new Iterable<P>() {
-			@Override
-			public Iterator<P> iterator() {
-				return AbstractGISGridSet.this.iterator(clipBounds, budget);
-			}
-		};
+		return () -> AbstractGISGridSet.this.iterator(clipBounds, budget);
 	}
 
 	//-----------------------------------------------------------------
@@ -540,7 +530,7 @@ abstract class AbstractGISGridSet<P extends GISPrimitive> implements GISSet<P> {
 
 			private final Iterator<?> it;
 
-			@SuppressWarnings({ "unchecked", "synthetic-access" })
+			@SuppressWarnings({ "unchecked" })
 			CheckedIterator() {
 				this.it = CheckedCollection.this.collection.iterator();
 				this.next = null;

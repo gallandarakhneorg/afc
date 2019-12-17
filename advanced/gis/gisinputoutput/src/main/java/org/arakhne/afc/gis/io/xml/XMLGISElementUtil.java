@@ -346,7 +346,7 @@ public final class XMLGISElementUtil {
 						final Constructor<T> cons = type.getConstructor(UUID.class);
 						polyline = (MapPolyline) cons.newInstance(id);
 					} else {
-						polyline = (MapPolyline) type.newInstance();
+						polyline = (MapPolyline) type.getDeclaredConstructor().newInstance();
 					}
 				} catch (AssertionError e) {
 					throw e;
@@ -377,7 +377,7 @@ public final class XMLGISElementUtil {
 						final Constructor<T> cons = type.getConstructor(UUID.class);
 						polygon = (MapPolygon) cons.newInstance(id);
 					} else {
-						polygon = (MapPolygon) type.newInstance();
+						polygon = (MapPolygon) type.getDeclaredConstructor().newInstance();
 					}
 				} catch (AssertionError e) {
 					throw e;
@@ -409,7 +409,7 @@ public final class XMLGISElementUtil {
 						final Constructor<T> cons = type.getConstructor(UUID.class);
 						multipoint = (MapMultiPoint) cons.newInstance(id);
 					} else {
-						multipoint = (MapMultiPoint) type.newInstance();
+						multipoint = (MapMultiPoint) type.getDeclaredConstructor().newInstance();
 					}
 				} catch (AssertionError e) {
 					throw e;

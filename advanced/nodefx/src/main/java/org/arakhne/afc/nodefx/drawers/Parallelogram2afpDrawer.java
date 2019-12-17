@@ -34,16 +34,17 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class Parallelogram2afpDrawer implements Drawer<Parallelogram2afp<?, ?, ? extends PathElement2afp, ?, ?, ?>> {
+@SuppressWarnings("rawtypes")
+public class Parallelogram2afpDrawer implements Drawer<Parallelogram2afp> {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends Parallelogram2afp<?, ?, ? extends PathElement2afp, ?, ?, ?>> getPrimitiveType() {
-		return (Class<? extends Parallelogram2afp<?, ?, ? extends PathElement2afp, ?, ?, ?>>) Parallelogram2afp.class;
+	public Class<? extends Parallelogram2afp> getPrimitiveType() {
+		return Parallelogram2afp.class;
 	}
 
 	@Override
-	public void draw(ZoomableGraphicsContext gc, Parallelogram2afp<?, ?, ? extends PathElement2afp, ?, ?, ?> element) {
+	@SuppressWarnings("unchecked")
+	public void draw(ZoomableGraphicsContext gc, Parallelogram2afp element) {
 		final PathIterator2D<? extends PathElement2afp> iterator = element.getPathIterator();
 		gc.beginPath();
 		while (iterator.hasNext()) {

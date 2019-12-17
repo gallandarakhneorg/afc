@@ -41,22 +41,19 @@ public final class BusNetworkUtilities {
 	/** Implementation of a string comparator which is
 	 * case-insensitive and ignore accent signs.
 	 */
-	public static final Comparator<String> NAME_COMPARATOR = new Comparator<String>() {
-		@Override
-		public int compare(String o1, String o2) {
-			if (o1 == o2) {
-				return 0;
-			}
-			if (o1 == null) {
-				return Integer.MIN_VALUE;
-			}
-			if (o2 == null) {
-				return Integer.MAX_VALUE;
-			}
-			final String s1 = TextUtil.removeAccents(o1);
-			final String s2 = TextUtil.removeAccents(o2);
-			return s1.compareToIgnoreCase(s2);
+	public static final Comparator<String> NAME_COMPARATOR = (String o1, String o2) -> {
+		if (o1 == o2) {
+			return 0;
 		}
+		if (o1 == null) {
+			return Integer.MIN_VALUE;
+		}
+		if (o2 == null) {
+			return Integer.MAX_VALUE;
+		}
+		final String s1 = TextUtil.removeAccents(o1);
+		final String s2 = TextUtil.removeAccents(o2);
+		return s1.compareToIgnoreCase(s2);
 	};
 
 	private BusNetworkUtilities() {

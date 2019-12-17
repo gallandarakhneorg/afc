@@ -343,7 +343,6 @@ public final class FileType {
 		 *
 		 * @see #isMimeType(URL, MimeType)
 		 */
-		@SuppressWarnings("resource")
 		private MimeType getMimeType(URL url) throws Exception {
 			assert url != null : AssertMessages.notNullParameter(0);
 			final URLConnection connection = url.openConnection();
@@ -392,7 +391,6 @@ public final class FileType {
 		 *
 		 * @see #getMimeType(URL)
 		 */
-		@SuppressWarnings("resource")
 		private boolean isMimeType(URL url, MimeType mimeType) throws Exception {
 			assert url != null : AssertMessages.notNullParameter(0);
 			assert mimeType != null : AssertMessages.notNullParameter(1);
@@ -444,7 +442,6 @@ public final class FileType {
 		 * @param url is the name of the file to test.
 		 * @return the MIME type of the given file.
 		 */
-		@SuppressWarnings("resource")
 		public String getFormatVersion(URL url) {
 			assert url != null : AssertMessages.notNullParameter();
 

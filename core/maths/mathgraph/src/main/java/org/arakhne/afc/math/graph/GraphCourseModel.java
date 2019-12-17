@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.math.graph;
 
-import java.util.Collection;
-
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -75,16 +73,6 @@ public interface GraphCourseModel<ST extends GraphSegment<ST, PT>, PT extends Gr
 	 * @return the next element
 	 */
 	GraphIterationElement<ST, PT> removeNextIterationElement();
-
-	/** Remove the specified iteration elements.
-	 *
-	 * @param elements the elements to remove.
-	 * @deprecated see {@link #removeIterationElements(Iterable)}
-	 */
-	@Deprecated
-	default void removeIterationElements(Collection<GraphIterationElement<ST, PT>> elements) {
-		removeIterationElements((Iterable<GraphIterationElement<ST, PT>>) elements);
-	}
 
 	/** Remove the specified iteration elements.
 	 *

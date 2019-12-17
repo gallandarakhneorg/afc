@@ -56,9 +56,31 @@ public interface ResourceWrapper {
 	 * @param path is the absolute path of the resource.
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 *     not found in class paths.
+	 * @deprecated since 17.0. Because Java 9 and later uses a different class loading architecture
+	 *     with modules, it is safer to use {@link #getResource(Class, String)}.
 	 */
 	@Pure
+	@Deprecated(since = "17.0")
 	URL getResource(ClassLoader classLoader, String path);
+
+	/**
+	 * Replies the URL of a resource.
+	 *
+	 * <p>You may use Unix-like syntax to write the resource path, ie.
+	 * you may use slashes to separate filenames.
+	 *
+	 * <p>If the {@code classLoader} parameter is <code>null</code>,
+	 * the class loader replied by {@link ClassLoaderFinder} is used.
+	 * If this last is <code>null</code>, the class loader of
+	 * the Resources class is used.
+	 *
+	 * @param clazz is the research scope. It cannot be {@code null}.
+	 * @param path is the absolute path of the resource.
+	 * @return the url of the resource or <code>null</code> if the resource was
+	 *     not found in class paths.
+	 */
+	@Pure
+	URL getResource(Class<?> clazz, String path);
 
 	/**
 	 * Replies the input stream of a resource.
@@ -77,9 +99,33 @@ public interface ResourceWrapper {
 	 * @param path is the absolute path of the resource.
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 *     not found in class paths.
+	 * @deprecated since 17.0. Because Java 9 and later uses a different class loading architecture
+	 *     with modules, it is safer to use {@link #getResourceAsStream(Class, String)}.
 	 */
 	@Pure
+	@Deprecated(since = "17.0")
 	InputStream getResourceAsStream(ClassLoader classLoader, String path);
+
+	/**
+	 * Replies the input stream of a resource.
+	 *
+	 * <p>You may use Unix-like syntax to write the resource path, ie.
+	 * you may use slashes to separate filenames, and may not start the
+	 * path with a slash.
+	 *
+	 * <p>If the {@code classLoader} parameter is <code>null</code>,
+	 * the class loader replied by {@link ClassLoaderFinder} is used.
+	 * If this last is <code>null</code>, the class loader of
+	 * the Resources class is used.
+	 *
+	 * @param clazz is the research scope. It cannot be {@code null}.
+	 * @param path is the absolute path of the resource.
+	 * @return the url of the resource or <code>null</code> if the resource was
+	 *     not found in class paths.
+	 * @since 17.0
+	 */
+	@Pure
+	InputStream getResourceAsStream(Class<?> clazz, String path);
 
 	/** Translate the given resource name according to the current JVM standard.
 	 *

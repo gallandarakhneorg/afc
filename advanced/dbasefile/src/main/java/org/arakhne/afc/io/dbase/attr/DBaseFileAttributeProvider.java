@@ -66,6 +66,7 @@ public class DBaseFileAttributeProvider extends AbstractAttributeProvider {
 
 	@Override
 	@SuppressWarnings("checkstyle:nofinalizer")
+	@Deprecated(since = "17.0", forRemoval = true)
 	public void finalize() throws Throwable {
 		this.accessor = null;
 		super.finalize();

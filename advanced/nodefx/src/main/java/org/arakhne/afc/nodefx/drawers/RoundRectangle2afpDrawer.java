@@ -32,16 +32,16 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class RoundRectangle2afpDrawer implements Drawer<RoundRectangle2afp<?, ?, ?, ?, ?, ?>> {
+@SuppressWarnings("rawtypes")
+public class RoundRectangle2afpDrawer implements Drawer<RoundRectangle2afp> {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends RoundRectangle2afp<?, ?, ?, ?, ?, ?>> getPrimitiveType() {
-		return (Class<? extends RoundRectangle2afp<?, ?, ?, ?, ?, ?>>) RoundRectangle2afp.class;
+	public Class<? extends RoundRectangle2afp> getPrimitiveType() {
+		return RoundRectangle2afp.class;
 	}
 
 	@Override
-	public void draw(ZoomableGraphicsContext gc, RoundRectangle2afp<?, ?, ?, ?, ?, ?> element) {
+	public void draw(ZoomableGraphicsContext gc, RoundRectangle2afp element) {
 		gc.fillRoundRect(element.getMinX(), element.getMinY(), element.getWidth(), element.getHeight(),
 				element.getArcWidth(), element.getArcHeight());
 		gc.strokeRoundRect(element.getMinX(), element.getMinY(), element.getWidth(), element.getHeight(),

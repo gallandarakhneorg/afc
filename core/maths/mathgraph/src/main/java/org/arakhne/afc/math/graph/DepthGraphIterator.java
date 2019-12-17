@@ -60,7 +60,7 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	 *     the end points of a segment are not distinguished.
 	 * @deprecated since 16.0
 	 */
-	@Deprecated
+	@Deprecated(since = "16.0", forRemoval = true)
 	public DepthGraphIterator(
 			Graph<ST, PT> graph,
 			double depth,
@@ -153,7 +153,7 @@ public class DepthGraphIterator<ST extends GraphSegment<ST, PT>, PT extends Grap
 	 *     the end points of a segment are not distinguished.
 	 * @deprecated since 16.0
 	 */
-	@Deprecated
+	@Deprecated(since = "16.0", forRemoval = true)
 	public DepthGraphIterator(
 			Graph<ST, PT> graph,
 			double depth,

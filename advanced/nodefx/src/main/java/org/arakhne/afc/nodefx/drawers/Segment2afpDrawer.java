@@ -32,16 +32,16 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class Segment2afpDrawer implements Drawer<Segment2afp<?, ?, ?, ?, ?, ?>> {
+@SuppressWarnings("rawtypes")
+public class Segment2afpDrawer implements Drawer<Segment2afp> {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends Segment2afp<?, ?, ?, ?, ?, ?>> getPrimitiveType() {
-		return (Class<? extends Segment2afp<?, ?, ?, ?, ?, ?>>) Segment2afp.class;
+	public Class<? extends Segment2afp> getPrimitiveType() {
+		return Segment2afp.class;
 	}
 
 	@Override
-	public void draw(ZoomableGraphicsContext gc, Segment2afp<?, ?, ?, ?, ?, ?> element) {
+	public void draw(ZoomableGraphicsContext gc, Segment2afp element) {
 		gc.strokeLine(element.getX1(), element.getY1(), element.getX2(), element.getY2());
 	}
 

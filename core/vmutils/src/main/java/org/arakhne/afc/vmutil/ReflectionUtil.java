@@ -922,7 +922,8 @@ public final class ReflectionUtil {
 			try {
 				if (!method.isSynthetic() && !Modifier.isStatic(method.getModifiers()) && method.getParameterCount() == 0
 					&& (method.getReturnType().isPrimitive() || String.class.equals(method.getReturnType())
-						|| method.getReturnType().isEnum() || JsonableObject.class.isAssignableFrom(method.getReturnType()))) {
+						|| method.getReturnType().isEnum()
+						|| JsonableObject.class.isAssignableFrom(method.getReturnType()))) {
 					final String name = method.getName();
 					if (name.startsWith("get") && name.length() > 3) { //$NON-NLS-1$
 						output.add(makeName(name, 3), method.invoke(object));

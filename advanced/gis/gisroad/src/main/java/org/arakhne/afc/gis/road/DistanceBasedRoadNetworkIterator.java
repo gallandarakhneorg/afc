@@ -29,9 +29,7 @@ import org.arakhne.afc.math.graph.DepthGraphIterator;
 import org.arakhne.afc.math.graph.DynamicDepthUpdater;
 import org.arakhne.afc.math.graph.GraphIterationElement;
 
-
-/**
- * This class is an iterator on the segments of a road network
+/** This class is an iterator on the segments of a road network
  * limited to a specified depth.
  *
  * @author $Author: sgalland$
@@ -59,7 +57,7 @@ final class DistanceBasedRoadNetworkIterator extends DepthGraphIterator<RoadSegm
 	 *     see {@link #DistanceBasedRoadNetworkIterator(RoadSegmentContainer, double, double, RoadSegment,
 	 *     RoadConnection, boolean, boolean, DynamicDepthUpdater)}.
 	 */
-	@Deprecated
+	@Deprecated(since = "16.0", forRemoval = true)
 	DistanceBasedRoadNetworkIterator(
 			RoadSegmentContainer network,
 			double depth,

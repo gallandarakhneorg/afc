@@ -121,7 +121,7 @@ public interface PhysicsEngine {
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 * @deprecated since 16.0, see {@link #motionNewtonLaw1D5(Vector1D, double, double, Vector1D, double, double, double, Vector1D)}
 	 */
-	@Deprecated
+	@Deprecated(since = "16.0", forRemoval = true)
 	@Pure
 	void motionNewtonLaw1D5(
 			Vector2D<?, ?> velocity,
@@ -327,7 +327,7 @@ public interface PhysicsEngine {
 	 * @deprecated since 16.0, see {@link #motionNewtonEuler1Law1D5(Vector1D, double, double, double, Vector1D)}
 	 */
 	@Pure
-	@Deprecated
+	@Deprecated(since = "16.0", forRemoval = true)
 	void motionNewtonEuler1Law1D5(
 			Vector2D<?, ?> velocity,
 			double minSpeed,

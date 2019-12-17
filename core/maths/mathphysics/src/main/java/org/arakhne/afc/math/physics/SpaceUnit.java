@@ -24,9 +24,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.vmutil.locale.Locale;
 
-
-/**
- * A <tt>SpaceUnit</tt> represents space distance at a given unit of
+/** A <tt>SpaceUnit</tt> represents space distance at a given unit of
  * granularity.
  *
  * @author $Author: sgalland$

@@ -866,7 +866,8 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 						getLog().debug("Add local module description for " //$NON-NLS-1$
 								+ parentArtifact.toString());
 					} else {
-						final String key = ArtifactUtils.key(parent.getGroupId(), parent.getArtifactId(), parent.getVersion());
+						final String key = ArtifactUtils.key(
+								parent.getGroupId(), parent.getArtifactId(), parent.getVersion());
 						final Artifact artifact = createArtifact(parent.getGroupId(),
 								parent.getArtifactId(), parent.getVersion());
 						final ArtifactRepository repo = getMavenSession().getLocalRepository();

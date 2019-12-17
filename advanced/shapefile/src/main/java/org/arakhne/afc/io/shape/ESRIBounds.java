@@ -20,7 +20,6 @@
 
 package org.arakhne.afc.io.shape;
 
-import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
@@ -378,18 +377,6 @@ public class ESRIBounds implements Comparable<ESRIBounds> {
 		final Rectangle2d bounds = new Rectangle2d();
 		bounds.setFromCorners(this.minx, this.miny, this.maxx, this.maxy);
 		return bounds;
-	}
-
-	/** Replies the 2D bounds.
-	 *
-	 * @return the 2D bounds
-	 * @deprecated since 15.0, see {@link #toRectangle2d()}.
-	 */
-	@Pure
-	@Deprecated
-	@Inline(value = "toRectangle2d()")
-	public Rectangle2d toRectangle2D() {
-		return toRectangle2d();
 	}
 
 	/** Ensure that min and max values are correctly ordered.

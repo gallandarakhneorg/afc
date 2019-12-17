@@ -28,7 +28,6 @@ import org.arakhne.afc.math.matrix.SingularMatrixException;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
 
-
 /** A 2D transformation.
  * Is represented internally as a 3x3 floating point matrix. The
  * mathematical representation is row major, as in traditional
@@ -706,7 +705,6 @@ public class Transform2D extends Matrix3d {
 	 * @return a new <code>Transform2D</code> object representing the
 	 *     inverse transformation.
 	 * @see #determinant()
-	 * @throws SingularMatrixException if the matrix cannot be inverted.
 	 */
 	@Pure
 	public Transform2D createInverse() {
@@ -758,7 +756,6 @@ public class Transform2D extends Matrix3d {
 	 * transform has no inverse, in which case an exception will be
 	 * thrown if the <code>createInverse</code> method is called.
 	 * @see #determinant()
-	 * @throws SingularMatrixException if the matrix cannot be inverted.
 	 */
 	@Override
 	public void invert() {
@@ -791,7 +788,6 @@ public class Transform2D extends Matrix3d {
 	 * thrown if the <code>createInverse</code> method is called.
 	 * @param matrix is the matrix to invert
 	 * @see #determinant()
-	 * @throws SingularMatrixException if the matrix cannot be inverted.
 	 */
 	@Override
 	public void invert(Matrix3d matrix) {

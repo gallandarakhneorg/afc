@@ -30,9 +30,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.tree.TreeNode;
 
-
-/**
- * This is the generic implementation of a
+/** This is the generic implementation of a
  * tree for which each node has five children.
  *
  * <h3>moveTo</h3>
@@ -584,7 +582,7 @@ public abstract class PentaTreeNode<D, N extends PentaTreeNode<D, N>> extends Ab
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {
-			heights.add(new Integer(currentHeight));
+			heights.add(Integer.valueOf(currentHeight));
 		} else {
 			if (this.child1 != null) {
 				this.child1.getHeights(currentHeight + 1, heights);

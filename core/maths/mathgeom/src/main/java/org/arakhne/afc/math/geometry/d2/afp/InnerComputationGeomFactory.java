@@ -32,7 +32,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-final class InnerComputationGeomFactory extends AbstractGeomFactory2D<InnerComputationVector2afp, InnerComputationPoint2afp> {
+public final class InnerComputationGeomFactory extends AbstractGeomFactory2D<InnerComputationVector2afp, InnerComputationPoint2afp> {
 
 	/** Singleton of the factory.
 	 */

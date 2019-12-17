@@ -29,9 +29,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.tree.TreeNode;
 
-
-/**
- * This is the generic implementation of a binary
+/** This is the generic implementation of a binary
  * tree.
  *
  * <h3>moveTo</h3>
@@ -418,7 +416,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {
-			heights.add(new Integer(currentHeight));
+			heights.add(Integer.valueOf(currentHeight));
 		} else {
 			if (this.left != null) {
 				this.left.getHeights(currentHeight + 1, heights);

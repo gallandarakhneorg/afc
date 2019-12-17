@@ -399,12 +399,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 */
 	@Pure
 	public Iterable<IntegerSegment> toSegmentIterable() {
-		return new Iterable<IntegerSegment>() {
-			@Override
-			public Iterator<IntegerSegment> iterator() {
-				return new SegmentIterator();
-			}
-		};
+		return () -> new SegmentIterator();
 	}
 
 	@Override
@@ -1120,13 +1115,11 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		}
 
 		@Override
-		@SuppressWarnings("synthetic-access")
 		public boolean hasNext() {
 			return this.index < IntegerList.this.values.length;
 		}
 
 		@Override
-		@SuppressWarnings("synthetic-access")
 		public IntegerSegment next() {
 			if (this.index >= IntegerList.this.values.length) {
 				throw new ConcurrentModificationException();
@@ -1144,7 +1137,6 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		}
 
 		@Override
-		@SuppressWarnings("synthetic-access")
 		public void remove() {
 			if (this.removable) {
 				final int idx = this.index - 2;

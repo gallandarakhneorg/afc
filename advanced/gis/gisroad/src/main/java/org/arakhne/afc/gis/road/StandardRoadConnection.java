@@ -46,9 +46,7 @@ import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.references.WeakArrayList;
 import org.arakhne.afc.vmutil.locale.Locale;
 
-
-/**
- * This class represents the connection point inside a road network.
+/** This class represents the connection point inside a road network.
  *
  * <p>A RoadConnection is a point that permits to link several road.
  * Two RoadConnections are assumed to be the same if they have
@@ -1460,7 +1458,6 @@ class StandardRoadConnection implements RoadConnection {
 			this.reverse = reverse;
 		}
 
-		@SuppressWarnings("synthetic-access")
 		@Override
 		@Pure
 		public Iterator<RoadSegment> iterator() {
@@ -1506,7 +1503,6 @@ class StandardRoadConnection implements RoadConnection {
 			this.reverse = reverse;
 		}
 
-		@SuppressWarnings("synthetic-access")
 		@Override
 		@Pure
 		public Iterator<Connection> iterator() {

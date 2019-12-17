@@ -91,7 +91,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	 */
 	@Pure
 	@Override
-	@Deprecated
+	@Deprecated(since = "16.0", forRemoval = true)
 	public void motionNewtonLaw1D5(
 			Vector2D<?, ?> velocity,
 			double minSpeed,
@@ -358,7 +358,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	 */
 	@Pure
 	@Override
-	@Deprecated
+	@Deprecated(since = "16.0", forRemoval = true)
 	public void motionNewtonEuler1Law1D5(
 			Vector2D<?, ?> velocity,
 			double minSpeed,

@@ -28,12 +28,11 @@ import java.security.Provider;
 import java.security.Security;
 import java.util.Base64;
 import java.util.Properties;
+import java.util.ServiceLoader;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import com.sun.crypto.provider.SunJCE;
 
 import org.arakhne.afc.vmutil.locale.Locale;
 
@@ -56,8 +55,9 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-@SuppressWarnings("restriction")
 public final class Encryption {
+
+	private static final String NAME = "SunJCE"; //$NON-NLS-1$
 
 	private static final Key CRYPT_KEY;
 
@@ -108,13 +108,18 @@ public final class Encryption {
 		final Provider[] providers = Security.getProviders();
 		boolean found = false;
 		for (final Provider provider : providers) {
-			if (provider instanceof SunJCE) {
+			if (NAME.equals(provider.getName())) {
 				found = true;
 				break;
 			}
 		}
 		if (!found) {
-			Security.addProvider(new SunJCE());
+			for (final Provider p : ServiceLoader.load(Provider.class, ClassLoader.getSystemClassLoader())) {
+	            if (NAME.equals(p.getName())) {
+	                Security.addProvider(p);
+	                return;
+	            }
+	        }
 		}
 	}
 

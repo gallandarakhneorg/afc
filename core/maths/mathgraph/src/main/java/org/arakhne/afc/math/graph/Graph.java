@@ -109,7 +109,8 @@ public interface Graph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT
 	@Pure
 	default GraphIterator<ST, PT> depthIterator(ST startingSegment, double depth, double positionFromStartingPoint,
 			PT startingPoint, boolean allowManyReplies, boolean assumeOrientedSegments) {
-		return depthIterator(startingSegment, depth, positionFromStartingPoint, startingPoint, allowManyReplies, assumeOrientedSegments, null);
+		return depthIterator(startingSegment, depth, positionFromStartingPoint, startingPoint,
+				allowManyReplies, assumeOrientedSegments, null);
 	}
 
 	/** Replies an iterator that permits to move along the segment's graph

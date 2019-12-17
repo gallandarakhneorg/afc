@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javafx.stage.FileChooser.ExtensionFilter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Multi file filter.
@@ -63,11 +62,6 @@ public class MultiFileFilter implements FileFilter {
 		this.acceptDirectories = acceptDirectories1;
 		this.filters = filters;
 		this.description = description;
-	}
-
-	@Override
-	public ExtensionFilter toJavaFX() {
-		return new ExtensionFilter(getDescription(), getExtensions());
 	}
 
 	@Pure

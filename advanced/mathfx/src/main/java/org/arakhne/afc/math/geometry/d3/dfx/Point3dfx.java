@@ -137,7 +137,7 @@ public class Point3dfx extends Tuple3dfx<Point3dfx> implements Point3D<Point3dfx
 
 	@Override
 	public UnmodifiablePoint3D<Point3dfx, Vector3dfx> toUnmodifiable() {
-		return new UnmodifiablePoint3D<Point3dfx, Vector3dfx>() {
+		return new UnmodifiablePoint3D<>() {
 
 			private static final long serialVersionUID = 5419032367247268556L;
 

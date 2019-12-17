@@ -40,8 +40,9 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  */
 public final class Drawers {
 
-	@SuppressWarnings("rawtypes")
-	private static ServiceLoader services;
+	private static ServiceLoader<Drawer<?>> services;
+
+	private static Iterable<Drawer<?>> iterable;
 
 	private static SoftValueTreeMap<Class<?>, Drawer<?>> buffer = new SoftValueTreeMap<>(ClassComparator.SINGLETON);
 
@@ -68,20 +69,44 @@ public final class Drawers {
 	 */
 	public static synchronized void reload() {
 		buffer.clear();
-		services.reload();
+		getDrawerProvidingService().reload();
 	}
 
 	/** Replies all the registered document drawers.
 	 *
 	 * @return the drawers.
 	 */
-	@SuppressWarnings("unchecked")
 	@Pure
 	public static synchronized Iterator<Drawer<?>> getAllDrawers() {
-		if (services == null) {
-			services = ServiceLoader.load(Drawer.class);
+		if (iterable == null) {
+			iterable = getDrawerProvidingService();
 		}
-		return services.iterator();
+		return iterable.iterator();
+	}
+
+	/** Change the collection of drawers.
+	 *
+	 * @param drawers the collection of the drawers.
+	 * @since 17.0
+	 */
+	public static synchronized void setBackedDrawers(Iterable<Drawer<?>> drawers) {
+		iterable = drawers;
+	}
+
+	/** Replies the service that provides the drawers.
+	 *
+	 * @return the drawers' providing service.
+	 * @since 17.0
+	 */
+	@SuppressWarnings("unchecked")
+	@Pure
+	public static synchronized ServiceLoader<Drawer<?>> getDrawerProvidingService() {
+		if (services == null) {
+			@SuppressWarnings("rawtypes")
+			final ServiceLoader serv = ServiceLoader.load(Drawer.class);
+			services = serv;
+		}
+		return services;
 	}
 
 	/** Replies the first registered document drawer that is supporting the given type.

@@ -13,6 +13,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>javafx</module>
 		<module>mathfx</module>
 		<module>attributes</module>
 		<module>agentmotion</module>

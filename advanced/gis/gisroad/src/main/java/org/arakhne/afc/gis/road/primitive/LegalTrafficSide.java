@@ -206,22 +206,19 @@ public enum LegalTrafficSide {
 		ZIMBABWE,
 	};
 
-	private static final Comparator<Object> COMPARATOR = new Comparator<Object>() {
-		@Override
-		public int compare(Object o1, Object o2) {
-			if (o1 == o2) {
-				return 0;
-			}
-			if (o1 == null) {
-				return Integer.MIN_VALUE;
-			}
-			if (o2 == null) {
-				return Integer.MAX_VALUE;
-			}
-			final String n1 = o1.toString();
-			final String n2 = o2.toString();
-			return n1.compareToIgnoreCase(n2);
+	private static final Comparator<Object> COMPARATOR = (Object o1, Object o2) -> {
+		if (o1 == o2) {
+			return 0;
 		}
+		if (o1 == null) {
+			return Integer.MIN_VALUE;
+		}
+		if (o2 == null) {
+			return Integer.MAX_VALUE;
+		}
+		final String n1 = o1.toString();
+		final String n2 = o2.toString();
+		return n1.compareToIgnoreCase(n2);
 	};
 
 	/** Replies the legal traffic side according to your current locale.

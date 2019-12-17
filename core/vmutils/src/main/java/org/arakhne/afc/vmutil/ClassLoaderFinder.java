@@ -53,7 +53,7 @@ public final class ClassLoaderFinder {
 	@Pure
 	public static ClassLoader findClassLoader() {
 		if (dynamicLoader == null) {
-			return ClassLoaderFinder.class.getClassLoader();
+			return Thread.currentThread().getContextClassLoader();
 		}
 		return dynamicLoader;
 	}

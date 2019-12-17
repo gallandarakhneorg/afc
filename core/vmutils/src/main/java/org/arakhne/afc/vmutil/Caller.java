@@ -186,4 +186,26 @@ public final class Caller {
     	return getCaller().getCallerClass(level + 1);
 	}
 
+	/** Replies the class of the first caller that invoked the function
+	 * from which <code>getCallerClass()</code> was invoked and is outside
+	 * the vmutils module.
+	 *
+	 * @return the class of the caller that invoked the function
+	 *     from which <code>getCallerClass()</code> was invoked and
+	 *     outside the current module.
+	 *     The {@code null} value may be replied if the caller class cannot
+	 *     be retrieved.
+	 * @since 17.0
+	 */
+	@Pure
+	public static Class<?> findClassForFirstCallerOutsideVmutilModule() {
+		Class<?> type = getCaller().getCallerClass(1);
+		int i = 3;
+		while (type != null && ModuleConstants.MODULE_NAME.equals(type.getModule().getName())) {
+			type = getCaller().getCallerClass(i);
+			++i;
+		}
+		return type;
+	}
+
 }

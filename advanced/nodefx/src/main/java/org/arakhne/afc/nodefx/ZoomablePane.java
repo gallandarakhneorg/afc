@@ -43,6 +43,9 @@ import javafx.css.StyleableBooleanProperty;
 import javafx.css.StyleableDoubleProperty;
 import javafx.css.StyleableObjectProperty;
 import javafx.css.StyleableProperty;
+import javafx.css.converter.BooleanConverter;
+import javafx.css.converter.EnumConverter;
+import javafx.css.converter.SizeConverter;
 import javafx.event.EventDispatchChain;
 import javafx.event.EventDispatcher;
 import javafx.event.EventHandler;
@@ -230,7 +233,6 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 			this.vbar.setRotate(TURN);
 		}
 		getDocumentCanvas().invertedAxisYProperty().addListener(new ChangeListener<Boolean>() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (newValue != null && newValue.booleanValue()) {
@@ -255,7 +257,6 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 			this.hbar.setRotate(TURN);
 		}
 		getDocumentCanvas().invertedAxisXProperty().addListener(new ChangeListener<Boolean>() {
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (newValue != null && newValue.booleanValue()) {
@@ -384,7 +385,8 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 						deltaX = -deltaX;
 					}
 					if (Math.abs(deltaX) > PAN_THRESHOLD) {
-						final double delta = getDocumentCanvas().getDocumentGraphicsContext2D().fx2docSize(deltaX) * sensitivity;
+						final double delta = getDocumentCanvas().getDocumentGraphicsContext2D()
+								.fx2docSize(deltaX) * sensitivity;
 						double newHVal = this.hbarValue + delta;
 						newHVal = MathUtil.clamp(this.hbar.getMin(), newHVal, this.hbar.getMax());
 						this.hbar.setValue(newHVal);
@@ -397,7 +399,8 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 						deltaY = -deltaY;
 					}
 					if (Math.abs(deltaY) >= PAN_THRESHOLD) {
-						final double delta = getDocumentCanvas().getDocumentGraphicsContext2D().fx2docSize(deltaY) * sensitivity;
+						final double delta = getDocumentCanvas().getDocumentGraphicsContext2D()
+								.fx2docSize(deltaY) * sensitivity;
 						double newVVal = this.vbarValue + delta;
 						newVVal = MathUtil.clamp(this.vbar.getMin(), newVVal, this.vbar.getMax());
 						this.vbar.setValue(newVVal);
@@ -600,7 +603,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 	 */
 	public ObjectProperty<Logger> loggerProperty() {
 		if (this.logger == null) {
-			this.logger = new SimpleObjectProperty<Logger>(this, LOGGER_PROPERTY, Logger.getLogger(getClass().getName())) {
+			this.logger = new SimpleObjectProperty<>(this, LOGGER_PROPERTY, Logger.getLogger(getClass().getName())) {
 				@Override
 				protected void invalidated() {
 					final Logger log = get();
@@ -694,8 +697,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 	 */
 	public ObjectProperty<MouseButton> panButtonProperty() {
 		if (this.panButton == null) {
-			this.panButton = new StyleableObjectProperty<MouseButton>(DEFAULT_PAN_BUTTON) {
-				@SuppressWarnings("synthetic-access")
+			this.panButton = new StyleableObjectProperty<>(DEFAULT_PAN_BUTTON) {
 				@Override
 				protected void invalidated() {
 					final MouseButton button = get();
@@ -1194,11 +1196,10 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 
 		/** Pannable CSS metadata.
 		 */
-		public static final CssMetaData<ZoomablePane<?>, Boolean> PANNABLE = new CssMetaData<ZoomablePane<?>, Boolean>(
+		public static final CssMetaData<ZoomablePane<?>, Boolean> PANNABLE = new CssMetaData<>(
 				"-afc-pannable", //$NON-NLS-1$
 				BooleanConverter.getInstance(), Boolean.FALSE) {
 
-			@SuppressWarnings("synthetic-access")
 			@Override
 			public boolean isSettable(ZoomablePane<?> pane) {
 				return pane.pannable == null || !pane.pannable.isBound();
@@ -1213,9 +1214,8 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 
 		/** PanButton CSS metadata.
 		 */
-		@SuppressWarnings("synthetic-access")
 		public static final CssMetaData<ZoomablePane<?>, MouseButton> PAN_BUTTON =
-			new CssMetaData<ZoomablePane<?>, MouseButton>(
+			new CssMetaData<>(
 					"-afc-panbutton", //$NON-NLS-1$
 					new EnumConverter<>(MouseButton.class), DEFAULT_PAN_BUTTON) {
 
@@ -1233,8 +1233,7 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 
 		/** PanButton CSS metadata.
 		 */
-		@SuppressWarnings("synthetic-access")
-		public static final CssMetaData<ZoomablePane<?>, Number> PAN_SENSITIVITY = new CssMetaData<ZoomablePane<?>, Number>(
+		public static final CssMetaData<ZoomablePane<?>, Number> PAN_SENSITIVITY = new CssMetaData<>(
 				"-afc-panbutton", //$NON-NLS-1$
 				SizeConverter.getInstance(), DEFAULT_PAN_SENSITIVITY) {
 

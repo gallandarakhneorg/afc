@@ -29,7 +29,6 @@ import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
-
 /** 3D Vector.
  *
  * @param <RV> is the type of vector that can be returned by this tuple.
@@ -404,9 +403,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
         return signedAngle(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ());
     }
 
-
-	/**
-	 * Sets the value of this tuple to the sum of tuples t1 and t2.
+	/** Sets the value of this tuple to the sum of tuples t1 and t2.
+	 *
 	 * @param vector1 the first tuple
 	 * @param vector2 the second tuple
 	 */
@@ -418,9 +416,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 			vector1.getZ() + vector2.getZ());
 	}
 
-
-	/**
-	 * Sets the value of this tuple to the sum of itself and t1.
+	/** Sets the value of this tuple to the sum of itself and t1.
+	 *
 	 * @param vector the other tuple
 	 */
 	default void add(Vector3D<?, ?> vector) {

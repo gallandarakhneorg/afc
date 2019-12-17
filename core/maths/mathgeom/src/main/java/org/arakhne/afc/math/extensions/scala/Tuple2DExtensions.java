@@ -58,7 +58,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@ScalaOperator("*")
-	public static <V extends Vector2D<? extends V, ?>> V $times(double left, V right) {
+	public static <V extends Vector2D<V, ?>> V $times(double left, V right) {
 		return org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions.operator_multiply(left, right);
 	}
 
@@ -79,7 +79,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@ScalaOperator("*")
-	public static <V extends Vector1D<? extends V, ?, ?>> V $times(double left, V right) {
+	public static <V extends Vector1D<V, ?, ?>> V $times(double left, V right) {
 		return org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions.operator_multiply(left, right);
 	}
 
@@ -98,7 +98,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@ScalaOperator("/")
-	public static <V extends Vector2D<? extends V, ?>> V $div(double left, V right) {
+	public static <V extends Vector2D<V, ?>> V $div(double left, V right) {
 		return org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions.operator_divide(left, right);
 	}
 
@@ -118,7 +118,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@ScalaOperator("/")
-	public static <V extends Vector1D<? extends V, ?, ?>> V $div(double left, V right) {
+	public static <V extends Vector1D<V, ?, ?>> V $div(double left, V right) {
 		return org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions.operator_divide(left, right);
 	}
 
@@ -138,7 +138,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@ScalaOperator("-")
-	public static <V extends Vector2D<? extends V, ?>> V $minus(double left, V right) {
+	public static <V extends Vector2D<V, ?>> V $minus(double left, V right) {
 		return org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions.operator_minus(left, right);
 	}
 
@@ -159,7 +159,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@ScalaOperator("-")
-	public static <V extends Vector1D<? extends V, ?, ?>> V $minus(double left, V right) {
+	public static <V extends Vector1D<V, ?, ?>> V $minus(double left, V right) {
 		return org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions.operator_minus(left, right);
 	}
 
@@ -179,7 +179,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@ScalaOperator("-")
-	public static <P extends Point2D<? extends P, ?>> P $minus(double left, P right) {
+	public static <P extends Point2D<P, ?>> P $minus(double left, P right) {
 		return org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions.operator_minus(left, right);
 	}
 
@@ -199,7 +199,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@ScalaOperator("+")
-	public static <V extends Vector2D<? extends V, ?>> V $plus(double left, V right) {
+	public static <V extends Vector2D<V, ?>> V $plus(double left, V right) {
 		return org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions.operator_plus(left, right);
 
 	}
@@ -221,7 +221,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@ScalaOperator("+")
-	public static <V extends Vector1D<? extends V, ?, ?>> V $plus(double left, V right) {
+	public static <V extends Vector1D<V, ?, ?>> V $plus(double left, V right) {
 		return org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions.operator_plus(left, right);
 
 	}
@@ -242,7 +242,7 @@ public final class Tuple2DExtensions {
 	 */
 	@Pure
 	@ScalaOperator("+")
-	public static <P extends Point2D<? extends P, ?>> P $plus(double left, P right) {
+	public static <P extends Point2D<P, ?>> P $plus(double left, P right) {
 		return org.arakhne.afc.math.extensions.xtext.Tuple2DExtensions.operator_plus(left, right);
 	}
 

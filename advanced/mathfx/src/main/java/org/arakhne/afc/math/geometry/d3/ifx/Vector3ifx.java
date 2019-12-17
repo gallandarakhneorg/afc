@@ -26,11 +26,11 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 3D Vector with 3 integer FX properties.
@@ -195,7 +195,7 @@ public class Vector3ifx extends Tuple3ifx<Vector3ifx> implements Vector3D<Vector
 	@Pure
 	@Override
 	public UnmodifiableVector3D<Vector3ifx, Point3ifx> toUnmodifiable() {
-		return new UnmodifiableVector3D<Vector3ifx, Point3ifx>() {
+		return new UnmodifiableVector3D<>() {
 
 			private static final long serialVersionUID = -3525974627723161583L;
 

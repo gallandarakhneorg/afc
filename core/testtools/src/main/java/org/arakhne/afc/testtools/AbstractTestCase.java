@@ -20,11 +20,14 @@
 
 package org.arakhne.afc.testtools;
 
-import java.awt.geom.Point2D;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,12 +40,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Random;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.common.base.Strings;
-import org.junit.Assert;
-import org.junit.ComparisonFailure;
 
 /** Abstract class that is providing a base for unit tests.
  *
@@ -53,6 +55,10 @@ import org.junit.ComparisonFailure;
  */
 @SuppressWarnings("checkstyle:methodcount")
 public abstract class AbstractTestCase extends EnableAssertion {
+
+	/** Supplier of an empty message.
+	 */
+	public static final Supplier<String> NO_MESSAGE = null;
 
 	/** Precision of the floating point number epsilon-tests.
 	 */
@@ -93,6 +99,17 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public void setDefaultDecimalPrecision() {
 		this.decimalPrecision = DEFAULT_DECIMAL_COUNT;
+	}
+
+	/** Fail a test with a comparison error.
+	 *
+	 * @param message the message.
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @since 17.0
+	 */
+	public static void failCompare(String message, String expected, String actual) {
+		fail(message);
 	}
 
 	/** Replies if two values are equals at espilon.
@@ -151,23 +168,23 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	public static boolean isEpsilonEquals(BigDecimal v1, BigDecimal v2, int precision) {
 		final BigDecimal ma = v1.movePointRight(precision);
 		final BigDecimal mb = v2.movePointRight(precision);
-		BigDecimal aa = ma.setScale(0, BigDecimal.ROUND_HALF_UP);
-		BigDecimal bb = mb.setScale(0, BigDecimal.ROUND_HALF_UP);
+		BigDecimal aa = ma.setScale(0, RoundingMode.HALF_UP);
+		BigDecimal bb = mb.setScale(0, RoundingMode.HALF_UP);
 		if (aa.compareTo(bb) == 0) {
 			return true;
 		}
-		aa = ma.setScale(0, BigDecimal.ROUND_DOWN);
-		bb = mb.setScale(0, BigDecimal.ROUND_DOWN);
+		aa = ma.setScale(0, RoundingMode.DOWN);
+		bb = mb.setScale(0, RoundingMode.DOWN);
 		if (aa.compareTo(bb) == 0) {
 			return true;
 		}
-		aa = ma.setScale(0, BigDecimal.ROUND_HALF_UP);
-		bb = mb.setScale(0, BigDecimal.ROUND_DOWN);
+		aa = ma.setScale(0, RoundingMode.HALF_UP);
+		bb = mb.setScale(0, RoundingMode.DOWN);
 		if (aa.compareTo(bb) == 0) {
 			return true;
 		}
-		aa = ma.setScale(0, BigDecimal.ROUND_DOWN);
-		bb = mb.setScale(0, BigDecimal.ROUND_HALF_UP);
+		aa = ma.setScale(0, RoundingMode.DOWN);
+		bb = mb.setScale(0, RoundingMode.HALF_UP);
 		return aa.compareTo(bb) == 0;
 	}
 
@@ -206,7 +223,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual the actual value.
 	 */
 	public static void assertNotEquals(int expected, int actual) {
-		assertNotEquals(null, expected, actual);
+		assertNotEquals(expected, actual, (Supplier<String>) null);
 	}
 
 	/** Test if the actual value is not equal to the expected value with
@@ -215,8 +232,34 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message the error message.
 	 * @param expected the expected value.
 	 * @param actual the actual value.
+	 * @deprecated since 17.0, see {@link #assertNotEquals(int, int, Supplier)}
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static void assertNotEquals(String message, int expected, int actual) {
+		assertNotEquals(expected, actual, message);
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param message the error message.
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @since 17.0
+	 */
+	public static void assertNotEquals(int expected, int actual, String message) {
+		assertNotEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public static void assertNotEquals(int expected, int actual, Supplier<String> message) {
 		if (expected == actual) {
 			fail(formatFailMessage(message, "same value, expecting not equal to:", expected, actual)); //$NON-NLS-1$
 		}
@@ -238,11 +281,38 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message the error message.
 	 * @param expected the expected value.
 	 * @param actual the actual value.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static void assertNotEquals(String message, Object expected, Object actual) {
+		assertNotEquals(expected, actual, message);
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public static void assertNotEquals(Object expected, Object actual, String message) {
+		assertNotEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public static void assertNotEquals(Object expected, Object actual, Supplier<String> message) {
 		if (Objects.equals(expected, actual)) {
-			if (!Strings.isNullOrEmpty(message)) {
-				fail(message);
+			final String s = message.get();
+			if (!Strings.isNullOrEmpty(s)) {
+				fail(s);
 			} else {
 				fail("Expecting to be not equals to " + Objects.toString(expected)); //$NON-NLS-1$
 			}
@@ -255,7 +325,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertNaN(double value) {
 		if (!Double.isNaN(value)) {
-			fail(formatFailMessage(null, "Expecting NaN", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting NaN", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -265,7 +335,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertNaN(float value) {
 		if (!Float.isNaN(value)) {
-			fail(formatFailMessage(null, "Expecting NaN", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting NaN", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -275,7 +345,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(byte value) {
 		if (value != 0) {
-			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -285,7 +355,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(short value) {
 		if (value != 0) {
-			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -295,7 +365,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(int value) {
 		if (value != 0) {
-			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -305,7 +375,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(long value) {
 		if (value != 0) {
-			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -315,7 +385,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 */
 	public static void assertZero(float value) {
 		if (value != 0f) {
-			fail(formatFailMessage(null, "Expecting zero", value)); //$NON-NLS-1$
+			fail(formatFailMessage(NO_MESSAGE, "Expecting zero", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -324,15 +394,37 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param value the value to test.
 	 */
 	public static void assertZero(double value) {
-		assertZero(null, value);
+		assertZero(value, NO_MESSAGE);
 	}
 
 	/** Test if the given value is equal to zero.
 	 *
 	 * @param message the error message.
 	 * @param value the value to test.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static void assertZero(String message, double value) {
+		assertZero(value, message);
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param message the error message.
+	 * @param value the value to test.
+	 * @since 17.0
+	 */
+	public static void assertZero(double value, String message) {
+		assertZero(value, () -> message);
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param message the error message.
+	 * @param value the value to test.
+	 * @since 17.0
+	 */
+	public static void assertZero(double value, Supplier<String> message) {
 		if (value != 0.) {
 			fail(formatFailMessage(message, "Expecting zero", value)); //$NON-NLS-1$
 		}
@@ -343,15 +435,37 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param value the value to test.
 	 */
 	public void assertEpsilonZero(double value) {
-		assertEpsilonZero(null, value);
+		assertEpsilonZero(value, NO_MESSAGE);
 	}
 
 	/** Test if the given value is near to zero.
 	 *
 	 * @param message the error message.
 	 * @param value the value to test.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public void assertEpsilonZero(String message, double value) {
+		assertEpsilonZero(value, message);
+	}
+
+	/** Test if the given value is near to zero.
+	 *
+	 * @param value the value to test.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public void assertEpsilonZero(double value, String message) {
+		assertEpsilonZero(value, () -> message);
+	}
+
+	/** Test if the given value is near to zero.
+	 *
+	 * @param value the value to test.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public void assertEpsilonZero(double value, Supplier<String> message) {
 		if (!isEpsilonEquals(value, 0.)) {
 			fail(formatFailMessage(message, "Expecting zero", value)); //$NON-NLS-1$
 		}
@@ -368,30 +482,17 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		final Iterator<? extends T> it2 = actual.iterator();
 		while (it1.hasNext()) {
 			if (!it2.hasNext()) {
-				throw new ComparisonFailure(
-						formatFailMessage(null, "Element is missed", expected, actual), //$NON-NLS-1$
-						toString(expected), toString(actual));
+				fail(formatFailMessage(NO_MESSAGE, "Element is missed", expected, actual)); //$NON-NLS-1$
 			}
 			final T expect = it1.next();
 			final T act = it2.next();
 			if (!Objects.equals(expect, act)) {
-				throw new ComparisonFailure(formatFailMessage(null, "Not same element", expected, actual), //$NON-NLS-1$
-						toString(expected), toString(actual));
+				fail(formatFailMessage(NO_MESSAGE, "Not same element", expected, actual)); //$NON-NLS-1$
 			}
 		}
 		if (it2.hasNext()) {
-			throw new ComparisonFailure(formatFailMessage(null, "Too many elements", expected, actual), //$NON-NLS-1$
-					toString(expected), toString(actual));
+			fail(formatFailMessage(NO_MESSAGE, "Too many elements", expected, actual)); //$NON-NLS-1$
 		}
-	}
-
-	private static String toString(Iterable<?> it) {
-		final StringBuilder b = new StringBuilder();
-		for (final Object o : it) {
-			b.append(o);
-			b.append(",\n"); //$NON-NLS-1$
-		}
-		return b.toString();
 	}
 
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
@@ -458,7 +559,9 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param expected is the expected object.
 	 * @param actual is the actual value of the object.
 	 * @return the message
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	protected static String formatFailMessage(String message, Object expected, Object actual) {
 		final StringBuilder formatted = new StringBuilder();
 		if (message != null) {
@@ -474,17 +577,66 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	}
 
 	/**
+	 * Format a failure message for invalid value.
+	 *
+	 * @param message is the message to reply.
+	 * @param expected is the expected object.
+	 * @param actual is the actual value of the object.
+	 * @return the message
+	 * @since 17.0
+	 */
+	protected static String formatFailMessage(Supplier<String> message, Object expected, Object actual) {
+		final StringBuilder formatted = new StringBuilder();
+		if (message != null) {
+			final String s = message.get();
+			if (!Strings.isNullOrEmpty(s)) {
+				formatted.append(message.get());
+				formatted.append(' ');
+			}
+		}
+		formatted.append("expected: <"); //$NON-NLS-1$
+		formatted.append(arrayToString(expected));
+		formatted.append("> but was: <"); //$NON-NLS-1$
+		formatted.append(arrayToString(actual));
+		formatted.append(">"); //$NON-NLS-1$
+		return formatted.toString();
+	}
+
+	/**
 	 * Format a failure message.
 	 *
 	 * @param message the first part of the message (optional).
 	 * @param msg the second part of the message.
 	 * @return the message
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	protected static String formatFailMessage(String message, String msg) {
 		final StringBuilder formatted = new StringBuilder();
 		if (message != null) {
 			formatted.append(message);
 			formatted.append(' ');
+		}
+		formatted.append(msg);
+		return formatted.toString();
+	}
+
+	/**
+	 * Format a failure message.
+	 *
+	 * @param message the first part of the message (optional).
+	 * @param msg the second part of the message.
+	 * @return the message
+	 * @since 17.0
+	 */
+	protected static String formatFailMessage(Supplier<String> message, String msg) {
+		final StringBuilder formatted = new StringBuilder();
+		if (message != null) {
+			final String s = message.get();
+			if (!Strings.isNullOrEmpty(s)) {
+				formatted.append(message.get());
+				formatted.append(' ');
+			}
 		}
 		formatted.append(msg);
 		return formatted.toString();
@@ -498,7 +650,9 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param expected is the expected object.
 	 * @param actual is the actual value of the object.
 	 * @return the message
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	protected static String formatFailMessage(String message, String msg, Object expected, Object actual) {
 		final StringBuilder formatted = new StringBuilder();
 		if (message != null) {
@@ -519,14 +673,69 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 *
 	 * @param message is the first part of the message (optional).
 	 * @param msg is the second part of the message (mandatory).
+	 * @param expected is the expected object.
 	 * @param actual is the actual value of the object.
 	 * @return the message
+	 * @since 17.0
 	 */
+	protected static String formatFailMessage(Supplier<String> message, String msg, Object expected, Object actual) {
+		final StringBuilder formatted = new StringBuilder();
+		if (message != null) {
+			final String s = message.get();
+			if (!Strings.isNullOrEmpty(s)) {
+				formatted.append(message.get());
+				formatted.append(' ');
+			}
+		}
+		formatted.append(msg);
+		formatted.append("; expected: <"); //$NON-NLS-1$
+		formatted.append(arrayToString(expected));
+		formatted.append("> but was: <"); //$NON-NLS-1$
+		formatted.append(arrayToString(actual));
+		formatted.append(">"); //$NON-NLS-1$
+		return formatted.toString();
+	}
+
+	/**
+	 * Format a failure message for invalid value.
+	 *
+	 * @param message is the first part of the message (optional).
+	 * @param msg is the second part of the message (mandatory).
+	 * @param actual is the actual value of the object.
+	 * @return the message
+	 * @deprecated since 17.0
+	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	protected static String formatFailMessage(String message, String msg, Object actual) {
 		final StringBuilder formatted = new StringBuilder();
 		if (message != null) {
 			formatted.append(message);
 			formatted.append(' ');
+		}
+		formatted.append(msg);
+		formatted.append(" but was: <"); //$NON-NLS-1$
+		formatted.append(arrayToString(actual));
+		formatted.append(">"); //$NON-NLS-1$
+		return formatted.toString();
+	}
+
+	/**
+	 * Format a failure message for invalid value.
+	 *
+	 * @param message is the first part of the message (optional).
+	 * @param msg is the second part of the message (mandatory).
+	 * @param actual is the actual value of the object.
+	 * @return the message
+	 * @since 17.0!
+	 */
+	protected static String formatFailMessage(Supplier<String> message, String msg, Object actual) {
+		final StringBuilder formatted = new StringBuilder();
+		if (message != null) {
+			final String s = message.get();
+			if (!Strings.isNullOrEmpty(s)) {
+				formatted.append(message.get());
+				formatted.append(' ');
+			}
 		}
 		formatted.append(msg);
 		formatted.append(" but was: <"); //$NON-NLS-1$
@@ -541,8 +750,34 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message is the error message to put inside the assertion.
 	 * @param expectedObjects are the set of expected values during the unit test.
 	 * @param actual is the actual value of the object in the unit test.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static void assertContains(String message, Object[] expectedObjects, Object actual) {
+		assertContains(expectedObjects, actual, message);
+	}
+
+	/** Asserts that the actual object is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown with the given message.
+	 *
+	 * @param expectedObjects are the set of expected values during the unit test.
+	 * @param actual is the actual value of the object in the unit test.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static void assertContains(Object[] expectedObjects, Object actual, String message) {
+		assertContains(expectedObjects, actual, () -> message);
+	}
+
+	/** Asserts that the actual object is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown with the given message.
+	 *
+	 * @param expectedObjects are the set of expected values during the unit test.
+	 * @param actual is the actual value of the object in the unit test.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static void assertContains(Object[] expectedObjects, Object actual, Supplier<String> message) {
 		if ((expectedObjects != null) && (expectedObjects.length > 0)) {
 			for (final Object object : expectedObjects) {
 				if ((object == null) && (actual == null)) {
@@ -563,7 +798,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual is the actual value of the object in the unit test.
 	 */
 	public static void assertContains(Object[] expectedObjects, Object actual) {
-	    assertContains(null, expectedObjects, actual);
+	    assertContains(expectedObjects, actual, NO_MESSAGE);
 	}
 
 	/** Asserts that the actual object is equal to one of the expected objects. If not
@@ -573,11 +808,10 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 *
 	 * @param expected is the expected value during the unit test.
 	 * @param actual is the actual value of the object during the unit test.
-	 * @see Assert#assertEquals(Object, Object)
 	 * @see #assertContains(Object[], Object)
 	 */
 	public static void assertEqualsGeneric(Object expected, Object actual) {
-		assertEqualsGeneric(null, expected, actual);
+		assertEqualsGeneric(expected, actual, NO_MESSAGE);
 	}
 
 	/** Asserts that the actual object is equal to one of the expected objects. If not
@@ -588,18 +822,49 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message is the error message to put inside the assertion.
 	 * @param expected is the expected value during the unit test.
 	 * @param actual is the actual value of the object during the unit test.
-	 * @see Assert#assertEquals(Object, Object)
+	 * @see #assertContains(Object[], Object)
+	 * @deprecated since 17.0
+	 */
+	@Deprecated(since = "17.0", forRemoval = true)
+	public static void assertEqualsGeneric(String message, Object expected, Object actual) {
+		assertEqualsGeneric(expected, actual, message);
+	}
+
+	/** Asserts that the actual object is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 * This assertion function tests the types of its parameters to call the best
+	 * {@code assertEquals} function.
+	 *
+	 * @param message is the error message to put inside the assertion.
+	 * @param expected is the expected value during the unit test.
+	 * @param actual is the actual value of the object during the unit test.
+	 * @since 17.0
 	 * @see #assertContains(Object[], Object)
 	 */
-	public static void assertEqualsGeneric(String message, Object expected, Object actual) {
+	public static void assertEqualsGeneric(Object expected, Object actual, String message) {
+		assertEqualsGeneric(expected, actual, () -> message);
+	}
+
+	/** Asserts that the actual object is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 * This assertion function tests the types of its parameters to call the best
+	 * {@code assertEquals} function.
+	 *
+	 * @param message is the error message to put inside the assertion.
+	 * @param expected is the expected value during the unit test.
+	 * @param actual is the actual value of the object during the unit test.
+	 * @since 17.0
+	 * @see #assertContains(Object[], Object)
+	 */
+	public static void assertEqualsGeneric(Object expected, Object actual, Supplier<String> message) {
 		if ((expected != null) && (actual != null) && (expected.getClass().isArray())) {
 			if (actual.getClass().isArray()) {
-				assertContains(message, (Object[]) expected, (Object[]) actual);
+				assertContains((Object[]) expected, (Object[]) actual, message);
 			} else {
-				assertContains(message, (Object[]) expected, actual);
+				assertContains((Object[]) expected, actual, message);
 			}
 		} else {
-			Assert.assertEquals(message, expected, actual);
+			assertEquals(expected, actual, message);
 		}
 	}
 
@@ -611,7 +876,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual are the actual values of the objects during the unit test.
 	 */
 	public static <T> void assertSimilars(T[] expectedObjects, T[] actual) {
-	    assertSimilars(null, expectedObjects, actual);
+	    assertSimilars(expectedObjects, actual, NO_MESSAGE);
 	}
 
 	/** Asserts that the actual similar is equal to one of the expected objects. If not
@@ -621,8 +886,36 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message is the error message to put inside the assertion.
 	 * @param expectedObjects are the expected values during the unit test.
 	 * @param actual are the actual values of the objects during the unit test.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static <T> void assertSimilars(String message, T[] expectedObjects, T[] actual) {
+		assertSimilars(expectedObjects, actual, message);
+	}
+
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 *
+	 * @param <T> is the type of the values
+	 * @param expectedObjects are the expected values during the unit test.
+	 * @param actual are the actual values of the objects during the unit test.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static <T> void assertSimilars(T[] expectedObjects, T[] actual, String message) {
+		assertSimilars(expectedObjects, actual, () -> message);
+	}
+
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 *
+	 * @param <T> is the type of the values
+	 * @param expectedObjects are the expected values during the unit test.
+	 * @param actual are the actual values of the objects during the unit test.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static <T> void assertSimilars(T[] expectedObjects, T[] actual, Supplier<String> message) {
 		if (expectedObjects == actual) {
 			return;
 		}
@@ -640,7 +933,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual are the actual values of the objects during the unit test.
 	 */
 	public static <T> void assertSimilars(Collection<T> expectedObjects, Collection<T> actual) {
-	    assertSimilars(null, expectedObjects, actual);
+	    assertSimilars(expectedObjects, actual, NO_MESSAGE);
 	}
 
 	/** Asserts that the actual similar is equal to one of the expected objects. If not
@@ -650,8 +943,36 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message is the error message to put inside the assertion.
 	 * @param expectedObjects are the expected values during the unit test.
 	 * @param actual are the actual values of the objects during the unit test.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static <T> void assertSimilars(String message, Collection<T> expectedObjects, Collection<T> actual) {
+		assertSimilars(expectedObjects, actual, message);
+	}
+
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 *
+	 * @param <T> is the type of the values
+	 * @param expectedObjects are the expected values during the unit test.
+	 * @param actual are the actual values of the objects during the unit test.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static <T> void assertSimilars(Collection<T> expectedObjects, Collection<T> actual, String message) {
+		assertSimilars(expectedObjects, actual, () -> message);
+	}
+
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 *
+	 * @param <T> is the type of the values
+	 * @param expectedObjects are the expected values during the unit test.
+	 * @param actual are the actual values of the objects during the unit test.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static <T> void assertSimilars(Collection<T> expectedObjects, Collection<T> actual, Supplier<String> message) {
 		if (expectedObjects == actual) {
 			return;
 		}
@@ -669,22 +990,50 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message is the error message to put inside the assertion.
 	 * @param expected is the expected value during the unit test.
 	 * @param actual are the actual value of the object during the unit test.
+	 * @deprecated since 17.0
+	 */
+	@Deprecated(since = "17.0", forRemoval = true)
+	public static <T, X> void assertSimilars(String message, T expected, T actual) {
+		assertSimilars(expected, actual, message);
+	}
+
+	/** Asserts that the actual object is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 *
+	 * @param <T> is the type of the values
+	 * @param <X> is the element's type of the values if they are arrays.
+	 * @param expected is the expected value during the unit test.
+	 * @param actual are the actual value of the object during the unit test.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static <T, X> void assertSimilars(T expected, T actual, String message) {
+		assertSimilars(expected, actual, () -> message);
+	}
+
+	/** Asserts that the actual object is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 *
+	 * @param <T> is the type of the values
+	 * @param <X> is the element's type of the values if they are arrays.
+	 * @param expected is the expected value during the unit test.
+	 * @param actual are the actual value of the object during the unit test.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T, X> void assertSimilars(String message, T expected, T actual) {
+	public static <T, X> void assertSimilars(T expected, T actual, Supplier<String> message) {
 		if (expected == actual) {
 			return;
 		}
 		if (expected instanceof Collection) {
-			assertSimilars(message, (Collection<?>) expected, (Collection<?>) actual);
-		} else if (expected instanceof Point2D) {
-			assertSimilars(message, (Point2D) expected, (Point2D) actual);
+			assertSimilars((Collection<?>) expected, (Collection<?>) actual, message);
 		} else if (expected instanceof Date) {
-			assertSimilars(message, (Date) expected, (Date) actual);
+			assertSimilars((Date) expected, (Date) actual, message);
 		} else if (expected.getClass().isArray()) {
-			assertSimilars(message, (X[]) expected, (X[]) actual);
+			assertSimilars((X[]) expected, (X[]) actual, message);
 		} else {
-			Assert.assertEquals(message, expected, actual);
+			assertEquals(expected, actual, message);
 		}
 	}
 
@@ -707,11 +1056,41 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message is the error message to put inside the assertion.
 	 * @param expected is the expected value.
 	 * @param actual is the current value.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static <T, X> void assertNotSimilars(String message, T expected, T actual) {
+		assertNotSimilars(expected, actual, message);
+	}
+
+	/** Asserts that the actual object is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 *
+	 * @param <T> is the type of the values.
+	 * @param <X> is the element's type of the values if they are arrays.
+	 * @param expected is the expected value.
+	 * @param actual is the current value.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static <T, X> void assertNotSimilars(T expected, T actual, String message) {
+		assertNotSimilars(expected, actual, () -> message);
+	}
+
+	/** Asserts that the actual object is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 *
+	 * @param <T> is the type of the values.
+	 * @param <X> is the element's type of the values if they are arrays.
+	 * @param expected is the expected value.
+	 * @param actual is the current value.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static <T, X> void assertNotSimilars(T expected, T actual, Supplier<String> message) {
 		if (expected != actual) {
 			try {
-				assertSimilars(message, expected, actual);
+				assertSimilars(expected, actual, message);
 			} catch (Throwable exception) {
 				// ok
 				return;
@@ -749,7 +1128,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual is the current map.
 	 */
 	public static <K, V> void assertDeepSimilars(Map<K, V> expectedObjects, Map<K, V> actual) {
-	    assertDeepSimilars(null, expectedObjects, actual);
+	    assertDeepSimilars(expectedObjects, actual, NO_MESSAGE);
 	}
 
 	/** Asserts that the actual similar is equal to one of the expected objects. If not
@@ -760,8 +1139,38 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message is the error message to put inside the assertion.
 	 * @param expectedObjects is the expected map.
 	 * @param actual is the current map.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static <K, V> void assertDeepSimilars(String message, Map<K, V> expectedObjects, Map<K, V> actual) {
+		assertDeepSimilars(expectedObjects, actual, message);
+	}
+
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 *
+	 * @param <K> is the type of the map keys.
+	 * @param <V> is the type of the map values.
+	 * @param expectedObjects is the expected map.
+	 * @param actual is the current map.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static <K, V> void assertDeepSimilars(Map<K, V> expectedObjects, Map<K, V> actual, String message) {
+		assertDeepSimilars(expectedObjects, actual, () -> message);
+	}
+
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 *
+	 * @param <K> is the type of the map keys.
+	 * @param <V> is the type of the map values.
+	 * @param expectedObjects is the expected map.
+	 * @param actual is the current map.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static <K, V> void assertDeepSimilars(Map<K, V> expectedObjects, Map<K, V> actual, Supplier<String> message) {
 		if (expectedObjects == actual) {
 			return;
 		}
@@ -769,7 +1178,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 			for (final Entry<K, V> entry : expectedObjects.entrySet()) {
 				final V v1 = entry.getValue();
 				final V v2 = actual.get(entry.getKey());
-				assertSimilars(message, v1, v2);
+				assertSimilars(v1, v2, message);
 			}
 			// all values are correct
 			return;
@@ -786,7 +1195,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual is the current map.
 	 */
 	public static <K, V> void assertNotDeepSimilars(Map<K, V> expectedObjects, Map<K, V> actual) {
-	    assertNotDeepSimilars(null, expectedObjects, actual);
+	    assertNotDeepSimilars(expectedObjects, actual, NO_MESSAGE);
 	}
 
 	/** Asserts that the actual similar is equal to one of the expected objects. If not
@@ -797,8 +1206,38 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message is the error message to put inside the assertion.
 	 * @param expectedObjects is the expected map.
 	 * @param actual is the current map.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static <K, V> void assertNotDeepSimilars(String message, Map<K, V> expectedObjects, Map<K, V> actual) {
+		assertNotDeepSimilars(expectedObjects, actual, message);
+	}
+
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 *
+	 * @param <K> is the type of the map keys.
+	 * @param <V> is the type of the map values.
+	 * @param expectedObjects is the expected map.
+	 * @param actual is the current map.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static <K, V> void assertNotDeepSimilars(Map<K, V> expectedObjects, Map<K, V> actual, String message) {
+		assertNotDeepSimilars(expectedObjects, actual, () -> message);
+	}
+
+	/** Asserts that the actual similar is equal to one of the expected objects. If not
+	 * an AssertionFailedError is thrown.
+	 *
+	 * @param <K> is the type of the map keys.
+	 * @param <V> is the type of the map values.
+	 * @param expectedObjects is the expected map.
+	 * @param actual is the current map.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static <K, V> void assertNotDeepSimilars(Map<K, V> expectedObjects, Map<K, V> actual, Supplier<String> message) {
 		if (expectedObjects != actual) {
 			if (!similars(expectedObjects.keySet(), actual.keySet())) {
 				return;
@@ -815,40 +1254,84 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		fail(formatFailMessage(message, expectedObjects, actual));
 	}
 
-	/** Asserts that the specified value is stricly negative.
+	/** Asserts that the specified value is strictly negative.
 	 *
 	 * @param number the value.
 	 */
 	public static void assertStrictlyNegative(Number number) {
-		assertStrictlyNegative(null, number);
+		assertStrictlyNegative(number, NO_MESSAGE);
 	}
 
-	/** Asserts that the specified value is stricly negative.
+	/** Asserts that the specified value is strictly negative.
 	 *
 	 * @param message is the error message to put inside the assertion.
 	 * @param number  the value.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static void assertStrictlyNegative(String message, Number number) {
+		assertStrictlyNegative(number, message);
+	}
+
+	/** Asserts that the specified value is strictly negative.
+	 *
+	 * @param number  the value.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static void assertStrictlyNegative(Number number, String message) {
+		assertStrictlyNegative(number, () -> message);
+	}
+
+	/** Asserts that the specified value is strictly negative.
+	 *
+	 * @param number  the value.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static void assertStrictlyNegative(Number number, Supplier<String> message) {
 		if (number.doubleValue() < 0.) {
 			return;
 		}
 		fail(formatFailMessage(message, "expected negative value", number)); //$NON-NLS-1$
 	}
 
-	/** Asserts that the specified value is stricly positive.
+	/** Asserts that the specified value is strictly positive.
 	 *
 	 * @param number the value.
 	 */
 	public static void assertStrictlyPositive(Number number) {
-		assertStrictlyPositive(null, number);
+		assertStrictlyPositive(number, NO_MESSAGE);
 	}
 
-	/** Asserts that the specified value is stricly positive.
+	/** Asserts that the specified value is strictly positive.
 	 *
 	 * @param message is the error message to put inside the assertion.
 	 * @param number the value.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static void assertStrictlyPositive(String message, Number number) {
+		assertStrictlyPositive(number, message);
+	}
+
+	/** Asserts that the specified value is strictly positive.
+	 *
+	 * @param number the value.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static void assertStrictlyPositive(Number number, String message) {
+		assertStrictlyPositive(number, () -> message);
+	}
+
+	/** Asserts that the specified value is strictly positive.
+	 *
+	 * @param number the value.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static void assertStrictlyPositive(Number number, Supplier<String> message) {
 		if (number.doubleValue() > 0.) {
 			return;
 		}
@@ -860,15 +1343,37 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param number the value.
 	 */
 	public static void assertNegative(Number number) {
-		assertNegative(null, number);
+		assertNegative(number, NO_MESSAGE);
 	}
 
 	/** Asserts that the specified value is negative.
 	 *
 	 * @param message is the error message to put inside the assertion.
 	 * @param number the value.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static void assertNegative(String message, Number number) {
+		assertNegative(number, message);
+	}
+
+	/** Asserts that the specified value is negative.
+	 *
+	 * @param number the value.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static void assertNegative(Number number, String message) {
+		assertNegative(number, () -> message);
+	}
+
+	/** Asserts that the specified value is negative.
+	 *
+	 * @param number the value.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static void assertNegative(Number number, Supplier<String> message) {
 		if (number.doubleValue() <= 0.) {
 			return;
 		}
@@ -880,15 +1385,37 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param number the value.
 	 */
 	public static void assertPositive(Number number) {
-		assertPositive(null, number);
+		assertPositive(number, NO_MESSAGE);
 	}
 
 	/** Asserts that the specified value is positive.
 	 *
 	 * @param message is the error message to put inside the assertion.
 	 * @param number the value.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static void assertPositive(String message, Number number) {
+		assertPositive(number, message);
+	}
+
+	/** Asserts that the specified value is positive.
+	 *
+	 * @param number the value.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static void assertPositive(Number number, String message) {
+		assertPositive(number, () -> message);
+	}
+
+	/** Asserts that the specified value is positive.
+	 *
+	 * @param number the value.
+	 * @param message is the error message to put inside the assertion.
+	 * @since 17.0
+	 */
+	public static void assertPositive(Number number, Supplier<String> message) {
 		if (number.doubleValue() >= 0.) {
 			return;
 		}
@@ -952,157 +1479,6 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		return constants[getRandom().nextInt(constants.length)];
 	}
 
-	/** Assert the the specified method thrown an exception.
-	 *
-	 * @param self is the calling object
-	 * @param method is the name of the method to invoke
-	 * @param types is the parameter types of the method
-	 * @param parameters is the parameter values to pass at invocation.
-	 */
-	public static void assertException(Object self, String method, Class<?>[] types, Object[] parameters) {
-		assertException((String) null, self, method, types, parameters);
-	}
-
-	/** Assert the the specified method thrown an exception.
-	 *
-	 * @param message is the error message to put in the assertion.
-	 * @param self is the calling object
-	 * @param method is the name of the method to invoke
-	 * @param types is the parameter types of the method
-	 * @param parameters is the parameter values to pass at invocation.
-	 */
-	public static void assertException(String message, Object self, String method, Class<?>[] types, Object[] parameters) {
-		try {
-			final Class<?> clazz = self.getClass();
-			final Method methodFunc = clazz.getMethod(method, types);
-			methodFunc.invoke(self, parameters);
-			fail(formatFailMessage(message, "An exception was attempted but never thrown.")); //$NON-NLS-1$
-		} catch (Exception exception) {
-			// Expected behavior
-		}
-	}
-
-	/** Assert the the specified method thrown an exception.
-	 *
-	 * @param self is the calling object
-	 * @param method is the name of the method to invoke
-	 */
-	public static void assertException(Object self, String method) {
-		assertException((String) null, self, method, new Class<?>[0], new Object[0]);
-	}
-
-	/** Assert the the specified method thrown an exception.
-	 *
-	 * @param message is the error message to put in the assertion.
-	 * @param self is the calling object
-	 * @param method is the name of the method to invoke
-	 */
-	public static void assertException(String message, Object self, String method) {
-		assertException(message, self, method, new Class<?>[0], new Object[0]);
-	}
-
-	/** Test if the given method entity throws the specified exception on the given entity.
-	 *
-	 * @param expectedException the expected exception.
-	 * @param object the object that is supposed to generate the exception.
-	 * @param methodName the method that is supposed to generate the exception.
-	 * @param values are the values to pass to the methods.
-	 */
-	protected static void assertException(Class<? extends Throwable> expectedException,
-			Object object, String methodName, Object... values) {
-		assertException(null, expectedException, object, methodName, values);
-	}
-
-	/** Test if the given method entity throws the specified exception on the given entity.
-	 *
-	 * @param message the error message.
-	 * @param expectedException the expected exception.
-	 * @param object the object that is supposed to generate the exception.
-	 * @param methodName the method that is supposed to generate the exception.
-	 * @param values are the values to pass to the methods.
-	 */
-	protected static void assertException(String message, Class<? extends Throwable> expectedException,
-			Object object, String methodName, Object... values) {
-		final Class<?>[] types = new Class<?>[values.length];
-		for (int idx = 0; idx < types.length; ++idx) {
-			types[idx] = values[idx].getClass();
-		}
-		assertException(message, expectedException, object, methodName, types, values);
-	}
-
-	/** Test if the given method entity throws the specified exception on the given entity.
-	 *
-	 * @param expectedException the expected exception.
-	 * @param object the object that is supposed to generate the exception.
-	 * @param methodName the method that is supposed to generate the exception.
-	 * @param types are the types of the method parameters.
-	 * @param values are the values to pass to the methods.
-	 */
-	protected static void assertException(Class<? extends Throwable> expectedException,
-			Object object, String methodName, Class<?>[] types, Object... values) {
-		assertException(null, expectedException, object, methodName, types, values);
-	}
-
-	/** Test if the given method entity throws the specified exception on the given entity.
-	 *
-	 * @param message the error message.
-	 * @param expectedException the expected exception.
-	 * @param object the object that is supposed to generate the exception.
-	 * @param methodName the method that is supposed to generate the exception.
-	 * @param types are the types of the method parameters.
-	 * @param values are the values to pass to the methods.
-	 */
-	@SuppressWarnings("checkstyle:npathcomplexity")
-	protected static void assertException(String message, Class<? extends Throwable> expectedException,
-			Object object, String methodName, Class<?>[] types, Object... values) {
-		assert object != null;
-		Class<?> objType;
-		Object obj = object;
-		if (obj instanceof Class<?>) {
-			objType = (Class<?>) obj;
-			obj = null;
-		} else {
-			objType = obj.getClass();
-		}
-		while (Enum.class.isAssignableFrom(objType) && !objType.isEnum()) {
-			objType = objType.getSuperclass();
-		}
-		Method method = null;
-		Throwable t = null;
-		try {
-			method = objType.getMethod(methodName, types);
-			if (method == null) {
-				fail(formatFailMessage(message, "unable to find the method " + methodName)); //$NON-NLS-1$
-				return;
-			}
-		} catch (Exception exception) {
-			fail(formatFailMessage(message, "unable to find the method " + methodName)); //$NON-NLS-1$
-			return;
-		}
-		try {
-			method.invoke(obj, values);
-		} catch (InvocationTargetException e) {
-			if (expectedException.equals(e.getCause().getClass())) {
-				return;
-			}
-			t = e.getCause();
-		} catch (Throwable e) {
-			if (expectedException.equals(e.getClass())) {
-				return;
-			}
-			t = e;
-		}
-		if (t != null) {
-			fail(formatFailMessage(message, "the method " + methodName //$NON-NLS-1$
-					+ " does not thrown the expected exception of type " + expectedException //$NON-NLS-1$
-					+ ". An exception of type " + t.getClass().getName() + " is thrown insteed.")); //$NON-NLS-1$ //$NON-NLS-2$
-		} else {
-			fail(formatFailMessage(message, "the method " + methodName //$NON-NLS-1$
-					+ " does not thrown the expected exception of type " + expectedException //$NON-NLS-1$
-					+ ". No exception was thrown insteed.")); //$NON-NLS-1$
-		}
-	}
-
 	/** Test if the actual value is equal to the expected value with
 	 * a distance of epsilon.
 	 *
@@ -1110,7 +1486,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(double expected, double actual) {
-		assertEpsilonEquals(null, expected, actual);
+		assertEpsilonEquals(expected, actual, NO_MESSAGE);
 	}
 
 	/** Test if the actual value is equal to the expected value with
@@ -1119,15 +1495,38 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message the error message.
 	 * @param expected the expected value.
 	 * @param actual the actual value.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public void assertEpsilonEquals(String message, double expected, double actual) {
+		assertEpsilonEquals(expected, actual, message);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public void assertEpsilonEquals(double expected, double actual, String message) {
+		assertEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public void assertEpsilonEquals(double expected, double actual, Supplier<String> message) {
 		if (isEpsilonEquals(expected, actual)) {
 			return;
 		}
-		throw new ComparisonFailure(
-				formatFailMessage(message, "not same double value.", expected, actual), //$NON-NLS-1$
-				Double.toString(expected),
-				Double.toString(actual));
+		fail(formatFailMessage(message, "not same double value.", expected, actual)); //$NON-NLS-1$
 	}
 
 	/** Test if the two collections contain the same elements without
@@ -1138,7 +1537,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual the actual collection.
 	 */
 	public static <T> void assertEpsilonEquals(Collection<? extends T> expected, Collection<? extends T> actual) {
-		assertEpsilonEquals(null, expected, actual);
+		assertEpsilonEquals(expected, actual, NO_MESSAGE);
 	}
 
 	/** Test if the two collections contain the same elements without
@@ -1148,20 +1547,44 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message the error message.
 	 * @param expected the expected collection.
 	 * @param actual the actual collection.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static <T> void assertEpsilonEquals(String message, Collection<? extends T> expected, Collection<? extends T> actual) {
+		assertEpsilonEquals(expected, actual, message);
+	}
+
+	/** Test if the two collections contain the same elements without
+	 * taking into account the order of the elements in the collections.
+	 *
+	 * @param <T> the type of the elements in the collections.
+	 * @param expected the expected collection.
+	 * @param actual the actual collection.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public static <T> void assertEpsilonEquals(Collection<? extends T> expected, Collection<? extends T> actual, String message) {
+		assertEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the two collections contain the same elements without
+	 * taking into account the order of the elements in the collections.
+	 *
+	 * @param <T> the type of the elements in the collections.
+	 * @param expected the expected collection.
+	 * @param actual the actual collection.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public static <T> void assertEpsilonEquals(Collection<? extends T> expected, Collection<? extends T> actual, Supplier<String> message) {
 		final List<T> l = new ArrayList<>(actual);
 		for (final T e : expected) {
 			if (!l.remove(e)) {
-				throw new ComparisonFailure(
-						formatFailMessage(message, "not similar collections", expected, actual), //$NON-NLS-1$
-						expected.toString(), actual.toString());
+				fail(formatFailMessage(message, "not similar collections", expected, actual)); //$NON-NLS-1$
 			}
 		}
 		if (!l.isEmpty()) {
-			throw new ComparisonFailure(
-					formatFailMessage(message, "not similar collections, not expected elements", expected, actual), //$NON-NLS-1$
-					expected.toString(), actual.toString());
+			fail(formatFailMessage(message, "not similar collections, not expected elements", expected, actual)); //$NON-NLS-1$
 		}
 	}
 
@@ -1173,7 +1596,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual the actual collection.
 	 */
 	public static <T> void assertEpsilonEquals(T[] expected, T[] actual) {
-		assertEpsilonEquals(null, expected, actual);
+		assertEpsilonEquals(expected, actual, NO_MESSAGE);
 	}
 
 	/** Test if the two collections contain the same elements without
@@ -1183,20 +1606,44 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message the error message.
 	 * @param expected the expected collection.
 	 * @param actual the actual collection.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static <T> void assertEpsilonEquals(String message, T[] expected, T[] actual) {
+		assertEpsilonEquals(expected, actual, message);
+	}
+
+	/** Test if the two collections contain the same elements without
+	 * taking into account the order of the elements in the collections.
+	 *
+	 * @param <T> the type of the elements in the collections.
+	 * @param expected the expected collection.
+	 * @param actual the actual collection.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public static <T> void assertEpsilonEquals(T[] expected, T[] actual, String message) {
+		assertEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the two collections contain the same elements without
+	 * taking into account the order of the elements in the collections.
+	 *
+	 * @param <T> the type of the elements in the collections.
+	 * @param expected the expected collection.
+	 * @param actual the actual collection.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public static <T> void assertEpsilonEquals(T[] expected, T[] actual, Supplier<String> message) {
 		final List<T> l = new ArrayList<>(Arrays.asList(actual));
 		for (final T e : expected) {
 			if (!l.remove(e)) {
-				throw new ComparisonFailure(
-						formatFailMessage(message, "not similar collections", expected, actual), //$NON-NLS-1$
-						Arrays.toString(expected), Arrays.toString(actual));
+				fail(formatFailMessage(message, "not similar collections", expected, actual)); //$NON-NLS-1$
 			}
 		}
 		if (!l.isEmpty()) {
-			throw new ComparisonFailure(
-					formatFailMessage(message, "not similar collections, not expected elements", expected, actual), //$NON-NLS-1$
-					Arrays.toString(expected), Arrays.toString(actual));
+			fail(formatFailMessage(message, "not similar collections, not expected elements", expected, actual)); //$NON-NLS-1$
 		}
 	}
 
@@ -1210,15 +1657,11 @@ public abstract class AbstractTestCase extends EnableAssertion {
 			return;
 		}
 		if (expected == null) {
-			throw new ComparisonFailure(formatFailMessage("not same", expected, actual), //$NON-NLS-1$
-					null,
-					actual.toString());
+			fail(formatFailMessage(NO_MESSAGE, "not same", expected, actual)); //$NON-NLS-1$
 		}
 
 		if (actual == null) {
-			throw new ComparisonFailure(formatFailMessage("not same", expected, actual), //$NON-NLS-1$
-					null,
-					expected.toString());
+			fail(formatFailMessage(NO_MESSAGE, "not same", expected, actual)); //$NON-NLS-1$
 		}
 
 		assert expected != null && actual != null;
@@ -1228,9 +1671,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		if (expectedStr.equals(actualStr)) {
 			return;
 		}
-		throw new ComparisonFailure(formatFailMessage(null, expected, actual),
-				expected.toString(),
-				actual.toString());
+		fail(formatFailMessage(NO_MESSAGE, expected, actual));
 	}
 
 	/** Test if the actual value is not equal to the expected value with
@@ -1240,7 +1681,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(double expected, double actual) {
-		assertNotEpsilonEquals(null, expected, actual);
+		assertNotEpsilonEquals(expected, actual, NO_MESSAGE);
 	}
 
 	/** Test if the actual value is not equal to the expected value with
@@ -1249,15 +1690,38 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message the error message.
 	 * @param expected the expected value.
 	 * @param actual the actual value.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public void assertNotEpsilonEquals(String message, double expected, double actual) {
+		assertNotEpsilonEquals(expected, actual, message);
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public void assertNotEpsilonEquals(double expected, double actual, String message) {
+		assertNotEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public void assertNotEpsilonEquals(double expected, double actual, Supplier<String> message) {
 		if (!isEpsilonEquals(expected, actual, false)) {
 			return;
 		}
-		throw new ComparisonFailure(
-				formatFailMessage(message, "same double value.", expected, actual), //$NON-NLS-1$
-				Double.toString(expected),
-				Double.toString(actual));
+		fail(formatFailMessage(message, "same double value.", expected, actual)); //$NON-NLS-1$
 	}
 
 	/** Test if the two collections do no contain the same elements without
@@ -1268,7 +1732,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param actual the actual collection.
 	 */
 	public static <T> void assertNotEpsilonEquals(T[] expected, T[] actual) {
-		assertNotEpsilonEquals(null, expected, actual);
+		assertNotEpsilonEquals(expected, actual, NO_MESSAGE);
 	}
 
 	/** Test if the two collections do no contain the same elements without
@@ -1278,8 +1742,36 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param message the error message.
 	 * @param expected the expected collection.
 	 * @param actual the actual collection.
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static <T> void assertNotEpsilonEquals(String message, T[] expected, T[] actual) {
+		assertNotEpsilonEquals(expected, actual, message);
+	}
+
+	/** Test if the two collections do no contain the same elements without
+	 * taking into account the order of the elements in the collections.
+	 *
+	 * @param <T> the type of the elements in the collections.
+	 * @param expected the expected collection.
+	 * @param actual the actual collection.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public static <T> void assertNotEpsilonEquals(T[] expected, T[] actual, String message) {
+		assertNotEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the two collections do no contain the same elements without
+	 * taking into account the order of the elements in the collections.
+	 *
+	 * @param <T> the type of the elements in the collections.
+	 * @param expected the expected collection.
+	 * @param actual the actual collection.
+	 * @param message the error message.
+	 * @since 17.0
+	 */
+	public static <T> void assertNotEpsilonEquals(T[] expected, T[] actual, Supplier<String> message) {
 		final List<T> l = new ArrayList<>(Arrays.asList(actual));
 		for (final T e : expected) {
 			if (!l.remove(e)) {
@@ -1287,9 +1779,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 			}
 		}
 		if (l.isEmpty()) {
-			throw new ComparisonFailure(
-					formatFailMessage(message, "having similar collections is not expected", expected, actual), //$NON-NLS-1$
-					Arrays.toString(expected), Arrays.toString(actual));
+			fail(formatFailMessage(message, "having similar collections is not expected", expected, actual)); //$NON-NLS-1$
 		}
 	}
 
@@ -1339,14 +1829,38 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		return false;
 	}
 
-	/** Assert if the given value is an instance of one of the givne types.
+	/** Assert if the given value is an instance of one of the given types.
 	 *
 	 * @param message the error message.
 	 * @param value the object to test.
 	 * @param types the expected types.
 	 * @since 16.0
+	 * @deprecated since 17.0
 	 */
+	@Deprecated(since = "17.0", forRemoval = true)
 	public static void assertInstanceOf(String message, Object value, @SuppressWarnings("rawtypes") Class... types) {
+		assertInstanceOf(value, message, types);
+	}
+
+	/** Assert if the given value is an instance of one of the given types.
+	 *
+	 * @param value the object to test.
+	 * @param message the error message.
+	 * @param types the expected types.
+	 * @since 17.0
+	 */
+	public static void assertInstanceOf(Object value, String message, @SuppressWarnings("rawtypes") Class... types) {
+		assertInstanceOf(value, () -> message, types);
+	}
+
+	/** Assert if the given value is an instance of one of the given types.
+	 *
+	 * @param value the object to test.
+	 * @param message the error message.
+	 * @param types the expected types.
+	 * @since 17.0
+	 */
+	public static void assertInstanceOf(Object value, Supplier<String> message, @SuppressWarnings("rawtypes") Class... types) {
 		if (value == null) {
 			fail("Value cannot be null"); //$NON-NLS-1$
 		} else if (!isInstanceOf(value, types)) {
@@ -1358,10 +1872,13 @@ public abstract class AbstractTestCase extends EnableAssertion {
 				typeMsg.append(type.getSimpleName());
 			}
 			final StringBuilder msg = new StringBuilder();
-			if (!Strings.isNullOrEmpty(message)) {
-				msg.append(message);
-				if (!message.trim().endsWith(".")) { //$NON-NLS-1$
-					msg.append(". "); //$NON-NLS-1$
+			if (message != null) {
+				final String m = message.get();
+				if (!Strings.isNullOrEmpty(m)) {
+					msg.append(m);
+					if (!m.trim().endsWith(".")) { //$NON-NLS-1$
+						msg.append(". "); //$NON-NLS-1$
+					}
 				}
 			}
 			msg.append("Actual: "); //$NON-NLS-1$
@@ -1379,7 +1896,25 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @since 16.0
 	 */
 	public static void assertInstanceOf(Object value, @SuppressWarnings("rawtypes") Class... types) {
-		assertInstanceOf(null, value, types);
+		assertInstanceOf(value, NO_MESSAGE, types);
+	}
+
+	/** Assert if the two arrays have equal values.
+	 *
+	 * @param expected the expected values.
+	 * @param actual the actual values.
+	 * @since 17.0
+	 */
+	public void assertEpsilonArrayEquals(double[] expected, float[] actual) {
+		if (expected == null) {
+			assertNull(actual);
+			return;
+		}
+		assertNotNull(actual);
+		assertEquals(expected.length, actual.length);
+		for (int i = 0; i < expected.length; ++i) {
+			assertEpsilonEquals(expected[i], actual[i]);
+		}
 	}
 
 }

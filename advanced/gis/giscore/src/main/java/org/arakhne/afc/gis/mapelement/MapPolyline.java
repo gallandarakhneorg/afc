@@ -476,9 +476,12 @@ public class MapPolyline extends MapComposedElement {
 						if (firstPoint) {
 							firstPoint = false;
 						} else if (MathUtil.min(
-								Segment2afp.calculatesDistanceSquaredSegmentSegment(rminX, rmaxY, rmaxX, rmaxY, px, py, x, y),
-								Segment2afp.calculatesDistanceSquaredSegmentSegment(rminX, rminY, rminX, rmaxY, px, py, x, y),
-								Segment2afp.calculatesDistanceSquaredSegmentSegment(rmaxX, rminY, rmaxX, rmaxY, px, py, x, y))
+								Segment2afp.calculatesDistanceSquaredSegmentSegment(rminX, rmaxY,
+										rmaxX, rmaxY, px, py, x, y),
+								Segment2afp.calculatesDistanceSquaredSegmentSegment(rminX, rminY,
+										rminX, rmaxY, px, py, x, y),
+								Segment2afp.calculatesDistanceSquaredSegmentSegment(rmaxX, rminY,
+										rmaxX, rmaxY, px, py, x, y))
 								<= width * width) {
 							return true;
 						}

@@ -20,8 +20,9 @@
 
 package org.arakhne.afc.nodefx.drawers;
 
+import java.util.Iterator;
+
 import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
 import org.arakhne.afc.nodefx.Drawer;
 import org.arakhne.afc.nodefx.Drawers;
 import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
@@ -34,18 +35,20 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
 * @mavenartifactid $ArtifactId$
 * @since 15.0
 */
-public class MultiShape2afpDrawer implements Drawer<MultiShape2afp<?, ?, ?, ?, ?, ?, ?>> {
+@SuppressWarnings("rawtypes")
+public class MultiShape2afpDrawer implements Drawer<MultiShape2afp> {
+
+	@Override
+	public Class<? extends MultiShape2afp> getPrimitiveType() {
+		return MultiShape2afp.class;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends MultiShape2afp<?, ?, ?, ?, ?, ?, ?>> getPrimitiveType() {
-		return (Class<? extends MultiShape2afp<?, ?, ?, ?, ?, ?, ?>>) MultiShape2afp.class;
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void draw(ZoomableGraphicsContext gc, MultiShape2afp<?, ?, ?, ?, ?, ?, ?> element) {
-		for (final Shape2afp<?, ?, ?, ?, ?, ?> shape : element) {
+	public void draw(ZoomableGraphicsContext gc, MultiShape2afp element) {
+		final Iterator<Object> iterator = element.iterator();
+		while (iterator.hasNext()) {
+			final Object shape = iterator.next();
 			final Drawer drawer = Drawers.getDrawerFor(shape);
 			if (drawer != null) {
 				drawer.draw(gc, shape);

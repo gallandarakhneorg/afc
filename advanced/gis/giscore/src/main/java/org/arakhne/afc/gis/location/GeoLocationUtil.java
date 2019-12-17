@@ -394,21 +394,6 @@ public class GeoLocationUtil {
 	 * "fr.utbm.set.math.defaultCoordinateSystem3D", or
 	 * if not set to {@link CoordinateSystemConstants#GIS_2D} and {@link CoordinateSystemConstants#GIS_3D}.
 	 *
-	 * @since 4.0
-	 * @deprecated since 15.0, see {@link #setGISCoordinateSystemAsDefault()}.
-	 */
-	@Deprecated
-	@SuppressWarnings("checkstyle:methodname")
-	public static void GISCoordinateSystemAsDefault() {
-		setGISCoordinateSystemAsDefault();
-	}
-
-	/** Force the GIS coordinate systems to be the default coordinates systems.
-	 * This function sets the default coordinate systems
-	 * to the value specified in the system properties "fr.utbm.set.math.defaultCoordinateSystem2D" and
-	 * "fr.utbm.set.math.defaultCoordinateSystem3D", or
-	 * if not set to {@link CoordinateSystemConstants#GIS_2D} and {@link CoordinateSystemConstants#GIS_3D}.
-	 *
 	 * @since 15.0
 	 */
 	public static void setGISCoordinateSystemAsDefault() {

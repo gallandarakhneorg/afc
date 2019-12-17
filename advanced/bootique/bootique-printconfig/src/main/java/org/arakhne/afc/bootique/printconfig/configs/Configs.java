@@ -105,7 +105,8 @@ public final class Configs {
 							theConfig = injector.getInstance(type);
 						}
 						if (theConfig != null) {
-							final Object value = filterValue(getterMethod.getReturnType(), getterMethod.invoke(theConfig));
+							final Object value = filterValue(getterMethod.getReturnType(),
+									getterMethod.invoke(theConfig));
 							final String id = sectionName + "." + firstLetter.toLowerCase() + rest; //$NON-NLS-1$
 							defineScalar(content, id, value);
 						}
@@ -154,7 +155,7 @@ public final class Configs {
 			if (val instanceof Map<?, ?>) {
 				entry = (Map<String, Object>) val;
 			} else {
-				final Map<String, Object> newElement = content.getClass().newInstance();
+				final Map<String, Object> newElement = content.getClass().getDeclaredConstructor().newInstance();
 				entry.put(elements[i], newElement);
 				entry = newElement;
 			}

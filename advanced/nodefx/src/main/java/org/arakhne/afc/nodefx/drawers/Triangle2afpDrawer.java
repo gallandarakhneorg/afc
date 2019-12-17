@@ -32,16 +32,16 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class Triangle2afpDrawer implements Drawer<Triangle2afp<?, ?, ?, ?, ?, ?>> {
+@SuppressWarnings("rawtypes")
+public class Triangle2afpDrawer implements Drawer<Triangle2afp> {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends Triangle2afp<?, ?, ?, ?, ?, ?>> getPrimitiveType() {
-		return (Class<? extends Triangle2afp<?, ?, ?, ?, ?, ?>>) Triangle2afp.class;
+	public Class<? extends Triangle2afp> getPrimitiveType() {
+		return Triangle2afp.class;
 	}
 
 	@Override
-	public void draw(ZoomableGraphicsContext gc, Triangle2afp<?, ?, ?, ?, ?, ?> element) {
+	public void draw(ZoomableGraphicsContext gc, Triangle2afp element) {
 		gc.beginPath();
 		gc.moveTo(element.getX1(), element.getY1());
 		gc.lineTo(element.getX2(), element.getY2());

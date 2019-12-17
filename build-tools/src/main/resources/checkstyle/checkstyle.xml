@@ -7,6 +7,11 @@
 
 <module name="Checker">
 
+	<!-- Exclude module informatio file from the checked files. -->
+	<module name="BeforeExecutionExclusionFileFilter">
+	  <property name="fileNamePattern" value="module\-info\.java$"/>
+	</module>
+
 	<!-- Default charset (Google). -->
 	<property name="charset" value="UTF-8" />
 
@@ -31,7 +36,7 @@
 	<!-- Checks that property files contain the same keys. -->
 	<module name="Translation" />
 
-	<!-- Files shold not be too large. -->
+	<!-- Files should not be too large. -->
 	<module name="FileLength">
 		<property name="max" value="4000" />
 	</module>
@@ -96,7 +101,6 @@
 			in throws. -->
 		<module name="JavadocMethod">
 			<property name="scope" value="package" />
-			<property name="minLineCount" value="1" />
 			<property name="validateThrows" value="true" />
 			<property name="allowUndeclaredRTE" value="true" />
 		</module>
@@ -252,13 +256,6 @@
 		</module>
 
 		<!-- ************* *** SIZES *** ************* -->
-
-		<!-- Line length is 150 (100 in Google standards). -->
-		<module name="LineLength">
-			<property name="max" value="150" />
-			<property name="ignorePattern"
-				value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
-		</module>
 
 		<!-- Maximum number of methods per type. -->
 		<module name="MethodCount">
@@ -671,6 +668,15 @@
 			Syntax is: @SuppressWarnings("checkstyle:<id>") -->
 		<module name="SuppressWarningsHolder" />
 
+	</module>
+
+	<!-- ************* *** SIZES *** ************* -->
+
+	<!-- Line length is 150 (100 in Google standards). -->
+	<module name="LineLength">
+		<property name="max" value="150" />
+		<property name="ignorePattern"
+			value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
 	</module>
 
 </module>

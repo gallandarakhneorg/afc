@@ -37,7 +37,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-class BasicPathShadow3ai {
+public class BasicPathShadow3ai {
 
     private final PathIterator3ai<?> pathIterator;
 
@@ -68,7 +68,7 @@ class BasicPathShadow3ai {
     /** Construct new path shadow.
      * @param path the path that is constituting the shadow.
      */
-    BasicPathShadow3ai(Path3ai<?, ?, ?, ?, ?, ?> path) {
+    public BasicPathShadow3ai(Path3ai<?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
         this.pathIterator = path.getPathIterator();
         final RectangularPrism3ai<?, ?, ?, ?, ?, ?> box = path.toBoundingBox();
@@ -84,7 +84,7 @@ class BasicPathShadow3ai {
      * @param pathIterator the iterator on the path that is constituting the shadow.
      * @param bounds the bounding box enclosing the primitives of the path iterator.
      */
-    BasicPathShadow3ai(PathIterator3ai<?> pathIterator, RectangularPrism3ai<?, ?, ?, ?, ?, ?> bounds) {
+    public BasicPathShadow3ai(PathIterator3ai<?> pathIterator, RectangularPrism3ai<?, ?, ?, ?, ?, ?> bounds) {
         assert pathIterator != null : AssertMessages.notNullParameter(0);
         assert bounds != null : AssertMessages.notNullParameter(1);
         this.pathIterator = pathIterator;
@@ -106,7 +106,7 @@ class BasicPathShadow3ai {
      * @param maxZ maximum z coordinate of the bounding box enclosing the primitives of the path iterator.
      */
     @SuppressWarnings("checkstyle:magicnumber")
-    BasicPathShadow3ai(PathIterator3ai<?> pathIterator, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+    public BasicPathShadow3ai(PathIterator3ai<?> pathIterator, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
         assert pathIterator != null : AssertMessages.notNullParameter(0);
         assert minX <= maxX : AssertMessages.lowerEqualParameters(1, minX, 4, maxX);
         assert minY <= maxY : AssertMessages.lowerEqualParameters(2, minY, 5, maxY);

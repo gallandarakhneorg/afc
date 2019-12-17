@@ -147,13 +147,12 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
-
 	/** Constructor from the given value.
 	 * @param value is the value.
 	 */
 	public AttributeValueImpl(boolean value) {
 		this.type = AttributeType.BOOLEAN;
-		this.value = new Boolean(value);
+		this.value = Boolean.valueOf(value);
 		this.assigned = true;
 	}
 
@@ -243,7 +242,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public AttributeValueImpl(float value) {
 		this.type = AttributeType.REAL;
-		this.value = new Double(value);
+		this.value = Double.valueOf(value);
 		this.assigned = true;
 	}
 
@@ -252,7 +251,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public AttributeValueImpl(double value) {
 		this.type = AttributeType.REAL;
-		this.value = new Double(value);
+		this.value = Double.valueOf(value);
 		this.assigned = true;
 	}
 
@@ -261,7 +260,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public AttributeValueImpl(int value) {
 		this.type = AttributeType.INTEGER;
-		this.value = new Long(value);
+		this.value = Long.valueOf(value);
 		this.assigned = true;
 	}
 
@@ -270,7 +269,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 */
 	public AttributeValueImpl(long value) {
 		this.type = AttributeType.INTEGER;
-		this.value = new Long(value);
+		this.value = Long.valueOf(value);
 		this.assigned = true;
 	}
 
@@ -649,16 +648,16 @@ public class AttributeValueImpl implements AttributeValue {
 		try {
 			switch (type) {
 			case INTEGER:
-				this.value = new Long(getInteger());
+				this.value = Long.valueOf(getInteger());
 				break;
 			case REAL:
-				this.value = new Double(getReal());
+				this.value = Double.valueOf(getReal());
 				break;
 			case STRING:
 				this.value = getString();
 				break;
 			case BOOLEAN:
-				this.value = new Boolean(getBoolean());
+				this.value = Boolean.valueOf(getBoolean());
 				break;
 			case DATE:
 				this.value = getDate();
@@ -915,14 +914,14 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Override
 	public void setInteger(int value) {
-		this.value = new Long(value);
+		this.value = Long.valueOf(value);
 		this.type = AttributeType.INTEGER;
 		this.assigned = true;
 	}
 
 	@Override
 	public void setInteger(long value) {
-		this.value = new Long(value);
+		this.value = Long.valueOf(value);
 		this.type = AttributeType.INTEGER;
 		this.assigned = true;
 	}
@@ -976,7 +975,7 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Override
 	public void setReal(double value) {
-		this.value = new Double(value);
+		this.value = Double.valueOf(value);
 		this.type = AttributeType.REAL;
 		this.assigned = true;
 	}
@@ -1310,7 +1309,7 @@ public class AttributeValueImpl implements AttributeValue {
 
 	@Override
 	public void setBoolean(boolean value) {
-		this.value = new Boolean(value);
+		this.value = Boolean.valueOf(value);
 		this.type = AttributeType.BOOLEAN;
 		this.assigned = true;
 	}

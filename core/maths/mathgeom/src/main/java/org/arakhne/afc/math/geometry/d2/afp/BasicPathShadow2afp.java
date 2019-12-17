@@ -37,7 +37,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-class BasicPathShadow2afp {
+public class BasicPathShadow2afp {
 
     private final PathIterator2afp<?> pathIterator;
 
@@ -63,12 +63,10 @@ class BasicPathShadow2afp {
 
     private double x4ymax;
 
-
-
     /** Construct new path shadow.
      * @param path the path that is constituting the shadow.
      */
-    BasicPathShadow2afp(Path2afp<?, ?, ?, ?, ?, ?> path) {
+    public BasicPathShadow2afp(Path2afp<?, ?, ?, ?, ?, ?> path) {
         this(path.getPathIterator(), path.toBoundingBox());
     }
 
@@ -76,7 +74,7 @@ class BasicPathShadow2afp {
      * @param pathIterator the iterator on the path that is constituting the shadow.
      * @param bounds the bounds of the shadow.
      */
-    BasicPathShadow2afp(PathIterator2afp<?> pathIterator, Rectangle2afp<?, ?, ?, ?, ?, ?> bounds) {
+    public BasicPathShadow2afp(PathIterator2afp<?> pathIterator, Rectangle2afp<?, ?, ?, ?, ?, ?> bounds) {
         assert pathIterator != null : AssertMessages.notNullParameter(0);
         assert bounds != null : AssertMessages.notNullParameter(1);
         this.pathIterator = pathIterator;
@@ -94,7 +92,7 @@ class BasicPathShadow2afp {
      * @param maxY y coordinate of the upper corner of the shadow's bouding box.
      */
     @SuppressWarnings("checkstyle:magicnumber")
-    BasicPathShadow2afp(PathIterator2afp<?> pathIterator, double minX, double minY, double maxX, double maxY) {
+    public BasicPathShadow2afp(PathIterator2afp<?> pathIterator, double minX, double minY, double maxX, double maxY) {
         assert pathIterator != null : AssertMessages.notNullParameter(0);
         assert minX <= maxX : AssertMessages.lowerEqualParameters(1, minX, 3, maxX);
         assert minY <= maxY : AssertMessages.lowerEqualParameters(2, minY, 4, maxY);

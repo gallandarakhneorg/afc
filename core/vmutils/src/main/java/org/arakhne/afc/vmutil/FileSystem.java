@@ -32,6 +32,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -40,7 +41,6 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -50,6 +50,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import com.google.common.base.Strings;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -2662,31 +2663,15 @@ public final class FileSystem {
 		}
 	}
 
-	/** Replies an URL for the given url and translate it into a
-	 * resource URL if the given file is inside the classpath.
-	 *
-	 * @param url is the URL to make shortest.
-	 * @return the URL which is corresponding to file, or <code>null</code> if
-	 *     the url cannot be computed.
-	 * @since 4.0
-	 */
-	@Pure
-	public static URL toShortestURL(URL url) {
-		if (url == null) {
-			return null;
-		}
+	private static URL toShortestURL(String url, URLClassLoader classLoader) {
 		final String endPattern = URL_PATH_SEPARATOR + "$"; //$NON-NLS-1$
-		final String shorterUrl = url.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
-		String sp;
-		final Iterator<URL> classpath = ClasspathUtil.getClasspath();
-		URL path;
+		final URL[] classpath = classLoader.getURLs();
 
-		while (classpath.hasNext()) {
-			path = classpath.next();
-			sp = path.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
-			if (shorterUrl.startsWith(sp)) {
+		for (final URL path : classpath) {
+			final String sp = path.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
+			if (url.startsWith(sp)) {
 				final StringBuilder buffer = new StringBuilder("resource:"); //$NON-NLS-1$
-				buffer.append(shorterUrl.substring(sp.length()).replaceAll(
+				buffer.append(url.substring(sp.length()).replaceAll(
 						"^" + URL_PATH_SEPARATOR, "")); //$NON-NLS-1$ //$NON-NLS-2$
 				try {
 					return new URL(buffer.toString());
@@ -2696,11 +2681,76 @@ public final class FileSystem {
 			}
 		}
 
+		return null;
+	}
+
+	/** Replies an URL for the given url and translate it into a
+	 * resource URL if the given file is inside the classpath.
+	 *
+	 * @param url is the URL to make shortest.
+	 * @return the URL which is corresponding to file, or <code>null</code> if
+	 *     the url cannot be computed.
+	 * @since 4.0
+	 */
+	@SuppressWarnings("resource")
+	@Pure
+	public static URL toShortestURL(URL url) {
+		if (url == null) {
+			return null;
+		}
+
+		final String endPattern = URL_PATH_SEPARATOR + "$"; //$NON-NLS-1$
+		final String shorterUrl = url.toExternalForm().replaceAll(endPattern, ""); //$NON-NLS-1$
+
+		final ClassLoader cl = Thread.currentThread().getContextClassLoader();
+		if (cl instanceof URLClassLoader) {
+			final URLClassLoader ucl = (URLClassLoader) cl;
+			final URL surl = toShortestURL(shorterUrl, ucl);
+			if (surl != null) {
+				return surl;
+			}
+		} else if (URISchemeType.FILE.isURL(url)) {
+			final URL surl = searchShortestURL(url);
+			if (surl != null) {
+				return surl;
+			}
+		}
+
 		try {
 			return new URL(shorterUrl);
 		} catch (MalformedURLException e) {
 			return url;
 		}
+	}
+
+	private static URL searchShortestURL(URL url) {
+		// Search for the research based on the URL path components
+		String candidate = url.getPath();
+		URL resource = Resources.getResource(candidate);
+		while (resource == null && candidate != null) {
+			final int idx = candidate.indexOf(URL_PATH_SEPARATOR_CHAR, 1);
+			if (idx > 0) {
+				candidate = candidate.substring(idx + 1);
+				if (!Strings.isNullOrEmpty(candidate)) {
+					resource = Resources.getResource(candidate);
+				}
+			} else {
+				candidate = null;
+			}
+		}
+		if (resource != null && candidate != null) {
+			final StringBuilder buffer = new StringBuilder("resource:"); //$NON-NLS-1$
+			if (candidate.startsWith(URL_PATH_SEPARATOR)) {
+				candidate = candidate.substring(URL_PATH_SEPARATOR.length());
+			}
+			buffer.append(candidate);
+			try {
+				return new URL(buffer.toString());
+			} catch (MalformedURLException e) {
+				//
+			}
+		}
+		return null;
 	}
 
 	/**

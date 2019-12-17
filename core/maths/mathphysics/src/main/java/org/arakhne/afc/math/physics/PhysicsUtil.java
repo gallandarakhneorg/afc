@@ -159,7 +159,7 @@ public final class PhysicsUtil {
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 * @deprecated since 16.0, see {@link #motionNewtonLaw1D5(Vector1D, double, double, Vector1D, double, double, double, Vector1D)}
 	 */
-	@Deprecated
+	@Deprecated(since = "16.0", forRemoval = true)
 	@Pure
 	@Inline(value = "$9.getPhysicsEngine().motionNewtonLaw1D5(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
@@ -381,7 +381,7 @@ public final class PhysicsUtil {
 	 * @param result a motion
 	 * @deprecated since 16.0, see {@link #motionNewtonEuler1Law1D5(Vector1D, double, double, double, Vector1D)}
 	 */
-	@Deprecated
+	@Deprecated(since = "16.0", forRemoval = true)
 	@Pure
 	@Inline(value = "$6.getPhysicsEngine().motionNewtonEuler1Law1D5(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})

@@ -481,7 +481,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D, N>> extend
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {
-			heights.add(new Integer(currentHeight));
+			heights.add(Integer.valueOf(currentHeight));
 		} else {
 			if (this.left != null) {
 				this.left.getHeights(currentHeight + 1, heights);

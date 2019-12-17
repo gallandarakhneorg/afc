@@ -272,7 +272,7 @@ public class Point3i extends Tuple3i<Point3i> implements Point3D<Point3i, Vector
 	@Pure
 	@Override
 	public UnmodifiablePoint3D<Point3i, Vector3i> toUnmodifiable() {
-		return new UnmodifiablePoint3D<Point3i, Vector3i>() {
+		return new UnmodifiablePoint3D<>() {
 
 			private static final long serialVersionUID = -4844158582025788289L;
 

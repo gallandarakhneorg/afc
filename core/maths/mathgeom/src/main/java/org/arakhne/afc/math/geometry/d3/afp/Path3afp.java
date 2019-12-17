@@ -1211,7 +1211,8 @@ public interface Path3afp<
 				localPath.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
 				numCrossings = computeCrossingsFromRect(numCrossings,
 						localPath.getPathIterator(
-								iterator.getGeomFactory().getSplineApproximationRatio()), rxmin, rymin, rzmin, rxmax, rymax,
+								iterator.getGeomFactory().getSplineApproximationRatio()),
+						rxmin, rymin, rzmin, rxmax, rymax,
 						rzmax, CrossingComputationType.STANDARD);
 				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
@@ -1231,7 +1232,8 @@ public interface Path3afp<
 						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(), endx, endy, endz);
 				numCrossings = computeCrossingsFromRect(numCrossings,
 						localPath.getPathIterator(
-								iterator.getGeomFactory().getSplineApproximationRatio()), rxmin, rymin, rzmin, rxmax, rymax,
+								iterator.getGeomFactory().getSplineApproximationRatio()),
+						rxmin, rymin, rzmin, rxmax, rymax,
 						rzmax, CrossingComputationType.STANDARD);
 				if (numCrossings == GeomConstants.SHAPE_INTERSECTS) {
 					return numCrossings;

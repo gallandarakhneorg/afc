@@ -32,16 +32,16 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class Ellipse2afpDrawer implements Drawer<Ellipse2afp<?, ?, ?, ?, ?, ?>> {
+@SuppressWarnings("rawtypes")
+public class Ellipse2afpDrawer implements Drawer<Ellipse2afp> {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends Ellipse2afp<?, ?, ?, ?, ?, ?>> getPrimitiveType() {
-		return (Class<? extends Ellipse2afp<?, ?, ?, ?, ?, ?>>) Ellipse2afp.class;
+	public Class<? extends Ellipse2afp> getPrimitiveType() {
+		return Ellipse2afp.class;
 	}
 
 	@Override
-	public void draw(ZoomableGraphicsContext gc, Ellipse2afp<?, ?, ?, ?, ?, ?> element) {
+	public void draw(ZoomableGraphicsContext gc, Ellipse2afp element) {
 		gc.fillOval(element.getMinX(), element.getMinY(), element.getWidth(), element.getHeight());
 		gc.strokeOval(element.getMinX(), element.getMinY(), element.getWidth(), element.getHeight());
 	}

@@ -33,7 +33,7 @@ import org.arakhne.afc.vmutil.json.JsonBuffer;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-final class ImmutableVector3D implements
+public final class ImmutableVector3D implements
 		UnmodifiableVector3D<ImmutableVector3D, ImmutablePoint3D> {
 
 	private static final long serialVersionUID = 5396213141906169741L;
@@ -49,7 +49,7 @@ final class ImmutableVector3D implements
 	 * @param y y coordinate.
 	 * @param z z coordinate.
 	 */
-	ImmutableVector3D(double x, double y, double z) {
+	public ImmutableVector3D(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -60,7 +60,7 @@ final class ImmutableVector3D implements
 	 * @param y y coordinate.
 	 * @param z z coordinate.
 	 */
-	ImmutableVector3D(int x, int y, int z) {
+	public ImmutableVector3D(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;

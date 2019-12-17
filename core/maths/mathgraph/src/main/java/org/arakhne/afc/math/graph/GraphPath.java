@@ -1273,7 +1273,6 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 		}
 
 		@Pure
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public Iterator<PT> iterator() {
 			return new PointIterator<>(GraphPath.this.startingPoint, GraphPath.this.segmentList.iterator());

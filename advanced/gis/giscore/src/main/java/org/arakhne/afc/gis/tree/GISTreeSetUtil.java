@@ -260,7 +260,8 @@ public final class GISTreeSetUtil {
 						if (subBranchCount > 1) {
 							for (int region = 0; region < count; ++region) {
 								if (collections[region] != null) {
-									final N newNode = createNode(insNode, IcosepQuadTreeZone.values()[region], builder);
+									final N newNode = createNode(insNode,
+											IcosepQuadTreeZone.values()[region], builder);
 									assert newNode != null;
 									if (!newNode.addUserData(collections[region])) {
 										return false;

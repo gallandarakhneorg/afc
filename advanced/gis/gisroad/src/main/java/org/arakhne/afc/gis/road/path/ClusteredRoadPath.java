@@ -743,7 +743,6 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 			return s;
 		}
 
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public void remove() {
 			if (this.repliedSegment == null) {
@@ -769,7 +768,6 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 
 		/** Constructor.
 		 */
-		@SuppressWarnings("synthetic-access")
 		PathIterator() {
 			this.iterator = ClusteredRoadPath.this.paths.iterator();
 		}
@@ -778,7 +776,6 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 		 *
 		 * @param path a path.
 		 */
-		@SuppressWarnings("synthetic-access")
 		public void reset(RoadPath path) {
 			this.iterator = ClusteredRoadPath.this.paths.iterator();
 			RoadPath pth = null;

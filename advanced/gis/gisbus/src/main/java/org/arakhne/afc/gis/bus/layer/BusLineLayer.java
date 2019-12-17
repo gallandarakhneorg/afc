@@ -215,6 +215,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 
 	@Override
 	@SuppressWarnings("checkstyle:nofinalizer")
+	@Deprecated(since = "17.0", forRemoval = true)
 	protected void finalize() throws Throwable {
 		this.busLine.removeBusChangeListener(this.listener);
 		super.finalize();

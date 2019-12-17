@@ -244,7 +244,7 @@ public class Vector1d extends Tuple1d<Vector1d> implements Vector1D<Vector1d, Po
 
 	@Override
 	public UnmodifiableVector1D<Vector1d, Point1d, Segment1D<?, ?>> toUnmodifiable() {
-		return new UnmodifiableVector1D<Vector1d, Point1d, Segment1D<?, ?>>() {
+		return new UnmodifiableVector1D<>() {
 
 			private static final long serialVersionUID = 6848610371671516804L;
 

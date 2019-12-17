@@ -34,16 +34,17 @@ import org.arakhne.afc.nodefx.ZoomableGraphicsContext;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class Path2afpDrawer implements Drawer<Path2afp<?, ?, ? extends PathElement2afp, ?, ?, ?>> {
+@SuppressWarnings("rawtypes")
+public class Path2afpDrawer implements Drawer<Path2afp> {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Class<? extends Path2afp<?, ?, ? extends PathElement2afp, ?, ?, ?>> getPrimitiveType() {
-		return (Class<? extends Path2afp<?, ?, ? extends PathElement2afp, ?, ?, ?>>) Path2afp.class;
+	public Class<? extends Path2afp> getPrimitiveType() {
+		return Path2afp.class;
 	}
 
 	@Override
-	public void draw(ZoomableGraphicsContext gc, Path2afp<?, ?, ? extends PathElement2afp, ?, ?, ?> element) {
+	@SuppressWarnings("unchecked")
+	public void draw(ZoomableGraphicsContext gc, Path2afp element) {
 		final PathIterator2D<? extends PathElement2afp> iterator = element.getPathIterator();
 		gc.beginPath();
 		while (iterator.hasNext()) {

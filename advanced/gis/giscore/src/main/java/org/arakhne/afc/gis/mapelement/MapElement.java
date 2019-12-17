@@ -127,6 +127,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 
 	@Override
 	@SuppressWarnings("checkstyle:nofinalizer")
+	@Deprecated(since = "17.0", forRemoval = true)
 	protected void finalize() throws Throwable {
 		getAttributeCollection().removeAttributeChangeListener(this.attributeListener);
 		super.finalize();

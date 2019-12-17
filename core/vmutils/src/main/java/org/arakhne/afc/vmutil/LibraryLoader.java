@@ -253,8 +253,6 @@ public final class LibraryLoader {
 	}
 
 	private static URL findLibraryURL(String path, String libName, String platform, String arch) {
-		final ClassLoader cl = ClassLoaderFinder.findClassLoader();
-		assert cl != null;
 		String resourcePath = path;
 		if (resourcePath == null) {
 			resourcePath = ""; //$NON-NLS-1$
@@ -282,11 +280,11 @@ public final class LibraryLoader {
 			}
 			realLibName = System.mapLibraryName(buf.toString());
 		}
-		final URL libRes = Resources.getResource(cl, resourcePath + realLibName);
+		final URL libRes = Resources.getResource(resourcePath + realLibName);
 		if (libRes != null) {
 			return libRes;
 		}
-		return Resources.getResource(cl, realLibName);
+		return Resources.getResource(realLibName);
 	}
 
 	/** Replies the data model of the current operating system: 32 or 64 bits.

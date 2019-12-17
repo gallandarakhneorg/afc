@@ -107,6 +107,7 @@ public class RoadNetworkLayer extends MapElementLayer<RoadPolyline> {
 
 	@Override
 	@SuppressWarnings("checkstyle:nofinalizer")
+	@Deprecated(since = "17.0", forRemoval = true)
 	protected void finalize() throws Throwable {
 		this.roadNetwork.removeRoadNetworkListener(this.listener);
 		for (final RoadSegment segment : this.roadNetwork) {

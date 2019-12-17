@@ -245,7 +245,7 @@ public class Vector2i extends Tuple2i<Vector2i> implements Vector2D<Vector2i, Po
 	@Pure
 	@Override
 	public UnmodifiableVector2D<Vector2i, Point2i> toUnmodifiable() {
-		return new UnmodifiableVector2D<Vector2i, Point2i>() {
+		return new UnmodifiableVector2D<>() {
 
 			private static final long serialVersionUID = 7684988962796497763L;
 

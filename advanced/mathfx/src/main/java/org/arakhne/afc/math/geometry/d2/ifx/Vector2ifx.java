@@ -27,11 +27,11 @@ import javafx.beans.property.ReadOnlyDoubleWrapper;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.MathFXAttributeNames;
 import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 /** 2D Vector with 2 integer FX properties.
@@ -202,7 +202,7 @@ public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector
 	@Pure
 	@Override
 	public UnmodifiableVector2D<Vector2ifx, Point2ifx> toUnmodifiable() {
-		return new UnmodifiableVector2D<Vector2ifx, Point2ifx>() {
+		return new UnmodifiableVector2D<>() {
 
 			private static final long serialVersionUID = -3525974627723161583L;
 

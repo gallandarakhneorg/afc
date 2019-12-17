@@ -15,23 +15,18 @@
 		<afc.version>17.0-SNAPSHOT</afc.version>
 		<afc.p2.stable.version>16.0</afc.p2.stable.version>
 		<afc.plugins.version>16.0</afc.plugins.version>
-		<min.java.version>1.8</min.java.version>
+		<min.java.version>11</min.java.version>
 		<year>2019</year>
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
 		<sourceEncoding>UTF-8</sourceEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<bytecode.optimize>false</bytecode.optimize>
 		<bytecode.debug>true</bytecode.debug>
-		<!-- Absolute path to the JDT compiler configuration -->
-		<jdtcompilerconfpath>${mainbasedir}/build-tools/src/main/resources/maven/maven-jdt-conf.properties</jdtcompilerconfpath>
 		<!-- Version of Mockito library -->
-		<mockito.version>2.28.2</mockito.version>
-		<mockito.version.osgi>2.28.2</mockito.version.osgi>
-		<!-- Version for Java FX libs -->
-		<openjfx.version>8</openjfx.version>
-		<openjfx.base.linux.path>/usr/lib/jvm/java-8-oracle/jre/lib/ext/jfxrt.jar</openjfx.base.linux.path>
-		<openjfx.graphics.linux.path>/usr/lib/jvm/java-8-oracle/jre/lib/ext/jfxrt.jar</openjfx.graphics.linux.path>
-		<openjfx.fxml.linux.path>/usr/lib/jvm/java-8-oracle/jre/lib/ext/jfxrt.jar</openjfx.fxml.linux.path>
+		<mockito.version>3.2.0</mockito.version>
+		<mockito.version.osgi>3.2.0</mockito.version.osgi>
+		<!-- Version of Junit 5 library -->
+		<junit5.version>5.6.0-M1</junit5.version>
 		<!-- Version of SLF4J library -->
 		<slf4j.version>2.0.0-alpha1</slf4j.version>
 		<!-- URL of the deployment server base -->
@@ -116,6 +111,11 @@
 			<dependency>
 				<groupId>org.arakhne.afc.advanced</groupId>
 				<artifactId>attributes</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.advanced</groupId>
+				<artifactId>javafx</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
 			<dependency>
@@ -208,9 +208,14 @@
 			<!-- ################################################## Third-Party Libraries 
 				################################################## -->
 			<dependency>
+			    <groupId>com.sun.activation</groupId>
+			    <artifactId>javax.activation</artifactId>
+			    <version>1.2.0</version>
+			</dependency>
+			<dependency>
 				<groupId>io.bootique</groupId>
 				<artifactId>bootique</artifactId>
-				<version>1.0</version>
+				<version>1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -250,22 +255,22 @@
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-plugin-api</artifactId>
-				<version>3.6.2</version>
+				<version>3.6.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact</artifactId>
-				<version>3.6.2</version>
+				<version>3.6.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
-				<version>3.6.2</version>
+				<version>3.6.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-compat</artifactId>
-				<version>3.6.2</version>
+				<version>3.6.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
@@ -295,9 +300,14 @@
 				<version>1.10.1</version>
 			</dependency>
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.13-beta-3</version>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-engine</artifactId>
+				<version>${junit5.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.junit.jupiter</groupId>
+			    <artifactId>junit-jupiter-params</artifactId>
+				<version>${junit5.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
@@ -493,7 +503,7 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-ssh</artifactId>
-				<version>3.3.3</version>
+				<version>3.3.4</version>
 			</extension>
 		</extensions>
 		<pluginManagement>
@@ -501,7 +511,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.2.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -511,7 +521,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.1.2</version>
+					<version>3.2.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -531,7 +541,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>3.1.1</version>
+					<version>3.2.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -541,12 +551,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M3</version>
+					<version>3.0.0-M4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.0.0-M2</version>
+					<version>3.0.0-M3</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -624,7 +634,7 @@
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
 							<!-- Same version as inside Eclipse IDE -->
-							<version>8.18</version>
+							<version>8.26</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -708,7 +718,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<compilerId>jdt</compilerId>
 					<target>${min.java.version}</target>
 					<source>${min.java.version}</source>
 					<encoding>${sourceEncoding}</encoding>
@@ -719,13 +728,6 @@
 					<optimize>${bytecode.optimize}</optimize>
 					<debug>${bytecode.debug}</debug>
 				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>tycho-compiler-jdt</artifactId>
-						<version>1.4.0</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -851,172 +853,6 @@
 	</build>
 
 	<profiles>
-		<profile>
-			<id>openhfx-with-env-var</id>
-			<activation>
-				<property>
-					<name>env.OPENJFX_LIB_PATH</name>
-				</property>
-			</activation>
-			<dependencyManagement>
-				<dependencies>
-					<dependency>
-						<groupId>org.openjfx-jre8</groupId>
-						<artifactId>javafx-base</artifactId>
-						<version>${openjfx.version}</version>
-						<scope>system</scope>
-						<systemPath>${env.OPENJFX_LIB_PATH}</systemPath>
-					</dependency>
-					<dependency>
-						<groupId>org.openjfx-jre8</groupId>
-						<artifactId>javafx-graphics</artifactId>
-						<version>${openjfx.version}</version>
-						<scope>system</scope>
-						<systemPath>${env.OPENJFX_LIB_PATH}</systemPath>
-					</dependency>
-					<dependency>
-						<groupId>org.openjfx-jre8</groupId>
-						<artifactId>javafx-fxml</artifactId>
-						<version>${openjfx.version}</version>
-						<scope>system</scope>
-						<systemPath>${env.OPENJFX_LIB_PATH}</systemPath>
-					</dependency>
-				</dependencies>
-			</dependencyManagement>
-		</profile>
-		<profile>
-			<id>openjfx-on-linux-box</id>
-			<activation>
-				<property>
-					<name>!env.OPENJFX_LIB_PATH</name>
-				</property>
-				<os>
-					<family>unix</family> 
-	                   		<name>linux</name>
-				</os>
-			</activation>
-			<dependencyManagement>
-				<dependencies>
-					<dependency>
-						<groupId>org.openjfx-jre8</groupId>
-						<artifactId>javafx-base</artifactId>
-						<version>${openjfx.version}</version>
-						<scope>system</scope>
-						<systemPath>${openjfx.base.linux.path}</systemPath>
-					</dependency>
-					<dependency>
-						<groupId>org.openjfx-jre8</groupId>
-						<artifactId>javafx-graphics</artifactId>
-						<version>${openjfx.version}</version>
-						<scope>system</scope>
-						<systemPath>${openjfx.graphics.linux.path}</systemPath>
-					</dependency>
-					<dependency>
-						<groupId>org.openjfx-jre8</groupId>
-						<artifactId>javafx-fxml</artifactId>
-						<version>${openjfx.version}</version>
-						<scope>system</scope>
-						<systemPath>${openjfx.fxml.linux.path}</systemPath>
-					</dependency>
-				</dependencies>
-			</dependencyManagement>
-		</profile>
-		<profile>
-			<id>openjfx-on-mac-box</id>
-			<activation>
-				<property>
-					<name>!env.OPENJFX_LIB_PATH</name>
-				</property>
-				<os>
-					<family>mac</family> 
-				</os>
-			</activation>
-			<dependencyManagement>
-				<dependencies>
-					<dependency>
-						<groupId>org.openjfx-jre8</groupId>
-						<artifactId>javafx-base</artifactId>
-						<version>${openjfx.version}</version>
-						<scope>system</scope>
-						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
-					</dependency>
-					<dependency>
-						<groupId>org.openjfx-jre8</groupId>
-						<artifactId>javafx-graphics</artifactId>
-						<version>${openjfx.version}</version>
-						<scope>system</scope>
-						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
-					</dependency>
-					<dependency>
-						<groupId>org.openjfx-jre8</groupId>
-						<artifactId>javafx-fxml</artifactId>
-						<version>${openjfx.version}</version>
-						<scope>system</scope>
-						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
-					</dependency>
-				</dependencies>
-			</dependencyManagement>
-		</profile>
-		<profile>
-			<id>openjfx-on-windows-box</id>
-			<activation>
-				<property>
-					<name>!env.OPENJFX_LIB_PATH</name>
-				</property>
-				<os>
-					<family>windows</family> 
-				</os>
-			</activation>
-			<dependencyManagement>
-				<dependencies>
-					<dependency>
-						<groupId>org.openjfx-jre8</groupId>
-						<artifactId>javafx-base</artifactId>
-						<version>${openjfx.version}</version>
-						<scope>system</scope>
-						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
-					</dependency>
-					<dependency>
-						<groupId>org.openjfx-jre8</groupId>
-						<artifactId>javafx-graphics</artifactId>
-						<version>${openjfx.version}</version>
-						<scope>system</scope>
-						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
-					</dependency>
-					<dependency>
-						<groupId>org.openjfx-jre8</groupId>
-						<artifactId>javafx-fxml</artifactId>
-						<version>${openjfx.version}</version>
-						<scope>system</scope>
-						<systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
-					</dependency>
-				</dependencies>
-			</dependencyManagement>
-		</profile>
-		<profile>
-			<id>sonar</id>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.codehaus.mojo</groupId>
-							<artifactId>sonar-maven-plugin</artifactId>
-							<version>3.7.0.1746</version>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
-			<!-- <activation> -->
-			<!-- <activeByDefault>true</activeByDefault> -->
-			<!-- </activation> -->
-			<!-- <properties> -->
-			<!-- <sonar.jdbc.url>jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8</sonar.jdbc.url> -->
-			<!-- <sonar.jdbc.driver>com.mysql.jdbc.Driver</sonar.jdbc.driver> -->
-			<!-- <sonar.jdbc.username>sonar</sonar.jdbc.username> -->
-			<!-- <sonar.jdbc.password>sonar</sonar.jdbc.password> -->
-			<!-- <sonar.host.url>https://nemo.sonarqube.org</sonar.host.url> -->
-			<!-- </properties> -->
-		</profile>
 		<profile>
 			<id>release-tasks</id>
 			<activation>

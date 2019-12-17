@@ -203,7 +203,6 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 
 		/** Construct the iterator.
 		 */
-		@SuppressWarnings("synthetic-access")
 		InnerIterator() {
 			this.originalIterator = AbstractReferencedSet.this.theSet.iterator();
 		}

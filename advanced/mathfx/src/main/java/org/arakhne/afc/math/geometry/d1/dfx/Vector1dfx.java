@@ -163,7 +163,7 @@ public class Vector1dfx extends Tuple1dfx<Vector1dfx> implements Vector1D<Vector
 
 	@Override
 	public UnmodifiableVector1D<Vector1dfx, Point1dfx, Segment1D<?, ?>> toUnmodifiable() {
-		return new UnmodifiableVector1D<Vector1dfx, Point1dfx, Segment1D<?, ?>>() {
+		return new UnmodifiableVector1D<>() {
 
 			private static final long serialVersionUID = 6848610371671516804L;
 

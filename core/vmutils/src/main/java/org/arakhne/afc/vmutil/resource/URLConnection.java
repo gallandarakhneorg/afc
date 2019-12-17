@@ -49,7 +49,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 6.0
  * @see URLConnection
  */
-class URLConnection extends java.net.URLConnection {
+public class URLConnection extends java.net.URLConnection {
 
 	private URL location;
 

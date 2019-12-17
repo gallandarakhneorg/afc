@@ -163,7 +163,7 @@ public class Point1dfx extends Tuple1dfx<Point1dfx> implements Point1D<Point1dfx
 
 	@Override
 	public UnmodifiablePoint1D<Point1dfx, Vector1dfx, Segment1D<?, ?>> toUnmodifiable() {
-		return new UnmodifiablePoint1D<Point1dfx, Vector1dfx, Segment1D<?, ?>>() {
+		return new UnmodifiablePoint1D<>() {
 
 			private static final long serialVersionUID = 7256619908484020358L;
 

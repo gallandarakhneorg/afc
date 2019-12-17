@@ -552,7 +552,7 @@ public final class ListUtil {
 	 * @since 14.0
 	 */
 	public static <T> Iterator<T> reverseIterator(final List<T> list) {
-		return new Iterator<T>() {
+		return new Iterator<>() {
 
 			private int next = list.size() - 1;
 

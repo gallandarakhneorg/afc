@@ -252,7 +252,7 @@ public class Point2d extends Tuple2d<Point2d> implements Point2D<Point2d, Vector
 	@Pure
 	@Override
 	public UnmodifiablePoint2D<Point2d, Vector2d> toUnmodifiable() {
-		return new UnmodifiablePoint2D<Point2d, Vector2d>() {
+		return new UnmodifiablePoint2D<>() {
 
 			private static final long serialVersionUID = 3305735799920201356L;
 

@@ -38,7 +38,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.gis.io.shape.GISShapeFileReader;
 import org.arakhne.afc.gis.mapelement.GISElementContainer;
@@ -55,6 +57,7 @@ import org.arakhne.afc.gis.road.StandardRoadNetwork;
 import org.arakhne.afc.gis.road.layer.RoadNetworkLayer;
 import org.arakhne.afc.gis.road.primitive.RoadNetworkException;
 import org.arakhne.afc.gis.ui.GisPane;
+import org.arakhne.afc.inputoutput.filefilter.FileFilter;
 import org.arakhne.afc.io.dbase.DBaseFileFilter;
 import org.arakhne.afc.io.shape.ESRIBounds;
 import org.arakhne.afc.io.shape.ShapeElementType;
@@ -145,13 +148,24 @@ public class SimpleViewer extends Application {
 		}
 	}
 
+	/** Convert the given standard file filter to its equivalent JavaFX file filter.
+	 *
+	 * @param filter the standard file filter to convert.
+	 * @return the JavaFX file filter.
+	 */
+	@Pure
+	public static ExtensionFilter toJavaFX(FileFilter filter) {
+		return new ExtensionFilter(filter.getDescription(), filter.getExtensions());
+	}
+
 	@Override
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:regexp", "checkstyle:npathcomplexity",
 		"checkstyle:nestedifdepth", "rawtypes", "unchecked"})
 	public void start(Stage primaryStage) {
 		final FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(Locale.getString(SimpleViewer.class, "OPEN_WINDOW_TITLE")); //$NON-NLS-1$
-		fileChooser.getExtensionFilters().add(new ShapeFileFilter().toJavaFX());
+		fileChooser.getExtensionFilters().add(
+				toJavaFX(new ShapeFileFilter()));
 		final List<File> shapeFiles = fileChooser.showOpenMultipleDialog(primaryStage);
 		if (shapeFiles != null && !shapeFiles.isEmpty()) {
 			final List<MapElementLayer> containers = new ArrayList<>();

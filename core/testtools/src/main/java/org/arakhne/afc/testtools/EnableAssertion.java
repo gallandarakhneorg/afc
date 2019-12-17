@@ -20,8 +20,9 @@
 
 package org.arakhne.afc.testtools;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
 
 /** Class that is testing if the assertions are enabled.
  *
@@ -31,13 +32,15 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("static-method")
-public class EnableAssertion extends Assert {
+public class EnableAssertion {
 
 	/** Test if assertions are enabled.
 	 */
-	@Test(expected = AssertionError.class)
+	@Test
 	public void enableAssert() {
-		assert false;
+		assertThrows(AssertionError.class, () -> {
+			assert false;
+		});
 	}
 
 }

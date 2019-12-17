@@ -22,7 +22,6 @@ package org.arakhne.afc.inputoutput.filefilter;
 
 import java.io.File;
 
-import javafx.stage.FileChooser.ExtensionFilter;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.vmutil.FileSystem;
@@ -37,8 +36,6 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractFileFilter implements FileFilter {
-
-	private static final String JAVAFX_EXTENSION_PREFIX = "*"; //$NON-NLS-1$
 
 	private final boolean acceptDirectories;
 
@@ -74,22 +71,6 @@ public abstract class AbstractFileFilter implements FileFilter {
 			}
 		}
 		this.description = Locale.getString("EXTENSION_STRING", description, b.toString()); //$NON-NLS-1$
-	}
-
-	@Override
-	public ExtensionFilter toJavaFX() {
-		final String[] current = getExtensions();
-		final String[] exts = new String[current.length];
-		for (int i = 0; i < exts.length; ++i) {
-			final String ext;
-			if (current[i].startsWith(FileSystem.EXTENSION_SEPARATOR)) {
-				ext = current[i];
-			} else {
-				ext = FileSystem.EXTENSION_SEPARATOR + current[i];
-			}
-			exts[i] = JAVAFX_EXTENSION_PREFIX + ext;
-		}
-		return new ExtensionFilter(getDescription(), exts);
 	}
 
 	@Pure

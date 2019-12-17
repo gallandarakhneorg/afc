@@ -29,9 +29,7 @@ import java.util.Iterator;
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.math.tree.TreeNode;
 
-
-/**
- * This is a writer of .gxl file from a tree.
+/** This is a writer of .gxl file from a tree.
  *
  * <p>The .gxl file format is an XML dialect for the .dot file format.
  * It is defined on <a href="http://www.gupro.de/GXL/">Graph eXchange Language page</a>.
@@ -80,7 +78,7 @@ public class DotGxlWriter {
 
         if (tree != null) {
             this.writer.append("\t<graph id=\""); //$NON-NLS-1$
-            this.writer.append(Integer.toHexString(System.identityHashCode(new Integer(tree.hashCode()))));
+            this.writer.append(Integer.toHexString(System.identityHashCode(Integer.valueOf(tree.hashCode()))));
             this.writer.append("-"); //$NON-NLS-1$
             this.writer.append(Integer.toString(this.graphIndex++));
             this.writer.append("\" edgeids=\"true\" edgemode=\"directed\">\n"); //$NON-NLS-1$
