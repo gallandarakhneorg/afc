@@ -18,29 +18,14 @@
  * limitations under the License.
  */
 
-/** High level JavaFX components.
+/** All modules for using Log4J as backend of SLF4J.
  *
- * @uses org.arakhne.afc.nodefx.Drawer
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 17.0
  */
-open module org.arakhne.afc.advanced.nodefx {
-	requires transitive java.logging;
-	requires org.eclipse.xtext.xbase.lib;
-	requires transitive javafx.base;
-	requires javafx.controls;
-	requires transitive javafx.graphics;
-	requires org.arakhne.afc.core.util;
-	requires org.arakhne.afc.core.references;
-	requires org.arakhne.afc.core.mathgen;
-	requires transitive org.arakhne.afc.core.mathgeom;
-	requires transitive org.arakhne.afc.advanced.javafx;
-
-	exports org.arakhne.afc.nodefx;
-	exports org.arakhne.afc.nodefx.drawers;
-
-	uses org.arakhne.afc.nodefx.Drawer;
+module org.arakhne.afc.slf4j.slf4j_log4j {
+	//
 }

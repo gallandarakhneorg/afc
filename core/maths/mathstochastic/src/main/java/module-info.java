@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Stochastic random number generators.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 module org.arakhne.afc.core.mathstochastic {
 	requires org.eclipse.xtext.xbase.lib;
 	requires transitive org.arakhne.afc.core.vmutils;

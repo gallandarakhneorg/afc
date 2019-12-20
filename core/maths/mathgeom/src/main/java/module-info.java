@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Geometry objects and utilities.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.core.mathgeom {
 	requires org.eclipse.xtext.xbase.lib;
 	requires transitive org.arakhne.afc.core.vmutils;

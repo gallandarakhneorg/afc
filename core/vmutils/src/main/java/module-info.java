@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Low-level and JRE related utilities.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.core.vmutils {
 	requires org.eclipse.xtext.xbase.lib;
 	requires com.google.common;

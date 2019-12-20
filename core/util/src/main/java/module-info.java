@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** General utilities.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.core.util {
 	requires transitive java.logging;
 	requires org.eclipse.xtext.xbase.lib;

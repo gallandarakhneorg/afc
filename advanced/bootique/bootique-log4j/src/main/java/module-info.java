@@ -18,6 +18,16 @@
  * limitations under the License.
  */
 
+/** Provide the bootique extension for log4j.
+ *
+ * @provides io.bootique.BQModuleProvider
+ * @provides io.bootique.config.PolymorphicConfiguration
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.bootique.bootique_log4j {
 	requires org.eclipse.xtext.xbase.lib;
 	requires com.google.guice;

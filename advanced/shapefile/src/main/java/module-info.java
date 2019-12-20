@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Reader and writer of ESRI shape files.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.advanced.shapefile {
 	requires org.eclipse.xtext.xbase.lib;
 	requires com.google.common;

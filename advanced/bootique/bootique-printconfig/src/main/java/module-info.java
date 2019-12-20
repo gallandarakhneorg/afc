@@ -18,6 +18,15 @@
  * limitations under the License.
  */
 
+/** Provide the extension for printing the Bootique configuration.
+ *
+ * @provides io.bootique.BQModuleProvider
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.bootique.bootique_printconfig {
 	requires org.eclipse.xtext.xbase.lib;
 	requires javax.inject;

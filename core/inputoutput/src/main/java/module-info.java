@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Utilities related to input and output of files.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.core.inputoutput {
 	requires org.eclipse.xtext.xbase.lib;
 	requires org.arakhne.afc.core.vmutils;

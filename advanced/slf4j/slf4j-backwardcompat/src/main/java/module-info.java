@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Backward compatibility with the old SLF4J API.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 module org.arakhne.afc.slf4j.slf4j_backwardcompat {
 	requires transitive org.slf4j;
 }

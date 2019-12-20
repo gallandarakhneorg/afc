@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Helper for including JavaFX in your application.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 module org.arakhne.afc.advanced.javafx {
 	requires javafx.base;
 

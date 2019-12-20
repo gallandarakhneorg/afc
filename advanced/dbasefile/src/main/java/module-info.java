@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Reader and writer of dBase files.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.advanced.dbasefile {
 	requires org.eclipse.xtext.xbase.lib;
 	requires com.google.common;

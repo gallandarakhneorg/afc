@@ -18,6 +18,15 @@
  * limitations under the License.
  */
 
+/** Utilities for strings of text.
+ *
+ * @uses java.security.Provider
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.core.text {
 	requires org.eclipse.xtext.xbase.lib;
 	requires org.arakhne.afc.core.vmutils;

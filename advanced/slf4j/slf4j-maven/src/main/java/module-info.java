@@ -18,6 +18,15 @@
  * limitations under the License.
  */
 
+/** Intregration of the Maven logger as an SLF4J logger.
+ *
+ * @provides org.slf4j.spi.SLF4JServiceProvider
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 module org.arakhne.afc.slf4j.slf4j_maven {
 	requires transitive org.slf4j;
 	requires transitive maven.plugin.api;

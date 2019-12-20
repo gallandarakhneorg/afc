@@ -18,6 +18,15 @@
  * limitations under the License.
  */
 
+/** JavaFX components for displaying a GIS map.
+ *
+ * @provides org.arakhne.afc.nodefx.Drawer
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 module org.arakhne.afc.gis.ui.giscorefx {
 	requires org.eclipse.xtext.xbase.lib;
 	requires org.arakhne.afc.core.util;

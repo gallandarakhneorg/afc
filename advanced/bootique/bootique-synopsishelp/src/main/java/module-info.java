@@ -18,6 +18,15 @@
  * limitations under the License.
  */
 
+/** Provide the bootique extension for creating a user-friendly synopsis.
+ *
+ * @provides io.bootique.BQModuleProvider
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.bootique.bootique_synopsishelp {
 	requires com.google.guice;
 	requires transitive bootique;

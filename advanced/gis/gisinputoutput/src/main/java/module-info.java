@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Reader and writer for GIS data structures.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.gis.gisinputoutput {
 	requires org.eclipse.xtext.xbase.lib;
 	requires com.google.common;

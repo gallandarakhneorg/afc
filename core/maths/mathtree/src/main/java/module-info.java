@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Tree data structure.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 module org.arakhne.afc.core.mathtree {
 	requires org.eclipse.xtext.xbase.lib;
 	requires transitive org.arakhne.afc.core.vmutils;

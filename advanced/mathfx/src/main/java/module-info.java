@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** JavaFX implementation of the geometry objects.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 module org.arakhne.afc.advanced.mathfx {
 	requires org.eclipse.xtext.xbase.lib;
 	requires transitive javafx.base;

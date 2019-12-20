@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Reader and writer for bus network library.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.gis.gisbusinputoutput {
 	requires org.eclipse.xtext.xbase.lib;
 	requires jdk.xml.dom;

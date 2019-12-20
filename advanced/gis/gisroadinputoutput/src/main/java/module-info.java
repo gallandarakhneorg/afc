@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Reader and writer of road data structures.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.gis.gisroadinputoutput {
 	requires org.eclipse.xtext.xbase.lib;
 	requires com.google.common;

@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Utilities and collections with the support of weak and soft-references.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.core.references {
 	requires org.eclipse.xtext.xbase.lib;
 	requires org.arakhne.afc.core.vmutils;

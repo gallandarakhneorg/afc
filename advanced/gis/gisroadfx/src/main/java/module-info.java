@@ -18,6 +18,15 @@
  * limitations under the License.
  */
 
+/** JavaFX components for displaying road networks.
+ *
+ * @provides org.arakhne.afc.nodefx.Drawer
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.gis.ui.gisroadfx {
 	requires org.eclipse.xtext.xbase.lib;
 	requires transitive javafx.graphics;

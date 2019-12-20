@@ -18,6 +18,15 @@
  * limitations under the License.
  */
 
+/** Provide application information to the bootique components.
+ *
+ * @provides io.bootique.BQModuleProvider
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.bootique.bootique_application2 {
 	requires com.google.guice;
 	requires transitive bootique;

@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Definition of data structure for bus network.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.gis.gisbus {
 	requires transitive java.prefs;
 	requires com.google.common;

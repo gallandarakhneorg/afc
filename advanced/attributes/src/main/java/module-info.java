@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Definition of collections of dynamic, variant, generic attributes.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.advanced.attributes {
 	requires org.eclipse.xtext.xbase.lib;
 	requires transitive org.arakhne.afc.core.vmutils;

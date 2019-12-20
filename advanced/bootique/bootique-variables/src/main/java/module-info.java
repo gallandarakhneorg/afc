@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Provide the bootique extension for declaring and mapping environment variables.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 module org.arakhne.afc.bootique.bootique_variables {
 	requires com.google.guice;
 	requires com.google.common;

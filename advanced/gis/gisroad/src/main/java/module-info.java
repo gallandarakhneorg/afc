@@ -18,6 +18,14 @@
  * limitations under the License.
  */
 
+/** Definition of the data structures for road network.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 17.0
+ */
 open module org.arakhne.afc.gis.gisroad {
 	requires transitive java.prefs;
 	requires org.eclipse.xtext.xbase.lib;

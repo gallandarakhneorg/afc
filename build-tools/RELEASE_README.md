@@ -8,14 +8,16 @@ The steps for releasing AFC are:
 2. Updgrade Maven dependencies and plugins.
 3. Compiling locally without error.
 
-     $> rm -rf $HOME/.m2/repository
-     $> mvn clean install
+```sh
+$> rm -rf $HOME/.m2/repository
+$> mvn clean install
+```
 
 
 ## B) PHASE 2: RELEASE
 
 1. Remove `-SNAPSHOT` in all the poms.
-2. Change the flags for `bytecode.optimize` and `bytecode.debug` in `pom.xm`l 
+2. Change the flags for `bytecode.optimize` and `bytecode.debug` in `pom.xml` 
 3. Create the aggregated documentation, and copy the generated archive file into a safe folder:
 
 ```sh
