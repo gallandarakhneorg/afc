@@ -14,6 +14,4 @@
 #		SOURCE_PATH="${SOURCE_PATH}:${module_path}"
 #	fi
 #done
-#exec mvn "$@" -Dmaven.test.skip=true -Dcheckstyle.skip=true -Dsourcepath=${SOURCE_PATH} clean generate-sources com.google.code.maven-replacer-plugin:replacer:replace compile javadoc:aggregate
-
-exec mvn1.11 "$@" -Dmaven.test.skip=true -Dcheckstyle.skip=true -DperformRelease=true clean generate-sources com.google.code.maven-replacer-plugin:replacer:replace compile javadoc:aggregate -pl '!maven/maventools,!core/testtools,!core/maths/mathgeomtesting,!core/maths/math,!p2/p2-repository'
+exec mvn1.11 "$@" -Dmaven.test.skip=true -Dcheckstyle.skip=true clean generate-sources org.arakhne.afc.maven:tag-replacer:generatereplacesrc compile javadoc:aggregate -pl '!maven/maventools,!maven/tag-replacer,!core/testtools,!core/maths/mathgeomtesting,!core/maths/math'
