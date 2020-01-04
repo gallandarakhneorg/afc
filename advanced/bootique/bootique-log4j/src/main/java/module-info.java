@@ -39,6 +39,7 @@ open module org.arakhne.afc.bootique.bootique_log4j {
 	requires com.google.common;
 	requires transitive java.logging;
 	requires org.arakhne.afc.core.vmutils;
+	requires org.arakhne.afc.slf4j.slf4j_log4j;
 	requires org.arakhne.afc.bootique.bootique_variables;
 
 	exports org.arakhne.afc.bootique.log4j;

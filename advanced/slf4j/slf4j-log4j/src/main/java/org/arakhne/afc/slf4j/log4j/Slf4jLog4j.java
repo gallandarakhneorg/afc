@@ -18,14 +18,23 @@
  * limitations under the License.
  */
 
-/** All modules for using Log4J as backend of SLF4J.
+package org.arakhne.afc.slf4j.log4j;
+
+/** Fake class for enabling the generation of the documentation.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 17.0
+ * @deprecated no replacement
  */
-module org.arakhne.afc.slf4j.slf4j_log4j {
-	exports org.arakhne.afc.slf4j.log4j;
+@Deprecated(forRemoval = true)
+public final class Slf4jLog4j {
+
+	/** Constructor.
+	 */
+	public Slf4jLog4j() {
+		//
+	}
+
 }
