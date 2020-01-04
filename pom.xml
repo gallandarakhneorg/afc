@@ -13,7 +13,7 @@
 
 	<properties>
 		<afc.version>18.0-SNAPSHOT</afc.version>
-		<afc.p2.stable.version>16.0</afc.p2.stable.version>
+		<afc.p2.stable.version>17.0</afc.p2.stable.version>
 		<afc.plugins.version>16.0</afc.plugins.version>
 		<min.java.version>11</min.java.version>
 		<year>2020</year>
