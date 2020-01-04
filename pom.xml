@@ -16,7 +16,7 @@
 		<afc.p2.stable.version>16.0</afc.p2.stable.version>
 		<afc.plugins.version>16.0</afc.plugins.version>
 		<min.java.version>11</min.java.version>
-		<year>2019</year>
+		<year>2020</year>
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
 		<sourceEncoding>UTF-8</sourceEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
