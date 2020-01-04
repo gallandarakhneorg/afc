@@ -63,7 +63,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @since 6.0
  * @see java.net.URLConnection
  */
-class URLConnection extends java.net.URLConnection {
+public class URLConnection extends java.net.URLConnection {
 
 	private static final String CONTENT_TYPE = "content-type"; //$NON-NLS-1$
 

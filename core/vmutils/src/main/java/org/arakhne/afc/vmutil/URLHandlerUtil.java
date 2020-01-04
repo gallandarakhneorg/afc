@@ -36,7 +36,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 6.0
+ * @deprecated since 17.0, no replacement.
  */
+@Deprecated(since = "17.0", forRemoval = true)
 public final class URLHandlerUtil {
 
 	private static final String HANDLER_PACKAGES = "java.protocol.handler.pkgs"; //$NON-NLS-1$

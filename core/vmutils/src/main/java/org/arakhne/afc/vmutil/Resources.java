@@ -50,8 +50,6 @@ public final class Resources {
 	private static ResourceWrapper currentResourceInstance;
 
 	static {
-		URLHandlerUtil.installArakhneHandlers();
-
 		ResourceWrapper wrapper = null;
 
 		switch (OperatingSystem.getCurrentOS()) {

@@ -35,6 +35,15 @@ import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.attrs.collection.AttributeProvider;
+import org.arakhne.afc.io.shape.ESRIBounds;
+import org.arakhne.afc.io.shape.ESRIFileUtil;
+import org.arakhne.afc.io.shape.ESRIPoint;
+import org.arakhne.afc.io.shape.ElementExporter;
+import org.arakhne.afc.io.shape.ElementFactory;
+import org.arakhne.afc.io.shape.ShapeElementType;
+import org.arakhne.afc.io.shape.ShapeFileReader;
+import org.arakhne.afc.io.shape.ShapeFileWriter;
+import org.arakhne.afc.io.shape.ShapeMultiPatchType;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
 
 /**

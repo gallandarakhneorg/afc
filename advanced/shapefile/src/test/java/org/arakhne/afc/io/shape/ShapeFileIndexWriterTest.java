@@ -32,6 +32,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.arakhne.afc.io.shape.ESRIBounds;
+import org.arakhne.afc.io.shape.ESRIFileUtil;
+import org.arakhne.afc.io.shape.ShapeElementType;
+import org.arakhne.afc.io.shape.ShapeFileIndexReader;
+import org.arakhne.afc.io.shape.ShapeFileIndexRecord;
+import org.arakhne.afc.io.shape.ShapeFileIndexWriter;
+
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$

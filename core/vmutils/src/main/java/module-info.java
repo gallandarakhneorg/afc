@@ -18,8 +18,12 @@
  * limitations under the License.
  */
 
+import java.net.spi.URLStreamHandlerProvider;
+
 /** Low-level and JRE related utilities.
  *
+ * @uses URLStreamHandlerProvider only for test purpose
+ * @provides URLStreamHandlerProvider implementations of "resource" and "file" schemes.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -39,4 +43,8 @@ open module org.arakhne.afc.core.vmutils {
 	exports org.arakhne.afc.vmutil.json;
 	exports org.arakhne.afc.vmutil.locale;
 	exports org.arakhne.afc.vmutil.resource;
+
+	provides URLStreamHandlerProvider
+	with org.arakhne.afc.vmutil.resource.HandlerProvider,
+		org.arakhne.afc.vmutil.file.HandlerProvider;
 }

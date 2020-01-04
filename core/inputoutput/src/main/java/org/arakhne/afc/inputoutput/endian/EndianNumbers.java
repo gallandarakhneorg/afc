@@ -24,7 +24,7 @@ import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * Uitility methods for Little Endian Number coding.
+ * Utility methods for Little Endian Number coding.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

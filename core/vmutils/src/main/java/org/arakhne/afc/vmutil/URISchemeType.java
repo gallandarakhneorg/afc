@@ -495,9 +495,5 @@ public enum URISchemeType {
 	@Pure
 	public abstract boolean isFileBasedScheme();
 
-	static {
-		URLHandlerUtil.installArakhneHandlers();
-	}
-
 }
 

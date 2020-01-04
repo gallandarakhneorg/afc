@@ -28,6 +28,7 @@
  */
 module org.arakhne.afc.core.mathstochastic {
 	requires org.eclipse.xtext.xbase.lib;
+	requires org.arakhne.afc.core.util;
 	requires transitive org.arakhne.afc.core.vmutils;
 
 	exports org.arakhne.afc.math.stochastic;

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2019 The original authors, and other authors.
+ * Copyright (c) 2013-2020 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,21 +18,27 @@
  * limitations under the License.
  */
 
-/** Intregration of the Maven logger as an SLF4J logger.
+/** Test utilities for mathematic features.
  *
- * @provides org.slf4j.spi.SLF4JServiceProvider
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 17.0
  */
-module org.arakhne.afc.slf4j.slf4j_maven {
-	requires transitive org.slf4j;
-	requires transitive maven.plugin.api;
+open module org.arakhne.afc.core.mathgeomtesting {
+	requires java.desktop;
+	requires org.junit.jupiter.api;
+	requires org.junit.jupiter.params;
+	requires org.arakhne.afc.core.mathgeom;
+	requires org.arakhne.afc.core.mathgen;
+	requires org.arakhne.afc.core.testtools;
 
-	exports org.arakhne.afc.slf4j.maven;
-
-	provides org.slf4j.spi.SLF4JServiceProvider
-		with org.arakhne.afc.slf4j.maven.MavenSlf4jServiceProvider;
+	exports org.arakhne.afc.math.test;
+	exports org.arakhne.afc.math.test.geometry;
+	exports org.arakhne.afc.math.test.geometry.d2;
+	exports org.arakhne.afc.math.test.geometry.d2.afp;
+	exports org.arakhne.afc.math.test.geometry.d2.ai;
+	exports org.arakhne.afc.math.test.geometry.d3.afp;
+	exports org.arakhne.afc.math.test.geometry.d3.ai;
 }

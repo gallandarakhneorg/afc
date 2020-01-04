@@ -27,44 +27,40 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.URL;
+import java.net.URLStreamHandler;
+import java.util.Map;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.arakhne.afc.vmutil.URLHandlerUtil;
+import org.arakhne.afc.vmutil.file.HandlerProvider;
 
 @SuppressWarnings("all")
 public class URLConnectionTest {
 
-	private static final String RESOURCE_URL = "resource:org/arakhne/afc/vmutil/test.txt";  //$NON-NLS-1$
+	private static final String RESOURCE_SCHEME = "resource";  //$NON-NLS-1$
+
+	private static final String RESOURCE_PATH = "org/arakhne/afc/vmutil/test.txt";  //$NON-NLS-1$
 
 	private URLConnection connection;
 
-	/**
-	 * @throws Exception
-	 */
 	@BeforeEach
 	public void setUp() throws Exception {
-		URLHandlerUtil.installArakhneHandlers();
-		URL resourceUrl = new URL(RESOURCE_URL);
+		URL resourceUrl = new URL(RESOURCE_SCHEME, null, -1, RESOURCE_PATH, new Handler());
 		assertNotNull(resourceUrl);
 		this.connection = new URLConnection(resourceUrl);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@AfterEach
 	public void tearDown() throws Exception {
 		this.connection = null;
-		URLHandlerUtil.uninstallArakhneHandlers();
 	}
 
-	/**
-	 * @throws IOException
-	 */
 	@Test
 	public void getInputStream() throws IOException {
 		String line;

@@ -43,7 +43,9 @@ import org.arakhne.afc.vmutil.URISchemeType;
  * @since 6.0
  * @see URLStreamHandlerFactory
  * @see URL#setURLStreamHandlerFactory(URLStreamHandlerFactory)
+ * @deprecated since 17.0, see {@link HandlerFactory}.
  */
+@Deprecated(forRemoval = true, since = "17.0")
 public class HandlerFactory implements URLStreamHandlerFactory {
 
 	@Override

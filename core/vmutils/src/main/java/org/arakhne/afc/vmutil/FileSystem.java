@@ -67,8 +67,6 @@ import org.arakhne.afc.vmutil.locale.Locale;
 public final class FileSystem {
 
 	static {
-		URLHandlerUtil.installArakhneHandlers();
-
 		final String validChars = "[^\\\\/:*?\"<>|]"; //$NON-NLS-1$
 		final String bslashChar = "\\\\"; //$NON-NLS-1$
 

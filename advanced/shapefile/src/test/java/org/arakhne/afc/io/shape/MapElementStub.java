@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Random;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
+import org.arakhne.afc.io.shape.ESRIBounds;
+import org.arakhne.afc.io.shape.ESRIPoint;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.text.Encryption;
 

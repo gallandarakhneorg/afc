@@ -33,46 +33,41 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.vmutil.Resources;
-import org.arakhne.afc.vmutil.URLHandlerUtil;
 
 @SuppressWarnings("all")
 public class URLConnectionTest {
 
-	private static final String RESOURCE_URL = "org/arakhne/afc/vmutil/test.txt";  //$NON-NLS-1$
+	private static final String RESOURCE_PATH = "org/arakhne/afc/vmutil/test.txt";  //$NON-NLS-1$
 
 	private URLConnection connection;
 
-	/**
-	 * @throws Exception
-	 */
 	@BeforeEach
 	public void setUp() throws Exception {
-		URLHandlerUtil.installArakhneHandlers();
-		URL resourceUrl = Resources.getResource(RESOURCE_URL);
+		// Find the resource file
+		URL resourceUrl = Resources.getResource(RESOURCE_PATH);
+		// Force the usage of the specific file handler.
+		resourceUrl = new URL(resourceUrl.getProtocol(), null, -1, resourceUrl.getPath(), new Handler());
 		assertNotNull(resourceUrl);
 		this.connection = new URLConnection(resourceUrl);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@AfterEach
 	public void tearDown() throws Exception {
 		this.connection = null;
-		URLHandlerUtil.uninstallArakhneHandlers();
 	}
 
-	/**
-	 */
 	@Test
 	public void getHeaderFieldKeyInt() {
 		assertEquals("content-type", this.connection.getHeaderFieldKey(0));  //$NON-NLS-1$
@@ -81,8 +76,6 @@ public class URLConnectionTest {
 		assertNull(this.connection.getHeaderFieldKey(3));
 	}
 
-	/**
-	 */
 	@Test
 	public void getHeaderFieldInt() {
 		assertEquals("text/plain", this.connection.getHeaderField(0));  //$NON-NLS-1$
@@ -91,8 +84,6 @@ public class URLConnectionTest {
 		assertNull(this.connection.getHeaderField(3));
 	}
 
-	/**
-	 */
 	@Test
 	public void getHeaderFieldString() {
 		assertEquals("text/plain", this.connection.getHeaderField("content-type"));   //$NON-NLS-1$ //$NON-NLS-2$
@@ -101,8 +92,6 @@ public class URLConnectionTest {
 		assertNull(this.connection.getHeaderField("expires"));  //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void getHeaderFields() {
 		Map<?,?> map = this.connection.getHeaderFields();
@@ -114,9 +103,6 @@ public class URLConnectionTest {
 		assertNull(map.get("expires"));  //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws IOException
-	 */
 	@Test
 	public void getInputStream() throws IOException {
 		String line;
@@ -128,9 +114,6 @@ public class URLConnectionTest {
 		assertEquals("TEST1: FOR UNIT TEST ONLY", line);  //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws IOException
-	 */
 	@Test
 	public void getOutputStream() throws IOException {
 		File tmpFile = File.createTempFile("unittest", ".txt");   //$NON-NLS-1$ //$NON-NLS-2$

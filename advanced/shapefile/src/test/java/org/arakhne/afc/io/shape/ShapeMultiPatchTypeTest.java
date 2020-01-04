@@ -25,6 +25,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
+import org.arakhne.afc.io.shape.ShapeFileException;
+import org.arakhne.afc.io.shape.ShapeMultiPatchType;
+
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$

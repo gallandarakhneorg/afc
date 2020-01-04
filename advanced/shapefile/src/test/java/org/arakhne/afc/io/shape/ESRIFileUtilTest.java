@@ -23,6 +23,8 @@ package org.arakhne.afc.io.shape;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.arakhne.afc.io.shape.ESRIFileUtil;
+
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$

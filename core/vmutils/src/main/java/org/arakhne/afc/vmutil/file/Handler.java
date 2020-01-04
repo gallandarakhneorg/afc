@@ -39,7 +39,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * automatically loaded.
  *
  * <p>To use this factory, invoke the following code only ONCE time:
- * <code>URL.setURLStreamHandlerFactory(new FileURLStreamHandlerFactory());</code>.
+ * <code>URL.setURLStreamHandlerFactory(new HandlerProvider());</code>.
  *
  * @author $Author: sgalland$
  * @author $Author: willaume$
@@ -48,7 +48,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 6.0
  * @see URLStreamHandler
- * @see HandlerFactory
+ * @see HandlerProvider
  */
 public class Handler extends URLStreamHandler {
 

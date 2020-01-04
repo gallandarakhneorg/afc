@@ -39,6 +39,12 @@ import org.arakhne.afc.vmutil.caller.StackTraceCaller;
  */
 public final class Caller {
 
+	/** Name of the {@code vmutils} module that is considered by {@link #findClassForFirstCallerOutsideVmutilModule()}.
+	 *
+	 * @since 17.0
+	 */
+	public static final String MODULE_NAME = "org.arakhne.afc.core.vmutils"; //$NON-NLS-1$
+
 	private static org.arakhne.afc.vmutil.caller.Caller caller;
 
 	private Caller() {
@@ -201,7 +207,7 @@ public final class Caller {
 	public static Class<?> findClassForFirstCallerOutsideVmutilModule() {
 		Class<?> type = getCaller().getCallerClass(1);
 		int i = 3;
-		while (type != null && ModuleConstants.MODULE_NAME.equals(type.getModule().getName())) {
+		while (type != null && MODULE_NAME.equals(type.getModule().getName())) {
 			type = getCaller().getCallerClass(i);
 			++i;
 		}

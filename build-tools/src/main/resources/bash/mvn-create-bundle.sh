@@ -60,6 +60,16 @@ then
 
 	if [ '!' -z "$PASSPHRASE" ]
 	then
+		CDIR=`dirname "$0"`
+
+		if [ -z "$JAVA_HOME" ]
+		then
+			JAVA_HOME=`$CDIR/java_home`
+		fi
+
+		export JAVA_HOME
+		echo "JAVA_HOME=$JAVA_HOME"
+
 		echo "Assuming 'org.arakhne.afc.maven:tag-replacer:generatereplacesrc' is activated"
 		echo "Assuming 'maven-javadoc-plugin:jar' is activated"
 		echo "Assuming 'maven-sources-plugin:jar' is activated"

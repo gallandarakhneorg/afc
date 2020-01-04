@@ -22,6 +22,9 @@ package org.arakhne.afc.vmutil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+
+import java.lang.module.ModuleDescriptor;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,15 +90,6 @@ public class CallerTest {
 	}
 
 	/**
-	 * @return caller
-	 */
-	static Class<?> innerFindClassForFirstCallerOutsideVmutilModule() {
-		Class<?> c = Caller.findClassForFirstCallerOutsideVmutilModule();
-		assertNotNull(c);
-		return c;
-	}
-
-	/**
 	 * @throws Exception
 	 */
 	@Test
@@ -134,11 +128,35 @@ public class CallerTest {
     	assertEquals("getCallerMethodInt",  //$NON-NLS-1$
     			this.caller.innerinnerTestGetCallerMethod(2));
 	}
-	
+
+	@Test
+	public void vmutilsModuleName() throws Exception {
+		final Module module = Caller.class.getModule();
+		if (module != null) {
+			final ModuleDescriptor descriptor = module.getDescriptor();
+			if (descriptor != null) {
+				final String name = descriptor.name();
+				assertEquals(name, Caller.MODULE_NAME);
+			} else {
+				assumeFalse(true, "The testing framework does not support modules");
+			}
+		} else {
+			assumeFalse(true, "The testing framework does not support modules");
+		}
+	}
+
 	@Test
 	public void findClassForFirstCallerOutsideVmutilModule() throws Exception {
+		// Depending on the test framework (Junit with Maven, or Junit within Eclipse)
+		// The testing code is not (or is) considered as part of the module
 		Class<?> expected = Caller.getCallerClass();
-		Class<?> c = innerFindClassForFirstCallerOutsideVmutilModule();
+
+		final Module module = CallerTest.class.getModule();
+		if (module != null && !Caller.MODULE_NAME.equals(module.getName())) {
+			expected = CallerTest.class;
+		}
+
+		Class<?> c = Caller.findClassForFirstCallerOutsideVmutilModule();
 		assertEquals(expected, c);
 	}
 

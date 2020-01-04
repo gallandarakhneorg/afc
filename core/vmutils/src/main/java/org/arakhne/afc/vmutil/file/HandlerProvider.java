@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2019 The original authors, and other authors.
+ * Copyright (c) 2013-2020 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,14 @@
  * limitations under the License.
  */
 
-/** Module description.
+package org.arakhne.afc.vmutil.file;
+
+import java.net.URLStreamHandler;
+import java.net.spi.URLStreamHandlerProvider;
+
+import org.arakhne.afc.vmutil.URISchemeType;
+
+/** Provider for the "file" URL handler.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -26,6 +33,15 @@
  * @mavenartifactid $ArtifactId$
  * @since 17.0
  */
-module org.arakhne.afc.buildTools {
-	//
+public class HandlerProvider extends URLStreamHandlerProvider {
+
+	@Override
+	public URLStreamHandler createURLStreamHandler(String protocol) {
+		if (URISchemeType.FILE.isScheme(protocol)) {
+            return new Handler();
+		}
+		// Force the default factory to retrieve stream handler.
+		return null;
+	}
 }
+

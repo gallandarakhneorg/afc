@@ -29,6 +29,7 @@
 open module org.arakhne.afc.core.inputoutput {
 	requires org.eclipse.xtext.xbase.lib;
 	requires org.arakhne.afc.core.vmutils;
+	requires org.arakhne.afc.core.text;
 	requires transitive java.activation;
 	requires transitive java.xml;
 

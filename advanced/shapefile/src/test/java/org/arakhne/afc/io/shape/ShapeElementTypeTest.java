@@ -26,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import org.arakhne.afc.io.shape.ShapeElementType;
+
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$

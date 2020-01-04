@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2019 The original authors, and other authors.
+ * Copyright (c) 2013-2020 The original authors, and other authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,7 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.vmutil;
-
-/**
- * Constants for the module.
+/** General test utilities.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -29,14 +26,11 @@ package org.arakhne.afc.vmutil;
  * @mavenartifactid $ArtifactId$
  * @since 17.0
  */
-final class ModuleConstants {
+module org.arakhne.afc.core.testtools {
+	requires transitive java.logging;
+	requires org.junit.jupiter.api;
+	requires com.google.common;
+	requires transitive org.eclipse.xtext.xbase.lib;
 
-	/** Name of module.
-	 */
-	public static final String MODULE_NAME = "org.arakhne.afc.core.vmutils"; //$NON-NLS-1$
-
-	private ModuleConstants() {
-		//
-	}
-
+	exports org.arakhne.afc.testtools;
 }

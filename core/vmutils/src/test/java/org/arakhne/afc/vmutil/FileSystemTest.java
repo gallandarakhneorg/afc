@@ -35,6 +35,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLStreamHandler;
+import java.net.URLStreamHandlerFactory;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -44,6 +46,9 @@ import java.util.zip.ZipFile;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import org.arakhne.afc.vmutil.resource.Handler;
+import org.arakhne.afc.vmutil.resource.HandlerProvider;
 
 
 @SuppressWarnings("all")
@@ -275,7 +280,7 @@ public class FileSystemTest {
 
 	@Test
 	public void convertFileToURLFile() throws Exception {
-		URLHandlerUtil.installArakhneHandlers();
+		handlesResourceUrl();
 		try {
 			File f1 = new File("/toto");  //$NON-NLS-1$
 			URL u1 = new URL("file:/toto"); //$NON-NLS-1$
@@ -284,23 +289,60 @@ public class FileSystemTest {
 			File f2 = FileSystem.convertURLToFile(u2);
 			assertEquals(u1, FileSystem.convertFileToURL(f1));
 			assertEquals(u2e, FileSystem.convertFileToURL(f2));
+		} finally {
+			unhandlesResourceUrl();
 		}
-		finally {
-			URLHandlerUtil.uninstallArakhneHandlers();
+	}
+
+	private static volatile TestingHandler handler;
+	
+	private void handlesResourceUrl() throws Exception {
+		if (FileSystem.class.getModule().getName() == null) {
+			// Special testing framework that is not loading the library into a module.
+			if (handler == null) {
+				handler = new TestingHandler();
+				URL.setURLStreamHandlerFactory(handler);
+				handler.isActive = true;
+			}
 		}
+	}
+
+	private void unhandlesResourceUrl() throws Exception {
+		if (FileSystem.class.getModule().getName() == null) {
+			// Special testing framework that is not loading the library into a module.
+			if (handler != null) {
+				handler.isActive = false;
+			}
+		}
+	}
+
+	/** Testing handler.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 17.0
+	 */
+	private static class TestingHandler implements URLStreamHandlerFactory {
+
+		public volatile boolean isActive;
+		
+		@Override
+		public URLStreamHandler createURLStreamHandler(String protocol) {
+			if (this.isActive && URISchemeType.RESOURCE.isScheme(protocol)) {
+				return new Handler();
+			}
+			return null;
+		}
+		
 	}
 
 	@Test
 	public void convertFileToURLFile_issue173() throws Exception {
-		URLHandlerUtil.installArakhneHandlers();
-		try {
-			File f1 = new File("./myfile.txt");  //$NON-NLS-1$
-			URL u1 = new URL("file:./myfile.txt"); //$NON-NLS-1$
-			assertEquals(u1, FileSystem.convertFileToURL(f1));
-		}
-		finally {
-			URLHandlerUtil.uninstallArakhneHandlers();
-		}
+		File f1 = new File("./myfile.txt");  //$NON-NLS-1$
+		URL u1 = new URL("file:./myfile.txt"); //$NON-NLS-1$
+		assertEquals(u1, FileSystem.convertFileToURL(f1));
 	}
 
 	@Test
@@ -606,64 +648,69 @@ public class FileSystemTest {
 
 	@Test
 	public void convertStringToURL() throws Exception {
-		assertNull(FileSystem.convertStringToURL(null, true));
-		assertNull(FileSystem.convertStringToURL("", true));  //$NON-NLS-1$
-		assertNull(FileSystem.convertStringToURL(null, false));
-		assertNull(FileSystem.convertStringToURL("", false));  //$NON-NLS-1$
-
-		URL rr = FileSystem.convertStringToURL("file://marbre.jpg", false);  //$NON-NLS-1$
-		assertNotNull(rr);
-		assertEquals("file", rr.getProtocol());  //$NON-NLS-1$
-		assertEquals("", rr.getAuthority()); //$NON-NLS-1$
-		assertEquals("", rr.getHost());  //$NON-NLS-1$
-		assertNull(rr.getQuery());
-		assertEquals("marbre.jpg", rr.getPath());  //$NON-NLS-1$
-
-		assertEquals(new URL("http", "www.arakhne.org", "/"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("http://www.arakhne.org/", true));  //$NON-NLS-1$
-		assertEquals(new URL("http", "www.arakhne.org", "/"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("http://www.arakhne.org/", false));  //$NON-NLS-1$
-
-		// CAUTION: testing right-formed jar URL.
-		assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", true));  //$NON-NLS-1$
-		assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false));  //$NON-NLS-1$
-
-		// CAUTION: testing malformed jar URL. Right syntax is: jar:{url}!/{entry}
-		assertEquals(new URL("file", "", "/home/test/j.jar"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("jar:/home/test/j.jar", true));  //$NON-NLS-1$
-		assertEquals(new URL("file", "", "/home/test/j.jar"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("jar:/home/test/j.jar", false));  //$NON-NLS-1$
-
-		// CAUTION: testing malformed jar URL. Right syntax is: jar:{url}!/{entry}
-		assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("jar:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", true));  //$NON-NLS-1$
-		assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("jar:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false));  //$NON-NLS-1$
-
-		URL testResource = Resources.getResource("/org/arakhne/afc/vmutil/test.txt");  //$NON-NLS-1$
-		assertNotNull(testResource);
-
-		assertEquals(testResource,
-				FileSystem.convertStringToURL("resource:/org/arakhne/afc/vmutil/test.txt", true));  //$NON-NLS-1$
-		assertEquals(null,
-				FileSystem.convertStringToURL("resource:/org/arakhne/afc/vmutil/test.txt", false));  //$NON-NLS-1$
-
-		assertEquals(testResource,
-				FileSystem.convertStringToURL("resource:org/arakhne/afc/vmutil/test.txt", true));  //$NON-NLS-1$
-		assertEquals(null,
-				FileSystem.convertStringToURL("resource:org/arakhne/afc/vmutil/test.txt", false));  //$NON-NLS-1$
-
-		assertEquals(testResource,
-				FileSystem.convertStringToURL("/org/arakhne/afc/vmutil/test.txt", true));  //$NON-NLS-1$
-		assertEquals(new URL("file", "", "/org/arakhne/afc/vmutil/test.txt"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("/org/arakhne/afc/vmutil/test.txt", false));  //$NON-NLS-1$
-
-		assertEquals(testResource,
-				FileSystem.convertStringToURL("org/arakhne/afc/vmutil/test.txt", true));  //$NON-NLS-1$
-		assertEquals(new URL("file","", "org/arakhne/afc/vmutil/test.txt"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("org/arakhne/afc/vmutil/test.txt", false));  //$NON-NLS-1$
+		handlesResourceUrl();
+		try {
+			assertNull(FileSystem.convertStringToURL(null, true));
+			assertNull(FileSystem.convertStringToURL("", true));  //$NON-NLS-1$
+			assertNull(FileSystem.convertStringToURL(null, false));
+			assertNull(FileSystem.convertStringToURL("", false));  //$NON-NLS-1$
+	
+			URL rr = FileSystem.convertStringToURL("file://marbre.jpg", false);  //$NON-NLS-1$
+			assertNotNull(rr);
+			assertEquals("file", rr.getProtocol());  //$NON-NLS-1$
+			assertEquals("", rr.getAuthority()); //$NON-NLS-1$
+			assertEquals("", rr.getHost());  //$NON-NLS-1$
+			assertNull(rr.getQuery());
+			assertEquals("marbre.jpg", rr.getPath());  //$NON-NLS-1$
+	
+			assertEquals(new URL("http", "www.arakhne.org", "/"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					FileSystem.convertStringToURL("http://www.arakhne.org/", true));  //$NON-NLS-1$
+			assertEquals(new URL("http", "www.arakhne.org", "/"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					FileSystem.convertStringToURL("http://www.arakhne.org/", false));  //$NON-NLS-1$
+	
+			// CAUTION: testing right-formed jar URL.
+			assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					FileSystem.convertStringToURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", true));  //$NON-NLS-1$
+			assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					FileSystem.convertStringToURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false));  //$NON-NLS-1$
+	
+			// CAUTION: testing malformed jar URL. Right syntax is: jar:{url}!/{entry}
+			assertEquals(new URL("file", "", "/home/test/j.jar"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					FileSystem.convertStringToURL("jar:/home/test/j.jar", true));  //$NON-NLS-1$
+			assertEquals(new URL("file", "", "/home/test/j.jar"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					FileSystem.convertStringToURL("jar:/home/test/j.jar", false));  //$NON-NLS-1$
+	
+			// CAUTION: testing malformed jar URL. Right syntax is: jar:{url}!/{entry}
+			assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					FileSystem.convertStringToURL("jar:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", true));  //$NON-NLS-1$
+			assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"),    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					FileSystem.convertStringToURL("jar:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false));  //$NON-NLS-1$
+	
+			URL testResource = Resources.getResource("/org/arakhne/afc/vmutil/test.txt");  //$NON-NLS-1$
+			assertNotNull(testResource);
+	
+			assertEquals(testResource,
+					FileSystem.convertStringToURL("resource:/org/arakhne/afc/vmutil/test.txt", true));  //$NON-NLS-1$
+			assertEquals(null,
+					FileSystem.convertStringToURL("resource:/org/arakhne/afc/vmutil/test.txt", false));  //$NON-NLS-1$
+	
+			assertEquals(testResource,
+					FileSystem.convertStringToURL("resource:org/arakhne/afc/vmutil/test.txt", true));  //$NON-NLS-1$
+			assertEquals(null,
+					FileSystem.convertStringToURL("resource:org/arakhne/afc/vmutil/test.txt", false));  //$NON-NLS-1$
+	
+			assertEquals(testResource,
+					FileSystem.convertStringToURL("/org/arakhne/afc/vmutil/test.txt", true));  //$NON-NLS-1$
+			assertEquals(new URL("file", "", "/org/arakhne/afc/vmutil/test.txt"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					FileSystem.convertStringToURL("/org/arakhne/afc/vmutil/test.txt", false));  //$NON-NLS-1$
+	
+			assertEquals(testResource,
+					FileSystem.convertStringToURL("org/arakhne/afc/vmutil/test.txt", true));  //$NON-NLS-1$
+			assertEquals(new URL("file","", "org/arakhne/afc/vmutil/test.txt"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					FileSystem.convertStringToURL("org/arakhne/afc/vmutil/test.txt", false));  //$NON-NLS-1$
+		} finally {
+			unhandlesResourceUrl();
+		}
 	}
 
 	@Test
@@ -931,23 +978,22 @@ public class FileSystemTest {
 
 	@Test
 	public void toShortestURLURL() throws Exception {
-		URLHandlerUtil.installArakhneHandlers();
+		handlesResourceUrl();
 		try {
 			File f1 = new File("/toto");  //$NON-NLS-1$
 			URL u1 = f1.toURI().toURL();
 			URL u2 = Resources.getResource("org/arakhne/afc/vmutil/test.txt");  //$NON-NLS-1$
 			URL u2e = new URL("resource:org/arakhne/afc/vmutil/test.txt");  //$NON-NLS-1$
-
+	
 			URL actual;
-
+	
 			actual = FileSystem.toShortestURL(u1);
 			assertEquals(u1, actual);
-
+	
 			actual = FileSystem.toShortestURL(u2);
 			assertEquals(u2e, actual);
-		}
-		finally {
-			URLHandlerUtil.uninstallArakhneHandlers();
+		} finally {
+			unhandlesResourceUrl();
 		}
 	}
 

@@ -35,6 +35,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
+import org.arakhne.afc.io.shape.ESRIPoint;
+import org.arakhne.afc.io.shape.ElementFactory;
+import org.arakhne.afc.io.shape.ShapeElementType;
+import org.arakhne.afc.io.shape.ShapeFileIndexReader;
+import org.arakhne.afc.io.shape.ShapeFileReader;
 import org.arakhne.afc.vmutil.Resources;
 
 /**
