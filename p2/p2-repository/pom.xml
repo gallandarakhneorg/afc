@@ -73,6 +73,26 @@
 									<id>org.arakhne.afc.advanced:agentmotion:${afc.p2.stable.version}</id>
 									<override>true</override>
 								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.bootique:bootique-applicationdata2:${afc.p2.stable.version}</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.bootique:bootique-log4j:${afc.p2.stable.version}</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.bootique:bootique-printconfig:${afc.p2.stable.version}</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.bootique:bootique-synopsishelp:${afc.p2.stable.version}</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.bootique:bootique-variables:${afc.p2.stable.version}</id>
+									<override>true</override>
+								</artifact>
 
 								<!-- Other libraries -->
 								<artifact>
@@ -200,6 +220,26 @@
 								</artifact>
 								<artifact>
 									<id>org.arakhne.afc.advanced:agentmotion:16.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.bootique:bootique-applicationdata2:16.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.bootique:bootique-log4j:16.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.bootique:bootique-printconfig:16.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.bootique:bootique-synopsishelp:16.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>org.arakhne.afc.bootique:bootique-variables:16.0</id>
 									<override>true</override>
 								</artifact>
 							</artifacts>
