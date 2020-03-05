@@ -51,7 +51,7 @@ class StaticGateway {
 	protected SLF4JServiceProvider getServiceProvider() {
 		if (this.provider == null) {
 			try {
-				final Method meth = LoggerFactory.class.getMethod("getProvider"); //$NON-NLS-1$
+				final Method meth = LoggerFactory.class.getDeclaredMethod("getProvider"); //$NON-NLS-1$
 				meth.setAccessible(true);
 				this.provider = (SLF4JServiceProvider) meth.invoke(null);
 			} catch (Throwable exception) {
