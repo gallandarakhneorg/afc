@@ -47,6 +47,8 @@ public class LinearStochasticLaw extends StochasticLaw {
 
 	private static final String ASCENDENT_NAME = "ascendent"; //$NON-NLS-1$
 
+	private static final boolean ASCENDENT_DEFAULT = true;
+
 	private static final String MINX_NAME = "minX"; //$NON-NLS-1$
 
 	private static final String MAXX_NAME = "maxX"; //$NON-NLS-1$
@@ -74,10 +76,10 @@ public class LinearStochasticLaw extends StochasticLaw {
 	 * @throws LawParameterNotFoundException if the list of parameters does not permits to create the law.
 	 */
 	public LinearStochasticLaw(Map<String, String> parameters) throws LawParameterNotFoundException {
-		this.ascendent = paramBoolean(ASCENDENT_NAME, parameters);
-		this.minX = paramDouble(MINX_NAME, parameters);
-		this.maxX = paramDouble(MAXX_NAME, parameters);
-		this.delta = paramDouble(DELTA_NAME, parameters);
+		this(
+				paramDouble(MINX_NAME, parameters),
+				paramDouble(MAXX_NAME, parameters),
+				paramBoolean(ASCENDENT_NAME, ASCENDENT_DEFAULT, parameters));
 	}
 
 	/** Create a ascendent linear distribution.
@@ -86,7 +88,7 @@ public class LinearStochasticLaw extends StochasticLaw {
 	 * @param maxX is the upper bound of the distribution
 	 */
 	public LinearStochasticLaw(double minX, double maxX) {
-		this(minX, maxX, true);
+		this(minX, maxX, ASCENDENT_DEFAULT);
 	}
 
 	/** Create a linear distribution.

@@ -23,6 +23,7 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.vmutil.json.JsonBuffer;
@@ -60,7 +61,54 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 
 	/** Extract a parameter value from a map of parameters.
 	 *
-	 * @param paramName is the nameof the parameter to extract.
+	 * @param paramName is the name of the parameter to extract.
+	 * @param defaultValue is the default value.
+	 * @param parameters is the map of available parameters
+	 * @return the extract value
+	 * @since 18.0
+	 */
+	@Pure
+	protected static double paramDouble(String paramName, double defaultValue, Map<String, String> parameters) {
+		final String svalue = parameters.get(paramName);
+		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
+			try {
+				return Float.parseFloat(svalue);
+			} catch (AssertionError e) {
+				throw e;
+			} catch (Throwable e) {
+				//
+			}
+		}
+		return defaultValue;
+	}
+
+	/** Extract a parameter value from a map of parameters.
+	 *
+	 * @param paramName is the name of the parameter to extract.
+	 * @param defaultValue is the default value.
+	 * @param parameters is the map of available parameters
+	 * @return the extract value
+	 * @since 18.0
+	 */
+	@Pure
+	protected static double paramDouble(String paramName, Function0<? extends Double> defaultValue, Map<String, String> parameters) {
+		assert defaultValue != null;
+		final String svalue = parameters.get(paramName);
+		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
+			try {
+				return Float.parseFloat(svalue);
+			} catch (AssertionError e) {
+				throw e;
+			} catch (Throwable e) {
+				//
+			}
+		}
+		return defaultValue.apply();
+	}
+
+	/** Extract a parameter value from a map of parameters.
+	 *
+	 * @param paramName is the name of the parameter to extract.
 	 * @param parameters is the map of available parameters
 	 * @return the extract value
 	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a double.
@@ -83,7 +131,54 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 
 	/** Extract a parameter value from a map of parameters.
 	 *
-	 * @param paramName is the nameof the parameter to extract.
+	 * @param paramName is the name of the parameter to extract.
+	 * @param defaultValue the default value of the parameters is not declared.
+	 * @param parameters is the map of available parameters
+	 * @return the extract value
+	 * @since 18.0
+	 */
+	@Pure
+	protected static boolean paramBoolean(String paramName, boolean defaultValue, Map<String, String> parameters) {
+		final String svalue = parameters.get(paramName);
+		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
+			try {
+				return Boolean.parseBoolean(svalue);
+			} catch (AssertionError e) {
+				throw e;
+			} catch (Throwable e) {
+				//
+			}
+		}
+		return defaultValue;
+	}
+
+	/** Extract a parameter value from a map of parameters.
+	 *
+	 * @param paramName is the name of the parameter to extract.
+	 * @param defaultValue the default value of the parameters is not declared.
+	 * @param parameters is the map of available parameters
+	 * @return the extract value
+	 * @since 18.0
+	 */
+	@Pure
+	protected static boolean paramBoolean(String paramName, Function0<? extends Boolean> defaultValue, Map<String, String> parameters) {
+		assert defaultValue != null;
+		final String svalue = parameters.get(paramName);
+		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
+			try {
+				return Boolean.parseBoolean(svalue);
+			} catch (AssertionError e) {
+				throw e;
+			} catch (Throwable e) {
+				//
+			}
+		}
+		return defaultValue.apply();
+	}
+
+	/** Extract a parameter value from a map of parameters.
+	 *
+	 * @param paramName is the name of the parameter to extract.
 	 * @param parameters is the map of available parameters
 	 * @return the extract value
 	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a double.
@@ -91,7 +186,7 @@ public abstract class StochasticLaw implements MathInversableFunction, JsonableO
 	@Pure
 	protected static boolean paramBoolean(String paramName, Map<String, String> parameters)
 			throws LawParameterNotFoundException {
-		final String svalue = parameters.get(paramName);
+		final String svalue = parameters.getOrDefault(paramName, null);
 		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
 			try {
 				return Boolean.parseBoolean(svalue);
