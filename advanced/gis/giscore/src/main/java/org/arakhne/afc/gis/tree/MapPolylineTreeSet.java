@@ -33,7 +33,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.tree.Tree;
-import org.arakhne.afc.math.tree.iterator.BroadFirstTreeIterator;
+import org.arakhne.afc.math.tree.iterator.BreadthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.NodeSelector;
 import org.arakhne.afc.math.tree.iterator.PostfixDepthFirstTreeIterator;
 import org.arakhne.afc.util.OutputParameter;
@@ -309,7 +309,7 @@ public class MapPolylineTreeSet<P extends MapPolyline> extends MapElementTreeSet
 						endPoint.getX(), endPoint.getY(),
 						precision);
 
-			final Iterator<GISTreeSetNode<P>> iter = new BroadFirstTreeIterator<>(tree, selector);
+			final Iterator<GISTreeSetNode<P>> iter = new BreadthFirstTreeIterator<>(tree, selector);
 
 			GISTreeSetNode<P> node;
 

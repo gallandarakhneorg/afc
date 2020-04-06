@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.math.tree.iterator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.math.tree.TreeNode;
 
@@ -32,45 +34,69 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 13.0
- * @deprecated since 18.0, see {@link BreadthFirstTreeIterator}
+ * @since 18.0 (replacement for 13.0 and higher)
  */
-@Deprecated(since = "18.0", forRemoval = true)
-public class BroadFirstTreeIterator<N extends TreeNode<?, N>>
-		extends BreadthFirstTreeIterator<N> {
+public class BreadthFirstTreeIterator<N extends TreeNode<?, N>>
+		extends AbstractBreadthFirstTreeIterator<N, N>
+		implements NodeSelectionTreeIterator<N> {
+
+	private NodeSelector<N> selector;
 
 	/** Create an iterator on the given tree.
 	 *
 	 * @param tree is the tree to iterate.
 	 */
-	public BroadFirstTreeIterator(Tree<?, N> tree) {
-		super(tree);
+	public BreadthFirstTreeIterator(Tree<?, N> tree) {
+		this(tree.getRoot(), null);
 	}
 
 	/** Create an iterator on the given tree.
 	 *
 	 * @param tree is the tree to iterate.
-	 * @param selector1 permits to filter the node repliable by this iterator.
+	 * @param selector permits to filter the node that could be returned by this iterator.
 	 */
-	public BroadFirstTreeIterator(Tree<?, N> tree, NodeSelector<N> selector1) {
-		super(tree, selector1);
+	public BreadthFirstTreeIterator(Tree<?, N> tree, NodeSelector<N> selector) {
+		this(tree.getRoot(), selector);
 	}
 
 	/** Create an iterator on the given node.
 	 *
 	 * @param node is the node to iterate.
 	 */
-	public BroadFirstTreeIterator(N node) {
-		super(node);
+	public BreadthFirstTreeIterator(N node) {
+		this(node, null);
 	}
 
 	/** Create an iterator on the given node.
 	 *
 	 * @param node is the node to iterate.
-	 * @param selector1 permits to filter the node repliable by this iterator.
+	 * @param selector permits to filter the node that could be returned by this iterator.
 	 */
-	public BroadFirstTreeIterator(N node, NodeSelector<N> selector1) {
-		super(node, selector1);
+	public BreadthFirstTreeIterator(N node, NodeSelector<N> selector) {
+		super(select(selector, node));
+		this.selector = selector;
+	}
+
+	private static <N extends TreeNode<?, N>> N select(NodeSelector<N> selector, N node) {
+		if ((node != null) && ((selector == null) || (selector.nodeCouldBeTreatedByIterator(node)))) {
+			return node;
+		}
+		return null;
+	}
+
+	@Override
+	public void setNodeSelector(NodeSelector<N> selector1) {
+		this.selector = selector1;
+	}
+
+	@Pure
+	@Override
+	protected N toTraversableChild(N parent, N child, int childIndex, int notNullChildIndex) {
+		assert parent != null && child != null;
+		if (this.selector == null || this.selector.nodeCouldBeTreatedByIterator(child)) {
+			return child;
+		}
+		return null;
 	}
 
 }

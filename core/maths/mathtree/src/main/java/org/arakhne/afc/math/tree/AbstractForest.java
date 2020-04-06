@@ -28,8 +28,8 @@ import java.util.List;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.tree.iterator.BroadFirstForestIterator;
-import org.arakhne.afc.math.tree.iterator.DataBroadFirstForestIterator;
+import org.arakhne.afc.math.tree.iterator.BreadthFirstForestIterator;
+import org.arakhne.afc.math.tree.iterator.DataBreadthFirstForestIterator;
 import org.arakhne.afc.math.tree.iterator.DataDepthFirstForestIterator;
 import org.arakhne.afc.math.tree.iterator.DepthFirstForestIterator;
 import org.arakhne.afc.math.tree.iterator.DepthFirstNodeOrder;
@@ -147,8 +147,8 @@ public abstract class AbstractForest<D> implements Forest<D> {
 
 	@Override
 	@Pure
-	public final Iterator<TreeNode<D, ?>> broadFirstIterator() {
-		return new BroadFirstForestIterator<>(this.trees.iterator());
+	public final Iterator<TreeNode<D, ?>> breadthFirstIterator() {
+		return new BreadthFirstForestIterator<>(this.trees.iterator());
 	}
 
 	@Override
@@ -182,8 +182,8 @@ public abstract class AbstractForest<D> implements Forest<D> {
 
 	@Override
 	@Pure
-	public final Iterator<D> dataBroadFirstIterator() {
-		return new DataBroadFirstForestIterator<>(this.trees.iterator());
+	public final Iterator<D> dataBreadthFirstIterator() {
+		return new DataBreadthFirstForestIterator<>(this.trees.iterator());
 	}
 
 	@Override

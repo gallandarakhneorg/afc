@@ -18,25 +18,50 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.tree.iterator;
+package org.arakhne.afc.math.tree;
+
+import java.util.Iterator;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * Listener invoked when a broad-first iterator has treated a line.
+ * This is the generic implementation of a
+ * tree service that permits to iterate
+ * with a breadth-first approach.
  *
+ * <p>This is the public interface for a tree which
+ * is independent of the tree implementation.
+ *
+ * @param <D> is the type of the data inside the tree
+ * @param <N> is the type of the tree nodes.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 13.0
- * @deprecated since 18.0, see {@link BreadthFirstIterationListener}
+ * @since 18.0 (replacement for 13.0 and higher)
  */
-@Deprecated(since = "18.0", forRemoval = true)
-public interface BroadFirstIterationListener extends BreadthFirstIterationListener {
+public interface BreadthFirstIterableTree<D, N extends TreeNode<D, ?>> extends Tree<D, N> {
 
-	/** Invoked when a row of tree nodes was completely replied by the iterator.
+	@Override
+	@Pure
+	Iterator<N> breadthFirstIterator();
+
+	@Override
+	@Pure
+	Iterator<D> dataBreadthFirstIterator();
+
+	/** Replies the breadth-first iterator on the tree.
+	 *
+	 * @return the iterator on nodes.
 	 */
-	default void onBoardFirstIterationLevelFinished() {
-		onBreadthFirstIterationLevelFinished();
-	}
+	@Pure
+	Iterable<N> toBreadthFirstIterable();
+
+	/** Replies the breadth-first iterator on the tree.
+	 *
+	 * @return the iterator on user data.
+	 */
+	@Pure
+	Iterable<D> toDataBreadthFirstIterable();
 
 }

@@ -25,8 +25,8 @@ import java.util.Iterator;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.tree.iterator.BroadFirstTreeIterator;
-import org.arakhne.afc.math.tree.iterator.DataBroadFirstTreeIterator;
+import org.arakhne.afc.math.tree.iterator.BreadthFirstTreeIterator;
+import org.arakhne.afc.math.tree.iterator.DataBreadthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.DepthFirstNodeOrder;
 import org.arakhne.afc.math.tree.iterator.InfixDataDepthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.InfixDepthFirstTreeIterator;
@@ -50,7 +50,7 @@ import org.arakhne.afc.math.tree.iterator.PrefixDepthFirstTreeIterator;
  * @since 13.0
  */
 public abstract class AbstractTree<D, N extends TreeNode<D, N>>
-		implements DepthFirstIterableTree<D, N>, BroadFirstIterableTree<D, N>, Serializable {
+		implements DepthFirstIterableTree<D, N>, BreadthFirstIterableTree<D, N>, Serializable {
 
 	private static final long serialVersionUID = 1192947956138993568L;
 
@@ -100,8 +100,8 @@ public abstract class AbstractTree<D, N extends TreeNode<D, N>>
 
 	@Override
 	@Pure
-	public final Iterator<N> broadFirstIterator() {
-		return new BroadFirstTreeIterator<>(this);
+	public final Iterator<N> breadthFirstIterator() {
+		return new BreadthFirstTreeIterator<>(this);
 	}
 
 	@Override
@@ -135,8 +135,8 @@ public abstract class AbstractTree<D, N extends TreeNode<D, N>>
 
 	@Pure
 	@Override
-	public final Iterator<D> dataBroadFirstIterator() {
-		return new DataBroadFirstTreeIterator<>(this);
+	public final Iterator<D> dataBreadthFirstIterator() {
+		return new DataBreadthFirstTreeIterator<>(this);
 	}
 
 	@Pure
@@ -159,8 +159,8 @@ public abstract class AbstractTree<D, N extends TreeNode<D, N>>
 
 	@Pure
 	@Override
-	public final Iterable<N> toBroadFirstIterable() {
-		return () -> broadFirstIterator();
+	public final Iterable<N> toBreadthFirstIterable() {
+		return () -> breadthFirstIterator();
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public abstract class AbstractTree<D, N extends TreeNode<D, N>>
 
 	@Pure
 	@Override
-	public final Iterable<D> toDataBroadFirstIterable() {
-		return () -> dataBroadFirstIterator();
+	public final Iterable<D> toDataBreadthFirstIterable() {
+		return () -> dataBreadthFirstIterator();
 	}
 }

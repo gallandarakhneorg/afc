@@ -33,7 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.tree.Tree;
-import org.arakhne.afc.math.tree.iterator.BroadFirstTreeIterator;
+import org.arakhne.afc.math.tree.iterator.BreadthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.NodeSelector;
 
 /**
@@ -153,7 +153,7 @@ public class MapElementTreeSet<P extends MapElement> extends StandardGISTreeSet<
 		 * @return the next pair or {@code null}.
 		 */
 		public Pair<P, Double> select(Tree<P, GISTreeSetNode<P>> tree) {
-			final Iterator<GISTreeSetNode<P>> iter = new BroadFirstTreeIterator<>(tree, this);
+			final Iterator<GISTreeSetNode<P>> iter = new BreadthFirstTreeIterator<>(tree, this);
 			GISTreeSetNode<P> node;
 			double distance;
 			while (iter.hasNext()) {

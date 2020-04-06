@@ -42,25 +42,25 @@ import org.arakhne.afc.math.tree.node.BinaryTreeNode.DefaultBinaryTreeNode;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class BroadFirstTreeIteratorTest extends AbstractTreeIteratorTest {
+public class BreadthFirstTreeIteratorTest extends AbstractTreeIteratorTest {
 
 	private IterationListener listener;
-	private BroadFirstTreeIterator<DefaultBinaryTreeNode<Object>> iterator;
+	private BreadthFirstTreeIterator<DefaultBinaryTreeNode<Object>> iterator;
 
 	@BeforeEach
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		this.listener = new IterationListener();
-		this.iterator = new BroadFirstTreeIterator<>(this.tree);
-		this.iterator.setBroadFirstIterationListener(this.listener);
+		this.iterator = new BreadthFirstTreeIterator<>(this.tree);
+		this.iterator.setBreadthFirstIterationListener(this.listener);
 	}
 	
 	@AfterEach
 	@Override
 	public void tearDown() throws Exception {
 		this.listener = null;
-		this.iterator.setBroadFirstIterationListener(null);
+		this.iterator.setBreadthFirstIterationListener(null);
 		this.iterator = null;
 		super.tearDown();
 	}
@@ -161,7 +161,7 @@ public class BroadFirstTreeIteratorTest extends AbstractTreeIteratorTest {
 		assertSame(this.child12122, this.iterator.next());
 		assertFalse(this.iterator.hasNext());
 		
-		Iterator<DefaultBinaryTreeNode<Object>> it = this.tree.broadFirstIterator();
+		Iterator<DefaultBinaryTreeNode<Object>> it = this.tree.breadthFirstIterator();
 		assertSame(this.root, it.next());
 		assertSame(this.child1, it.next());
 		assertSame(this.child2, it.next());
@@ -178,7 +178,7 @@ public class BroadFirstTreeIteratorTest extends AbstractTreeIteratorTest {
 		assertFalse(it.hasNext());
 	}
 
-	private static class IterationListener implements BroadFirstIterationListener {
+	private static class IterationListener implements BreadthFirstIterationListener {
 		
 		private final AtomicBoolean invoked = new AtomicBoolean(false);
 		
@@ -192,7 +192,7 @@ public class BroadFirstTreeIteratorTest extends AbstractTreeIteratorTest {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void onBoardFirstIterationLevelFinished() {
+		public void onBreadthFirstIterationLevelFinished() {
 			this.invoked.set(true);
 		}
 

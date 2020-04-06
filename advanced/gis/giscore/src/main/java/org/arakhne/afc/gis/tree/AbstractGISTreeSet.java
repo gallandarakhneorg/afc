@@ -37,8 +37,8 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.tree.LinkedTree;
 import org.arakhne.afc.math.tree.Tree;
-import org.arakhne.afc.math.tree.iterator.BroadFirstTreeIterator;
-import org.arakhne.afc.math.tree.iterator.DataBroadFirstTreeIterator;
+import org.arakhne.afc.math.tree.iterator.BreadthFirstTreeIterator;
+import org.arakhne.afc.math.tree.iterator.DataBreadthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.DataSelector;
 import org.arakhne.afc.math.tree.iterator.NodeSelector;
 import org.arakhne.afc.math.tree.iterator.PrefixDataDepthFirstTreeIterator;
@@ -280,7 +280,7 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	@Override
 	@Pure
 	public Iterator<P> iterator() {
-		return this.tree.dataBroadFirstIterator();
+		return this.tree.dataBreadthFirstIterator();
 	}
 
 	@Override
@@ -294,7 +294,7 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 			return new BudgetIterator<>(this.tree, clipBounds, budget);
 		}
 		final FrustumSelector<P, N> selector = new FrustumSelector<>(clipBounds);
-		return new DataBroadFirstTreeIterator<>(
+		return new DataBreadthFirstTreeIterator<>(
 				this.tree,
 				selector,
 				selector);
@@ -530,7 +530,7 @@ abstract class AbstractGISTreeSet<P extends GISPrimitive,
 	 */
 	@Pure
 	Iterator<N> nodeIterator(Rectangle2afp<?, ?, ?, ?, ?, ?> clipBounds) {
-		return new BroadFirstTreeIterator<>(this.tree, new FrustumSelector<P, N>(clipBounds));
+		return new BreadthFirstTreeIterator<>(this.tree, new FrustumSelector<P, N>(clipBounds));
 	}
 
 	@Override

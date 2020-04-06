@@ -20,23 +20,22 @@
 
 package org.arakhne.afc.math.tree.iterator;
 
+import java.util.EventListener;
+
 /**
- * Listener invoked when a broad-first iterator has treated a line.
+ * Listener invoked when a breadth-first iterator has treated a line.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
- * @deprecated since 18.0, see {@link BreadthFirstIterationListener}
  */
-@Deprecated(since = "18.0", forRemoval = true)
-public interface BroadFirstIterationListener extends BreadthFirstIterationListener {
+@FunctionalInterface
+public interface BreadthFirstIterationListener extends EventListener {
 
 	/** Invoked when a row of tree nodes was completely replied by the iterator.
 	 */
-	default void onBoardFirstIterationLevelFinished() {
-		onBreadthFirstIterationLevelFinished();
-	}
+	void onBreadthFirstIterationLevelFinished();
 
 }

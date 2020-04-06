@@ -78,7 +78,7 @@ public class DotDotWriter {
 
         if (tree != null) {
             // Write the node attributes
-            Iterator<? extends TreeNode<?, ?>> iterator = tree.broadFirstIterator();
+            Iterator<? extends TreeNode<?, ?>> iterator = tree.breadthFirstIterator();
             TreeNode<?, ?> node;
             int dataCount;
             while (iterator.hasNext()) {
@@ -97,7 +97,7 @@ public class DotDotWriter {
             this.writer.append("\n"); //$NON-NLS-1$
 
             // Write the node links
-            iterator = tree.broadFirstIterator();
+            iterator = tree.breadthFirstIterator();
             Class<? extends Enum<?>> partitionType;
             TreeNode<?, ?> child;
             String childName;

@@ -80,12 +80,24 @@ interface Forest<D> extends Collection<Tree<D, ?>> {
 	@Pure
 	Iterator<TreeNode<D, ?>> depthFirstIterator();
 
+	/** Replies a breadth first iterator on nodes.
+	 *
+	 * @return a breadth first iterator.
+	 * @since 18.0 (replacement for 13.0 and higher)
+	 */
+	@Pure
+	Iterator<TreeNode<D, ?>> breadthFirstIterator();
+
 	/** Replies a broad first iterator on nodes.
 	 *
 	 * @return a broad first iterator.
+	 * @deprecated since 18.0, see {@link #breadthFirstIterator()}.
 	 */
 	@Pure
-	Iterator<TreeNode<D, ?>> broadFirstIterator();
+	@Deprecated(since = "18.0", forRemoval = true)
+	default Iterator<TreeNode<D, ?>> broadFirstIterator() {
+		return breadthFirstIterator();
+	}
 
 	/** Replies a prefixed depth first iterator on the tree.
 	 *
@@ -113,11 +125,23 @@ interface Forest<D> extends Collection<Tree<D, ?>> {
 	Iterator<D> dataDepthFirstIterator(int infixPosition);
 
 
+	/** Replies the breadth-first iterator on the tree.
+	 *
+	 * @return the iterator on user data.
+	 * @since 18.0 (replacement for 13.0 and higher)
+	 */
+	@Pure
+	Iterator<D> dataBreadthFirstIterator();
+
 	/** Replies the broad-first iterator on the tree.
 	 *
 	 * @return the iterator on user data.
+	 * @deprecated since 18.0, see {@link #dataBreadthFirstIterator()}
 	 */
 	@Pure
-	Iterator<D> dataBroadFirstIterator();
+	@Deprecated(since = "18.0", forRemoval = true)
+	default Iterator<D> dataBroadFirstIterator() {
+		return dataBreadthFirstIterator();
+	}
 
 }

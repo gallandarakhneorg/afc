@@ -39,29 +39,39 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
+ * @deprecated since 18.0, see {@link BreadthFirstIterableTree}.
  */
-public interface BroadFirstIterableTree<D, N extends TreeNode<D, ?>> extends Tree<D, N> {
+@Deprecated(since = "18.0", forRemoval = true)
+public interface BroadFirstIterableTree<D, N extends TreeNode<D, ?>> extends BreadthFirstIterableTree<D, N> {
 
 	@Override
 	@Pure
-	Iterator<N> broadFirstIterator();
+	default Iterator<N> broadFirstIterator() {
+		return breadthFirstIterator();
+	}
 
 	@Override
 	@Pure
-	Iterator<D> dataBroadFirstIterator();
+	default Iterator<D> dataBroadFirstIterator() {
+		return dataBreadthFirstIterator();
+	}
 
 	/** Replies the broad-first iterator on the tree.
 	 *
 	 * @return the iterator on nodes.
 	 */
 	@Pure
-	Iterable<N> toBroadFirstIterable();
+	default Iterable<N> toBroadFirstIterable() {
+		return toBreadthFirstIterable();
+	}
 
 	/** Replies the broad-first iterator on the tree.
 	 *
 	 * @return the iterator on user data.
 	 */
 	@Pure
-	Iterable<D> toDataBroadFirstIterable();
+	default Iterable<D> toDataBroadFirstIterable() {
+		return toDataBreadthFirstIterable();
+	}
 
 }

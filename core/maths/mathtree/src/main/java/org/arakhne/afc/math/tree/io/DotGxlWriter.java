@@ -84,7 +84,7 @@ public class DotGxlWriter {
             this.writer.append("\" edgeids=\"true\" edgemode=\"directed\">\n"); //$NON-NLS-1$
 
             // Write the node attributes
-            Iterator<? extends TreeNode<?, ?>> iterator = tree.broadFirstIterator();
+            Iterator<? extends TreeNode<?, ?>> iterator = tree.breadthFirstIterator();
             TreeNode<?, ?> node;
             int dataCount;
             while (iterator.hasNext()) {
@@ -107,7 +107,7 @@ public class DotGxlWriter {
             }
 
             // Write the node attributes
-            iterator = tree.broadFirstIterator();
+            iterator = tree.breadthFirstIterator();
             TreeNode<?, ?> child;
             String childName;
             while (iterator.hasNext()) {

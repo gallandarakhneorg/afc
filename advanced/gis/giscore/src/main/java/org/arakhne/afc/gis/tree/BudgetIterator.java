@@ -29,7 +29,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.gis.primitive.GISPrimitive;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.tree.Tree;
-import org.arakhne.afc.math.tree.iterator.AbstractBroadFirstTreeIterator;
+import org.arakhne.afc.math.tree.iterator.AbstractBreadthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.AbstractDataTreeIterator;
 import org.arakhne.afc.math.tree.iterator.NodeSelectionTreeIterator;
 import org.arakhne.afc.math.tree.iterator.NodeSelector;
@@ -174,7 +174,7 @@ class BudgetIterator<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P,
 	 * @mavenartifactid $ArtifactId$
 	 */
 	private static class BudgetNodeIterator<P extends GISPrimitive, N extends AbstractGISTreeSetNode<P, N>>
-			extends AbstractBroadFirstTreeIterator<BudgetNode<P, N>, N>
+			extends AbstractBreadthFirstTreeIterator<BudgetNode<P, N>, N>
 			implements NodeSelectionTreeIterator<BudgetNode<P, N>> {
 
 		/** Budget that was not consumed by the iterator.

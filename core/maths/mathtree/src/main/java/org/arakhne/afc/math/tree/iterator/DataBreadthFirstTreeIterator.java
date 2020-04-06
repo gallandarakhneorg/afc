@@ -25,7 +25,7 @@ import org.arakhne.afc.math.tree.TreeNode;
 
 /** This class is an iterator on a tree that replies the user data.
  *
- * <p>This iterator go thru the tree in a broad-first order.
+ * <p>This iterator go thru the tree in a breadth-first order.
  *
  * @param <D> is the type of the data inside the tree
  * @param <N> is the type of the tree nodes.
@@ -34,33 +34,31 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
- * @deprecated since 18.0, see {link DataBreadthFirstTreeIterator}
  */
-@Deprecated(since = "18.0", forRemoval = true)
-public class DataBroadFirstTreeIterator<D, N extends TreeNode<D, N>>
-		extends DataBreadthFirstTreeIterator<D, N> {
+public class DataBreadthFirstTreeIterator<D, N extends TreeNode<D, N>>
+		extends AbstractDataTreeIterator<D, N> {
 
 	/** Construct the iterator.
 	 * @param tree is the tree to iterate
 	 */
-	public DataBroadFirstTreeIterator(Tree<D, N> tree) {
-		super(tree);
+	public DataBreadthFirstTreeIterator(Tree<D, N> tree) {
+		this(tree.getRoot(), null, null);
 	}
 
 	/** Construct the iterator.
 	 * @param tree is the tree to iterate
 	 * @param nodeSelector permits to filter the node repliable by this iterator.
 	 */
-	public DataBroadFirstTreeIterator(Tree<D, N> tree, NodeSelector<N> nodeSelector) {
-		super(tree, nodeSelector);
+	public DataBreadthFirstTreeIterator(Tree<D, N> tree, NodeSelector<N> nodeSelector) {
+		this(tree.getRoot(), nodeSelector, null);
 	}
 
 	/** Construct the iterator.
 	 * @param tree is the tree to iterate
 	 * @param dataSelector permits to filter the user data repliable by this iterator.
 	 */
-	public DataBroadFirstTreeIterator(Tree<D, N> tree, DataSelector<D> dataSelector) {
-		super(tree, dataSelector);
+	public DataBreadthFirstTreeIterator(Tree<D, N> tree, DataSelector<D> dataSelector) {
+		this(tree.getRoot(), null, dataSelector);
 	}
 
 	/** Construct the iterator.
@@ -68,31 +66,31 @@ public class DataBroadFirstTreeIterator<D, N extends TreeNode<D, N>>
 	 * @param nodeSelector permits to filter the node repliable by this iterator.
 	 * @param dataSelector permits to filter the user data repliable by this iterator.
 	 */
-	public DataBroadFirstTreeIterator(Tree<D, N> tree, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
-		super(tree, nodeSelector, dataSelector);
+	public DataBreadthFirstTreeIterator(Tree<D, N> tree, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
+		this(tree.getRoot(), nodeSelector, dataSelector);
 	}
 
 	/** Construct the iterator.
 	 * @param node is the node to iterate
 	 */
-	public DataBroadFirstTreeIterator(N node) {
-		super(node);
+	public DataBreadthFirstTreeIterator(N node) {
+		this(node, null, null);
 	}
 
 	/** Construct the iterator.
 	 * @param node is the node to iterate
 	 * @param nodeSelector permits to filter the node repliable by this iterator.
 	 */
-	public DataBroadFirstTreeIterator(N node, NodeSelector<N> nodeSelector) {
-		super(node, nodeSelector);
+	public DataBreadthFirstTreeIterator(N node, NodeSelector<N> nodeSelector) {
+		this(node, nodeSelector, null);
 	}
 
 	/** Construct the iterator.
 	 * @param node is the node to iterate
 	 * @param dataSelector permits to filter the user data repliable by this iterator.
 	 */
-	public DataBroadFirstTreeIterator(N node, DataSelector<D> dataSelector) {
-		super(node, dataSelector);
+	public DataBreadthFirstTreeIterator(N node, DataSelector<D> dataSelector) {
+		this(node, null, dataSelector);
 	}
 
 	/** Construct the iterator.
@@ -100,8 +98,16 @@ public class DataBroadFirstTreeIterator<D, N extends TreeNode<D, N>>
 	 * @param nodeSelector permits to filter the node repliable by this iterator.
 	 * @param dataSelector permits to filter the user data repliable by this iterator.
 	 */
-	public DataBroadFirstTreeIterator(N node, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
-		super(node, nodeSelector, dataSelector);
+	public DataBreadthFirstTreeIterator(N node, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
+		this(new BreadthFirstTreeIterator<>(node, nodeSelector), dataSelector);
+	}
+
+	/** Construct the iterator.
+	 * @param nodeIterator1 is the node iterator.
+	 * @param dataSelector permits to filter the user data repliable by this iterator.
+	 */
+	private DataBreadthFirstTreeIterator(BreadthFirstTreeIterator<N> nodeIterator1, DataSelector<D> dataSelector) {
+		super(nodeIterator1, dataSelector);
 	}
 
 }
