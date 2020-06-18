@@ -52,6 +52,7 @@ public enum SpeedUnit {
 	/** Replies the time unit that corresponds to this speed unit.
 	 *
 	 * @return the time unit.
+	 * @throws IllegalArgumentException should never append
 	 */
 	@Pure
 	public TimeUnit toTimeUnit() {
@@ -69,6 +70,7 @@ public enum SpeedUnit {
 	/** Replies the space unit that corresponds to this speed unit.
 	 *
 	 * @return the space unit.
+	 * @throws IllegalArgumentException should never append
 	 */
 	@Pure
 	public SpaceUnit toSpaceUnit() {

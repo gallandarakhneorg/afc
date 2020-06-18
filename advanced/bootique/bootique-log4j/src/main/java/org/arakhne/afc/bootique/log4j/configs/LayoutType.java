@@ -129,6 +129,7 @@ public enum LayoutType {
 	 *
 	 * @param name the name to parse.
 	 * @return the layout type.
+	 * @throws NullPointerException if case the given name is {@code null} or empty.
 	 * @since 16.0
 	 */
 	@JsonCreator

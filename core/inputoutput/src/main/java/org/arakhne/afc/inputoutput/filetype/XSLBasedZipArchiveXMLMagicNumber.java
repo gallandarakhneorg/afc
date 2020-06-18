@@ -21,7 +21,6 @@
 package org.arakhne.afc.inputoutput.filetype;
 
 import java.io.File;
-
 import javax.activation.MimeType;
 
 /** This class defines a set of informations that could distinguish

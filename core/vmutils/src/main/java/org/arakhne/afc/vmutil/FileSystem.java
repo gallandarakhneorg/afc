@@ -1681,6 +1681,7 @@ public final class FileSystem {
 	 *
 	 * @param software is the name of the concerned software.
 	 * @return the configuration directory of the software for the current user.
+	 * @throws IllegalArgumentException if the argument is {@code null} or empty.
 	 */
 	@Pure
 	public static File getUserConfigurationDirectoryFor(String software) {
@@ -1747,6 +1748,7 @@ public final class FileSystem {
 	 *
 	 * @param software is the name of the concerned software.
 	 * @return the configuration directory of the software for the current user.
+	 * @throws IllegalArgumentException if the argument is {@code null} or empty.
 	 */
 	@Pure
 	public static File getSystemConfigurationDirectoryFor(String software) {
@@ -1804,6 +1806,7 @@ public final class FileSystem {
 	 *
 	 * @param software is the name of the concerned software.
 	 * @return the configuration directory of the software for the current user.
+	 * @throws IllegalArgumentException if the argument is {@code null} or empty.
 	 */
 	@Pure
 	public static File getSystemSharedLibraryDirectoryFor(String software) {
@@ -2809,6 +2812,7 @@ public final class FileSystem {
 	 * @param rootPath is the root path from which the relative path will be set.
 	 * @return a relative filename.
 	 * @throws IOException when is is impossible to retreive canonical paths.
+	 * @throws IllegalArgumentException if the argument is {@code null} or empty.
 	 * @since 6.0
 	 */
 	@Pure
@@ -2838,6 +2842,7 @@ public final class FileSystem {
 	 * @param rootPath is the root path from which the relative path will be set.
 	 * @return a relative filename.
 	 * @throws IOException when is is impossible to retreive canonical paths.
+	 * @throws IllegalArgumentException if the argument is {@code null} or empty.
 	 * @since 6.0
 	 */
 	@Pure
@@ -3178,6 +3183,7 @@ public final class FileSystem {
 	 *          If a security manager exists and its <code>{@link
 	 *          java.lang.SecurityManager#checkWrite(java.lang.String)}</code>
 	 *          method does not allow a file to be created
+	 * @throws NullPointerException if the {@code prefix} argument is {@code null}.
 	 * @since 6.2
 	 */
 	public static File createTempDirectory(String prefix, String suffix, File directory) throws IOException {

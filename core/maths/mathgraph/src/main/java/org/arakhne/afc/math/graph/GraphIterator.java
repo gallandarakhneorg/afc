@@ -390,6 +390,8 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	}
 
 	/** Ignore the elements after the specified element.
+	 *
+	 * @throws NoSuchElementException if there is no current element, i.e. the iteration is finished.
 	 */
 	public void ignoreElementsAfter() {
 		if (this.current != null) {

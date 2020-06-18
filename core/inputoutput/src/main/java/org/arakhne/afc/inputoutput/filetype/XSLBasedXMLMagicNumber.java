@@ -22,7 +22,6 @@ package org.arakhne.afc.inputoutput.filetype;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.activation.MimeType;
 
 /** This class defines a set of informations that could distinguish

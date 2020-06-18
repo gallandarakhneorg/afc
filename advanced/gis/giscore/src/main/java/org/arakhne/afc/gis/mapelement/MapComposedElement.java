@@ -695,6 +695,7 @@ public abstract class MapComposedElement extends MapElement {
 	 *
 	 * @param groupIndex int element on which invert points
 	 * @return this
+	 * @throws IndexOutOfBoundsException if the given groupIndex is out of range.
 	 */
 	public MapComposedElement invertPointsIn(int groupIndex) {
 		if (this.pointCoordinates == null) {
@@ -732,6 +733,7 @@ public abstract class MapComposedElement extends MapElement {
 	 * <p>{@code this.invert() == this.invert().invert()}
 	 *
 	 * @return the inverted element
+	 * @throws IndexOutOfBoundsException if there is no point into the composed element.
 	 */
 	public MapComposedElement invert() {
 		if (this.pointCoordinates == null) {

@@ -265,6 +265,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint, SGraphSegment> {
 	 *
 	 * @param index is the index of the data.
 	 * @return the data
+	 * @throws IndexOutOfBoundsException if the given index is out of the range.
 	 */
 	@Pure
 	public Object getUserDataAt(int index) {
@@ -277,7 +278,8 @@ public class SGraphPoint implements GraphPoint<SGraphPoint, SGraphSegment> {
 	/** Set the user data at the given index.
 	 *
 	 * @param index is the index of the data.
-	 * @param data is the data
+	 * @param data is the data.
+	 * @throws IndexOutOfBoundsException if the given index is out of the range.
 	 */
 	public void setUserDataAt(int index, Object data) {
 		if (this.userData == null) {

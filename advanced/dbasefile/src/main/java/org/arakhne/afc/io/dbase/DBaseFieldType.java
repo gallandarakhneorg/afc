@@ -140,6 +140,7 @@ public enum DBaseFieldType {
 	/** Replies the attribute type corresponding to the field type.
 	 *
 	 * @return the associated attribute type.
+	 * @throws IllegalStateException if the current type is not supported.
 	 */
 	@Pure
 	public AttributeType toAttributeType() {
@@ -178,6 +179,7 @@ public enum DBaseFieldType {
 	 * @param type is the attribute type to convert
 	 * @return the dBase field type that corresponds to the given attribute type.
 	 * @throws DBaseFileException if the given type is unknown.
+	 * @throws InvalidDBaseFieldTypeException if the given type is undetermined.
 	 */
 	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})

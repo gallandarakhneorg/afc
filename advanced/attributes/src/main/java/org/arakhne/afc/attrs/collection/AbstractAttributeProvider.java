@@ -57,6 +57,8 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	 * @param rawAttributeValue is the value to protect.
 	 * @param type is the type of the attribute to preserve over time.
 	 * @return the value, or the representant of the java <code>null</code> value.
+	 * @throws NullPointerException if the attribute value is {@code null} and this
+	 *     type of value is not allowed.
 	 * @see #unprotectNull(Object)
 	 */
 	protected static Object protectNull(Object rawAttributeValue, AttributeType type) {

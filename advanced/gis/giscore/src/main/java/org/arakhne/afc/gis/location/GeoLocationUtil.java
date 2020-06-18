@@ -77,6 +77,7 @@ public class GeoLocationUtil {
 	 *
 	 * @param newPrecisionValue the new precision value (in meters).
 	 * @return the old precision value.
+	 * @throws IllegalArgumentException if the argument is not between 0 and 1.
 	 */
 	public static double setDistanceEpsilon(double newPrecisionValue) {
 		if ((newPrecisionValue >= 1) || (newPrecisionValue <= 0)) {

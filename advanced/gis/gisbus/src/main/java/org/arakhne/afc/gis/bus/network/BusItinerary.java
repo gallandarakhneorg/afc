@@ -930,6 +930,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * @param firsthaltIndex is the index of the first bus halt.
 	 * @param lasthaltIndex is the index of the last bus halt.
 	 * @return the distance in meters between the given bus halts.
+	 * @throws ArrayIndexOutOfBoundsException if the last halt index is lower or equal to
+	 *     the first halt index, or if this last halt index is out of range.
 	 */
 	@Pure
 	public double getDistanceBetweenBusHalts(int firsthaltIndex, int lasthaltIndex) {

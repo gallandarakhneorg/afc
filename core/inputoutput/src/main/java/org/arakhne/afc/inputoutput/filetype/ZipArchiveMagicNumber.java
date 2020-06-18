@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
 import javax.activation.MimeType;
 
 import org.arakhne.afc.inputoutput.mime.MimeName;

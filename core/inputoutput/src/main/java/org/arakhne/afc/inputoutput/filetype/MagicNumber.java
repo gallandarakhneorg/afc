@@ -21,7 +21,6 @@
 package org.arakhne.afc.inputoutput.filetype;
 
 import java.io.IOException;
-
 import javax.activation.MimeType;
 
 import org.eclipse.xtext.xbase.lib.Pure;

@@ -22,7 +22,6 @@ package org.arakhne.afc.inputoutput.filetype;
 
 import java.io.InputStream;
 import java.net.URL;
-
 import javax.activation.MimeType;
 
 import org.arakhne.afc.inputoutput.mime.MimeName;

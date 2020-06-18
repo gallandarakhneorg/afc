@@ -47,6 +47,7 @@ class StaticGateway {
 	 * Get the SLF4J provider.
 	 *
 	 * @return the provider
+	 * @throws Error in case of error, see the cause.
 	 */
 	protected SLF4JServiceProvider getServiceProvider() {
 		if (this.provider == null) {

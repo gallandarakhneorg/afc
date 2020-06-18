@@ -53,7 +53,6 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -2472,6 +2471,7 @@ public final class XMLUtil {
 	 * @param node is the XML node to fill.
 	 * @param resources are the resources to put out.
 	 * @param builder is the tool to create XML nodes.
+	 * @throws Error in case of unexpected error.
 	 */
 	public static void writeResources(Element node, XMLResources resources, XMLBuilder builder) {
 		if (resources != null) {

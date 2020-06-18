@@ -549,6 +549,7 @@ public final class ListUtil {
 	 * @param <T> the type of the list elements.
 	 * @param list the list.
 	 * @return the reverse iterator.
+	 * @throws NoSuchElementException if the {@code next()} function is called when the iterator is finished.
 	 * @since 14.0
 	 */
 	public static <T> Iterator<T> reverseIterator(final List<T> list) {

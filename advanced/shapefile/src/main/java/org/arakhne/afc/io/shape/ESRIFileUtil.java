@@ -91,6 +91,7 @@ public final class ESRIFileUtil {
 	 * @param x is the Java x-coordinate
 	 * @return the ESRI x-coordinate
 	 * @throws IOException when invalid conversion.
+	 * @throws InvalidNumericValueException if the given argument is infinity or NaN.
 	 */
 	@Pure
 	public static double toESRI_x(double x) throws IOException {
@@ -106,6 +107,7 @@ public final class ESRIFileUtil {
 	 * @param x is the Java x-coordinate
 	 * @return the ESRI x-coordinate
 	 * @throws IOException when invalid conversion.
+	 * @throws InvalidNumericValueException if the given argument is infinity or NaN.
 	 */
 	@Pure
 	public static double fromESRI_x(double x) throws IOException {
@@ -121,6 +123,7 @@ public final class ESRIFileUtil {
 	 * @param y is the Java y-coordinate
 	 * @return the ESRI y-coordinate
 	 * @throws IOException when invalid conversion.
+	 * @throws InvalidNumericValueException if the given argument is infinity or NaN.
 	 */
 	@Pure
 	public static double toESRI_y(double y) throws IOException {
@@ -136,6 +139,7 @@ public final class ESRIFileUtil {
 	 * @param y is the Java y-coordinate
 	 * @return the ESRI y-coordinate
 	 * @throws IOException when invalid conversion.
+	 * @throws InvalidNumericValueException if the given argument is infinity or NaN.
 	 */
 	@Pure
 	public static double fromESRI_y(double y) throws IOException {

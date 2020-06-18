@@ -560,6 +560,7 @@ public final class ArrayUtil {
 	 * @param clazz is the type of the elements.
 	 * @param size is the size of the new array.
 	 * @return the new array.
+	 * @throws IndexOutOfBoundsException if the {@code size} is negative.
 	 */
 	@Pure
 	@SuppressWarnings("unchecked")

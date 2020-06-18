@@ -72,6 +72,7 @@ public interface AngularInstantVelocityKinematic {
 	 * <p>This function replies the velocity in 3D if possible.
 	 *
 	 * @return the velocity of the object.
+	 * @throws UnsupportedOperationException not supported yet.
 	 */
 	@Pure
 	default Quaternion getAngularVelocity3D() {
@@ -85,6 +86,7 @@ public interface AngularInstantVelocityKinematic {
 	 * <p>This function replies the velocity in 2D if possible.
 	 *
 	 * @return the velocity of the object.
+	 * @throws UnsupportedOperationException not supported yet.
 	 */
 	@Pure
 	default double getAngularVelocity2D() {
@@ -98,6 +100,7 @@ public interface AngularInstantVelocityKinematic {
 	 * <p>This function replies the velocity in 1.5D if possible.
 	 *
 	 * @return the velocity of the object.
+	 * @throws UnsupportedOperationException not supported yet.
 	 */
 	@Pure
 	default double getAngularVelocity1D5() {

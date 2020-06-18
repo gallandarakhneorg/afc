@@ -172,6 +172,7 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 	/** Replies the attribute provider associated to this element.
 	 *
 	 * @return the attribute provider
+	 * @throws NoAttributeProviderFoundException no defined provider
 	 */
 	@Pure
 	public AttributeCollection getAttributeCollection() {
@@ -183,7 +184,8 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 
 	/** Replies the attribute container associated to this element.
 	 *
-	 * @return the attribute container
+	 * @return the attribute container.
+	 * @throws NoAttributeProviderFoundException no defined provider.
 	 */
 	@Pure
 	public AttributeProvider getAttributeProvider() {

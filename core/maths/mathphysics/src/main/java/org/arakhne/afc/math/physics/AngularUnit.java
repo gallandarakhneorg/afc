@@ -49,6 +49,7 @@ public enum AngularUnit {
 	/** Replies the time unit that corresponds to this angular unit.
 	 *
 	 * @return the time unit.
+	 * @throws IllegalArgumentException should never append
 	 */
 	@Pure
 	public TimeUnit toTimeUnit() {

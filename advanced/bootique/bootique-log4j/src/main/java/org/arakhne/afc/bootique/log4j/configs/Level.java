@@ -81,6 +81,7 @@ public enum Level {
 	 *
 	 * @param name the name to parse.
 	 * @return the level.
+	 * @throws NullPointerException if case the given name is {@code null} or empty.
 	 * @since 16.0
 	 */
 	@JsonCreator

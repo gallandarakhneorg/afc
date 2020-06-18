@@ -155,6 +155,7 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 		/** Get or create an appender with a single offset.
 		 *
 		 * @return the appender.
+		 * @throws Error in case of internal error.
 		 */
 		protected ConsoleAppender getOrCreateOffsetAppender() {
 			if (this.offsetAppender == null) {
@@ -173,6 +174,7 @@ public class SynopsisHelpGenerator extends DefaultHelpGenerator {
 		/** Get or create an appender with a single offset.
 		 *
 		 * @return the appender.
+		 * @throws Error in case of internal error.
 		 */
 		protected ConsoleAppender getOrCreateDoubleOffsetAppender() {
 			if (this.doubleOffsetAppender == null) {

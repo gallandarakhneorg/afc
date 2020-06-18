@@ -345,6 +345,7 @@ public enum MimeName {
 	/** Replies the MIME type associated to this MIME constant.
 	 *
 	 * @return the MIME type for this MIME constant.
+	 * @throws RuntimeException if the raw mime type cannot be parsed properly.
 	 */
 	public MimeType toMimeType() {
 		try {

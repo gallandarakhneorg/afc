@@ -46,6 +46,7 @@ public final class XbaseInlineTestUtil {
 	 * @param methodName the method name.
 	 * @param parameters the list of parameter types.
 	 * @return the annotation or <code>null</code>.
+	 * @throws RuntimeException in the case the method cannot be found.
 	 */
 	public static Inline getInlineAnnotation(Class<?> type, String methodName, Class<?>... parameters) {
 		try {

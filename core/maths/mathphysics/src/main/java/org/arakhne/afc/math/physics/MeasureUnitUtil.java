@@ -389,6 +389,7 @@ public final class MeasureUnitUtil {
 	 * @param value is the value to convert
 	 * @param inputUnit is the unit of the {@code value}
 	 * @return the result of the convertion.
+	 * @throws IllegalArgumentException if the given inputUnit is undetermined.
 	 */
 	@Pure
 	public static double toSeconds(double value, TimeUnit inputUnit) {
@@ -418,6 +419,7 @@ public final class MeasureUnitUtil {
 	 * @param value is the value to convert
 	 * @param inputUnit is the unit of the {@code value}
 	 * @return the result of the convertion.
+	 * @throws IllegalArgumentException if the given inputUnit is undetermined.
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:returncount")
@@ -462,6 +464,7 @@ public final class MeasureUnitUtil {
 	 * @param value is the value to convert
 	 * @param outputUnit is the unit of the replied value.
 	 * @return the result of the convertion.
+	 * @throws IllegalArgumentException if the given outputUnit is undetermined.
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:returncount")
@@ -506,6 +509,7 @@ public final class MeasureUnitUtil {
 	 * @param value is the value to convert
 	 * @param outputUnit is the unit of result.
 	 * @return the result of the convertion.
+	 * @throws IllegalArgumentException if the given outputUnit is undetermined.
 	 */
 	@Pure
 	public static double fromSeconds(double value, TimeUnit outputUnit) {

@@ -434,6 +434,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 *
 	 * @param index the index.
 	 * @return the element at the specified position.
+	 * @throws IndexOutOfBoundsException if the given index is out of the range.
 	 */
 	@Pure
 	public P getElementAt(int index) {

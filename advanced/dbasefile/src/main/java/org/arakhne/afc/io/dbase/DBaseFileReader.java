@@ -464,6 +464,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 * Read the header of the DBF file.
 	 *
 	 * @throws IOException in case of error.
+	 * @throws EOFDBaseFileException eof of file is reached from the database.
 	 */
 	@SuppressWarnings("checkstyle:magicnumber")
 	public void readDBFHeader() throws IOException {
@@ -778,6 +779,8 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 *
 	 * @return the next record from the input stream or {@code null} if none.
 	 * @throws IOException in case of error.
+	 * @throws MustCallReadHeaderFunctionException you must call a {@code readHeader()}
+	 *     function prior to the call to this function.
 	 * @see #readNextAttributeProvider()
 	 */
 	public DBaseFileRecord readNextDBFRecord() throws IOException {
@@ -808,6 +811,8 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 *
 	 * @param skipAmount is the count of records to skip.
 	 * @throws IOException in case of error.
+	 * @throws MustCallReadHeaderFunctionException you must call a {@code readHeader()} function
+	 *      prior to this function.
 	 */
 	public void skip(int skipAmount) throws IOException {
 		if (this.recordCount == -1) {
@@ -835,6 +840,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 *
 	 * @param recordIndex is the index of record to reply at the next read.
 	 * @throws IOException in case of error.
+	 * @throws UnsupportedSeekOperationException seeking operation is not supported.
 	 */
 	public void seek(int recordIndex) throws IOException {
 		if (!this.stream.markSupported()) {
@@ -890,6 +896,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 *
 	 * @return all the records
 	 * @throws IOException in case of error.
+	 * @throws EOFDBaseFileException if there is no more record to be read.
 	 */
 	public List<DBaseFileRecord> readRestOfDBFRecords() throws IOException {
 		if (this.finished) {

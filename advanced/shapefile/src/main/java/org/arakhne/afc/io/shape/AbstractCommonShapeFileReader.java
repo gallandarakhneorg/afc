@@ -259,6 +259,12 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	/** Read the header of the shape file.
 	 *
 	 * @throws IOException in case of error.
+	 * @throws EOFException if the end of the file was reached before reading the header.
+	 * @throws NotShapeFileException if the attached file is not a shape file, i.e.
+	 *     the file's header does not correspond to a Shape file.
+	 * @throws InvalidShapeFileVersionException if the version of the ShapeFile format that
+	 *     is specified into the file is not compatible with the one supported by
+	 *     this reader.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public final void readHeader() throws IOException {
@@ -610,6 +616,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 * @param recordIndex is the index of the next record to read.
 	 * @param byteIndex is the index of the next byte to read (excluding the header).
 	 * @throws IOException in case of error.
+	 * @throws SeekOperationDisabledException seeking operation not allowed.
 	 */
 	protected void setReadingPosition(int recordIndex, int byteIndex) throws IOException {
 		if (this.seekEnabled) {
@@ -624,6 +631,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 *
 	 * @param amount is the count of expected bytes
 	 * @throws IOException in case of error.
+	 * @throws EOFException if the end of the file was reached.
 	 */
 	protected void ensureAvailableBytes(int amount) throws IOException {
 		if (!this.seekEnabled && amount > this.buffer.remaining()) {

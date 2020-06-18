@@ -342,6 +342,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	/** Replies the left vector.
 	 *
 	 * @return the left vector.
+	 * @throws CoordinateSystemNotFoundException if the source coordinate system is undetermined.
 	 */
 	@Pure
 	public Vector2D<?, ?> getLeftVector() {
@@ -360,6 +361,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param <T> the type of the vector.
 	 * @param vectorToFill is the vector to set with the left vector values.
 	 * @return the left vector.
+	 * @throws CoordinateSystemNotFoundException if the source coordinate system is undetermined.
 	 */
 	public <T extends Vector2D<?, ?>> T getLeftVector(T vectorToFill) {
 		assert vectorToFill != null;
@@ -379,6 +381,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	/** Replies the right vector.
 	 *
 	 * @return the right vector.
+	 * @throws CoordinateSystemNotFoundException if the source coordinate system is undetermined.
 	 */
 	@Pure
 	public Vector2D<?, ?> getRightVector() {
@@ -397,6 +400,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param <T> the type of the vector.
 	 * @param vectorToFill is the vector to set with the right vector values.
 	 * @return the right vector.
+	 * @throws CoordinateSystemNotFoundException if the source coordinate system is undetermined.
 	 */
 	public <T extends Vector2D<?, ?>> T getRightVector(T vectorToFill) {
 		assert vectorToFill != null;
@@ -416,6 +420,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * this 2D coordinate system.
 	 *
 	 * @return the 3D coordinate system
+	 * @throws CoordinateSystemNotFoundException if the source coordinate system is undetermined.
 	 */
 	@Pure
 	public CoordinateSystem3D toCoordinateSystem3D() {

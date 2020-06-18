@@ -109,6 +109,7 @@ public class VMCommandLine {
 	/**
 	 * Create a interface to the command line options.
 	 *
+	 * @throws IllegalArgumentException if the classname to launch is {@code null}.
 	 * @see #VMCommandLine(Class, String[], String[])
 	 * @see #VMCommandLine(Class, String[])
 	 */

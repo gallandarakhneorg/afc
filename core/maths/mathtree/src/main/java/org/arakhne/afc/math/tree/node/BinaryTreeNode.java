@@ -188,6 +188,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 	 *
 	 * @param index is the position of the child to reply.
 	 * @return the child or <code>null</code>
+	 * @throws IndexOutOfBoundsException if the provided index does not correspond to a child node.
 	 */
 	@Pure
 	public final N getChildAt(BinaryTreeZone index) {
@@ -312,6 +313,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 	 * @param zone is the zone to set
 	 * @param newChild is the child to insert
 	 * @return <code>true</code> if the child was added, otherwise <code>false</code>
+	 * @throws IndexOutOfBoundsException if the provided index does not correspond to a child node.
 	 */
 	public final boolean setChildAt(BinaryTreeZone zone, N newChild) {
 		switch (zone) {

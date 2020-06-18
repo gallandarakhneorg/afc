@@ -689,6 +689,8 @@ public class DBaseFileWriter implements AutoCloseable {
 	 * @param element is the element to write.
 	 * @throws AttributeException if an attribute cannot pre set.
 	 * @throws IOException in case of IO error.
+	 * @throws MustCallWriteHeaderFunctionException You must call the {@code writeHeader()}
+	 *     function prior to this function.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber"})
 	public void writeRecord(AttributeProvider element) throws IOException, AttributeException {

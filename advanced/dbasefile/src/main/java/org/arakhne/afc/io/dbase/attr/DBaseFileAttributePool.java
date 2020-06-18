@@ -413,6 +413,7 @@ public final class DBaseFileAttributePool {
 	 * @param type is the type of the replied value. Tis attribute will be set by this function.
 	 * @return the value extracted from the pool.
 	 * @throws AttributeException if an attribute cannot be read.
+	 * @throws NoAttributeFoundException no attribute with the given name was found into the database.
 	 */
 	@SuppressWarnings("resource")
 	@Pure

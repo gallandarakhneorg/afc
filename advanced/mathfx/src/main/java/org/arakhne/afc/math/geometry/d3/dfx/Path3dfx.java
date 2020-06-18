@@ -803,6 +803,7 @@ public class Path3dfx extends AbstractShape3dfx<Path3dfx>
 	 *
 	 * @param point the point to remove.
 	 * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
+	 * @throws IllegalStateException if "arc-to" is found.
 	 */
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity"})
 	public boolean remove(Point3D<?, ?> point) {

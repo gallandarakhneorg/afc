@@ -68,6 +68,7 @@ public enum ConsoleTarget {
 	 *
 	 * @param name the name to parse.
 	 * @return the console target.
+	 * @throws NullPointerException is case the given name is {@code null} or empty.
 	 * @since 16.0
 	 */
 	@JsonCreator

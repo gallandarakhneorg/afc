@@ -74,6 +74,7 @@ public interface LinearInstantVelocityKinematic {
 	 * <p>This function replies the velocity in 3D if possible.
 	 *
 	 * @return the velocity of the object.
+	 * @throws UnsupportedOperationException not supported yet.
 	 */
 	@Pure
 	default Vector3D<?, ?> getLinearVelocity3D() {
@@ -87,6 +88,7 @@ public interface LinearInstantVelocityKinematic {
 	 * <p>This function replies the velocity in 2D if possible.
 	 *
 	 * @return the velocity of the object.
+	 * @throws UnsupportedOperationException not supported yet.
 	 */
 	@Pure
 	default Vector2D<?, ?> getLinearVelocity2D() {
@@ -100,6 +102,7 @@ public interface LinearInstantVelocityKinematic {
 	 * <p>This function replies the velocity in 1.5D if possible.
 	 *
 	 * @return the velocity of the object.
+	 * @throws UnsupportedOperationException not supported yet.
 	 */
 	@Pure
 	default Vector1D<?, ?, ?> getLinearVelocity1D5() {

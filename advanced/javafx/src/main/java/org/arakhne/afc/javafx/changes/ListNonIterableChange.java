@@ -87,6 +87,8 @@ public abstract class ListNonIterableChange<E> extends ListChangeListener.Change
 	}
 
 	/** Check if the state of the change is valid.
+	 *
+	 * @throws IllegalStateException invalid internal state. You must call {@link #next()} first.
 	 */
 	public void checkState() {
 		if (this.invalid) {

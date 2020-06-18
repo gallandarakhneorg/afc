@@ -814,6 +814,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 *
 	 * @param point the point to remove.
 	 * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
+	 * @throws IllegalStateException if "arc-to" is found.
 	 */
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity"})
 	public boolean remove(Point2D<?, ?> point) {
