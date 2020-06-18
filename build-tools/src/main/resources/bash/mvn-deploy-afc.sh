@@ -20,8 +20,14 @@ then
 	source "$RCFILE"
 fi
 
+if [ -z "$MVN" ]
+then
+	MVN=mvn
+fi
+
 echo "JAVA_HOME=$JAVA_HOME"
 echo "settings=$SETTINGSFILE"
 echo "user=$ARAKHNEORG_USER"
+echo "MVN=$mvn"
 
-exec mvn deploy -DskipTests -Dcheckstyle.skip=true --settings "$SETTINGSFILE"
+exec $MVN deploy -DskipTests -Dcheckstyle.skip=true --settings "$SETTINGSFILE"
