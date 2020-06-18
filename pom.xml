@@ -29,6 +29,8 @@
 		<junit5.version>5.6.0-M1</junit5.version>
 		<!-- Version of SLF4J library -->
 		<slf4j.version>2.0.0-alpha1</slf4j.version>
+		<!--  Version of the Jackson API (usually included by Bootique -->
+		<jacksonapi.version>2.11.0</jacksonapi.version>
 		<!-- URL of the deployment server base -->
 		<afc.deployment.server>org.arakhne-ftp</afc.deployment.server>
 		<afc.deployment.base>${env.ARAKHNEORG_SFTP}</afc.deployment.base>
@@ -216,11 +218,60 @@
 				<groupId>io.bootique</groupId>
 				<artifactId>bootique</artifactId>
 				<version>1.1</version>
+				<exclusions>
+						<exclusion>
+							<groupId>com.fasterxml.jackson.core</groupId>
+							<artifactId>jackson-core</artifactId>
+				        </exclusion>
+						<exclusion>
+							<groupId>com.fasterxml.jackson.core</groupId>
+							<artifactId>jackson-annotations</artifactId>
+				        </exclusion>
+						<exclusion>
+							<groupId>com.fasterxml.jackson.core</groupId>
+							<artifactId>jackson-databind</artifactId>
+				        </exclusion>
+						<exclusion>
+							<groupId>com.fasterxml.jackson.dataformat</groupId>
+							<artifactId>jackson-dataformat-xml</artifactId>
+				        </exclusion>
+				        <exclusion>
+							<groupId>com.fasterxml.jackson.dataformat</groupId>
+							<artifactId>jackson-dataformat-yaml</artifactId>
+				        </exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jacksonapi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jacksonapi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jacksonapi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.dataformat</groupId>
+				<artifactId>jackson-dataformat-yaml</artifactId>
+				<version>${jacksonapi.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.dataformat</groupId>
 				<artifactId>jackson-dataformat-xml</artifactId>
-				<version>2.10.1</version>
+				<version>${jacksonapi.version}</version>
+				<exclusions>
+					<!-- The following jakarta module has conflict with the JRE 11 java.activation module -->
+					<exclusion>
+						<groupId>jakarta.activation</groupId>
+						<artifactId>jakarta.activation-api</artifactId>
+			        </exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
