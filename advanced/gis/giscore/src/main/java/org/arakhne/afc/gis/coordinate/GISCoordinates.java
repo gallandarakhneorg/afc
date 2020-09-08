@@ -1198,10 +1198,6 @@ public final class GISCoordinates {
 	 *
 	 * @param lambda is the WSG94 coordinate in decimal degrees.
 	 * @param phi is the WSG84 coordinate is decimal in degrees.
-	 * @param n is the exponential of the Lambert projection.
-	 * @param c is the constant of projection.
-	 * @param Xs is the x coordinate of the origine of the Lambert projection.
-	 * @param Ys is the y coordinate of the origine of the Lambert projection.
 	 * @return the NTF Lambda-Phi
 	 */
 	@SuppressWarnings({"checkstyle:parametername", "checkstyle:magicnumber",
