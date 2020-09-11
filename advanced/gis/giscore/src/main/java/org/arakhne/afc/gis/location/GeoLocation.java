@@ -76,12 +76,12 @@ public interface GeoLocation extends Comparable<GeoLocation> {
 	@Pure
 	Rectangle2d toBounds2D();
 
-	/** Replies the WSG84 (GPS) representation of this point.
+	/** Replies the WGS84 (GPS) representation of this point.
 	 *
 	 * <p>If this GeoLocation is not a point, the implementation
 	 * class should provides a significant GPS point.
 	 *
-	 * @return the WSG84 (GPS) representation of this point; or
+	 * @return the WGS84 (GPS) representation of this point; or
 	 * <code>null</code> if the GPS point could not be computed.
 	 */
 	@Pure

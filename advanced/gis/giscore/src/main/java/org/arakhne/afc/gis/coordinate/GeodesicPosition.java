@@ -29,7 +29,7 @@ import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.vmutil.locale.Locale;
 
-/** Describes a GPS position in the geographic WSG84 standard.
+/** Describes a GPS position in the geographic WGS84 standard.
  *
  * <p>The geographic latitude (abbreviation: Lat., or phi) of a point on
  * the Earth's surface is the angle between the equatorial plane and a
@@ -73,12 +73,12 @@ public class GeodesicPosition implements Cloneable, Serializable {
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
-	/** Lambda component in the WSG84 standard.
+	/** Lambda component in the WGS84 standard.
 	 */
 	@SuppressWarnings("checkstyle:visibilitymodifier")
 	public final double lambda;
 
-	/** Phi component in the WSG84 standard.
+	/** Phi component in the WGS84 standard.
 	 */
 	@SuppressWarnings("checkstyle:visibilitymodifier")
 	public final double phi;

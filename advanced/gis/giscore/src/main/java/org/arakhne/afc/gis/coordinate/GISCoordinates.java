@@ -51,8 +51,16 @@ public final class GISCoordinates {
 	 */
 	public static final double DEMI_NTF_E = NTF_E / 2.;
 
-	/** The value of the e constant in the WSG94 specification.
+	/** The value of the e constant in the WGS94 specification.
+	 * @since 0.18
 	 */
+	public static final double WGS84_E = 0.08181919106;
+
+	/** The value of the e constant in the WGS94 specification.
+	 *
+	 * @deprecated since 0.18, see {@link #WGS84_E}.
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
 	public static final double WSG84_E = 0.08181919106;
 
 	/** France Lambert I Constant n.
@@ -156,20 +164,35 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert extended France Lambert II coordinate to geographic WSG84 Data.
+	 * This function convert extended France Lambert II coordinate to geographic WGS84 Data.
 	 *
 	 * @param x is the coordinate in extended France Lambert II
 	 * @param y is the coordinate in extended France Lambert II
-	 * @return lambda and phi in geographic WSG84 in degrees.
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @since 0.18
 	 */
 	@Pure
-	public static GeodesicPosition EL2_WSG84(double x, double y) {
+	public static GeodesicPosition EL2_WGS84(double x, double y) {
 		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_2E_N,
 				LAMBERT_2E_C,
 				LAMBERT_2E_XS,
 				LAMBERT_2E_YS);
-		return NTFLambdaPhi_WSG84(ntfLambdaPhi.getX(), ntfLambdaPhi.getY());
+		return NTFLambdaPhi_WGS84(ntfLambdaPhi.getX(), ntfLambdaPhi.getY());
+	}
+
+	/**
+	 * This function convert extended France Lambert II coordinate to geographic WGS84 Data.
+	 *
+	 * @param x is the coordinate in extended France Lambert II
+	 * @param y is the coordinate in extended France Lambert II
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @deprecated since 0.18, see {@link #GeodesicPosition EL2_WGS84(double, double)}
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
+	@Pure
+	public static GeodesicPosition EL2_WSG84(double x, double y) {
+		return EL2_WGS84(x, y);
 	}
 
 	/**
@@ -278,20 +301,35 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert France Lambert I coordinate to geographic WSG84 Data.
+	 * This function convert France Lambert I coordinate to geographic WGS84 Data.
 	 *
 	 * @param x is the coordinate in France Lambert I
 	 * @param y is the coordinate in France Lambert I
-	 * @return lambda and phi in geographic WSG84 in degrees.
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @since 0.18
 	 */
 	@Pure
-	public static GeodesicPosition L1_WSG84(double x, double y) {
+	public static GeodesicPosition L1_WGS84(double x, double y) {
 		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_1_N,
 				LAMBERT_1_C,
 				LAMBERT_1_XS,
 				LAMBERT_1_YS);
-		return NTFLambdaPhi_WSG84(ntfLambdaPhi.getX(), ntfLambdaPhi.getY());
+		return NTFLambdaPhi_WGS84(ntfLambdaPhi.getX(), ntfLambdaPhi.getY());
+	}
+
+	/**
+	 * This function convert France Lambert I coordinate to geographic WGS84 Data.
+	 *
+	 * @param x is the coordinate in France Lambert I
+	 * @param y is the coordinate in France Lambert I
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @deprecated since 0.18, see {@link #L1_WGS84(double, double)}.
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
+	@Pure
+	public static GeodesicPosition L1_WSG84(double x, double y) {
+		return L1_WGS84(x, y);
 	}
 
 	/**
@@ -410,20 +448,35 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert France Lambert II coordinate to geographic WSG84 Data.
+	 * This function convert France Lambert II coordinate to geographic WGS84 Data.
 	 *
 	 * @param x is the coordinate in France Lambert II
 	 * @param y is the coordinate in France Lambert II
-	 * @return lambda and phi in geographic WSG84 in degrees.
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @since 0.18
 	 */
 	@Pure
-	public static GeodesicPosition L2_WSG84(double x, double y) {
+	public static GeodesicPosition L2_WGS84(double x, double y) {
 		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_2_N,
 				LAMBERT_2_C,
 				LAMBERT_2_XS,
 				LAMBERT_2_YS);
-		return NTFLambdaPhi_WSG84(ntfLambdaPhi.getX(), ntfLambdaPhi.getY());
+		return NTFLambdaPhi_WGS84(ntfLambdaPhi.getX(), ntfLambdaPhi.getY());
+	}
+
+	/**
+	 * This function convert France Lambert II coordinate to geographic WGS84 Data.
+	 *
+	 * @param x is the coordinate in France Lambert II
+	 * @param y is the coordinate in France Lambert II
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @deprecated since 0.18, {@link #L2_WGS84(double, double)}.
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
+	@Pure
+	public static GeodesicPosition L2_WSG84(double x, double y) {
+		return L2_WGS84(x, y);
 	}
 
 	/**
@@ -532,20 +585,35 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert France Lambert III coordinate to geographic WSG84 Data.
+	 * This function convert France Lambert III coordinate to geographic WGS84 Data.
 	 *
 	 * @param x is the coordinate in France Lambert III
 	 * @param y is the coordinate in France Lambert III
-	 * @return lambda and phi in geographic WSG84 in degrees.
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @since 0.18
 	 */
 	@Pure
-	public static GeodesicPosition L3_WSG84(double x, double y) {
+	public static GeodesicPosition L3_WGS84(double x, double y) {
 		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_3_N,
 				LAMBERT_3_C,
 				LAMBERT_3_XS,
 				LAMBERT_3_YS);
-		return NTFLambdaPhi_WSG84(ntfLambdaPhi.getX(), ntfLambdaPhi.getY());
+		return NTFLambdaPhi_WGS84(ntfLambdaPhi.getX(), ntfLambdaPhi.getY());
+	}
+
+	/**
+	 * This function convert France Lambert III coordinate to geographic WGS84 Data.
+	 *
+	 * @param x is the coordinate in France Lambert III
+	 * @param y is the coordinate in France Lambert III
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @deprecated since 0.18, see {@link #L3_WGS84(double, double)}.
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
+	@Pure
+	public static GeodesicPosition L3_WSG84(double x, double y) {
+		return L3_WGS84(x, y);
 	}
 
 	/**
@@ -664,20 +732,35 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert France Lambert IV coordinate to geographic WSG84 Data.
+	 * This function convert France Lambert IV coordinate to geographic WGS84 Data.
 	 *
 	 * @param x is the coordinate in France Lambert IV
 	 * @param y is the coordinate in France Lambert IV
-	 * @return lambda and phi in geographic WSG84 in degrees.
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @since 0.18
 	 */
 	@Pure
-	public static GeodesicPosition L4_WSG84(double x, double y) {
+	public static GeodesicPosition L4_WGS84(double x, double y) {
 		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_4_N,
 				LAMBERT_4_C,
 				LAMBERT_4_XS,
 				LAMBERT_4_YS);
-		return NTFLambdaPhi_WSG84(ntfLambdaPhi.getX(), ntfLambdaPhi.getY());
+		return NTFLambdaPhi_WGS84(ntfLambdaPhi.getX(), ntfLambdaPhi.getY());
+	}
+
+	/**
+	 * This function convert France Lambert IV coordinate to geographic WGS84 Data.
+	 *
+	 * @param x is the coordinate in France Lambert IV
+	 * @param y is the coordinate in France Lambert IV
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @deprecated since 0.18, see {@link #L4_WGS84(double, double)}.
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
+	@Pure
+	public static GeodesicPosition L4_WSG84(double x, double y) {
+		return L4_WGS84(x, y);
 	}
 
 	/**
@@ -796,20 +879,35 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert France Lambert 93 coordinate to geographic WSG84 Data.
+	 * This function convert France Lambert 93 coordinate to geographic WGS84 Data.
 	 *
 	 * @param x is the coordinate in France Lambert 93
 	 * @param y is the coordinate in France Lambert 93
-	 * @return lambda and phi in geographic WSG84 in degrees.
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @since 0.18
 	 */
 	@Pure
-	public static GeodesicPosition L93_WSG84(double x, double y) {
+	public static GeodesicPosition L93_WGS84(double x, double y) {
 		final Point2d ntfLambdaPhi = NTFLambert_NTFLambdaPhi(x, y,
 				LAMBERT_93_N,
 				LAMBERT_93_C,
 				LAMBERT_93_XS,
 				LAMBERT_93_YS);
-		return NTFLambdaPhi_WSG84(ntfLambdaPhi.getX(), ntfLambdaPhi.getY());
+		return NTFLambdaPhi_WGS84(ntfLambdaPhi.getX(), ntfLambdaPhi.getY());
+	}
+
+	/**
+	 * This function convert France Lambert 93 coordinate to geographic WGS84 Data.
+	 *
+	 * @param x is the coordinate in France Lambert 93
+	 * @param y is the coordinate in France Lambert 93
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @deprecated since 0.18, see {@link #L93_WGS84(double, double)}.
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
+	@Pure
+	public static GeodesicPosition L93_WSG84(double x, double y) {
+		return L93_WGS84(x, y);
 	}
 
 	/**
@@ -973,14 +1071,15 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert extended France NTF Lambert coordinate to geographic WSG84 Data.
+	 * This function convert extended France NTF Lambert coordinate to geographic WGS84 Data.
 	 *
 	 * @param lambda_ntf is the lambda coordinate in NTF
 	 * @param lambda_ntf is the phi coordinate in NTF
-	 * @return lambda and phi in geographic WSG84 in degrees.
+	 * @return lambda and phi in geographic WGS84 in degrees.
+	 * @since 0.18
 	 */
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:localfinalvariablename", "checkstyle:localvariablename"})
-	private static GeodesicPosition NTFLambdaPhi_WSG84(double lambda_ntf, double phi_ntf) {
+	private static GeodesicPosition NTFLambdaPhi_WGS84(double lambda_ntf, double phi_ntf) {
 		// Geographical coordinate NTF (lamda_ntf,phi_ntf)
 		// -> Cartesian coordinate NTF (x_ntf,y_ntf,z_ntf)
 		// ALG0009
@@ -1013,16 +1112,16 @@ public final class GISCoordinates {
 
 		double lambda_w = l840 + Math.atan(y_w / x_w);
 
-		double phi0_w = Math.atan(z_w / (P * (1 - ((a * WSG84_E * WSG84_E))
+		double phi0_w = Math.atan(z_w / (P * (1 - ((a * WGS84_E * WGS84_E))
 				/ Math.sqrt((x_w * x_w) + (y_w * y_w) + (z_w * z_w)))));
 
-		double phi_w = Math.atan((z_w / P) / (1 - ((a * WSG84_E * WSG84_E * Math.cos(phi0_w))
+		double phi_w = Math.atan((z_w / P) / (1 - ((a * WGS84_E * WGS84_E * Math.cos(phi0_w))
 				/ (P * Math.sqrt(1 - NTF_E * NTF_E * (Math.sin(phi0_w) * Math.sin(phi0_w)))))));
 
 		while (Math.abs(phi_w - phi0_w) >= EPSILON) {
 			phi0_w = phi_w;
-			phi_w = Math.atan((z_w / P) / (1 - ((a * WSG84_E * WSG84_E * Math.cos(phi0_w))
-					/ (P * Math.sqrt(1 - ((WSG84_E * WSG84_E) * (Math.sin(phi0_w) * Math.sin(phi0_w))))))));
+			phi_w = Math.atan((z_w / P) / (1 - ((a * WGS84_E * WGS84_E * Math.cos(phi0_w))
+					/ (P * Math.sqrt(1 - ((WGS84_E * WGS84_E) * (Math.sin(phi0_w) * Math.sin(phi0_w))))))));
 
 		}
 
@@ -1034,15 +1133,16 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert WSG84 GPS coordinate to extended France Lambert II coordinate.
+	 * This function convert WGS84 GPS coordinate to extended France Lambert II coordinate.
 	 *
 	 * @param lambda  in degrees.
 	 * @param phi  in degrees.
 	 * @return the extended France Lambert II coordinates.
+	 * @qince 0.18
 	 */
 	@Pure
-	public static Point2d WSG84_EL2(double lambda, double phi) {
-		final Point2d ntfLambdaPhi = WSG84_NTFLamdaPhi(lambda, phi);
+	public static Point2d WGS84_EL2(double lambda, double phi) {
+		final Point2d ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
 		return NTFLambdaPhi_NTFLambert(
 				ntfLambdaPhi.getX(), ntfLambdaPhi.getY(),
 				LAMBERT_2E_N,
@@ -1052,15 +1152,30 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert WSG84 GPS coordinate to France Lambert I coordinate.
+	 * This function convert WGS84 GPS coordinate to extended France Lambert II coordinate.
+	 *
+	 * @param lambda  in degrees.
+	 * @param phi  in degrees.
+	 * @return the extended France Lambert II coordinates.
+	 * @deprecated since 0.18, see {@link #WGS84_EL2(double, double)}.
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
+	@Pure
+	public static Point2d WSG84_EL2(double lambda, double phi) {
+		return WGS84_EL2(lambda, phi);
+	}
+
+	/**
+	 * This function convert WGS84 GPS coordinate to France Lambert I coordinate.
 	 *
 	 * @param lambda  in degrees.
 	 * @param phi  in degrees.
 	 * @return the France Lambert I coordinates.
+	 * @since 0.18
 	 */
 	@Pure
-	public static Point2d WSG84_L1(double lambda, double phi) {
-		final Point2d ntfLambdaPhi = WSG84_NTFLamdaPhi(lambda, phi);
+	public static Point2d WGS84_L1(double lambda, double phi) {
+		final Point2d ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
 		return NTFLambdaPhi_NTFLambert(
 				ntfLambdaPhi.getX(), ntfLambdaPhi.getY(),
 				LAMBERT_1_N,
@@ -1070,15 +1185,30 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert WSG84 GPS coordinate to France Lambert II coordinate.
+	 * This function convert WGS84 GPS coordinate to France Lambert I coordinate.
+	 *
+	 * @param lambda  in degrees.
+	 * @param phi  in degrees.
+	 * @return the France Lambert I coordinates.
+	 * @deprecated since 0.18, see {@link #WGS84_L1(double, double)}.
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
+	@Pure
+	public static Point2d WSG84_L1(double lambda, double phi) {
+		return WGS84_L1(lambda, phi);
+	}
+
+	/**
+	 * This function convert WGS84 GPS coordinate to France Lambert II coordinate.
 	 *
 	 * @param lambda  in degrees.
 	 * @param phi  in degrees.
 	 * @return the France Lambert II coordinates.
+	 * @since 0.18
 	 */
 	@Pure
-	public static Point2d WSG84_L2(double lambda, double phi) {
-		final Point2d ntfLambdaPhi = WSG84_NTFLamdaPhi(lambda, phi);
+	public static Point2d WGS84_L2(double lambda, double phi) {
+		final Point2d ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
 		return NTFLambdaPhi_NTFLambert(
 				ntfLambdaPhi.getX(), ntfLambdaPhi.getY(),
 				LAMBERT_2_N,
@@ -1088,15 +1218,30 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert WSG84 GPS coordinate to France Lambert III coordinate.
+	 * This function convert WGS84 GPS coordinate to France Lambert II coordinate.
+	 *
+	 * @param lambda  in degrees.
+	 * @param phi  in degrees.
+	 * @return the France Lambert II coordinates.
+	 * @deprecated since 0.18, see {@link #WGS84_L2(double, double)}.
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
+	@Pure
+	public static Point2d WSG84_L2(double lambda, double phi) {
+		return WGS84_L2(lambda, phi);
+	}
+
+	/**
+	 * This function convert WGS84 GPS coordinate to France Lambert III coordinate.
 	 *
 	 * @param lambda  in degrees.
 	 * @param phi  in degrees.
 	 * @return the France Lambert III coordinates.
+	 * @since 0.18
 	 */
 	@Pure
-	public static Point2d WSG84_L3(double lambda, double phi) {
-		final Point2d ntfLambdaPhi = WSG84_NTFLamdaPhi(lambda, phi);
+	public static Point2d WGS84_L3(double lambda, double phi) {
+		final Point2d ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
 		return NTFLambdaPhi_NTFLambert(
 				ntfLambdaPhi.getX(), ntfLambdaPhi.getY(),
 				LAMBERT_3_N,
@@ -1106,14 +1251,30 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert WSG84 GPS coordinate to France Lambert IV coordinate.
+	 * This function convert WGS84 GPS coordinate to France Lambert III coordinate.
+	 *
+	 * @param lambda  in degrees.
+	 * @param phi  in degrees.
+	 * @return the France Lambert III coordinates.
+	 * @deprecated since 0.18, see {@link #WGS84_L3(double, double)}.
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
+	@Pure
+	public static Point2d WSG84_L3(double lambda, double phi) {
+		return WGS84_L3(lambda, phi);
+	}
+
+	/**
+	 * This function convert WGS84 GPS coordinate to France Lambert IV coordinate.
 	 *
 	 * @param lambda  in degrees.
 	 * @param phi  in degrees.
 	 * @return the France Lambert IV coordinates.
+	 * @since 0.18
 	 */
-	public static Point2d WSG84_L4(double lambda, double phi) {
-		final Point2d ntfLambdaPhi = WSG84_NTFLamdaPhi(lambda, phi);
+	@Pure
+	public static Point2d WGS84_L4(double lambda, double phi) {
+		final Point2d ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
 		return NTFLambdaPhi_NTFLambert(
 				ntfLambdaPhi.getX(), ntfLambdaPhi.getY(),
 				LAMBERT_4_N,
@@ -1123,21 +1284,50 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert WSG84 GPS coordinate to France Lambert 93 coordinate.
+	 * This function convert WGS84 GPS coordinate to France Lambert IV coordinate.
+	 *
+	 * @param lambda  in degrees.
+	 * @param phi  in degrees.
+	 * @return the France Lambert IV coordinates.
+	 * @deprecated since 0.18, see {@link #WGS84_L4(double, double)}.
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
+	@Pure
+	public static Point2d WSG84_L4(double lambda, double phi) {
+		return WGS84_L4(lambda, phi);
+	}
+
+	/**
+	 * This function convert WGS84 GPS coordinate to France Lambert 93 coordinate.
 	 *
 	 * @param lambda  in degrees.
 	 * @param phi  in degrees.
 	 * @return the France Lambert 93 coordinates.
+	 * @since 0.18
 	 */
 	@Pure
-	public static Point2d WSG84_L93(double lambda, double phi) {
-		final Point2d ntfLambdaPhi = WSG84_NTFLamdaPhi(lambda, phi);
+	public static Point2d WGS84_L93(double lambda, double phi) {
+		final Point2d ntfLambdaPhi = WGS84_NTFLamdaPhi(lambda, phi);
 		return NTFLambdaPhi_NTFLambert(
 				ntfLambdaPhi.getX(), ntfLambdaPhi.getY(),
 				LAMBERT_93_N,
 				LAMBERT_93_C,
 				LAMBERT_93_XS,
 				LAMBERT_93_YS);
+	}
+
+	/**
+	 * This function convert WGS84 GPS coordinate to France Lambert 93 coordinate.
+	 *
+	 * @param lambda  in degrees.
+	 * @param phi  in degrees.
+	 * @return the France Lambert 93 coordinates.
+	 * @deprecated since 0.18, see {@link #WGS84_L93(double, double)}.
+	 */
+	@Deprecated(forRemoval = true, since = "0.18")
+	@Pure
+	public static Point2d WSG84_L93(double lambda, double phi) {
+		return WGS84_L93(lambda, phi);
 	}
 
 	/**
@@ -1194,15 +1384,15 @@ public final class GISCoordinates {
 	}
 
 	/**
-	 * This function convert WSG84 GPS coordinate to one of the NTF Lambda-Phi coordinate.
+	 * This function convert WGS84 GPS coordinate to one of the NTF Lambda-Phi coordinate.
 	 *
-	 * @param lambda is the WSG94 coordinate in decimal degrees.
-	 * @param phi is the WSG84 coordinate is decimal in degrees.
+	 * @param lambda is the WGS94 coordinate in decimal degrees.
+	 * @param phi is the WGS84 coordinate is decimal in degrees.
 	 * @return the NTF Lambda-Phi
 	 */
 	@SuppressWarnings({"checkstyle:parametername", "checkstyle:magicnumber",
 		"checkstyle:localfinalvariablename", "checkstyle:localvariablename"})
-	private static Point2d WSG84_NTFLamdaPhi(double lambda, double phi) {
+	private static Point2d WGS84_NTFLamdaPhi(double lambda, double phi) {
 		//---------------------------------------------------------
 		// 0) degree -> radian
 		final double lambda_w = Math.toRadians(lambda);

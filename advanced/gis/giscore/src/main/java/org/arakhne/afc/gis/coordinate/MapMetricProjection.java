@@ -75,12 +75,12 @@ public enum MapMetricProjection {
 
 		@Override
 		public GeodesicPosition convertToGeodesicPosition(Point2D<?, ?> point) {
-			return GISCoordinates.L1_WSG84(point.getX(), point.getY());
+			return GISCoordinates.L1_WGS84(point.getX(), point.getY());
 		}
 
 		@Override
 		public Point2d convertFromGeodesicPosition(GeodesicPosition gpsPoint) {
-			return GISCoordinates.WSG84_L1(gpsPoint.lambda, gpsPoint.phi);
+			return GISCoordinates.WGS84_L1(gpsPoint.lambda, gpsPoint.phi);
 		}
 	},
 
@@ -110,12 +110,12 @@ public enum MapMetricProjection {
 
 		@Override
 		public GeodesicPosition convertToGeodesicPosition(Point2D<?, ?> point) {
-			return GISCoordinates.L2_WSG84(point.getX(), point.getY());
+			return GISCoordinates.L2_WGS84(point.getX(), point.getY());
 		}
 
 		@Override
 		public Point2d convertFromGeodesicPosition(GeodesicPosition gpsPoint) {
-			return GISCoordinates.WSG84_L2(gpsPoint.lambda, gpsPoint.phi);
+			return GISCoordinates.WGS84_L2(gpsPoint.lambda, gpsPoint.phi);
 		}
 	},
 
@@ -145,12 +145,12 @@ public enum MapMetricProjection {
 
 		@Override
 		public GeodesicPosition convertToGeodesicPosition(Point2D<?, ?> point) {
-			return GISCoordinates.EL2_WSG84(point.getX(), point.getY());
+			return GISCoordinates.EL2_WGS84(point.getX(), point.getY());
 		}
 
 		@Override
 		public Point2d convertFromGeodesicPosition(GeodesicPosition gpsPoint) {
-			return GISCoordinates.WSG84_EL2(gpsPoint.lambda, gpsPoint.phi);
+			return GISCoordinates.WGS84_EL2(gpsPoint.lambda, gpsPoint.phi);
 		}
 	},
 
@@ -180,12 +180,12 @@ public enum MapMetricProjection {
 
 		@Override
 		public GeodesicPosition convertToGeodesicPosition(Point2D<?, ?> point) {
-			return GISCoordinates.L3_WSG84(point.getX(), point.getY());
+			return GISCoordinates.L3_WGS84(point.getX(), point.getY());
 		}
 
 		@Override
 		public Point2d convertFromGeodesicPosition(GeodesicPosition gpsPoint) {
-			return GISCoordinates.WSG84_L3(gpsPoint.lambda, gpsPoint.phi);
+			return GISCoordinates.WGS84_L3(gpsPoint.lambda, gpsPoint.phi);
 		}
 	},
 
@@ -215,12 +215,12 @@ public enum MapMetricProjection {
 
 		@Override
 		public GeodesicPosition convertToGeodesicPosition(Point2D<?, ?> point) {
-			return GISCoordinates.L4_WSG84(point.getX(), point.getY());
+			return GISCoordinates.L4_WGS84(point.getX(), point.getY());
 		}
 
 		@Override
 		public Point2d convertFromGeodesicPosition(GeodesicPosition gpsPoint) {
-			return GISCoordinates.WSG84_L4(gpsPoint.lambda, gpsPoint.phi);
+			return GISCoordinates.WGS84_L4(gpsPoint.lambda, gpsPoint.phi);
 		}
 	},
 
@@ -250,12 +250,12 @@ public enum MapMetricProjection {
 
 		@Override
 		public GeodesicPosition convertToGeodesicPosition(Point2D<?, ?> point) {
-			return GISCoordinates.L93_WSG84(point.getX(), point.getY());
+			return GISCoordinates.L93_WGS84(point.getX(), point.getY());
 		}
 
 		@Override
 		public Point2d convertFromGeodesicPosition(GeodesicPosition gpsPoint) {
-			return GISCoordinates.WSG84_L93(gpsPoint.lambda, gpsPoint.phi);
+			return GISCoordinates.WGS84_L93(gpsPoint.lambda, gpsPoint.phi);
 		}
 	};
 

@@ -46,7 +46,7 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 @SuppressWarnings("all")
 public class GISCoordinatesTest extends AbstractGisTest {
 
-	private GeodesicPosition wsg1, wsg2, wsg3, wsg4, wsg5;
+	private GeodesicPosition wgs1, wgs2, wgs3, wgs4, wgs5;
 	private Point2d lambertIIe_1, lambertIIe_2, lambertIIe_3, lambertIIe_4;
 	private Point2d lambertIIe_5;
 
@@ -62,7 +62,7 @@ public class GISCoordinatesTest extends AbstractGisTest {
 		// X = E(m)  = 694310.948
 		// Y = N(m)  = 2627328.610
 		// epsilon   = 2..5 meters
-		this.wsg1 = new GeodesicPosition(3.666666667, 50.633055556);
+		this.wgs1 = new GeodesicPosition(3.666666667, 50.633055556);
 		this.lambertIIe_1 = new Point2d(694310.948, 2627328.610);
 
 		// -------------------
@@ -74,7 +74,7 @@ public class GISCoordinatesTest extends AbstractGisTest {
 		// X = E(m)  = 685319.079
 		// Y = N(m)  = 2595599.220
 		// epsilon = 2..5 meters
-		this.wsg2 = new GeodesicPosition(3.533055556, 50.349722222);
+		this.wgs2 = new GeodesicPosition(3.533055556, 50.349722222);
 		this.lambertIIe_2 = new Point2d(685319.079, 2595599.220);
 
 		// -------------------
@@ -86,7 +86,7 @@ public class GISCoordinatesTest extends AbstractGisTest {
 		// X = E(m)  = 938247.8125
 		// Y = N(m)  = 2303550.0
 		// epsilon = 2..5 meters
-		this.wsg3 = new GeodesicPosition(6.84076953, 47.64425505);
+		this.wgs3 = new GeodesicPosition(6.84076953, 47.64425505);
 		this.lambertIIe_3 = new Point2d(938247.8125, 2303550.0);
 
 		// -------------------
@@ -98,7 +98,7 @@ public class GISCoordinatesTest extends AbstractGisTest {
 		// X = E(m)  = 938687.6875
 		// Y = N(m)  = 2303720.75
 		// epsilon = 2..5 meters
-		this.wsg4 = new GeodesicPosition(6.84674456, 47.64556157);
+		this.wgs4 = new GeodesicPosition(6.84674456, 47.64556157);
 		this.lambertIIe_4 = new Point2d(938687.6875, 2303720.75);
 
 		// -------------------
@@ -110,74 +110,74 @@ public class GISCoordinatesTest extends AbstractGisTest {
 		// X = E(m)  = 939295.736
 		// Y = N(m)  = 2301730.451
 		// epsilon = 2..5 meters
-		this.wsg5 = new GeodesicPosition(6.8533028, 47.627376);
+		this.wgs5 = new GeodesicPosition(6.8533028, 47.627376);
 		this.lambertIIe_5 = new Point2d(939295.736, 2301730.451);
 	}
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		this.wsg1 = this.wsg2 = this.wsg3 = this.wsg4 = this.wsg5 = null;
+		this.wgs1 = this.wgs2 = this.wgs3 = this.wgs4 = this.wgs5 = null;
 		this.lambertIIe_1 = this.lambertIIe_2 = this.lambertIIe_3 = this.lambertIIe_4 = this.lambertIIe_5 = null;
 	}
 
 	@Test
-	public void testWSG84_EL2DoubleDouble() {
+	public void testWGS84_EL2DoubleDouble() {
 		Point2d p;
 
-		p = GISCoordinates.WSG84_EL2(this.wsg1.lambda, this.wsg1.phi);
+		p = GISCoordinates.WGS84_EL2(this.wgs1.lambda, this.wgs1.phi);
 		assertNotNull(p);
 		assertEpsilonEquals(this.lambertIIe_1.getX(), p.getX());
 		assertEpsilonEquals(this.lambertIIe_1.getY(), p.getY());
 
-		p = GISCoordinates.WSG84_EL2(this.wsg2.lambda, this.wsg2.phi);
+		p = GISCoordinates.WGS84_EL2(this.wgs2.lambda, this.wgs2.phi);
 		assertNotNull(p);
 		assertEpsilonEquals(this.lambertIIe_2.getX(), p.getX());
 		assertEpsilonEquals(this.lambertIIe_2.getY(), p.getY());
 
-		p = GISCoordinates.WSG84_EL2(this.wsg3.lambda, this.wsg3.phi);
+		p = GISCoordinates.WGS84_EL2(this.wgs3.lambda, this.wgs3.phi);
 		assertNotNull(p);
 		assertEpsilonEquals(this.lambertIIe_3.getX(), p.getX());
 		assertEpsilonEquals(this.lambertIIe_3.getY(), p.getY());
 
-		p = GISCoordinates.WSG84_EL2(this.wsg4.lambda, this.wsg4.phi);
+		p = GISCoordinates.WGS84_EL2(this.wgs4.lambda, this.wgs4.phi);
 		assertNotNull(p);
 		assertEpsilonEquals(this.lambertIIe_4.getX(), p.getX());
 		assertEpsilonEquals(this.lambertIIe_4.getY(), p.getY());
 
-		p = GISCoordinates.WSG84_EL2(this.wsg5.lambda, this.wsg5.phi);
+		p = GISCoordinates.WGS84_EL2(this.wgs5.lambda, this.wgs5.phi);
 		assertNotNull(p);
 		assertEpsilonEquals(this.lambertIIe_5.getX(), p.getX());
 		assertEpsilonEquals(this.lambertIIe_5.getY(), p.getY());
 	}
 
 	@Test
-	public void testEL2_WSG84DoubleDouble() {
+	public void testEL2_WGS84DoubleDouble() {
 		GeodesicPosition p;
 
-		p = GISCoordinates.EL2_WSG84(this.lambertIIe_1.getX(), this.lambertIIe_1.getY());
+		p = GISCoordinates.EL2_WGS84(this.lambertIIe_1.getX(), this.lambertIIe_1.getY());
 		assertNotNull(p);
-		assertEpsilonEquals(this.wsg1.lambda, p.lambda);
-		assertEpsilonEquals(this.wsg1.phi, p.phi);
+		assertEpsilonEquals(this.wgs1.lambda, p.lambda);
+		assertEpsilonEquals(this.wgs1.phi, p.phi);
 
-		p = GISCoordinates.EL2_WSG84(this.lambertIIe_2.getX(), this.lambertIIe_2.getY());
+		p = GISCoordinates.EL2_WGS84(this.lambertIIe_2.getX(), this.lambertIIe_2.getY());
 		assertNotNull(p);
-		assertEpsilonEquals(this.wsg2.lambda, p.lambda);
-		assertEpsilonEquals(this.wsg2.phi, p.phi);
+		assertEpsilonEquals(this.wgs2.lambda, p.lambda);
+		assertEpsilonEquals(this.wgs2.phi, p.phi);
 
-		p = GISCoordinates.EL2_WSG84(this.lambertIIe_3.getX(), this.lambertIIe_3.getY());
+		p = GISCoordinates.EL2_WGS84(this.lambertIIe_3.getX(), this.lambertIIe_3.getY());
 		assertNotNull(p);
-		assertEpsilonEquals(this.wsg3.lambda, p.lambda);
-		assertEpsilonEquals(this.wsg3.phi, p.phi);
+		assertEpsilonEquals(this.wgs3.lambda, p.lambda);
+		assertEpsilonEquals(this.wgs3.phi, p.phi);
 
-		p = GISCoordinates.EL2_WSG84(this.lambertIIe_4.getX(), this.lambertIIe_4.getY());
+		p = GISCoordinates.EL2_WGS84(this.lambertIIe_4.getX(), this.lambertIIe_4.getY());
 		assertNotNull(p);
-		assertEpsilonEquals(this.wsg4.lambda, p.lambda);
-		assertEpsilonEquals(this.wsg4.phi, p.phi);
+		assertEpsilonEquals(this.wgs4.lambda, p.lambda);
+		assertEpsilonEquals(this.wgs4.phi, p.phi);
 
-		p = GISCoordinates.EL2_WSG84(this.lambertIIe_5.getX(), this.lambertIIe_5.getY());
+		p = GISCoordinates.EL2_WGS84(this.lambertIIe_5.getX(), this.lambertIIe_5.getY());
 		assertNotNull(p);
-		assertEpsilonEquals(this.wsg5.lambda, p.lambda);
-		assertEpsilonEquals(this.wsg5.phi, p.phi);
+		assertEpsilonEquals(this.wgs5.lambda, p.lambda);
+		assertEpsilonEquals(this.wgs5.phi, p.phi);
 	}
 
 }

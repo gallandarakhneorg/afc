@@ -170,7 +170,7 @@ public final class GeoLocationArea extends AbstractGeoLocation {
 	@Pure
 	@Override
 	public GeodesicPosition toGeodesicPosition() {
-		return GISCoordinates.EL2_WSG84(
+		return GISCoordinates.EL2_WGS84(
 				(this.x1 + this.x2) / 2.,
 				(this.y1 + this.y2) / 2.);
 	}

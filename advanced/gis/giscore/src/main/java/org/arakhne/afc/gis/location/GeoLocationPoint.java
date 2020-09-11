@@ -107,7 +107,7 @@ public final class GeoLocationPoint extends AbstractGeoLocation {
 	@Pure
 	@Override
 	public GeodesicPosition toGeodesicPosition() {
-		return GISCoordinates.EL2_WSG84(this.x, this.y);
+		return GISCoordinates.EL2_WGS84(this.x, this.y);
 	}
 
 }

@@ -158,7 +158,7 @@ public final class GeoLocationPointList extends AbstractGeoLocation {
 		if (b == null) {
 			return null;
 		}
-		return GISCoordinates.EL2_WSG84(b.getCenterX(), b.getCenterY());
+		return GISCoordinates.EL2_WGS84(b.getCenterX(), b.getCenterY());
 	}
 
 	/** Replies the coordinates of this geo-location.
