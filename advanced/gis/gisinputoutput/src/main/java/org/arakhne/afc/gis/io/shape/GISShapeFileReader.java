@@ -742,7 +742,10 @@ public class GISShapeFileReader extends AbstractShapeFileReader<MapElement> {
 	@Override
 	protected AttributeCollection createAttributeCollection(int elementIndex) {
 		if (this.dbaseURL != null) {
-			return DBaseFileAttributePool.getCollection(this.dbaseURL, elementIndex);
+			// The argument has values in [1;size]
+			// The Dbase attribute pool uses indexes in [0;size)
+			final int dbIndex = elementIndex - 1;
+			return DBaseFileAttributePool.getCollection(this.dbaseURL, dbIndex);
 		}
 		return new HeapAttributeCollection();
 	}

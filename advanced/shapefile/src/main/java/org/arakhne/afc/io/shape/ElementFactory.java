@@ -67,6 +67,7 @@ public interface ElementFactory<E> {
 	/** Create an attribute provider which will be used by a new element.
 	 *
 	 * @param elementIndex is the index of the element for which an attribute provider must be created.
+	 *     According to the ESRI shape file format, it always begins at 1.
 	 * @return the new attribute provider which will be passed to one of the creation functions.
 	 * @see #createMultiPoint(AttributeCollection, int, ESRIPoint[], boolean)
 	 * @see #createPoint(AttributeCollection, int, ESRIPoint)
@@ -81,6 +82,7 @@ public interface ElementFactory<E> {
 	 *
 	 * @param provider is the attribute provider which must be used by the new map element.
 	 * @param shapeIndex is the index of the element in the shape file.
+	 *     According to the ESRI shape file format, it always begins at 1.
 	 * @param parts is the list of the parts, ie the index of the first point in the parts.
 	 * @param points is the list of the points.
 	 * @param hasZ indicates if the z-coordinates were set.
@@ -95,6 +97,7 @@ public interface ElementFactory<E> {
 	 *
 	 * @param provider is the attribute provider which must be used by the new element.
 	 * @param shapeIndex is the index of the element in the shape file.
+	 *     According to the ESRI shape file format, it always begins at 1.
 	 * @param parts is the list of the parts, ie the index of the first point in the parts.
 	 * @param points is the list of the points.
 	 * @param hasZ indicates if the z-coordinates were set.
@@ -122,6 +125,7 @@ public interface ElementFactory<E> {
 	 *
 	 * @param provider is the attribute provider which must be used by the new element.
 	 * @param shape_index is the index of the element in the shape file.
+	 *     According to the ESRI shape file format, it always begins at 1.
 	 * @param point is the location of the point.
 	 * @return an object representing the creating point, depending of your implementation.
 	 *     This value will be passed to {@link #postEntryReadingStage(Object)}.

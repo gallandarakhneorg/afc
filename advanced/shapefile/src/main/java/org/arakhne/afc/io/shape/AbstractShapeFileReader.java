@@ -258,7 +258,8 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	/**
 	 * Read a null shape.
 	 *
-	 * @param elementIndex is the index of the element inside the shape file
+	 * @param elementIndex is the index of the element inside the shape file. According to the ESRI
+	 *     shape file format, it always begins at 1.
 	 * @return an object representing the creating point, depending of your implementation.
 	 *      This value will be passed to {@link #postRecordReadingStage(E)}.
 	 * @throws IOException in case of error.
@@ -270,7 +271,8 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	/**
 	 * Read a point.
 	 *
-	 * @param elementIndex is the index of the element inside the shape file
+	 * @param elementIndex is the index of the element inside the shape file. According to the ESRI
+	 *     shape file format, it always begins at 1.
 	 * @param type is the type of the element to read.
 	 * @return an object representing the creating point, depending of your implementation.
 	 *      This value will be passed to {@link #postRecordReadingStage(E)}.
@@ -313,7 +315,8 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	/**
 	 * Read a polyelement.
 	 *
-	 * @param elementIndex is the index of the element inside the shape file
+	 * @param elementIndex is the index of the element inside the shape file. According to the ESRI
+	 *     shape file format, it always begins at 1.
 	 * @return an object representing the creating point, depending of your implementation.
 	 *     This value will be passed to {@link #postRecordReadingStage(E)}.
 	 */
@@ -427,7 +430,8 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	 * sequence of Rings not preceded by an First Ring is treated as a sequence of Outer Rings
 	 * without holes.
 	 *
-	 * @param elementIndex is the index of the element inside the shape file
+	 * @param elementIndex is the index of the element inside the shape file. According to the ESRI
+	 *     shape file format, it always begins at 1.
 	 * @param type is the type of the shape element to extract.
 	 * @return an object representing the creating multipatch, depending of your implementation.
 	 *      This value will be passed to {@link #postRecordReadingStage(E)}.
@@ -627,6 +631,7 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	/** Create an attribute provider which will be used by a new element.
 	 *
 	 * @param elementIndex is the index of the element for which an attribute provider must be created.
+	 *     According to the ESRI shape file format, it always begins at 1.
 	 * @return the new attribute provider which will be passed to one of the creation functions.
 	 * @see #createMultiPoint(AttributeCollection, int, ESRIPoint[], boolean)
 	 * @see #createPoint(AttributeCollection, int, ESRIPoint)
