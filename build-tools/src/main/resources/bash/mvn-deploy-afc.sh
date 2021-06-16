@@ -29,7 +29,6 @@ echo "MVN_CMD=${MVN_CMD}"
 echo "JAVA_HOME=$JAVA_HOME"
 echo "settings=$SETTINGSFILE"
 echo "user=$ARAKHNEORG_USER"
-echo "MVN=$mvn"
 
 exec "${MVN_CMD}" deploy -DskipTests -Dcheckstyle.skip=true --settings "$SETTINGSFILE"
 
