@@ -2,8 +2,6 @@
 
 language: java
 
-sudo: required
-
 env:
   global:
     - MAVEN_VERSION: "3.8.1"
