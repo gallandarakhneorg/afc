@@ -6,7 +6,7 @@ sudo: required
 
 env:
   global:
-    - MAVEN_VERSION: "3.6.3"
+    - MAVEN_VERSION: "3.8.1"
     - MAVEN_OPTS: "-XX:+CMSClassUnloadingEnabled -Xmx1g" #-Dorg.slf4j.simpleLogger.defaultLogLevel=warn 
     - MAVEN_COMPILATION_OPTS: "\"-e\""
     - secure: "akKEf27hEycPBpOjfQQ6O3Gt92IlgQCl+fRnmN2kZxBE7Gnm/BqDHQbM/IbixzfWWthvaIgI85BTljNRH2qNq5W/GSPixUd9bfqKI9WL8b1uvv00OxOXsPOcqbEjxBVP0zivxpPDWNX1Fefu7W4Lb/Yaa2ju5uCMBxTl1r2ug5U="
