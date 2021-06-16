@@ -23,10 +23,10 @@ package org.arakhne.afc.bootique.synopsishelp;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.google.inject.Module;
 import io.bootique.BQCoreModule;
-import io.bootique.BQModule;
+import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
 
 import org.arakhne.afc.bootique.synopsishelp.modules.SynopsisHelpGeneratorModule;
 import org.arakhne.afc.vmutil.locale.Locale;
@@ -42,18 +42,18 @@ import org.arakhne.afc.vmutil.locale.Locale;
 public class SynopsisHelpModuleProvider implements BQModuleProvider {
 
 	@Override
-	public Module module() {
+	public BQModule module() {
 		return new SynopsisHelpGeneratorModule();
 	}
 
 	@Override
-	public Collection<Class<? extends Module>> overrides() {
+	public Collection<Class<? extends BQModule>> overrides() {
 		return Collections.singleton(BQCoreModule.class);
 	}
 
 	@Override
-	public BQModule.Builder moduleBuilder() {
-		return BQModule
+	public BQModuleMetadata.Builder moduleBuilder() {
+		return BQModuleMetadata
 				.builder(module())
 				.overrides(overrides())
 				.providerName(name())

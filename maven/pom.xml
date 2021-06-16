@@ -14,7 +14,6 @@
 
 	<modules>
 		<module>maventools</module>
-		<module>tag-replacer</module>
 	</modules>
 
 	<build>

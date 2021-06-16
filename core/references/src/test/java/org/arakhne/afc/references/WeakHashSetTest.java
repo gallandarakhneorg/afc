@@ -22,8 +22,6 @@ package org.arakhne.afc.references;
 
 import java.util.Set;
 
-import org.arakhne.afc.references.WeakHashSet;
-
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$

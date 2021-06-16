@@ -187,7 +187,7 @@ public final class GISCoordinates {
 	 * @param x is the coordinate in extended France Lambert II
 	 * @param y is the coordinate in extended France Lambert II
 	 * @return lambda and phi in geographic WGS84 in degrees.
-	 * @deprecated since 0.18, see {@link #GeodesicPosition EL2_WGS84(double, double)}
+	 * @deprecated since 0.18, see {@link #EL2_WGS84(double, double)}
 	 */
 	@Deprecated(forRemoval = true, since = "0.18")
 	@Pure

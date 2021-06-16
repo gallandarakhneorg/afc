@@ -228,8 +228,8 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 					} else {
 						source = pts.getConnectionsStartingFrom(segment);
 					}
-					final Iterable<? extends GraphPointConnection<PT, ST>> filteredSegments = Iterables.filter(source,
-							it -> !it.getGraphSegment().equals(segment));
+					final Iterable<? extends GraphPointConnection<PT, ST>> filteredSegments = Iterables.filter(
+						source, it -> !it.getGraphSegment().equals(segment));
 					final Iterable<GraphIterationElement<ST, PT>> candidates = Iterables.transform(filteredSegments,
 						it ->  newIterationElement(
 								segment,

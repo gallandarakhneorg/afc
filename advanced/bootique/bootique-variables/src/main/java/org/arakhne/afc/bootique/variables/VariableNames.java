@@ -23,8 +23,6 @@ package org.arakhne.afc.bootique.variables;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Strings;
-
 /**
  * Constants and utilities for variable naming.
  *
@@ -50,7 +48,7 @@ public final class VariableNames {
 	 * @return the name of the property.
 	 */
 	public static String toPropertyName(String bootiqueVariable) {
-		if (Strings.isNullOrEmpty(bootiqueVariable)) {
+		if (bootiqueVariable == null || bootiqueVariable.isEmpty()) {
 			return null;
 		}
 		return BOOTIQUE_PROPERTY_PREFIX + bootiqueVariable;
@@ -62,7 +60,7 @@ public final class VariableNames {
 	 * @return the name of the environment variable.
 	 */
 	public static String toEnvironmentVariableName(String bootiqueVariable) {
-		if (Strings.isNullOrEmpty(bootiqueVariable)) {
+		if (bootiqueVariable == null || bootiqueVariable.isEmpty()) {
 			return null;
 		}
 		final StringBuilder name = new StringBuilder();

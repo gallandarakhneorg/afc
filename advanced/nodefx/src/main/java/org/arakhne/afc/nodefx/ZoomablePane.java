@@ -220,14 +220,14 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		setBottom(bottomGroup);
 		// Bind the scroll bars properties
 		this.vbar.minProperty().bind(Bindings.createDoubleBinding(
-				() -> getDocumentBounds().getMinY(),
-				documentBoundsProperty()));
+			() -> getDocumentBounds().getMinY(),
+			documentBoundsProperty()));
 		this.vbar.maxProperty().bind(Bindings.createDoubleBinding(
-				() -> getDocumentBounds().getMaxY(),
-				documentBoundsProperty()));
+			() -> getDocumentBounds().getMaxY(),
+			documentBoundsProperty()));
 		this.vbar.visibleAmountProperty().bind(Bindings.createDoubleBinding(
-				() -> getViewportBounds().getHeight(),
-				viewportBoundsProperty()));
+			() -> getViewportBounds().getHeight(),
+			viewportBoundsProperty()));
 		this.vbar.valueProperty().bindBidirectional(viewportCenterYProperty());
 		if (isInvertedAxisY()) {
 			this.vbar.setRotate(TURN);
@@ -244,14 +244,14 @@ public class ZoomablePane<T extends InformedIterable<?> & BoundedElement2afp<?>>
 		});
 		//
 		this.hbar.minProperty().bind(Bindings.createDoubleBinding(
-				() -> getDocumentBounds().getMinX(),
-				documentBoundsProperty()));
+			() -> getDocumentBounds().getMinX(),
+			documentBoundsProperty()));
 		this.hbar.maxProperty().bind(Bindings.createDoubleBinding(
-				() -> getDocumentBounds().getMaxX(),
-				documentBoundsProperty()));
+			() -> getDocumentBounds().getMaxX(),
+			documentBoundsProperty()));
 		this.hbar.visibleAmountProperty().bind(Bindings.createDoubleBinding(
-				() -> getViewportBounds().getWidth(),
-				viewportBoundsProperty()));
+			() -> getViewportBounds().getWidth(),
+			viewportBoundsProperty()));
 		this.hbar.valueProperty().bindBidirectional(viewportCenterXProperty());
 		if (isInvertedAxisX()) {
 			this.hbar.setRotate(TURN);

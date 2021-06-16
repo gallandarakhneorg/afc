@@ -201,7 +201,6 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 *
 	 * @param inputStream is the stream to read.
 	 */
-	@SuppressWarnings("resource")
 	public DBaseFileReader(InputStream inputStream) {
 		this.stream = (inputStream instanceof LittleEndianDataInputStream)
 				? (LittleEndianDataInputStream) inputStream : new LittleEndianDataInputStream(inputStream);
@@ -222,6 +221,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 * @param url is the URL to read.
 	 * @throws IOException in case of error.
 	 */
+	@SuppressWarnings("resource")
 	public DBaseFileReader(URL url) throws IOException {
 		this(url.openStream());
 	}
@@ -230,6 +230,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 *
 	 * @param channel is the channel to read.
 	 */
+	@SuppressWarnings("resource")
 	public DBaseFileReader(ReadableByteChannel channel) {
 		this(Channels.newInputStream(channel));
 	}

@@ -33,7 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import com.google.inject.Injector;
+import io.bootique.di.Injector;
 import io.bootique.meta.MetadataNode;
 import io.bootique.meta.config.ConfigMetadataNode;
 import io.bootique.meta.module.ModuleMetadata;
@@ -100,10 +100,10 @@ public final class Configs {
 				if (getterMethod != null && Modifier.isPublic(getterMethod.getModifiers())
 						&& !Modifier.isAbstract(getterMethod.getModifiers())
 						&& !Modifier.isStatic(getterMethod.getModifiers())) {
+					if (theConfig == null) {
+						theConfig = injector.getInstance(type);
+					}
 					try {
-						if (theConfig == null) {
-							theConfig = injector.getInstance(type);
-						}
 						if (theConfig != null) {
 							final Object value = filterValue(getterMethod.getReturnType(),
 									getterMethod.invoke(theConfig));

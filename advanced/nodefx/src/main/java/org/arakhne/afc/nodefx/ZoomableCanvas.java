@@ -475,8 +475,8 @@ public class ZoomableCanvas<T extends InformedIterable<?> & BoundedElement2afp<?
 		if (this.documentBounds == null) {
 			this.documentBounds = new ReadOnlyObjectWrapper<>(this, DOCUMENT_BOUNDS_PROPERTY);
 			this.documentBounds.bind(Bindings.createObjectBinding(
-					() ->  getDocumentModel().getBoundingBox(),
-					documentModelProperty()));
+				() ->  getDocumentModel().getBoundingBox(),
+				documentModelProperty()));
 		}
 		return this.documentBounds.getReadOnlyProperty();
 	}

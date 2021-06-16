@@ -20,9 +20,9 @@
 
 package org.arakhne.afc.bootique.printconfig;
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
+import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
 
 import org.arakhne.afc.bootique.printconfig.modules.PrintConfigCommandModule;
 import org.arakhne.afc.vmutil.locale.Locale;
@@ -38,13 +38,13 @@ import org.arakhne.afc.vmutil.locale.Locale;
 public class PrintConfigModuleProvider implements BQModuleProvider {
 
 	@Override
-	public Module module() {
+	public BQModule module() {
 		return new PrintConfigCommandModule();
 	}
 
 	@Override
-	public BQModule.Builder moduleBuilder() {
-		return BQModule
+	public BQModuleMetadata.Builder moduleBuilder() {
+		return BQModuleMetadata
 				.builder(module())
 				.overrides(overrides())
 				.providerName(name())

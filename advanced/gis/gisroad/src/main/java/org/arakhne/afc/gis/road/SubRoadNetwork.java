@@ -776,13 +776,13 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 		@Pure
 		public final Iterable<RoadSegment> getConnectedSegmentsStartingFrom(RoadSegment startingSegment) {
 			return Iterables.transform(this.connection.get().getConnectedSegmentsStartingFrom(startingSegment),
-					it -> wrapSegment(it));
+				it -> wrapSegment(it));
 		}
 
 		@Override
 		public Iterable<RoadSegment> getConnectedSegmentsStartingFromInReverseOrder(RoadSegment startingSegment) {
 			return Iterables.transform(this.connection.get().getConnectedSegmentsStartingFromInReverseOrder(startingSegment),
-					it -> wrapSegment(it));
+				it -> wrapSegment(it));
 		}
 
 		@Override

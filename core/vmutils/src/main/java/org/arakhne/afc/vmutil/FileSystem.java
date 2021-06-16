@@ -1582,6 +1582,7 @@ public final class FileSystem {
 	 * @since 6.0
 	 * @see #copy(File, File)
 	 */
+	@SuppressWarnings("resource")
 	public static void copy(URL in, File out) throws IOException {
 		assert in != null;
 		assert out != null;

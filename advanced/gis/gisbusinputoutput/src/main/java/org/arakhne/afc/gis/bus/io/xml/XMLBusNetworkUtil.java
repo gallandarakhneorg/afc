@@ -67,7 +67,7 @@ import org.arakhne.afc.inputoutput.path.PathBuilder;
 import org.arakhne.afc.inputoutput.xml.XMLBuilder;
 import org.arakhne.afc.inputoutput.xml.XMLResources;
 import org.arakhne.afc.inputoutput.xml.XMLUtil;
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d2.Point2D;
 
 /** This class provides tools to create an XML representation of a bus network
  * or to create a bus network from an XML representation.
@@ -189,7 +189,7 @@ public final class XMLBusNetworkUtil {
 			stopNode.setAttribute(ATTR_COLOR, toColor(color));
 		}
 
-		final Point2d p = stop.getPosition2D();
+		final Point2D<?, ?> p = stop.getPosition2D();
 		if (p != null) {
 			stopNode.setAttribute(ATTR_X, Double.toString(p.getX()));
 			stopNode.setAttribute(ATTR_Y, Double.toString(p.getY()));

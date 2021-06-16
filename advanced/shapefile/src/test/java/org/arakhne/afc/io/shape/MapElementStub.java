@@ -20,15 +20,15 @@
 
 package org.arakhne.afc.io.shape;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import org.arakhne.afc.attrs.collection.AttributeCollection;
-import org.arakhne.afc.io.shape.ESRIBounds;
-import org.arakhne.afc.io.shape.ESRIPoint;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.text.Encryption;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Stub for shape file elements.
  * @author $Author: sgalland$
@@ -99,9 +99,36 @@ class MapElementStub implements Comparable<MapElementStub> {
 				buffer.append(Integer.toHexString((int)p.getY()));
 				buffer.append('|');
 			}
-			this.id = Encryption.md5(buffer.toString());
+			this.id = md5(buffer.toString());
 		}
 		return this.id;
+	}
+
+	private static String md5(String str) {
+		if (str == null) {
+			return "";  //$NON-NLS-1$
+		}
+		final byte[] uniqueKey = str.getBytes();
+		byte[] hash = null;
+
+		try {
+			hash = MessageDigest.getInstance("MD5").digest(uniqueKey); //$NON-NLS-1$
+		} catch (NoSuchAlgorithmException e) {
+			throw new Error(Locale.getString("NO_MD5")); //$NON-NLS-1$
+		}
+
+		final StringBuilder hashString = new StringBuilder();
+
+		for (int i = 0; i < hash.length; ++i) {
+			final String hex = Integer.toHexString(hash[i]);
+			if (hex.length() == 1) {
+				hashString.append('0');
+				hashString.append(hex.charAt(hex.length() - 1));
+			} else {
+				hashString.append(hex.substring(hex.length() - 2));
+			}
+		}
+		return hashString.toString();
 	}
 
 	/**

@@ -22,11 +22,13 @@ package org.arakhne.afc.bootique.printconfig.modules;
 
 import static io.bootique.BQCoreModule.extend;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provider;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Injector;
+import io.bootique.di.Provides;
 import io.bootique.log.BootLogger;
 import io.bootique.meta.module.ModulesMetadata;
 
@@ -40,11 +42,11 @@ import org.arakhne.afc.bootique.printconfig.commands.PrintConfigCommand;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class PrintConfigCommandModule extends AbstractModule {
+public class PrintConfigCommandModule implements BQModule {
 
 	@Override
-	protected void configure() {
-		extend(binder()).addCommand(PrintConfigCommand.class);
+	public void configure(Binder binder) {
+		extend(binder).addCommand(PrintConfigCommand.class);
 	}
 
 	/** Provide the command for running the command for printing out the configuration values.

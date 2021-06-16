@@ -125,6 +125,7 @@ public class DBaseFileWriter implements AutoCloseable {
 	 * @param stream is the file to write.
 	 * @throws IOException in case of error.
 	 */
+	@SuppressWarnings("resource")
 	public DBaseFileWriter(URL stream) throws IOException {
 		this(stream.openConnection().getOutputStream());
 	}
@@ -132,6 +133,7 @@ public class DBaseFileWriter implements AutoCloseable {
 	/** Constructor.
 	 * @param channel is the channel to write in.
 	 */
+	@SuppressWarnings("resource")
 	public DBaseFileWriter(WritableByteChannel channel) {
 		this(Channels.newOutputStream(channel));
 	}

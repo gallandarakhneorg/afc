@@ -20,18 +20,21 @@
 
 package org.arakhne.afc.bootique.applicationdata2.modules;
 
-import java.lang.reflect.Field;
+import java.util.Set;
+import javax.inject.Singleton;
 
-import com.google.common.base.Strings;
-import com.google.inject.AbstractModule;
-import com.google.inject.Binding;
-import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.Provider;
-import com.google.inject.matcher.AbstractMatcher;
-import com.google.inject.spi.ProvisionListener;
+import io.bootique.command.CommandManager;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Injector;
+import io.bootique.di.Key;
+import io.bootique.di.Provides;
+import io.bootique.env.DeclaredVariable;
 import io.bootique.meta.application.ApplicationMetadata;
+import io.bootique.meta.application.OptionMetadata;
+import io.bootique.meta.module.ModulesMetadata;
 
+import org.arakhne.afc.bootique.applicationdata2.annotations.ApplicationDescription2;
 import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationName;
 
 /** Module for the compiler application metadata version 2.
@@ -42,89 +45,66 @@ import org.arakhne.afc.bootique.applicationdata2.annotations.DefaultApplicationN
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class ApplicationMetadata2Module extends AbstractModule {
+public class ApplicationMetadata2Module implements BQModule {
 
 	@Override
-	protected void configure() {
-		binder().bindListener(new BindingMatcher(), new ApplicationProvisionListener(binder().getProvider(Injector.class)));
+	public void configure(Binder binder) {
+		//
 	}
 
-	/** Listener on application provision.
+	/** Provides the metadata for the application.
 	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 15.0
+	 * @param commandManager the command manager.
+	 * @param options the options
+	 * @param declaredVars the declared variables
+	 * @param modulesMetadata the module metadata.
+	 * @param injector the injector.
+	 * @return the application metadata.
 	 */
-	private static class ApplicationProvisionListener implements ProvisionListener {
+	@SuppressWarnings("static-method")
+	@Provides
+	@Singleton
+	public ApplicationMetadata provideApplicationMetadata(
+			CommandManager commandManager,
+			Set<OptionMetadata> options,
+			Set<DeclaredVariable> declaredVars,
+			ModulesMetadata modulesMetadata,
+			Injector injector) {
 
-		private final Provider<Injector> injector;
-
-		/** Constructor.
-		 *
-		 * @param injector the injector.
-		 */
-		ApplicationProvisionListener(Provider<Injector> injector) {
-			this.injector = injector;
+		String name;
+		try {
+			name = injector.getInstance(Key.get(String.class, DefaultApplicationName.class));
+		} catch (Throwable exception) {
+			name = null;
 		}
 
-		@Override
-		public <T> void onProvision(ProvisionInvocation<T> provision) {
-			final T object = provision.provision();
-			if (object instanceof ApplicationMetadata) {
-				final ApplicationMetadata metadata = (ApplicationMetadata) object;
-				final Injector inj = this.injector.get();
-				String name;
-				try {
-					name = inj.getInstance(Key.get(String.class, DefaultApplicationName.class));
-				} catch (Throwable exception) {
-					name = null;
-				}
-				if (!Strings.isNullOrEmpty(name)) {
-					setName(metadata, name);
-				}
+		String description;
+		try {
+			description = injector.getInstance(Key.get(String.class, ApplicationDescription2.class));
+		} catch (Throwable exception) {
+			description  = null;
+		}
+
+		final ApplicationMetadata.Builder builder = ApplicationMetadata
+			.builder(name)
+			.description(description)
+			.addOptions(options);
+
+		commandManager.getAllCommands().values().forEach(mc -> {
+			if (!mc.isHidden() && !mc.isDefault()) {
+				builder.addCommand(mc.getCommand().getMetadata());
 			}
-		}
+		});
 
-		/** Change the application name.
-		 *
-		 * @param metadata the metadata to change.
-		 * @param name the new name.
-		 */
-		private static void setName(ApplicationMetadata metadata, String name) {
-			try {
-				final Field field = ApplicationMetadata.class.getDeclaredField("name"); //$NON-NLS-1$
-				field.setAccessible(true);
-				field.set(metadata, name);
-			} catch (Exception exception) {
-				//
-			}
-		}
+		// merge default command options with top-level app options
+		commandManager.getPublicDefaultCommand().ifPresent(
+			c -> builder.addOptions(c.getMetadata().getOptions()));
 
-	}
+		declaredVars.forEach(dv -> DeclaredVariableMetaCompiler
+			.compileIfValid(dv, modulesMetadata)
+			.ifPresent(builder::addVariable));
 
-	/** Matcher of sub types.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 15.0
-	 */
-	private static class BindingMatcher extends AbstractMatcher<Binding<?>> {
-
-		/** Constructor.
-		 */
-		BindingMatcher() {
-			//
-		}
-
-		@Override
-		public boolean matches(Binding<?> binding) {
-			return ApplicationMetadata.class.isAssignableFrom(binding.getKey().getTypeLiteral().getRawType());
-		}
-
+		return builder.build();
 	}
 
 }

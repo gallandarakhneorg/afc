@@ -114,6 +114,7 @@ public abstract class AbstractCommonShapeFileWriter<E> implements AutoCloseable 
 	 * @param elementType is the type of the elements to write.
 	 * @throws IOException in case of error.
 	 */
+	@SuppressWarnings("resource")
 	public AbstractCommonShapeFileWriter(URL shapeName, ShapeElementType elementType) throws IOException {
 		this(shapeName.openConnection().getOutputStream(), elementType);
 	}
@@ -123,6 +124,7 @@ public abstract class AbstractCommonShapeFileWriter<E> implements AutoCloseable 
 	 * @param elementType is the type of the elements to write.
 	 * @throws IOException in case of error.
 	 */
+	@SuppressWarnings("resource")
 	public AbstractCommonShapeFileWriter(OutputStream stream, ShapeElementType elementType) throws IOException {
 		this(Channels.newChannel(stream), elementType);
 	}

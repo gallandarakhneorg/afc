@@ -30,9 +30,10 @@
  */
 open module org.arakhne.afc.bootique.bootique_log4j {
 	requires org.eclipse.xtext.xbase.lib;
-	requires com.google.guice;
 	requires transitive bootique;
-	requires log4j;
+	requires transitive bootique.di;
+	requires javax.inject;
+	requires transitive log4j;
 	requires org.slf4j;
 	requires jul.to.slf4j;
 	requires com.fasterxml.jackson.annotation;

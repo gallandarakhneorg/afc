@@ -24,8 +24,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.google.inject.BindingAnnotation;
+import javax.inject.Qualifier;
 
 /**
  * Annotation for marking a String value in order to define the application's name.
@@ -38,7 +37,7 @@ import com.google.inject.BindingAnnotation;
  */
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@BindingAnnotation
+@Qualifier
 public @interface DefaultApplicationName {
 	//
 }

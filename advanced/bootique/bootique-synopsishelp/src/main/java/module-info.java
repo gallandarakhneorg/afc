@@ -28,9 +28,10 @@
  * @since 17.0
  */
 open module org.arakhne.afc.bootique.bootique_synopsishelp {
-	requires com.google.guice;
 	requires transitive bootique;
+	requires transitive bootique.di;
 	requires org.arakhne.afc.core.vmutils;
+	requires javax.inject;
 
 	exports org.arakhne.afc.bootique.synopsishelp;
 	exports org.arakhne.afc.bootique.synopsishelp.annotations;

@@ -80,6 +80,7 @@ public class ShapeFileIndexReader extends AbstractCommonShapeFileReader<ShapeFil
 	 * @param file is the file to read
 	 * @throws IOException in case of error.
 	 */
+	@SuppressWarnings("resource")
 	public ShapeFileIndexReader(URL file) throws IOException {
 		this(file.openStream());
 	}

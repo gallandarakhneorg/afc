@@ -20,9 +20,13 @@
 
 package org.arakhne.afc.bootique.applicationdata2;
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
+import java.util.Collection;
+import java.util.Collections;
+
+import io.bootique.BQCoreModule;
+import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
 
 import org.arakhne.afc.bootique.applicationdata2.modules.ApplicationMetadata2Module;
 import org.arakhne.afc.vmutil.locale.Locale;
@@ -38,13 +42,18 @@ import org.arakhne.afc.vmutil.locale.Locale;
 public class ApplicationData2ModuleProvider implements BQModuleProvider {
 
 	@Override
-	public Module module() {
+	public BQModule module() {
 		return new ApplicationMetadata2Module();
 	}
 
 	@Override
-	public BQModule.Builder moduleBuilder() {
-		return BQModule
+	public Collection<Class<? extends BQModule>> overrides() {
+		return Collections.singleton(BQCoreModule.class);
+	}
+
+	@Override
+	public BQModuleMetadata.Builder moduleBuilder() {
+		return BQModuleMetadata
 				.builder(module())
 				.overrides(overrides())
 				.providerName(name())

@@ -24,9 +24,9 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Map;
 
-import com.google.inject.Module;
-import io.bootique.BQModule;
+import io.bootique.BQModuleMetadata;
 import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
 
 import org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig;
 import org.arakhne.afc.bootique.log4j.modules.Log4jIntegrationModule;
@@ -43,7 +43,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
 public class Log4jIntegrationModuleProvider implements BQModuleProvider {
 
 	@Override
-	public Module module() {
+	public BQModule module() {
 		return new Log4jIntegrationModule();
 	}
 
@@ -53,8 +53,8 @@ public class Log4jIntegrationModuleProvider implements BQModuleProvider {
 	}
 
 	@Override
-	public BQModule.Builder moduleBuilder() {
-		return BQModule
+	public BQModuleMetadata.Builder moduleBuilder() {
+		return BQModuleMetadata
 				.builder(module())
 				.overrides(overrides())
 				.providerName(name())

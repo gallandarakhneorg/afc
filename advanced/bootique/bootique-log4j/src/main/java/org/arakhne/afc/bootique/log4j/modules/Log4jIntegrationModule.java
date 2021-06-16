@@ -23,13 +23,15 @@ package org.arakhne.afc.bootique.log4j.modules;
 import static io.bootique.BQCoreModule.extend;
 import static org.arakhne.afc.bootique.log4j.configs.Log4jIntegrationConfig.LEVEL;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Provider;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
 import io.bootique.config.ConfigurationFactory;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Injector;
+import io.bootique.di.Provides;
 import io.bootique.meta.application.OptionMetadata;
 import org.apache.log4j.Logger;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -47,18 +49,18 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class Log4jIntegrationModule extends AbstractModule {
+public class Log4jIntegrationModule implements BQModule {
 
 	private static final String LOG_CLI = "log"; //$NON-NLS-1$
 
 	@Override
-	protected void configure() {
+	public void configure(Binder binder) {
 		// Binding a dummy class to trigger eager init of Log4j as
 		// @Provides below can not be invoked eagerly.
-		binder().bind(LogInitTrigger.class).asEagerSingleton();
+		binder.bind(LogInitTrigger.class).inSingletonScope();
 
-		VariableDecls.extend(binder()).declareVar(LEVEL);
-		extend(binder()).addOption(OptionMetadata.builder(
+		VariableDecls.extend(binder).declareVar(LEVEL);
+		extend(binder).addOption(OptionMetadata.builder(
 				LOG_CLI,
 				Locale.getString("LOG_OPT", Level.getLabels())) //$NON-NLS-1$
 				.valueRequired(Locale.getString("LEVEL")) //$NON-NLS-1$

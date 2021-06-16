@@ -152,6 +152,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	/** Constructor.
 	 * @param inputStream is the stream to read
 	 */
+	@SuppressWarnings("resource")
 	public AbstractCommonShapeFileReader(InputStream inputStream) {
 		this(Channels.newChannel(inputStream));
 	}
@@ -169,6 +170,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 * @param file is the file to read
 	 * @throws IOException if cannot read.
 	 */
+	@SuppressWarnings("resource")
 	public AbstractCommonShapeFileReader(URL file) throws IOException {
 		this(Channels.newChannel(file.openStream()));
 	}

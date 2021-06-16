@@ -22,8 +22,6 @@ package org.arakhne.afc.references;
 
 import java.util.Map;
 
-import org.arakhne.afc.references.WeakValueHashMap;
-
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$

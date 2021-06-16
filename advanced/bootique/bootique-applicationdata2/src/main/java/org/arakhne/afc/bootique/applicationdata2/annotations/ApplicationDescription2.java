@@ -18,35 +18,26 @@
  * limitations under the License.
  */
 
-package org.arakhne.maven.plugins.tagreplacer;
+package org.arakhne.afc.bootique.applicationdata2.annotations;
 
-import java.io.File;
-
-import org.apache.maven.plugin.MojoExecutionException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import javax.inject.Qualifier;
 
 /**
- * Generate the Java source files and replace the macros by the corresponding values
- * on the fly.
- * Supported macros are described in {@link AbstractReplaceMojo}.
- *
- * <p>CAUTION: This Mojo override the value of the source directory.
+ * Annotation for marking a String value in order to define the application's name.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- *
- * @goal generatereplacesrc
- * @phase pre-integration-test
- * @requireProject true
- * @threadSafe
+ * @since 15.0
  */
-public class GenerateReplaceSourceMojo extends GenerateSourceMojo {
-
-	@Override
-    protected synchronized void executeMojo(File targetDir) throws MojoExecutionException {
-		super.executeMojo(targetDir);
-		setSourceDirectoryForAllMojo(targetDir);
-	}
-
+@Target({ElementType.PARAMETER, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
+public @interface ApplicationDescription2 {
+	//
 }

@@ -33,6 +33,7 @@ open module org.arakhne.afc.gis.gisbus {
 	requires org.arakhne.afc.core.util;
 	requires org.arakhne.afc.core.references;
 	requires org.arakhne.afc.core.text;
+	requires transitive org.arakhne.afc.core.mathgeom;
 	requires transitive org.arakhne.afc.gis.gisroad;
 
 	exports org.arakhne.afc.gis.bus.layer;

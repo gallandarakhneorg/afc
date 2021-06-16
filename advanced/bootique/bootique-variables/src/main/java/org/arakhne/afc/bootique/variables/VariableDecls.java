@@ -20,8 +20,8 @@
 
 package org.arakhne.afc.bootique.variables;
 
-import com.google.inject.Binder;
 import io.bootique.BQCoreModuleExtender;
+import io.bootique.di.Binder;
 
 /**
  * Constants and utilities for variable declaration.

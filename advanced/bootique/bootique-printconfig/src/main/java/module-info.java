@@ -31,7 +31,7 @@ open module org.arakhne.afc.bootique.bootique_printconfig {
 	requires org.eclipse.xtext.xbase.lib;
 	requires javax.inject;
 	requires transitive bootique;
-	requires com.google.guice;
+	requires transitive bootique.di;
 	requires org.arakhne.afc.core.vmutils;
 	requires com.fasterxml.jackson.core;
 	requires com.fasterxml.jackson.databind;

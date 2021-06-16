@@ -34,7 +34,7 @@ open module org.arakhne.afc.gis.gisbusinputoutput {
 	requires org.arakhne.afc.core.inputoutput;
 	requires org.arakhne.afc.gis.gisinputoutput;
 	requires transitive org.arakhne.afc.gis.gisroadinputoutput;
-	requires org.arakhne.afc.core.mathgeom;
+	requires transitive org.arakhne.afc.core.mathgeom;
 
 	exports org.arakhne.afc.gis.bus.io.xml;
 }

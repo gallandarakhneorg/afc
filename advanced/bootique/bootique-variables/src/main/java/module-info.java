@@ -27,9 +27,9 @@
  * @since 17.0
  */
 module org.arakhne.afc.bootique.bootique_variables {
-	requires com.google.guice;
-	requires com.google.common;
 	requires transitive bootique;
+	requires transitive bootique.di;
+	requires javax.inject;
 
 	exports org.arakhne.afc.bootique.variables;
 }

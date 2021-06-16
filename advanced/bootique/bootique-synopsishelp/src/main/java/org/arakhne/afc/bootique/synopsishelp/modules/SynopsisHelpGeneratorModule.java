@@ -20,11 +20,13 @@
 
 package org.arakhne.afc.bootique.synopsishelp.modules;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import javax.inject.Singleton;
+
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Injector;
+import io.bootique.di.Key;
+import io.bootique.di.Provides;
 import io.bootique.help.HelpGenerator;
 import io.bootique.meta.application.ApplicationMetadata;
 import io.bootique.terminal.Terminal;
@@ -41,14 +43,14 @@ import org.arakhne.afc.bootique.synopsishelp.help.SynopsisHelpGenerator;
  * @mavenartifactid $ArtifactId$
  * @since 15.0
  */
-public class SynopsisHelpGeneratorModule extends AbstractModule {
+public class SynopsisHelpGeneratorModule implements BQModule {
 
 	private static final int TTY_MIN_COLUMNS = 40;
 
 	private static final int TTY_DEFAULT_COLUMNS = 80;
 
 	@Override
-	protected void configure() {
+	public void configure(Binder binder) {
 		//
 	}
 

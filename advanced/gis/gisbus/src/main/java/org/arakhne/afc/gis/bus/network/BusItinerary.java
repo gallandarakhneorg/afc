@@ -1819,8 +1819,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 		BusItineraryHalt halt;
 		RoadSegment sgmt;
-		final Map<BusItineraryHalt, RoadSegment> haltMapping = new TreeMap<>(
-				(obj1, obj2) -> Integer.compare(System.identityHashCode(obj1), System.identityHashCode(obj2)));
+		final Map<BusItineraryHalt, RoadSegment> haltMapping = new TreeMap<>((obj1, obj2) ->
+			Integer.compare(System.identityHashCode(obj1), System.identityHashCode(obj2)));
 		final Iterator<BusItineraryHalt> haltIterator = this.validHalts.iterator();
 		while (haltIterator.hasNext()) {
 			halt = haltIterator.next();
@@ -2194,8 +2194,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 				//
 				// Invalidate the bus halts on the segment
 				//
-				final Map<BusItineraryHalt, RoadSegment> segmentMap = new TreeMap<>(
-						(obj1, obj2) -> Integer.compare(System.identityHashCode(obj1), System.identityHashCode(obj2)));
+				final Map<BusItineraryHalt, RoadSegment> segmentMap = new TreeMap<>((obj1, obj2) ->
+					Integer.compare(System.identityHashCode(obj1), System.identityHashCode(obj2)));
 				final Iterator<BusItineraryHalt> haltIterator = this.validHalts.iterator();
 				while (haltIterator.hasNext()) {
 					final BusItineraryHalt halt = haltIterator.next();
@@ -2299,8 +2299,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	public Set<Integer> removeRoadSegment(RoadSegment segment, boolean tryToReconnect) {
 		final IntegerList removedIndexes = new IntegerList();
 		if (segment != null) {
-			final Map<BusItineraryHalt, RoadSegment> segmentMap = new TreeMap<>(
-					(obj1, obj2) -> Integer.compare(System.identityHashCode(obj1), System.identityHashCode(obj2)));
+			final Map<BusItineraryHalt, RoadSegment> segmentMap = new TreeMap<>((obj1, obj2) ->
+				Integer.compare(System.identityHashCode(obj1), System.identityHashCode(obj2)));
 
 			// Save the segment-halt binding
 			final Iterator<BusItineraryHalt> haltIterator = this.validHalts.iterator();

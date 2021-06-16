@@ -347,6 +347,7 @@ public final class DBaseFileAttributePool {
 	 * @throws IOException in case of error.
 	 */
 	@Pure
+	@SuppressWarnings("resource")
 	protected DBaseFileReader getReader() throws IOException {
 		if (this.reader == null) {
 			this.reader = new DBaseFileReader(this.url.openStream());

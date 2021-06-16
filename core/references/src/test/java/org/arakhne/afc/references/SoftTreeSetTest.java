@@ -22,8 +22,6 @@ package org.arakhne.afc.references;
 
 import java.util.Set;
 
-import org.arakhne.afc.references.SoftTreeSet;
-
 /**
  * @author $Author: sgalland$
  * @version $FullVersion$
