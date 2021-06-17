@@ -172,13 +172,22 @@
 											!NOTICE,
 											*
 										</Export-Package>
-										<!-- Getting rid of Ant. See https://code.google.com/p/mockito/issues/detail?id=67#c13 -->
+										<!-- Getting rid of Ant. See https://code.google.com/p/mockito/issues/detail?id=67#c13 
+										     And ignore the kotlin dependency -->
 										<Import-Package>
 											org.hamcrest;core=split,
 											!org.apache.tools.ant.*,
+											!kotlin.jvm.*,
+											!sun.misc.*,
 											*
 										</Import-Package>
 									</instructions>
+									<instructionsProperties>
+                                        <property>
+                                            <name>-noee</name>
+                                            <value>true</value>
+                                        </property>
+                                    </instructionsProperties>
 								</artifact>
 
 								<!-- OLD VERSIONS -->
