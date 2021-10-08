@@ -309,6 +309,31 @@
 									<id>org.arakhne.afc.bootique:bootique-variables:16.0</id>
 									<override>true</override>
 								</artifact>
+
+								<artifact>
+									<id>com.fasterxml.jackson.core:jackson-annotations:2.11.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>com.fasterxml.jackson.core:jackson-core:2.11.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>com.fasterxml.jackson.core:jackson-databind:2.11.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.11.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.0</id>
+									<override>true</override>
+								</artifact>
+								<artifact>
+									<id>com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.11.0</id>
+									<override>true</override>
+								</artifact>
 							</artifacts>
 						</configuration>
 					</execution>
