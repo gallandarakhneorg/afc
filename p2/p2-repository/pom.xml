@@ -208,6 +208,7 @@
 										<Import-Package>
 											org.hamcrest;core=split,
 											!org.apache.tools.ant.*,
+											!sun.misc.*,
 											*
 										</Import-Package>
 									</instructions>
