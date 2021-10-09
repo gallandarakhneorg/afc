@@ -22,12 +22,12 @@
 		<bytecode.optimize>false</bytecode.optimize>
 		<bytecode.debug>true</bytecode.debug>
 		<!-- Version of Mockito library (mockito-core) -->
-		<mockito.version>3.11.1</mockito.version>
-		<mockito.version.osgi>3.11.1</mockito.version.osgi>
+		<mockito.version>4.0.0</mockito.version>
+		<mockito.version.osgi>4.0.0</mockito.version.osgi>
 		<!-- Version of Junit 5 library (junit-jupiter-engine) -->
-		<junit5.version>5.8.0-M1</junit5.version>
+		<junit5.version>5.8.1</junit5.version>
 		<!-- Version of SLF4J library (org.slf4j:slf4j-api) -->
-		<slf4j.version>2.0.0-alpha1</slf4j.version>
+		<slf4j.version>2.0.0-alpha5</slf4j.version>
 		<!--  Version of the Jackson API (usually included by Bootique) (com.fasterxml.jackson.core:jackson-core) -->
 		<jacksonapi.version>2.12.3</jacksonapi.version>
 		<!-- URL of the deployment server base -->
@@ -290,7 +290,7 @@
 			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
 				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-				<version>2.22.0</version>
+				<version>2.25.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.felix</groupId>
@@ -300,27 +300,27 @@
 			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.main</artifactId>
-				<version>7.0.0</version>
+				<version>7.0.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-plugin-api</artifactId>
-				<version>3.8.1</version>
+				<version>3.8.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact</artifactId>
-				<version>3.8.1</version>
+				<version>3.8.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
-				<version>3.8.1</version>
+				<version>3.8.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-compat</artifactId>
-				<version>3.8.1</version>
+				<version>3.8.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
@@ -619,17 +619,17 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.0.0-M3</version>
+					<version>3.0.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>3.8.2</version>
+					<version>3.9.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.3.0</version>
+					<version>3.3.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.felix</groupId>
@@ -691,7 +691,7 @@
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
 							<!-- Same version as inside Eclipse IDE -->
-							<version>8.32</version>
+							<version>8.44</version>
 						</dependency>
 					</dependencies>
 				</plugin>

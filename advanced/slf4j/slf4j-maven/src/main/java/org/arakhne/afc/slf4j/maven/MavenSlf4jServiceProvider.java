@@ -66,7 +66,7 @@ public class MavenSlf4jServiceProvider implements SLF4JServiceProvider {
 	}
 
 	@Override
-	public String getRequesteApiVersion() {
+	public String getRequestedApiVersion() {
 		return REQUESTED_API_VERSION;
 	}
 
@@ -76,5 +76,6 @@ public class MavenSlf4jServiceProvider implements SLF4JServiceProvider {
 		this.markerFactory = StaticMarkerBinder.getSingleton().getMarkerFactory();
 		this.mdcAdapter = StaticMDCBinder.getSingleton().getMDCA();
 	}
+
 
 }
