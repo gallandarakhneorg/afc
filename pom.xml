@@ -27,7 +27,7 @@
 		<!-- Version of Junit 5 library (junit-jupiter-engine) -->
 		<junit5.version>5.8.1</junit5.version>
 		<!-- Version of SLF4J library (org.slf4j:slf4j-api) -->
-		<slf4j.version>2.0.0-alpha5</slf4j.version>
+		<slf4j.version>2.0.0-alpha1</slf4j.version>
 		<!--  Version of the Jackson API (usually included by Bootique) (com.fasterxml.jackson.core:jackson-core) -->
 		<jacksonapi.version>2.12.3</jacksonapi.version>
 		<!-- URL of the deployment server base -->
