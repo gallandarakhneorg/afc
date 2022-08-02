@@ -860,4 +860,23 @@ public enum CountryCode {
 		return this.code;
 	}
 
+	/** Replies the country code that corresponds to the given name, with a case-insensitive
+	 * test of the name.
+	 *
+	 * @param name the name of the code, to search for.
+	 * @return the code.
+	 * @throws IllegalArgumentException if the given name does not corresponds to a type.
+	 * @since 18.0
+	 */
+	public static CountryCode valueOfCaseInsensitive(String name) {
+		if (name != null && !name.isEmpty()) {
+			for (final CountryCode code : CountryCode.values()) {
+				if (name.equalsIgnoreCase(code.name())) {
+					return code;
+				}
+			}
+		}
+		throw new IllegalArgumentException("Invalid country code: " + name); //$NON-NLS-1$
+	}
+
 }
