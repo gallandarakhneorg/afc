@@ -841,7 +841,17 @@ public enum CountryCode {
 	 */
 	@Pure
 	public Locale getLocale() {
-		return new Locale(this.code);
+		return new Locale(this.code, this.code);
+	}
+
+	/** Replies the display name of the country.
+	 *
+	 * @return the display name of the country.
+	 * @since 18.0
+	 */
+	@Pure
+	public String getDisplayCountry() {
+		return getLocale().getDisplayCountry();
 	}
 
 	@Override
