@@ -16,7 +16,6 @@
 	<modules>
 		<module>bootique-variables</module>
 		<module>bootique-applicationdata2</module>
-		<module>bootique-log4j</module>
 		<module>bootique-printconfig</module>
 		<module>bootique-synopsishelp</module>
 	</modules>
