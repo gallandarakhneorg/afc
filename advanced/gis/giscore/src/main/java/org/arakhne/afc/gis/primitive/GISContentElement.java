@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,14 +42,14 @@ public interface GISContentElement<C extends GISContainer<?>> extends GISElement
 
 	/** Replies the object which contains this MapElement.
 	 *
-	 * @return the container or <code>null</code>
+	 * @return the container or {@code null}
 	 */
 	@Pure
 	C getContainer();
 
 	/** Replies the top-most object which contains this element.
 	 *
-	 * @return the top container or <code>null</code>
+	 * @return the top container or {@code null}
 	 */
 	@Pure
 	Object getTopContainer();

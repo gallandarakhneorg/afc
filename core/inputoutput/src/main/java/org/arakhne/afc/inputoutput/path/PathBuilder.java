@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,7 +132,7 @@ public interface PathBuilder {
 	 * <p>If the given filename is an URL, the external form of the URL is replied.
 	 *
 	 * @param filename the file.
-	 * @return absolute equivalent name or <code>null</code> if it is impossible to obtain an URL.
+	 * @return absolute equivalent name or {@code null} if it is impossible to obtain an URL.
 	 */
 	@Pure
 	default URL makeAbsolute(String filename) {
@@ -176,7 +176,7 @@ public interface PathBuilder {
 	 * <p>If the given filename is an URL, the external form of the URL is replied.
 	 *
 	 * @param filename filename.
-	 * @return relative equivalent name or <code>null</code> if it is impossible to obtain an File.
+	 * @return relative equivalent name or {@code null} if it is impossible to obtain an File.
 	 * @throws IOException in case of error.
 	 */
 	@Pure

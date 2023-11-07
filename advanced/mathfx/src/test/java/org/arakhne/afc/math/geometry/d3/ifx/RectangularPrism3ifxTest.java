@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,11 +32,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
-import org.arakhne.afc.math.test.geometry.d3.ai.AbstractRectangularPrism3aiTest;
+import org.arakhne.afc.math.test.geometry.d3.ai.AbstractAlignedBox3aiTest;
 
 @SuppressWarnings("all")
 @Disabled("temporary")
-public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<RectangularPrism3ifx> {
+public class AlignedBox3ifxTest extends AbstractAlignedBox3aiTest<AlignedBox3ifx> {
 
 	@Override
 	protected TestShapeFactory3ifx createFactory() {
@@ -156,7 +156,7 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 	@Override
 	public void testClone(CoordinateSystem3D cs) {
 		super.testClone(cs);
-		RectangularPrism3ifx clone = this.shape.clone();
+		AlignedBox3ifx clone = this.shape.clone();
 		assertNotSame(this.shape.minXProperty(), clone.minXProperty());
 		assertNotSame(this.shape.maxXProperty(), clone.maxXProperty());
 		assertNotSame(this.shape.minYProperty(), clone.minYProperty());

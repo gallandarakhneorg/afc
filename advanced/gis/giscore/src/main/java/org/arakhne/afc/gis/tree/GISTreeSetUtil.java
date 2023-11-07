@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -122,8 +122,8 @@ public final class GISTreeSetUtil {
 	 * @param cutY is the cut line of the region parent.
 	 * @param pointX is the coordinate of the point to classify.
 	 * @param pointY is the coordinate of the point to classify.
-	 * @return <code>true</code> if the point is inside the given region,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the point is inside the given region,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	static boolean contains(int region, double cutX, double cutY, double pointX, double pointY) {
@@ -506,7 +506,7 @@ public final class GISTreeSetUtil {
 	 *
 	 * @param region is the id of the region for which the cut plane position must be computed
 	 * @param parent is the parent node.
-	 * @return the cut planes' position of the region, or <code>null</code> if
+	 * @return the cut planes' position of the region, or {@code null} if
 	 *     the cut planes' position could not be computed (because the region is the icosep region
 	 *     for instance).
 	 */

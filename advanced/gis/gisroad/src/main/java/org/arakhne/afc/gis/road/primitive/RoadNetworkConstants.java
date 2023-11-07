@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -386,7 +386,7 @@ public final class RoadNetworkConstants {
 	 * @param direction a direction.
 	 * @param index is the index of the supported string to reply
 	 * @return the preferred name for the traffic direction on the roads,
-	 *     or <code>null</code> if there is no string value for the given index.
+	 *     or {@code null} if there is no string value for the given index.
 	 */
 	@Pure
 	public static String getPreferredAttributeValueForTrafficDirection(TrafficDirection direction, int index) {
@@ -415,7 +415,7 @@ public final class RoadNetworkConstants {
 	 * used in the attributes for the traffic direction on the roads.
 	 *
 	 * @param direction aa direction
-	 * @return the preferred names for the traffic direction on the roads, never <code>null</code>.
+	 * @return the preferred names for the traffic direction on the roads, never {@code null}.
 	 */
 	@Pure
 	public static List<String> getPreferredAttributeValuesForTrafficDirection(TrafficDirection direction) {
@@ -434,7 +434,7 @@ public final class RoadNetworkConstants {
 	 *
 	 * @param direction is the direction for which the string value should be replied
 	 * @param valueIndex is the position of the string-value.
-	 * @return the string-value at the given position, never <code>null</code>
+	 * @return the string-value at the given position, never {@code null}
 	 * @throws IndexOutOfBoundsException is the given index is wrong.
 	 * @throws IllegalArgumentException is the given direction is wrong.
 	 */
@@ -521,7 +521,7 @@ public final class RoadNetworkConstants {
 	/** Replies the system default string-values for the traffic direction.
 	 *
 	 * @param direction is the direction for which the string values should be replied
-	 * @return the string-values, never <code>null</code>
+	 * @return the string-values, never {@code null}
 	 */
 	@Pure
 	public static List<String> getSystemDefaults(TrafficDirection direction) {

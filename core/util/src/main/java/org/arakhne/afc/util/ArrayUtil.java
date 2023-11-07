@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ public final class ArrayUtil {
 
 	/** Merge the arrays.
 	 *
-	 * <p>This function does not remove the <code>null</code> values.
+	 * <p>This function does not remove the {@code null} values.
 	 *
 	 * @param <T> is the type of the elements.
 	 * @param clazz is the type of the elements.
@@ -127,7 +127,7 @@ public final class ArrayUtil {
 
 	/** Merge the elements to make an array.
 	 *
-	 * <p>This function does not remove the <code>null</code> values.
+	 * <p>This function does not remove the {@code null} values.
 	 *
 	 * @param <T> is the type of the elements.
 	 * @param clazz is the type of the elements.
@@ -143,7 +143,7 @@ public final class ArrayUtil {
 
 	/** Merge the elements to make an array.
 	 *
-	 * <p>This function does not remove the <code>null</code> values.
+	 * <p>This function does not remove the {@code null} values.
 	 *
 	 * @param <T> is the type of the elements.
 	 * @param source is the first array to merge.
@@ -161,7 +161,7 @@ public final class ArrayUtil {
 
 	/** Merge the arrays.
 	 *
-	 * <p>This function removes the <code>null</code> values.
+	 * <p>This function removes the {@code null} values.
 	 *
 	 * @param <T> is the type of the elements.
 	 * @param clazz is the type of the elements.
@@ -197,7 +197,7 @@ public final class ArrayUtil {
 
 	/** Merge the elements to make an array.
 	 *
-	 * <p>This function removes the <code>null</code> values.
+	 * <p>This function removes the {@code null} values.
 	 *
 	 * @param <T> is the type of the elements.
 	 * @param clazz is the type of the elements.
@@ -224,7 +224,7 @@ public final class ArrayUtil {
 
 	/** Merge the elements to make an array.
 	 *
-	 * <p>This function removes the <code>null</code> values.
+	 * <p>This function removes the {@code null} values.
 	 *
 	 * @param <T> is the type of the elements.
 	 * @param source is the first array to merge.
@@ -278,7 +278,7 @@ public final class ArrayUtil {
 		return toArrayAndClear(list, clazz);
 	}
 
-	/** Cast the specified array and put <code>null</code> is the array when
+	/** Cast the specified array and put {@code null} is the array when
 	 * the element could not be casted.
 	 *
 	 * @param <I> is the type of the elements before the cast.
@@ -302,7 +302,7 @@ public final class ArrayUtil {
 		return result;
 	}
 
-	/** Cast the specified array and put <code>null</code> is the array when
+	/** Cast the specified array and put {@code null} is the array when
 	 * the element could not be casted.
 	 *
 	 * @param <I> is the type of the elements before the cast.
@@ -408,7 +408,7 @@ public final class ArrayUtil {
 	 * @param <T> is the type of the elements.
 	 * @param elt is the element to search for.
 	 * @param array is the array inside which the search must be done.
-	 * @return <code>true</code> if the element is inside the array, otherwise <code>false</code>
+	 * @return {@code true} if the element is inside the array, otherwise {@code false}
 	 */
 	@Pure
 	public static <T> boolean containsObject(T elt, T[] array) {
@@ -428,7 +428,7 @@ public final class ArrayUtil {
 	 * @param <T> is the type of the elements.
 	 * @param elts are the elements to search for.
 	 * @param array is the array inside which the search must be done.
-	 * @return <code>true</code> if the elements are inside the array, otherwise <code>false</code>
+	 * @return {@code true} if the elements are inside the array, otherwise {@code false}
 	 */
 	@Pure
 	public static <T> boolean containsAllObjects(T[] elts, T[] array) {
@@ -455,7 +455,7 @@ public final class ArrayUtil {
 	 * @param <T> is the type of the elements.
 	 * @param elt is the element to search for.
 	 * @param array is the array inside which the search must be done.
-	 * @return <code>true</code> if the element is inside the array, otherwise <code>false</code>
+	 * @return {@code true} if the element is inside the array, otherwise {@code false}
 	 */
 	@Pure
 	public static <T> boolean contains(T elt, @SuppressWarnings("unchecked") T... array) {
@@ -477,7 +477,7 @@ public final class ArrayUtil {
 	 * @param comparator is the comparator used to sort the array.
 	 * @param elt is the element to search for.
 	 * @param array is the array inside which the search must be done.
-	 * @return <code>true</code> if the element is inside the array, otherwise <code>false</code>
+	 * @return {@code true} if the element is inside the array, otherwise {@code false}
 	 * @since 4.0
 	 */
 	@Pure
@@ -513,7 +513,7 @@ public final class ArrayUtil {
 	 * @param <T> is the type of the elements.
 	 * @param elts are the elements to search for.
 	 * @param array is the array inside which the search must be done.
-	 * @return <code>true</code> if the elements are inside the array, otherwise <code>false</code>
+	 * @return {@code true} if the elements are inside the array, otherwise {@code false}
 	 */
 	@Pure
 	public static <T> boolean containsAll(T[] elts, T[] array) {
@@ -540,7 +540,7 @@ public final class ArrayUtil {
 	 * @param <T> is the type of the elements.
 	 * @param elts is the first array.
 	 * @param array is the second array.
-	 * @return <code>true</code> if an intersection is existing, otherwise <code>false</code>
+	 * @return {@code true} if an intersection is existing, otherwise {@code false}
 	 */
 	@Pure
 	public static <T> boolean intersects(T[] elts, T[] array) {
@@ -1057,7 +1057,7 @@ public final class ArrayUtil {
 		/** Filtering the objects.
 		 *
 		 * @param obj is the value to filter.
-		 * @return <code>true</code> if the given value is acceptable, otherwise <code>false</code>
+		 * @return {@code true} if the given value is acceptable, otherwise {@code false}
 		 */
 		@Pure
 		boolean filter(T obj);

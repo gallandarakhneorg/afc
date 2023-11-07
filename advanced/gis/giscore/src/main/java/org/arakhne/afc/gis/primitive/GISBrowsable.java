@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package org.arakhne.afc.gis.primitive;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Describe a GIS element that could be displayed inside a <code>GISDisplayer</code>.
+/** Describe a GIS element that could be displayed inside a {@code GISDisplayer}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -48,7 +48,7 @@ public interface GISBrowsable extends GISPrimitive {
 	 * This flag should not be used to adapt the visibility of the element
 	 * inside the browser.
 	 *
-	 * @return <code>true</code> if this element is visible, otherwise <code>false</code>
+	 * @return {@code true} if this element is visible, otherwise {@code false}
 	 */
 	@Pure
 	boolean isVisible();
@@ -57,7 +57,7 @@ public interface GISBrowsable extends GISPrimitive {
 	 * This flag should not be used to adapt the visibility of the element
 	 * inside the browser.
 	 *
-	 * @param isVisible must be <code>true</code> if this element is visible, otherwise <code>false</code>
+	 * @param isVisible must be {@code true} if this element is visible, otherwise {@code false}
 	 */
 	void setVisible(boolean isVisible);
 
@@ -65,7 +65,7 @@ public interface GISBrowsable extends GISPrimitive {
 	 * This flag should not be used to adapt the visibility of the element
 	 * inside the browser.
 	 *
-	 * @param isVisible must be <code>true</code> if this element is visible, otherwise <code>false</code>
+	 * @param isVisible must be {@code true} if this element is visible, otherwise {@code false}
 	 * @param setChildrenVisibility indicates if the children visibility should be also changed in turn.
 	 */
 	void setVisible(boolean isVisible, boolean setChildrenVisibility);

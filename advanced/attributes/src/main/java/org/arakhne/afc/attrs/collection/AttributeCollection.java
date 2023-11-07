@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,10 +59,10 @@ public interface AttributeCollection extends AttributeProvider {
 	 * Any previous content of this attribute collection will
 	 * be lost.
 	 * This function is equivalent to:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * this.removeAllAttributes();
 	 * this.addAttributes(content);
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @param content is the content.
 	 * @see #addAttributes(Map)
@@ -73,10 +73,10 @@ public interface AttributeCollection extends AttributeProvider {
 	 * Any previous content of this attribute collection will
 	 * be lost.
 	 * This function is equivalent to:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * this.removeAllAttributes();
 	 * this.addAttributes(content);
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @param content is the content.
 	 * @throws AttributeException if one attribute from the content cannot be inserted.
@@ -111,7 +111,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 * @throws AttributeException on error.
 	 */
 	Attribute setAttribute(String name, AttributeValue value) throws AttributeException;
@@ -120,7 +120,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, boolean value);
 
@@ -128,7 +128,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, int value);
 
@@ -136,7 +136,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, long value);
 
@@ -144,7 +144,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, float value);
 
@@ -152,7 +152,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, double value);
 
@@ -160,7 +160,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, String value);
 
@@ -168,7 +168,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, UUID value);
 
@@ -176,7 +176,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, URL value);
 
@@ -184,7 +184,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, URI value);
 
@@ -192,7 +192,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, Date value);
 
@@ -200,7 +200,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, InetAddress value);
 
@@ -208,7 +208,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, InetSocketAddress value);
 
@@ -216,7 +216,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, Enum<?> value);
 
@@ -224,14 +224,14 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 */
 	Attribute setAttribute(String name, Class<?> value);
 
 	/** Set the value for the given attribute.
 	 *
 	 * @param value is the value to store.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 * @throws AttributeException on error.
 	 */
 	Attribute setAttribute(Attribute value) throws AttributeException;
@@ -240,7 +240,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param name is the name of the attribute
 	 * @param type is the desired type.
-	 * @return the changed attribute or <code>null</code>
+	 * @return the changed attribute or {@code null}
 	 * @throws AttributeException on error.
 	 * @since 4.0
 	 */
@@ -249,26 +249,26 @@ public interface AttributeCollection extends AttributeProvider {
 	/** Remove the given attribute.
 	 *
 	 * @param name is the name of the attribute to remove.
-	 * @return <code>true</code> on success, otherwhise <code>false</code>
+	 * @return {@code true} on success, otherwhise {@code false}
 	 */
 	boolean removeAttribute(String name);
 
 	/** Remove all the attributes.
 	 *
-	 * @return <code>false</code> if something wrong appends
+	 * @return {@code false} if something wrong appends
 	 */
 	boolean removeAllAttributes();
 
 	/** Rename the attribute.
 	 *
-	 * <p>If a attribute named <code>newname</code> already exists,
-	 * this function will reply <code>false</code>.
+	 * <p>If a attribute named {@code newname} already exists,
+	 * this function will reply {@code false}.
 	 *
 	 * <p>This function is equivalent to {@code renameAttribute(oldname, newname, false)}.
 	 *
 	 * @param oldname is the name of the attribute to rename.
 	 * @param newname is the new name of the attribute.
-	 * @return <code>false</code> if something wrong appends
+	 * @return {@code false} if something wrong appends
 	 */
 	boolean renameAttribute(String oldname, String newname);
 
@@ -276,10 +276,10 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @param oldname is the name of the attribute to rename.
 	 * @param newname is the new name of the attribute.
-	 * @param overwrite must be <code>true</code> if the value of an
-	 *     existing attribute named by <code>newname</code> must be
-	 *     overwritten by the value of the attribute named <code>oldname</code>.
-	 * @return <code>false</code> if something wrong appends
+	 * @param overwrite must be {@code true} if the value of an
+	 *     existing attribute named by {@code newname} must be
+	 *     overwritten by the value of the attribute named {@code oldname}.
+	 * @return {@code false} if something wrong appends
 	 */
 	boolean renameAttribute(String oldname, String newname, boolean overwrite);
 
@@ -297,7 +297,7 @@ public interface AttributeCollection extends AttributeProvider {
 
 	/** Replies if the events are fired by this container.
 	 *
-	 * @return <code>true</code> if the events are fired; otherwise <code>false</code>
+	 * @return {@code true} if the events are fired; otherwise {@code false}
 	 *     if events are not fired.
 	 */
 	@Pure
@@ -305,7 +305,7 @@ public interface AttributeCollection extends AttributeProvider {
 
 	/** Set if the events are fired by this container.
 	 *
-	 * @param isFirable is <code>true</code> if the events are fired; otherwise <code>false</code>
+	 * @param isFirable is {@code true} if the events are fired; otherwise {@code false}
 	 *     if events are not fired.
 	 */
 	void setEventFirable(boolean isFirable);

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.afp.RectangularPrism3afp;
+import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
 import org.arakhne.afc.math.geometry.fx.MathFXAttributeNames;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
@@ -43,8 +43,8 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx> implements
-        RectangularPrism3afp<Shape3dfx<?>, RectangularPrism3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
+public class AlignedBox3dfx extends AbstractShape3dfx<AlignedBox3dfx> implements
+        AlignedBox3afp<Shape3dfx<?>, AlignedBox3dfx, PathElement3dfx, Point3dfx, Vector3dfx, AlignedBox3dfx> {
 
 	private static final long serialVersionUID = -1393290109630714626L;
 
@@ -66,7 +66,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 
 	/** Construct an empty rectangular prism.
      */
-	public RectangularPrism3dfx() {
+	public AlignedBox3dfx() {
 		addListeners();
 	}
 
@@ -74,7 +74,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	 * @param min is the min corner of the rectangular prism.
 	 * @param max is the max corner of the rectangular prism.
 	 */
-	public RectangularPrism3dfx(Point3D<?, ?> min, Point3D<?, ?> max) {
+	public AlignedBox3dfx(Point3D<?, ?> min, Point3D<?, ?> max) {
 	    assert min != null : AssertMessages.notNullParameter(0);
 	    assert max != null : AssertMessages.notNullParameter(1);
 	    setFromCorners(min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
@@ -84,7 +84,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	 * @param min is the point to set as the min corner of the rectangular prism.
 	 * @param max is the point to set as the max corner of the rectangular prism.
 	 */
-	public RectangularPrism3dfx(Point3dfx min, Point3dfx max) {
+	public AlignedBox3dfx(Point3dfx min, Point3dfx max) {
 		assert min != null : AssertMessages.notNullParameter(0);
 		assert max != null : AssertMessages.notNullParameter(1);
 		this.max = max;
@@ -100,7 +100,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
      * @param depth depth of the rectangle.
      */
 	@SuppressWarnings("checkstyle:magicnumber")
-	public RectangularPrism3dfx(double x, double y, double z, double width, double height, double depth) {
+	public AlignedBox3dfx(double x, double y, double z, double width, double height, double depth) {
 		assert width >= 0. : AssertMessages.positiveOrZeroParameter(3);
 		assert height >= 0. : AssertMessages.positiveOrZeroParameter(4);
 		assert depth >= 0. : AssertMessages.positiveOrZeroParameter(5);
@@ -108,26 +108,26 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	}
 
 	/** Constructor by copy.
-	 * @param rectangularPrism the shape to copy.
+	 * @param AlignedBox the shape to copy.
 	 */
-	public RectangularPrism3dfx(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
-	    assert rectangularPrism != null : AssertMessages.notNullParameter();
-        setFromCorners(rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ(),
-                rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ());
+	public AlignedBox3dfx(AlignedBox3afp<?, ?, ?, ?, ?, ?> AlignedBox) {
+	    assert AlignedBox != null : AssertMessages.notNullParameter();
+        setFromCorners(AlignedBox.getMinX(), AlignedBox.getMinY(), AlignedBox.getMinZ(),
+                AlignedBox.getMaxX(), AlignedBox.getMaxY(), AlignedBox.getMaxZ());
 	}
 
 	/** Constructor by setting.
-     * @param rectangularPrism the shape to set.
+     * @param AlignedBox the shape to set.
      */
-	public RectangularPrism3dfx(RectangularPrism3dfx rectangularPrism) {
-	    assert rectangularPrism != null : AssertMessages.notNullParameter();
-        this.min = rectangularPrism.min;
-        this.max = rectangularPrism.max;
+	public AlignedBox3dfx(AlignedBox3dfx AlignedBox) {
+	    assert AlignedBox != null : AssertMessages.notNullParameter();
+        this.min = AlignedBox.min;
+        this.max = AlignedBox.max;
 	}
 
 	@Override
-	public RectangularPrism3dfx clone() {
-		final RectangularPrism3dfx clone = super.clone();
+	public AlignedBox3dfx clone() {
+		final AlignedBox3dfx clone = super.clone();
 		if (clone.min != null) {
 			clone.min = null;
 			clone.min = this.min.clone();
@@ -411,7 +411,7 @@ public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx
 	}
 
 	@Override
-	public ObjectProperty<RectangularPrism3dfx> boundingBoxProperty() {
+	public ObjectProperty<AlignedBox3dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() ->

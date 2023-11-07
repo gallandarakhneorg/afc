@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import org.arakhne.afc.vmutil.ReflectionUtil;
  *
  * <p>This collection is thread-safe.
  *
- * <p>This class is inspirated by <code>EventListenerList</code>.
+ * <p>This class is inspirated by {@code EventListenerList}.
  *
  * @param <L> is the type of listeners.
  * @author $Author: sgalland$
@@ -60,8 +60,8 @@ public class ListenerCollection<L extends EventListener> {
 
 	/** Replies if this collection is empty.
 	 *
-	 * @return <code>true</code> if this collection does not
-	 *     contains any listener, otherwise <code>false</code>
+	 * @return {@code true} if this collection does not
+	 *     contains any listener, otherwise {@code false}
 	 */
 	@Pure
 	public boolean isEmpty() {

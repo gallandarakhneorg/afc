@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -148,8 +148,8 @@ public final class FileType {
 	/** Replies if the specified MIME type corresponds to an image.
 	 *
 	 * @param mime is the MIME type to test.
-	 * @return <code>true</code> if the given MIME type is corresponding to an image,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given MIME type is corresponding to an image,
+	 *     otherwise {@code false}
 	 */
 	public static boolean isImage(String mime) {
 		try {
@@ -165,8 +165,8 @@ public final class FileType {
 	 *
 	 * @param filename is the name of the file to test.
 	 * @param desiredMimeType is the desired MIME type.
-	 * @return <code>true</code> if the given file has type equal to the given MIME type,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given file has type equal to the given MIME type,
+	 *     otherwise {@code false}.
 	 */
 	public static boolean isContentType(File filename, String desiredMimeType) {
 		final ContentFileTypeMap map = ensureContentTypeManager();
@@ -177,8 +177,8 @@ public final class FileType {
 	 *
 	 * @param filename is the name of the file to test.
 	 * @param desiredMimeType is the desired MIME type.
-	 * @return <code>true</code> if the given file has type equal to the given MIME type,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given file has type equal to the given MIME type,
+	 *     otherwise {@code false}.
 	 */
 	public static boolean isContentType(String filename, String desiredMimeType) {
 		final ContentFileTypeMap map = ensureContentTypeManager();
@@ -189,8 +189,8 @@ public final class FileType {
 	 *
 	 * @param filename is the name of the file to test.
 	 * @param desiredMimeType is the desired MIME type.
-	 * @return <code>true</code> if the given file has type equal to the given MIME type,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given file has type equal to the given MIME type,
+	 *     otherwise {@code false}.
 	 */
 	public static boolean isContentType(URL filename, String desiredMimeType) {
 		final ContentFileTypeMap map = ensureContentTypeManager();
@@ -271,8 +271,8 @@ public final class FileType {
 		 *
 		 * @param filename is the filename of the file to read.
 		 * @param mimeType is the restriction type.
-		 * @return <code>true</code> if the file has the given MIME type,
-		 *     otherwise <code>false</code>
+		 * @return {@code true} if the file has the given MIME type,
+		 *     otherwise {@code false}
 		 */
 		public boolean isContentType(File filename, String mimeType) {
 			assert filename != null : AssertMessages.notNullParameter(0);
@@ -300,8 +300,8 @@ public final class FileType {
 		 *
 		 * @param filename is the filename of the file to read.
 		 * @param mimeType is the restriction type.
-		 * @return <code>true</code> if the file has the given MIME type,
-		 *     otherwise <code>false</code>
+		 * @return {@code true} if the file has the given MIME type,
+		 *     otherwise {@code false}
 		 */
 		public boolean isContentType(String filename, String mimeType) {
 			return isContentType(new File(filename), mimeType);
@@ -311,8 +311,8 @@ public final class FileType {
 		 *
 		 * @param filename is the filename of the file to read.
 		 * @param mimeType is the restriction type.
-		 * @return <code>true</code> if the file has the given MIME type,
-		 *     otherwise <code>false</code>
+		 * @return {@code true} if the file has the given MIME type,
+		 *     otherwise {@code false}
 		 */
 		public boolean isContentType(URL filename, String mimeType) {
 			assert filename != null : AssertMessages.notNullParameter(0);

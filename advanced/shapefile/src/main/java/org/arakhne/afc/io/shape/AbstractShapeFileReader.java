@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -236,8 +236,8 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	/** Called just after the dBase attributes was red.
 	 *
 	 * @param element_representation is the value returned by the reading function.
-	 * @return <code>true</code> if the object is assumed to be valid (ie. it will be replies by
-	 *     the reading function), otherwise <code>false</code>.
+	 * @return {@code true} if the object is assumed to be valid (ie. it will be replies by
+	 *     the reading function), otherwise {@code false}.
 	 * @throws IOException in case of error.
 	 */
 	protected boolean postAttributeReadingStage(E element_representation) throws IOException {
@@ -247,8 +247,8 @@ public abstract class AbstractShapeFileReader<E> extends AbstractCommonShapeFile
 	/** Called just after the shape was red but before the attributes were retreived.
 	 *
 	 * @param element_representation is the value returned by the reading function.
-	 * @return <code>true</code> if the object is assumed to be valid (ie. it will be replies by
-	 *     the reading function), otherwhise <code>false</code>.
+	 * @return {@code true} if the object is assumed to be valid (ie. it will be replies by
+	 *     the reading function), otherwhise {@code false}.
 	 * @throws IOException in case of error.
 	 */
 	protected boolean postShapeReadingStage(E element_representation) throws IOException {

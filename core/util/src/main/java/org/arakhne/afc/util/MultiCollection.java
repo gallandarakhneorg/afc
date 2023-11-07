@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,8 +64,8 @@ public class MultiCollection<E> implements Collection<E> {
 	/** Remove a collection from this multicollection.
 	 *
 	 * @param collection the collection to remove.
-	 * @return <code>true</code> if the multi-collection has changed,
-	 *      otherwise <code>false</code>.
+	 * @return {@code true} if the multi-collection has changed,
+	 *      otherwise {@code false}.
 	 */
 	public boolean removeCollection(Collection<? extends E> collection) {
 		return this.collections.remove(collection);

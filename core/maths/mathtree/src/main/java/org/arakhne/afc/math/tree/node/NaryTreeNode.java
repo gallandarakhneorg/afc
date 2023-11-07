@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,16 +34,16 @@ import org.arakhne.afc.math.tree.TreeNode;
  * tree. This node has not a constant count of children.
  * Indeed when a child node was removed, the count of children
  * is also changed. It also means that a child node is never
- * <code>null</code>. If you want a generic implementation
+ * {@code null}. If you want a generic implementation
  * of a tree node which has always the same count of children,
  * please see {@link ConstantNaryTreeNode}.
  *
  * <h3>moveTo</h3>
  * According to its definition in
  * {@link TreeNode#moveTo(TreeNode, int)}, the binary
- * tree node implementation of <code>moveTo</code>
+ * tree node implementation of {@code moveTo}
  * does not replace any existing node at the position given as
- * parameter of <code>moveTo</code>. In place <code>moveTo</code>
+ * parameter of {@code moveTo}. In place {@code moveTo}
  * insert the moving node in the new parent.
  *
  * @param <D> is the type of the data inside the tree
@@ -85,7 +85,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 
 	/** Constructor.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 */
 	public NaryTreeNode(boolean useLinkedList) {
 		super(useLinkedList);
@@ -94,10 +94,10 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 
 	/** Constructor.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param copyDataCollection indicates if the given data collection is copied
-	 *     if <code>true</code> or the inner data collection will be the given
-	 *     collection itself if <code>false</code>.
+	 *     if {@code true} or the inner data collection will be the given
+	 *     collection itself if {@code false}.
 	 * @param data are the initial user data
 	 */
 	public NaryTreeNode(boolean useLinkedList, boolean copyDataCollection, List<D> data) {
@@ -107,7 +107,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 
 	/** Constructor.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param data are the initial user data
 	 */
 	public NaryTreeNode(boolean useLinkedList, D data) {
@@ -150,7 +150,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	 * If you want to unlink the first-level
 	 * child node with
 	 * this node but leave the rest of the tree
-	 * unchanged, please call <code>setChildAt(i,null)</code>.
+	 * unchanged, please call {@code setChildAt(i,null)}.
 	 */
 	@Override
 	public void clear() {
@@ -214,7 +214,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	 * the node.
 	 *
 	 * @param newParent is the new parent for this node.
-	 * @return <code>true</code> on success, otherwise <code>false</code>.
+	 * @return {@code true} on success, otherwise {@code false}.
 	 */
 	public boolean moveTo(N newParent) {
 		if (newParent == null) {
@@ -321,7 +321,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	/** Add a child node at the end of the children list.
 	 *
 	 * @param child is the new child to insert.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public final boolean addChild(N child) {
 		if (child != null) {
@@ -334,7 +334,7 @@ public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends Abst
 	 *
 	 * @param index is the insertion index.
 	 * @param newChild is the new child to insert.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public final boolean addChild(int index, N newChild) {
 		if (newChild == null) {

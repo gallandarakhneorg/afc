@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -320,8 +320,8 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	/** Replies if the specified option was set.
 	 *
 	 * @param option is the option to test
-	 * @return <code>true</code> if the given option was previously set,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given option was previously set,
+	 *     otherwise {@code false}.
 	 * @see #OPTION_DECODE_STRING
 	 */
 	@Pure
@@ -350,7 +350,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	/** Set or unset the specified option.
 	 *
 	 * @param option is the option to set or unset.
-	 * @param option_is_set is <code>true</code> to set the given option, or <code>false</code>
+	 * @param option_is_set is {@code true} to set the given option, or {@code false}
 	 *     to unset it.
 	 * @see #OPTION_DECODE_STRING
 	 */
@@ -370,7 +370,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 	/** Replies if the stream was closed.
 	 *
-	 * @return <code>true</code> if the input stream is closed, otherwise <code>false</code>.
+	 * @return {@code true} if the input stream is closed, otherwise {@code false}.
 	 */
 	@Pure
 	public boolean isClosed() {
@@ -433,7 +433,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 	/** Replies the date of the last update of the DBF file.
 	 *
-	 * @return the date or <code>null</code> of the date is unknown.
+	 * @return the date or {@code null} of the date is unknown.
 	 * @since 4.0
 	 */
 	@Pure
@@ -443,7 +443,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 
 	/** Replies the language used in the dBASE file.
 	 *
-	 * @return the language used in the dBASE file, or <code>null</code> if unknown.
+	 * @return the language used in the dBASE file, or {@code null} if unknown.
 	 * @since 4.0
 	 */
 	@Pure
@@ -572,9 +572,9 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 *
 	 * <p>Instead of {@link #readDBFFields()}, this method
 	 * does not throws any exception. It prefers to
-	 * return the value <code>null</code>.
+	 * return the value {@code null}.
 	 *
-	 * @return all the columns or <code>null</code>
+	 * @return all the columns or {@code null}
 	 * @see #readDBFFields()
 	 */
 	@Pure
@@ -590,7 +590,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 * Replies the name of the i-th field.
 	 *
 	 * @param index the index.
-	 * @return the name or <code>null</code> if the function {@link #readDBFFields()}
+	 * @return the name or {@code null} if the function {@link #readDBFFields()}
 	 *     was never called.
 	 */
 	@Pure
@@ -612,7 +612,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 * Replies the column index of the specified column name.
 	 *
 	 * @param name the field name.
-	 * @return the index or <code>-1</code> if the columns was not found
+	 * @return the index or {@code -1} if the columns was not found
 	 *     or the function {@link #readDBFFields()} was never called
 	 */
 	@Pure
@@ -638,7 +638,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 * Replies the type of the i-th field.
 	 *
 	 * @param index the index.
-	 * @return the type or <code>null</code> if the function {@link #readDBFFields()}
+	 * @return the type or {@code null} if the function {@link #readDBFFields()}
 	 *     was never called.
 	 */
 	@Pure
@@ -665,7 +665,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	 * of the dBASE file's columns.
 	 *
 	 * <p>Instead of {@link #getDBFFields()}, this method
-	 * does not returns the value <code>null</code>. It
+	 * does not returns the value {@code null}. It
 	 * prefers to throw an exception.
 	 *
 	 * @return all the columns
@@ -1265,7 +1265,7 @@ public class DBaseFileReader implements Iterable<AttributeProvider>, AutoCloseab
 	/** Replies if the specified column could be replied or ignored.
 	 *
 	 * @param column the column.
-	 * @return <code>true</code> if the given column is selectable, otherwise <code>false</code>
+	 * @return {@code true} if the given column is selectable, otherwise {@code false}
 	 */
 	@Pure
 	public boolean isColumnSelectable(DBaseFileField column) {

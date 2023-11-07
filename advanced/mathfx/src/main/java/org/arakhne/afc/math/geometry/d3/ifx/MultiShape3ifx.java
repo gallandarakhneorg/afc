@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public class MultiShape3ifx<T extends Shape3ifx<?>> extends AbstractShape3ifx<MultiShape3ifx<T>> implements
-        MultiShape3ai<Shape3ifx<?>, MultiShape3ifx<T>, T, PathElement3ifx, Point3ifx, Vector3ifx, RectangularPrism3ifx> {
+        MultiShape3ai<Shape3ifx<?>, MultiShape3ifx<T>, T, PathElement3ifx, Point3ifx, Vector3ifx, AlignedBox3ifx> {
 
 	private static final long serialVersionUID = -4727279807601027239L;
 
@@ -106,12 +106,12 @@ public class MultiShape3ifx<T extends Shape3ifx<?>> extends AbstractShape3ifx<Mu
 	}
 
 	@Override
-	public ObjectProperty<RectangularPrism3ifx> boundingBoxProperty() {
+	public ObjectProperty<AlignedBox3ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-			    final RectangularPrism3ifx box = getGeomFactory().newBox();
-			    final RectangularPrism3ifx shapeBox = getGeomFactory().newBox();
+			    final AlignedBox3ifx box = getGeomFactory().newBox();
+			    final AlignedBox3ifx shapeBox = getGeomFactory().newBox();
 			    final Iterator<T> iterator = elementsProperty().iterator();
 			    if (iterator.hasNext()) {
 			        iterator.next().toBoundingBox(shapeBox);
@@ -150,13 +150,13 @@ public class MultiShape3ifx<T extends Shape3ifx<?>> extends AbstractShape3ifx<Mu
 
 	@Pure
 	@Override
-	public RectangularPrism3ifx toBoundingBox() {
+	public AlignedBox3ifx toBoundingBox() {
 		return boundingBoxProperty().get().clone();
 	}
 
 	@Pure
 	@Override
-	public void toBoundingBox(RectangularPrism3ifx box) {
+	public void toBoundingBox(AlignedBox3ifx box) {
 		assert box != null : AssertMessages.notNullParameter();
 		box.set(boundingBoxProperty().get());
 	}
@@ -182,13 +182,13 @@ public class MultiShape3ifx<T extends Shape3ifx<?>> extends AbstractShape3ifx<Mu
 
 		private void bind(Shape3ifx<?> shape) {
 			assert shape != null;
-			final ObjectProperty<RectangularPrism3ifx> property = shape.boundingBoxProperty();
+			final ObjectProperty<AlignedBox3ifx> property = shape.boundingBoxProperty();
 			property.addListener(this);
 		}
 
 		private void unbind(Shape3ifx<?> shape) {
 			assert shape != null;
-			final ObjectProperty<RectangularPrism3ifx> property = shape.boundingBoxProperty();
+			final ObjectProperty<AlignedBox3ifx> property = shape.boundingBoxProperty();
 			property.removeListener(this);
 		}
 

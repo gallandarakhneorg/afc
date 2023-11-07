@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,8 +88,8 @@ public interface Progression {
 
 	/**
 	 * Returns the model's current value.  Note that the upper
-	 * limit on the model's value is <code>maximum</code>
-	 * and the lower limit is <code>minimum</code>.
+	 * limit on the model's value is {@code maximum}
+	 * and the lower limit is {@code minimum}.
 	 *
 	 * @return  the model's value
 	 * @see     #setValue
@@ -115,14 +115,14 @@ public interface Progression {
 	double getProgressionFactor();
 
 	/**
-	 * Sets the model's current value to <code>newValue</code> if <code>newValue</code>
+	 * Sets the model's current value to {@code newValue} if {@code newValue}
 	 * satisfies the model's constraints. Those constraints are:
 	 * <pre>
 	 * minimum &lt;= value &lt;= maximum
 	 * </pre>
-	 * Otherwise, if <code>newValue</code> is less than <code>minimum</code>
-	 * it's set to <code>minimum</code>, if its greater than
-	 * <code>maximum</code> then it's set to <code>maximum</code>.
+	 * Otherwise, if {@code newValue} is less than {@code minimum}
+	 * it's set to {@code minimum}, if its greater than
+	 * {@code maximum} then it's set to {@code maximum}.
 	 *
 	 * @param newValue the model's new value
 	 * @see #getValue
@@ -130,14 +130,14 @@ public interface Progression {
 	void setValue(int newValue);
 
 	/**
-	 * Sets the model's current value to <code>newValue</code> if <code>newValue</code>
+	 * Sets the model's current value to {@code newValue} if {@code newValue}
 	 * satisfies the model's constraints. Those constraints are:
 	 * <pre>
 	 * minimum &lt;= value &lt;= maximum
 	 * </pre>
-	 * Otherwise, if <code>newValue</code> is less than <code>minimum</code>
-	 * it's set to <code>minimum</code>, if its greater than
-	 * <code>maximum</code> then it's set to <code>maximum</code>.
+	 * Otherwise, if {@code newValue} is less than {@code minimum}
+	 * it's set to {@code minimum}, if its greater than
+	 * {@code maximum} then it's set to {@code maximum}.
 	 *
 	 * @param newValue the model's new value
 	 * @param comment is the comment to display.
@@ -153,7 +153,7 @@ public interface Progression {
 	 * this allows a listener to only take action when the final value change in
 	 * committed, instead of having to do updates for all intermediate values.
 	 *
-	 * @param adjusting <code>true</code> if the upcoming changes to the value property are part of a series
+	 * @param adjusting {@code true} if the upcoming changes to the value property are part of a series
 	 * @see #subTask(int)
 	 */
 	void setAdjusting(boolean adjusting);
@@ -179,7 +179,7 @@ public interface Progression {
 	 * @param max    an int giving the maximum value
 	 * @param adjusting a boolean, true if a series of changes are in
 	 *                    progress
-	 * @param comment is the comment associated to the current task, or <code>null</code>
+	 * @param comment is the comment associated to the current task, or {@code null}
 	 *
 	 * @see #setValue
 	 * @see #setMinimum
@@ -210,30 +210,30 @@ public interface Progression {
 	void setProperties(int value, int min, int max, boolean adjusting);
 
 	/**
-	 * Sets the <code>indeterminate</code> property of the task progression,
+	 * Sets the {@code indeterminate} property of the task progression,
 	 * which determines whether the progression is in determinate
 	 * or indeterminate mode.
 	 * For example an indeterminate progress bar continuously displays animation
 	 * indicating that an operation of unknown length is occurring.
 	 *
-	 * @param newValue	<code>true</code> if the progress bar
+	 * @param newValue	{@code true} if the progress bar
 	 *     should change to indeterminate mode;
-	 * 	   <code>false</code> if it should revert to normal.
+	 * 	   {@code false} if it should revert to normal.
 	 * @see #isIndeterminate
 	 */
 	void setIndeterminate(boolean newValue);
 
 	/**
-	 * Returns the value of the <code>indeterminate</code> property.
+	 * Returns the value of the {@code indeterminate} property.
 	 *
-	 * @return the value of the <code>indeterminate</code> property
+	 * @return the value of the {@code indeterminate} property
 	 * @see    #setIndeterminate
 	 */
 	boolean isIndeterminate();
 
 	/** Set the comment associated to the currect task.
 	 *
-	 * <p>If the given string is <code>null</code> or empty,
+	 * <p>If the given string is {@code null} or empty,
 	 * the current task is assumed to not have a comment.
 	 *
 	 * @param comment is the comment for the current task.
@@ -242,7 +242,7 @@ public interface Progression {
 
 	/** Replies the comment associated to the currect task.
 	 *
-	 * @return the comment for the current task or <code>null</code>
+	 * @return the comment for the current task or {@code null}
 	 *     if the current task has not any comment.
 	 */
 	String getComment();
@@ -339,7 +339,7 @@ public interface Progression {
 
 	/** Replies the current subtask of this task model.
 	 *
-	 * @return the current subtask or <code>null</code> this task was
+	 * @return the current subtask or {@code null} this task was
 	 *     not decomposed.
 	 */
 	Progression getSubTask();
@@ -352,7 +352,7 @@ public interface Progression {
 
 	/** Replies the super task of this task model.
 	 *
-	 * @return the super task or <code>null</code> this task was
+	 * @return the super task or {@code null} this task was
 	 *     not a decomposition of a super task.
 	 */
 	Progression getSuperTask();
@@ -365,8 +365,8 @@ public interface Progression {
 	 *
 	 * <p>{@code isRootMode() == (getTaskDepth()==0)}
 	 *
-	 * @return <code>true</code> if this model is a root model,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this model is a root model,
+	 *     otherwise {@code false}
 	 */
 	boolean isRootModel();
 
@@ -385,9 +385,9 @@ public interface Progression {
 	/** Increment the current value by the given amount.
 	 *
 	 * <p>This function is equivalent to:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * this.setValue(this.getValue()+amount);
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @param amount is the amount to add to the current value.
 	 * @since 11.0
@@ -397,9 +397,9 @@ public interface Progression {
 	/** Increment the current value by the given amount.
 	 *
 	 * <p>This function is equivalent to:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * this.setValue(this.getValue()+amount, comment);
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @param amount is the amount to add to the current value.
 	 * @param comment is the comment to display.
@@ -410,9 +410,9 @@ public interface Progression {
 	/** Increment the current value by 1.
 	 *
 	 * <p>This function is equivalent to:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * this.setValue(this.getValue()+1);
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @since 11.0
 	 */
@@ -421,9 +421,9 @@ public interface Progression {
 	/** Increment the current value by 1.
 	 *
 	 * <p>This function is equivalent to:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * this.setValue(this.getValue()+1, comment);
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @param comment is the comment to display.
 	 * @since 11.0

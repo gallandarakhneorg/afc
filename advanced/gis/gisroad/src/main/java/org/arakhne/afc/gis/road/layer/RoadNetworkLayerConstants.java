@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,7 +109,7 @@ public final class RoadNetworkLayerConstants {
 
 	/** Replies the preferred size of the roazd borders (in pixels).
 	 *
-	 * @param useSystemValue indicates if the <code>null</code> value
+	 * @param useSystemValue indicates if the {@code null} value
 	 *     must be replaced by the default system value:
 	 * {@link #DEFAULT_BORDER_SIZE}.
 	 * @return size of the road borders.
@@ -162,9 +162,9 @@ public final class RoadNetworkLayerConstants {
 	/** Replies the preferred color to draw the content of the roads of the given type.
 	 *
 	 * @param roadType is the type of road for which the color should be replied.
-	 * @param useSystemValue indicates if the <code>null</code> value
+	 * @param useSystemValue indicates if the {@code null} value
 	 *     must be replaced by the default system value in
-	 * {@link #DEFAULT_ROAD_COLORS} (if <code>true</code>).
+	 * {@link #DEFAULT_ROAD_COLORS} (if {@code true}).
 	 * @return the color of the inner parts of the roads.
 	 */
 	@Pure
@@ -190,7 +190,7 @@ public final class RoadNetworkLayerConstants {
 	/** Set the preferred color to draw the content of the roads of the given type.
 	 *
 	 * @param roadType is the type of road for which the color should be replied.
-	 * @param color is the color or <code>null</code> to restore the default value.
+	 * @param color is the color or {@code null} to restore the default value.
 	 */
 	public static void setPreferredRoadColor(RoadType roadType, Integer color) {
 		final RoadType rt = roadType == null ? RoadType.OTHER : roadType;
@@ -222,9 +222,9 @@ public final class RoadNetworkLayerConstants {
 	/** Replies the preferred color to draw the borders of the roads of the given type.
 	 *
 	 * @param roadType is the type of road for which the color should be replied.
-	 * @param useSystemValue indicates if the <code>null</code> value
+	 * @param useSystemValue indicates if the {@code null} value
 	 *     must be replaced by the default system value in
-	 * {@link #DEFAULT_ROAD_COLORS} (if <code>true</code>).
+	 * {@link #DEFAULT_ROAD_COLORS} (if {@code true}).
 	 * @return the color of the inner parts of the roads.
 	 */
 	@Pure
@@ -250,7 +250,7 @@ public final class RoadNetworkLayerConstants {
 	/** Set the preferred color to draw the borders of the roads of the given type.
 	 *
 	 * @param roadType is the type of road for which the color should be replied.
-	 * @param color is the color or <code>null</code> to restore the default value.
+	 * @param color is the color or {@code null} to restore the default value.
 	 */
 	public static void setPreferredBorderColor(RoadType roadType, Integer color) {
 		final RoadType rt = roadType == null ? RoadType.OTHER : roadType;
@@ -272,8 +272,8 @@ public final class RoadNetworkLayerConstants {
 	/** Replies if the internal data structure used to store the road network
 	 * may be drawn on the displayers.
 	 *
-	 * @return <code>true</code> if the internal data structures may be
-	 *     drawn on the displayers, otherwise <code>false</code>.
+	 * @return {@code true} if the internal data structures may be
+	 *     drawn on the displayers, otherwise {@code false}.
 	 */
 	@Pure
 	public static boolean getPreferredRoadInternDrawing() {
@@ -287,9 +287,9 @@ public final class RoadNetworkLayerConstants {
 	/** Set if the internal data structure used to store the road network
 	 * may be drawn on the displayers.
 	 *
-	 * @param draw is <code>true</code> if the internal data structures may be
-	 *     drawn on the displayers, <code>false</code> if the internal data structures
-	 *     may not be drawn on the displayers, <code>null</code> to restore
+	 * @param draw is {@code true} if the internal data structures may be
+	 *     drawn on the displayers, {@code false} if the internal data structures
+	 *     may not be drawn on the displayers, {@code null} to restore
 	 *     the default value given by {@link #DEFAULT_ROAD_INTERN_DRAWING}.
 	 */
 	public static void setPreferredRoadInternDrawing(Boolean draw) {
@@ -311,7 +311,7 @@ public final class RoadNetworkLayerConstants {
 	/** Replies the color of the internal data structures used when they
 	 * are drawn on the displayers.
 	 *
-	 * @return the color of the internal data structures, never <code>null</code>.
+	 * @return the color of the internal data structures, never {@code null}.
 	 */
 	@Pure
 	public static int getPreferredRoadInternColor() {
@@ -332,7 +332,7 @@ public final class RoadNetworkLayerConstants {
 	/** Set the color of the internal data structures used when they
 	 * are drawn on the displayers.
 	 *
-	 * @param color is the color of the internal data structures, never <code>null</code>.
+	 * @param color is the color of the internal data structures, never {@code null}.
 	 */
 	public static void setPreferredRoadInternColor(Integer color) {
 		final Preferences prefs = Preferences.userNodeForPackage(RoadNetworkLayerConstants.class);

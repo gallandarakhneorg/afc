@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,21 +44,21 @@ public interface GISSet<P extends GISPrimitive> extends Set<P> {
 
 	/** Replies if this informed tree set is trying to
 	 * compute the best fitting type after a removal.
-	 * If <code>false</code>, this class will keep unchanged
+	 * If {@code false}, this class will keep unchanged
 	 * the previously computed type.
 	 *
-	 * @return <code>true</code> if the type is recomputed
-	 *     after a removal, <code>false</code> if not.
+	 * @return {@code true} if the type is recomputed
+	 *     after a removal, {@code false} if not.
 	 */
 	boolean isTypeRecomputedAfterRemoval();
 
 	/** Set if this informed tree set is trying to
 	 * compute the best fitting type after a removal.
-	 * If <code>false</code>, this class will keep unchanged
+	 * If {@code false}, this class will keep unchanged
 	 * the previously computed type.
 	 *
-	 * @param update is <code>true</code> if the type is recomputed
-	 *     after a removal, <code>false</code> if not.
+	 * @param update is {@code true} if the type is recomputed
+	 *     after a removal, {@code false} if not.
 	 */
 	void setTypeRecomputedAfterRemoval(boolean update);
 
@@ -75,14 +75,14 @@ public interface GISSet<P extends GISPrimitive> extends Set<P> {
 	 * the geoId.
 	 *
 	 * @param identifier is the identifier to text.
-	 * @return the entity or <code>null</code> if none was found.
+	 * @return the entity or {@code null} if none was found.
 	 */
 	P get(GeoId identifier);
 
 	/** Replies the element which as the specified location.
 	 *
 	 * @param location is the location of the element to find.
-	 * @return the entity or <code>null</code> if none was found.
+	 * @return the entity or {@code null} if none was found.
 	 */
 	P get(GeoLocation location);
 
@@ -109,8 +109,8 @@ public interface GISSet<P extends GISPrimitive> extends Set<P> {
 	 * by user a depth-first iteration on the internal tree.
 	 *
 	 * @param obj the object.
-	 * @return <code>true</code> of <var>o</var> is inside,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} of <var>o</var> is inside,
+	 *     otherwise {@code false}
 	 * @see #contains(Object)
 	 */
 	boolean slowContains(Object obj);

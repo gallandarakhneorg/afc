@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,9 +56,9 @@ final class RoadSegmentIterationComparator implements Comparator<GraphIterationE
 	private final boolean isOrientedSegments;
 
 	/** Constructor.
-	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
+	 * @param assumeOrientedSegments may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
-	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
+	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
 	 *      the end points of a segment are not distinguished.
 	 */
 	private RoadSegmentIterationComparator(boolean assumeOrientedSegments) {
@@ -85,9 +85,9 @@ final class RoadSegmentIterationComparator implements Comparator<GraphIterationE
 	 *
 	 * @param s1 the first segment.
 	 * @param s2 the second segment.
-	 * @return <code>-1</code> if {@code s1} is lower than {@code s2},
-	 *     <code>1</code> if {@code s1} is greater than {@code s2},
-	 *     otherwise <code>0</code>.
+	 * @return {@code -1} if {@code s1} is lower than {@code s2},
+	 *     {@code 1} if {@code s1} is greater than {@code s2},
+	 *     otherwise {@code 0}.
 	 */
 	@SuppressWarnings("static-method")
 	@Pure
@@ -100,9 +100,9 @@ final class RoadSegmentIterationComparator implements Comparator<GraphIterationE
 	 *
 	 * @param p1 the first connection.
 	 * @param p2 the second connection.
-	 * @return <code>-1</code> if {@code p1} is lower than {@code p2},
-	 *     <code>1</code> if {@code p1} is greater than {@code p2},
-	 *     otherwise <code>0</code>.
+	 * @return {@code -1} if {@code p1} is lower than {@code p2},
+	 *     {@code 1} if {@code p1} is greater than {@code p2},
+	 *     otherwise {@code 0}.
 	 */
 	@SuppressWarnings("static-method")
 	@Pure
@@ -114,8 +114,8 @@ final class RoadSegmentIterationComparator implements Comparator<GraphIterationE
 	/** Replies if this comparator is assuming that
 	 * segments are oriented.
 	 *
-	 * @return <code>true</code> if segments are oriented,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if segments are oriented,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isOrientedSegments() {

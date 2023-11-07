@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,11 +80,11 @@ public final class Resources {
 	 * for retrieving the resource.
 	 * If the calling class cannot be obtained or accessed, the class loader replied by
 	 * {@link ClassLoaderFinder} is used.
-	 * If it is <code>null</code>, the class loader of
+	 * If it is {@code null}, the class loader of
 	 * the Resources class is used.
 	 *
 	 * @param path is the absolute path of the resource.
-	 * @return the url of the resource or <code>null</code> if the resource was
+	 * @return the url of the resource or {@code null} if the resource was
 	 *     not found in class paths.
 	 */
 	@Pure
@@ -108,23 +108,23 @@ public final class Resources {
 	 *
 	 * <p>The name of {@code packagename} is translated into a resource
 	 * path (by replacing the dots by slashes) and the given path
-	 * is append to. For example, the two following codes are equivalent:<pre><code>
+	 * is append to. For example, the two following codes are equivalent:<pre>{@code 
 	 * Resources.getResources(Package.getPackage("org.arakhne.afc"), "/a/b/c/d.png");
 	 * Resources.getResources("org/arakhne/afc/a/b/c/d.png");
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * <p>This function tries to use the class loader of the {@link Caller#getCallerClass()} calling class}
 	 * for retrieving the resource.
 	 * If the calling class cannot be obtained or accessed,
 	 * the class loader replied by {@link ClassLoaderFinder} is used.
-	 * If this last is <code>null</code>, the class loader of
+	 * If this last is {@code null}, the class loader of
 	 * the Resources class is used.
 	 *
-	 * @param classLoader is the research scope. If <code>null</code>,
+	 * @param classLoader is the research scope. If {@code null},
 	 *     the class loader replied by {@link ClassLoaderFinder} is used.
 	 * @param packagename is the package in which the resource should be located.
 	 * @param path is the relative path of the resource in the package.
-	 * @return the url of the resource or <code>null</code> if the resource was
+	 * @return the url of the resource or {@code null} if the resource was
 	 *     not found in class paths.
 	 * @since 6.2
 	 * @deprecated since 17.0. According to the new module path management (since Java 9),
@@ -160,19 +160,19 @@ public final class Resources {
 	 *
 	 * <p>The name of {@code classname} is translated into a resource
 	 * path (by remove the name of the class and replacing the dots by slashes) and the given path
-	 * is append to. For example, the two following codes are equivalent:<pre><code>
+	 * is append to. For example, the two following codes are equivalent:<pre>{@code 
 	 * Resources.getResource(Resources.class, "/a/b/c/d.png");
 	 * Resources.getResource("org/arakhne/vmutil/a/b/c/d.png");
-	 * </code></pre>
+	 * }</pre>
 	 *
-	 * <p>The class loader of the given class is used. If it is <code>null</code>,
+	 * <p>The class loader of the given class is used. If it is {@code null},
 	 * the class loader replied by {@link ClassLoaderFinder} is used.
-	 * If it is also <code>null</code>, the class loader of this Resources
+	 * If it is also {@code null}, the class loader of this Resources
 	 * class is used.
 	 *
 	 * @param classname is located in the package in which the resource should be also located.
 	 * @param path is the absolute path of the resource.
-	 * @return the url of the resource or <code>null</code> if the resource was
+	 * @return the url of the resource or {@code null} if the resource was
 	 *     not found in class paths.
 	 */
 	@Pure
@@ -189,15 +189,15 @@ public final class Resources {
 	 * <p>You may use Unix-like syntax to write the resource path, ie.
 	 * you may use slashes to separate filenames.
 	 *
-	 * <p>If the {@code classLoader} parameter is <code>null</code>,
+	 * <p>If the {@code classLoader} parameter is {@code null},
 	 * the class loader replied by {@link ClassLoaderFinder} is used.
-	 * If this last is <code>null</code>, the class loader of
+	 * If this last is {@code null}, the class loader of
 	 * the Resources class is used.
 	 *
-	 * @param classLoader is the research scope. If <code>null</code>,
+	 * @param classLoader is the research scope. If {@code null},
 	 *     the class loader replied by {@link ClassLoaderFinder} is used.
 	 * @param path is the absolute path of the resource.
-	 * @return the url of the resource or <code>null</code> if the resource was
+	 * @return the url of the resource or {@code null} if the resource was
 	 *     not found in class paths.
 	 * @deprecated since 17.0. According to the new module path management (since Java 9),
 	 *     it is preferable to use the class for searching a resource. See
@@ -217,11 +217,11 @@ public final class Resources {
 	 * path with a slash.
 	 *
 	 * <p>The class loader replied by {@link ClassLoaderFinder} is used.
-	 * If it is <code>null</code>, the class loader of
+	 * If it is {@code null}, the class loader of
 	 * the Resources class is used.
 	 *
 	 * @param path is the absolute path of the resource.
-	 * @return the url of the resource or <code>null</code> if the resource was
+	 * @return the url of the resource or {@code null} if the resource was
 	 *     not found in class paths.
 	 */
 	@Pure
@@ -245,21 +245,21 @@ public final class Resources {
 	 *
 	 * <p>The name of {@code packagename} is translated into a resource
 	 * path (by replacing the dots by slashes) and the given path
-	 * is append to. For example, the two following codes are equivalent:<pre><code>
+	 * is append to. For example, the two following codes are equivalent:<pre>{@code 
 	 * Resources.getResources(Package.getPackage("org.arakhne.afc"), "/a/b/c/d.png");
 	 * Resources.getResources("org/arakhne/afc/a/b/c/d.png");
-	 * </code></pre>
+	 * }</pre>
 	 *
-	 * <p>If the {@code classLoader} parameter is <code>null</code>,
+	 * <p>If the {@code classLoader} parameter is {@code null},
 	 * the class loader replied by {@link ClassLoaderFinder} is used.
-	 * If this last is <code>null</code>, the class loader of
+	 * If this last is {@code null}, the class loader of
 	 * the Resources class is used.
 	 *
-	 * @param classLoader is the research scope. If <code>null</code>,
+	 * @param classLoader is the research scope. If {@code null},
 	 *     the class loader replied by {@link ClassLoaderFinder} is used.
 	 * @param packagename is the package in which the resource should be located.
 	 * @param path is the relative path of the resource in the package.
-	 * @return the url of the resource or <code>null</code> if the resource was
+	 * @return the url of the resource or {@code null} if the resource was
 	 *     not found in class paths.
 	 * @since 6.2
 	 * @deprecated since 17.0. According to the new module path management (since Java 9),
@@ -295,19 +295,19 @@ public final class Resources {
 	 *
 	 * <p>The name of {@code classname} is translated into a resource
 	 * path (by remove the name of the class and replacing the dots by slashes) and the given path
-	 * is append to. For example, the two following codes are equivalent:<pre><code>
+	 * is append to. For example, the two following codes are equivalent:<pre>{@code 
 	 * Resources.getResources(Resources.class, "/a/b/c/d.png");
 	 * Resources.getResources("org/arakhne/vmutil/a/b/c/d.png");
-	 * </code></pre>
+	 * }</pre>
 	 *
-	 * <p>The class loader of the given class is used. If it is <code>null</code>,
+	 * <p>The class loader of the given class is used. If it is {@code null},
 	 * the class loader replied by {@link ClassLoaderFinder} is used.
-	 * If it is also <code>null</code>, the class loader of this Resources
+	 * If it is also {@code null}, the class loader of this Resources
 	 * class is used.
 	 *
 	 * @param classname is located in the package in which the resource should be also located.
 	 * @param path is the absolute path of the resource.
-	 * @return the url of the resource or <code>null</code> if the resource was
+	 * @return the url of the resource or {@code null} if the resource was
 	 *     not found in class paths.
 	 */
 	@Pure
@@ -325,15 +325,15 @@ public final class Resources {
 	 * you may use slashes to separate filenames, and may not start the
 	 * path with a slash.
 	 *
-	 * <p>If the {@code classLoader} parameter is <code>null</code>,
+	 * <p>If the {@code classLoader} parameter is {@code null},
 	 * the class loader replied by {@link ClassLoaderFinder} is used.
-	 * If this last is <code>null</code>, the class loader of
+	 * If this last is {@code null}, the class loader of
 	 * the Resources class is used.
 	 *
-	 * @param classLoader is the research scope. If <code>null</code>,
+	 * @param classLoader is the research scope. If {@code null},
 	 *     the class loader replied by {@link ClassLoaderFinder} is used.
 	 * @param path is the absolute path of the resource.
-	 * @return the url of the resource or <code>null</code> if the resource was
+	 * @return the url of the resource or {@code null} if the resource was
 	 *     not found in class paths.
 	 * @deprecated since 17.0. According to the new module path management (since Java 9),
 	 *     it is preferable to use the class for searching a resource. See
@@ -349,9 +349,9 @@ public final class Resources {
 	 * Replies the URL of a property resource that is associated to the given class.
 	 *
 	 * @param classname is the class for which the property resource should be replied.
-	 * @param locale is the expected localization of the resource file; or <code>null</code>
+	 * @param locale is the expected localization of the resource file; or {@code null}
 	 *     for the default.
-	 * @return the url of the property resource or <code>null</code> if the resource was
+	 * @return the url of the property resource or {@code null} if the resource was
 	 *     not found in class paths.
 	 * @since 7.0
 	 */
@@ -384,12 +384,12 @@ public final class Resources {
 	/**
 	 * Replies the URL of a property resource that is associated to the given class.
 	 *
-	 * @param classLoader is the research scope. If <code>null</code>,
+	 * @param classLoader is the research scope. If {@code null},
 	 *     the class loader replied by {@link ClassLoaderFinder} is used.
 	 * @param classname is the class for which the property resource should be replied.
-	 * @param locale is the expected localization of the resource file; or <code>null</code>
+	 * @param locale is the expected localization of the resource file; or {@code null}
 	 *     for the default.
-	 * @return the url of the property resource or <code>null</code> if the resource was
+	 * @return the url of the property resource or {@code null} if the resource was
 	 *     not found in class paths.
 	 * @deprecated since 17.0. According to the new module path management (since Java 9),
 	 *     it is preferable to use the class for searching a resource. See
@@ -424,10 +424,10 @@ public final class Resources {
 
 	/** Translate the given resource name according to the current JVM standard.
 	 *
-	 * <p>The <code>resourceName</code> argument should be a fully
+	 * <p>The {@code resourceName} argument should be a fully
 	 * qualified class name. However, for compatibility with earlier
 	 * versions, Sun's Java SE Runtime Environments do not verify this,
-	 * and so it is possible to access <code>PropertyResourceBundle</code>s
+	 * and so it is possible to access {@code PropertyResourceBundle}s
 	 * by specifying a path name (using "/") instead of a fully
 	 * qualified class name (using ".").
 	 * In several VM, such as Dalvik, the translation from "." to "/" is not

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import org.arakhne.afc.math.test.geometry.d3.ai.AbstractMultiShape3aiTest;
 @SuppressWarnings("all")
 @Disabled("temporary")
 public class MultiShape3ifxTest
-        extends AbstractMultiShape3aiTest<MultiShape3ifx<Shape3ifx<?>>, Shape3ifx<?>, RectangularPrism3ifx> {
+        extends AbstractMultiShape3aiTest<MultiShape3ifx<Shape3ifx<?>>, Shape3ifx<?>, AlignedBox3ifx> {
 
     @Override
     protected TestShapeFactory3ifx createFactory() {

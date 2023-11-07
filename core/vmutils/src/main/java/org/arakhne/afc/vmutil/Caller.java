@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import org.arakhne.afc.vmutil.caller.StackTraceCaller;
  * This utility class provides a way to determine which class
  * call a function.
  *
- * <p>It inspirated from the Sun's <code>sun.reflect.Reflection</code> class
+ * <p>It inspirated from the Sun's {@code sun.reflect.Reflection} class
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -67,7 +67,7 @@ public final class Caller {
 	}
 
 	/** Replies the method of the caller that invoked the function
-	 * from which <code>getCallerMethod()</code> was invoked.
+	 * from which {@code getCallerMethod()} was invoked.
 	 *
 	 * <p>The returned value is the name of the method instead of a
 	 * {@link Method} instance. It is due to JRE that does not
@@ -101,7 +101,7 @@ public final class Caller {
 	 * </pre>
 	 *
 	 * @return the method of the caller that invoked the function
-	 *     from which <code>getCallerMethod()</code> was invoked.
+	 *     from which {@code getCallerMethod()} was invoked.
 	 */
 	@Pure
 	public static String getCallerMethod() {
@@ -112,12 +112,12 @@ public final class Caller {
 	 *
 	 * <p>The given {@code level} permits to specify which method to reply:
 	 * <ul>
-	 * <li><code>0</code>: the method where is defined the function (<code>f<sub>0</sub></code>)
-	 * that has called <code>getCallerClass()</code></li>
-	 * <li><code>1</code>: the method where is defined the function (<code>f<sub>1</sub></code>)
-	 * that has called <code>f<sub>0</sub></code></li>
-	 * <li><code>2</code>: the method where is defined the function (<code>f<sub>2</sub></code>)
-	 * that has called <code>f<sub>1</sub></code></li>
+	 * <li>{@code 0}: the method where is defined the function ({@code f<sub>0</sub>})
+	 * that has called {@code getCallerClass()}</li>
+	 * <li>{@code 1}: the method where is defined the function ({@code f<sub>1</sub>})
+	 * that has called {@code f<sub>0</sub>}</li>
+	 * <li>{@code 2}: the method where is defined the function ({@code f<sub>2</sub>})
+	 * that has called {@code f<sub>1</sub>}</li>
 	 * <li>etc.</li>
 	 * </ul>
 	 *
@@ -161,10 +161,10 @@ public final class Caller {
 	}
 
 	/** Replies the class of the caller that invoked the function
-	 * from which <code>getCallerClass()</code> was invoked.
+	 * from which {@code getCallerClass()} was invoked.
 	 *
 	 * @return the class of the caller that invoked the function
-	 *     from which <code>getCallerClass()</code> was invoked.
+	 *     from which {@code getCallerClass()} was invoked.
 	 */
 	@Pure
 	public static Class<?> getCallerClass() {
@@ -175,12 +175,12 @@ public final class Caller {
 	 *
 	 * <p>The given {@code level} permits to specify which class to reply:
 	 * <ul>
-	 * <li><code>0</code>: the class where is defined the function (<code>f<sub>0</sub></code>)
-	 * that has called <code>getCallerClass()</code></li>
-	 * <li><code>1</code>: the class where is defined the function (<code>f<sub>1</sub></code>)
-	 * that has called <code>f<sub>0</sub></code></li>
-	 * <li><code>2</code>: the class where is defined the function (<code>f<sub>2</sub></code>)
-	 * that has called <code>f<sub>1</sub></code></li>
+	 * <li>{@code 0}: the class where is defined the function ({@code f<sub>0</sub>})
+	 * that has called {@code getCallerClass()}</li>
+	 * <li>{@code 1}: the class where is defined the function ({@code f<sub>1</sub>})
+	 * that has called {@code f<sub>0</sub>}</li>
+	 * <li>{@code 2}: the class where is defined the function ({@code f<sub>2</sub>})
+	 * that has called {@code f<sub>1</sub>}</li>
 	 * <li>etc.</li>
 	 * </ul>
 	 *
@@ -193,11 +193,11 @@ public final class Caller {
 	}
 
 	/** Replies the class of the first caller that invoked the function
-	 * from which <code>getCallerClass()</code> was invoked and is outside
+	 * from which {@code getCallerClass()} was invoked and is outside
 	 * the vmutils module.
 	 *
 	 * @return the class of the caller that invoked the function
-	 *     from which <code>getCallerClass()</code> was invoked and
+	 *     from which {@code getCallerClass()} was invoked and
 	 *     outside the current module.
 	 *     The {@code null} value may be replied if the caller class cannot
 	 *     be retrieved.

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,10 +52,10 @@ public final class AssertMessages {
 		return msg("A15", Arrays.toString(parameterIndexes)); //$NON-NLS-1$
 	}
 
-	/** The value of Parameter must be <code>true</code>.
+	/** The value of Parameter must be {@code true}.
 	 *
 	 * @param parameterIndex the index of the formal parameter.
-	 * @param functionName the name of the function that should reply <code>true</code>.
+	 * @param functionName the name of the function that should reply {@code true}.
 	 * @return the error message.
 	 */
 	@Pure
@@ -63,9 +63,9 @@ public final class AssertMessages {
 		return msg("A13", functionName); //$NON-NLS-1$
 	}
 
-	/** The value of first Parameter must be <code>true</code>.
+	/** The value of first Parameter must be {@code true}.
 	 *
-	 * @param functionName the name of the function that should reply <code>true</code>.
+	 * @param functionName the name of the function that should reply {@code true}.
 	 * @return the error message.
 	 */
 	@Pure
@@ -74,10 +74,10 @@ public final class AssertMessages {
 		return invalidFalseValue(0, functionName);
 	}
 
-	/** The value of Parameter must be <code>false</code>.
+	/** The value of Parameter must be {@code false}.
 	 *
 	 * @param parameterIndex the index of the formal parameter.
-	 * @param functionName the name of the function that should reply <code>false</code>.
+	 * @param functionName the name of the function that should reply {@code false}.
 	 * @return the error message.
 	 */
 	@Pure
@@ -85,9 +85,9 @@ public final class AssertMessages {
 		return msg("A12", functionName); //$NON-NLS-1$
 	}
 
-	/** The value of first Parameter must be <code>false</code>.
+	/** The value of first Parameter must be {@code false}.
 	 *
-	 * @param functionName the name of the function that should reply <code>false</code>.
+	 * @param functionName the name of the function that should reply {@code false}.
 	 * @return the error message.
 	 */
 	@Pure

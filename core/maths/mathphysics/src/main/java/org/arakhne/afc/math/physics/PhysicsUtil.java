@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,10 +63,10 @@ public final class PhysicsUtil {
 
 	/** Set the current physics engine.
 	 *
-	 * <p>If the given engine is <code>null</code>, the default physics engine
+	 * <p>If the given engine is {@code null}, the default physics engine
 	 * is used (java implementation).
 	 *
-	 * @param newEngine the current physics engine, or <code>null</code> for default engine.
+	 * @param newEngine the current physics engine, or {@code null} for default engine.
 	 * @return previous physics engine.
 	 */
 	public static PhysicsEngine setPhysicsEngine(PhysicsEngine newEngine) {
@@ -82,7 +82,7 @@ public final class PhysicsUtil {
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
 	 *
-	 * <p><code>movement = speed * dt + 0.5 * acceleration * dt * dt</code>
+	 * <p>{@code movement = speed * dt + 0.5 * acceleration * dt * dt}
 	 *
 	 * @param speed is the current speed of the object.
 	 * @param acceleration is the current acceleration of the object.
@@ -104,10 +104,10 @@ public final class PhysicsUtil {
 	 *
 	 * <p>This function allows to clamp acceleration and velocity.
 	 *
-	 * <p><code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
-	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
-	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
-	 * <code>motion = clamped_velocity * dt</code><br>
+	 * <p>{@code clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)}<br>
+	 * {@code new_velocity = velocity + 0.5 * clamped_acceleration * dt}<br>
+	 * {@code clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)}<br>
+	 * {@code motion = clamped_velocity * dt}<br>
 	 *
 	 * @param velocity is the current velocity of the object.
 	 * @param minSpeed is the minimal speed allowed.
@@ -140,10 +140,10 @@ public final class PhysicsUtil {
 	 *
 	 * <p>This function allows to clamp acceleration and velocity.
 	 *
-	 * <p><code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
-	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
-	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
-	 * <code>motion = clamped_velocity * dt</code><br>
+	 * <p>{@code clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)}<br>
+	 * {@code new_velocity = velocity + 0.5 * clamped_acceleration * dt}<br>
+	 * {@code clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)}<br>
+	 * {@code motion = clamped_velocity * dt}<br>
 	 *
 	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
 	 * @param minSpeed is the minimal speed allowed.
@@ -180,10 +180,10 @@ public final class PhysicsUtil {
 	 *
 	 * <p>This function allows to clamp acceleration and velocity.
 	 *
-	 * <p><code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
-	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
-	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
-	 * <code>motion = clamped_velocity * dt</code><br>
+	 * <p>{@code clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)}<br>
+	 * {@code new_velocity = velocity + 0.5 * clamped_acceleration * dt}<br>
+	 * {@code clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)}<br>
+	 * {@code motion = clamped_velocity * dt}<br>
 	 *
 	 * <p>Caution: The resulting vector has the same segment as the provided vector.
 	 *
@@ -220,10 +220,10 @@ public final class PhysicsUtil {
 	 *
 	 * <p>This function allows to clamp acceleration and velocity.
 	 *
-	 * <p><code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
-	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
-	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
-	 * <code>motion = clamped_velocity * dt</code><br>
+	 * <p>{@code clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)}<br>
+	 * {@code new_velocity = velocity + 0.5 * clamped_acceleration * dt}<br>
+	 * {@code clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)}<br>
+	 * {@code motion = clamped_velocity * dt}<br>
 	 *
 	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
 	 * @param minSpeed is the minimal speed allowed.
@@ -258,10 +258,10 @@ public final class PhysicsUtil {
 	 *
 	 * <p>This function allows to clamp acceleration and velocity.
 	 *
-	 * <p><code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
-	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
-	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
-	 * <code>motion = clamped_velocity * dt</code><br>
+	 * <p>{@code clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)}<br>
+	 * {@code new_velocity = velocity + 0.5 * clamped_acceleration * dt}<br>
+	 * {@code clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)}<br>
+	 * {@code motion = clamped_velocity * dt}<br>
 	 *
 	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
 	 * @param minSpeed is the minimal speed allowed.
@@ -280,14 +280,14 @@ public final class PhysicsUtil {
 	@Inline(value = "$9.getPhysicsEngine().motionNewtonLaw2D5(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonLaw2D5(
-			Vector3D<?, ?> velocity,
+			Vector3D<?, ?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D<?, ?> acceleration,
+			Vector3D<?, ?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector3D<?, ?> result) {
+			Vector3D<?, ?, ?> result) {
 		engine.motionNewtonLaw2D5(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt, result);
 	}
 
@@ -296,10 +296,10 @@ public final class PhysicsUtil {
 	 *
 	 * <p>This function allows to clamp acceleration and velocity.
 	 *
-	 * <p><code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
-	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
-	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
-	 * <code>motion = clamped_velocity * dt</code><br>
+	 * <p>{@code clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)}<br>
+	 * {@code new_velocity = velocity + 0.5 * clamped_acceleration * dt}<br>
+	 * {@code clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)}<br>
+	 * {@code motion = clamped_velocity * dt}<br>
 	 *
 	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
 	 * @param minSpeed is the minimal speed allowed.
@@ -318,21 +318,21 @@ public final class PhysicsUtil {
 	@Inline(value = "$9.getPhysicsEngine().motionNewtonLaw3D(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonLaw3D(
-			Vector3D<?, ?> velocity,
+			Vector3D<?, ?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D<?, ?> acceleration,
+			Vector3D<?, ?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector3D<?, ?> result) {
+			Vector3D<?, ?, ?> result) {
 		engine.motionNewtonLaw3D(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt, result);
 	}
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion.
 	 *
-	 * <p><code>movement = speed * dt</code>
+	 * <p>{@code movement = speed * dt}
 	 *
 	 * @param speed is the current  speed of the object.
 	 * @param dt is the time
@@ -350,7 +350,7 @@ public final class PhysicsUtil {
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion.
 	 *
-	 * <p><code>movement = clamp(velocity) * dt</code>
+	 * <p>{@code movement = clamp(velocity) * dt}
 	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed.
@@ -372,7 +372,7 @@ public final class PhysicsUtil {
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion.
 	 *
-	 * <p><code>movement = clamp(velocity) * dt</code>
+	 * <p>{@code movement = clamp(velocity) * dt}
 	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
@@ -397,7 +397,7 @@ public final class PhysicsUtil {
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion.
 	 *
-	 * <p><code>movement = clamp(velocity) * dt</code>
+	 * <p>{@code movement = clamp(velocity) * dt}
 	 *
 	 * <p>Caution: The resulting vector has the same segment as the provided vector.
 	 *
@@ -422,7 +422,7 @@ public final class PhysicsUtil {
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion.
 	 *
-	 * <p><code>movement = clamp(velocity) * dt</code>
+	 * <p>{@code movement = clamp(velocity) * dt}
 	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
@@ -445,7 +445,7 @@ public final class PhysicsUtil {
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion.
 	 *
-	 * <p><code>movement = clamp(velocity) * dt</code>
+	 * <p>{@code movement = clamp(velocity) * dt}
 	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
@@ -457,18 +457,18 @@ public final class PhysicsUtil {
 	@Inline(value = "$6.getPhysicsEngine().motionNewtonEuler1Law2D5(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonEuler1Law2D5(
-			Vector3D<?, ?> velocity,
+			Vector3D<?, ?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector3D<?, ?> result) {
+			Vector3D<?, ?, ?> result) {
 		engine.motionNewtonEuler1Law2D5(velocity, minSpeed, maxSpeed, dt, result);
 	}
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion.
 	 *
-	 * <p><code>movement = clamp(velocity) * dt</code>
+	 * <p>{@code movement = clamp(velocity) * dt}
 	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
@@ -480,18 +480,18 @@ public final class PhysicsUtil {
 	@Inline(value = "$6.getPhysicsEngine().motionNewtonEuler1Law3D(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonEuler1Law3D(
-			Vector3D<?, ?> velocity,
+			Vector3D<?, ?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector3D<?, ?> result) {
+			Vector3D<?, ?, ?> result) {
 		engine.motionNewtonEuler1Law3D(velocity, minSpeed, maxSpeed, dt, result);
 	}
 
 	/** Replies the new  velocity according to a previous velocity and
 	 * a mouvement during a given time.
 	 *
-	 * <p><code>velocity = movement / dt</code>
+	 * <p>{@code velocity = movement / dt}
 	 *
 	 * @param movement is the movement distance.
 	 * @param dt is the time
@@ -507,7 +507,7 @@ public final class PhysicsUtil {
 	/** Replies the new  acceleration according to a previous
 	 * velocity and a current  velocity, and given time.
 	 *
-	 * <p><code>(currentVelocity - previousVelocity) / dt</code>
+	 * <p>{@code (currentVelocity - previousVelocity) / dt}
 	 *
 	 * @param previousSpeed is the previous  speed of the object.
 	 * @param currentSpeed is the current  speed of the object.

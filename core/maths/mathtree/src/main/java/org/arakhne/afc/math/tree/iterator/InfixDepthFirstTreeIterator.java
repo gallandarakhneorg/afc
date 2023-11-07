@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,14 +32,14 @@ import org.arakhne.afc.math.tree.TreeNode;
  * the set of child treatments.
  * Significant values of this position are:
  * <table border="1" width="100%" summary="Values of the parents' position">
- * <tr><td><code>0</code></td><td>the parent is
- * treated before the child at index <code>0</code>.
+ * <tr><td>{@code 0}</td><td>the parent is
+ * treated before the child at index {@code 0}.
  * This is equivalent to a prefixed depth-first iterator.
  * We recommend to use {@link PrefixDepthFirstTreeIterator}
  * insteed of this iterator class.</td></tr>
- * <tr><td>between <code>1</code> and <code>getChildCount()-1</code></td><td>the parent is
+ * <tr><td>between {@code 1} and {@code getChildCount()-1}</td><td>the parent is
  * treated before the child at the specified index.</td></tr>
- * <tr><td><code>getChildCount()</code></td><td>the parent is
+ * <tr><td>{@code getChildCount()}</td><td>the parent is
  * treated after the last child.
  * This is equivalent to a postfixed depth-first iterator.
  * We recommend to use {@link PostfixDepthFirstTreeIterator}
@@ -47,7 +47,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * </table>
  *
  * <p>By default this iterator assumes an infix index that corresponds
- * to the middle of each child set (ie, <code>getChildCount()/2</code>).
+ * to the middle of each child set (ie, {@code getChildCount()/2}).
  *
  * @param <N> is the type of the tree nodes.
  * @author $Author: sgalland$

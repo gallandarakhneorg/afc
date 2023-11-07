@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ public interface BusPrimitive<CONTAINER extends BusContainer<?>> extends Bounded
 	 * this primitive. Please refers to the documentation
 	 * of that primitive.
 	 *
-	 * @return <code>true</code> if the primitive is valid, otherwise <code>false</code>
+	 * @return {@code true} if the primitive is valid, otherwise {@code false}
 	 */
 	@Pure
 	boolean isValidPrimitive();
@@ -82,17 +82,17 @@ public interface BusPrimitive<CONTAINER extends BusContainer<?>> extends Bounded
 	 *
 	 * <p>This function should be invoked when the bus primitive
 	 * was construct with its flag replied by {@link #isEventFirable()}
-	 * set to <code>false</code>.
+	 * set to {@code false}.
 	 * This function permits to finalize the construction.
 	 *
 	 * <p>In addition, this function automatically
 	 * invoke {@link #resetBoundingBox()} and does the same
 	 * job as {@link #revalidate()} (but does not invoke it).
 	 * This function invokes {@link #setEventFirable(boolean)}
-	 * with <code>true</code> as parameter.
+	 * with {@code true} as parameter.
 	 *
 	 * <p>This function does not fire any event is
-	 * {@link #isEventFirable()} replies <code>true</code>
+	 * {@link #isEventFirable()} replies {@code true}
 	 * when {@link #rebuild()} is invoked
 	 *
 	 * @since 4.0
@@ -106,14 +106,14 @@ public interface BusPrimitive<CONTAINER extends BusContainer<?>> extends Bounded
 	 *
 	 * <p>This function should be invoked when the bus primitive
 	 * was construct with its flag replied by {@link #isEventFirable()}
-	 * set to <code>false</code>.
+	 * set to {@code false}.
 	 * This function permits to finalize the construction.
 	 *
 	 * <p>In addition, this function automatically
 	 * invoke {@link #resetBoundingBox()} and does the same
 	 * job as {@link #revalidate()} (but does not invoke it).
 	 * This function invokes {@link #setEventFirable(boolean)}
-	 * with <code>true</code> as parameter.
+	 * with {@code true} as parameter.
 	 *
 	 * @param fireEvents indicates if the events should be fired.
 	 * @since 4.0

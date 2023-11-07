@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 
 	/** Create a new layer.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param itinerary is the embedded itinerary
 	 * @since 4.0
 	 */
@@ -87,7 +87,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 
 	/** Create a new layer.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param itinerary is the embedded itinerary
 	 * @param autoUpdate indicates if this layer is automatically updated
 	 *     when the given itinerary has changed.
@@ -120,7 +120,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 
 	/** Create a new layer.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeProvider is the attribute collection associated to this layer.
 	 * @param itinerary is the itinerary to put in the layer.
 	 * @since 4.0
@@ -131,7 +131,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 
 	/** Create a new layer.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeProvider is the attribute collection associated to this layer.
 	 * @param itinerary is the itinerary to put in the layer.
 	 * @param autoUpdate indicates if this layer is automatically updated
@@ -249,8 +249,8 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	/** Run the initialization of the elements from the current bus itinerary.
 	 *
 	 * <p>This function is invoked by the constructor of BusItineraryLayer
-	 * if its parameter <var>autoUpdate</var> is <code>true</code>, and
-	 * not invoked if this parameter is <code>false</code>.
+	 * if its parameter <var>autoUpdate</var> is {@code true}, and
+	 * not invoked if this parameter is {@code false}.
 	 */
 	protected void initializeElements() {
 		final BusItinerary itinerary = getBusItinerary();
@@ -273,7 +273,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	 * when a bus itinerary has been inverted.
 	 *
 	 * @param event is the source of the event.
-	 * @return <code>true</code> if the events was fired, otherwise <code>false</code>.
+	 * @return {@code true} if the events was fired, otherwise {@code false}.
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean onBusItineraryInverted(BusChangeEvent event) {
@@ -288,7 +288,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	 * @param halt is the new itinerary halt.
 	 * @param index is the index of the bus halt.
 	 * @param event is the source of the event.
-	 * @return <code>true</code> if the events was fired, otherwise <code>false</code>.
+	 * @return {@code true} if the events was fired, otherwise {@code false}.
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean onBusItineraryHaltAdded(BusItineraryHalt halt, int index, BusChangeEvent event) {
@@ -303,7 +303,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	 * @param halt is the removed itinerary halt.
 	 * @param index is the index of the bus halt.
 	 * @param event is the source of the event.
-	 * @return <code>true</code> if the events was fired, otherwise <code>false</code>.
+	 * @return {@code true} if the events was fired, otherwise {@code false}.
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean onBusItineraryHaltRemoved(BusItineraryHalt halt, int index, BusChangeEvent event) {
@@ -316,7 +316,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	 * when a bus itinerary halt has been removed.
 	 *
 	 * @param event is the source of the event.
-	 * @return <code>true</code> if the events was fired, otherwise <code>false</code>.
+	 * @return {@code true} if the events was fired, otherwise {@code false}.
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean onAllBusItineraryHaltRemoved(BusChangeEvent event) {
@@ -331,7 +331,7 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	 * @param halt is the changed itinerary halt.
 	 * @param index is the index of the bus halt.
 	 * @param event is the source of the event.
-	 * @return <code>true</code> if the events was fired, otherwise <code>false</code>.
+	 * @return {@code true} if the events was fired, otherwise {@code false}.
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean onBusItineraryHaltChanged(BusItineraryHalt halt, int index, BusChangeEvent event) {
@@ -352,8 +352,8 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	/** Replies if this layer is automatically updated when
 	 * a bus itinerary was removed or added.
 	 *
-	 * @return <code>true</code> if the layer is automatically updated,
-	 * <code>false</code>.
+	 * @return {@code true} if the layer is automatically updated,
+	 * {@code false}.
 	 */
 	@Pure
 	public boolean isLayerAutoUpdated() {
@@ -363,8 +363,8 @@ public class BusItineraryLayer extends MapLayer implements BusLayer {
 	/** Set if this layer is automatically updated when
 	 * a bus itinerary was removed or added.
 	 *
-	 * @param update is <code>true</code> if the layer should be automatically updated,
-	 * <code>false</code>.
+	 * @param update is {@code true} if the layer should be automatically updated,
+	 * {@code false}.
 	 */
 	public void setLayerAutoUpdated(boolean update) {
 		this.autoUpdate.set(update);

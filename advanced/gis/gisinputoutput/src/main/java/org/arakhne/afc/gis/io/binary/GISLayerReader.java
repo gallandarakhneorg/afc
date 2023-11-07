@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,7 +101,7 @@ public class GISLayerReader implements AutoCloseable, Iterable<MapLayer> {
 
 	/** Replies the task progression.
 	 *
-	 * @return the task progression object associated to this reader, or <code>null</code>
+	 * @return the task progression object associated to this reader, or {@code null}
 	 */
 	@Pure
 	public Progression getProgression() {
@@ -110,7 +110,7 @@ public class GISLayerReader implements AutoCloseable, Iterable<MapLayer> {
 
 	/** Set the task progression associated to this reader.
 	 *
-	 * @param progressBar is the task progression object associated to this reader, or <code>null</code>
+	 * @param progressBar is the task progression object associated to this reader, or {@code null}
 	 */
 	public void setProgression(Progression progressBar) {
 		this.progression = progressBar;
@@ -154,7 +154,7 @@ public class GISLayerReader implements AutoCloseable, Iterable<MapLayer> {
 	 *
 	 * @param <T> is the type of the expected layer.
 	 * @param type is the type of the expected layer.
-	 * @return the next layer in the input stream, or <code>null</code>
+	 * @return the next layer in the input stream, or {@code null}
 	 *     if there is no more object of the given type.
 	 * @throws IOException in case of error.
 	 * @throws IndexOutOfBoundsException in case of error.

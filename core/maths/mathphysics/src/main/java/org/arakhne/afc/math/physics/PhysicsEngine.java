@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public interface PhysicsEngine {
 	 * to high school physics Newton's equations for motion.
 	 *
 	 * <p>From Equation 2 of the SUVAT form:<br>
-	 * <code>movement = speed * dt + 0.5 * acceleration * dt * dt</code>
+	 * {@code movement = speed * dt + 0.5 * acceleration * dt * dt}
 	 *
 	 * @param speed is the current speed of the object.
 	 * @param acceleration is the current acceleration of the object.
@@ -69,10 +69,10 @@ public interface PhysicsEngine {
 	 * <p>This function allows to clamp acceleration and velocity.
 	 *
 	 * <p>From Equation 2 of the SUVAT form:<br>
-	 * <code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
-	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
-	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
-	 * <code>motion = clamped_velocity * dt</code><br>
+	 * {@code clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)}<br>
+	 * {@code new_velocity = velocity + 0.5 * clamped_acceleration * dt}<br>
+	 * {@code clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)}<br>
+	 * {@code motion = clamped_velocity * dt}<br>
 	 *
 	 * @param velocity is the current velocity of the object.
 	 * @param minSpeed is the minimal speed allowed.
@@ -102,10 +102,10 @@ public interface PhysicsEngine {
 	 * <p>This function allows to clamp acceleration and velocity.
 	 *
 	 * <p>From Equation 2 of the SUVAT form:<br>
-	 * <code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
-	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
-	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
-	 * <code>motion = clamped_velocity * dt</code><br>
+	 * {@code clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)}<br>
+	 * {@code new_velocity = velocity + 0.5 * clamped_acceleration * dt}<br>
+	 * {@code clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)}<br>
+	 * {@code motion = clamped_velocity * dt}<br>
 	 *
 	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
 	 * @param minSpeed is the minimal speed allowed.
@@ -139,10 +139,10 @@ public interface PhysicsEngine {
 	 * <p>This function allows to clamp acceleration and velocity.
 	 *
 	 * <p>From Equation 2 of the SUVAT form:<br>
-	 * <code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
-	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
-	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
-	 * <code>motion = clamped_velocity * dt</code><br>
+	 * {@code clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)}<br>
+	 * {@code new_velocity = velocity + 0.5 * clamped_acceleration * dt}<br>
+	 * {@code clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)}<br>
+	 * {@code motion = clamped_velocity * dt}<br>
 	 *
 	 * <p>Caution: The resulting vector has the same segment as the provided vector.
 	 *
@@ -177,10 +177,10 @@ public interface PhysicsEngine {
 	 * <p>This function allows to clamp acceleration and velocity.
 	 *
 	 * <p>From Equation 2 of the SUVAT form:<br>
-	 * <code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
-	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
-	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
-	 * <code>motion = clamped_velocity * dt</code><br>
+	 * {@code clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)}<br>
+	 * {@code new_velocity = velocity + 0.5 * clamped_acceleration * dt}<br>
+	 * {@code clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)}<br>
+	 * {@code motion = clamped_velocity * dt}<br>
 	 *
 	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
 	 * @param minSpeed is the minimal speed allowed.
@@ -212,10 +212,10 @@ public interface PhysicsEngine {
 	 * <p>This function allows to clamp acceleration and velocity.
 	 *
 	 * <p>From Equation 2 of the SUVAT form:<br>
-	 * <code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
-	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
-	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
-	 * <code>motion = clamped_velocity * dt</code><br>
+	 * {@code clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)}<br>
+	 * {@code new_velocity = velocity + 0.5 * clamped_acceleration * dt}<br>
+	 * {@code clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)}<br>
+	 * {@code motion = clamped_velocity * dt}<br>
 	 *
 	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
 	 * @param minSpeed is the minimal speed allowed.
@@ -232,14 +232,14 @@ public interface PhysicsEngine {
 	 */
 	@Pure
 	void motionNewtonLaw2D5(
-			Vector3D<?, ?> velocity,
+			Vector3D<?, ?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D<?, ?> acceleration,
+			Vector3D<?, ?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector3D<?, ?> result);
+			Vector3D<?, ?, ?> result);
 
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
@@ -247,10 +247,10 @@ public interface PhysicsEngine {
 	 * <p>This function allows to clamp acceleration and velocity.
 	 *
 	 * <p>From Equation 2 of the SUVAT form:<br>
-	 * <code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
-	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
-	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
-	 * <code>motion = clamped_velocity * dt</code><br>
+	 * {@code clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)}<br>
+	 * {@code new_velocity = velocity + 0.5 * clamped_acceleration * dt}<br>
+	 * {@code clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)}<br>
+	 * {@code motion = clamped_velocity * dt}<br>
 	 *
 	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
 	 * @param minSpeed is the minimal speed allowed.
@@ -267,21 +267,21 @@ public interface PhysicsEngine {
 	 */
 	@Pure
 	void motionNewtonLaw3D(
-			Vector3D<?, ?> velocity,
+			Vector3D<?, ?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D<?, ?> acceleration,
+			Vector3D<?, ?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector3D<?, ?> result);
+			Vector3D<?, ?, ?> result);
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
 	 * (where acceleration is not significant).
 	 *
 	 * <p>From the first-order Newton-Euler method:
-	 * <code>movement = speed * dt</code>
+	 * {@code movement = speed * dt}
 	 *
 	 * @param speed is the current  speed of the object.
 	 * @param dt is the time
@@ -297,7 +297,7 @@ public interface PhysicsEngine {
 	 * (where acceleration is not significant).
 	 *
 	 * <p>From the first-order Newton-Euler method:
-	 * <code>movement = clamp(velocity) * dt</code>
+	 * {@code movement = clamp(velocity) * dt}
 	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed.
@@ -317,7 +317,7 @@ public interface PhysicsEngine {
 	 * (where acceleration is not significant).
 	 *
 	 * <p>From the first-order Newton-Euler method:
-	 * <code>movement = clamp(velocity) * dt</code>
+	 * {@code movement = clamp(velocity) * dt}
 	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
@@ -340,7 +340,7 @@ public interface PhysicsEngine {
 	 * (where acceleration is not significant).
 	 *
 	 * <p>From the first-order Newton-Euler method:
-	 * <code>movement = clamp(velocity) * dt</code>
+	 * {@code movement = clamp(velocity) * dt}
 	 *
 	 * <p>Caution: The resulting vector has the same segment as the provided vector.
 	 *
@@ -364,7 +364,7 @@ public interface PhysicsEngine {
 	 * (where acceleration is not significant).
 	 *
 	 * <p>From the first-order Newton-Euler method:
-	 * <code>movement = clamp(velocity) * dt</code>
+	 * {@code movement = clamp(velocity) * dt}
 	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
@@ -385,7 +385,7 @@ public interface PhysicsEngine {
 	 * (where acceleration is not significant).
 	 *
 	 * <p>From the first-order Newton-Euler method:
-	 * <code>movement = clamp(velocity) * dt</code>
+	 * {@code movement = clamp(velocity) * dt}
 	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
@@ -395,18 +395,18 @@ public interface PhysicsEngine {
 	 */
 	@Pure
 	void motionNewtonEuler1Law2D5(
-			Vector3D<?, ?> velocity,
+			Vector3D<?, ?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector3D<?, ?> result);
+			Vector3D<?, ?, ?> result);
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
 	 * (where acceleration is not significant).
 	 *
 	 * <p>From the first-order Newton-Euler method:
-	 * <code>movement = clamp(velocity) * dt</code>
+	 * {@code movement = clamp(velocity) * dt}
 	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
@@ -416,17 +416,17 @@ public interface PhysicsEngine {
 	 */
 	@Pure
 	void motionNewtonEuler1Law3D(
-			Vector3D<?, ?> velocity,
+			Vector3D<?, ?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector3D<?, ?> result);
+			Vector3D<?, ?, ?> result);
 
 	/** Replies the new speed according to a previous speed and
 	 * a mouvement during a given time.
 	 *
 	 * <p>From the first-order Newton-Euler method:
-	 * <code>speed = movement / dt</code>
+	 * {@code speed = movement / dt}
 	 *
 	 * @param movement is the movement distance.
 	 * @param dt is the time
@@ -440,7 +440,7 @@ public interface PhysicsEngine {
 	 * speed and a current speed, and given time.
 	 *
 	 * <p>From the second-order Newton-Euler method:
-	 * <code>(currentSpeed - previousSpeed) / dt</code>
+	 * {@code (currentSpeed - previousSpeed) / dt}
 	 *
 	 * @param previousSpeed is the previous  speed of the object.
 	 * @param currentSpeed is the current  speed of the object.

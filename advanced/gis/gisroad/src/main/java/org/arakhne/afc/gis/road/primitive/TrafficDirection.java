@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public enum TrafficDirection {
 	 * to the given string value. The value is matched
 	 * according to {@link RoadNetworkConstants#getPreferredAttributeValueForTrafficDirection(TrafficDirection, int)}.
 	 * @param value the value to parse.
-	 * @return the traffic direction if matched, otherwise <code>null</code>
+	 * @return the traffic direction if matched, otherwise {@code null}
 	 *     if the given value does not match any constant.
 	 */
 	@Pure

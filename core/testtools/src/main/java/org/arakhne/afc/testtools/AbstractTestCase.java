@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.common.base.Strings;
+import org.eclipse.xtext.xbase.lib.Pair;
 
 /** Abstract class that is providing a base for unit tests.
  *
@@ -109,7 +110,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @since 17.0
 	 */
 	public static void failCompare(String message, String expected, String actual) {
-		fail(message);
+		fail(formatFailMessage(() -> message, expected, actual));
 	}
 
 	/** Replies if two values are equals at espilon.
@@ -117,7 +118,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param v1 the first value.
 	 * @param v2 the second value.
 	 * @param isNaNEqual indicates if the NaN value is equals to itself.
-	 * @return <code>true</code> or <code>false</code>
+	 * @return {@code true} or {@code false}
 	 */
 	public boolean isEpsilonEquals(double v1, double v2, boolean isNaNEqual) {
 		if (v1 == v2) {
@@ -142,7 +143,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 *
 	 * @param v1 the first value.
 	 * @param v2 the second value.
-	 * @return <code>true</code> or <code>false</code>
+	 * @return {@code true} or {@code false}
 	 */
 	public boolean isEpsilonEquals(double v1, double v2) {
 		return isEpsilonEquals(v1, v2, true);
@@ -152,7 +153,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 *
 	 * @param v1 the first value.
 	 * @param v2 the second value.
-	 * @return <code>true</code> or <code>false</code>
+	 * @return {@code true} or {@code false}
 	 */
 	public boolean isEpsilonEquals(BigDecimal v1, BigDecimal v2) {
 		return isEpsilonEquals(v1, v2, this.decimalPrecision);
@@ -163,7 +164,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param v1 the first value.
 	 * @param v2 the second value.
 	 * @param precision is the number of decimal digits to test.
-	 * @return <code>true</code> or <code>false</code>
+	 * @return {@code true} or {@code false}
 	 */
 	public static boolean isEpsilonEquals(BigDecimal v1, BigDecimal v2, int precision) {
 		final BigDecimal ma = v1.movePointRight(precision);
@@ -193,8 +194,8 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 *
 	 * @param v1 the first value.
 	 * @param v2 the second value.
-	 * @return <code>true</code> if the two arrays are equal, otherwise
-	 * <code>false</code>.
+	 * @return {@code true} if the two arrays are equal, otherwise
+	 * {@code false}.
 	 */
 	public boolean isEpsilonEquals(double[] v1, double[] v2) {
 		if (v1 == v2) {
@@ -336,6 +337,26 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	public static void assertNaN(float value) {
 		if (!Float.isNaN(value)) {
 			fail(formatFailMessage(NO_MESSAGE, "Expecting NaN", value)); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is infinity.
+	 *
+	 * @param value the value to test.
+	 */
+	public static void assertInfinity(double value) {
+		if (!Double.isInfinite(value)) {
+			fail(formatFailMessage(NO_MESSAGE, "Expecting infinite", value)); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is infinity.
+	 *
+	 * @param value the value to test.
+	 */
+	public static void assertInfinity(float value) {
+		if (!Float.isInfinite(value)) {
+			fail(formatFailMessage(NO_MESSAGE, "Expecting infinite", value)); //$NON-NLS-1$
 		}
 	}
 
@@ -1105,7 +1126,7 @@ public abstract class AbstractTestCase extends EnableAssertion {
 	 * @param <X> is the element's type of the values if they are arrays.
 	 * @param obj1 the first object.
 	 * @param obj2 the second object.
-	 * @return <code>true</code> if the objects are similar, otherwise <code>false</code>
+	 * @return {@code true} if the objects are similar, otherwise {@code false}
 	 */
 	public static <T, X> boolean isSimilarObjects(T obj1, T obj2) {
 		if (obj1 == obj2) {
@@ -1915,6 +1936,57 @@ public abstract class AbstractTestCase extends EnableAssertion {
 		for (int i = 0; i < expected.length; ++i) {
 			assertEpsilonEquals(expected[i], actual[i]);
 		}
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @since 18.0
+	 */
+	public void assertEpsilonEquals(Pair<? extends Number, ? extends Number> expected, Pair<? extends Number, ? extends Number> actual) {
+		assertEpsilonEquals(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonEquals(Pair<? extends Number, ? extends Number> expected, Pair<? extends Number, ? extends Number> actual, String message) {
+		assertEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 *
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonEquals(Pair<? extends Number, ? extends Number> expected, Pair<? extends Number, ? extends Number> actual, Supplier<String> message) {
+		if (expected == actual) {
+			return;
+		}
+		if (expected == null || expected.getKey() == null || expected.getValue() == null) {
+			fail(formatFailMessage(message, "not pair of same double values.", expected, actual)); //$NON-NLS-1$
+		}
+		if (actual == null || actual.getKey() == null || actual.getValue() == null) {
+			fail(formatFailMessage(message, "not pair of same double values.", expected, actual)); //$NON-NLS-1$
+		}
+		final double e1 = expected.getKey().doubleValue();
+		final double e2 = expected.getValue().doubleValue();
+		final double a1 = actual.getKey().doubleValue();
+		final double a2 = actual.getValue().doubleValue();
+		if (isEpsilonEquals(e1, a1) && isEpsilonEquals(e2, a2)) {
+			return;
+		}
+		fail(formatFailMessage(message, "not pair of same double values.", expected, actual)); //$NON-NLS-1$
 	}
 
 }

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,47 +36,47 @@ public final class AttributeConstants {
 	 */
 	public static final URISchemeType DEFAULT_SCHEME = URISchemeType.HTTP;
 
-	/** String constant for the <code>true</code> boolean constant.
+	/** String constant for the {@code true} boolean constant.
 	 */
 	public static final String TRUE_CONSTANT = "true"; //$NON-NLS-1$
 
-	/** String constant for the <code>true</code> boolean constant.
+	/** String constant for the {@code true} boolean constant.
 	 */
 	public static final String YES_CONSTANT = "yes"; //$NON-NLS-1$
 
-	/** String constant for the <code>true</code> boolean constant.
+	/** String constant for the {@code true} boolean constant.
 	 */
 	public static final String OUI_CONSTANT = "oui"; //$NON-NLS-1$
 
-	/** String constant for the <code>true</code> boolean constant.
+	/** String constant for the {@code true} boolean constant.
 	 */
 	public static final String T_CONSTANT = "t"; //$NON-NLS-1$
 
-	/** String constant for the <code>true</code> boolean constant.
+	/** String constant for the {@code true} boolean constant.
 	 */
 	public static final String O_CONSTANT = "o"; //$NON-NLS-1$
 
-	/** String constant for the <code>true</code> boolean constant.
+	/** String constant for the {@code true} boolean constant.
 	 */
 	public static final String Y_CONSTANT = "y"; //$NON-NLS-1$
 
-	/** String constant for the <code>false</code> boolean constant.
+	/** String constant for the {@code false} boolean constant.
 	 */
 	public static final String FALSE_CONSTANT = "false"; //$NON-NLS-1$
 
-	/** String constant for the <code>true</code> boolean constant.
+	/** String constant for the {@code true} boolean constant.
 	 */
 	public static final String NO_CONSTANT = "no"; //$NON-NLS-1$
 
-	/** String constant for the <code>true</code> boolean constant.
+	/** String constant for the {@code true} boolean constant.
 	 */
 	public static final String NON_CONSTANT = "non"; //$NON-NLS-1$
 
-	/** String constant for the <code>true</code> boolean constant.
+	/** String constant for the {@code true} boolean constant.
 	 */
 	public static final String F_CONSTANT = "f"; //$NON-NLS-1$
 
-	/** String constant for the <code>true</code> boolean constant.
+	/** String constant for the {@code true} boolean constant.
 	 */
 	public static final String N_CONSTANT = "n"; //$NON-NLS-1$
 

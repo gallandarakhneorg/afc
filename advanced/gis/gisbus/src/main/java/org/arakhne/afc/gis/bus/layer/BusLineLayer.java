@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 
 	/** Create a new layer.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param line is the embedded line
 	 * @since 4.0
 	 */
@@ -96,7 +96,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 
 	/** Create a new layer.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param line is the embedded line
 	 * @param autoUpdate indicates if this layer is automatically updated
 	 *     when the given line has changed.
@@ -120,7 +120,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 
 	/** Create a new layer.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeProvider is the attribute collection associated to this layer.
 	 * @param line is the embedded line
 	 * @since 4.0
@@ -131,7 +131,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 
 	/** Create a new layer.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeProvider is the attribute collection associated to this layer.
 	 * @param line is the embedded line
 	 * @param autoUpdate indicates if this layer is automatically updated
@@ -224,8 +224,8 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 	/** Run the initialization of the elements from the current bus line.
 	 *
 	 * <p>This function is invoked by the constructor of BusLineLayer
-	 * if its parameter <var>autoUpdate</var> is <code>true</code>, and
-	 * not invoked if this parameter is <code>false</code>.
+	 * if its parameter <var>autoUpdate</var> is {@code true}, and
+	 * not invoked if this parameter is {@code false}.
 	 */
 	protected void initializeElements() {
 		final BusLine line = getBusLine();
@@ -249,7 +249,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 	 *
 	 * @param itinerary is the new itinerary.
 	 * @param index is the index of the bus itinerary.
-	 * @return <code>true</code> if the events was fired, otherwise <code>false</code>.
+	 * @return {@code true} if the events was fired, otherwise {@code false}.
 	 */
 	protected boolean onBusItineraryAdded(BusItinerary itinerary, int index) {
 		if (this.autoUpdate.get()) {
@@ -270,7 +270,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 	 *
 	 * @param itinerary is the removed itinerary.
 	 * @param index is the index of the bus itinerary.
-	 * @return <code>true</code> if the events was fired, otherwise <code>false</code>.
+	 * @return {@code true} if the events was fired, otherwise {@code false}.
 	 */
 	protected boolean onBusItineraryRemoved(BusItinerary itinerary, int index) {
 		if (this.autoUpdate.get()) {
@@ -289,7 +289,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 	 * <p>This function exists to allow be override to provide a specific behaviour
 	 * when a bus itinerary has been removed.
 	 *
-	 * @return <code>true</code> if the events was fired, otherwise <code>false</code>.
+	 * @return {@code true} if the events was fired, otherwise {@code false}.
 	 */
 	protected boolean onAllBusItineraryRemoved() {
 		if (this.autoUpdate.get()) {
@@ -307,7 +307,7 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 	 *
 	 * @param itinerary is the changed itinerary.
 	 * @param index is the index of the bus itinerary.
-	 * @return <code>true</code> if the events was fired, otherwise <code>false</code>.
+	 * @return {@code true} if the events was fired, otherwise {@code false}.
 	 */
 	@SuppressWarnings("static-method")
 	protected boolean onBusItineraryChanged(BusItinerary itinerary, int index) {
@@ -328,8 +328,8 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 	/** Replies if this layer is automatically updated when
 	 * a bus itinerary was removed or added.
 	 *
-	 * @return <code>true</code> if the layer is automatically updated,
-	 * <code>false</code>.
+	 * @return {@code true} if the layer is automatically updated,
+	 * {@code false}.
 	 */
 	public boolean isLayerAutoUpdated() {
 		return this.autoUpdate.get();
@@ -338,8 +338,8 @@ public class BusLineLayer extends MultiMapLayer<BusItineraryLayer> implements Bu
 	/** Set if this layer is automatically updated when
 	 * a bus itinerary was removed or added.
 	 *
-	 * @param update is <code>true</code> if the layer should be automatically updated,
-	 * <code>false</code>.
+	 * @param update is {@code true} if the layer should be automatically updated,
+	 * {@code false}.
 	 */
 	public void setLayerAutoUpdated(boolean update) {
 		this.autoUpdate.set(update);

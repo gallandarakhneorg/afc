@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,8 +48,8 @@ public interface RoadSegmentContainer extends Graph<RoadSegment, RoadConnection>
 	 * vehicles are going on the left side of the roads. For example,
 	 * this rule is used in UK.
 	 *
-	 * @return <code>true</code> if the left-side rule is used on this network,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the left-side rule is used on this network,
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	boolean isLeftSidedTrafficDirection();
@@ -60,8 +60,8 @@ public interface RoadSegmentContainer extends Graph<RoadSegment, RoadConnection>
 	 * vehicles are going on the right side of the roads. For example,
 	 * this rule is used in France.
 	 *
-	 * @return <code>true</code> if the right-side rule is used on this network,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the right-side rule is used on this network,
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	boolean isRightSidedTrafficDirection();
@@ -70,8 +70,8 @@ public interface RoadSegmentContainer extends Graph<RoadSegment, RoadConnection>
 	 * Replies if the given road segment is inside this road network.
 	 *
 	 * @param segment a segment.
-	 * @return <code>true</code> if the segment is inside the road network,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the segment is inside the road network,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	boolean contains(RoadSegment segment);
@@ -84,7 +84,7 @@ public interface RoadSegmentContainer extends Graph<RoadSegment, RoadConnection>
 	 * the geoId.
 	 *
 	 * @param geoId an identifier.
-	 * @return the road segment or <code>null</code> if not found.
+	 * @return the road segment or {@code null} if not found.
 	 */
 	@Pure
 	RoadSegment getRoadSegment(GeoId geoId);
@@ -93,7 +93,7 @@ public interface RoadSegmentContainer extends Graph<RoadSegment, RoadConnection>
 	 * Replies the road segment with the given location.
 	 *
 	 * @param location a location
-	 * @return the road segment or <code>null</code> if not found.
+	 * @return the road segment or {@code null} if not found.
 	 */
 	@Pure
 	RoadSegment getRoadSegment(GeoLocation location);

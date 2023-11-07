@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ public interface Tree<D, N extends TreeNode<D, ?>> extends Iterable<N> {
 	 * links between the nodes inside the tree.
 	 * If you want to unlink the root node with
 	 * this tree but leave the nodes' links
-	 * unchanged, please call <code>setRoot(null)</code>.
+	 * unchanged, please call {@code setRoot(null)}.
 	 */
 	void clear();
 
@@ -83,8 +83,8 @@ public interface Tree<D, N extends TreeNode<D, ?>> extends Iterable<N> {
 
 	/** Replies if this tree contains user data.
 	 *
-	 * @return <code>true</code> if the tree is empty (no user data),
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the tree is empty (no user data),
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	boolean isEmpty();

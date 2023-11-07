@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public abstract class MapComposedElement extends MapElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the source of the attributes for this map element.
 	 * @since 4.0
 	 */
@@ -114,7 +114,7 @@ public abstract class MapComposedElement extends MapElement {
 	 * <p>If the specified object is a MapComposedElement, these points
 	 * are matched to the points of this object.
 	 * If the specified object is not a MapcomposedElement, this
-	 * function replies <code>false</code>
+	 * function replies {@code false}
 	 */
 	@Override
 	@SuppressWarnings({"checkstyle:equalshashcode", "checkstyle:covariantequals"})
@@ -168,8 +168,8 @@ public abstract class MapComposedElement extends MapElement {
 	 * @param point is a geo-referenced coordinate
 	 * @param delta is the geo-referenced distance that corresponds to a approximation
 	 *     distance in the screen coordinate system
-	 * @return <code>true</code> if the specified point has a distance nearest than delta
-	 *     to this element, otherwise <code>false</code>
+	 * @return {@code true} if the specified point has a distance nearest than delta
+	 *     to this element, otherwise {@code false}
 	 */
 	@Override
 	@Pure
@@ -316,7 +316,7 @@ public abstract class MapComposedElement extends MapElement {
 	 *
 	 * @param groupIndex is the index of the desired group
 	 * @return the index of the point in the list of points.
-	 *     This value is between <code>0</code> and <code>this.pointCoordinates.length()-2</code>
+	 *     This value is between {@code 0} and {@code this.pointCoordinates.length()-2}
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
 	private int firstInGroup(int groupIndex) {
@@ -341,7 +341,7 @@ public abstract class MapComposedElement extends MapElement {
 	 *
 	 * @param groupIndex is the index of the desired group
 	 * @return the index of the point in the list of points.
-	 *     This value is between <code>0</code> and <code>this.pointCoordinates.length()-2</code>
+	 *     This value is between {@code 0} and {@code this.pointCoordinates.length()-2}
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
 	private int lastInGroup(int groupIndex) {
@@ -365,7 +365,7 @@ public abstract class MapComposedElement extends MapElement {
 	 *
 	 * @param pointIndex is the global index of the point.
 	 * @return the index of the group.
-	 *     This value is between <code>0</code> and <code>this.getGroupCount()</code>
+	 *     This value is between {@code 0} and {@code this.getGroupCount()}
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
 	private int groupIndexForPoint(int pointIndex) {
@@ -430,7 +430,7 @@ public abstract class MapComposedElement extends MapElement {
 	 *
 	 * @param groupIndex the group index.
 	 * @param point2d  is the point in the group
-	 * @return the global index of the point or <code>-1</code> if not found
+	 * @return the global index of the point or {@code -1} if not found
 	 */
 	@Pure
 	public int getPointIndex(int groupIndex, Point2D<?, ?> point2d) {
@@ -901,7 +901,7 @@ public abstract class MapComposedElement extends MapElement {
 	 * @param index is the index of the desired point
 	 * @param x is the new value of the point
 	 * @param y is the new value of the point
-	 * @return <code>true</code> if the point was set, <code>false</code> if
+	 * @return {@code true} if the point was set, {@code false} if
 	 *     the specified coordinates correspond to the already existing point.
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
@@ -918,7 +918,7 @@ public abstract class MapComposedElement extends MapElement {
 	 * @param x is the new value of the point
 	 * @param y is the new value of the point
 	 * @param canonize indicates if the function {@link #canonize(int)} must be called.
-	 * @return <code>true</code> if the point was set, <code>false</code> if
+	 * @return {@code true} if the point was set, {@code false} if
 	 *     the specified coordinates correspond to the already existing point.
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
@@ -959,7 +959,7 @@ public abstract class MapComposedElement extends MapElement {
 	 *
 	 * @param index is the index of the desired point
 	 * @param point is the new value of the point
-	 * @return <code>true</code> if the point was set, <code>false</code> if
+	 * @return {@code true} if the point was set, {@code false} if
 	 *     the specified coordinates correspond to the already existing point.
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
@@ -975,7 +975,7 @@ public abstract class MapComposedElement extends MapElement {
 	 * @param index is the index of the desired point
 	 * @param point is the new value of the point
 	 * @param canonize indicates if the function {@link #canonize(int)} must be called.
-	 * @return <code>true</code> if the point was set, <code>false</code> if
+	 * @return {@code true} if the point was set, {@code false} if
 	 *     the specified coordinates correspond to the already existing point.
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
@@ -990,7 +990,7 @@ public abstract class MapComposedElement extends MapElement {
 	 *     first point of the group...).
 	 * @param x is the new value.
 	 * @param y is the new value.
-	 * @return <code>true</code> if the point was set, <code>false</code> if
+	 * @return {@code true} if the point was set, {@code false} if
 	 *     the specified coordinates correspond to the already existing point.
 	 * @throws IndexOutOfBoundsException in case of error
 	 */
@@ -1006,7 +1006,7 @@ public abstract class MapComposedElement extends MapElement {
 	 * @param x is the new value.
 	 * @param y is the new value.
 	 * @param canonize indicates if the function {@link #canonize(int)} must be called.
-	 * @return <code>true</code> if the point was set, <code>false</code> if
+	 * @return {@code true} if the point was set, {@code false} if
 	 *     the specified coordinates correspond to the already existing point.
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
@@ -1047,7 +1047,7 @@ public abstract class MapComposedElement extends MapElement {
 	 * @param indexInGroup is the index of the ponit in the group (0 for the
 	 *     first point of the group...).
 	 * @param point is the new value.
-	 * @return <code>true</code> if the point was set, <code>false</code> if
+	 * @return {@code true} if the point was set, {@code false} if
 	 *     the specified coordinates correspond to the already existing point.
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
@@ -1062,7 +1062,7 @@ public abstract class MapComposedElement extends MapElement {
 	 *     first point of the group...).
 	 * @param point is the new value.
 	 * @param canonize indicates if the function {@link #canonize(int)} must be called.
-	 * @return <code>true</code> if the point was set, <code>false</code> if
+	 * @return {@code true} if the point was set, {@code false} if
 	 *     the specified coordinates correspond to the already existing point.
 	 * @throws IndexOutOfBoundsException in case of error.
 	 */
@@ -1073,7 +1073,7 @@ public abstract class MapComposedElement extends MapElement {
 	/** Remove the specified group.
 	 *
 	 * @param groupIndex the index of the group.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean removeGroupAt(int groupIndex) {
 		try {
@@ -1209,7 +1209,7 @@ public abstract class MapComposedElement extends MapElement {
 
 	/** Remove unnecessary points from the specified index.
 	 *
-	 * @return <code>true</code> if points are removed, otherwise <code>false</code>
+	 * @return {@code true} if points are removed, otherwise {@code false}
 	 */
 	public boolean canonize() {
 		return canonize(0);
@@ -1217,7 +1217,7 @@ public abstract class MapComposedElement extends MapElement {
 
 	/** Remove unnecessary points from the specified index.
 	 *
-	 * @return <code>true</code> if points are removed, otherwise <code>false</code>
+	 * @return {@code true} if points are removed, otherwise {@code false}
 	 */
 	private boolean canonize(int index) {
 		final int count = getPointCount();
@@ -1313,7 +1313,7 @@ public abstract class MapComposedElement extends MapElement {
 	 * Subclasses should override this function
 	 * to provide specifical implementation of a validator.
 	 *
-	 * @return the validator, never <code>null</code>
+	 * @return the validator, never {@code null}
 	 */
 	@SuppressWarnings("static-method")
 	@Pure

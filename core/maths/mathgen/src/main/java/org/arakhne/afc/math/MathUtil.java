@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +28,9 @@ import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_LEFT;
 import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_RIGHT;
 import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_TOP;
 
+import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
-
-import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** Mathematic and geometric utilities.
  *
@@ -41,7 +40,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"checkstyle:methodcount", "checkstyle:magicnumber"})
 public final class MathUtil {
 
 	private MathUtil() {
@@ -137,14 +135,14 @@ public final class MathUtil {
 	/** Replies if the given value is near zero.
 	 *
 	 * @param value is the value to test.
-	 * @return <code>true</code> if the given {@code value}
-	 *     is near zero, otherwise <code>false</code>.
+	 * @return {@code true} if the given {@code value}
+	 *     is near zero, otherwise {@code false}.
 	 * @see Math#ulp(double)
 	 */
 	@Pure
-	@Inline(value = "Math.abs($1) < Math.ulp($1)", imported = Math.class)
+	@Inline(value = "Math.abs($1) <= Math.ulp($1)", imported = Math.class)
 	public static boolean isEpsilonZero(double value) {
-		return Math.abs(value) < Math.ulp(value);
+		return Math.abs(value) <= Math.ulp(value);
 	}
 
 	/** Replies if the given value is near zero.
@@ -152,8 +150,8 @@ public final class MathUtil {
 	 * @param value is the value to test.
 	 * @param epsilon the approximation epsilon. If {@link Double#NaN}, the function {@link Math#ulp(double)} is
 	 *     used for evaluating the epsilon.
-	 * @return <code>true</code> if the given {@code value}
-	 *     is near zero, otherwise <code>false</code>.
+	 * @return {@code true} if the given {@code value}
+	 *     is near zero, otherwise {@code false}.
 	 */
 	@Pure
 	@Inline(value = "Math.abs($1) < (Double.isNaN($2) ? Math.ulp($1) : ($2))", imported = Math.class)
@@ -166,8 +164,8 @@ public final class MathUtil {
 	 *
 	 * @param v1 first value.
 	 * @param v2 second value.
-	 * @return <code>true</code> if the given {@code v1}
-	 *     is near {@code v2}, otherwise <code>false</code>.
+	 * @return {@code true} if the given {@code v1}
+	 *     is near {@code v2}, otherwise {@code false}.
 	 * @see Math#ulp(double)
 	 */
 	@Pure
@@ -182,8 +180,8 @@ public final class MathUtil {
 	 * @param v2 second value.
 	 * @param epsilon the approximation epsilon. If {@link Double#NaN}, the function {@link Math#ulp(double)} is
 	 *     used for evaluating the epsilon.
-	 * @return <code>true</code> if the given {@code v1}
-	 *     is near {@code v2}, otherwise <code>false</code>.
+	 * @return {@code true} if the given {@code v1}
+	 *     is near {@code v2}, otherwise {@code false}.
 	 */
 	@Pure
 	public static boolean isEpsilonEqual(double v1, double v2, double epsilon) {
@@ -517,16 +515,14 @@ public final class MathUtil {
 		if (px < rxmin) {
 			// to the left of clip window
 			code |= COHEN_SUTHERLAND_LEFT;
-		}
-		if (px > rxmax) {
+		} else if (px > rxmax) {
 			// to the right of clip window
 			code |= COHEN_SUTHERLAND_RIGHT;
 		}
 		if (py < rymin) {
 			// to the bottom of clip window
 			code |= COHEN_SUTHERLAND_BOTTOM;
-		}
-		if (py > rymax) {
+		} else if (py > rymax) {
 			// to the top of clip window
 			code |= COHEN_SUTHERLAND_TOP;
 		}
@@ -561,16 +557,14 @@ public final class MathUtil {
 		if (px < rxmin) {
 			// to the left of clip window
 			code |= COHEN_SUTHERLAND_LEFT;
-		}
-		if (px > rxmax) {
+		} else if (px > rxmax) {
 			// to the right of clip window
 			code |= COHEN_SUTHERLAND_RIGHT;
 		}
 		if (py < rymin) {
 			// to the bottom of clip window
 			code |= COHEN_SUTHERLAND_BOTTOM;
-		}
-		if (py > rymax) {
+		} else if (py > rymax) {
 			// to the top of clip window
 			code |= COHEN_SUTHERLAND_TOP;
 		}
@@ -592,9 +586,8 @@ public final class MathUtil {
 	 * @return the zone
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
-    public static int getCohenSutherlandCode3D(int px, int py, int pz, int rxmin, int rymin, int rzmin, int rxmax, int rymax,
-            int rzmax) {
+	public static int getCohenSutherlandCode3D(int px, int py, int pz, int rxmin, int rymin, int rzmin, int rxmax, int rymax,
+			int rzmax) {
 		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(3, rxmin, 6, rxmax);
 		assert rymin <= rymax : AssertMessages.lowerEqualParameters(4, rymin, 7, rymax);
 		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(5, rzmin, 8, rzmax);
@@ -603,24 +596,21 @@ public final class MathUtil {
 		if (px < rxmin) {
 			// to the left of clip window
 			code |= COHEN_SUTHERLAND_LEFT;
-		}
-		if (px > rxmax) {
+		} else if (px > rxmax) {
 			// to the right of clip window
 			code |= COHEN_SUTHERLAND_RIGHT;
 		}
 		if (py < rymin) {
 			// to the bottom of clip window
 			code |= COHEN_SUTHERLAND_BOTTOM;
-		}
-		if (py > rymax) {
+		} else if (py > rymax) {
 			// to the top of clip window
 			code |= COHEN_SUTHERLAND_TOP;
 		}
 		if (pz < rzmin) {
 			// to the front of clip window
 			code |= COHEN_SUTHERLAND_FRONT;
-		}
-		if (pz > rzmax) {
+		} else if (pz > rzmax) {
 			// to the back of clip window
 			code |= COHEN_SUTHERLAND_BACK;
 		}
@@ -645,9 +635,8 @@ public final class MathUtil {
 	 * @return the zone
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
-    public static int getCohenSutherlandCode3D(double px, double py, double pz, double rxmin, double rymin, double rzmin,
-            double rxmax, double rymax, double rzmax) {
+	public static int getCohenSutherlandCode3D(double px, double py, double pz, double rxmin, double rymin, double rzmin,
+			double rxmax, double rymax, double rzmax) {
 		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(3, rxmin, 6, rxmax);
 		assert rymin <= rymax : AssertMessages.lowerEqualParameters(4, rymin, 7, rymax);
 		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(5, rzmin, 8, rzmax);
@@ -656,24 +645,21 @@ public final class MathUtil {
 		if (px < rxmin) {
 			// to the left of clip window
 			code |= COHEN_SUTHERLAND_LEFT;
-		}
-		if (px > rxmax) {
+		} else if (px > rxmax) {
 			// to the right of clip window
 			code |= COHEN_SUTHERLAND_RIGHT;
 		}
 		if (py < rymin) {
 			// to the bottom of clip window
 			code |= COHEN_SUTHERLAND_BOTTOM;
-		}
-		if (py > rymax) {
+		} else if (py > rymax) {
 			// to the top of clip window
 			code |= COHEN_SUTHERLAND_TOP;
 		}
 		if (pz < rzmin) {
 			// to the front of clip window
 			code |= COHEN_SUTHERLAND_FRONT;
-		}
-		if (pz > rzmax) {
+		} else if (pz > rzmax) {
 			// to the back of clip window
 			code |= COHEN_SUTHERLAND_BACK;
 		}
@@ -686,12 +672,12 @@ public final class MathUtil {
 	 *
 	 * <p>If one of the value is {@link Double#NaN}, it is ignored.
 	 * If all the values are {@link Double#NaN}, the function replies
-	 * <code>null</code>.
+	 * {@code null}.
 	 *
 	 * @param value1 the first value.
 	 * @param value2 the second value.
 	 * @param value3 the third value.
-	 * @return the min max range; or <code>null</code>.
+	 * @return the min max range; or {@code null}.
 	 * @since 13.0
 	 */
 	public static DoubleRange getMinMax(double value1, double value2, double value3) {
@@ -788,7 +774,7 @@ public final class MathUtil {
 
 	/** Replies the cosecant of the specified angle.
 	 *
-	 * <p><code>csc(a) = 1/sin(a)</code>
+	 * <p>{@code csc(a) = 1/sin(a)}
 	 *
 	 * <p><img src="./doc-files/trigo1.png" alt="[Cosecant function]">
 	 * <img src="./doc-files/trigo3.png" alt="[Cosecant function]">
@@ -804,7 +790,7 @@ public final class MathUtil {
 
 	/** Replies the secant of the specified angle.
 	 *
-	 * <p><code>csc(a) = 1/cos(a)</code>
+	 * <p>{@code csc(a) = 1/cos(a)}
 	 *
 	 * <p><img src="./doc-files/trigo1.png" alt="[Secant function]">
 	 * <img src="./doc-files/trigo2.png" alt="[Secant function]">
@@ -820,7 +806,7 @@ public final class MathUtil {
 
 	/** Replies the cotangent of the specified angle.
 	 *
-	 * <p><code>csc(a) = 1/tan(a)</code>
+	 * <p>{@code csc(a) = 1/tan(a)}
 	 *
 	 * <p><img src="./doc-files/trigo1.png" alt="[Cotangent function]">
 	 * <img src="./doc-files/trigo3.png" alt="[Cotangent function]">
@@ -836,7 +822,7 @@ public final class MathUtil {
 
 	/** Replies the versine of the specified angle.
 	 *
-	 * <p><code>versin(a) = 1 - cos(a)</code>
+	 * <p>{@code versin(a) = 1 - cos(a)}
 	 *
 	 * <p><img src="./doc-files/trigo1.png" alt="[Versine function]">
 	 *
@@ -851,7 +837,7 @@ public final class MathUtil {
 
 	/** Replies the exsecant of the specified angle.
 	 *
-	 * <p><code>exsec(a) = sec(a) - 1</code>
+	 * <p>{@code exsec(a) = sec(a) - 1}
 	 *
 	 * <p><img src="./doc-files/trigo1.png" alt="[Exsecant function]">
 	 *
@@ -866,7 +852,7 @@ public final class MathUtil {
 
 	/** Replies the chord of the specified angle.
 	 *
-	 * <p><code>crd(a) = 2 sin(a/2)</code>
+	 * <p>{@code crd(a) = 2 sin(a/2)}
 	 *
 	 * <p><img src="./doc-files/chord.png" alt="[Chord function]">
 	 *
@@ -881,7 +867,7 @@ public final class MathUtil {
 
 	/** Replies the half of the versine (aka, haversine) of the specified angle.
 	 *
-	 * <p><code>haversine(a) = sin<sup>2</sup>(a/2) = (1-cos(a)) / 2</code>
+	 * <p>{@code haversine(a) = sin<sup>2</sup>(a/2) = (1-cos(a)) / 2}
 	 *
 	 * <p><img src="./doc-files/trigo1.png" alt="[Excosecant function]">
 	 *

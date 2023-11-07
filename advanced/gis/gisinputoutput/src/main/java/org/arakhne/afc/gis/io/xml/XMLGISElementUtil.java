@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,58 +71,58 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
  */
 public final class XMLGISElementUtil {
 
-	/** <code>&lt;circle /&gt;</code>. */
+	/** {@code &lt;circle /&gt;}. */
 	public static final String NODE_CIRCLE = "circle"; //$NON-NLS-1$
 
-	/** <code>&lt;elements /&gt;</code>. */
+	/** {@code &lt;elements /&gt;}. */
 	public static final String NODE_ELEMENTS = "elements"; //$NON-NLS-1$
 
-	/** <code>&lt;group /&gt;</code>. */
+	/** {@code &lt;group /&gt;}. */
 	public static final String NODE_GROUP = "group"; //$NON-NLS-1$
 
-	/** <code>&lt;groups /&gt;</code>. */
+	/** {@code &lt;groups /&gt;}. */
 	public static final String NODE_GROUPS = "groups"; //$NON-NLS-1$
 
-	/** <code>&lt;multipoint /&gt;</code>. */
+	/** {@code &lt;multipoint /&gt;}. */
 	public static final String NODE_MULTIPOINT = "multipoint"; //$NON-NLS-1$
 
-	/** <code>&lt;point /&gt;</code>. */
+	/** {@code &lt;point /&gt;}. */
 	public static final String NODE_POINT = "point"; //$NON-NLS-1$
 
-	/** <code>&lt;points /&gt;</code>. */
+	/** {@code &lt;points /&gt;}. */
 	public static final String NODE_POINTS = "points"; //$NON-NLS-1$
 
-	/** <code>&lt;polygon /&gt;</code>. */
+	/** {@code &lt;polygon /&gt;}. */
 	public static final String NODE_POLYGON = "polygon"; //$NON-NLS-1$
 
-	/** <code>&lt;polyline /&gt;</code>. */
+	/** {@code &lt;polyline /&gt;}. */
 	public static final String NODE_POLYLINE = "polyline"; //$NON-NLS-1$
 
-	/** <code>doubleFrame=""</code>. */
+	/** {@code doubleFrame=""}. */
 	public static final String ATTR_DOUBLEFRAME = "doubleFrame"; //$NON-NLS-1$
 
-	/** <code>firstPointIndex=""</code>. */
+	/** {@code firstPointIndex=""}. */
 	public static final String ATTR_FIRSTPOINTINDEX = "firstPointIndex"; //$NON-NLS-1$
 
-	/** <code>lastPointIndex=""</code>. */
+	/** {@code lastPointIndex=""}. */
 	public static final String ATTR_LASTPOINTINDEX = "lastPointIndex"; //$NON-NLS-1$
 
-	/** <code>radius=""</code>. */
+	/** {@code radius=""}. */
 	public static final String ATTR_RADIUS = "radius"; //$NON-NLS-1$
 
-	/** <code>size=""</code>. */
+	/** {@code size=""}. */
 	public static final String ATTR_SIZE = "size"; //$NON-NLS-1$
 
-	/** <code>wide=""</code>. */
+	/** {@code wide=""}. */
 	public static final String ATTR_WIDE = "wide"; //$NON-NLS-1$
 
-	/** <code>width=""</code>. */
+	/** {@code width=""}. */
 	public static final String ATTR_WIDTH = "width"; //$NON-NLS-1$
 
-	/** <code>x=""</code>. */
+	/** {@code x=""}. */
 	public static final String ATTR_X = "x"; //$NON-NLS-1$
 
-	/** <code>y=""</code>. */
+	/** {@code y=""}. */
 	public static final String ATTR_Y = "y"; //$NON-NLS-1$
 
 	private XMLGISElementUtil() {

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	//------------------------------------------------------------------
 
 	/** Constructor.
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeProvider is the provider of attributes used by this bus stop.
 	 * @since 2.0
 	 */
@@ -441,7 +441,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 
 	/** Set if this editable object want to be seen as a reed-only object.
 	 *
-	 * <p>Even if this object replies <code>true</code>, it is possible to change
+	 * <p>Even if this object replies {@code true}, it is possible to change
 	 * its attributes. The value replied by this function is just a desire
 	 * from this object. It could be used by the GUI to allow edition or not
 	 * from a graphical component.
@@ -531,7 +531,7 @@ public abstract class AbstractBusPrimitive<CONTAINER extends BusContainer<?>>
 	 * from {@link #checkPrimitiveValidity()}.
 	 *
 	 * @param invalidityReason is the reason of the invalidity;
-	 *     if <code>null</code> the primitive is valid.
+	 *     if {@code null} the primitive is valid.
 	 */
 	@SuppressWarnings("unlikely-arg-type")
 	protected final void setPrimitiveValidity(BusPrimitiveInvalidity invalidityReason) {

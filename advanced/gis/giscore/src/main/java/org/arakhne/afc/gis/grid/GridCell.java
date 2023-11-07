@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,7 +74,7 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 
 	/** Replies if the cell is empty, or not.
 	 *
-	 * @return <code>true</code> if the cell is empty; otherwise <code>false</code>.
+	 * @return {@code true} if the cell is empty; otherwise {@code false}.
 	 */
 	@Pure
 	public boolean isEmpty() {
@@ -189,8 +189,8 @@ class GridCell<P extends GISPrimitive> implements Iterable<P> {
 	/** Add an element in the cell.
 	 *
 	 * @param element the element.
-	 * @return <code>true</code> if the element is added;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the element is added;
+	 *     otherwise {@code false}.
 	 */
 	public boolean addElement(GridCellElement<P> element) {
 		if (element != null && this.elements.add(element)) {

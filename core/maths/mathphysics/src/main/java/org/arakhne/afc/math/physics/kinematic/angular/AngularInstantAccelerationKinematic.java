@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,11 +43,11 @@ public interface AngularInstantAccelerationKinematic extends AngularInstantVeloc
 	 * <p>The sign of the acceleration indicates if the object
 	 * is accelerating (positive) or decelerating (negative).
 	 *
-	 * <p>The replied value is in <code>[-d;a]</code> where:<ul>
-	 * <li><code>d</code> is the max deceleration value, replied
-	 * by <code>getMaxAngularDeceleration</code>.</li>
-	 * <li><code>a</code> is the max acceleration value, replied
-	 * by <code>getMaxAngularAcceleration</code>.</li>
+	 * <p>The replied value is in {@code [-d;a]} where:<ul>
+	 * <li>{@code d} is the max deceleration value, replied
+	 * by {@code getMaxAngularDeceleration}.</li>
+	 * <li>{@code a} is the max acceleration value, replied
+	 * by {@code getMaxAngularAcceleration}.</li>
 	 * </ul>
 	 *
 	 * @return the angular acceleration of this object in r/s^2.
@@ -65,11 +65,11 @@ public interface AngularInstantAccelerationKinematic extends AngularInstantVeloc
 	 * <p>The sign of the acceleration indicates if the object
 	 * is accelerating (positive) or decelerating (negative).
 	 *
-	 * <p>The replied value is in <code>[-d;a]</code> where:<ul>
-	 * <li><code>d</code> is the max deceleration value, replied
-	 * by <code>getMaxAngularDeceleration</code>.</li>
-	 * <li><code>a</code> is the max acceleration value, replied
-	 * by <code>getMaxAngularAcceleration</code>.</li>
+	 * <p>The replied value is in {@code [-d;a]} where:<ul>
+	 * <li>{@code d} is the max deceleration value, replied
+	 * by {@code getMaxAngularDeceleration}.</li>
+	 * <li>{@code a} is the max acceleration value, replied
+	 * by {@code getMaxAngularAcceleration}.</li>
 	 * </ul>
 	 *
 	 * @param unit the unit in which the speed will be given.

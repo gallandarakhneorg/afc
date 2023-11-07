@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,13 +61,13 @@ public final class ReflectionUtil {
 	}
 
 	/**
-	 * Determines if the specified <code>Object</code> is assignment-compatible
-	 * with the object represented by the <code>Class</code>.  This method extends
+	 * Determines if the specified {@code Object} is assignment-compatible
+	 * with the object represented by the {@code Class}.  This method extends
 	 * {@link Class#isInstance(Object)} with autoboxing support.
 	 *
 	 * @param type is the class against which the object must be test
 	 * @param obj is the object to check
-	 * @return <code>true</code> if <code>obj</code> is an instance of the type
+	 * @return {@code true} if {@code obj} is an instance of the type
 	 * @see Class#isInstance(Object)
 	 */
 	@Pure
@@ -157,17 +157,17 @@ public final class ReflectionUtil {
 
 
 	/**
-	 * Determines if the <code>assignmentTarget</code> object is either the same as,
+	 * Determines if the {@code assignmentTarget} object is either the same as,
 	 * or is a superclass or superinterface of, the class or interface
 	 * represented by the specified
-	 * <code>assignementSource</code> parameter. This method extends
+	 * {@code assignementSource} parameter. This method extends
 	 * {@link Class#isAssignableFrom(Class)} with autoboxing support.
 	 *
 	 * @param assignementTarget is the class that is tested to be a super class.
 	 * @param assignementSource is the class that is tested to be a sub class.
-	 * @return <code>true</code> if an object of the {@code assignementSource} type
+	 * @return {@code true} if an object of the {@code assignementSource} type
 	 *     could be assigned to a variable of {@code assignementTarget} type,
-	 *     otherwise <code>false</code>.
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	public static boolean isAssignableFrom(Class<?> assignementTarget, Class<?> assignementSource) {
@@ -259,7 +259,7 @@ public final class ReflectionUtil {
 	 * {@link Class#forName(String)} with autoboxing support.
 	 *
 	 * @param name is the name of the class to load.
-	 * @param typeInitialization must be <code>true</code> to initialize the type, <code>false</code> otherwise.
+	 * @param typeInitialization must be {@code true} to initialize the type, {@code false} otherwise.
 	 * @param loader is the class loader to use.
 	 * @return the loaded class
 	 * @throws ClassNotFoundException  if name names an
@@ -446,9 +446,9 @@ public final class ReflectionUtil {
 	 *
 	 * @param <T> is the type of the superclass.
 	 * @param className is the name of the class to explore.
-	 * @param allowAbstract is <code>true</code> to allow abstract classes to be put in the replied list
-	 * @param allowInterface is <code>true</code> to allow interfaces to be put in the replied list.
-	 * @param allowEnum is <code>true</code> to allow enumeration to be put in the replied list.
+	 * @param allowAbstract is {@code true} to allow abstract classes to be put in the replied list
+	 * @param allowInterface is {@code true} to allow interfaces to be put in the replied list.
+	 * @param allowEnum is {@code true} to allow enumeration to be put in the replied list.
 	 * @param result is the list of subclasses which will be filled by this function.
 	 */
 	public static <T> void getSubClasses(Class<T> className, boolean allowAbstract, boolean allowInterface,
@@ -462,9 +462,9 @@ public final class ReflectionUtil {
 	 *
 	 * @param <T> is the type of the superclass.
 	 * @param className is the name of the class to explore.
-	 * @param allowAbstract is <code>true</code> to allow abstract classes to be put in the replied list
-	 * @param allowInterface is <code>true</code> to allow interfaces to be put in the replied list.
-	 * @param allowEnum is <code>true</code> to allow enumeration to be put in the replied list.
+	 * @param allowAbstract is {@code true} to allow abstract classes to be put in the replied list
+	 * @param allowInterface is {@code true} to allow interfaces to be put in the replied list.
+	 * @param allowEnum is {@code true} to allow enumeration to be put in the replied list.
 	 * @param classLoader the class loader that is used for exploring the class path. If {@code null}, the default
 	 *     class path is explored.
 	 * @param result is the list of subclasses which will be filled by this function.
@@ -611,7 +611,7 @@ public final class ReflectionUtil {
 	 * the super classes. This function does not explore super-interfaces
 	 * of implemented interfaces.
 	 *
-	 * <pre><code>
+	 * <pre>{@code 
 	 * interface IA {}
 	 * interface IB extends IA {}
 	 * interface IC {}
@@ -619,16 +619,16 @@ public final class ReflectionUtil {
 	 * class CA implements IC {}
 	 * class CB extends CA {}
 	 * class CC extends CB implements IB {}
-	 * </code></pre>
+	 * }</pre>
 	 * This function replies for:
 	 * <ul>
-	 * <li><code>getAllDirectInterfaces(IA,null,null)</code>=<code>{}</code></li>
-	 * <li><code>getAllDirectInterfaces(IB,null,null)</code>=<code>{IA}</code></li>
-	 * <li><code>getAllDirectInterfaces(IC,null,null)</code>=<code>{}</code></li>
-	 * <li><code>getAllDirectInterfaces(ID,null,null)</code>=<code>{IB,IC}</code></li>
-	 * <li><code>getAllDirectInterfaces(CA,null,null)</code>=<code>{IC}</code></li>
-	 * <li><code>getAllDirectInterfaces(CB,null,null)</code>=<code>{IC}</code></li>
-	 * <li><code>getAllDirectInterfaces(CC,null,null)</code>=<code>{IB,IC}</code></li>
+	 * <li>{@code getAllDirectInterfaces(IA,null,null)}={@code {}}</li>
+	 * <li>{@code getAllDirectInterfaces(IB,null,null)}={@code {IA}}</li>
+	 * <li>{@code getAllDirectInterfaces(IC,null,null)}={@code {}}</li>
+	 * <li>{@code getAllDirectInterfaces(ID,null,null)}={@code {IB,IC}}</li>
+	 * <li>{@code getAllDirectInterfaces(CA,null,null)}={@code {IC}}</li>
+	 * <li>{@code getAllDirectInterfaces(CB,null,null)}={@code {IC}}</li>
+	 * <li>{@code getAllDirectInterfaces(CC,null,null)}={@code {IB,IC}}</li>
 	 * </ul>
 	 *
 	 * @param <T> is the highest type to explore in type hierarchy.
@@ -668,7 +668,7 @@ public final class ReflectionUtil {
 	 * the super classes. This function does not explore super-interfaces
 	 * of implemented interfaces.
 	 *
-	 * <pre><code>
+	 * <pre>{@code 
 	 * interface IA {}
 	 * interface IB extends IA {}
 	 * interface IC {}
@@ -676,16 +676,16 @@ public final class ReflectionUtil {
 	 * class CA implements IC {}
 	 * class CB extends CA {}
 	 * class CC extends CB implements IB {}
-	 * </code></pre>
+	 * }</pre>
 	 * This function replies for:
 	 * <ul>
-	 * <li><code>getAllDirectInterfaces(IA,null,null)</code>=<code>{}</code></li>
-	 * <li><code>getAllDirectInterfaces(IB,null,null)</code>=<code>{IA}</code></li>
-	 * <li><code>getAllDirectInterfaces(IC,null,null)</code>=<code>{}</code></li>
-	 * <li><code>getAllDirectInterfaces(ID,null,null)</code>=<code>{IB,IC}</code></li>
-	 * <li><code>getAllDirectInterfaces(CA,null,null)</code>=<code>{IC}</code></li>
-	 * <li><code>getAllDirectInterfaces(CB,null,null)</code>=<code>{IC}</code></li>
-	 * <li><code>getAllDirectInterfaces(CC,null,null)</code>=<code>{IB,IC}</code></li>
+	 * <li>{@code getAllDirectInterfaces(IA,null,null)}={@code {}}</li>
+	 * <li>{@code getAllDirectInterfaces(IB,null,null)}={@code {IA}}</li>
+	 * <li>{@code getAllDirectInterfaces(IC,null,null)}={@code {}}</li>
+	 * <li>{@code getAllDirectInterfaces(ID,null,null)}={@code {IB,IC}}</li>
+	 * <li>{@code getAllDirectInterfaces(CA,null,null)}={@code {IC}}</li>
+	 * <li>{@code getAllDirectInterfaces(CB,null,null)}={@code {IC}}</li>
+	 * <li>{@code getAllDirectInterfaces(CC,null,null)}={@code {IB,IC}}</li>
 	 * </ul>
 	 *
 	 * @param <T> is the highest type to explore in type hierarchy.
@@ -713,7 +713,7 @@ public final class ReflectionUtil {
 	/**
 	 * Replies the list of all the superclasses of the given class.
 	 *
-	 * <p>This function does not replies <code>Object.class</code>.
+	 * <p>This function does not replies {@code Object.class}.
 	 *
 	 * @param <T> is the type of the lowest class.
 	 * @param className is the type of the lowest class.
@@ -859,7 +859,7 @@ public final class ReflectionUtil {
 	 *
 	 * @param formalParameters the types of the formal parameters.
 	 * @param parameterValues the values associated to the paramters.
-	 * @return <code>true</code> if the values could be passed to the method.
+	 * @return {@code true} if the values could be passed to the method.
 	 * @since 7.1
 	 */
 	@Pure
@@ -882,7 +882,7 @@ public final class ReflectionUtil {
 	 *
 	 * @param method the method that contains the types.
 	 * @param parameters the objects associated to the paramters.
-	 * @return <code>true</code> if the values could be passed to the method.
+	 * @return {@code true} if the values could be passed to the method.
 	 * @since 7.1
 	 */
 	@Pure

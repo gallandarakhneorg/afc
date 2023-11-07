@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -201,7 +201,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 *
 	 * @param contributor the contributor.
 	 * @param log the log.
-	 * @return the URL or <code>null</code> if no URL could be built.
+	 * @return the URL or {@code null} if no URL could be built.
 	 */
 	protected static URL getContributorURL(Contributor contributor, Log log) {
 		URL url = null;
@@ -451,24 +451,24 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the artifact handler manager.
 	 *
-	 * <p>It is an attribute defined as: <pre><code>
+	 * <p>It is an attribute defined as: <pre>{@code 
 	 * <span>/</span>* <span>@</span>component
 	 * <span>*</span>/
 	 * private ArtifactHandlerManager manager;
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @return the artifact resolver.
 	 */
 	public abstract ArtifactHandlerManager getArtifactHandlerManager();
 
 	/**
-	 * Replies the output directory of the project. Basically it is <code>getRootDirectory()+"/target"</code>.
+	 * Replies the output directory of the project. Basically it is {@code getRootDirectory()+"/target"}.
 	 *
-	 * <p>It is an attribute defined as: <pre><code>
+	 * <p>It is an attribute defined as: <pre>{@code 
 	 * <span>/</span>* <span>@</span>parameter expression="&#36;{project.build.directory}"
 	 * <span>*</span>/
 	 * private File outputDirectory;
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @return the output directory.
 	 */
@@ -476,13 +476,13 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 
 	/**
 	 * Replies the root directory of the project. Basically it is the value stored inside the
-	 * Maven property named <code>project.basedir</code>.
+	 * Maven property named {@code project.basedir}.
 	 *
-	 * <p>It is an attribute defined as: <pre><code>
+	 * <p>It is an attribute defined as: <pre>{@code 
 	 * <span>/</span>* <span>@</span>parameter expression="${project.basedir}"
 	 * <span>*</span>/
 	 * private File baseDirectory;
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @return the root directory.
 	 */
@@ -499,13 +499,13 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the current maven session. Basically it is an internal component of Maven.
 	 *
-	 * <p>It is an attribute defined as: <pre><code>
+	 * <p>It is an attribute defined as: <pre>{@code 
 	 * <span>/</span>* <span>@</span>component role="org.apache.maven.project.MavenProjectBuilder"
 	 * * <span>@</span>required
 	 * * <span>@</span>readonly
 	 * <span>*</span>/
 	 * private MavenProjectBuilder projectBuilder;
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @return the maven session
 	 */
@@ -514,12 +514,12 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the current project builder. Basically it is an internal component of Maven.
 	 *
-	 * <p>It is an attribute defined as: <pre><code>
+	 * <p>It is an attribute defined as: <pre>{@code 
 	 * <span>/</span>* <span>@</span>parameter expression="&#36;{session}"
 	 * * <span>@</span>required
 	 * <span>*</span>/
 	 * private MavenSession mvnSession;
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @return the maven session
 	 */
@@ -530,7 +530,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 *
 	 * @param file
 	 *            is the file for which the maven artifact should be retreived.
-	 * @return the maven artifact or <code>null</code> if none.
+	 * @return the maven artifact or {@code null} if none.
 	 */
 	public final synchronized ExtendedArtifact searchArtifact(File file) {
 		final String filename = removePathPrefix(getBaseDirectory(), file);
@@ -571,11 +571,11 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the project's remote repositories to use for the resolution of plugins and their dependencies..
 	 *
-	 * <p>It is an attribute defined as: <pre><code>
+	 * <p>It is an attribute defined as: <pre>{@code 
 	 * <span>/</span>* <span>@</span>parameter default-value="&#36;{project.remoteProjectRepositories}"
 	 * <span>*</span>/
 	 * private List&lt;RemoteRepository&gt; remoteRepos;
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @return the repository system
 	 */
@@ -584,11 +584,11 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the repository system used by this maven instance. Basically it is an internal component of Maven.
 	 *
-	 * <p>It is an attribute defined as: <pre><code>
+	 * <p>It is an attribute defined as: <pre>{@code 
 	 * <span>/</span>* <span>@</span>component
 	 * <span>*</span>/
 	 * private RepositorySystem repoSystem;
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @return the repository system
 	 */
@@ -597,12 +597,12 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Replies the current repository/network configuration of Maven..
 	 *
-	 * <p>It is an attribute defined as: <pre><code>
+	 * <p>It is an attribute defined as: <pre>{@code 
 	 * <span>/</span>* <span>@</span>parameter default-value="&#36;{repositorySystemSession}"
 	 * <span>@</span>readonly
 	 * <span>*</span>/
 	 * private RepositorySystemSession repoSession;
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @return the repository system
 	 */
@@ -772,22 +772,22 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	}
 
 	/**
-	 * Replies the maven artifact which is described by the <code>pom.xml</code> file in the given directory.
+	 * Replies the maven artifact which is described by the {@code pom.xml} file in the given directory.
 	 *
 	 * @param pomDirectory
-	 *            is the directory where to find the <code>pom.xml</code> file.
-	 * @return the artifact or <code>null</code>.
+	 *            is the directory where to find the {@code pom.xml} file.
+	 * @return the artifact or {@code null}.
 	 */
 	public final synchronized ExtendedArtifact readPom(File pomDirectory) {
 		return readPomFile(new File(pomDirectory, "pom.xml")); //$NON-NLS-1$
 	}
 
 	/**
-	 * Replies the maven artifact which is described by the given <code>pom.xml</code>.
+	 * Replies the maven artifact which is described by the given {@code pom.xml}.
 	 *
 	 * @param pomFile
-	 *            is the <code>pom.xml</code> file.
-	 * @return the artifact or <code>null</code>.
+	 *            is the {@code pom.xml} file.
+	 * @return the artifact or {@code null}.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	public final synchronized ExtendedArtifact readPomFile(File pomFile) {
@@ -1158,7 +1158,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 *
 	 * @param file
 	 *            is the file to read.
-	 * @return the encoding charset of the given file or <code>null</code> if the encoding could not be detected.
+	 * @return the encoding charset of the given file or {@code null} if the encoding could not be detected.
 	 * @see #getPreferredCharsets()
 	 * @see #setPreferredCharsets(Charset...)
 	 */

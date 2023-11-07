@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ public interface XMLConstraint {
 	/** Replies if the given element is validating the constraints.
 	 *
 	 * @param element the element to validate.
-	 * @return <code>true</code> if validation is success, otherwise <code>false</code>.
+	 * @return {@code true} if validation is success, otherwise {@code false}.
 	 */
 	boolean isValidElement(Element element);
 

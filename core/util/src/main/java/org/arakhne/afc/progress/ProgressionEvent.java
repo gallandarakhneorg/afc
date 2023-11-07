@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,8 +66,8 @@ public class ProgressionEvent extends EventObject {
 	/** Replies if this event was fired by an task progression source
 	 * which is a root source.
 	 *
-	 * @return <code>true</code> if the task progression is a root,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the task progression is a root,
+	 *     otherwise {@code false}.
 	 */
 	public boolean isRoot() {
 		return this.isRoot;
@@ -78,8 +78,8 @@ public class ProgressionEvent extends EventObject {
 	 * value AND the associated task progression object is a root
 	 * task.
 	 *
-	 * @return <code>true</code> if the task was finished,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the task was finished,
+	 *     otherwise {@code false}.
 	 */
 	public boolean isFinished() {
 		return this.isRoot && this.value >= this.max;
@@ -112,8 +112,8 @@ public class ProgressionEvent extends EventObject {
 
 	/**
 	 * Returns the model's current value.  Note that the upper
-	 * limit on the model's value is <code>maximum</code>
-	 * and the lower limit is <code>minimum</code>.
+	 * limit on the model's value is {@code maximum}
+	 * and the lower limit is {@code minimum}.
 	 *
 	 * @return the current value.
 	 */
@@ -147,16 +147,16 @@ public class ProgressionEvent extends EventObject {
 	/**
 	 * Returns the model's current comment.
 	 *
-	 * @return the current comment or <code>null</code>.
+	 * @return the current comment or {@code null}.
 	 */
 	public String getComment() {
 		return this.comment;
 	}
 
 	/**
-	 * Returns the value of the <code>indeterminate</code> property.
+	 * Returns the value of the {@code indeterminate} property.
 	 *
-	 * @return the value of the <code>indeterminate</code> property
+	 * @return the value of the {@code indeterminate} property
 	 */
 	public boolean isIndeterminate() {
 		return this.isIndeterminate;

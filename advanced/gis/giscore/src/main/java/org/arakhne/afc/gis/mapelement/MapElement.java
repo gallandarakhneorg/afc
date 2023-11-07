@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,7 +103,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the source of the attributes for this map element.
 	 * @since 4.0
 	 */
@@ -253,7 +253,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 
 	/** Set if this editable object want to be seen as a reed-only object.
 	 *
-	 * <p>Even if this object replies <code>true</code>, it is possible to change
+	 * <p>Even if this object replies {@code true}, it is possible to change
 	 * its attributes. The value replied by this function is just a desire
 	 * from this object. It could be used by the GUI to allow edition or not
 	 * from a graphical component.
@@ -355,8 +355,8 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	/** Replies if the specified objects is the same as this one.
 	 *
 	 * @param element the element to compare to.
-	 * @return <code>true</code> if the given element is equal to this object,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given element is equal to this object,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public abstract boolean equals(MapElement element);
@@ -382,8 +382,8 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 * @param point is a geo-referenced coordinate
 	 * @param delta is the geo-referenced distance that corresponds to a approximation
 	 *     distance in the screen coordinate system
-	 * @return <code>true</code> if the specified point has a distance nearest than delta
-	 *     to this element, otherwise <code>false</code>
+	 * @return {@code true} if the specified point has a distance nearest than delta
+	 *     to this element, otherwise {@code false}
 	 */
 	@Pure
 	public abstract boolean contains(Point2D<?, ?> point, double delta);
@@ -393,12 +393,12 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 * was inside the figure of this MapElement.
 	 *
 	 * <p>If this MapElement has no associated figure, this method
-	 * always returns <code>false</code>.
+	 * always returns {@code false}.
 	 *
 	 * @param point is a geo-referenced coordinate
-	 * @return <code>true</code> if this MapElement had an associated figure and
+	 * @return {@code true} if this MapElement had an associated figure and
 	 *     the specified point was inside this bounds of this figure, otherwhise
-	 *     <code>false</code>
+	 *     {@code false}
 	 */
 	@Pure
 	public final boolean contains(Point2D<?, ?> point) {
@@ -413,8 +413,8 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 * @param y is a geo-referenced coordinate
 	 * @param delta is the geo-referenced distance that corresponds to a approximation
 	 *     distance in the screen coordinate system
-	 * @return <code>true</code> if the point is inside the bounds of this object,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the point is inside the bounds of this object,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	protected final boolean boundsContains(double x, double y, double delta) {
@@ -439,8 +439,8 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 * with the specified rectangle.
 	 *
 	 * @param rectangle the rectangle
-	 * @return <code>true</code> if this MapElement is intersecting the specified area,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this MapElement is intersecting the specified area,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public abstract boolean intersects(Shape2D<?, ?, ?, ?, ?, ? extends Rectangle2afp<?, ?, ?, ?, ?, ?>> rectangle);
@@ -450,8 +450,8 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 * with the specified rectangle.
 	 *
 	 * @param rectangle the rectangle.
-	 * @return <code>true</code> if this bounds is intersecting the specified area,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this bounds is intersecting the specified area,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	protected final boolean boundsIntersects(Shape2D<?, ?, ?, ?, ?, ? extends Rectangle2afp<?, ?, ?, ?, ?, ?>> rectangle) {
@@ -464,8 +464,8 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 * Set the flag that indicates if this element use its color or
 	 * the container's color.
 	 *
-	 * @param useContainerColor must be <code>true</code> if this element must
-	 *     use the container's color, and must be <code>false</code> to use the
+	 * @param useContainerColor must be {@code true} if this element must
+	 *     use the container's color, and must be {@code false} to use the
 	 *     element's color.
 	 */
 	public void setContainerColorUse(boolean useContainerColor) {
@@ -476,8 +476,8 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 	 * Replies the flag that indicates if this element use its color or
 	 * the container's color.
 	 *
-	 * @return <code>true</code> if this element must
-	 *     use the container's color, and <code>false</code> to use the
+	 * @return {@code true} if this element must
+	 *     use the container's color, and {@code false} to use the
 	 *     element's color.
 	 */
 	@Pure
@@ -602,7 +602,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 
 		/** Replies if this visualization type includes the shape.
 		 *
-		 * @return <code>true</code> if this type allows to display a shape.
+		 * @return {@code true} if this type allows to display a shape.
 		 */
 		@Pure
 		public boolean isShape() {
@@ -611,7 +611,7 @@ public abstract class MapElement extends AbstractBoundedGISElement<GISElementCon
 
 		/** Replies if this visualization type includes the icon.
 		 *
-		 * @return <code>true</code> if this type allows to display an icon.
+		 * @return {@code true} if this type allows to display an icon.
 		 */
 		@Pure
 		public boolean isIcon() {

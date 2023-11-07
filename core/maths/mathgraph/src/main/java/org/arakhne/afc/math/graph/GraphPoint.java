@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,8 +118,8 @@ public interface GraphPoint<PT extends GraphPoint<PT, ST>, ST extends GraphSegme
 	 * this point.
 	 *
 	 * @param segment the starting point.
-	 * @return <code>true</code> if the given segment is connected to this node,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given segment is connected to this node,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	boolean isConnectedSegment(ST segment);
@@ -127,8 +127,8 @@ public interface GraphPoint<PT extends GraphPoint<PT, ST>, ST extends GraphSegme
 	/** Replies if this point is a final connection point ie,
 	 * a point connected to only one segment.
 	 *
-	 * @return <code>true</code> if zero or one segment was connected
-	 *     to this point, otherwhise <code>false</code>
+	 * @return {@code true} if zero or one segment was connected
+	 *     to this point, otherwhise {@code false}
 	 */
 	@Pure
 	boolean isFinalConnectionPoint();
@@ -169,10 +169,10 @@ public interface GraphPoint<PT extends GraphPoint<PT, ST>, ST extends GraphSegme
 		/** Replies if the connected segment is connected
 		 * by its start point or not.
 		 *
-		 * @return <code>true</code> if the segment replied
+		 * @return {@code true} if the segment replied
 		 *     by {@link #getGraphSegment()} is connected
 		 *     to the point replied by {@link #getGraphPoint()}
-		 *     by its start end, otherwise <code>false</code>
+		 *     by its start end, otherwise {@code false}
 		 */
 		@Pure
 		boolean isSegmentStartConnected();

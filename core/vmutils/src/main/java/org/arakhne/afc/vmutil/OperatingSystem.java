@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -155,8 +155,8 @@ public enum OperatingSystem {
 	/** Replies if the current OperatingSystem constant is corresponding
 	 * to the current operating system.
 	 *
-	 * @return <code>true</code> if the current operating system corresponds to this constant,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the current operating system corresponds to this constant,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isCurrentOS() {
@@ -165,8 +165,8 @@ public enum OperatingSystem {
 
 	/** Replies of this OS is Unix compliant.
 	 *
-	 * @return <code>true</code> if this constant corresponds to a Unix-like operating system,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this constant corresponds to a Unix-like operating system,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isUnixCompliant() {
@@ -214,7 +214,7 @@ public enum OperatingSystem {
 	/** Force the type of the current OS replied by the functions of
 	 * this class.
 	 *
-	 * <p>If the given OS is <code>null</code>, the current OS will be auto-detected
+	 * <p>If the given OS is {@code null}, the current OS will be auto-detected
 	 * at the next call of {@link #getCurrentOS()}.
 	 *
 	 * @param os - the OS to consider for the next calls to {@link #getCurrentOS()}.
@@ -279,7 +279,7 @@ public enum OperatingSystem {
 
 	/** Replies the data model of the current operating system: 32 or 64 bits.
 	 *
-	 * @return the integer which is corresponding to the data model, or <code>0</code> if
+	 * @return the integer which is corresponding to the data model, or {@code 0} if
 	 *     it could not be determined.
 	 */
 	@Pure
@@ -289,8 +289,8 @@ public enum OperatingSystem {
 
 	/** Replies if the current operating system is 64bit.
 	 *
-	 * @return <code>true</code> if the operating system is 64bits, othewise
-	 *     <code>false</code>
+	 * @return {@code true} if the operating system is 64bits, othewise
+	 *     {@code false}
 	 */
 	@Pure
 	@Inline(value = "OperatingSystem.getOperatingSystemArchitectureDataModel() == 64", imported = {OperatingSystem.class})
@@ -301,8 +301,8 @@ public enum OperatingSystem {
 
 	/** Replies if the current operating system is 32bit.
 	 *
-	 * @return <code>true</code> if the operating system is 32bits, othewise
-	 * <code>false</code>
+	 * @return {@code true} if the operating system is 32bits, othewise
+	 * {@code false}
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")

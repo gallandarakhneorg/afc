@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -141,7 +141,7 @@ public enum ShapeElementType {
 	 *
 	 * <p>According to ESRI, only objects of type *_Z contain Z coordinates.
 	 *
-	 * @return <code>true</code> if the z-coordinate are supported, otherwise <code>false</code>
+	 * @return {@code true} if the z-coordinate are supported, otherwise {@code false}
 	 */
 	@Pure
 	public boolean hasZ() {
@@ -155,7 +155,7 @@ public enum ShapeElementType {
 	 * <p>M coordinate has different meanings depending on the type of object:
 	 * height from floor to top, some measure on object...
 	 *
-	 * @return <code>true</code> if the m-coordinate are supported, otherwise <code>false</code>
+	 * @return {@code true} if the m-coordinate are supported, otherwise {@code false}
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
@@ -166,8 +166,8 @@ public enum ShapeElementType {
 
 	/** Replies if this type is a ponctual element and not a collection of elements.
 	 *
-	 * @return <code>true</code> if the type corresponds to a ponctual element,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the type corresponds to a ponctual element,
+	 *     otherwise {@code false}.
 	 * @since 4.0
 	 */
 	@Pure
@@ -177,8 +177,8 @@ public enum ShapeElementType {
 
 	/** Replies if this type is a collection of element and not a ponctual element.
 	 *
-	 * @return <code>true</code> if the type corresponds to a collection of elements,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the type corresponds to a collection of elements,
+	 *     otherwise {@code false}.
 	 * @since 4.0
 	 */
 	@Pure

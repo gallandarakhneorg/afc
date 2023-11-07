@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,8 +46,8 @@ public interface PointFusionValidator {
 	 * @param y1 is the y of the first point.
 	 * @param x2 is the x of the second point.
 	 * @param y2 is the y of the second point.
-	 * @return <code>true</code> if the two points are equal;
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the two points are equal;
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	boolean isSame(double x1, double y1, double x2, double y2);

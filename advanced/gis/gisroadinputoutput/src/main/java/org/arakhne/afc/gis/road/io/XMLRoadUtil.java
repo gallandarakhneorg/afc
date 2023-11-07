@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,10 +67,10 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
  */
 public final class XMLRoadUtil {
 
-	/** <code>&lt;circle /&gt;</code>. */
+	/** {@code &lt;circle /&gt;}. */
 	public static final String NODE_ROAD = "road"; //$NON-NLS-1$
 
-	/** <code>height=""</code>. */
+	/** {@code height=""}. */
 	public static final String ATTR_HEIGHT = "height"; //$NON-NLS-1$
 
 	private XMLRoadUtil() {
@@ -137,10 +137,10 @@ public final class XMLRoadUtil {
 	 * @param xmlNode is the XML node to fill with the container data.
 	 * @param primitive is the container of roads to output.
 	 * @param geometryURL is the URL of the file that contains the geometry of the roads.
-	 *     If <code>null</code>, the road will be directly written in the XML document.
+	 *     If {@code null}, the road will be directly written in the XML document.
 	 * @param mapProjection is the map projection to use to write the geometry shapes.
 	 * @param attributeURL is the URL of the file that contains the attributes of the roads.
-	 *     This parameter is used only if <var>geometryURL</var> is not <code>null</code>.
+	 *     This parameter is used only if <var>geometryURL</var> is not {@code null}.
 	 * @param builder is the tool to create XML nodes.
 	 * @param pathBuilder is the tool to make paths relative.
 	 * @param resources is the tool that permits to gather the resources.

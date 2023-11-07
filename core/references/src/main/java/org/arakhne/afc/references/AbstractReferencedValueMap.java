@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
 /**
  * A <tt>Map</tt> implementation with <em>weak/soft values</em>. An entry in a
  * <tt>AbstractReferencedValueMap</tt> will automatically be removed when its value is no
- * longer in ordinary use or <code>null</code>.
+ * longer in ordinary use or {@code null}.
  *
  * <p>This abstract implementation does not decide if the map is based on a tree or on a hashtable;
  * it does not impose soft or weak references.
@@ -83,7 +83,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 	/** Mask the null values given by the used of this map.
 	 *
-	 * <p>This method replaces the <code>null</code> value by
+	 * <p>This method replaces the {@code null} value by
 	 * the internal representation {@link #NULL_VALUE}.
 	 *
 	 * @param <VALUET> is the type of the value.
@@ -101,7 +101,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 	 *
 	 * <p>This method replaces the internal representation
 	 * {@link #NULL_VALUE} of null values by its user representation
-	 * <code>null</code>.
+	 * {@code null}.
 	 *
 	 * @param <VALUET> is the type of the value.
 	 * @param value is the value given by the user of this map.
@@ -161,8 +161,8 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 	/** Replies if this map expurge all the released references
 	 * even if they are not enqueued by the virtual machine.
 	 *
-	 * @return <code>true</code> is the values are deeply expurged when they
-	 *     are released from the moemory, otherwise <code>false</code>.
+	 * @return {@code true} is the values are deeply expurged when they
+	 *     are released from the moemory, otherwise {@code false}.
 	 */
 	@Pure
 	public final boolean isDeeplyExpurge() {
@@ -172,8 +172,8 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 	/** Set if this map expurge all the released references
 	 * even if they are not enqueued by the virtual machine.
 	 *
-	 * @param deeplyExpurge must be <code>true</code> to
-	 *     expurge all the released values, otherwise <code>false</code>
+	 * @param deeplyExpurge must be {@code true} to
+	 *     expurge all the released values, otherwise {@code false}
 	 *     to expurge only the enqueued values.
 	 * @return the old value of this flag
 	 */
@@ -620,11 +620,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 			final VKT key = getKey();
 			buffer.append(key == null ? null : key.toString());
 			buffer.append('=');
-			if (isEnqueued()) {
-				buffer.append("Q#"); //$NON-NLS-1$
-			} else {
-				buffer.append("P#"); //$NON-NLS-1$
-			}
+			buffer.append("P#"); //$NON-NLS-1$
 			final VVT v = getValue();
 			buffer.append(v == null ? null : v.toString());
 			buffer.append('}');
@@ -699,11 +695,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 			final VKT key = getKey();
 			buffer.append(key == null ? null : key.toString());
 			buffer.append('=');
-			if (isEnqueued()) {
-				buffer.append("Q#"); //$NON-NLS-1$
-			} else {
-				buffer.append("P#"); //$NON-NLS-1$
-			}
+			buffer.append("P#"); //$NON-NLS-1$
 			final VVT v = getValue();
 			buffer.append(v == null ? null : v.toString());
 			buffer.append('}');
@@ -777,11 +769,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 			final VKT key = getKey();
 			buffer.append(key == null ? null : key.toString());
 			buffer.append('=');
-			if (isEnqueued()) {
-				buffer.append("Q#"); //$NON-NLS-1$
-			} else {
-				buffer.append("P#"); //$NON-NLS-1$
-			}
+			buffer.append("P#"); //$NON-NLS-1$
 			final VVT v = getValue();
 			buffer.append(v == null ? null : v.toString());
 			buffer.append('}');

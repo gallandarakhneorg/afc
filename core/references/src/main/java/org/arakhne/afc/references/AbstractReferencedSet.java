@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * A <tt>Set</tt> implementation with {@link SoftReference soft values}
  * or {@link WeakReference weak values}. An entry in a
  * <tt>AbstractReferencedSet</tt> will automatically be removed when its value is no
- * longer in ordinary use or <code>null</code>.
+ * longer in ordinary use or {@code null}.
  *
  * <p>This abstract implementation does not decide if the map is based on a tree or
  * on a hashtable.
@@ -92,8 +92,8 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 	/** Replies if this map expurge all the released references
 	 * even if they are not enqueued by the virtual machine.
 	 *
-	 * @return <code>true</code> is the values are deeply expurged when they
-	 *     are released from the moemory, otherwise <code>false</code>
+	 * @return {@code true} is the values are deeply expurged when they
+	 *     are released from the moemory, otherwise {@code false}
 	 */
 	@Pure
 	public final boolean isDeeplyExpurge() {
@@ -103,8 +103,8 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 	/** Set if this map expurge all the released references
 	 * even if they are not enqueued by the virtual machine.
 	 *
-	 * @param deeplyExpurge must be <code>true</code> to
-	 *     expurge all the released values, otherwise <code>false</code>
+	 * @param deeplyExpurge must be {@code true} to
+	 *     expurge all the released values, otherwise {@code false}
 	 *     to expurge only the enqueued values.
 	 * @return the old value of this flag
 	 */
@@ -137,7 +137,7 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 		while (iter.hasNext()) {
 			reference = iter.next();
 			if (reference != null
-					&& ((reference.isEnqueued()) || (reference.get() == null))) {
+					&& (reference.refersTo(null) || (reference.get() == null))) {
 				reference.enqueue();
 				reference.clear();
 			}

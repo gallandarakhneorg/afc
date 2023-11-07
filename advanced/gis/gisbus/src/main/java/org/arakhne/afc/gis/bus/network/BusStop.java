@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 
 	/** Create a stop with attributes stored in memory.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param name is the name of the new bus stop
 	 */
 	public BusStop(UUID id, String name) {
@@ -111,7 +111,7 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 
 	/** Create a bus stop.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param name is the name of the new bus stop
 	 * @param attributeProvider is the provider of attributes used by this bus stop.
 	 */
@@ -130,7 +130,7 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 
 	/** Create a stop with attributes stored in memory.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param name is the name of the new bus stop
 	 * @param position is the position of the bus stop.
 	 */
@@ -150,7 +150,7 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 
 	/** Create a bus stop.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param name is the name of the new bus stop.
 	 * @param position is the position of the bus stop.
 	 * @param attributeProvider is the provider of attributes used by this bus stop.
@@ -299,7 +299,7 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 
 	/** Replies the position of the bus stop.
 	 *
-	 * @return the position or <code>null</code> if never set before.
+	 * @return the position or {@code null} if never set before.
 	 */
 	@Pure
 	public GeoLocationPoint getGeoPosition() {
@@ -464,8 +464,8 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 
 	/** Replies if this bus stop is inside a hub.
 	 *
-	 * @return <code>true</code> if this bus stop is inside a hub,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this bus stop is inside a hub,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean insideBusHub() {
@@ -526,8 +526,8 @@ public class BusStop extends AbstractBusPrimitive<BusNetwork> {
 
 	/** Replies if this bus stop is associated to a bus itinerary halt.
 	 *
-	 * @return <code>true</code> if this bus stop is associated to a bus itinerary halt,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this bus stop is associated to a bus itinerary halt,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isBusHaltBinded() {

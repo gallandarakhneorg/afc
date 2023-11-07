@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ public interface GISLayerContainer<L extends MapLayer> extends GISContainer<L> {
 
 	/** Replies the bounding box of this visible elements.
 	 *
-	 * @return the bounding box or <code>null</code> if not applicable.
+	 * @return the bounding box or {@code null} if not applicable.
 	 */
 	@Pure
 	Rectangle2d getVisibleBoundingBox();
@@ -82,8 +82,8 @@ public interface GISLayerContainer<L extends MapLayer> extends GISContainer<L> {
 	/** Add a map layer inside this container at the top-most position.
 	 *
 	 * @param layer the layer.
-	 * @return <code>true</code> if the layer was added successfully,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the layer was added successfully,
+	 *     otherwise {@code false}
 	 */
 	boolean addMapLayer(L layer);
 
@@ -98,8 +98,8 @@ public interface GISLayerContainer<L extends MapLayer> extends GISContainer<L> {
 	/** Remove a map layer from this container.
 	 *
 	 * @param layer the layer.
-	 * @return <code>true</code> if the layer was removed successfully,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the layer was removed successfully,
+	 *     otherwise {@code false}
 	 */
 	boolean removeMapLayer(MapLayer layer);
 
@@ -117,13 +117,13 @@ public interface GISLayerContainer<L extends MapLayer> extends GISContainer<L> {
 	 * drawing and event handling. Indeed
 	 * the layers will be drawn from the
 	 * index replied by {@link #getMapLayerCount()}
-	 * minus 1 (last) to the index <code>0</code> (first).
+	 * minus 1 (last) to the index {@code 0} (first).
 	 * Moreover the events will be forwarded to the
 	 * layers from the first to the last.
 	 *
 	 * @param layer the layer.
-	 * @return <code>true</code> if the layer
-	 *     was moved. otherwise <code>false</code>
+	 * @return {@code true} if the layer
+	 *     was moved. otherwise {@code false}
 	 */
 	boolean moveLayerUp(MapLayer layer);
 
@@ -133,13 +133,13 @@ public interface GISLayerContainer<L extends MapLayer> extends GISContainer<L> {
 	 * drawing and event handling. Indeed
 	 * the layers will be drawn from the
 	 * index replied by {@link #getMapLayerCount()}
-	 * minus 1 (last) to the index <code>0</code> (first).
+	 * minus 1 (last) to the index {@code 0} (first).
 	 * Moreover the events will be forwarded to the
 	 * layers from the first to the last.
 	 *
 	 * @param index the index.
-	 * @return <code>true</code> if the layer
-	 *     was moved. otherwise <code>false</code>
+	 * @return {@code true} if the layer
+	 *     was moved. otherwise {@code false}
 	 */
 	boolean moveLayerUp(int index);
 
@@ -149,13 +149,13 @@ public interface GISLayerContainer<L extends MapLayer> extends GISContainer<L> {
 	 * drawing and event handling. Indeed
 	 * the layers will be drawn from the
 	 * index replied by {@link #getMapLayerCount()}
-	 * minus 1 (last) to the index <code>0</code> (first).
+	 * minus 1 (last) to the index {@code 0} (first).
 	 * Moreover the events will be forwarded to the
 	 * layers from the first to the last.
 	 *
 	 * @param layer the layer.
-	 * @return <code>true</code> if the layer
-	 *     was moved. otherwise <code>false</code>
+	 * @return {@code true} if the layer
+	 *     was moved. otherwise {@code false}
 	 */
 	boolean moveLayerDown(MapLayer layer);
 
@@ -165,13 +165,13 @@ public interface GISLayerContainer<L extends MapLayer> extends GISContainer<L> {
 	 * drawing and event handling. Indeed
 	 * the layers will be drawn from the
 	 * index replied by {@link #getMapLayerCount()}
-	 * minus 1 (last) to the index <code>0</code> (first).
+	 * minus 1 (last) to the index {@code 0} (first).
 	 * Moreover the events will be forwarded to the
 	 * layers from the first to the last.
 	 *
 	 * @param index the index.
-	 * @return <code>true</code> if the layer
-	 *     was moved. otherwise <code>false</code>
+	 * @return {@code true} if the layer
+	 *     was moved. otherwise {@code false}
 	 */
 	boolean moveLayerDown(int index);
 
@@ -220,8 +220,8 @@ public interface GISLayerContainer<L extends MapLayer> extends GISContainer<L> {
 	/** Replies if the specified layer is the bottom-most inside this container.
 	 *
 	 * @param layer the layer.
-	 * @return <code>true</code> if the given layer is the bottom-most layer in this container,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given layer is the bottom-most layer in this container,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	boolean isBottomLayer(MapLayer layer);
@@ -229,8 +229,8 @@ public interface GISLayerContainer<L extends MapLayer> extends GISContainer<L> {
 	/** Replies if the specified layer is the top-most inside this container.
 	 *
 	 * @param layer the layer.
-	 * @return <code>true</code> if the given layer is the top-most layer in this container,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given layer is the top-most layer in this container,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	boolean isTopLayer(MapLayer layer);
@@ -238,7 +238,7 @@ public interface GISLayerContainer<L extends MapLayer> extends GISContainer<L> {
 	/** Replies the index of the given layer in this container.
 	 *
 	 * @param layer the layer.
-	 * @return the index of the layer or <code>-1</code> if not found
+	 * @return the index of the layer or {@code -1} if not found
 	 */
 	@Pure
 	int indexOf(MapLayer layer);

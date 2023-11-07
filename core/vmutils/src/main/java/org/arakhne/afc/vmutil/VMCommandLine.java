@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,8 +57,8 @@ public class VMCommandLine {
 	/**
 	 * Create a interface to the command line options.
 	 *
-	 * @param classToLaunch is the class which contains a <code>main</code>.
-	 * @param parameters is the parameters to pass to the <code>main</code>.
+	 * @param classToLaunch is the class which contains a {@code main}.
+	 * @param parameters is the parameters to pass to the {@code main}.
 	 * @see #saveVMParametersIfNotSet(Class, String[])
 	 */
 	public VMCommandLine(Class<?> classToLaunch, String... parameters) {
@@ -68,8 +68,8 @@ public class VMCommandLine {
 	/**
 	 * Create a interface to the command line options.
 	 *
-	 * @param classToLaunch is the class which contains a <code>main</code>.
-	 * @param parameters is the parameters to pass to the <code>main</code>.
+	 * @param classToLaunch is the class which contains a {@code main}.
+	 * @param parameters is the parameters to pass to the {@code main}.
 	 * @since 6.2
 	 * @see #saveVMParametersIfNotSet(String, String[])
 	 */
@@ -80,9 +80,9 @@ public class VMCommandLine {
 	/**
 	 * Create a interface to the command line options.
 	 *
-	 * @param classToLaunch is the class which contains a <code>main</code>.
+	 * @param classToLaunch is the class which contains a {@code main}.
 	 * @param optionDefinitions is the list of definitions of the available command line options.
-	 * @param parameters is the parameters to pass to the <code>main</code>.
+	 * @param parameters is the parameters to pass to the {@code main}.
 	 * @see #saveVMParametersIfNotSet(Class, String[])
 	 * @see #splitOptionsAndParameters(String[])
 	 */
@@ -94,9 +94,9 @@ public class VMCommandLine {
 	/**
 	 * Create a interface to the command line options.
 	 *
-	 * @param classToLaunch is the class which contains a <code>main</code>.
+	 * @param classToLaunch is the class which contains a {@code main}.
 	 * @param optionDefinitions is the list of definitions of the available command line options.
-	 * @param parameters is the parameters to pass to the <code>main</code>.
+	 * @param parameters is the parameters to pass to the {@code main}.
 	 * @since 6.2
 	 * @see #saveVMParametersIfNotSet(String, String[])
 	 * @see #splitOptionsAndParameters(String[])
@@ -158,7 +158,7 @@ public class VMCommandLine {
 	 * @param classToLaunch is the class to launch.
 	 * @param classpath is the class path to use.
 	 * @param additionalParams is the list of additional parameters
-	 * @return the process that is running the new virtual machine, neither <code>null</code>
+	 * @return the process that is running the new virtual machine, neither {@code null}
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
@@ -174,7 +174,7 @@ public class VMCommandLine {
 	 * @param classToLaunch is the class to launch.
 	 * @param classpath is the class path to use.
 	 * @param additionalParams is the list of additional parameters
-	 * @return the process that is running the new virtual machine, neither <code>null</code>
+	 * @return the process that is running the new virtual machine, neither {@code null}
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
@@ -213,7 +213,7 @@ public class VMCommandLine {
 	 * @param classToLaunch is the class to launch.
 	 * @param classpath is the class path to use.
 	 * @param additionalParams is the list of additional parameters
-	 * @return the process that is running the new virtual machine, neither <code>null</code>
+	 * @return the process that is running the new virtual machine, neither {@code null}
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
@@ -229,7 +229,7 @@ public class VMCommandLine {
 	 * @param classToLaunch is the class to launch.
 	 * @param classpath is the class path to use.
 	 * @param additionalParams is the list of additional parameters
-	 * @return the process that is running the new virtual machine, neither <code>null</code>
+	 * @return the process that is running the new virtual machine, neither {@code null}
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
@@ -249,7 +249,7 @@ public class VMCommandLine {
 	 *
 	 * @param jarFile is the jar file to launch.
 	 * @param additionalParams is the list of additional parameters
-	 * @return the process that is running the new virtual machine, neither <code>null</code>
+	 * @return the process that is running the new virtual machine, neither {@code null}
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
@@ -275,7 +275,7 @@ public class VMCommandLine {
 	 *
 	 * @param classToLaunch is the class to launch.
 	 * @param additionalParams is the list of additional parameters
-	 * @return the process that is running the new virtual machine, neither <code>null</code>
+	 * @return the process that is running the new virtual machine, neither {@code null}
 	 * @throws IOException when a IO error occurs.
 	 */
 	@Inline(value = "VMCommandLine.launchVM(($1).getCanonicalName(), ($2))", imported = {VMCommandLine.class},
@@ -288,7 +288,7 @@ public class VMCommandLine {
 	 *
 	 * @param classToLaunch is the class to launch.
 	 * @param additionalParams is the list of additional parameters
-	 * @return the process that is running the new virtual machine, neither <code>null</code>
+	 * @return the process that is running the new virtual machine, neither {@code null}
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
@@ -304,8 +304,8 @@ public class VMCommandLine {
 	/** Save parameters that permit to relaunch a VM with
 	 * {@link #relaunchVM()}.
 	 *
-	 * @param classToLaunch is the class which contains a <code>main</code>.
-	 * @param parameters is the parameters to pass to the <code>main</code>.
+	 * @param classToLaunch is the class which contains a {@code main}.
+	 * @param parameters is the parameters to pass to the {@code main}.
 	 */
 	@Inline(value = "VMCommandLine.saveVMParameters((($1) != null) ? ($1).getCanonicalName() : null, ($2))",
 			imported = {VMCommandLine.class}, statementExpression = true)
@@ -319,8 +319,8 @@ public class VMCommandLine {
 	/** Save parameters that permit to relaunch a VM with
 	 * {@link #relaunchVM()}.
 	 *
-	 * @param classToLaunch is the class which contains a <code>main</code>.
-	 * @param parameters is the parameters to pass to the <code>main</code>.
+	 * @param classToLaunch is the class which contains a {@code main}.
+	 * @param parameters is the parameters to pass to the {@code main}.
 	 * @since 6.2
 	 */
 	public static void saveVMParameters(String classToLaunch, String... parameters) {
@@ -336,8 +336,8 @@ public class VMCommandLine {
 	/** Save parameters that permit to relaunch a VM with
 	 * {@link #relaunchVM()}.
 	 *
-	 * @param classToLaunch is the class which contains a <code>main</code>.
-	 * @param parameters is the parameters to pass to the <code>main</code>.
+	 * @param classToLaunch is the class which contains a {@code main}.
+	 * @param parameters is the parameters to pass to the {@code main}.
 	 */
 	@Inline(value = "VMCommandLine.saveVMParametersIfNotSet(($1).getCanonicalName(), ($2))",
 			imported = {VMCommandLine.class}, statementExpression = true)
@@ -348,8 +348,8 @@ public class VMCommandLine {
 	/** Save parameters that permit to relaunch a VM with
 	 * {@link #relaunchVM()}.
 	 *
-	 * @param classToLaunch is the class which contains a <code>main</code>.
-	 * @param parameters is the parameters to pass to the <code>main</code>.
+	 * @param classToLaunch is the class which contains a {@code main}.
+	 * @param parameters is the parameters to pass to the {@code main}.
 	 * @since 6.2
 	 */
 	public static void saveVMParametersIfNotSet(String classToLaunch, String... parameters) {
@@ -361,7 +361,7 @@ public class VMCommandLine {
 	/** Launch a VM with the same parameters as ones saved by
 	 * {@link #saveVMParameters(Class, String[])}.
 	 *
-	 * @return the process that is running the new virtual machine, neither <code>null</code>
+	 * @return the process that is running the new virtual machine, neither {@code null}
 	 * @throws IOException when a IO error occurs.
 	 */
 	public static Process relaunchVM() throws IOException {
@@ -433,7 +433,7 @@ public class VMCommandLine {
 	/** Shift the command line parameters by one on the left.
 	 * The first parameter is removed from the list.
 	 *
-	 * @return the removed element or <code>null</code>
+	 * @return the removed element or {@code null}
 	 */
 	public static String shiftCommandLineParameters() {
 		String removed = null;
@@ -468,7 +468,7 @@ public class VMCommandLine {
 	/** Replies one command option.
 	 *
 	 * @param name is the name of the option
-	 * @return the option value or <code>null</code> if the option is not on the command line.
+	 * @return the option value or {@code null} if the option is not on the command line.
 	 */
 	@Pure
 	public static List<Object> getCommandLineOption(String name) {
@@ -482,7 +482,7 @@ public class VMCommandLine {
 	/** Replies if an option was specified on the command line.
 	 *
 	 * @param name is the name of the option
-	 * @return <code>true</code> if the option was found on the command line, otherwise <code>false</code>.
+	 * @return {@code true} if the option was found on the command line, otherwise {@code false}.
 	 */
 	@Pure
 	public static boolean hasCommandLineOption(String name) {
@@ -798,7 +798,7 @@ public class VMCommandLine {
 	/** Replies if the given option is present on the command line.
 	 *
 	 * @param optionLabel is the name of the option
-	 * @return <code>true</code> if the option is present, otherwise <code>false</code>
+	 * @return {@code true} if the option is present, otherwise {@code false}
 	 */
 	@Pure
 	@SuppressWarnings("static-method")
@@ -809,7 +809,7 @@ public class VMCommandLine {
 	/** Replies the first value of the option.
 	 *
 	 * @param optionLabel is the name of the option
-	 * @return the option value or <code>null</code> if the option is not present or has no value.
+	 * @return the option value or {@code null} if the option is not present or has no value.
 	 */
 	@Pure
 	@SuppressWarnings("static-method")
@@ -824,7 +824,7 @@ public class VMCommandLine {
 	/** Replies the values of the option.
 	 *
 	 * @param optionLabel is the name of the option
-	 * @return the option values or <code>null</code> if the option is not present.
+	 * @return the option values or {@code null} if the option is not present.
 	 */
 	@Pure
 	@SuppressWarnings("static-method")
@@ -849,7 +849,7 @@ public class VMCommandLine {
 	/** Shift the command line parameters by one on the left.
 	 * The first parameter is removed from the list.
 	 *
-	 * @return the removed element or <code>null</code>
+	 * @return the removed element or {@code null}
 	 */
 	@SuppressWarnings("static-method")
 	public String shiftParameters() {
@@ -881,8 +881,8 @@ public class VMCommandLine {
 	/** Replies if the given index corresponds to a command line parameter.
 	 *
 	 * @param index position of the parameter to test.
-	 * @return <code>true</code> if the given index corresponds to a parameter,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given index corresponds to a parameter,
+	 *     otherwise {@code false}
 	 * @throws IndexOutOfBoundsException if the given index is out of bounds.
 	 */
 	@Pure
@@ -948,7 +948,7 @@ public class VMCommandLine {
 
 		/** Replies if the value is mandatory.
 		 *
-		 * @return <code>true</code> if the value is mandatory, otherwise <code>false</code>
+		 * @return {@code true} if the value is mandatory, otherwise {@code false}
 		 */
 		@Pure
 		public boolean isMandatory() {
@@ -960,7 +960,7 @@ public class VMCommandLine {
 
 		/** Replies if the value is optional.
 		 *
-		 * @return <code>true</code> if the value is not mandatory, otherwise <code>false</code>
+		 * @return {@code true} if the value is not mandatory, otherwise {@code false}
 		 */
 		@Pure
 		public boolean isOptional() {

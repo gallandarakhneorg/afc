@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,7 +109,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 
 	/** Create bus network.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param name is the name of the new bus network
 	 * @param roadNetwork is the road network on which the bus network is mapped.
 	 * @param attributeProvider is the attribute provider which must be used by this object.
@@ -134,7 +134,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 
 	/** Create bus network.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param roadNetwork is the road network on which the bus network is mapped.
 	 * @param attributeProvider is the attribute provider which must be used by this object.
 	 * @since 2.0
@@ -154,7 +154,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 
 	/** Create bus network with a storage in memory of the attributes.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param name is the name of the new bus network
 	 * @param roadNetwork is the road network on which the bus network is mapped.
 	 * @since 2.0
@@ -173,7 +173,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 
 	/** Create bus network with a storage in memory of the attributes.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param roadNetwork is the road network on which the bus network is mapped.
 	 * @since 2.0
 	 */
@@ -323,8 +323,8 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 
 	/** Replies if all the bus stops are valid.
 	 *
-	 * @return <code>true</code> if all the bus stops are valid,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if all the bus stops are valid,
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	public boolean isValidBusStops() {
@@ -333,8 +333,8 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 
 	/** Replies if all the bus hubs are valid.
 	 *
-	 * @return <code>true</code> if all the bus hubs are valid,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if all the bus hubs are valid,
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	public boolean isValidBusHubs() {
@@ -446,7 +446,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Add a bus line inside the bus network.
 	 *
 	 * @param busLine is the bus line to insert.
-	 * @return <code>true</code> if the bus line was added, otherwise <code>false</code>
+	 * @return {@code true} if the bus line was added, otherwise {@code false}
 	 */
 	public boolean addBusLine(BusLine busLine) {
 		if (busLine == null) {
@@ -483,7 +483,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 *
 	 * @param busLine is the bus line to insert.
 	 * @param index the index.
-	 * @return <code>true</code> if the bus line was added, otherwise <code>false</code>
+	 * @return {@code true} if the bus line was added, otherwise {@code false}
 	 */
 	public boolean addBusLine(BusLine busLine, int index) {
 		if (busLine == null) {
@@ -546,7 +546,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * will be also removed.
 	 *
 	 * @param busLine is the bus line to remove.
-	 * @return <code>true</code> if the bus line was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus line was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusLine(BusLine busLine) {
 		final int index = this.busLines.indexOf(busLine);
@@ -563,7 +563,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * will be also removed.
 	 *
 	 * @param name is the name of the bus line to remove.
-	 * @return <code>true</code> if the bus line was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus line was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusLine(String name) {
 		final Iterator<BusLine> iterator = this.busLines.iterator();
@@ -597,7 +597,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * will be also removed.
 	 *
 	 * @param index is the index of the bus line to remove.
-	 * @return <code>true</code> if the bus line was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus line was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusLine(int index) {
 		try {
@@ -633,7 +633,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Replies the index of the specified bus line.
 	 *
 	 * @param busLine is the bus line to search for.
-	 * @return the index or <code>-1</code> if it was not found.
+	 * @return the index or {@code -1} if it was not found.
 	 */
 	@Pure
 	public int indexOf(BusLine busLine) {
@@ -662,7 +662,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Replies the bus line with the specified name.
 	 *
 	 * @param name is the desired name
-	 * @return BusLine or <code>null</code>
+	 * @return BusLine or {@code null}
 	 */
 	@Pure
 	public BusLine getBusLine(String name) {
@@ -673,7 +673,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Replies the bus line with the specified uuid.
 	 *
 	 * @param uuid the identifier.
-	 * @return BusLine or <code>null</code>
+	 * @return BusLine or {@code null}
 	 */
 	@Pure
 	public BusLine getBusLine(UUID uuid) {
@@ -693,7 +693,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 *
 	 * @param name is the desired name
 	 * @param nameComparator is used to compare the names.
-	 * @return BusLine or <code>null</code>
+	 * @return BusLine or {@code null}
 	 */
 	@Pure
 	public BusLine getBusLine(String name, Comparator<String> nameComparator) {
@@ -735,7 +735,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Add a bus stop inside the bus network.
 	 *
 	 * @param busStop is the bus stop to insert.
-	 * @return <code>true</code> if the bus stop was added, otherwise <code>false</code>
+	 * @return {@code true} if the bus stop was added, otherwise {@code false}
 	 */
 	public boolean addBusStop(BusStop busStop) {
 		if (busStop == null) {
@@ -804,7 +804,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * will be also removed.
 	 *
 	 * @param busStop is the bus stop to remove.
-	 * @return <code>true</code> if the bus stop was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus stop was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusStop(BusStop busStop) {
 		if (this.validBusStops.remove(busStop)) {
@@ -842,7 +842,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * will be also removed.
 	 *
 	 * @param name is the name of the bus stop to remove.
-	 * @return <code>true</code> if the bus stop was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus stop was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusStop(String name) {
 		Iterator<BusStop> iterator;
@@ -902,7 +902,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Replies the bus stop with the specified name.
 	 *
 	 * @param name is the desired name
-	 * @return BusStop or <code>null</code>
+	 * @return BusStop or {@code null}
 	 */
 	@Pure
 	public BusStop getBusStop(String name) {
@@ -913,7 +913,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Replies the bus stop with the specified id.
 	 *
 	 * @param id is the desired identifier
-	 * @return BusStop or <code>null</code>
+	 * @return BusStop or {@code null}
 	 */
 	@Pure
 	public BusStop getBusStop(UUID id) {
@@ -940,7 +940,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 *
 	 * @param name is the desired name
 	 * @param nameComparator is used to compare the names.
-	 * @return BusStop or <code>null</code>
+	 * @return BusStop or {@code null}
 	 */
 	@Pure
 	public BusStop getBusStop(String name, Comparator<String> nameComparator) {
@@ -1000,7 +1000,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Replies the nearest bus stop to the given point.
 	 *
 	 * @param point the point.
-	 * @return the nearest bus stop or <code>null</code> if none was found.
+	 * @return the nearest bus stop or {@code null} if none was found.
 	 */
 	@Pure
 	public final BusStop getNearestBusStop(Point2D<?, ?> point) {
@@ -1011,7 +1011,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Replies the nearest bus stop to the given point.
 	 *
 	 * @param point the point
-	 * @return the nearest bus stop or <code>null</code> if none was found.
+	 * @return the nearest bus stop or {@code null} if none was found.
 	 */
 	@Pure
 	public final BusStop getNearestBusStop(GeoLocationPoint point) {
@@ -1023,7 +1023,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 *
 	 * @param x x coordinate.
 	 * @param y y coordinate.
-	 * @return the nearest bus stop or <code>null</code> if none was found.
+	 * @return the nearest bus stop or {@code null} if none was found.
 	 */
 	@Pure
 	public BusStop getNearestBusStop(double x, double y) {
@@ -1052,7 +1052,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * The name of the hub is deduced from the bus stops names.
 	 *
 	 * @param stops are the bus stops to put inside the hub.
-	 * @return the create bus hub, or <code>null</code> if not created.
+	 * @return the create bus hub, or {@code null} if not created.
 	 */
 	public BusHub addBusHub(BusStop... stops) {
 		return addBusHub(null, stops);
@@ -1061,11 +1061,11 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	/**
 	 * Add a bus hub in this network.
 	 * At least, one bus stop must be given to create a hub if you pass a
-	 * <code>null</code> name.
+	 * {@code null} name.
 	 *
 	 * @param name is the name of the hub.
 	 * @param stops are the bus stops to put inside the hub.
-	 * @return the create bus hub, or <code>null</code> if not created.
+	 * @return the create bus hub, or {@code null} if not created.
 	 */
 	public BusHub addBusHub(String name, BusStop... stops) {
 		// Do not set immediatly the container to
@@ -1083,7 +1083,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	/** Add the given bus hub in the network.
 	 *
 	 * @param hub is the new bus hub.
-	 * @return <code>true</code> on success, otherwise <code>false</code>.
+	 * @return {@code true} on success, otherwise {@code false}.
 	 */
 	private boolean addBusHub(BusHub hub) {
 		if (hub == null) {
@@ -1150,7 +1150,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Remove a bus hubs from this network.
 	 *
 	 * @param busHub is the bus hub to remove.
-	 * @return <code>true</code> if the bus hub was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus hub was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusHub(BusHub busHub) {
 		if (this.validBusHubs.remove(busHub)) {
@@ -1187,7 +1187,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Remove the bus hub with the given name.
 	 *
 	 * @param name is the name of the bus hub to remove.
-	 * @return <code>true</code> if the bus hub was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus hub was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusHub(String name) {
 		Iterator<BusHub> iterator;
@@ -1247,7 +1247,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Replies the bus hub with the specified name.
 	 *
 	 * @param name is the desired name
-	 * @return a bus hub or <code>null</code>
+	 * @return a bus hub or {@code null}
 	 */
 	@Pure
 	public BusHub getBusHub(String name) {
@@ -1258,7 +1258,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Replies the bus hub with the specified uuid.
 	 *
 	 * @param uuid the identifier.
-	 * @return a bus hub or <code>null</code>
+	 * @return a bus hub or {@code null}
 	 */
 	@Pure
 	public BusHub getBusHub(UUID uuid) {
@@ -1283,7 +1283,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 *
 	 * @param name is the desired name
 	 * @param nameComparator is used to compare the names.
-	 * @return a bus hub or <code>null</code>
+	 * @return a bus hub or {@code null}
 	 */
 	@Pure
 	public BusHub getBusHub(String name, Comparator<String> nameComparator) {
@@ -1343,7 +1343,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Replies the nearest bus hub to the given point.
 	 *
 	 * @param point the point
-	 * @return the nearest bus hub or <code>null</code> if none was found.
+	 * @return the nearest bus hub or {@code null} if none was found.
 	 */
 	@Pure
 	public final BusHub getNearestBusHub(Point2D<?, ?> point) {
@@ -1354,7 +1354,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 * Replies the nearest bus hub to the given point.
 	 *
 	 * @param point the point
-	 * @return the nearest bus hub or <code>null</code> if none was found.
+	 * @return the nearest bus hub or {@code null} if none was found.
 	 */
 	@Pure
 	public final BusHub getNearestBusHub(GeoLocationPoint point) {
@@ -1366,7 +1366,7 @@ public class BusNetwork extends AbstractBusContainer<BusContainer<?>, BusLine> {
 	 *
 	 * @param x x coordinate.
 	 * @param y y coordinate.
-	 * @return the nearest bus hub or <code>null</code> if none was found.
+	 * @return the nearest bus hub or {@code null} if none was found.
 	 */
 	@Pure
 	public BusHub getNearestBusHub(double x, double y) {

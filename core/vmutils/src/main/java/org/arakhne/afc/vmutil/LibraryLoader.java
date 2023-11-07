@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,8 +61,8 @@ public final class LibraryLoader {
 	 * when it is enable. Otherwise it ignore all the loading
 	 * queries.
 	 *
-	 * @return <code>true</code> if the library loader is enable,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the library loader is enable,
+	 *     otherwise {@code false}
 	 * @since 5.0
 	 */
 	@Pure
@@ -76,8 +76,8 @@ public final class LibraryLoader {
 	 * when it is enable. Otherwise it ignore all the loading
 	 * queries.
 	 *
-	 * @param enable is <code>true</code> to allow this loader
-	 *     to retreive native libraries, or <code>false</code> to
+	 * @param enable is {@code true} to allow this loader
+	 *     to retreive native libraries, or {@code false} to
 	 *     ignore all the loading queries.
 	 * @since 5.0
 	 */
@@ -89,7 +89,7 @@ public final class LibraryLoader {
 	 * system as a dynamic library. The filename
 	 * argument must be a complete path name.
 	 *
-	 * <p>The call <code>LibraryLoader.load(name)</code> is effectively equivalent
+	 * <p>The call {@code LibraryLoader.load(name)} is effectively equivalent
 	 * to the call:
 	 * <blockquote><pre>
 	 * System.load(name)
@@ -97,11 +97,11 @@ public final class LibraryLoader {
 	 *
 	 * @param filename is the file to load.
 	 * @throws  SecurityException if a security manager exists and its
-	 *             <code>checkLink</code> method doesn't allow
+	 *             {@code checkLink} method doesn't allow
 	 *             loading of the specified dynamic library
 	 * @throws  UnsatisfiedLinkError if the file does not exist.
-	 * @throws  NullPointerException if <code>filename</code> is
-	 *             <code>null</code>
+	 * @throws  NullPointerException if {@code filename} is
+	 *             {@code null}
 	 * @see        java.lang.System#load(java.lang.String)
 	 */
 	public static void load(String filename) {
@@ -120,11 +120,11 @@ public final class LibraryLoader {
 	 * @param filename is the file to load.
 	 * @throws IOException when reading error occurs.
 	 * @throws  SecurityException if a security manager exists and its
-	 *             <code>checkLink</code> method doesn't allow
+	 *             {@code checkLink} method doesn't allow
 	 *             loading of the specified dynamic library
 	 * @throws  UnsatisfiedLinkError if the file does not exist.
-	 * @throws  NullPointerException if <code>filename</code> is
-	 *             <code>null</code>
+	 * @throws  NullPointerException if {@code filename} is
+	 *             {@code null}
 	 * @see        java.lang.System#load(java.lang.String)
 	 */
 	public static void load(URL filename) throws IOException {
@@ -174,7 +174,7 @@ public final class LibraryLoader {
 	 * system as a dynamic library. The filename
 	 * argument must be a complete path name.
 	 *
-	 * <p>The call <code>LibraryLoader.load(name)</code> is effectively equivalent
+	 * <p>The call {@code LibraryLoader.load(name)} is effectively equivalent
 	 * to the call:
 	 * <blockquote><pre>
 	 * System.load(name.getAbsolutePath())
@@ -182,11 +182,11 @@ public final class LibraryLoader {
 	 *
 	 * @param filename is the file to load.
 	 * @throws  SecurityException if a security manager exists and its
-	 *             <code>checkLink</code> method doesn't allow
+	 *             {@code checkLink} method doesn't allow
 	 *             loading of the specified dynamic library
 	 * @throws  UnsatisfiedLinkError if the file does not exist.
-	 * @throws  NullPointerException if <code>filename</code> is
-	 *             <code>null</code>
+	 * @throws  NullPointerException if {@code filename} is
+	 *             {@code null}
 	 * @see        java.lang.System#load(java.lang.String)
 	 */
 	public static void load(File filename) {
@@ -198,11 +198,11 @@ public final class LibraryLoader {
 	}
 
 	/**
-	 * Loads the system library specified by the <code>libname</code>
+	 * Loads the system library specified by the {@code libname}
 	 * argument. The manner in which a library name is mapped to the
 	 * actual system library is system dependent.
 	 *
-	 * <p>The call <code>LibraryLoader.loadLibrary(name)</code> is effectively
+	 * <p>The call {@code LibraryLoader.loadLibrary(name)} is effectively
 	 * equivalent to the call
 	 * <blockquote><pre>
 	 * System.loadLibrary(name)
@@ -210,11 +210,11 @@ public final class LibraryLoader {
 	 *
 	 * @param      libname   the name of the library.
 	 * @throws  SecurityException  if a security manager exists and its
-	 *             <code>checkLink</code> method doesn't allow
+	 *             {@code checkLink} method doesn't allow
 	 *             loading of the specified dynamic library
 	 * @throws  UnsatisfiedLinkError  if the library does not exist.
-	 * @throws  NullPointerException if <code>libname</code> is
-	 *             <code>null</code>
+	 * @throws  NullPointerException if {@code libname} is
+	 *             {@code null}
 	 * @see        java.lang.System#loadLibrary(java.lang.String)
 	 */
 	public static void loadLibrary(String libname) {
@@ -237,7 +237,7 @@ public final class LibraryLoader {
 
 	/** Replies the URL for the specified library.
 	 *
-	 * <p>The call <code>LibraryLoader.findLibraryURL(path,name)</code> is effectively equivalent
+	 * <p>The call {@code LibraryLoader.findLibraryURL(path,name)} is effectively equivalent
 	 * to the call:
 	 * <blockquote><pre>
 	 * getClassLoader().getResource(path+System.mapLibraryName(name))
@@ -289,7 +289,7 @@ public final class LibraryLoader {
 
 	/** Replies the data model of the current operating system: 32 or 64 bits.
 	 *
-	 * @return the integer which is corresponding to the data model, or <code>0</code> if
+	 * @return the integer which is corresponding to the data model, or {@code 0} if
 	 *     it could not be determined.
 	 */
 	@Pure
@@ -337,22 +337,22 @@ public final class LibraryLoader {
 	/**
 	 * Search and load the dynamic library which is fitting the
 	 * current operating system (32 or 64bits operating system...).
-	 * A 64 bits library is assumed to be named <code>libname64.dll</code>
-	 * on Windows&reg; and <code>liblibname64.so</code> on Unix.
-	 * A 32 bits library is assumed to be named <code>libname32.dll</code>
-	 * on Windows&reg; and <code>liblibname32.so</code> on Unix.
+	 * A 64 bits library is assumed to be named {@code libname64.dll}
+	 * on Windows&reg; and {@code liblibname64.so} on Unix.
+	 * A 32 bits library is assumed to be named {@code libname32.dll}
+	 * on Windows&reg; and {@code liblibname32.so} on Unix.
 	 * A library which could be ran either on 32 and 64 platforms is assumed
-	 * to be named <code>libname.dll</code> on Windows&reg; and
-	 * <code>liblibname.so</code> on Unix.
+	 * to be named {@code libname.dll} on Windows&reg; and
+	 * {@code liblibname.so} on Unix.
 	 *
 	 * @param libname is the name of the library.
 	 * @throws IOException when reading error occurs.
 	 * @throws  SecurityException if a security manager exists and its
-	 *             <code>checkLink</code> method doesn't allow
+	 *             {@code checkLink} method doesn't allow
 	 *             loading of the specified dynamic library
 	 * @throws  UnsatisfiedLinkError if the file does not exist.
-	 * @throws  NullPointerException if <code>filename</code> is
-	 *             <code>null</code>
+	 * @throws  NullPointerException if {@code filename} is
+	 *             {@code null}
 	 * @see        java.lang.System#load(java.lang.String)
 	 */
 	@Inline(value = "LibraryLoader.loadPlatformDependentLibrary(null, $1)", imported = {LibraryLoader.class},
@@ -364,23 +364,23 @@ public final class LibraryLoader {
 	/**
 	 * Search and load the dynamic library which is fitting the
 	 * current operating system (32 or 64bits operating system...).
-	 * A 64 bits library is assumed to be named <code>libname64.dll</code>
-	 * on Windows&reg; and <code>liblibname64.so</code> on Unix.
-	 * A 32 bits library is assumed to be named <code>libname32.dll</code>
-	 * on Windows&reg; and <code>liblibname32.so</code> on Unix.
+	 * A 64 bits library is assumed to be named {@code libname64.dll}
+	 * on Windows&reg; and {@code liblibname64.so} on Unix.
+	 * A 32 bits library is assumed to be named {@code libname32.dll}
+	 * on Windows&reg; and {@code liblibname32.so} on Unix.
 	 * A library which could be ran either on 32 and 64 platforms is assumed
-	 * to be named <code>libname.dll</code> on Windows&reg; and
-	 * <code>liblibname.so</code> on Unix.
+	 * to be named {@code libname.dll} on Windows&reg; and
+	 * {@code liblibname.so} on Unix.
 	 *
 	 * @param path is the resource's path where the library was located.
 	 * @param libname is the name of the library.
 	 * @throws IOException when reading error occurs.
 	 * @throws  SecurityException if a security manager exists and its
-	 *             <code>checkLink</code> method doesn't allow
+	 *             {@code checkLink} method doesn't allow
 	 *             loading of the specified dynamic library
 	 * @throws  UnsatisfiedLinkError if the file does not exist.
-	 * @throws  NullPointerException if <code>filename</code> is
-	 *             <code>null</code>
+	 * @throws  NullPointerException if {@code filename} is
+	 *             {@code null}
 	 * @see        java.lang.System#load(java.lang.String)
 	 */
 	public static void loadPlatformDependentLibrary(String path, String libname) throws IOException {
@@ -390,24 +390,24 @@ public final class LibraryLoader {
 	/**
 	 * Search and load the dynamic library which is fitting the
 	 * current operating system (32 or 64bits operating system...).
-	 * A 64 bits library is assumed to be named <code>libname64.dll</code>
-	 * on Windows&reg; and <code>liblibname64.so</code> on Unix.
-	 * A 32 bits library is assumed to be named <code>libname32.dll</code>
-	 * on Windows&reg; and <code>liblibname32.so</code> on Unix.
+	 * A 64 bits library is assumed to be named {@code libname64.dll}
+	 * on Windows&reg; and {@code liblibname64.so} on Unix.
+	 * A 32 bits library is assumed to be named {@code libname32.dll}
+	 * on Windows&reg; and {@code liblibname32.so} on Unix.
 	 * A library which could be ran either on 32 and 64 platforms is assumed
-	 * to be named <code>libname.dll</code> on Windows&reg; and
-	 * <code>liblibname.so</code> on Unix.
+	 * to be named {@code libname.dll} on Windows&reg; and
+	 * {@code liblibname.so} on Unix.
 	 *
 	 * @param libname is the name of the library.
 	 * @param platform is the name of the current OS platform.
 	 * @param paths are the resource's paths where the library was located.
 	 * @throws IOException when reading error occurs.
 	 * @throws  SecurityException if a security manager exists and its
-	 *             <code>checkLink</code> method doesn't allow
+	 *             {@code checkLink} method doesn't allow
 	 *             loading of the specified dynamic library
 	 * @throws  UnsatisfiedLinkError if the file does not exist.
-	 * @throws  NullPointerException if <code>filename</code> is
-	 *             <code>null</code>
+	 * @throws  NullPointerException if {@code filename} is
+	 *             {@code null}
 	 * @see        java.lang.System#load(java.lang.String)
 	 */
 	static void loadPlatformDependentLibrary(String libname, String platform, String... paths) throws IOException {

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ public class AttributeChangeEvent extends EventObject {
 
 	/** Replies the name of the changed attributes.
 	 *
-	 * @return the name attribute, or <code>null</code> if this
+	 * @return the name attribute, or {@code null} if this
 	 *     event has no name attribute.
 	 */
 	@Pure
@@ -81,7 +81,7 @@ public class AttributeChangeEvent extends EventObject {
 
 	/** Replies the old name of the changed attributes.
 	 *
-	 * @return the old name attribute, or <code>null</code> if this
+	 * @return the old name attribute, or {@code null} if this
 	 *     event has no old name attribute.
 	 */
 	@Pure
@@ -91,7 +91,7 @@ public class AttributeChangeEvent extends EventObject {
 
 	/** Replies the old value of the attribute.
 	 *
-	 * @return the attribute value or <code>null</code>
+	 * @return the attribute value or {@code null}
 	 */
 	@Pure
 	public AttributeValue getOldValue() {
@@ -100,7 +100,7 @@ public class AttributeChangeEvent extends EventObject {
 
 	/** Replies the new value of the attribute.
 	 *
-	 * @return the attribute value, never <code>null</code>
+	 * @return the attribute value, never {@code null}
 	 */
 	@Pure
 	public AttributeValue getValue() {
@@ -109,7 +109,7 @@ public class AttributeChangeEvent extends EventObject {
 
 	/** Replies the changed attribute.
 	 *
-	 * @return the attribute, never <code>null</code>
+	 * @return the attribute, never {@code null}
 	 */
 	@Pure
 	public Attribute getAttribute() {
@@ -118,7 +118,7 @@ public class AttributeChangeEvent extends EventObject {
 
 	/** Replies the type of event.
 	 *
-	 * @return the type of the event, neither <code>null</code>
+	 * @return the type of the event, neither {@code null}
 	 */
 	@Pure
 	public Type getType() {

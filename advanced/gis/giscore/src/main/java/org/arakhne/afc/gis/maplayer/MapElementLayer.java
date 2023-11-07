@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ public abstract class MapElementLayer<E extends MapElement> extends MapLayer imp
 
 	/** Create a new layer with the specified attribute source.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the provider of the layer's attributes.
 	 * @since 4.0
 	 */
@@ -76,7 +76,7 @@ public abstract class MapElementLayer<E extends MapElement> extends MapLayer imp
 
 	/** Create a new layer with the specified attribute source.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the provider of the layer's attributes.
 	 * @param isTemp indicates if this layer is temporary.
 	 * @since 4.0

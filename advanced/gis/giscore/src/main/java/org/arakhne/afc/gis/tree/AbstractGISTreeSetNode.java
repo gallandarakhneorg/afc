@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -233,7 +233,7 @@ class AbstractGISTreeSetNode<P extends GISPrimitive, N extends AbstractGISTreeSe
 	 * of the bounds, but the bounding object itself.
 	 * See {@link #getObjectBounds()} to obtain a copy.
 	 *
-	 * @return the bounds, never <code>null</code>
+	 * @return the bounds, never {@code null}
 	 * @see #getObjectBounds()
 	 */
 	@Pure

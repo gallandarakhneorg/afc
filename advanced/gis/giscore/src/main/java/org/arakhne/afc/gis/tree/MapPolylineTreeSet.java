@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -283,7 +283,7 @@ public class MapPolylineTreeSet<P extends MapPolyline> extends MapElementTreeSet
 		 * @param insertionNode will be filled by the node that could receive the specified polyline
 		 * @param firstNeighbour is one of the two nearest polylines that could be connected to the new segment.
 		 * @param secondNeighbour is one of the two nearest polylines that could be connected to the new segment.
-		 * @return <code>true</code> the element could be added, <code>false</code> otherwise
+		 * @return {@code true} the element could be added, {@code false} otherwise
 		 */
 		@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 		public static <P extends MapPolyline> boolean computeConnectableInsertion(

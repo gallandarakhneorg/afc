@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -135,7 +135,7 @@ public enum DBaseCodePage {
 
 	/** Replies the charset.
 	 *
-	 * @return the charset or <code>null</code> if unknown
+	 * @return the charset or {@code null} if unknown
 	 */
 	@Pure
 	public Charset getChatset() {
@@ -154,7 +154,7 @@ public enum DBaseCodePage {
 	/** Replies the code page which is corresponding to the given dBASE language code.
 	 *
 	 * @param code the language code.
-	 * @return the code page, or <code>null</code> if not found.
+	 * @return the code page, or {@code null} if not found.
 	 */
 	@Pure
 	public static DBaseCodePage fromLanguageCode(byte code) {
@@ -169,7 +169,7 @@ public enum DBaseCodePage {
 	/** Replies the code page which is corresponding to the given charset.
 	 *
 	 * @param charset the character set.
-	 * @return the code page, or <code>null</code> if not found.
+	 * @return the code page, or {@code null} if not found.
 	 */
 	@Pure
 	public static DBaseCodePage fromCharset(Charset charset) {
@@ -185,7 +185,7 @@ public enum DBaseCodePage {
 	/** Replies the code page which is corresponding to the given charset.
 	 *
 	 * @param charset the character set.
-	 * @return the code page, or <code>null</code> if not found.
+	 * @return the code page, or {@code null} if not found.
 	 */
 	@Pure
 	public static DBaseCodePage fromCharset(String charset) {

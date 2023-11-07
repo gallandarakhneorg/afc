@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import org.arakhne.afc.vmutil.ReflectionUtil;
  * <p>The generic type describes the type of the parameter.
  *
  * <p>Example of the classic swap function:
- * <pre><code>
+ * <pre>{@code 
  * class SwapTest {
  *   public static void swap(OutputParameter&lt;Long&gt; a, OutputParameter&lt;Long&gt; b) {
  *     Long tmp = a.get();
@@ -49,14 +49,14 @@ import org.arakhne.afc.vmutil.ReflectionUtil;
  *      System.out.println("after, y="+opy.get());
  *   }
  * }
- * </code></pre>
+ * }</pre>
  *
- * <p>The example outputs the text:<pre><code>
+ * <p>The example outputs the text:<pre>{@code 
  * before, x=24
  * before, y=36
  * after, x=36
  * after, y=24
- * </code></pre>
+ * }</pre>
  *
  * @param <T> is the type of the value to output with this object.
  * @author $Author: sgalland$
@@ -114,9 +114,9 @@ public class OutputParameter<T> {
 		this.object = null;
 	}
 
-	/** Replies if the value was set, i.e. not <code>null</code>.
+	/** Replies if the value was set, i.e. not {@code null}.
 	 *
-	 * @return <code>true</code> is the parameter vlaue was set, otherwise <code>false</code>
+	 * @return {@code true} is the parameter vlaue was set, otherwise {@code false}
 	 * @see #isEmpty()
 	 */
 	@Pure
@@ -124,9 +124,9 @@ public class OutputParameter<T> {
 		return this.object != null;
 	}
 
-	/** Replies if the value was not set, i.e. <code>null</code>.
+	/** Replies if the value was not set, i.e. {@code null}.
 	 *
-	 * @return <code>false</code> is the parameter vlaue was set, otherwise <code>true</code>
+	 * @return {@code false} is the parameter vlaue was set, otherwise {@code true}
 	 * @see #isSet()
 	 */
 	@Pure

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -153,8 +153,8 @@ public class MathFunctionRange {
 
 	/** Replies if the minimal value is included in the value set.
 	 *
-	 * @return <code>true</code> if the minimal value is inside the set,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the minimal value is inside the set,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isMinValueIncluded() {
@@ -163,8 +163,8 @@ public class MathFunctionRange {
 
 	/** Replies if the maximal value is included in the value set.
 	 *
-	 * @return <code>true</code> if the maximal value is inside the set,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the maximal value is inside the set,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isMaxValueIncluded() {

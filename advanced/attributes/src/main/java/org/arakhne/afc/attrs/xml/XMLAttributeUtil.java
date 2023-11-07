@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,19 +49,19 @@ import org.arakhne.afc.inputoutput.xml.XMLUtil;
  */
 public final class XMLAttributeUtil {
 
-	/** <code>&lt;attribute /&gt;</code>. */
+	/** {@code &lt;attribute /&gt;}. */
 	public static final String NODE_ATTRIBUTE = "attribute"; //$NON-NLS-1$
 
-	/** <code>&lt;attributes /&gt;</code>. */
+	/** {@code &lt;attributes /&gt;}. */
 	public static final String NODE_ATTRIBUTES = "attributes"; //$NON-NLS-1$
 
-	/** <code>geoid=""</code>. */
+	/** {@code geoid=""}. */
 	public static final String ATTR_GEOID = "geoId"; //$NON-NLS-1$
 
-	/** <code>type=""</code>. */
+	/** {@code type=""}. */
 	public static final String ATTR_TYPE = "type"; //$NON-NLS-1$
 
-	/** <code>value=""</code>. */
+	/** {@code value=""}. */
 	public static final String ATTR_VALUE = "value"; //$NON-NLS-1$
 
 	private XMLAttributeUtil() {
@@ -71,7 +71,7 @@ public final class XMLAttributeUtil {
 	/** Put in the given XML element the attributes stored in the given container.
 	 * This function ignores the attributes with the names "id", "name", "color",
 	 * "icon", and "geoId" if the parameter <var>writeStandardAttribute</var>
-	 * is <code>false</code>.
+	 * is {@code false}.
 	 *
 	 * @param element is the XML element to fill.
 	 * @param container is the container of attributes.
@@ -135,7 +135,7 @@ public final class XMLAttributeUtil {
 	/** Put the attributes in the given container from the given XML element.
 	 * This function ignores the attributes with the names "id", "name", "color",
 	 * and "geoId" if the parameter <var>readStandardAttribute</var>
-	 * is <code>false</code>.
+	 * is {@code false}.
 	 *
 	 * @param element is the XML element to fill.
 	 * @param container is the container of attributes.

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,46 +80,46 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
  */
 public final class XMLBusNetworkUtil {
 
-	/** <code>&lt;halts /&gt;</code>. */
+	/** {@code &lt;halts /&gt;}. */
 	public static final String NODE_BUSHALTS = "halts"; //$NON-NLS-1$
 
-	/** <code>&lt;halt /&gt;</code>. */
+	/** {@code &lt;halt /&gt;}. */
 	public static final String NODE_BUSHALT = "halt"; //$NON-NLS-1$
 
-	/** <code>&lt;hubs /&gt;</code>. */
+	/** {@code &lt;hubs /&gt;}. */
 	public static final String NODE_BUSHUBS = "hubs"; //$NON-NLS-1$
 
-	/** <code>&lt;hub /&gt;</code>. */
+	/** {@code &lt;hub /&gt;}. */
 	public static final String NODE_BUSHUB = "hub"; //$NON-NLS-1$
 
-	/** <code>&lt;itineraries /&gt;</code>. */
+	/** {@code &lt;itineraries /&gt;}. */
 	public static final String NODE_BUSITINERARIES = "itineraries"; //$NON-NLS-1$
 
-	/** <code>&lt;itinerary /&gt;</code>. */
+	/** {@code &lt;itinerary /&gt;}. */
 	public static final String NODE_BUSITINERARY = "itinerary"; //$NON-NLS-1$
 
-	/** <code>&lt;lines /&gt;</code>. */
+	/** {@code &lt;lines /&gt;}. */
 	public static final String NODE_BUSLINES = "lines"; //$NON-NLS-1$
 
-	/** <code>&lt;line /&gt;</code>. */
+	/** {@code &lt;line /&gt;}. */
 	public static final String NODE_BUSLINE = "line"; //$NON-NLS-1$
 
-	/** <code>&lt;busNetwork /&gt;</code>. */
+	/** {@code &lt;busNetwork /&gt;}. */
 	public static final String NODE_BUSNETWORK = "busNetwork"; //$NON-NLS-1$
 
-	/** <code>&lt;stops /&gt;</code>. */
+	/** {@code &lt;stops /&gt;}. */
 	public static final String NODE_BUSSTOPS = "stops"; //$NON-NLS-1$
 
-	/** <code>&lt;stop /&gt;</code>. */
+	/** {@code &lt;stop /&gt;}. */
 	public static final String NODE_BUSSTOP = "stop"; //$NON-NLS-1$
 
-	/** <code>&lt;roads /&gt;</code>. */
+	/** {@code &lt;roads /&gt;}. */
 	public static final String NODE_ROADS = "roads"; //$NON-NLS-1$
 
-	/** <code>&lt;roadId /&gt;</code>. */
+	/** {@code &lt;roadId /&gt;}. */
 	public static final String ATTR_ROADID = "roadId"; //$NON-NLS-1$
 
-	/** <code>&lt;stopId /&gt;</code>. */
+	/** {@code &lt;stopId /&gt;}. */
 	private static final String ATTR_STOPID = "stopId"; //$NON-NLS-1$
 
 	private XMLBusNetworkUtil() {

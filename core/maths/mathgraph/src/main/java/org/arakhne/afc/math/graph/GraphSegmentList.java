@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ public interface GraphSegmentList<ST extends GraphSegment<ST, PT>, PT extends Gr
 	 *
 	 * @param segment is the segment to add
 	 * @param point is the point at which the path is starting to go through the given segment.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	boolean add(ST segment, PT point);
 
@@ -79,14 +79,14 @@ public interface GraphSegmentList<ST extends GraphSegment<ST, PT>, PT extends Gr
 
 	/** Replies the last segment.
 	 *
-	 * @return the last segment or <code>null</code>.
+	 * @return the last segment or {@code null}.
 	 */
 	@Pure
 	ST getLastSegment();
 
 	/** Replies the antepenulvian segment.
 	 *
-	 * @return the antepenulvian segment or <code>null</code>.
+	 * @return the antepenulvian segment or {@code null}.
 	 */
 	@Pure
 	ST getAntepenulvianSegment();
@@ -100,7 +100,7 @@ public interface GraphSegmentList<ST extends GraphSegment<ST, PT>, PT extends Gr
 
 	/** Replies the first segment.
 	 *
-	 * @return the first segment or <code>null</code>.
+	 * @return the first segment or {@code null}.
 	 */
 	@Pure
 	ST getFirstSegment();
@@ -110,7 +110,7 @@ public interface GraphSegmentList<ST extends GraphSegment<ST, PT>, PT extends Gr
 	 * not be removed.
 	 *
 	 * @param obj the reference object.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	boolean removeBefore(ST obj);
 
@@ -122,7 +122,7 @@ public interface GraphSegmentList<ST extends GraphSegment<ST, PT>, PT extends Gr
 	 * @param obj the refrence segment.
 	 * @param pt is the point on which the segment was connected
 	 *     as its first point.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	boolean removeBefore(ST obj, PT pt);
 
@@ -131,7 +131,7 @@ public interface GraphSegmentList<ST extends GraphSegment<ST, PT>, PT extends Gr
 	 * not be removed.
 	 *
 	 * @param obj the reference object
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	boolean removeBeforeLast(ST obj);
 
@@ -143,7 +143,7 @@ public interface GraphSegmentList<ST extends GraphSegment<ST, PT>, PT extends Gr
 	 * @param obj the refrence segment.
 	 * @param pt is the point on which the segment was connected
 	 *     as its first point.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	boolean removeBeforeLast(ST obj, PT pt);
 
@@ -152,7 +152,7 @@ public interface GraphSegmentList<ST extends GraphSegment<ST, PT>, PT extends Gr
 	 * also be removed.
 	 *
 	 * @param obj the refrence segment.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	boolean removeUntil(ST obj);
 
@@ -161,7 +161,7 @@ public interface GraphSegmentList<ST extends GraphSegment<ST, PT>, PT extends Gr
 	 * also be removed.
 	 *
 	 * @param obj the refrence segment.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	boolean removeUntilLast(ST obj);
 

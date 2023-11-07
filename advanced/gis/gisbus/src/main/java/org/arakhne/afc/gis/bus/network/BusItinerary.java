@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -124,7 +124,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 	/** Create bus itinerary with attributes stored in memory.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param busline is the line which is containing this itinerary.
 	 * @param name is the name of the new bus itinerary
 	 * @since 2.0
@@ -145,7 +145,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 	/** Create bus itinerary.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param busline is the line which is containing this itinerary.
 	 * @param name is the name of the new bus itinerary
 	 * @param attributeProvider is the attribute provider for this instance.
@@ -167,7 +167,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 	/** Create bus itinerary with attributes stored in memory.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param name is the name of the new bus itinerary
 	 * @since 2.0
 	 */
@@ -186,7 +186,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 	/** Create bus itinerary.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param name is the name of the new bus itinerary
 	 * @param attributeProvider is the attribute provider for this instance.
 	 * @since 2.0
@@ -206,7 +206,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 	/** Create bus itinerary with attributes stored in memory.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param busline is the line which is containing this itinerary.
 	 * @since 2.0
 	 */
@@ -225,7 +225,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 	/** Create bus itinerary.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param busline is the line which is containing this itinerary.
 	 * @param attributeProvider is the attribute provider for this instance.
 	 * @since 2.0
@@ -243,7 +243,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 	/** Create bus itinerary with attributes stored in memory.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @since 2.0
 	 */
 	public BusItinerary(UUID id) {
@@ -260,7 +260,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 
 	/** Create bus itinerary.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeProvider is the attribute provider for this instance.
 	 * @since 2.0
 	 */
@@ -755,8 +755,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	/** Replies if the given segment has a bus halt on it.
 	 *
 	 * @param segment is the segment to search on.
-	 * @return <code>true</code> if a bus halt was located on the segment,
-	 *     otherwhise <code>false</code>
+	 * @return {@code true} if a bus halt was located on the segment,
+	 *     otherwhise {@code false}
 	 */
 	@Pure
 	public boolean hasBusHaltOnSegment(RoadSegment segment) {
@@ -1003,7 +1003,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Replies the nearest bus halt to the given point.
 	 *
 	 * @param point the point.
-	 * @return the nearest bus halt or <code>null</code> if none was found.
+	 * @return the nearest bus halt or {@code null} if none was found.
 	 */
 	@Pure
 	public final BusItineraryHalt getNearestBusHalt(Point2D<?, ?> point) {
@@ -1014,7 +1014,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Replies the nearest bus halt to the given point.
 	 *
 	 * @param point the point.
-	 * @return the nearest bus halt or <code>null</code> if none was found.
+	 * @return the nearest bus halt or {@code null} if none was found.
 	 */
 	@Pure
 	public final BusItineraryHalt getNearestBusHalt(GeoLocationPoint point) {
@@ -1026,7 +1026,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 *
 	 * @param x x coordinate.
 	 * @param y y coordinate.
-	 * @return the nearest bus halt or <code>null</code> if none was found.
+	 * @return the nearest bus halt or {@code null} if none was found.
 	 */
 	@Pure
 	public BusItineraryHalt getNearestBusHalt(double x, double y) {
@@ -1050,7 +1050,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 *
 	 * @param name is the name of the bus halt
 	 * @param type is the type of the bus halt.
-	 * @return the added bus halt, otherwise <code>null</code>
+	 * @return the added bus halt, otherwise {@code null}
 	 */
 	public final BusItineraryHalt addBusHalt(String name, BusItineraryHaltType type) {
 		return addBusHalt(null, name, type);
@@ -1060,7 +1060,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Add a bus halt inside the bus itinerary.
 	 *
 	 * @param type is the type of the bus halt.
-	 * @return the added bus halt, otherwise <code>null</code>
+	 * @return the added bus halt, otherwise {@code null}
 	 */
 	public final BusItineraryHalt addBusHalt(BusItineraryHaltType type) {
 		return addBusHalt(null, null, type);
@@ -1074,7 +1074,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * @param id is the identifier of the bus halt.
 	 * @param name is the name of the bus halt
 	 * @param type is the type of the bus halt.
-	 * @return the added bus halt, otherwise <code>null</code>
+	 * @return the added bus halt, otherwise {@code null}
 	 */
 	public BusItineraryHalt addBusHalt(UUID id, String name, BusItineraryHaltType type) {
 		return this.addBusHalt(id, name, type, -1);
@@ -1087,7 +1087,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * @param name is the name of the bus halt
 	 * @param type is the type of the bus halt.
 	 * @param insertToIndex the inserted index
-	 * @return the added bus halt, otherwise <code>null</code>
+	 * @return the added bus halt, otherwise {@code null}
 	 */
 	BusItineraryHalt addBusHalt(UUID id, String name, BusItineraryHaltType type, int insertToIndex) {
 		String haltName = name;
@@ -1113,7 +1113,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 *
 	 * @param id is the identifier of the bus halt.
 	 * @param type is the type of the bus halt.
-	 * @return the added bus halt, otherwise <code>null</code>
+	 * @return the added bus halt, otherwise {@code null}
 	 */
 	public final BusItineraryHalt addBusHalt(UUID id, BusItineraryHaltType type) {
 		return addBusHalt(id, null, type);
@@ -1123,7 +1123,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 *
 	 * @param halt the halt.
 	 * @param insertToIndex the insertion index.
-	 * @return <code>true</code> if the addition was successful, <code>false</code>
+	 * @return {@code true} if the addition was successful, {@code false}
 	 *     otherwise.
 	 */
 	boolean addBusHalt(BusItineraryHalt halt, int insertToIndex) {
@@ -1159,7 +1159,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * @param id id of the new halt
 	 * @param type the type of bus halt
 	 *
-	 * @return the added bus halt, otherwise <code>null</code>
+	 * @return the added bus halt, otherwise {@code null}
 	 */
 	public BusItineraryHalt insertBusHaltAfter(BusItineraryHalt afterHalt, UUID id, BusItineraryHaltType type) {
 		return insertBusHaltAfter(afterHalt, id, null, type);
@@ -1172,7 +1172,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * @param name name of the new halt
 	 * @param type the type of bus halt
 	 *
-	 * @return the added bus halt, otherwise <code>null</code>
+	 * @return the added bus halt, otherwise {@code null}
 	 */
 	public BusItineraryHalt insertBusHaltAfter(BusItineraryHalt afterHalt, String name, BusItineraryHaltType type) {
 		return insertBusHaltAfter(afterHalt, null, name, type);
@@ -1186,7 +1186,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * @param name name of the new halt
 	 * @param type the type of bus halt
 	 *
-	 * @return the added bus halt, otherwise <code>null</code>
+	 * @return the added bus halt, otherwise {@code null}
 	 */
 	public BusItineraryHalt insertBusHaltAfter(BusItineraryHalt afterHalt, UUID id, String name, BusItineraryHaltType type) {
 		assert afterHalt != null;
@@ -1233,7 +1233,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * @param name name of the new halt
 	 * @param type the type of bus halt
 	 *
-	 * @return the added bus halt, otherwise <code>null</code>
+	 * @return the added bus halt, otherwise {@code null}
 	 */
 	public BusItineraryHalt insertBusHaltBefore(BusItineraryHalt beforeHalt, String name, BusItineraryHaltType type) {
 		return this.insertBusHaltBefore(beforeHalt, null, name, type);
@@ -1245,7 +1245,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * @param id id of the new halt
 	 * @param type the type of bus halt
 	 *
-	 * @return the added bus halt, otherwise <code>null</code>
+	 * @return the added bus halt, otherwise {@code null}
 	 */
 	public BusItineraryHalt insertBusHaltBefore(BusItineraryHalt beforeHalt, UUID id, BusItineraryHaltType type) {
 		return this.insertBusHaltBefore(beforeHalt, id, null, type);
@@ -1258,7 +1258,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * @param name name of the new halt
 	 * @param type the type of bus halt
 	 *
-	 * @return the added bus halt, otherwise <code>null</code>
+	 * @return the added bus halt, otherwise {@code null}
 	 */
 	public BusItineraryHalt insertBusHaltBefore(BusItineraryHalt beforeHalt, UUID id, String name, BusItineraryHaltType type) {
 		assert beforeHalt != null;
@@ -1333,7 +1333,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Remove a bus bus from this itinerary.
 	 *
 	 * @param bushalt is the bus halt to remove.
-	 * @return <code>true</code> if the bus halt was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus halt was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusHalt(BusItineraryHalt bushalt) {
 		try {
@@ -1356,7 +1356,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Remove the bus halt with the given name.
 	 *
 	 * @param name is the name of the bus halt to remove.
-	 * @return <code>true</code> if the bus halt was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus halt was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusHalt(String name) {
 		Iterator<BusItineraryHalt> iterator = this.validHalts.iterator();
@@ -1387,7 +1387,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Remove the bus halt at the specified index.
 	 *
 	 * @param index is the index of the bus halt to remove.
-	 * @return <code>true</code> if the bus halt was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus halt was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusHalt(int index) {
 		try {
@@ -1446,7 +1446,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Replies the index of the specified bus halt.
 	 *
 	 * @param bushalt is the bus halt to search for.
-	 * @return the index or <code>-1</code> if it was not found.
+	 * @return the index or {@code -1} if it was not found.
 	 */
 	@Pure
 	public int indexOf(BusItineraryHalt bushalt) {
@@ -1467,7 +1467,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Replies the index of the first occurrence of the specified road segment.
 	 *
 	 * @param segment the segment.
-	 * @return the index or <code>-1</code> if it was not found.
+	 * @return the index or {@code -1} if it was not found.
 	 */
 	@Pure
 	public int indexOf(RoadSegment segment) {
@@ -1478,7 +1478,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Replies the index of the last occurrence of the specified road segment.
 	 *
 	 * @param segment the segment.
-	 * @return the index or <code>-1</code> if it was not found.
+	 * @return the index or {@code -1} if it was not found.
 	 */
 	@Pure
 	public int lastIndexOf(RoadSegment segment) {
@@ -1499,8 +1499,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Replies if the given bus halt is inside this bus itinerary.
 	 *
 	 * @param bushalt is the bus halt to search for.
-	 * @return <code>true</code> if the bus halt is inside the itinerary,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the bus halt is inside the itinerary,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean contains(BusItineraryHalt bushalt) {
@@ -1517,8 +1517,8 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Replies if the given segment is inside this bus itinerary.
 	 *
 	 * @param segment is the road segment to search for.
-	 * @return <code>true</code> if the road segment is inside the itinerary,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the road segment is inside the itinerary,
+	 *     otherwise {@code false}
 	 */
 	@SuppressWarnings("unlikely-arg-type")
 	@Pure
@@ -1544,7 +1544,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Replies the bus halt with the specified name.
 	 *
 	 * @param name is the desired name
-	 * @return a bus halt or <code>null</code>
+	 * @return a bus halt or {@code null}
 	 */
 	@Pure
 	public BusItineraryHalt getBusHalt(String name) {
@@ -1555,7 +1555,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Replies the bus halt with the specified uuid.
 	 *
 	 * @param uuid the identifier.
-	 * @return BusItineraryHalt or <code>null</code>
+	 * @return BusItineraryHalt or {@code null}
 	 */
 	@Pure
 	public BusItineraryHalt getBusHalt(UUID uuid) {
@@ -1580,7 +1580,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 *
 	 * @param name is the desired name
 	 * @param nameComparator is used to compare the names.
-	 * @return a bus halt or <code>null</code>
+	 * @return a bus halt or {@code null}
 	 */
 	@Pure
 	public BusItineraryHalt getBusHalt(String name, Comparator<String> nameComparator) {
@@ -1673,7 +1673,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 *
 	 * @param x x coordinate.
 	 * @param y y coordinate
-	 * @return the nearest road segment or <code>null</code> if none was found.
+	 * @return the nearest road segment or {@code null} if none was found.
 	 */
 	@Pure
 	public final RoadSegment getNearestRoadSegment(double x, double y) {
@@ -1684,7 +1684,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Replies the nearest road segment from this itinerary to the given point.
 	 *
 	 * @param point the point
-	 * @return the nearest road segment or <code>null</code> if none was found.
+	 * @return the nearest road segment or {@code null} if none was found.
 	 */
 	@Pure
 	public final RoadSegment getNearestRoadSegment(GeoLocationPoint point) {
@@ -1695,7 +1695,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Replies the nearest road segment from this itinerary to the given point.
 	 *
 	 * @param point the point.
-	 * @return the nearest road segment or <code>null</code> if none was found.
+	 * @return the nearest road segment or {@code null} if none was found.
 	 */
 	@Pure
 	public RoadSegment getNearestRoadSegment(Point2D<?, ?> point) {
@@ -1719,7 +1719,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Add a road segment inside the bus itinerary.
 	 *
 	 * <p>This function is equivalent to {@link #addRoadSegment(RoadSegment, boolean)}
-	 * with the boolean parameter equals to <code>true</code>.
+	 * with the boolean parameter equals to {@code true}.
 	 *
 	 * <p>This function try to connect the invalid itinerary halts to
 	 * the added road segments.
@@ -1727,7 +1727,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * <p>This function ignores the automatic building of the loops.
 	 *
 	 * @param segment is the segment to add.
-	 * @return <code>true</code> if the segment was added, otherwise <code>false</code>
+	 * @return {@code true} if the segment was added, otherwise {@code false}
 	 * @see #addRoadSegments(RoadPath)
 	 * @see #addRoadSegment(RoadSegment, boolean)
 	 * @see #addRoadSegments(RoadPath, boolean)
@@ -1743,9 +1743,9 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 *
 	 * @param segment is the segment to add.
 	 * @param autoConnectHalts indicates if the invalid itinery halts are trying to
-	 *     be connected to the added segment.  If <code>true</code> {@link #putInvalidHaltsOnRoads(BusItineraryHalt...)}
+	 *     be connected to the added segment.  If {@code true} {@link #putInvalidHaltsOnRoads(BusItineraryHalt...)}
 	 *     is invoked.
-	 * @return <code>true</code> if the segment was added, otherwise <code>false</code>
+	 * @return {@code true} if the segment was added, otherwise {@code false}
 	 * @see #addRoadSegment(RoadSegment)
 	 * @see #addRoadSegments(RoadPath)
 	 * @see #addRoadSegments(RoadPath, boolean)
@@ -1759,7 +1759,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * Add road segments inside the bus itinerary.
 	 *
 	 * <p>This function is equivalent to {@link #addRoadSegments(RoadPath, boolean)}
-	 * with the boolean parameter equals to <code>true</code>.
+	 * with the boolean parameter equals to {@code true}.
 	 *
 	 * <p>This function try to connect the invalid itinerary halts to
 	 * the added road segments.
@@ -1767,7 +1767,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * <p>This function ignores the automatic building of the loops.
 	 *
 	 * @param segments are the segments to add.
-	 * @return <code>true</code> if the segment was added, otherwise <code>false</code>
+	 * @return {@code true} if the segment was added, otherwise {@code false}
 	 * @see #addRoadSegment(RoadSegment)
 	 * @see #addRoadSegment(RoadSegment, boolean)
 	 * @see #addRoadSegments(RoadPath, boolean)
@@ -1784,9 +1784,9 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 *
 	 * @param segments is the segment to add.
 	 * @param autoConnectHalts indicates if the invalid itinery halts are trying to
-	 *     be connected to the added segments. If <code>true</code> {@link #putInvalidHaltsOnRoads(BusItineraryHalt...)}
+	 *     be connected to the added segments. If {@code true} {@link #putInvalidHaltsOnRoads(BusItineraryHalt...)}
 	 *     is invoked.
-	 * @return <code>true</code> if the segment was added, otherwise <code>false</code>.
+	 * @return {@code true} if the segment was added, otherwise {@code false}.
 	 * @since 4.0
 	 * @see #addRoadSegment(RoadSegment)
 	 * @see #addRoadSegments(RoadPath)
@@ -1802,10 +1802,10 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 *
 	 * @param segments is the segment to add.
 	 * @param autoConnectHalts indicates if the invalid itinery halts are trying to
-	 *     be connected to the added segments. If <code>true</code> {@link #putInvalidHaltsOnRoads(BusItineraryHalt...)}
+	 *     be connected to the added segments. If {@code true} {@link #putInvalidHaltsOnRoads(BusItineraryHalt...)}
 	 *     is invoked.
 	 * @param enableLoopAutoBuild indicates if the automatic building of loop is enabled.
-	 * @return <code>true</code> if the segment was added, otherwise <code>false</code>.
+	 * @return {@code true} if the segment was added, otherwise {@code false}.
 	 * @since 4.0
 	 * @see #addRoadSegment(RoadSegment)
 	 * @see #addRoadSegments(RoadPath)
@@ -1981,7 +1981,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	/** Try to put the invalid halts on the roads traversed by the bus itinerary.
 	 * This function is automatically invoked by {@link #addRoadSegments(RoadPath)},
 	 * {@link #addRoadSegment(RoadSegment)}, and by {@link #addRoadSegments(RoadPath, boolean)},
-	 * {@link #addRoadSegment(RoadSegment, boolean)} when the boolean parameter is <code>true</code>.
+	 * {@link #addRoadSegment(RoadSegment, boolean)} when the boolean parameter is {@code true}.
 	 *
 	 * <p>This function traverses all the candidate halts and tries to find the nearest road segment.
 	 * If one was found, the bus halt is associated to the road segment.
@@ -2063,9 +2063,9 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 *
 	 * @param halt is the halt to put on the road.
 	 * @param road is the road.
-	 * @return <code>false</code> if the road was not found;
-	 *     otherwise <code>true</code>. If the bus halt is not binded
-	 *     to a valid bus stop, replies <code>true</code> also.
+	 * @return {@code false} if the road was not found;
+	 *     otherwise {@code true}. If the bus halt is not binded
+	 *     to a valid bus stop, replies {@code true} also.
 	 */
 	@SuppressWarnings("checkstyle:nestedifdepth")
 	public boolean putHaltOnRoad(BusItineraryHalt halt, RoadSegment road) {
@@ -2106,9 +2106,9 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * @param halt is the halt to put on the road.
 	 * @param road is the road.
 	 * @param nearPoint the near point from road
-	 * @return <code>false</code> if the road was not found;
-	 *     otherwise <code>true</code>. If the bus halt is not binded
-	 *     to a valid bus stop, replies <code>true</code> also.
+	 * @return {@code false} if the road was not found;
+	 *     otherwise {@code true}. If the bus halt is not binded
+	 *     to a valid bus stop, replies {@code true} also.
 	 */
 	@SuppressWarnings("checkstyle:nestedifdepth")
 	public boolean putHaltOnRoad(BusItineraryHalt halt, RoadSegment road, Point2D<?, ?> nearPoint) {
@@ -2185,7 +2185,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * <p>The bus halts on the segment will also be removed.
 	 *
 	 * @param segmentIndex is the index of the segment to remove.
-	 * @return <code>true</code> if the segment was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the segment was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeRoadSegment(int segmentIndex) {
 		if (segmentIndex >= 0 && segmentIndex < this.roadSegments.getRoadSegmentCount()) {
@@ -2465,7 +2465,7 @@ public class BusItinerary extends AbstractBusContainer<BusLine, BusItineraryHalt
 	 * covered by the itinerary, cannot be found without discontinuity; the
 	 * two road segments are inside two different clusters of road segments.
 	 *
-	 * @return a road path for this itinerary, or <code>null</code> if
+	 * @return a road path for this itinerary, or {@code null} if
 	 *     the road segments for this itinerary ar not well connected.
 	 */
 	@Pure

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,7 +114,7 @@ public abstract class AbstractBreadthFirstTreeIterator<P extends IterableNode<? 
 	 * @param notNullChildIndex is the position of the {@code child} node in the
 	 *     list of the not-null nodes of its {@code parent}. {@code notNullChildIndex}
 	 *     is always lower or equal to {@code childIndex}.
-	 * @return the traversable node, or <code>null</code> if the node is not traversable.
+	 * @return the traversable node, or {@code null} if the node is not traversable.
 	 */
 	@Pure
 	protected abstract P toTraversableChild(P parent, C child, int childIndex, int notNullChildIndex);

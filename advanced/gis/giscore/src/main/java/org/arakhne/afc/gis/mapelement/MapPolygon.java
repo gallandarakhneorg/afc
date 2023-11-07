@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public class MapPolygon extends MapComposedElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @since 4.0
 	 */
 	public MapPolygon(UUID id) {
@@ -71,7 +71,7 @@ public class MapPolygon extends MapComposedElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the source of the attributes for this map element.
 	 * @since 4.0
 	 */
@@ -132,8 +132,8 @@ public class MapPolygon extends MapComposedElement {
 	 * Replies if this element has an intersection
 	 * with the specified rectangle.
 	 *
-	 * @return <code>true</code> if this MapElement is intersecting the specified area,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this MapElement is intersecting the specified area,
+	 *     otherwise {@code false}
 	 */
 	@Override
 	@Pure
@@ -153,8 +153,8 @@ public class MapPolygon extends MapComposedElement {
 	/**
 	 * Replies the Path2D that corresponds to this polygon.
 	 *
-	 * @return <code>true</code> if this MapElement is intersecting the specified area,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this MapElement is intersecting the specified area,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public final Path2d toPath2D() {

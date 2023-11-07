@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -197,7 +197,7 @@ public class XMLResources implements Comparator<Object> {
 	 *
 	 * @param identifier the identifier of the URL.
 	 * @param url the value of the URL.
-	 * @param mimeType may be <code>null</code>
+	 * @param mimeType may be {@code null}
 	 * @return the string representation, basically the reference to the
 	 *     resource given by the file classifier.
 	 */
@@ -225,7 +225,7 @@ public class XMLResources implements Comparator<Object> {
 	 *
 	 * @param identifier the identifier of the file.
 	 * @param file the name of the file.
-	 * @param mimeType may be <code>null</code>
+	 * @param mimeType may be {@code null}
 	 * @return the string representation, basically the reference to the
 	 *     resource given by the file classifier.
 	 */
@@ -253,7 +253,7 @@ public class XMLResources implements Comparator<Object> {
 	 *
 	 * @param identifier the identifier of the data.
 	 * @param rawData the value of the data.
-	 * @param mimeType may be <code>null</code>
+	 * @param mimeType may be {@code null}
 	 * @return the string representation, basically the reference to the
 	 *     resource given by the file classifier.
 	 */
@@ -383,7 +383,7 @@ public class XMLResources implements Comparator<Object> {
 	/** Replies the identifier that is corresponding to the given URL.
 	 *
 	 * @param resource is the resource to search for.
-	 * @return the identifier; or <code>null</code> if not found.
+	 * @return the identifier; or {@code null} if not found.
 	 */
 	@Pure
 	protected synchronized Long getIdentifierFromResource(Object resource) {
@@ -393,7 +393,7 @@ public class XMLResources implements Comparator<Object> {
 	/** Replies the identifier that is corresponding to the given URL.
 	 *
 	 * @param id is the identifier to search for.
-	 * @return the resource; or <code>null</code> if not found.
+	 * @return the resource; or {@code null} if not found.
 	 */
 	@Pure
 	protected synchronized Entry getResourceFromIdentifier(long id) {
@@ -445,7 +445,7 @@ public class XMLResources implements Comparator<Object> {
 	/** Replies the resource URL.
 	 *
 	 * @param identifier the identifier to search for.
-	 * @return the URL or <code>null</code>
+	 * @return the URL or {@code null}
 	 */
 	@Pure
 	public final URL getResourceURL(long identifier) {
@@ -462,7 +462,7 @@ public class XMLResources implements Comparator<Object> {
 	/** Replies the resource.
 	 *
 	 * @param identifier the identifier to search for.
-	 * @return the URL or <code>null</code>
+	 * @return the URL or {@code null}
 	 */
 	@Pure
 	@Inline(value = "getResourceFromIdentifier($1)")
@@ -592,7 +592,7 @@ public class XMLResources implements Comparator<Object> {
 
 		/** Replies the URL in this entry.
 		 *
-		 * @return the url or <code>null</code> if the entry
+		 * @return the url or {@code null} if the entry
 		 *     is not an URL.
 		 */
 		@Pure
@@ -605,7 +605,7 @@ public class XMLResources implements Comparator<Object> {
 
 		/** Replies the File in this entry.
 		 *
-		 * @return the url or <code>null</code> if the entry
+		 * @return the url or {@code null} if the entry
 		 *     is not a File.
 		 */
 		@Pure
@@ -618,7 +618,7 @@ public class XMLResources implements Comparator<Object> {
 
 		/** Replies the embedded data in this entry.
 		 *
-		 * @return the embedded data or <code>null</code> if the entry
+		 * @return the embedded data or {@code null} if the entry
 		 *     is not an embedded data.
 		 */
 		@Pure

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, Comparable<N> {
 
-	/** Replies the parent node or <code>null</code>.
+	/** Replies the parent node or {@code null}.
 	 *
 	 * @return the node that is containing this object.
 	 */
@@ -50,7 +50,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	 *
 	 * @param index is the index of the child to reply
 	 * @param child is the new child node.
-	 * @return <code>true</code> if it was set, otherwise <code>false</code>
+	 * @return {@code true} if it was set, otherwise {@code false}
 	 * @throws IndexOutOfBoundsException if the given index was invalid
 	 */
 	boolean setChildAt(int index, N child) throws IndexOutOfBoundsException;
@@ -58,7 +58,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	/** Replies the index of the specified child.
 	 *
 	 * @param child is the node to search for.
-	 * @return the index or <code>-1</code>.
+	 * @return the index or {@code -1}.
 	 */
 	@Pure
 	int indexOf(N child);
@@ -67,7 +67,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	 * the children of the nodes.
 	 *
 	 * @return the enumeration type of the child partition,
-	 *     or <code>null</code> if no such enumeration type is
+	 *     or {@code null} if no such enumeration type is
 	 *     defined.
 	 */
 	@Pure
@@ -114,8 +114,8 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	/** Add a user data associated to this node.
 	 *
 	 * @param data the data to add.
-	 * @return <code>true</code> if the the list of user data has changed,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the the list of user data has changed,
+	 *     otherwise {@code false}.
 	 */
 	boolean addUserData(Collection<? extends D> data);
 
@@ -123,16 +123,16 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	 *
 	 * @param index is the position where to put the elements in the user data list.
 	 * @param data the data to add.
-	 * @return <code>true</code> if the the list of user data has changed,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the the list of user data has changed,
+	 *     otherwise {@code false}.
 	 */
 	boolean addUserData(int index, Collection<? extends D> data);
 
 	/** Add a user data associated to this node.
 	 *
 	 * @param data the data to add.
-	 * @return <code>true</code> if the data was successfully added,
-	 *     otherwhise <code>false</code>
+	 * @return {@code true} if the data was successfully added,
+	 *     otherwhise {@code false}
 	 */
 	boolean addUserData(D data);
 
@@ -146,23 +146,23 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	/** Remove a user data associated to this node.
 	 *
 	 * @param data the data to remove.
-	 * @return <code>true</code> if the data was successfully removed,
-	 *     otherwhise <code>false</code>
+	 * @return {@code true} if the data was successfully removed,
+	 *     otherwhise {@code false}
 	 */
 	boolean removeUserData(Collection<D> data);
 
 	/** Remove a user data associated to this node.
 	 *
 	 * @param data the data to remove.
-	 * @return <code>true</code> if the data was successfully removed,
-	 *     otherwhise <code>false</code>
+	 * @return {@code true} if the data was successfully removed,
+	 *     otherwhise {@code false}
 	 */
 	boolean removeUserData(D data);
 
 	/** Remove a user data associated to this node.
 	 *
 	 * @param index is the position of the user data to remove.
-	 * @return the removed data or <code>null</code> if the data
+	 * @return the removed data or {@code null} if the data
 	 *     was not removed.
 	 */
 	D removeUserData(int index);
@@ -170,16 +170,16 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	/** Set the user data associated to this node.
 	 *
 	 * @param data the data to put inside.
-	 * @return <code>true</code> if the data was successfully set,
-	 *     otherwhise <code>false</code>
+	 * @return {@code true} if the data was successfully set,
+	 *     otherwhise {@code false}
 	 */
 	boolean setUserData(Collection<D> data);
 
 	/** Set the user data associated to this node.
 	 *
 	 * @param data the data to put inside.
-	 * @return <code>true</code> if the data was successfully set,
-	 *     otherwhise <code>false</code>
+	 * @return {@code true} if the data was successfully set,
+	 *     otherwhise {@code false}
 	 */
 	boolean setUserData(D data);
 
@@ -187,8 +187,8 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	 *
 	 * @param index the index at which the data must be set.
 	 * @param data the data to put inside.
-	 * @return <code>true</code> if the data was successfully set,
-	 *     otherwhise <code>false</code>
+	 * @return {@code true} if the data was successfully set,
+	 *     otherwhise {@code false}
 	 * @throws IndexOutOfBoundsException if the given index was invalid
 	 */
 	boolean setUserDataAt(int index, D data) throws IndexOutOfBoundsException;
@@ -207,19 +207,19 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 
 	/** Replies if this node is a leaf and has no user data.
 	 *
-	 * <p>This function is equivalent to call <code>{@link #isLeaf()} &amp;&amp;
-	 * {@link #getUserDataCount()}==0</code>
+	 * <p>This function is equivalent to call {@code {@link #isLeaf()} &amp;&amp;
+	 * {@link #getUserDataCount()}==0}
 	 *
-	 * @return <code>true</code> is this node is a leaf without user data,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} is this node is a leaf without user data,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	boolean isEmpty();
 
 	/** Replies if this node is a root.
 	 *
-	 * @return <code>true</code> is this node is the root,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} is this node is the root,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	boolean isRoot();
@@ -227,8 +227,8 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	/** Replies if this node is a valid. The validity of a node depends of
 	 * the node implementation.
 	 *
-	 * @return <code>true</code> is this node is valid,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} is this node is valid,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	boolean isValid();
@@ -240,7 +240,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	 * If you want to unlink the first-level
 	 * child node with
 	 * this node but leave the rest of the tree
-	 * unchanged, please call <code>setChildAt(i,null)</code>.
+	 * unchanged, please call {@code setChildAt(i,null)}.
 	 */
 	void clear();
 
@@ -251,7 +251,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	/** Remove the specified node from this node if it is a child.
 	 *
 	 * @param child is the child to remove.
-	 * @return <code>true</code> if the node was removed, otherwise <code>false</code>
+	 * @return {@code true} if the node was removed, otherwise {@code false}
 	 */
 	boolean removeChild(N child);
 
@@ -289,7 +289,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 
 	/** Replies the child nodes of this node.
 	 *
-	 * <p>This function may put <code>null</code> in the
+	 * <p>This function may put {@code null} in the
 	 * array cells if the current tree node has not a child
 	 * at the corresponding index.
 	 *
@@ -303,7 +303,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 
 	/** Replies the child nodes of this node.
 	 *
-	 * <p>This function may put <code>null</code> in the
+	 * <p>This function may put {@code null} in the
 	 * array cells if the current tree node has not a child
 	 * at the corresponding index.
 	 *
@@ -314,8 +314,8 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	void getChildren(Object[] array);
 
 	/** Replies the depth level of this node.
-	 * Depth level <code>0</code> is the root node,
-	 * <code>1</code> are the children of the root node, etc.
+	 * Depth level {@code 0} is the root node,
+	 * {@code 1} are the children of the root node, etc.
 	 *
 	 * @return the height of the lowest leaf in the tree.
 	 */
@@ -359,7 +359,7 @@ public interface TreeNode<D, N extends TreeNode<D, ?>> extends IterableNode<N>, 
 	 *
 	 * @param newParent is the new parent for this node.
 	 * @param index is the position of this node in the new parent.
-	 * @return <code>true</code> on success, otherwise <code>false</code>.
+	 * @return {@code true} on success, otherwise {@code false}.
 	 */
 	boolean moveTo(N newParent, int index);
 

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,7 +109,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 
 	/** Create a halt with attributes stored in memory.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param itinerary is the itinerary on which thus bus halt was located.
 	 * @param type is the type of the bus halt.
 	 * @param name is the name of the new bus halt
@@ -132,7 +132,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 
 	/** Create a bus halt.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param itinerary is the itinerary on which thus bus halt was located.
 	 * @param name is the name of the new bus halt
 	 * @param type is the type of the bus halt.
@@ -296,7 +296,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	/** Replies the bus stop associated to this halt.
 	 *
 	 * @return the bus halt associated to this halt,
-	 *     or <code>null</code> if this halt is not associated to
+	 *     or {@code null} if this halt is not associated to
 	 *     a bus halt.
 	 */
 	@Pure
@@ -307,10 +307,10 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	/** Set the bus stop associated to this halt.
 	 *
 	 * @param busStop is the bus stop associated to this halt,
-	 *     or <code>null</code> if this halt is not associated to
+	 *     or {@code null} if this halt is not associated to
 	 *     a bus stop.
-	 * @return <code>true</code> if the bus stop was correctly set,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the bus stop was correctly set,
+	 *     otherwise {@code false}.
 	 */
 	public boolean setBusStop(BusStop busStop) {
 		final BusStop old = getBusStop();
@@ -357,7 +357,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 * position on the road is a projection of the stop's position
 	 * on the road.
 	 *
-	 * @return the 2D position or <code>null</code> if
+	 * @return the 2D position or {@code null} if
 	 *     the halt is not associated to a road segment.
 	 */
 	@Pure
@@ -381,7 +381,7 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 * position on the road is a projection of the stop's position
 	 * on the road.
 	 *
-	 * @return the 1.5D position or <code>null</code> if
+	 * @return the 1.5D position or {@code null} if
 	 *     the halt is not associated to a road segment.
 	 */
 	@Pure
@@ -512,8 +512,8 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 * Replies if this bus halt is a terminus (aka. first or last bus halt)
 	 * of an itinerary.
 	 *
-	 * @return <code>true</code> if the bus halt is a terminus,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the bus halt is a terminus,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isTerminus() {
@@ -534,8 +534,8 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 * Replies if this bus halt is a starting bus halt (aka. first bus halt)
 	 * of an itinerary.
 	 *
-	 * @return <code>true</code> if the bus halt is a starting bus halt,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the bus halt is a starting bus halt,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isStartingBusHalt() {
@@ -554,8 +554,8 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 	 * Replies if this bus halt is a ending bus halt (aka. last bus halt)
 	 * of an itinerary.
 	 *
-	 * @return <code>true</code> if the bus halt is a ending bus halt,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the bus halt is a ending bus halt,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isEndingBusHalt() {
@@ -579,8 +579,8 @@ public class BusItineraryHalt extends AbstractBusPrimitive<BusItinerary> {
 
 	/** Replies if this bus halt is inside a hub throught an associated bus stop.
 	 *
-	 * @return <code>true</code> if this bus stop is inside a hub,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this bus stop is inside a hub,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean insideBusHub() {

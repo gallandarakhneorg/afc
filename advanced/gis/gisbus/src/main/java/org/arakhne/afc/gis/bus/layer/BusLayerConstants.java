@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,8 +72,8 @@ public final class BusLayerConstants {
 	/** Replies if the bus network should be drawn with the
 	 * algorithm.
 	 *
-	 * @return <code>true</code> if the algorithm may be used,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the algorithm may be used,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public static BusLayerDrawerType getPreferredLineDrawAlgorithm() {
@@ -173,8 +173,8 @@ public final class BusLayerConstants {
 
 	/** Replies if the bus stops should be drawn or not.
 	 *
-	 * @return <code>true</code> if the bus stops are drawable;
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the bus stops are drawable;
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public static boolean isBusStopDrawable() {
@@ -187,8 +187,8 @@ public final class BusLayerConstants {
 
 	/** Set if the bus stops should be drawn or not.
 	 *
-	 * @param isDrawable is <code>true</code> if the bus stops are drawable;
-	 *      <code>false</code> if the bus stops are not drawable; or <code>null</code>
+	 * @param isDrawable is {@code true} if the bus stops are drawable;
+	 *      {@code false} if the bus stops are not drawable; or {@code null}
 	 *      if the default value must be restored.
 	 */
 	public static void setBusStopDrawable(Boolean isDrawable) {
@@ -209,8 +209,8 @@ public final class BusLayerConstants {
 
 	/** Replies if the bus stops names should be drawn or not.
 	 *
-	 * @return <code>true</code> if the bus stops are drawable;
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the bus stops are drawable;
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public static boolean isBusStopNamesDrawable() {
@@ -223,8 +223,8 @@ public final class BusLayerConstants {
 
 	/** Set if the bus stops should be drawn or not.
 	 *
-	 * @param isNamesDrawable is <code>true</code> if the bus stops	names are drawable;
-	 *     <code>false</code> if the bus stops names are not drawable; or <code>null</code>
+	 * @param isNamesDrawable is {@code true} if the bus stops	names are drawable;
+	 *     {@code false} if the bus stops names are not drawable; or {@code null}
 	 *     if the default value must be restored.
 	 */
 	public static void setBusStopNamesDrawable(Boolean isNamesDrawable) {
@@ -246,8 +246,8 @@ public final class BusLayerConstants {
 	/** Replies if the bus stops with no binding to bus halt
 	 * should be drawn or not.
 	 *
-	 * @return <code>true</code> if the bus stops name with no binding are drawable;
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the bus stops name with no binding are drawable;
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public static boolean isBusStopNoHaltBindingDrawable() {
@@ -261,8 +261,8 @@ public final class BusLayerConstants {
 	/** Set if the bus stops stops with no binding to bus halt
 	 * should be drawn or not.
 	 *
-	 * @param isDrawable is <code>true</code> if the bus stops name with no binding are drawable;
-	 *     <code>false</code> if the bus stops name with no binding are not drawable; or <code>null</code>
+	 * @param isDrawable is {@code true} if the bus stops name with no binding are drawable;
+	 *     {@code false} if the bus stops name with no binding are not drawable; or {@code null}
 	 *     if the default value must be restored.
 	 */
 	public static void setBusStopNoHaltBindingDrawable(Boolean isDrawable) {
@@ -284,8 +284,8 @@ public final class BusLayerConstants {
 	/** Replies if the bus stops with no binding to bus halt
 	 * should have their names drawn or not.
 	 *
-	 * @return <code>true</code> if the bus stops name with no binding are drawable;
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the bus stops name with no binding are drawable;
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public static boolean isBusStopNoHaltBindingNamesDrawable() {
@@ -299,8 +299,8 @@ public final class BusLayerConstants {
 	/** Set if the bus stops stops with no binding to bus halt
 	 * should have their names drawn or not.
 	 *
-	 * @param isDrawable is <code>true</code> if the bus stops name with no binding are drawable;
-	 *     <code>false</code> if the bus stops name with no binding are not drawable; or <code>null</code>
+	 * @param isDrawable is {@code true} if the bus stops name with no binding are drawable;
+	 *     {@code false} if the bus stops name with no binding are not drawable; or {@code null}
 	 *     if the default value must be restored.
 	 */
 	public static void setBusStopNoHaltBindingNamesDrawable(Boolean isDrawable) {
@@ -325,8 +325,8 @@ public final class BusLayerConstants {
 	 * For example, a BusLineLayer may exhibit the BusLine
 	 * attributes.
 	 *
-	 * @return <code>true</code> if the bus stops are drawable;
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the bus stops are drawable;
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public static boolean isAttributeExhibitable() {
@@ -343,8 +343,8 @@ public final class BusLayerConstants {
 	 * For example, a BusLineLayer may exhibit the BusLine
 	 * attributes.
 	 *
-	 * @param isExhibit is <code>true</code> if the attributes are exhibited by the layers;
-	 *     <code>false</code> if the attributes are not exhibited; or <code>null</code>
+	 * @param isExhibit is {@code true} if the attributes are exhibited by the layers;
+	 *     {@code false} if the attributes are not exhibited; or {@code null}
 	 *     if the default value must be restored.
 	 */
 	public static void setAttributeExhibitable(Boolean isExhibit) {

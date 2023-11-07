@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @since 13.0
  */
 public class Path3dfx extends AbstractShape3dfx<Path3dfx>
-		implements Path3afp<Shape3dfx<?>, Path3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
+		implements Path3afp<Shape3dfx<?>, Path3dfx, PathElement3dfx, Point3dfx, Vector3dfx, AlignedBox3dfx> {
 
 	private static final long serialVersionUID = 6051061640155091109L;
 
@@ -101,7 +101,7 @@ public class Path3dfx extends AbstractShape3dfx<Path3dfx>
 	/** Buffer for the bounds of the path that corresponds
 	 * to all the points added in the path.
 	 */
-	private ObjectProperty<RectangularPrism3dfx> logicalBounds;
+	private ObjectProperty<AlignedBox3dfx> logicalBounds;
 
 	/** Buffer for the squared length of the path.
 	 */
@@ -255,12 +255,12 @@ public class Path3dfx extends AbstractShape3dfx<Path3dfx>
 	}
 
 	@Override
-	public RectangularPrism3dfx toBoundingBox() {
+	public AlignedBox3dfx toBoundingBox() {
 		return boundingBoxProperty().get().clone();
 	}
 
 	@Override
-	public void toBoundingBox(RectangularPrism3dfx box) {
+	public void toBoundingBox(AlignedBox3dfx box) {
 		assert box != null : AssertMessages.positiveOrZeroParameter();
 		box.set(boundingBoxProperty().get());
 	}
@@ -424,8 +424,8 @@ public class Path3dfx extends AbstractShape3dfx<Path3dfx>
 	}
 
 	@Override
-	public RectangularPrism3dfx toBoundingBoxWithCtrlPoints() {
-		RectangularPrism3dfx bb = null;
+	public AlignedBox3dfx toBoundingBoxWithCtrlPoints() {
+		AlignedBox3dfx bb = null;
 		if (this.logicalBounds != null) {
 			bb = controlPointBoundingBoxProperty().get();
 		}
@@ -436,7 +436,7 @@ public class Path3dfx extends AbstractShape3dfx<Path3dfx>
 	}
 
 	@Override
-	public void toBoundingBoxWithCtrlPoints(RectangularPrism3dfx box) {
+	public void toBoundingBoxWithCtrlPoints(AlignedBox3dfx box) {
 		assert box != null : AssertMessages.positiveOrZeroParameter();
 		if (this.logicalBounds != null) {
 			box.set(controlPointBoundingBoxProperty().get());
@@ -802,7 +802,7 @@ public class Path3dfx extends AbstractShape3dfx<Path3dfx>
 	 * <p>If the given point do not match exactly a point in the path, nothing is removed.
 	 *
 	 * @param point the point to remove.
-	 * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
+	 * @return {@code true} if the point was removed; {@code false} otherwise.
 	 * @throws IllegalStateException if "arc-to" is found.
 	 */
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity"})
@@ -914,11 +914,11 @@ public class Path3dfx extends AbstractShape3dfx<Path3dfx>
 	}
 
 	@Override
-	public ObjectProperty<RectangularPrism3dfx> boundingBoxProperty() {
+	public ObjectProperty<AlignedBox3dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-				final RectangularPrism3dfx bb = getGeomFactory().newBox();
+				final AlignedBox3dfx bb = getGeomFactory().newBox();
 				Path3afp.computeDrawableElementBoundingBox(
 						getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 						bb);
@@ -936,11 +936,11 @@ public class Path3dfx extends AbstractShape3dfx<Path3dfx>
 	 *
 	 * @return the bounding box of the control points.
 	 */
-	public ObjectProperty<RectangularPrism3dfx> controlPointBoundingBoxProperty() {
+	public ObjectProperty<AlignedBox3dfx> controlPointBoundingBoxProperty() {
 		if (this.logicalBounds == null) {
 			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.CONTROL_POINT_BOUNDING_BOX);
 			this.logicalBounds.bind(Bindings.createObjectBinding(() -> {
-				final RectangularPrism3dfx bb = getGeomFactory().newBox();
+				final AlignedBox3dfx bb = getGeomFactory().newBox();
 				Path3afp.computeControlPointBoundingBox(
 						getPathIterator(),
 						bb);

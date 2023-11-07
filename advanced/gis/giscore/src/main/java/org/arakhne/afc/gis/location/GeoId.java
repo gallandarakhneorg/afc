@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,21 +38,21 @@ import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
  * if two elements have the same points in a reverse order, they
  * must have the same Geo-Id.
  *
- * <p>This class calls <code>{@link GeoLocation}.{@link GeoLocation#toGeoId()}</code>.
+ * <p>This class calls {@code {@link GeoLocation}.{@link GeoLocation#toGeoId()}}.
  *
  * <p>The following code is always true (where the arguments of the
  * constructors are the list of points of the polyline). It illustrates
  * that for two elements with the same geo-localized points, they
  * have the same geo-location identifier (Geo-Id) and they
  * have different unique ientifier (Uid):
- * <pre><code>
+ * <pre>{@code 
  * GISElement obj1 = new MapPolyline(100,10,200,30,300,4);
  * GISElement obj2 = new MapPolyline(100,10,200,30,300,4);
  * assert( obj1.getGeoId().equals(obj2.getGeoId()) );
  * assert( obj2.getGeoId().equals(obj1.getGeoId()) );
  * assert( ! obj1.getUid().equals(obj2.getUid()) );
  * assert( ! obj2.getUid().equals(obj1.getUid()) );
- * </code></pre>
+ * }</pre>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -160,7 +160,7 @@ public final class GeoId implements Serializable, Comparable<GeoId> {
 	 * <p>A geoId is an identifier from which the localization could be extracted.
 	 * The location is here restricted to the bounds of the primitives.
 	 *
-	 * @return a rectangle or <code>null</code> if invalid geoid.
+	 * @return a rectangle or {@code null} if invalid geoid.
 	 */
 	@Pure
 	public Rectangle2d toBounds2D() {
@@ -205,7 +205,7 @@ public final class GeoId implements Serializable, Comparable<GeoId> {
 
 	/** Extract the unique identifier stored in this geoId.
 	 *
-	 * @return the internal identifier or <code>null</code> if this
+	 * @return the internal identifier or {@code null} if this
 	 *     geoid has invalid format.
 	 */
 	@Pure

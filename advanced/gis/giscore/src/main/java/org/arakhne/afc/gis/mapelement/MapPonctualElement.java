@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public abstract class MapPonctualElement extends MapElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param geoX is a location component of the point in the geo-referenced space.
 	 * @param geoY is a location component of the point in the geo-referenced space.
 	 * @since 4.0
@@ -62,7 +62,7 @@ public abstract class MapPonctualElement extends MapElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param geo_location is a location component of the point in the geo-referenced space.
 	 * @since 4.0
 	 */
@@ -72,7 +72,7 @@ public abstract class MapPonctualElement extends MapElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the provider of the attributes for this element.
 	 * @param geoX is a location component of the point in the geo-referenced space.
 	 * @param geoY is a location component of the point in the geo-referenced space.
@@ -85,7 +85,7 @@ public abstract class MapPonctualElement extends MapElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the provider of the attributes for this element.
 	 * @param geo_location is a location component of the point in the geo-referenced space.
 	 * @since 4.0
@@ -204,8 +204,8 @@ public abstract class MapPonctualElement extends MapElement {
 	 * @param point is a geo-referenced coordinate
 	 * @param delta is the geo-referenced distance that corresponds to a approximation
 	 *     distance in the screen coordinate system
-	 * @return <code>true</code> if the specified point has a distance nearest than delta
-	 *     to this element, otherwise <code>false</code>
+	 * @return {@code true} if the specified point has a distance nearest than delta
+	 *     to this element, otherwise {@code false}
 	 */
 	@Pure
 	@Override

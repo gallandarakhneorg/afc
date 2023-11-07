@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -250,7 +250,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	}
 
 	/** Replies the GPS position as a point,
-	 * where <code>x</code> is lambda and <code>y</code> is phi.
+	 * where {@code x} is lambda and {@code y} is phi.
 	 *
 	 * @return the point representation of this GPS position in degrees..
 	 */
@@ -263,8 +263,8 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	 * in the DMS format: coordinate containing degrees (integer), minutes (integer),
 	 * and seconds (integer, or real number).
 	 *
-	 * <p>Example with symbolic direction: <code>40&deg;26'47"N 79&deg;58'36"W</code><br>
-	 * Example without symbolic direction: <code>40&deg;26'47" -79&deg;58'36"</code><br>
+	 * <p>Example with symbolic direction: {@code 40&deg;26'47"N 79&deg;58'36"W}<br>
+	 * Example without symbolic direction: {@code 40&deg;26'47" -79&deg;58'36"}<br>
 	 *
 	 * @param lambda is the longitude in degrees.
 	 * @param phi is the latitude in degrees.
@@ -341,7 +341,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	/** Replies the string representation of the longitude/latitude coordinates
 	 * in the Decimal Degree format: coordinate containing only degrees (integer, or real number).
 	 *
-	 * <p>Example: <code>40.446195N 79.948862W</code>
+	 * <p>Example: {@code 40.446195N 79.948862W}
 	 *
 	 * @param lambda is the longitude in degrees.
 	 * @param phi is the latitude in degrees.
@@ -373,7 +373,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	 * in the Decimal Degree Minute format: coordinate containing degrees (integer)
 	 * and minutes (integer, or real number).
 	 *
-	 * <p>Example: <code>40° 26.7717N 79° 56.93172W</code>
+	 * <p>Example: {@code 40° 26.7717N 79° 56.93172W}
 	 *
 	 * @param lambda is the longitude in degrees.
 	 * @param phi is the latitude in degrees.
@@ -419,7 +419,7 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	/** Set the preferred format of the string representation
 	 * of a geodesic position.
 	 *
-	 * @param representation indicates the preferred string representation, or <code>null</code>
+	 * @param representation indicates the preferred string representation, or {@code null}
 	 *     to use the default.
 	 * @param useSymbolicDirection indicates if the directions should be output with there
 	 *     symbols or if there are represented by the signs of the coordinates.
@@ -443,8 +443,8 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	/** Replies the preferred format of the string representation
 	 * of a geodesic position.
 	 *
-	 * @return the preferred string representation, or <code>null</code>
-	 *     to use the default; never <code>null</code>.
+	 * @return the preferred string representation, or {@code null}
+	 *     to use the default; never {@code null}.
 	 * @see #setPreferredStringRepresentation(GeodesicPositionStringRepresentation, boolean)
 	 * @see #getDirectionSymbolInPreferredStringRepresentation()
 	 * @see #toString()
@@ -457,11 +457,11 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	/** Replies the preferred format of the string representation
 	 * of a geodesic position.
 	 *
-	 * @param allowNullValue indicates if the <code>null</code> value is enable
+	 * @param allowNullValue indicates if the {@code null} value is enable
 	 *     for output in the replied value.
-	 * @return the preferred string representation, or <code>null</code>
-	 *     to use the default. The <code>null</code> value is replied iff
-	 *     <var>allowNullValue</var> is <code>true</code> and if the
+	 * @return the preferred string representation, or {@code null}
+	 *     to use the default. The {@code null} value is replied iff
+	 *     <var>allowNullValue</var> is {@code true} and if the
 	 *     default configuration is currently used.
 	 * @see #setPreferredStringRepresentation(GeodesicPositionStringRepresentation, boolean)
 	 * @see #getDirectionSymbolInPreferredStringRepresentation()
@@ -500,8 +500,8 @@ public class GeodesicPosition implements Cloneable, Serializable {
 	 * output in the preferred string representation
 	 * of a geodesic position.
 	 *
-	 * @return <code>true</code> if the direction symbol should be output,
-	 * <code>false</code> if the signs of the coordinates indicate the directions.
+	 * @return {@code true} if the direction symbol should be output,
+	 * {@code false} if the signs of the coordinates indicate the directions.
 	 * @see #setPreferredStringRepresentation(GeodesicPositionStringRepresentation, boolean)
 	 * @see #getPreferredStringRepresentation()
 	 * @see #toString()

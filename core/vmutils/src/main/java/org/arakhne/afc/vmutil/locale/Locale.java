@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,15 +44,15 @@ import org.arakhne.afc.vmutil.ClassLoaderFinder;
 
 /**
  * This utility class permits a easier use of localized strings.
- * <code>Locale</code> provides a means to retreive
+ * {@code Locale} provides a means to retreive
  * messages in the default language. Use this to construct messages
  * displayed for end users.
  *
- * <p><code>Locale</code> takes a string from a properties resource,
+ * <p>{@code Locale} takes a string from a properties resource,
  * then inserts the parameter strings into the extracted strings
  * at the appropriate places.
  * The pattern matching is proceeded with {@link LocaleMessageFormat}
- * formatter. Note that <code>''</code> may represent a single quote
+ * formatter. Note that {@code ''} may represent a single quote
  * in strings (see {@link LocaleMessageFormat} for details).
  *
  * @author $Author: sgalland$
@@ -123,10 +123,10 @@ public final class Locale {
 	/**
 	 * Replies the text that corresponds to the specified resource.
 	 *
-	 * <p>The <code>resourcePath</code> argument should be a fully
+	 * <p>The {@code resourcePath} argument should be a fully
 	 * qualified class name. However, for compatibility with earlier
 	 * versions, Sun's Java SE Runtime Environments do not verify this,
-	 * and so it is possible to access <code>PropertyResourceBundle</code>s
+	 * and so it is possible to access {@code PropertyResourceBundle}s
 	 * by specifying a path name (using "/") instead of a fully
 	 * qualified class name (using ".").
 	 *
@@ -134,7 +134,7 @@ public final class Locale {
 	 * @param key is the name of the resource into the specified file
 	 * @param defaultValue is the default value to replies if the resource does not contain the specified key.
 	 * @param params is the the list of parameters which will
-	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
+	 *     replaces the {@code #1}, {@code #2}... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
 	@Pure
@@ -151,10 +151,10 @@ public final class Locale {
 	/**
 	 * Replies the text that corresponds to the specified resource.
 	 *
-	 * <p>The <code>resourcePath</code> argument should be a fully
+	 * <p>The {@code resourcePath} argument should be a fully
 	 * qualified class name. However, for compatibility with earlier
 	 * versions, Sun's Java SE Runtime Environments do not verify this,
-	 * and so it is possible to access <code>PropertyResourceBundle</code>s
+	 * and so it is possible to access {@code PropertyResourceBundle}s
 	 * by specifying a path name (using "/") instead of a fully
 	 * qualified class name (using ".").
 	 *
@@ -163,7 +163,7 @@ public final class Locale {
 	 * @param key is the name of the resource into the specified file
 	 * @param defaultValue is the default value to replies if the resource does not contain the specified key.
 	 * @param params is the the list of parameters which will
-	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
+	 *     replaces the {@code #1}, {@code #2}... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
 	@Pure
@@ -205,17 +205,17 @@ public final class Locale {
 	/**
 	 * Replies the text that corresponds to the specified resource.
 	 *
-	 * <p>The <code>resourcePath</code> argument should be a fully
+	 * <p>The {@code resourcePath} argument should be a fully
 	 * qualified class name. However, for compatibility with earlier
 	 * versions, Sun's Java SE Runtime Environments do not verify this,
-	 * and so it is possible to access <code>PropertyResourceBundle</code>s
+	 * and so it is possible to access {@code PropertyResourceBundle}s
 	 * by specifying a path name (using "/") instead of a fully
 	 * qualified class name (using ".").
 	 *
 	 * @param resourcePath is the name (path) of the resource file, a fully qualified class name
 	 * @param key is the name of the resource into the specified file
 	 * @param params is the the list of parameters which will
-	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
+	 *     replaces the {@code #1}, {@code #2}... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
 	@Pure
@@ -228,10 +228,10 @@ public final class Locale {
 	/**
 	 * Replies the text that corresponds to the specified resource.
 	 *
-	 * <p>The <code>resourcePath</code> argument should be a fully
+	 * <p>The {@code resourcePath} argument should be a fully
 	 * qualified class name. However, for compatibility with earlier
 	 * versions, Sun's Java SE Runtime Environments do not verify this,
-	 * and so it is possible to access <code>PropertyResourceBundle</code>s
+	 * and so it is possible to access {@code PropertyResourceBundle}s
 	 * by specifying a path name (using "/") instead of a fully
 	 * qualified class name (using ".").
 	 *
@@ -239,7 +239,7 @@ public final class Locale {
 	 * @param resourcePath is the name (path) of the resource file, a fully qualified class name
 	 * @param key is the name of the resource into the specified file
 	 * @param params is the the list of parameters which will
-	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
+	 *     replaces the {@code #1}, {@code #2}... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
 	@Pure
@@ -255,7 +255,7 @@ public final class Locale {
 	 * @param resource is the name of the resource file
 	 * @param key is the name of the resource into the specified file
 	 * @param params is the the list of parameters which will
-	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
+	 *     replaces the {@code #1}, {@code #2}... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
 	@Pure
@@ -270,7 +270,7 @@ public final class Locale {
 	 * @param resource is the name of the resource file
 	 * @param key is the name of the resource into the specified file
 	 * @param params is the the list of parameters which will
-	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
+	 *     replaces the {@code #1}, {@code #2}... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
 	@Pure
@@ -303,7 +303,7 @@ public final class Locale {
 	 *
 	 * @param key is the name of the resource into the specified file
 	 * @param params is the the list of parameters which will
-	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
+	 *     replaces the {@code #1}, {@code #2}... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
 	public static String getString(String key, Object... params) {
@@ -320,7 +320,7 @@ public final class Locale {
 	 * @param classLoader is the classLoader to use.
 	 * @param key is the name of the resource into the specified file
 	 * @param params is the the list of parameters which will
-	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
+	 *     replaces the {@code #1}, {@code #2}... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
 	@Pure
@@ -335,7 +335,7 @@ public final class Locale {
 	 * @param key is the name of the resource into the specified file
 	 * @param defaultValue is the default value to replies if the resource does not contain the specified key.
 	 * @param params is the the list of parameters which will
-	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
+	 *     replaces the {@code #1}, {@code #2}... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
 	@Pure
@@ -352,7 +352,7 @@ public final class Locale {
 	 * @param key is the name of the resource into the specified file
 	 * @param defaultValue is the default value to replies if the resource does not contain the specified key.
 	 * @param params is the the list of parameters which will
-	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
+	 *     replaces the {@code #1}, {@code #2}... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
 	@Pure
@@ -384,7 +384,7 @@ public final class Locale {
 	 * @param key is the name of the resource into the specified file
 	 * @param defaultValue is the default value to replies if the resource does not contain the specified key.
 	 * @param params is the the list of parameters which will
-	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
+	 *     replaces the {@code #1}, {@code #2}... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
 	@Pure
@@ -399,7 +399,7 @@ public final class Locale {
 	 * @param key is the name of the resource into the specified file
 	 * @param defaultValue is the default value to replies if the resource does not contain the specified key.
 	 * @param params is the the list of parameters which will
-	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
+	 *     replaces the {@code #1}, {@code #2}... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
 	@Pure
@@ -461,7 +461,7 @@ public final class Locale {
 	 * @param charset is the charset to use for decoding
 	 * @param referenceLength is the length of the attempted result. If negative, this parameter is ignored.
 	 * @return the decoded string with the appropriate charset set,
-	 *     or <code>null</code> if the specified charset cannot be
+	 *     or {@code null} if the specified charset cannot be
 	 *     used to decode all the characters inside the byte array.
 	 */
 	private static CharBuffer decodeString(byte[] bytes, Charset charset, int referenceLength) {
@@ -557,8 +557,8 @@ public final class Locale {
 	 *
 	 * @param stream is the stream to decode.
 	 * @param lineArray is the array of lines to fill
-	 * @return <code>true</code> is the decoding was successful,
-	 *     otherwhise <code>false</code>
+	 * @return {@code true} is the decoding was successful,
+	 *     otherwhise {@code false}
 	 * @throws IOException when the stream cannot be read.
 	 */
 	public static boolean decodeString(InputStream stream, List<String> lineArray) throws IOException {
@@ -614,8 +614,8 @@ public final class Locale {
 	 * @param stream is the stream to decode.
 	 * @param lineArray is the array of lines to fill.
 	 * @param charset is the charset to use.
-	 * @return <code>true</code> is the decoding was successful,
-	 *     otherwhise <code>false</code>
+	 * @return {@code true} is the decoding was successful,
+	 *     otherwhise {@code false}
 	 * @throws IOException when the stream cannot be read.
 	 */
 	private static boolean decodeString(InputStream stream, List<String> lineArray, Charset charset) throws IOException {

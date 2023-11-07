@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -108,7 +108,7 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 
 	/** Replies the parent graph is this subgraph was built.
 	 *
-	 * @return the parent graph or <code>null</code>
+	 * @return the parent graph or {@code null}
 	 */
 	@Pure
 	protected final Graph<ST, PT> getParentGraph() {
@@ -205,7 +205,7 @@ public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT,
 	/** Replies if the given point is a terminal point.
 	 *
 	 * @param point the point to test.
-	 * @return <code>true</code> if the point is terminal otherwise <code>false</code>
+	 * @return {@code true} if the point is terminal otherwise {@code false}
 	 */
 	@Pure
 	protected final boolean isTerminalPoint(PT point) {

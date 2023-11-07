@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,18 +28,18 @@ import org.arakhne.afc.vmutil.URISchemeType;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
- * The class <code>Handler</code> is supporting resource protocol
+ * The class {@code Handler} is supporting resource protocol
  * for URL streams. This stream protocol
  * handler knows how to make a connection for "resource" protocol.
  *
- * <p>In most cases, an instance of a <code>URLStreamHandler</code>
+ * <p>In most cases, an instance of a {@code URLStreamHandler}
  * subclass is not created directly by an application. Rather, the
  * first time a protocol name is encountered when constructing a
- * <code>URL</code>, the appropriate stream protocol handler is
+ * {@code URL}, the appropriate stream protocol handler is
  * automatically loaded.
  *
  * <p>To use this factory, invoke the following code only ONCE time:
- * <code>URL.setURLStreamHandlerFactory(new HandlerProvider());</code>.
+ * {@code URL.setURLStreamHandlerFactory(new HandlerProvider());}.
  *
  * @author $Author: sgalland$
  * @author $Author: willaume$

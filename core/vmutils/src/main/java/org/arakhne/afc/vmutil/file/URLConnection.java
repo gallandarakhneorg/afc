@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,16 +42,16 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
- * The class <code>URLConnection</code> is implementing
+ * The class {@code URLConnection} is implementing
  * connection between an URL and a local file.
  * Instances of this class can be used both to
  * read from and to write to the resource referenced by the file URL.
  *
  * <p>Supported header fields are:
  * <ul>
- * <li><code>content-type</code></li>
- * <li><code>content-length</code></li>
- * <li><code>last-modified</code></li>
+ * <li>{@code content-type}</li>
+ * <li>{@code content-length}</li>
+ * <li>{@code last-modified}</li>
  * </ul>
  *
  * @author $Author: sgalland$

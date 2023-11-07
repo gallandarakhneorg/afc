@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,13 +45,13 @@ public class DynamicURLClassLoader extends URLClassLoader {
 	 * to refer to a JAR file which will be downloaded and opened as needed.
 	 *
 	 * <p>If there is a security manager, this method first
-	 * calls the security manager's <code>checkCreateClassLoader</code> method
+	 * calls the security manager's {@code checkCreateClassLoader} method
 	 * to ensure creation of a class loader is allowed.
 	 *
 	 * @param parent the parent class loader for delegation
 	 * @param urls the URLs from which to load classes and resources
 	 * @throws  SecurityException  if a security manager exists and its
-	 *     <code>checkCreateClassLoader</code> method doesn't allow
+	 *     {@code checkCreateClassLoader} method doesn't allow
 	 *     creation of a class loader.
 	 * @see SecurityManager#checkCreateClassLoader
 	 */
@@ -85,9 +85,9 @@ public class DynamicURLClassLoader extends URLClassLoader {
 	/**
 	 * Creates a new instance of DynamicURLClassLoader for the specified
 	 * URLs and parent class loader. If a security manager is
-	 * installed, the <code>loadClass</code> method of the URLClassLoader
+	 * installed, the {@code loadClass} method of the URLClassLoader
 	 * returned by this method will invoke the
-	 * <code>SecurityManager.checkPackageAccess</code> method before
+	 * {@code SecurityManager.checkPackageAccess} method before
 	 * loading the class.
 	 *
 	 * @param parent the parent class loader for delegation

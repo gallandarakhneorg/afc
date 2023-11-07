@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import org.arakhne.afc.math.test.geometry.d3.afp.AbstractSegment3afpTest;
 
 @SuppressWarnings("all")
 @Disabled("temporary")
-public class Segment3dfxTest extends AbstractSegment3afpTest<Segment3dfx, RectangularPrism3dfx> {
+public class Segment3dfxTest extends AbstractSegment3afpTest<Segment3dfx, AlignedBox3dfx> {
 
 	@Override
 	protected TestShapeFactory3dfx createFactory() {
@@ -109,9 +109,9 @@ public class Segment3dfxTest extends AbstractSegment3afpTest<Segment3dfx, Rectan
 	@EnumSource(CoordinateSystem3D.class)
 	public void boundingBoxProperty(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		ObjectProperty<RectangularPrism3dfx> property = this.shape.boundingBoxProperty();
+		ObjectProperty<AlignedBox3dfx> property = this.shape.boundingBoxProperty();
 		assertNotNull(property);
-		RectangularPrism3dfx box = property.get();
+		AlignedBox3dfx box = property.get();
 		assertNotNull(box);
 		assertEpsilonEquals(0, box.getMinX());
 		assertEpsilonEquals(0, box.getMinY());

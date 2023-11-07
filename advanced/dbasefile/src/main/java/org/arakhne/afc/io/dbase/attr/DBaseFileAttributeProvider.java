@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -151,8 +151,8 @@ public class DBaseFileAttributeProvider extends AbstractAttributeProvider {
 	 * Replies if the specified attribute exists inside the dBase file.
 	 *
 	 * @param name the name.
-	 * @return <code>true</code> if the given attribute exists inside the dBase file,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given attribute exists inside the dBase file,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	protected final boolean hasAttributeInDBase(String name) {

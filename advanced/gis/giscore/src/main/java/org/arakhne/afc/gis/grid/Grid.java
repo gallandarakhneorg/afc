@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,7 +115,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 
 	/** Replies if the grid is empty.
 	 *
-	 * @return <code>true</code> if the grid is empty; otherwise <code>false</code>.
+	 * @return {@code true} if the grid is empty; otherwise {@code false}.
 	 */
 	@Pure
 	public boolean isEmpty() {
@@ -135,7 +135,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 *
 	 * @param row the row index.
 	 * @param column the column index.
-	 * @return the cell or <code>null</code> if no element at
+	 * @return the cell or {@code null} if no element at
 	 *     the specified location.
 	 */
 	@Pure
@@ -179,7 +179,7 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	 *
 	 * @param row the row index.
 	 * @param column the column index.
-	 * @return the removed cell or <code>null</code> if no element at
+	 * @return the removed cell or {@code null} if no element at
 	 *     the specified location.
 	 */
 	public GridCell<P> removeCellAt(int row, int column) {
@@ -197,8 +197,8 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	/** Add the element in the grid.
 	 *
 	 * @param element the element.
-	 * @return <code>true</code> if the element was added;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the element was added;
+	 *     otherwise {@code false}.
 	 */
 	public boolean addElement(P element) {
 		boolean changed = false;
@@ -219,8 +219,8 @@ class Grid<P extends GISPrimitive> implements Iterable<P> {
 	/** Remove the element at the specified location.
 	 *
 	 * @param element the element.
-	 * @return <code>true</code> if the element was removed;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the element was removed;
+	 *     otherwise {@code false}.
 	 */
 	public boolean removeElement(P element) {
 		boolean changed = false;

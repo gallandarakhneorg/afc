@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -240,7 +240,7 @@ public class SGraphSegment implements GraphSegment<SGraphSegment, SGraphPoint> {
 	/** Add a user data in the data associated to this point.
 	 *
 	 * @param userData the user data to add.
-	 * @return <code>true</code> if the data was added; otherwise <code>false</code>.
+	 * @return {@code true} if the data was added; otherwise {@code false}.
 	 */
 	public boolean addUserData(Object userData) {
 		if (this.userData == null) {
@@ -252,7 +252,7 @@ public class SGraphSegment implements GraphSegment<SGraphSegment, SGraphPoint> {
 	/** Remove a user data from the data associated to this point.
 	 *
 	 * @param userData the user data to remove.
-	 * @return <code>true</code> if the data was removed; otherwise <code>false</code>.
+	 * @return {@code true} if the data was removed; otherwise {@code false}.
 	 */
 	public boolean removeUserData(Object userData) {
 		return this.userData != null && this.userData.remove(userData);

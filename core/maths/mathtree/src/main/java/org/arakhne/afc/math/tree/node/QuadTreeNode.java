@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,9 +36,9 @@ import org.arakhne.afc.math.tree.TreeNode;
  * <h3>moveTo</h3>
  * According to its definition in
  * {@link TreeNode#moveTo(TreeNode, int)}, the binary
- * tree node implementation of <code>moveTo</code>
+ * tree node implementation of {@code moveTo}
  * replaces any existing node at the position given as
- * parameter of <code>moveTo</code>..
+ * parameter of {@code moveTo}..
  *
  * @param <D> is the type of the data inside the tree
  * @param <N> is the type of the tree nodes.
@@ -89,7 +89,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 
 	/** Constructor.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 */
 	public QuadTreeNode(boolean useLinkedList) {
 		super(useLinkedList);
@@ -101,10 +101,10 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 
 	/** Constructor.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param copyDataCollection indicates if the given data collection is copied
-	 *     if <code>true</code> or the inner data collection will be the given
-	 *     collection itself if <code>false</code>.
+	 *     if {@code true} or the inner data collection will be the given
+	 *     collection itself if {@code false}.
 	 * @param data are initial user data
 	 */
 	public QuadTreeNode(boolean useLinkedList, boolean copyDataCollection, List<D> data) {
@@ -117,7 +117,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 
 	/** Constructor.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param data are initial user data
 	 */
 	public QuadTreeNode(boolean useLinkedList, D data) {
@@ -164,7 +164,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	 * If you want to unlink the first-level
 	 * child node with
 	 * this node but leave the rest of the tree
-	 * unchanged, please call <code>setChildAt(i,null)</code>.
+	 * unchanged, please call {@code setChildAt(i,null)}.
 	 */
 	@Override
 	public void clear() {
@@ -217,7 +217,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	/** Replies the node that is corresponding to the given zone.
 	 *
 	 * @param zone the zone.
-	 * @return the child node for the given zone, or <code>null</code>.
+	 * @return the child node for the given zone, or {@code null}.
 	 */
 	@Pure
 	public N getChildAt(QuadTreeZone zone) {
@@ -238,7 +238,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	/** Set the first child of this node.
 	 *
 	 * @param newChild is the new child for the first zone
-	 * @return <code>true</code> on success, otherwhise <code>false</code>
+	 * @return {@code true} on success, otherwhise {@code false}
 	 */
 	public boolean setFirstChild(N newChild) {
 		final N oldChild = this.nNorthWest;
@@ -282,7 +282,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	/** Set the second child of this node.
 	 *
 	 * @param newChild is the new child for the second zone
-	 * @return <code>true</code> on success, otherwhise <code>false</code>
+	 * @return {@code true} on success, otherwhise {@code false}
 	 */
 	public boolean setSecondChild(N newChild) {
 		final N oldChild = this.nNorthEast;
@@ -326,7 +326,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	/** Set the third child of this node.
 	 *
 	 * @param newChild is the new child for the third zone
-	 * @return <code>true</code> on success, otherwhise <code>false</code>
+	 * @return {@code true} on success, otherwhise {@code false}
 	 */
 	public boolean setThirdChild(N newChild) {
 		final N oldChild = this.nSouthWest;
@@ -370,7 +370,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	/** Set the Fourth child of this node.
 	 *
 	 * @param newChild is the new child for the fourth zone
-	 * @return <code>true</code> on success, otherwhise <code>false</code>
+	 * @return {@code true} on success, otherwhise {@code false}
 	 */
 	public boolean setFourthChild(N newChild) {
 		final N oldChild = this.nSouthEast;
@@ -431,7 +431,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	 *
 	 * @param newParent is the new parent for this node.
 	 * @param zone is the position of this node in the new parent.
-	 * @return <code>true</code> on success, otherwise <code>false</code>.
+	 * @return {@code true} on success, otherwise {@code false}.
 	 */
 	public boolean moveTo(N newParent, QuadTreeZone zone) {
 		return moveTo(newParent, zone.ordinal());
@@ -450,7 +450,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	 *
 	 * @param zone is the zone to set
 	 * @param newChild is the new node for the given zone
-	 * @return <code>true</code> on success, <code>false</code> otherwise
+	 * @return {@code true} on success, {@code false} otherwise
 	 */
 	public boolean setChildAt(QuadTreeZone zone, N newChild) {
 		switch (zone) {
@@ -541,7 +541,7 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 	/** Replies the zone of the specified child.
 	 *
 	 * @param child the child.
-	 * @return the index or <code>null</code>.
+	 * @return the index or {@code null}.
 	 */
 	@Pure
 	public QuadTreeZone zoneOf(N child) {
@@ -636,10 +636,10 @@ public abstract class QuadTreeNode<D, N extends QuadTreeNode<D, N>> extends Abst
 		/** Replies the zone corresponding to the given index.
 		 * The index is the same as the ordinal value of the
 		 * enumeration. If the given index does not correspond
-		 * to an ordinal value, <code>null</code> is replied.
+		 * to an ordinal value, {@code null} is replied.
 		 *
 		 * @param index the index.
-		 * @return the zone or <code>null</code>
+		 * @return the zone or {@code null}
 		 */
 		public static QuadTreeZone fromInteger(int index) {
 			if (index < 0) {

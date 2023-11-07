@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,9 +52,9 @@ public class TXTFileFilter extends AbstractFileFilter {
 	}
 
 	/** Constructor.
-	 * @param acceptDirectories is <code>true</code> to
+	 * @param acceptDirectories is {@code true} to
 	 *     permit to this file filter to accept directories;
-	 *     <code>false</code> if the directories should not
+	 *     {@code false} if the directories should not
 	 *     match.
 	 */
 	public TXTFileFilter(boolean acceptDirectories) {
@@ -68,8 +68,8 @@ public class TXTFileFilter extends AbstractFileFilter {
 	/** Replies if the specified file contains text.
 	 *
 	 * @param file is the file to test.
-	 * @return <code>true</code> if the given file contains text,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given file contains text,
+	 *     otherwise {@code false}
 	 */
 	public static boolean isTextFile(File file) {
 		return FileType.isContentType(file, MimeName.MIME_PLAIN_TEXT.getMimeConstant());
@@ -78,8 +78,8 @@ public class TXTFileFilter extends AbstractFileFilter {
 	/** Replies if the specified file contains text.
 	 *
 	 * @param file is the file to test.
-	 * @return <code>true</code> if the given file contains text,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given file contains text,
+	 *     otherwise {@code false}
 	 */
 	public static boolean isTextFile(URL file) {
 		return FileType.isContentType(file, MimeName.MIME_PLAIN_TEXT.getMimeConstant());
@@ -88,8 +88,8 @@ public class TXTFileFilter extends AbstractFileFilter {
 	/** Replies if the specified file contains text.
 	 *
 	 * @param file is the file to test.
-	 * @return <code>true</code> if the given file contains text,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given file contains text,
+	 *     otherwise {@code false}
 	 */
 	public static boolean isTextFile(String file) {
 		return FileType.isContentType(file, MimeName.MIME_PLAIN_TEXT.getMimeConstant());

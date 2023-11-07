@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,10 +93,10 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 *
 	 * <p>Let s1 and s2 two segments respectively linked
 	 * to the points [p1, p2] and [p1, p3].
-	 * Let the following code:<pre><code>
+	 * Let the following code:<pre>{@code 
 	 * GraphPath path = new GraphPath();
 	 * path.add(s1);
-	 * path.add(s2);</code></pre>
+	 * path.add(s2);}</pre>
 	 * If the path is not reversable, it is becoming
 	 * {@code [s2, s1]} because the order of s1
 	 * is preserved. If the path is reversable, it
@@ -105,17 +105,17 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * to the add function.
 	 *
 	 * <p>Let s1 and s2 the same segments as previously.
-	 * Let the following code:<pre><code>
+	 * Let the following code:<pre>{@code 
 	 * GraphPath path = new GraphPath();
 	 * path.add(s1, p2);
-	 * path.add(s2);</code></pre>
+	 * path.add(s2);}</pre>
 	 * The first segment is not reversable because of
 	 * the call to the add function with the connection
 	 * as parameter. The path is becoming
 	 * {@code s1, s2}, and nothing else.
 	 *
-	 * @return <code>true</code> if the first segment
-	 *     could be reversed; otherwise <code>false</code>.
+	 * @return {@code true} if the first segment
+	 *     could be reversed; otherwise {@code false}.
 	 */
 	@Pure
 	public boolean isFirstSegmentReversable() {
@@ -128,10 +128,10 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 *
 	 * <p>Let s1 and s2 two segments respectively linked
 	 * to the points [p1, p2] and [p1, p3].
-	 * Let the following code:<pre><code>
+	 * Let the following code:<pre>{@code 
 	 * GraphPath path = new GraphPath();
 	 * path.add(s1);
-	 * path.add(s2);</code></pre>
+	 * path.add(s2);}</pre>
 	 * If the path is not reversable, it is becoming
 	 * {@code [s2, s1]} because the order of s1
 	 * is preserved. If the path is reversable, it
@@ -140,17 +140,17 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * to the add function.
 	 *
 	 * <p>Let s1 and s2 the same segments as previously.
-	 * Let the following code:<pre><code>
+	 * Let the following code:<pre>{@code 
 	 * GraphPath path = new GraphPath();
 	 * path.add(s1, p2);
-	 * path.add(s2);</code></pre>
+	 * path.add(s2);}</pre>
 	 * The first segment is not reversable because of
 	 * the call to the add function with the connection
 	 * as parameter. The path is becoming
 	 * {@code s1, s2}, and nothing else.
 	 *
-	 * @param isReversable1 is <code>true</code> if the first
-	 *     segment could be reversed; otherwise <code>false</code>.
+	 * @param isReversable1 is {@code true} if the first
+	 *     segment could be reversed; otherwise {@code false}.
 	 */
 	public void setFirstSegmentReversable(boolean isReversable1) {
 		this.isReversable = isReversable1;
@@ -572,7 +572,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 *
 	 * @param index the reference index.
 	 * @param inclusive indicates if the element at the reference index is included in the removed elements.
-	 * @return <code>true</code> or <code>false</code>
+	 * @return {@code true} or {@code false}
 	 */
 	boolean removeUntil(int index, boolean inclusive) {
 		if (index >= 0) {
@@ -617,7 +617,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * @param obj is the segment to remove
 	 * @param pt is the point on which the segment was connected
 	 *     as its first point.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean removeUntil(ST obj, PT pt) {
 		return removeUntil(indexOf(obj, pt), true);
@@ -631,7 +631,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	@Override
 	public boolean removeUntil(ST obj) {
@@ -646,7 +646,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * of the given object.
 	 *
 	 * @param obj the reference element.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	@Override
 	public boolean removeBefore(ST obj) {
@@ -664,7 +664,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * @param obj is the segment to remove
 	 * @param pt is the point on which the segment was connected
 	 *     as its first point.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	@Override
 	public boolean removeBefore(ST obj, PT pt) {
@@ -679,7 +679,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * of the given object.
 	 *
 	 * @param obj the reference element.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	@Override
 	public boolean removeBeforeLast(ST obj) {
@@ -697,7 +697,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * @param obj is the segment to remove
 	 * @param pt is the point on which the segment was connected
 	 *     as its first point.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	@Override
 	public boolean removeBeforeLast(ST obj, PT pt) {
@@ -715,7 +715,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * @param obj is the segment to remove
 	 * @param pt is the point on which the segment was connected
 	 *     as its first point.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean removeUntilLast(ST obj, PT pt) {
 		return removeUntil(lastIndexOf(obj, pt), true);
@@ -729,7 +729,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	@Override
 	public boolean removeUntilLast(ST obj) {
@@ -784,7 +784,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * @param obj is the segment to remove
 	 * @param pt is the point on which the segment was connected
 	 *     as its first point.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean removeAfter(ST obj, PT pt) {
 		return removeAfter(indexOf(obj, pt), false);
@@ -798,7 +798,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean removeAfter(ST obj) {
 		return removeAfter(this.segmentList.indexOf(obj), false);
@@ -812,7 +812,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean removeAfterLast(ST obj) {
 		return removeAfter(this.segmentList.lastIndexOf(obj), false);
@@ -829,7 +829,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * @param obj is the segment to remove
 	 * @param pt is the point on which the segment was connected
 	 *     as its first point.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean removeAfterLast(ST obj, PT pt) {
 		return removeAfter(lastIndexOf(obj, pt), false);
@@ -846,7 +846,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * @param obj is the segment to remove
 	 * @param pt is the point on which the segment was connected
 	 *     as its first point.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean removeFromLast(ST obj, PT pt) {
 		return removeAfter(lastIndexOf(obj, pt), true);
@@ -860,7 +860,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean removeFromLast(ST obj) {
 		return removeAfter(this.segmentList.lastIndexOf(obj), true);
@@ -877,7 +877,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * @param obj is the segment to remove
 	 * @param pt is the point on which the segment was connected
 	 *     as its first point.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean removeFrom(ST obj, PT pt) {
 		return removeAfter(indexOf(obj, pt), true);
@@ -891,7 +891,7 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 	 * of the given object.
 	 *
 	 * @param obj the reference segment.
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean removeFrom(ST obj) {
 		return removeAfter(this.segmentList.indexOf(obj), true);

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,8 +68,8 @@ public class ShapeFileIndexRecord implements Comparable<ShapeFileIndexRecord> {
 	/** Constructor.
 	 * @param recordOffset is the offset of the record, including the file header.
 	 * @param length the length of the record.
-	 * @param recordContentSize if <code>true</code> indicates that the given length is
-	 *     the length of the record's content (without record header), if <code>false</code>
+	 * @param recordContentSize if {@code true} indicates that the given length is
+	 *     the length of the record's content (without record header), if {@code false}
 	 *     indicates that the given length is the length of the whole record (record
 	 *     header included).
 	 * @param index is the index of the record.
@@ -187,9 +187,9 @@ public class ShapeFileIndexRecord implements Comparable<ShapeFileIndexRecord> {
 	}
 
 	/** Replies index of the record if it is known, or
-	 * <code>-1</code> if unknown.
+	 * {@code -1} if unknown.
 	 *
-	 * @return the record index or <code>-1</code> if unknown.
+	 * @return the record index or {@code -1} if unknown.
 	 */
 	@Pure
 	public int getRecordIndex() {

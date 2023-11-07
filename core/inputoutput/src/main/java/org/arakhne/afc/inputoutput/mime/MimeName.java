@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -366,8 +366,8 @@ public enum MimeName {
 	/** Replies if the given string corresponds to this MIME constant.
 	 *
 	 * @param stringMime is the string to compare to the MIME constant.
-	 * @return <code>true</code> if the given Mime string corresponds
-	 *     to the MIME constant of this MIME type, otherwise <code>false</code>.
+	 * @return {@code true} if the given Mime string corresponds
+	 *     to the MIME constant of this MIME type, otherwise {@code false}.
 	 */
 	public boolean isMimeConstant(String stringMime) {
 		return stringMime != null && stringMime.equalsIgnoreCase(this.rawMime);
@@ -378,10 +378,10 @@ public enum MimeName {
 	 *
 	 * <p>This function differs from {@link MimeType#MimeType(String)}
 	 * by the fact that this function does not throw an exception
-	 * but reply <code>null</code>.
+	 * but reply {@code null}.
 	 *
 	 * @param mime the string to parse.
-	 * @return the mime type or <code>null</code> if invalid.
+	 * @return the mime type or {@code null} if invalid.
 	 */
 	public static MimeType parseMimeType(String mime) {
 		if (mime == null || mime.isEmpty()) {
@@ -398,7 +398,7 @@ public enum MimeName {
 	 * Parse the given string to extract a MimeName.
 	 *
 	 * @param mime the string to parse.
-	 * @return the mime name or <code>null</code> if invalid.
+	 * @return the mime name or {@code null} if invalid.
 	 */
 	public static MimeName parseMimeName(String mime) {
 		if (mime == null || mime.isEmpty()) {

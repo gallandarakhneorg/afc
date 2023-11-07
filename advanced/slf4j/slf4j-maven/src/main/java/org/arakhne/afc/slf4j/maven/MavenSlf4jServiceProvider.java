@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,16 +66,15 @@ public class MavenSlf4jServiceProvider implements SLF4JServiceProvider {
 	}
 
 	@Override
-	public String getRequesteApiVersion() {
-		return REQUESTED_API_VERSION;
-	}
-
-	@Override
 	public void initialize() {
 		this.loggerFactory = StaticLoggerBinder.getSingleton().getLoggerFactory();
 		this.markerFactory = StaticMarkerBinder.getSingleton().getMarkerFactory();
 		this.mdcAdapter = StaticMDCBinder.getSingleton().getMDCA();
 	}
 
+	@Override
+	public String getRequestedApiVersion() {
+		return REQUESTED_API_VERSION;
+	}
 
 }

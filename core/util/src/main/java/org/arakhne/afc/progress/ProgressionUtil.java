@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ public final class ProgressionUtil {
 		//
 	}
 
-	/** Initialize the given task progression if not <code>null</code>.
+	/** Initialize the given task progression if not {@code null}.
 	 *
 	 * @param model is the task progression to initialize.
 	 * @param value is the progression value.
@@ -50,7 +50,7 @@ public final class ProgressionUtil {
 		}
 	}
 
-	/** Initialize the given task progression if not <code>null</code>.
+	/** Initialize the given task progression if not {@code null}.
 	 *
 	 * <p>The inderterminate state is not changed.
 	 *
@@ -65,10 +65,10 @@ public final class ProgressionUtil {
 		}
 	}
 
-	/** Initialize the given task progression if not <code>null</code>.
+	/** Initialize the given task progression if not {@code null}.
 	 *
 	 * <p>The inderterminate state is not changed.
-	 * The adjusting state is set to <code>false</code>.
+	 * The adjusting state is set to {@code false}.
 	 *
 	 * @param model is the task progression to initialize.
 	 * @param min is the minimum value.
@@ -80,7 +80,7 @@ public final class ProgressionUtil {
 		}
 	}
 
-	/** Initialize the given task progression if not <code>null</code>.
+	/** Initialize the given task progression if not {@code null}.
 	 *
 	 * @param model is the task progression to initialize.
 	 * @param value is the progression value.
@@ -98,7 +98,7 @@ public final class ProgressionUtil {
 		}
 	}
 
-	/** Initialize the given task progression if not <code>null</code>.
+	/** Initialize the given task progression if not {@code null}.
 	 *
 	 * <p>The inderterminate state is not changed.
 	 *
@@ -114,10 +114,10 @@ public final class ProgressionUtil {
 		}
 	}
 
-	/** Initialize the given task progression if not <code>null</code>.
+	/** Initialize the given task progression if not {@code null}.
 	 *
 	 * <p>The inderterminate state is not changed.
-	 * The adjusting state is set to <code>false</code>.
+	 * The adjusting state is set to {@code false}.
 	 *
 	 * @param model is the task progression to initialize.
 	 * @param min is the minimum value.
@@ -142,7 +142,7 @@ public final class ProgressionUtil {
 	 * @param model is the model to derivate
 	 * @param extent is the size of the subtask progression that is
 	 *     covered in the task progression.
-	 * @return the subtask progression model; or <code>null</code>.
+	 * @return the subtask progression model; or {@code null}.
 	 */
 	public static Progression sub(Progression model, int extent) {
 		if (model != null) {
@@ -165,7 +165,7 @@ public final class ProgressionUtil {
 	 *     covered in the task progression.
 	 * @param overwriteComment indicates if the comment of this task model may
 	 *     be overwritten by the comment of the subtask when it is disconnected.
-	 * @return the subtask progression model; or <code>null</code>.
+	 * @return the subtask progression model; or {@code null}.
 	 */
 	public static Progression sub(Progression model, int extent, boolean overwriteComment) {
 		if (model != null) {
@@ -182,7 +182,7 @@ public final class ProgressionUtil {
 	 * the value of the task progression is equal to the maximum.
 	 *
 	 * @param model is the model to derivate
-	 * @return the subtask progression model; or <code>null</code>.
+	 * @return the subtask progression model; or {@code null}.
 	 */
 	public static Progression subToEnd(Progression model) {
 		if (model != null) {
@@ -201,7 +201,7 @@ public final class ProgressionUtil {
 	 * @param model is the model to derivate
 	 * @param overwriteComment indicates if the comment of this task model may
 	 *     be overwritten by the comment of the subtask when it is disconnected.
-	 * @return the subtask progression model; or <code>null</code>.
+	 * @return the subtask progression model; or {@code null}.
 	 */
 	public static Progression subToEnd(Progression model, boolean overwriteComment) {
 		if (model != null) {
@@ -211,7 +211,7 @@ public final class ProgressionUtil {
 	}
 
 	/** Increment the value of the given task progression,
-	 * if not <code>null</code>, by the given amount.
+	 * if not {@code null}, by the given amount.
 	 *
 	 * @param model is the progression to change
 	 * @param value is the value to add to the progression value.
@@ -231,7 +231,7 @@ public final class ProgressionUtil {
 	}
 
 	/** Increment the value of the given task progression,
-	 * if not <code>null</code>, by {@code 1}.
+	 * if not {@code null}, by {@code 1}.
 	 *
 	 * @param model is the progression to change
 	 */
@@ -240,7 +240,7 @@ public final class ProgressionUtil {
 	}
 
 	/** Increment the value of the given task progression,
-	 * if not <code>null</code>, by the given amount.
+	 * if not {@code null}, by the given amount.
 	 *
 	 * @param model is the progression to change
 	 * @param value is the value to add to the progression value.
@@ -253,7 +253,7 @@ public final class ProgressionUtil {
 	}
 
 	/** Increment the value of the given task progression,
-	 * if not <code>null</code>, by {@code 1}.
+	 * if not {@code null}, by {@code 1}.
 	 *
 	 * @param model is the progression to change
 	 * @param comment is the comment associated to the progression.
@@ -263,7 +263,7 @@ public final class ProgressionUtil {
 	}
 
 	/** Replies the value of the given task progression,
-	 * if not <code>null</code>.
+	 * if not {@code null}.
 	 *
 	 * @param model is the progression to change
 	 * @return the value or {@code 0} if there is no progession model.
@@ -277,7 +277,7 @@ public final class ProgressionUtil {
 
 	/** Replies the value from the current progression value
 	 * to the maximal progression value of the given task progression,
-	 * if not <code>null</code>.
+	 * if not {@code null}.
 	 *
 	 * @param model is the progression to change
 	 * @return the positive value to end or {@code 0} if there is no progession model.
@@ -290,7 +290,7 @@ public final class ProgressionUtil {
 	}
 
 	/** Replies the percent of progression for the given task progression,
-	 * if not <code>null</code>.
+	 * if not {@code null}.
 	 *
 	 * @param model is the progression to change
 	 * @return the percent of progress or {@link Double#NaN}
@@ -304,7 +304,7 @@ public final class ProgressionUtil {
 	}
 
 	/** Set the value of the given task progression,
-	 * if not <code>null</code>.
+	 * if not {@code null}.
 	 * The value must be greater than the current progression value.
 	 *
 	 * @param model is the progression to change
@@ -317,7 +317,7 @@ public final class ProgressionUtil {
 	}
 
 	/** Set the value of the given task progression,
-	 * if not <code>null</code>.
+	 * if not {@code null}.
 	 * The value must be greater than the current progression value.
 	 *
 	 * @param model is the progression to change
@@ -330,7 +330,7 @@ public final class ProgressionUtil {
 		}
 	}
 
-	/** Force the given task progression, if not <code>null</code>,
+	/** Force the given task progression, if not {@code null},
 	 * to have its value equals to the maximal value.
 	 *
 	 * <p>The inderterminate and adjusting states are not changed.
@@ -360,8 +360,8 @@ public final class ProgressionUtil {
 	 * equal to its min value.
 	 *
 	 * @param model is the task progression to initialize.
-	 * @return <code>true</code> if the indicator is at its min value or
-	 *     if {@code model} is <code>null</code>.
+	 * @return {@code true} if the indicator is at its min value or
+	 *     if {@code model} is {@code null}.
 	 */
 	public static boolean isMinValue(Progression model) {
 		if (model != null) {

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -157,8 +157,8 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 
 	/** Change the flag that permits to reopen the closed A* nodes.
 	 *
-	 * @param enableClosedNodeReopening1 is <code>true</code> to enable the closed
-	 *     A* nodes; <code>false</code> to never reopen the closed A* nodes.
+	 * @param enableClosedNodeReopening1 is {@code true} to enable the closed
+	 *     A* nodes; {@code false} to never reopen the closed A* nodes.
 	 */
 	public void setClosedNodeReopeningEnabled(boolean enableClosedNodeReopening1) {
 		this.enableClosedNodeReopening = enableClosedNodeReopening1;
@@ -166,8 +166,8 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 
 	/** Replies the flag that permits to reopen the closed A* nodes.
 	 *
-	 * @return <code>true</code> if the closed
-	 *     A* nodes could be reopened; <code>false</code> if the closed A* nodes
+	 * @return {@code true} if the closed
+	 *     A* nodes could be reopened; {@code false} if the closed A* nodes
 	 *     will be never reopened.
 	 */
 	@Pure
@@ -241,7 +241,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 
 	/** Replies the object used to replace the segments in the shortest path.
 	 *
-	 * @return the segment replacer, or <code>null</code> if none.
+	 * @return the segment replacer, or {@code null} if none.
 	 */
 	@Pure
 	public AStarSegmentReplacer<ST> getSegmentReplacer() {
@@ -336,7 +336,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * This function is invoked prior to any treatment with
 	 * the given A* node. It is assumed that this
 	 * function replies a good translation of the given node
-	 * for the A* algorithm; or it replies <code>null</code>
+	 * for the A* algorithm; or it replies {@code null}
 	 * if the given node is the target node of the A* algorithm,
 	 * ie. it corresponds to the given endPoint.
 	 *
@@ -344,7 +344,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 *
 	 * @param endPoint is the end point given to solve function.
 	 * @param node is the current A* node to translate.
-	 * @return the translation of the node, or <code>null</code> if
+	 * @return the translation of the node, or {@code null} if
 	 *     the node corresponds to the endPoint.
 	 */
 	@Pure
@@ -384,8 +384,8 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 *
 	 * @param path is the path to build.
 	 * @param segment is the segment to add.
-	 * @return <code>true</code> if the segment was added;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the segment was added;
+	 *     otherwise {@code false}.
 	 */
 	protected boolean addToPath(GP path, ST segment) {
 		if (this.pathFactory != null) {
@@ -408,7 +408,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 *
 	 * @param startPoint is the starting point.
 	 * @param endPoint is the point to reach.
-	 * @return the found path, or <code>null</code> if none found.
+	 * @return the found path, or {@code null} if none found.
 	 */
 	@Pure
 	public GP solve(PT startPoint, PT endPoint) {
@@ -427,7 +427,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 *
 	 * @param startPoint is the starting point.
 	 * @param endPoint is the point to reach.
-	 * @return the found path, or <code>null</code> if none found.
+	 * @return the found path, or {@code null} if none found.
 	 */
 	protected GP solve(AStarNode<ST, PT> startPoint, PT endPoint) {
 		final List<AStarNode<ST, PT>> closeList;
@@ -603,7 +603,7 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	 * @param startPoint is the starting point.
 	 * @param endPoint is the ending point.
 	 * @param closeList is the close list.
-	 * @return the path, or <code>null</code> if no path found.
+	 * @return the path, or {@code null} if no path found.
 	 */
 	@Pure
 	GP createPath(AStarNode<ST, PT> startPoint, PT endPoint, List<AStarNode<ST, PT>> closeList) {
@@ -687,14 +687,14 @@ public class AStar<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment<ST,
 	/** Invoked when a segment could not be added into the
 	 * path.
 	 *
-	 * <p>In standard AStar implementation, this function replies <code>false</code>.
+	 * <p>In standard AStar implementation, this function replies {@code false}.
 	 *
 	 * @param index is the index of the invalid segment.
 	 * @param segment is the segment that cannot be added
 	 * @param path is the current state of the path.
-	 * @return <code>true</code> if the path building should continue,
-	 *     <code>false</code> if the path building should stop and
-	 *     replies a <code>null</code> path.
+	 * @return {@code true} if the path building should continue,
+	 *     {@code false} if the path building should stop and
+	 *     replies a {@code null} path.
 	 */
 	@Pure
 	protected boolean invalidPathSegmentFound(int index, ST segment, GP path) {

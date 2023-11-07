@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,15 +35,15 @@ import java.util.WeakHashMap;
  *
  * <p>This class has a special flag which permits to control the
  * way how the released references are expurged: {@link #isDeeplyExpurge()},
- * {@link #setDeeplyExpurge(boolean)}. If this flag is <code>true</code>,
+ * {@link #setDeeplyExpurge(boolean)}. If this flag is {@code true},
  * all the released references will be immediately removed from the map even
  * if they are not enqueued by the virtual machine (see {@link #expurge()}.
- * If this flag is <code>false</code>,
+ * If this flag is {@code false},
  * only the enqueued references will be removed from the map
  * (see {@link #expurgeQueuedReferences()}.
  *
  * <p>If this map does not use a "deep expurge" of the released references,
- * it could contains <code>null</code> values that corresponds to
+ * it could contains {@code null} values that corresponds to
  * values that are released by the garbage collector. If a "deep expurge"
  * is used, all the values released by the garbage collector will be
  * removed from the map.

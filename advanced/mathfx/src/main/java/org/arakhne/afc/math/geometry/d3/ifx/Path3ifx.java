@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @since 13.0
  */
 public class Path3ifx extends AbstractShape3ifx<Path3ifx>
-		implements Path3ai<Shape3ifx<?>, Path3ifx, PathElement3ifx, Point3ifx, Vector3ifx, RectangularPrism3ifx> {
+		implements Path3ai<Shape3ifx<?>, Path3ifx, PathElement3ifx, Point3ifx, Vector3ifx, AlignedBox3ifx> {
 
 	private static final long serialVersionUID = -5410743023218999966L;
 
@@ -98,7 +98,7 @@ public class Path3ifx extends AbstractShape3ifx<Path3ifx>
 	/** Buffer for the bounds of the path that corresponds
 	 * to all the points added in the path.
 	 */
-	private ObjectProperty<RectangularPrism3ifx> logicalBounds;
+	private ObjectProperty<AlignedBox3ifx> logicalBounds;
 
 	/** Construct an empty path.
 	 */
@@ -250,11 +250,11 @@ public class Path3ifx extends AbstractShape3ifx<Path3ifx>
 	}
 
 	@Override
-	public ObjectProperty<RectangularPrism3ifx> boundingBoxProperty() {
+	public ObjectProperty<AlignedBox3ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.BOUNDING_BOX);
 			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
-				final RectangularPrism3ifx bb = getGeomFactory().newBox();
+				final AlignedBox3ifx bb = getGeomFactory().newBox();
 				Path3ai.computeDrawableElementBoundingBox(
 						getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 						bb);
@@ -272,11 +272,11 @@ public class Path3ifx extends AbstractShape3ifx<Path3ifx>
 	 *
 	 * @return the bounding box of the control points.
 	 */
-	public ObjectProperty<RectangularPrism3ifx> controlPointBoundingBoxProperty() {
+	public ObjectProperty<AlignedBox3ifx> controlPointBoundingBoxProperty() {
 		if (this.logicalBounds == null) {
 			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, MathFXAttributeNames.CONTROL_POINT_BOUNDING_BOX);
 			this.logicalBounds.bind(Bindings.createObjectBinding(() -> {
-				final RectangularPrism3ifx bb = getGeomFactory().newBox();
+				final AlignedBox3ifx bb = getGeomFactory().newBox();
 				Path3ai.computeControlPointBoundingBox(
 						getPathIterator(),
 						bb);
@@ -288,12 +288,12 @@ public class Path3ifx extends AbstractShape3ifx<Path3ifx>
 	}
 
 	@Override
-	public RectangularPrism3ifx toBoundingBox() {
+	public AlignedBox3ifx toBoundingBox() {
 		return boundingBoxProperty().get().clone();
 	}
 
 	@Override
-	public void toBoundingBox(RectangularPrism3ifx box) {
+	public void toBoundingBox(AlignedBox3ifx box) {
 		assert box != null : AssertMessages.notNullParameter();
 		box.set(boundingBoxProperty().get());
 	}
@@ -456,12 +456,12 @@ public class Path3ifx extends AbstractShape3ifx<Path3ifx>
 	}
 
 	@Override
-	public RectangularPrism3ifx toBoundingBoxWithCtrlPoints() {
+	public AlignedBox3ifx toBoundingBoxWithCtrlPoints() {
 		return controlPointBoundingBoxProperty().get().clone();
 	}
 
 	@Override
-	public void toBoundingBoxWithCtrlPoints(RectangularPrism3ifx box) {
+	public void toBoundingBoxWithCtrlPoints(AlignedBox3ifx box) {
 		assert box != null : AssertMessages.notNullParameter();
 		box.set(controlPointBoundingBoxProperty().get());
 	}
@@ -823,7 +823,7 @@ public class Path3ifx extends AbstractShape3ifx<Path3ifx>
 	 * <p>If the given point do not match exactly a point in the path, nothing is removed.
 	 *
 	 * @param point the point to remove.
-	 * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
+	 * @return {@code true} if the point was removed; {@code false} otherwise.
 	 * @throws IllegalStateException if "arc-to" is found.
 	 */
 	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity"})

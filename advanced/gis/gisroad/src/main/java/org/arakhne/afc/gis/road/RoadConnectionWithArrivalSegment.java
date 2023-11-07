@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ final class RoadConnectionWithArrivalSegment implements RoadConnection, Iterable
 	 *
 	 * @param connection is the wrapped connection
 	 * @param arrivalSegment is the segment that permits to arrive to the road connection
-	 * @param startConnection is <code>true</code> is the enter point is the start.
+	 * @param startConnection is {@code true} is the enter point is the start.
 	 */
 	RoadConnectionWithArrivalSegment(StandardRoadConnection connection, RoadSegment arrivalSegment, boolean startConnection) {
 		this.connection = new SoftReference<>(connection);
@@ -111,8 +111,8 @@ final class RoadConnectionWithArrivalSegment implements RoadConnection, Iterable
 	/** Replies if the arrival segment is connected to this road connection
 	 * by its start point.
 	 *
-	 * @return <code>true</code> if the arrival segment is connected by its
-	 *     start point, <code>false</code> if it is connected by its end segment.
+	 * @return {@code true} if the arrival segment is connected by its
+	 *     start point, {@code false} if it is connected by its end segment.
 	 */
 	@Pure
 	public boolean isArrivalSegmentConnectedByStartPoint() {

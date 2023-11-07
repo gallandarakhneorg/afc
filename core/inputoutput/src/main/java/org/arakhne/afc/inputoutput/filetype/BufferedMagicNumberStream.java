@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -129,7 +129,7 @@ final class BufferedMagicNumberStream extends FilterInputStream {
 	/** Replies the bytes until the next end of the first line (inclusive).
 	 *
 	 * @param offset is the position of the byte to read.
-	 * @return the bytes; or <code>null</code> if EOF
+	 * @return the bytes; or {@code null} if EOF
 	 * @throws IOException in case of problems
 	 */
 	public byte[] readLine(int offset) throws IOException {

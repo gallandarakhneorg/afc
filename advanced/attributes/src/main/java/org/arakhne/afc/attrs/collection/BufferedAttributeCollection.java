@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 
 	/** Remove all the values from the data source.
 	 *
-	 * @return <code>true</code> on success, otherwhise <code>false</code>
+	 * @return {@code true} on success, otherwhise {@code false}
 	 * @throws AttributeException on error
 	 */
 	protected abstract boolean removeAllValues() throws AttributeException;
@@ -125,7 +125,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	/** Replies the value associated to the specified name.
 	 *
 	 * <p>This function differs to {@link #extractValueFor(String)} because it is not throwing
-	 * an exception if the value cannot be loaded. In this case is is replying <code>null</code>.
+	 * an exception if the value cannot be loaded. In this case is is replying {@code null}.
 	 *
 	 * @throws AttributeException on error.
 	 * @see #extractValueFor(String)

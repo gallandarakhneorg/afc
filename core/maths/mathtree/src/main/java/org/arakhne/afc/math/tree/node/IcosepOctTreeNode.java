@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ public abstract class IcosepOctTreeNode<D, N extends IcosepOctTreeNode<D, N>>
 
 	/** Construct a node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 */
 	public IcosepOctTreeNode(boolean useLinkedList) {
 		super(useLinkedList);
@@ -88,10 +88,10 @@ public abstract class IcosepOctTreeNode<D, N extends IcosepOctTreeNode<D, N>>
 
 	/** Construct a node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param copyDataCollection indicates if the given data collection is copied
-	 *     if <code>true</code> or the inner data collection will be the given
-	 *     collection itself if <code>false</code>.
+	 *     if {@code true} or the inner data collection will be the given
+	 *     collection itself if {@code false}.
 	 * @param data are the initial user data
 	 */
 	public IcosepOctTreeNode(boolean useLinkedList, boolean copyDataCollection, List<D> data) {
@@ -101,7 +101,7 @@ public abstract class IcosepOctTreeNode<D, N extends IcosepOctTreeNode<D, N>>
 
 	/** Construct a node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param data are the initial user data
 	 */
 	public IcosepOctTreeNode(boolean useLinkedList, D data) {
@@ -135,7 +135,7 @@ public abstract class IcosepOctTreeNode<D, N extends IcosepOctTreeNode<D, N>>
 	 * If you want to unlink the first-level
 	 * child node with
 	 * this node but leave the rest of the tree
-	 * unchanged, please call <code>setChildAt(i,null)</code>.
+	 * unchanged, please call {@code setChildAt(i,null)}.
 	 */
 	@Override
 	public void clear() {
@@ -165,7 +165,7 @@ public abstract class IcosepOctTreeNode<D, N extends IcosepOctTreeNode<D, N>>
 	/** Replies the node that is corresponding to the given zone.
 	 *
 	 * @param zone the zone.
-	 * @return the child node for the given zone, or <code>null</code>
+	 * @return the child node for the given zone, or {@code null}
 	 */
 	@Pure
 	public N getChildAt(IcosepOctTreeZone zone) {
@@ -361,10 +361,10 @@ public abstract class IcosepOctTreeNode<D, N extends IcosepOctTreeNode<D, N>>
 		/** Replies the zone corresponding to the given index.
 		 * The index is the same as the ordinal value of the
 		 * enumeration. If the given index does not correspond
-		 * to an ordinal value, <code>null</code> is replied.
+		 * to an ordinal value, {@code null} is replied.
 		 *
 		 * @param index the index.
-		 * @return the zone or <code>null</code>
+		 * @return the zone or {@code null}
 		 */
 		@Pure
 		public static IcosepOctTreeZone fromInteger(int index) {

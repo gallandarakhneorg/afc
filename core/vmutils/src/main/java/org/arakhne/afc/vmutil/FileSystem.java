@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -229,7 +229,7 @@ public final class FileSystem {
 	/** Replies if the given URL has a jar scheme.
 	 *
 	 * @param url the URL to test.
-	 * @return <code>true</code> if the given URL uses a jar scheme.
+	 * @return {@code true} if the given URL uses a jar scheme.
 	 */
 	@Pure
 	@Inline(value = "URISchemeType.JAR.isURL($1)", imported = {URISchemeType.class})
@@ -243,7 +243,7 @@ public final class FileSystem {
 	 * the output of this function is {@code file:/path1/archive.jar}.
 	 *
 	 * @param url the URL to test.
-	 * @return the URL of the jar file in the given URL, or <code>null</code>
+	 * @return the URL of the jar file in the given URL, or {@code null}
 	 *     if the given URL does not use jar scheme.
 	 */
 	@Pure
@@ -269,7 +269,7 @@ public final class FileSystem {
 	 * the output of this function is {@code /path2/file}.
 	 *
 	 * @param url the URL to test.
-	 * @return the file in the given URL, or <code>null</code>
+	 * @return the file in the given URL, or {@code null}
 	 *     if the given URL does not use jar scheme.
 	 */
 	@Pure
@@ -366,8 +366,8 @@ public final class FileSystem {
 
 	/** Replies if the current operating system uses case-sensitive filename.
 	 *
-	 * @return <code>true</code> if the filenames on the current file system are case sensitive,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the filenames on the current file system are case sensitive,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public static boolean isCaseSensitiveFilenameSystem() {
@@ -1130,8 +1130,8 @@ public final class FileSystem {
 	 *
 	 * @param filename is the filename to parse
 	 * @param extension is the extension to test.
-	 * @return <code>true</code> if the given filename has the given extension,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given filename has the given extension,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public static boolean hasExtension(File filename, String extension) {
@@ -1159,8 +1159,8 @@ public final class FileSystem {
 	 *
 	 * @param filename is the filename to parse
 	 * @param extension is the extension to test.
-	 * @return <code>true</code> if the given filename has the given extension,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given filename has the given extension,
+	 *     otherwise {@code false}
 	 * @since 7.0
 	 */
 	@Pure
@@ -1189,8 +1189,8 @@ public final class FileSystem {
 	 *
 	 * @param filename is the filename to parse
 	 * @param extension is the extension to test.
-	 * @return <code>true</code> if the given filename has the given extension,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given filename has the given extension,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public static boolean hasExtension(URL filename, String extension) {
@@ -1860,7 +1860,7 @@ public final class FileSystem {
 	 * operating systems.
 	 *
 	 * @param filename the filename.
-	 * @return the file, or <code>null</code> if the given filename is <code>null</code> or empty.
+	 * @return the file, or {@code null} if the given filename is {@code null} or empty.
 	 * @since 13.0
 	 */
 	@Pure
@@ -1957,18 +1957,18 @@ public final class FileSystem {
 	 *
 	 * <p>The rules are (the first succeeded is replied):
 	 * <ul>
-	 * <li>if {@code urlDescription} is <code>null</code> or empty, return <code>null</code>;</li>
+	 * <li>if {@code urlDescription} is {@code null} or empty, return {@code null};</li>
 	 * <li>try to build an {@link URL} with {@code urlDescription} as parameter;</li>
-	 * <li>if {@code allowResourceSearch} is <code>true</code> and
+	 * <li>if {@code allowResourceSearch} is {@code true} and
 	 * {@code urlDescription} starts with {@code "resource:"}, call
 	 * {@link Resources#getResource(String)} with the rest of the string as parameter;</li>
-	 * <li>if {@code allowResourceSearch} is <code>true</code>, call
+	 * <li>if {@code allowResourceSearch} is {@code true}, call
 	 * {@link Resources#getResource(String)} with the {@code urlDescription} as
 	 * parameter;</li>
 	 * <li>assuming that the {@code urlDescription} is
 	 * a filename, call {@link File#toURI()} to retreive an URI and then
 	 * {@link URI#toURL()};</li>
-	 * <li>If everything else failed, return <code>null</code>.</li>
+	 * <li>If everything else failed, return {@code null}.</li>
 	 * </ul>
 	 *
 	 * @param urlDescription is a string which is describing an URL.
@@ -1986,19 +1986,19 @@ public final class FileSystem {
 	 *
 	 * <p>The rules are (the first succeeded is replied):
 	 * <ul>
-	 * <li>if {@code urlDescription} is <code>null</code> or empty, return <code>null</code>;</li>
+	 * <li>if {@code urlDescription} is {@code null} or empty, return {@code null};</li>
 	 * <li>try to build an {@link URL} with {@code urlDescription} as parameter;</li>
-	 * <li>if {@code allowResourceSearch} is <code>true</code> and
+	 * <li>if {@code allowResourceSearch} is {@code true} and
 	 * {@code urlDescription} starts with {@code "resource:"}, call
 	 * {@link Resources#getResource(String)} with the rest of the string as parameter;</li>
-	 * <li>if {@code allowResourceSearch} is <code>true</code>, call
+	 * <li>if {@code allowResourceSearch} is {@code true}, call
 	 * {@link Resources#getResource(String)} with the {@code urlDescription} as
 	 * parameter;</li>
-	 * <li>if {@code repliesFileURL} is <code>true</code> and
+	 * <li>if {@code repliesFileURL} is {@code true} and
 	 * assuming that the {@code urlDescription} is
 	 * a filename, call {@link File#toURI()} to retreive an URI and then
 	 * {@link URI#toURL()};</li>
-	 * <li>If everything else failed, return <code>null</code>.</li>
+	 * <li>If everything else failed, return {@code null}.</li>
 	 * </ul>
 	 *
 	 * @param urlDescription is a string which is describing an URL.
@@ -2017,19 +2017,19 @@ public final class FileSystem {
 	 *
 	 * <p>The rules are (the first succeeded is replied):
 	 * <ul>
-	 * <li>if {@code urlDescription} is <code>null</code> or empty, return <code>null</code>;</li>
+	 * <li>if {@code urlDescription} is {@code null} or empty, return {@code null};</li>
 	 * <li>try to build an {@link URL} with {@code urlDescription} as parameter;</li>
-	 * <li>if {@code allowResourceSearch} is <code>true</code> and
+	 * <li>if {@code allowResourceSearch} is {@code true} and
 	 * {@code urlDescription} starts with {@code "resource:"}, call
 	 * {@link Resources#getResource(String)} with the rest of the string as parameter;</li>
-	 * <li>if {@code allowResourceSearch} is <code>true</code>, call
+	 * <li>if {@code allowResourceSearch} is {@code true}, call
 	 * {@link Resources#getResource(String)} with the {@code urlDescription} as
 	 * parameter;</li>
-	 * <li>if {@code repliesFileURL} is <code>true</code> and
+	 * <li>if {@code repliesFileURL} is {@code true} and
 	 * assuming that the {@code urlDescription} is
 	 * a filename, call {@link File#toURI()} to retreive an URI and then
 	 * {@link URI#toURL()};</li>
-	 * <li>If everything else failed, return <code>null</code>.</li>
+	 * <li>If everything else failed, return {@code null}.</li>
 	 * </ul>
 	 *
 	 * @param urlDescription is a string which is describing an URL.
@@ -2130,34 +2130,34 @@ public final class FileSystem {
 	 * </tr>
 	 * </thead>
 	 * <tr>
-	 * <td><code>null</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>null</code></td>
+	 * <td>{@code null}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code null}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>null</code></td>
-	 * <td><code>/myroot</code></td>
-	 * <td><code>null</code></td>
+	 * <td>{@code null}</td>
+	 * <td>{@code /myroot}</td>
+	 * <td>{@code null}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>/path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>/path/to/file</code></td>
+	 * <td>{@code /path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code /path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>path/to/file</code></td>
+	 * <td>{@code path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>/path/to/file</code></td>
-	 * <td><code>/myroot</code></td>
-	 * <td><code>/path/to/file</code></td>
+	 * <td>{@code /path/to/file}</td>
+	 * <td>{@code /myroot}</td>
+	 * <td>{@code /path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>path/to/file</code></td>
-	 * <td><code>/myroot</code></td>
-	 * <td><code>/myroot/path/to/file</code></td>
+	 * <td>{@code path/to/file}</td>
+	 * <td>{@code /myroot}</td>
+	 * <td>{@code /myroot/path/to/file}</td>
 	 * </tr>
 	 * </table>
 	 *
@@ -2190,64 +2190,64 @@ public final class FileSystem {
 	 * </tr>
 	 * </thead>
 	 * <tr>
-	 * <td><code>null</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>null</code></td>
+	 * <td>{@code null}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code null}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>null</code></td>
-	 * <td><code>/myroot</code></td>
-	 * <td><code>null</code></td>
+	 * <td>{@code null}</td>
+	 * <td>{@code /myroot}</td>
+	 * <td>{@code null}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>file:/path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>file:/path/to/file</code></td>
+	 * <td>{@code file:/path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code file:/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>file:path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>file:path/to/file</code></td>
+	 * <td>{@code file:path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code file:path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>file:/path/to/file</code></td>
-	 * <td><code>/myroot</code></td>
-	 * <td><code>file:/path/to/file</code></td>
+	 * <td>{@code file:/path/to/file}</td>
+	 * <td>{@code /myroot}</td>
+	 * <td>{@code file:/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>file:path/to/file</code></td>
-	 * <td><code>/myroot</code></td>
-	 * <td><code>file:/myroot/path/to/file</code></td>
+	 * <td>{@code file:path/to/file}</td>
+	 * <td>{@code /myroot}</td>
+	 * <td>{@code file:/myroot/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>http://host.com/path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>http://host.com/path/to/file</code></td>
+	 * <td>{@code http://host.com/path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code http://host.com/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>http://host.com/path/to/file</code></td>
-	 * <td><code>/myroot</code></td>
-	 * <td><code>http://host.com/path/to/file</code></td>
+	 * <td>{@code http://host.com/path/to/file}</td>
+	 * <td>{@code /myroot}</td>
+	 * <td>{@code http://host.com/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>ftp://host.com/path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>ftp://host.com/path/to/file</code></td>
+	 * <td>{@code ftp://host.com/path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code ftp://host.com/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>ftp://host.com/path/to/file</code></td>
-	 * <td><code>/myroot</code></td>
-	 * <td><code>ftp://host.com/path/to/file</code></td>
+	 * <td>{@code ftp://host.com/path/to/file}</td>
+	 * <td>{@code /myroot}</td>
+	 * <td>{@code ftp://host.com/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>ssh://host.com/path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>ssh://host.com/path/to/file</code></td>
+	 * <td>{@code ssh://host.com/path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code ssh://host.com/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>ssh://host.com/path/to/file</code></td>
-	 * <td><code>/myroot</code></td>
-	 * <td><code>ssh://host.com/path/to/file</code></td>
+	 * <td>{@code ssh://host.com/path/to/file}</td>
+	 * <td>{@code /myroot}</td>
+	 * <td>{@code ssh://host.com/path/to/file}</td>
 	 * </tr>
 	 * </table>
 	 *
@@ -2275,79 +2275,79 @@ public final class FileSystem {
 	 * </tr>
 	 * </thead>
 	 * <tr>
-	 * <td><code>null</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>null</code></td>
+	 * <td>{@code null}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code null}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>null</code></td>
-	 * <td><code>file:/myroot</code></td>
-	 * <td><code>null</code></td>
+	 * <td>{@code null}</td>
+	 * <td>{@code file:/myroot}</td>
+	 * <td>{@code null}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>null</code></td>
-	 * <td><code>http://host.com/myroot</code></td>
-	 * <td><code>null</code></td>
+	 * <td>{@code null}</td>
+	 * <td>{@code http://host.com/myroot}</td>
+	 * <td>{@code null}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>file:path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>file:path/to/file</code></td>
+	 * <td>{@code file:path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code file:path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>file:path/to/file</code></td>
-	 * <td><code>file:/myroot</code></td>
-	 * <td><code>file:/myroot/path/to/file</code></td>
+	 * <td>{@code file:path/to/file}</td>
+	 * <td>{@code file:/myroot}</td>
+	 * <td>{@code file:/myroot/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>file:path/to/file</code></td>
-	 * <td><code>http://host.com/myroot</code></td>
-	 * <td><code>http://host.com/myroot/path/to/file</code></td>
+	 * <td>{@code file:path/to/file}</td>
+	 * <td>{@code http://host.com/myroot}</td>
+	 * <td>{@code http://host.com/myroot/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>file:/path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>file:/path/to/file</code></td>
+	 * <td>{@code file:/path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code file:/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>file:/path/to/file</code></td>
-	 * <td><code>file:/myroot</code></td>
-	 * <td><code>file:/path/to/file</code></td>
+	 * <td>{@code file:/path/to/file}</td>
+	 * <td>{@code file:/myroot}</td>
+	 * <td>{@code file:/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>file:/path/to/file</code></td>
-	 * <td><code>http://host.com/myroot</code></td>
-	 * <td><code>file:/path/to/file</code></td>
+	 * <td>{@code file:/path/to/file}</td>
+	 * <td>{@code http://host.com/myroot}</td>
+	 * <td>{@code file:/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>http://host2.com/path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>http://host2.com/path/to/file</code></td>
+	 * <td>{@code http://host2.com/path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code http://host2.com/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>http://host2.com/path/to/file</code></td>
-	 * <td><code>file:/myroot</code></td>
-	 * <td><code>http://host2.com/path/to/file</code></td>
+	 * <td>{@code http://host2.com/path/to/file}</td>
+	 * <td>{@code file:/myroot}</td>
+	 * <td>{@code http://host2.com/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>http://host2.com/path/to/file</code></td>
-	 * <td><code>http://host.com/myroot</code></td>
-	 * <td><code>http://host2.com/path/to/file</code></td>
+	 * <td>{@code http://host2.com/path/to/file}</td>
+	 * <td>{@code http://host.com/myroot}</td>
+	 * <td>{@code http://host2.com/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>ftp://host2.com/path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>ftp://host2.com/path/to/file</code></td>
+	 * <td>{@code ftp://host2.com/path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code ftp://host2.com/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>ftp://host2.com/path/to/file</code></td>
-	 * <td><code>file:/myroot</code></td>
-	 * <td><code>ftp://host2.com/path/to/file</code></td>
+	 * <td>{@code ftp://host2.com/path/to/file}</td>
+	 * <td>{@code file:/myroot}</td>
+	 * <td>{@code ftp://host2.com/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>ftp://host2.com/path/to/file</code></td>
-	 * <td><code>http://host.com/myroot</code></td>
-	 * <td><code>ftp://host2.com/path/to/file</code></td>
+	 * <td>{@code ftp://host2.com/path/to/file}</td>
+	 * <td>{@code http://host.com/myroot}</td>
+	 * <td>{@code ftp://host2.com/path/to/file}</td>
 	 * </tr>
 	 * </table>
 	 *
@@ -2396,49 +2396,49 @@ public final class FileSystem {
 	 * </tr>
 	 * </thead>
 	 * <tr>
-	 * <td><code>null</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>null</code></td>
+	 * <td>{@code null}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code null}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>null</code></td>
-	 * <td><code>file:/myroot</code></td>
-	 * <td><code>null</code></td>
+	 * <td>{@code null}</td>
+	 * <td>{@code file:/myroot}</td>
+	 * <td>{@code null}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>null</code></td>
-	 * <td><code>http://host.com/myroot</code></td>
-	 * <td><code>null</code></td>
+	 * <td>{@code null}</td>
+	 * <td>{@code http://host.com/myroot}</td>
+	 * <td>{@code null}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>file:path/to/file</code></td>
+	 * <td>{@code path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code file:path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>path/to/file</code></td>
-	 * <td><code>file:/myroot</code></td>
-	 * <td><code>file:/myroot/path/to/file</code></td>
+	 * <td>{@code path/to/file}</td>
+	 * <td>{@code file:/myroot}</td>
+	 * <td>{@code file:/myroot/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>path/to/file</code></td>
-	 * <td><code>http://host.com/myroot</code></td>
-	 * <td><code>http://host.com/myroot/path/to/file</code></td>
+	 * <td>{@code path/to/file}</td>
+	 * <td>{@code http://host.com/myroot}</td>
+	 * <td>{@code http://host.com/myroot/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>/path/to/file</code></td>
-	 * <td><code>null</code></td>
-	 * <td><code>file:/path/to/file</code></td>
+	 * <td>{@code /path/to/file}</td>
+	 * <td>{@code null}</td>
+	 * <td>{@code file:/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>/path/to/file</code></td>
-	 * <td><code>file:/myroot</code></td>
-	 * <td><code>file:/path/to/file</code></td>
+	 * <td>{@code /path/to/file}</td>
+	 * <td>{@code file:/myroot}</td>
+	 * <td>{@code file:/path/to/file}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>/path/to/file</code></td>
-	 * <td><code>http://host.com/myroot</code></td>
-	 * <td><code>file:/path/to/file</code></td>
+	 * <td>{@code /path/to/file}</td>
+	 * <td>{@code http://host.com/myroot}</td>
+	 * <td>{@code file:/path/to/file}</td>
 	 * </tr>
 	 * </table>
 	 *
@@ -2577,13 +2577,13 @@ public final class FileSystem {
 	 * <p>The long filename system allows a maximum length of 255 UTF-16 characters,
 	 * including spaces and non-alphanumeric characters; excluding the following
 	 * characters, which have special meaning within the command interpreter or
-	 * the operating system kernel: <code>\</code> <code>/</code> <code>:</code>
-	 * <code>*</code> <code>?</code> <code>"</code> <code>&lt;</code>
-	 * <code>&gt;</code> <code>|</code>
+	 * the operating system kernel: {@code \} {@code /} {@code :}
+	 * {@code *} {@code ?} {@code "} {@code &lt;}
+	 * {@code &gt;} {@code |}
 	 *
 	 * @param filename the filename to test.
-	 * @return <code>true</code> if the given filename is a long filename,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given filename is a long filename,
+	 *     otherwise {@code false}
 	 * @see #normalizeWindowsNativeFilename(String)
 	 */
 	@Pure
@@ -2612,12 +2612,12 @@ public final class FileSystem {
 	 * <p>The long filename system allows a maximum length of 255 UTF-16 characters,
 	 * including spaces and non-alphanumeric characters; excluding the following
 	 * characters, which have special meaning within the command interpreter or
-	 * the operating system kernel: <code>\</code> <code>/</code> <code>:</code>
-	 * <code>*</code> <code>?</code> <code>"</code> <code>&lt;</code>
-	 * <code>&gt;</code> <code>|</code>
+	 * the operating system kernel: {@code \} {@code /} {@code :}
+	 * {@code *} {@code ?} {@code "} {@code &lt;}
+	 * {@code &gt;} {@code |}
 	 *
 	 * @param filename the filename to test.
-	 * @return the normalized path or <code>null</code> if not a windows native path.
+	 * @return the normalized path or {@code null} if not a windows native path.
 	 * @see #isWindowsNativeFilename(String)
 	 */
 	@Pure
@@ -2637,7 +2637,7 @@ public final class FileSystem {
 	 * resource URL if the given file is inside the classpath.
 	 *
 	 * @param file is the filename to translate.
-	 * @return the URL which is corresponding to file, or <code>null</code> if
+	 * @return the URL which is corresponding to file, or {@code null} if
 	 *     the url cannot be computed.
 	 */
 	@Pure
@@ -2690,7 +2690,7 @@ public final class FileSystem {
 	 * resource URL if the given file is inside the classpath.
 	 *
 	 * @param url is the URL to make shortest.
-	 * @return the URL which is corresponding to file, or <code>null</code> if
+	 * @return the URL which is corresponding to file, or {@code null} if
 	 *     the url cannot be computed.
 	 * @since 4.0
 	 */
@@ -3100,24 +3100,24 @@ public final class FileSystem {
 
 	/** Create an empty directory in the default temporary-file directory, using
 	 * the given prefix and suffix to generate its name.  Invoking this method
-	 * is equivalent to invoking <code>{@link #createTempDirectory(java.lang.String,
+	 * is equivalent to invoking {@code {@link #createTempDirectory(java.lang.String,
 	 * java.lang.String, java.io.File)
-	 * createTempDirectory(prefix,&nbsp;suffix,&nbsp;null)}</code>.
+	 * createTempDirectory(prefix,&nbsp;suffix,&nbsp;null)}}.
 	 *
 	 * @param  prefix is the prefix string to be used in generating the file's
 	 *                    name; must be at least three characters long
 	 *
 	 * @param  suffix is the suffix string to be used in generating the file's
-	 *                    name; may be <code>null</code>, in which case the
-	 *                    suffix <code>".tmp"</code> will be used
+	 *                    name; may be {@code null}, in which case the
+	 *                    suffix {@code ".tmp"} will be used
 	 * @return  An abstract pathname denoting a newly-created empty file
 	 * @throws  IllegalArgumentException
-	 *          If the <code>prefix</code> argument contains fewer than three
+	 *          If the {@code prefix} argument contains fewer than three
 	 *          characters
 	 * @throws  IOException  If a file could not be created
 	 * @throws  SecurityException
-	 *          If a security manager exists and its <code>{@link
-	 *          java.lang.SecurityManager#checkWrite(java.lang.String)}</code>
+	 *          If a security manager exists and its {@code {@link
+	 *          java.lang.SecurityManager#checkWrite(java.lang.String)}}
 	 *          method does not allow a file to be created
 	 * @since 6.2
 	 */
@@ -3138,30 +3138,30 @@ public final class FileSystem {
 	 *
 	 * <p>This method provides only part of a temporary-file facility.  To arrange
 	 * for a file created by this method to be deleted automatically, use the
-	 * <code>{@link #deleteOnExit}</code> method.
+	 * {@code {@link #deleteOnExit}} method.
 	 *
-	 * <p>The <code>prefix</code> argument must be at least three characters
+	 * <p>The {@code prefix} argument must be at least three characters
 	 * long.  It is recommended that the prefix be a short, meaningful string
-	 * such as <code>"hjb"</code> or <code>"mail"</code>.  The
-	 * <code>suffix</code> argument may be <code>null</code>, in which case the
-	 * suffix <code>".tmp"</code> will be used.
+	 * such as {@code "hjb"} or {@code "mail"}.  The
+	 * {@code suffix} argument may be {@code null}, in which case the
+	 * suffix {@code ".tmp"} will be used.
 	 *
 	 * <p>To create the new directory, the prefix and the suffix may first be
 	 * adjusted to fit the limitations of the underlying platform.  If the
 	 * prefix is too long then it will be truncated, but its first three
 	 * characters will always be preserved.  If the suffix is too long then it
 	 * too will be truncated, but if it begins with a period character
-	 * (<code>'.'</code>) then the period and the first three characters
+	 * ({@code '.'}) then the period and the first three characters
 	 * following it will always be preserved.  Once these adjustments have been
 	 * made the name of the new file will be generated by concatenating the
 	 * prefix, five or more internally-generated characters, and the suffix.
 	 *
-	 * <p>If the <code>directory</code> argument is <code>null</code> then the
+	 * <p>If the {@code directory} argument is {@code null} then the
 	 * system-dependent default temporary-file directory will be used.  The
 	 * default temporary-file directory is specified by the system property
-	 * <code>java.io.tmpdir</code>.  On UNIX systems the default value of this
-	 * property is typically <code>"/tmp"</code> or <code>"/var/tmp"</code>; on
-	 * Microsoft Windows systems it is typically <code>"C:\\WINNT\\TEMP"</code>.  A different
+	 * {@code java.io.tmpdir}.  On UNIX systems the default value of this
+	 * property is typically {@code "/tmp"} or {@code "/var/tmp"}; on
+	 * Microsoft Windows systems it is typically {@code "C:\\WINNT\\TEMP"}.  A different
 	 * value may be given to this system property when the Java virtual machine
 	 * is invoked, but programmatic changes to this property are not guaranteed
 	 * to have any effect upon the temporary directory used by this method.
@@ -3170,19 +3170,19 @@ public final class FileSystem {
 	 *                    name; must be at least three characters long
 	 *
 	 * @param  suffix is the suffix string to be used in generating the file's
-	 *                    name; may be <code>null</code>, in which case the
-	 *                    suffix <code>".tmp"</code> will be used
+	 *                    name; may be {@code null}, in which case the
+	 *                    suffix {@code ".tmp"} will be used
 	 * @param  directory is the directory in which the file is to be created, or
-	 *                    <code>null</code> if the default temporary-file
+	 *                    {@code null} if the default temporary-file
 	 *                    directory is to be used
 	 * @return  An abstract pathname denoting a newly-created empty file
 	 * @throws  IllegalArgumentException
-	 *          If the <code>prefix</code> argument contains fewer than three
+	 *          If the {@code prefix} argument contains fewer than three
 	 *          characters
 	 * @throws  IOException  If a file could not be created
 	 * @throws  SecurityException
-	 *          If a security manager exists and its <code>{@link
-	 *          java.lang.SecurityManager#checkWrite(java.lang.String)}</code>
+	 *          If a security manager exists and its {@code {@link
+	 *          java.lang.SecurityManager#checkWrite(java.lang.String)}}
 	 *          method does not allow a file to be created
 	 * @throws NullPointerException if the {@code prefix} argument is {@code null}.
 	 * @since 6.2

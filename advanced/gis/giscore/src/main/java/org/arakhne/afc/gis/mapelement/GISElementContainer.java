@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,31 +64,31 @@ public interface GISElementContainer<T extends MapElement> extends GISContainer<
 	/** Add map elements inside this container.
 	 *
 	 * @param elements the new elements.
-	 * @return <code>true</code> if at least one element was added,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if at least one element was added,
+	 *     otherwise {@code false}
 	 */
 	boolean addMapElements(Collection<? extends T> elements);
 
 	/** Add a map element inside this container.
 	 *
 	 * @param element the new element.
-	 * @return <code>true</code> if the element was added successfully,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the element was added successfully,
+	 *     otherwise {@code false}
 	 */
 	boolean addMapElement(T element);
 
 	/** Remove a map element from this container.
 	 *
 	 * @param element the element to remove.
-	 * @return <code>true</code> if the element was removed successfully,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the element was removed successfully,
+	 *     otherwise {@code false}
 	 */
 	boolean removeMapElement(MapElement element);
 
 	/** Remove all the map elements from this container.
 	 *
-	 * @return <code>true</code> if container has changed,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if container has changed,
+	 *     otherwise {@code false}
 	 * @since 4.0
 	 */
 	boolean removeAllMapElements();
@@ -106,7 +106,7 @@ public interface GISElementContainer<T extends MapElement> extends GISContainer<
 	 * of a ESRI Shape file.
 	 *
 	 * @return the URL of the source of the geometry of
-	 *     the elements, or <code>null</code> if no known source.
+	 *     the elements, or {@code null} if no known source.
 	 */
 	URL getElementGeometrySourceURL();
 
@@ -114,8 +114,8 @@ public interface GISElementContainer<T extends MapElement> extends GISContainer<
 	 * the file for which the URL is replied by
 	 * {@link #getElementGeometrySourceURL()}.
 	 *
-	 * @return the map projection of the data, or <code>null</code>
-	 *     if {@link #getElementGeometrySourceURL()} replies <code>null</code>.
+	 * @return the map projection of the data, or {@code null}
+	 *     if {@link #getElementGeometrySourceURL()} replies {@code null}.
 	 * @since 4.1
 	 */
 	MapMetricProjection getElementGeometrySourceProjection();
@@ -127,7 +127,7 @@ public interface GISElementContainer<T extends MapElement> extends GISContainer<
 	 * of a dBase file.
 	 *
 	 * @return the URL of the source of the attributes of
-	 *     the elements, or <code>null</code> if no known source.
+	 *     the elements, or {@code null} if no known source.
 	 */
 	URL getElementAttributeSourceURL();
 
@@ -138,7 +138,7 @@ public interface GISElementContainer<T extends MapElement> extends GISContainer<
 	 * of a dBase file.
 	 *
 	 * @param url is the URL of the source of the attributes of
-	 *     the elements, or <code>null</code> if no known source.
+	 *     the elements, or {@code null} if no known source.
 	 */
 	void setElementAttributeSourceURL(URL url);
 
@@ -150,7 +150,7 @@ public interface GISElementContainer<T extends MapElement> extends GISContainer<
 	 * of a ESRI Shape file.
 	 *
 	 * @param url is the URL of the source of the geometry of
-	 *     the elements, or <code>null</code> if no known source.
+	 *     the elements, or {@code null} if no known source.
 	 * @param mapProjection is the map projection used to describe the
 	 *     data inside the file with the given URL.
 	 * @since 4.1

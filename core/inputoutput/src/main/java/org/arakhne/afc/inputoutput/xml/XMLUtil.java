@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,10 +94,10 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
 @SuppressWarnings({"checkstyle:methodcount", "checkstyle:classfanoutcomplexity", "checkstyle:classdataabstractioncoupling"})
 public final class XMLUtil {
 
-	/** <code>&lt;resource /&gt;</code>. */
+	/** {@code &lt;resource /&gt;}. */
 	public static final String NODE_RESOURCE = "resource"; //$NON-NLS-1$
 
-	/** <code>&lt;resources /&gt;</code>. */
+	/** {@code &lt;resources /&gt;}. */
 	public static final String NODE_RESOURCES = "resources"; //$NON-NLS-1$
 
 	/** Format of the date in XML files.
@@ -113,25 +113,25 @@ public final class XMLUtil {
 	 */
 	public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"; //$NON-NLS-1$
 
-	/** <code>id=""</code>.
+	/** {@code id=""}.
 	 */
 	public static final String ATTR_ID = "id"; //$NON-NLS-1$
 
-	/** <code>name=""</code>.
+	/** {@code name=""}.
 	 */
 	public static final String ATTR_NAME = "name"; //$NON-NLS-1$
 
-	/** <code>color=""</code>.
+	/** {@code color=""}.
 	 */
 	public static final String ATTR_COLOR = "color"; //$NON-NLS-1$
 
-	/** <code>url=""</code>. */
+	/** {@code url=""}. */
 	public static final String ATTR_URL = "url"; //$NON-NLS-1$
 
-	/** <code>mime=""</code>. */
+	/** {@code mime=""}. */
 	public static final String ATTR_MIMETYPE = "mime"; //$NON-NLS-1$
 
-	/** <code>file=""</code>. */
+	/** {@code file=""}. */
 	public static final String ATTR_FILE = "file"; //$NON-NLS-1$
 
 	private static final String POSITIVE_INTEGER_NUMBER_PATTERN = "[0-9]+"; //$NON-NLS-1$
@@ -276,7 +276,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the boolean value of the specified attribute or <code>false</code> if
+	 * @return the boolean value of the specified attribute or {@code false} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -293,7 +293,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the boolean value of the specified attribute or <code>0</code>.
+	 * @return the boolean value of the specified attribute or {@code 0}.
 	 */
 	@Pure
 	public static boolean getAttributeBoolean(Node document, String... path) {
@@ -310,7 +310,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the boolean value of the specified attribute or <code>false</code> if
+	 * @return the boolean value of the specified attribute or {@code false} if
 	 *      it was node found in the document
 	 */
 	@Pure
@@ -336,7 +336,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the boolean value of the specified attribute or <code>false</code> if
+	 * @return the boolean value of the specified attribute or {@code false} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -350,7 +350,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the java class or <code>null</code> if none.
+	 * @return the java class or {@code null} if none.
 	 */
 	@Pure
 	public static Class<?> getAttributeClass(Node document, boolean caseSensitive, String... path) {
@@ -362,7 +362,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the java class or <code>null</code> if none.
+	 * @return the java class or {@code null} if none.
 	 */
 	@Pure
 	public static Class<?> getAttributeClass(Node document, String... path) {
@@ -376,7 +376,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param defaultValue is the default value replied if no attribute was found.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the java class or <code>defaultValue</code> if none.
+	 * @return the java class or {@code defaultValue} if none.
 	 */
 	@Pure
 	public static Class<?> getAttributeClassWithDefault(Node document, boolean caseSensitive,
@@ -399,7 +399,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param defaultValue is the default value replied if no attribute was found.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the java class or <code>defaultValue</code> if none.
+	 * @return the java class or {@code defaultValue} if none.
 	 */
 	@Pure
 	public static Class<?> getAttributeClassWithDefault(Node document, Class<?> defaultValue, String... path) {
@@ -448,7 +448,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the color of the specified attribute or <code>null</code> if
+	 * @return the color of the specified attribute or {@code null} if
 	 *      it was node found in the document
 	 */
 	@Pure
@@ -491,7 +491,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the date of the specified attribute or <code>null</code> if
+	 * @return the date of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -508,7 +508,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the date of the specified attribute or <code>null</code> if
+	 * @return the date of the specified attribute or {@code null} if
 	 *      it was node found in the document
 	 */
 	@Pure
@@ -526,7 +526,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the date of the specified attribute or <code>null</code> if
+	 * @return the date of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -552,7 +552,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param path is the list of and ended by the attribute's name.
 	 * @param defaultValue is the default value to reply.
-	 * @return the date of the specified attribute or <code>null</code> if
+	 * @return the date of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -569,7 +569,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the double value of the specified attribute or <code>null</code> if
+	 * @return the double value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -586,7 +586,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the double value of the specified attribute or <code>0</code>.
+	 * @return the double value of the specified attribute or {@code 0}.
 	 */
 	@Pure
 	public static double getAttributeDouble(Node document, String... path) {
@@ -603,7 +603,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the double value of the specified attribute or <code>null</code> if
+	 * @return the double value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -630,7 +630,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the double value of the specified attribute or <code>0</code>.
+	 * @return the double value of the specified attribute or {@code 0}.
 	 */
 	@Pure
 	public static Double getAttributeDoubleWithDefault(Node document, Double defaultValue, String... path) {
@@ -645,7 +645,7 @@ public final class XMLUtil {
 	 * @param type is the type of the enumeration.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the value of the enumeration or <code>null</code> if none.
+	 * @return the value of the enumeration or {@code null} if none.
 	 */
 	@Pure
 	public static <T extends Enum<T>> T getAttributeEnum(Node document, Class<T> type, boolean caseSensitive, String... path) {
@@ -659,7 +659,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param type is the type of the enumeration.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the value of the enumeration or <code>null</code> if none.
+	 * @return the value of the enumeration or {@code null} if none.
 	 */
 	@Pure
 	public static <T extends Enum<T>> T getAttributeEnum(Node document, Class<T> type, String... path) {
@@ -675,7 +675,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param defaultValue is the default value replied if no attribute was found.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the value of the enumeration or <code>null</code> if none.
+	 * @return the value of the enumeration or {@code null} if none.
 	 */
 	@Pure
 	public static <T extends Enum<T>> T getAttributeEnumWithDefault(Node document, Class<T> type,
@@ -711,7 +711,7 @@ public final class XMLUtil {
 	 * @param type is the type of the enumeration.
 	 * @param defaultValue is the default value replied if no attribute was found.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the value of the enumeration or <code>null</code> if none.
+	 * @return the value of the enumeration or {@code null} if none.
 	 */
 	@Pure
 	public static <T extends Enum<T>> T getAttributeEnumWithDefault(Node document, Class<T> type,
@@ -728,7 +728,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the float value of the specified attribute or <code>null</code> if
+	 * @return the float value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -745,7 +745,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the float value of the specified attribute or <code>0</code>.
+	 * @return the float value of the specified attribute or {@code 0}.
 	 */
 	@Pure
 	public static float getAttributeFloat(Node document, String... path) {
@@ -762,7 +762,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the float value of the specified attribute or <code>null</code> if
+	 * @return the float value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -788,7 +788,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the float value of the specified attribute or <code>0</code>.
+	 * @return the float value of the specified attribute or {@code 0}.
 	 */
 	@Pure
 	public static Float getAttributeFloatWithDefault(Node document, Float defaultValue, String... path) {
@@ -804,7 +804,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the integer value of the specified attribute or <code>null</code> if
+	 * @return the integer value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -821,7 +821,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the integer value of the specified attribute or <code>0</code>.
+	 * @return the integer value of the specified attribute or {@code 0}.
 	 */
 	@Pure
 	public static int getAttributeInt(Node document, String... path) {
@@ -838,7 +838,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the integer value of the specified attribute or <code>null</code> if
+	 * @return the integer value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -864,7 +864,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the integer value of the specified attribute or <code>0</code>.
+	 * @return the integer value of the specified attribute or {@code 0}.
 	 */
 	@Pure
 	public static Integer getAttributeIntWithDefault(Node document, Integer defaultValue, String... path) {
@@ -879,7 +879,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the long value of the specified attribute or <code>null</code> if
+	 * @return the long value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -896,7 +896,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the long value of the specified attribute or <code>0</code>.
+	 * @return the long value of the specified attribute or {@code 0}.
 	 */
 	@Pure
 	public static long getAttributeLong(Node document, String... path) {
@@ -913,7 +913,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the long value of the specified attribute or <code>null</code> if
+	 * @return the long value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -939,7 +939,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the long value of the specified attribute or <code>0</code>.
+	 * @return the long value of the specified attribute or {@code 0}.
 	 */
 	@Pure
 	public static Long getAttributeLongWithDefault(Node document, Long defaultValue, String... path) {
@@ -955,7 +955,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the URL in the specified attribute or <code>null</code> if
+	 * @return the URL in the specified attribute or {@code null} if
 	 *      it was node found in the document
 	 */
 	@Pure
@@ -972,7 +972,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the URL in the specified attribute or <code>null</code> if
+	 * @return the URL in the specified attribute or {@code null} if
 	 *      it was node found in the document
 	 */
 	@Pure
@@ -990,7 +990,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the URL in the specified attribute or <code>null</code> if
+	 * @return the URL in the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -1015,7 +1015,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the URL in the specified attribute or <code>null</code> if
+	 * @return the URL in the specified attribute or {@code null} if
 	 *      it was node found in the document
 	 */
 	@Pure
@@ -1032,7 +1032,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the UUID in the specified attribute or <code>null</code> if
+	 * @return the UUID in the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -1049,7 +1049,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the UUID in the specified attribute or <code>null</code> if
+	 * @return the UUID in the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -1066,7 +1066,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the UUIDs in the specified attribute, never <code>null</code>
+	 * @return the UUIDs in the specified attribute, never {@code null}
 	 */
 	@Pure
 	public static List<UUID> getAttributeUUIDs(Node document, boolean caseSensitive, String... path) {
@@ -1093,7 +1093,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the UUIDs in the specified attribute, never <code>null</code>
+	 * @return the UUIDs in the specified attribute, never {@code null}
 	 */
 	@Pure
 	public static List<UUID> getAttributeUUIDs(Node document, String... path) {
@@ -1110,7 +1110,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the UUID in the specified attribute or <code>null</code> if
+	 * @return the UUID in the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -1139,7 +1139,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param defaultValue is the default value to reply.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the UUID in the specified attribute or <code>null</code> if
+	 * @return the UUID in the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -1157,7 +1157,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param idxStart is the index of the first element of the path to use.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the value of the specified attribute or <code>null</code> if
+	 * @return the value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -1228,7 +1228,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param casesSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the value of the specified attribute or <code>null</code> if
+	 * @return the value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -1245,7 +1245,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the value of the specified attribute or <code>null</code> if
+	 * @return the value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -1263,7 +1263,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param defaultValue is the default value to reply if no attribute value was found.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the value of the specified attribute or <code>null</code> if
+	 * @return the value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -1285,7 +1285,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param defaultValue is the default value to reply if no attribute value was found.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return the value of the specified attribute or <code>null</code> if
+	 * @return the value of the specified attribute or {@code null} if
 	 *     it was node found in the document
 	 */
 	@Pure
@@ -1299,7 +1299,7 @@ public final class XMLUtil {
 	 * @param <T> is the type of the desired child
 	 * @param parent is the element from which the child must be extracted.
 	 * @param type is the type of the desired child
-	 * @return the child node or <code>null</code> if none.
+	 * @return the child node or {@code null} if none.
 	 */
 	@Pure
 	public static <T extends Node> T getChild(Node parent, Class<T> type) {
@@ -1319,7 +1319,7 @@ public final class XMLUtil {
 	/** Replies the XML Document that is containing the given node.
 	 *
 	 * @param node the node.
-	 * @return the Document in which the given node is, or <code>null</code>
+	 * @return the Document in which the given node is, or {@code null}
 	 *     if not found.
 	 */
 	@Pure
@@ -1343,7 +1343,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param idxStart is the index of the first element of the path to use.
 	 * @param path is the list of names.
-	 * @return the node or <code>null</code> if
+	 * @return the node or {@code null} if
 	 *     it was not found in the document.
 	 */
 	@Pure
@@ -1380,7 +1380,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of names.
-	 * @return the node or <code>null</code> if it was not found in the document.
+	 * @return the node or {@code null} if it was not found in the document.
 	 */
 	@Pure
 	public static Element getElementFromPath(Node document, boolean caseSensitive, String... path) {
@@ -1396,7 +1396,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of names.
-	 * @return the node or <code>null</code> if it was not found in the document.
+	 * @return the node or {@code null} if it was not found in the document.
 	 */
 	@Pure
 	public static Element getElementFromPath(Node document, String... path) {
@@ -1413,7 +1413,7 @@ public final class XMLUtil {
 	 * @param constraint is the constraint that the replied element must respect.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of names.
-	 * @return the node or <code>null</code> if it was not found in the document.
+	 * @return the node or {@code null} if it was not found in the document.
 	 */
 	@Pure
 	public static Element getElementMatching(Node document, XMLConstraint constraint, boolean caseSensitive, String... path) {
@@ -1435,7 +1435,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param constraint is the constraint that the replied element must respect.
 	 * @param path is the list of names.
-	 * @return the node or <code>null</code> if it was not found in the document.
+	 * @return the node or {@code null} if it was not found in the document.
 	 */
 	@Pure
 	public static Element getElementMatching(Node document, XMLConstraint constraint, String... path) {
@@ -1488,7 +1488,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of names.
-	 * @return the node or <code>null</code> if it was not found in the document.
+	 * @return the node or {@code null} if it was not found in the document.
 	 */
 	@Pure
 	public static List<Element> getElementsFromPath(Node document, boolean caseSensitive, String... path) {
@@ -1506,7 +1506,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of names.
-	 * @return the node or <code>null</code> if it was not found in the document.
+	 * @return the node or {@code null} if it was not found in the document.
 	 */
 	@Pure
 	public static List<Element> getElementsFromPath(Node document, String... path) {
@@ -1525,7 +1525,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param idxStart is the index of the first element of the path to use.
 	 * @param path is the list of names.
-	 * @return the node or <code>null</code> if
+	 * @return the node or {@code null} if
 	 *     it was not found in the document.
 	 */
 	@Pure
@@ -1561,7 +1561,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of names.
-	 * @return the node or <code>null</code> if
+	 * @return the node or {@code null} if
 	 *      it was not found in the document.
 	 */
 	@Pure
@@ -1578,7 +1578,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of names.
-	 * @return the node or <code>null</code> if
+	 * @return the node or {@code null} if
 	 *     it was not found in the document.
 	 */
 	@Pure
@@ -1629,7 +1629,7 @@ public final class XMLUtil {
 	 * @param document is the XML document to explore.
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param path is the list of names.
-	 * @return the node or <code>null</code> if
+	 * @return the node or {@code null} if
 	 *      it was not found in the document.
 	 */
 	@Pure
@@ -1648,7 +1648,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of names.
-	 * @return the node or <code>null</code> if
+	 * @return the node or {@code null} if
 	 *     it was not found in the document.
 	 */
 	@Pure
@@ -1667,7 +1667,7 @@ public final class XMLUtil {
 	 *
 	 * @param document is the XML document to explore.
 	 * @param path is the list of names. This path may be empty.
-	 * @return the text or <code>null</code> if the node was not found in the document or the text
+	 * @return the text or {@code null} if the node was not found in the document or the text
 	 *     inside was empty.
 	 */
 	@Pure
@@ -1709,12 +1709,12 @@ public final class XMLUtil {
 	 * Parses an XML/HTML color.
 	 *
 	 * <p>The supported formats of color are:<ul>
-	 * <li><code>#<i>hex</i></code></li>
-	 * <li><code><i>name</i></code></li>
-	 * <li><code>rgb(<i>r</i>, <i>g</i>, <i>b</i>)</code></li>
-	 * <li><code>rgba(<i>r</i>, <i>g</i>, <i>b</i>, <i>a</i>)</code></li>
-	 * <li><code>hsl(<i>h</i>[%], <i>s</i>[%], <i>l</i>[%])</code></li>
-	 * <li><code>hsla(<i>h</i>[%], <i>s</i>[%], <i>l</i>[%], <i>a</i>)</code></li>
+	 * <li>{@code #<i>hex</i>}</li>
+	 * <li>{@code <i>name</i>}</li>
+	 * <li>{@code rgb(<i>r</i>, <i>g</i>, <i>b</i>)}</li>
+	 * <li>{@code rgba(<i>r</i>, <i>g</i>, <i>b</i>, <i>a</i>)}</li>
+	 * <li>{@code hsl(<i>h</i>[%], <i>s</i>[%], <i>l</i>[%])}</li>
+	 * <li>{@code hsla(<i>h</i>[%], <i>s</i>[%], <i>l</i>[%], <i>a</i>)}</li>
 	 * </ul>
 	 *
 	 * <p>The supported color names are listed in {@link ColorNames}.
@@ -1830,7 +1830,7 @@ public final class XMLUtil {
 	/** Parse a string representation of an XML document.
 	 *
 	 * @param xmlString is the string representation of the XML document.
-	 * @return the document or <code>null</code> in case of error.
+	 * @return the document or {@code null} in case of error.
 	 */
 	@Pure
 	public static Document parseXML(String xmlString) {
@@ -2164,7 +2164,7 @@ public final class XMLUtil {
 	 * @param caseSensitive indicates of the {@code path}'s components are case sensitive.
 	 * @param value is the value to put in the document.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return <code>true</code> if written, <code>false</code> if not written.
+	 * @return {@code true} if written, {@code false} if not written.
 	 */
 	public static <T extends Enum<T>> boolean setAttributeEnum(Node document, Class<T> type,
 			boolean caseSensitive, T value, String... path) {
@@ -2196,7 +2196,7 @@ public final class XMLUtil {
 	 * @param type is the type of the enumeration.
 	 * @param value is the value to put in the document.
 	 * @param path is the list of and ended by the attribute's name.
-	 * @return <code>true</code> if written, <code>false</code> if not written.
+	 * @return {@code true} if written, {@code false} if not written.
 	 */
 	public static <T extends Enum<T>> boolean setAttributeEnum(Node document, Class<T> type, T value, String... path) {
 		assert document != null : AssertMessages.notNullParameter(0);
@@ -2271,7 +2271,7 @@ public final class XMLUtil {
 	/** Translate the XML tree into a string representation.
 	 *
 	 * @param node is the object that contains the node tree
-	 * @return the string representation or <code>null</code> in case of error.
+	 * @return the string representation or {@code null} in case of error.
 	 */
 	@Pure
 	public static String toString(Node node) {
@@ -2599,7 +2599,7 @@ public final class XMLUtil {
 	 * @param resources is the collection of resources to read.
 	 * @param path is the XML path, relative to the node, of the attribute. The last
 	 *     element of the array is the name of the attribute.
-	 * @return the resource URL, or <code>null</code> if it cannot be retrieved.
+	 * @return the resource URL, or {@code null} if it cannot be retrieved.
 	 */
 	@Pure
 	public static URL readResourceURL(Element node, XMLResources resources, String... path) {

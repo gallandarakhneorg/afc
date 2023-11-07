@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -228,7 +228,7 @@ class StandardRoadConnection implements RoadConnection {
 	/** Compute the angle of the given road segment according
 	 * to the vector (1,0).
 	 *
-	 * @return the angle between the vector (<code>RoadConnection.this</code>,<var>segment</var>)
+	 * @return the angle between the vector ({@code RoadConnection.this},<var>segment</var>)
 	 *     and (1,0).
 	 */
 	private double computeAngle(RoadPolyline segment, boolean fromStartPoint) {
@@ -302,8 +302,8 @@ class StandardRoadConnection implements RoadConnection {
 	 *
 	 * @param segment is the segment to add.
 	 * @param attachToStartPoint indicates if the segment must be attached by
-	 *     its start point (if value is <code>true</code>) or by its end point
-	 *     (if value is <code>false</code>).
+	 *     its start point (if value is {@code true}) or by its end point
+	 *     (if value is {@code false}).
 	 */
 	void addConnectedSegment(RoadPolyline segment, boolean attachToStartPoint) {
 		if (segment == null) {
@@ -406,7 +406,7 @@ class StandardRoadConnection implements RoadConnection {
 	 *
 	 * @param segment is the segment to remove.
 	 * @param attachToStartPoint indicates if the segment is attached by
-	 *     its start point (if value is <code>true</code>) or by its end point
+	 *     its start point (if value is {@code true}) or by its end point
 	 * @return the index of the removed segment, or {@code -1} if none was found
 	 */
 	int removeConnectedSegment(RoadSegment segment, boolean attachToStartPoint) {

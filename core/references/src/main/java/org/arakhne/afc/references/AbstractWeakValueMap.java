@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * A <tt>Map</tt> implementation with {@link WeakReference weak values}. An entry in a
  * <tt>AbstractWeakValueMap</tt> will automatically be removed when its value is no
- * longer in ordinary use or <code>null</code>.
+ * longer in ordinary use or {@code null}.
  *
  * <p>This abstract implementation does not decide if the map is based on a tree or on a hashtable.
  *

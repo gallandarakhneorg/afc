@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -374,7 +374,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 * the given text.
 	 *
 	 * @param text the text.
-	 * @return the attribute value, never <code>null</code>.
+	 * @return the attribute value, never {@code null}.
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
@@ -457,7 +457,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 * @param arg1 second value.
 	 * @return replies a negative value if {@code arg0} is lesser than
 	 * {@code arg1}, a positive value if {@code arg0} is greater than
-	 * {@code arg1}, or <code>0</code> if they are equal.
+	 * {@code arg1}, or {@code 0} if they are equal.
 	 * @see AttributeValueComparator
 	 */
 	@Pure
@@ -496,7 +496,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 * @param arg1 second value.
 	 * @return replies a negative value if {@code arg0} is lesser than
 	 * {@code arg1}, a positive value if {@code arg0} is greater than
-	 * {@code arg1}, or <code>0</code> if they are equal.
+	 * {@code arg1}, or {@code 0} if they are equal.
 	 */
 	@Pure
 	@SuppressWarnings({"unchecked", "rawtypes", "checkstyle:returncount", "checkstyle:npathcomplexity"})
@@ -597,10 +597,10 @@ public class AttributeValueImpl implements AttributeValue {
 	}
 
 	/** Replies if this value was assigned and
-	 * supposes that the <code>null</code> value is
+	 * supposes that the {@code null} value is
 	 * allowed.
 	 *
-	 * @return <code>true</code> if the value is not assigned or equals to <code>null</code>.
+	 * @return {@code true} if the value is not assigned or equals to {@code null}.
 	 */
 	private boolean isNotAssignedOrNull() {
 		return !this.assigned || this.value == null;
@@ -614,7 +614,7 @@ public class AttributeValueImpl implements AttributeValue {
 		}
 	}
 
-	/** Assert that the attribute value was assigned and not <code>null</code>.
+	/** Assert that the attribute value was assigned and not {@code null}.
 	 *
 	 * @throws AttributeNotInitializedException attribute not initialized.
 	 */

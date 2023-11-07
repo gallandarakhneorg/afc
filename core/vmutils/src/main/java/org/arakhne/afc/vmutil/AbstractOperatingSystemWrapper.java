@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ abstract class AbstractOperatingSystemWrapper implements OperatingSystemWrapper 
 	 *
 	 * @param selector is the string to search for.
 	 * @param text is the text to search in.
-	 * @return the found line or <code>null</code>.
+	 * @return the found line or {@code null}.
 	 */
 	protected static String grep(String selector, String text) {
 		if (text == null || text.isEmpty()) {

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -198,9 +198,9 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	 *
 	 * @param firstSegment the first segment to compare to the second segment.
 	 * @param secondSegment the second segment to compare to the first segment.
-	 * @return <code>-1</code> if {@code firstSegment} is lower than {@code secondSegment},
-	 *     <code>1</code> if {@code firstSegment} is greater than {@code secondSegment},
-	 *     or <code>0</code> if {@code firstSegment} is equal to {@code secondSegment}.
+	 * @return {@code -1} if {@code firstSegment} is lower than {@code secondSegment},
+	 *     {@code 1} if {@code firstSegment} is greater than {@code secondSegment},
+	 *     or {@code 0} if {@code firstSegment} is equal to {@code secondSegment}.
 	 */
 	@Pure
 	@SuppressWarnings({ "unchecked", "rawtypes", "static-method" })
@@ -220,7 +220,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	/** Replies if this segment is a cul-de-sac ie if the next
 	 * connection point is only connected to this segment.
 	 *
-	 * @return <code>true</code> if this segment is a cul-de-sac, otherwise <code>false</code>
+	 * @return {@code true} if this segment is a cul-de-sac, otherwise {@code false}
 	 */
 	@Pure
 	public final boolean isCulDeSac() {
@@ -233,7 +233,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	 *
 	 * <p>Of course a segment with a cul-de-sac end is always assumed as a terminal segment.
 	 *
-	 * @return <code>true</code> if this segment is terminal, otherwise <code>false</code>
+	 * @return {@code true} if this segment is terminal, otherwise {@code false}
 	 */
 	@Pure
 	public final boolean isTerminalSegment() {

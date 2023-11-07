@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -443,7 +443,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 * @param segmentIndex is the index of the segment from which the
 	 *     element must be removed.
 	 * @param element is the element to remove.
-	 * @return <code>true</code> if the element was removed, otherwhise <code>false</code>
+	 * @return {@code true} if the element was removed, otherwhise {@code false}
 	 */
 	protected boolean removeElementInSegment(int segmentIndex, int element) {
 		if ((element == this.values[segmentIndex]) && (element == this.values[segmentIndex + 1])) {
@@ -491,7 +491,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 * {@code segmentIndex}.
 	 *
 	 * @param segmentIndex is the index of the segment to remove.
-	 * @return <code>true</code> if the element was removed, otherwhise <code>false</code>
+	 * @return {@code true} if the element was removed, otherwhise {@code false}
 	 */
 	protected boolean removeSegment(int segmentIndex) {
 		if ((this.values == null) || (segmentIndex < 0)
@@ -620,7 +620,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 * Replies the segment index for the specified value.
 	 *
 	 * @param value is the value to search for.
-	 * @return the index or <code>-1</code>.  It is a multiple of 2.
+	 * @return the index or {@code -1}.  It is a multiple of 2.
 	 */
 	protected int getSegmentIndexFor(int value) {
 		if (this.values != null) {
@@ -677,7 +677,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 * @param offset is the number of integer values to skip from the
 	 *     begining of the value set.
 	 * @param tofill is the 2-cell array to fill
-	 * @return <code>true</code> on success, <code>false</code> otherwise.
+	 * @return {@code true} on success, {@code false} otherwise.
 	 */
 	protected boolean get(int offset, int[] tofill) {
 		if (this.values != null) {

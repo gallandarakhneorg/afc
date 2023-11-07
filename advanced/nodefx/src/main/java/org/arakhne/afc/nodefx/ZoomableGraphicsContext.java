@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -364,7 +364,7 @@ public class ZoomableGraphicsContext {
 	/** Transform a document size (or distance) to its JavaFX equivalent.
 	 *
 	 * <p>The JavaFX size {@code fx_x} is equal to:
-	 * <pre><code>fx_size = size * scale</code></pre>
+	 * <pre>{@code fx_size = size * scale}</pre>
 	 *
 	 * @param size the document size.
 	 * @return the JavaFX size.
@@ -377,7 +377,7 @@ public class ZoomableGraphicsContext {
 	/** Transform a JavaFX size (or distance) to its document equivalent.
 	 *
 	 * <p>The document size {@code doc_size} is equal to:
-	 * <pre><code>doc_size = size / scale</code></pre>
+	 * <pre>{@code doc_size = size / scale}</pre>
 	 *
 	 * @param size the JavaFX size.
 	 * @return the document size.

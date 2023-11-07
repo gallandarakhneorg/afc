@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -256,14 +256,14 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	@Pure
 	@Override
 	public void motionNewtonLaw2D5(
-			Vector3D<?, ?> velocity,
+			Vector3D<?, ?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D<?, ?> acceleration,
+			Vector3D<?, ?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector3D<?, ?> result) {
+			Vector3D<?, ?, ?> result) {
 		motionNewtonLaw3D(
 				velocity,
 				minSpeed, maxSpeed,
@@ -276,14 +276,14 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	@Pure
 	@Override
 	public void motionNewtonLaw3D(
-			Vector3D<?, ?> velocity,
+			Vector3D<?, ?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D<?, ?> acceleration,
+			Vector3D<?, ?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector3D<?, ?> result) {
+			Vector3D<?, ?, ?> result) {
 		assert velocity != null;
 		assert acceleration != null;
 		assert minSpeed >= 0.;
@@ -414,11 +414,11 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	@Pure
 	@Override
 	public void motionNewtonEuler1Law2D5(
-			Vector3D<?, ?> velocity,
+			Vector3D<?, ?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector3D<?, ?> result) {
+			Vector3D<?, ?, ?> result) {
 		motionNewtonEuler1Law3D(
 				velocity,
 				minSpeed, maxSpeed,
@@ -429,11 +429,11 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	@Pure
 	@Override
 	public void motionNewtonEuler1Law3D(
-			Vector3D<?, ?> velocity,
+			Vector3D<?, ?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector3D<?, ?> result) {
+			Vector3D<?, ?, ?> result) {
 		assert minSpeed >= 0.;
 		final double l = velocity.getLength();
 		if (l != 0.) {

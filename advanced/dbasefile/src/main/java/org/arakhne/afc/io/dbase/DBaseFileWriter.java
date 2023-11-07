@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -208,14 +208,14 @@ public class DBaseFileWriter implements AutoCloseable {
 
 	/** Write a number inside the current <var>stream</var>.
 	 *
-	 * <p>A number is composed of the characters <code>[-.0123456789]</code>.
+	 * <p>A number is composed of the characters {@code [-.0123456789]}.
 	 * The number is written to have its decimal point matching the given
 	 * position. It was filled by space characters (0x20) at the left, and
-	 * by <code>0</code> at the right.
+	 * by {@code 0} at the right.
 	 *
 	 * @param number is the number to output
 	 * @param numberLength is the length, in digits, of the number to output.
-	 * @param decimalLength is the position of the decimal point, <code>0</code>
+	 * @param decimalLength is the position of the decimal point, {@code 0}
 	 *     means right-most position, ie. no decimal part.
 	 * @throws IOException in case of error.
 	 */
@@ -252,14 +252,14 @@ public class DBaseFileWriter implements AutoCloseable {
 
 	/** Write a number inside the current <var>stream</var>.
 	 *
-	 * <p>A number is composed of the characters <code>[-.0123456789]</code>.
+	 * <p>A number is composed of the characters {@code [-.0123456789]}.
 	 * The number is written to have its decimal point matching the given
 	 * position. It was filled by space characters (0x20) at the left, and
-	 * by <code>0</code> at the right.
+	 * by {@code 0} at the right.
 	 *
 	 * @param number is the number to output
 	 * @param numberLength is the length, in digits, of the number to output.
-	 * @param decimalLength is the position of the decimal point, <code>0</code>
+	 * @param decimalLength is the position of the decimal point, {@code 0}
 	 *     means right-most position, ie. no decimal part.
 	 * @throws IOException in case of error.
 	 */
@@ -360,8 +360,8 @@ public class DBaseFileWriter implements AutoCloseable {
 	/** Replies if the given dBASE type is supported by this writer.
 	 *
 	 * @param type the type of the field.
-	 * @return <code>true</code> if the given type is supported by the writer,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given type is supported by the writer,
+	 *     otherwise {@code false}.
 	 * @since 4.0
 	 */
 	@Pure
@@ -560,7 +560,7 @@ public class DBaseFileWriter implements AutoCloseable {
 
 	/** Write the fields definition after the header on the main <var>stream</var>.
 	 *
-	 * <p>The header must be finished by the character <code>0Dh</code>.
+	 * <p>The header must be finished by the character {@code 0Dh}.
 	 *
 	 * <p><pre>
 	 * -----------------------------------------------------------

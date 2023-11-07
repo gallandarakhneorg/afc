@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public interface GISElementSet<P extends MapElement> extends GISSet<P> {
 	/** Replies the nearest object from the specified point.
 	 *
 	 * @param position is the position from which the nearest primitive must be replied.
-	 * @return the nearest element or <code>null</code> if none.
+	 * @return the nearest element or {@code null} if none.
 	 * @see #getNearestData(Point2D)
 	 */
 	P getNearest(Point2D<?, ?> position);
@@ -52,7 +52,7 @@ public interface GISElementSet<P extends MapElement> extends GISSet<P> {
 	 *
 	 * @param x is the position from which the nearest primitive must be replied.
 	 * @param y is the position from which the nearest primitive must be replied.
-	 * @return the nearest element or <code>null</code> if none.
+	 * @return the nearest element or {@code null} if none.
 	 * @see #getNearestData(double, double)
 	 */
 	P getNearest(double x, double y);
@@ -62,7 +62,7 @@ public interface GISElementSet<P extends MapElement> extends GISSet<P> {
 	 *
 	 * @param position is the position from which the nearest primitive must be replied.
 	 * @return the nearest element and its distance to the given coordinates;
-	 *     or <code>null</code> if none.
+	 *     or {@code null} if none.
 	 * @see #getNearest(Point2D)
 	 */
 	Pair<P, Double> getNearestData(Point2D<?, ?> position);
@@ -94,7 +94,7 @@ public interface GISElementSet<P extends MapElement> extends GISSet<P> {
 	 * @param x is the position from which the nearest primitive must be replied.
 	 * @param y is the position from which the nearest primitive must be replied.
 	 * @return the nearest element and its distance to the given coordinates;
-	 *     or <code>null</code> if none.
+	 *     or {@code null} if none.
 	 * @see #getNearest(double, double)
 	 */
 	Pair<P, Double> getNearestData(double x, double y);

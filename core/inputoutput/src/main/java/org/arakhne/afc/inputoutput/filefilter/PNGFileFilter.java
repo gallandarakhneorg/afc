@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,9 +47,9 @@ public class PNGFileFilter extends AbstractFileFilter {
 	}
 
 	/** Constructor.
-	 * @param acceptDirectories is <code>true</code> to
+	 * @param acceptDirectories is {@code true} to
 	 *     permit to this file filter to accept directories;
-	 *     <code>false</code> if the directories should not
+	 *     {@code false} if the directories should not
 	 *     match.
 	 */
 	public PNGFileFilter(boolean acceptDirectories) {
@@ -62,8 +62,8 @@ public class PNGFileFilter extends AbstractFileFilter {
 	/** Replies if the specified file contains PNG picture.
 	 *
 	 * @param file is the file to test.
-	 * @return <code>true</code> if the given file contains PNG picture,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given file contains PNG picture,
+	 *     otherwise {@code false}
 	 */
 	public static boolean isPNGFile(File file) {
 		return FileType.isContentType(file, MimeName.MIME_PNG.getMimeConstant());
@@ -72,8 +72,8 @@ public class PNGFileFilter extends AbstractFileFilter {
 	/** Replies if the specified file contains PNG picture.
 	 *
 	 * @param file is the file to test.
-	 * @return <code>true</code> if the given file contains PNG picture,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given file contains PNG picture,
+	 *     otherwise {@code false}
 	 */
 	public static boolean isPNGFile(URL file) {
 		return FileType.isContentType(file, MimeName.MIME_PNG.getMimeConstant());
@@ -82,8 +82,8 @@ public class PNGFileFilter extends AbstractFileFilter {
 	/** Replies if the specified file contains PNG picture.
 	 *
 	 * @param file is the file to test.
-	 * @return <code>true</code> if the given file contains PNG picture,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given file contains PNG picture,
+	 *     otherwise {@code false}
 	 */
 	public static boolean isPNGFile(String file) {
 		return FileType.isContentType(file, MimeName.MIME_PNG.getMimeConstant());

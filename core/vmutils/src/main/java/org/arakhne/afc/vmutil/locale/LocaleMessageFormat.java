@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,15 +34,15 @@ import java.util.Locale;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * <code>LocaleMessageFormat</code> provides a means to produce concatenated
+ * {@code LocaleMessageFormat} provides a means to produce concatenated
  * messages in a language-neutral way in the {@link Locale}
  * utility class.
  *
- * <p><code>LocaleMessageFormat</code> takes a set of objects, formats them, then
+ * <p>{@code LocaleMessageFormat} takes a set of objects, formats them, then
  * inserts the formatted strings into the pattern at the appropriate places.
  *
- * <p>In addition to the standard JDK {@link MessageFormat}, <code>LocaleMessageFormat</code>
- * provides the <code>FormatStyle</code> named "raw". This new style does not try
+ * <p>In addition to the standard JDK {@link MessageFormat}, {@code LocaleMessageFormat}
+ * provides the {@code FormatStyle} named "raw". This new style does not try
  * to format the given data according to the locale. It simply put the
  * not-formatted data in the result.
  *
@@ -83,15 +83,15 @@ public class LocaleMessageFormat extends MessageFormat {
 	 * Creates a LocaleMessageFormat with the given pattern and uses it
 	 * to format the given arguments. This is equivalent to
 	 * <blockquote>
-	 *     <code>(new {@link #LocaleMessageFormat(String) MessageFormat}(pattern)).{@link #format(java.lang.Object[],
-	 *     java.lang.StringBuffer, java.text.FieldPosition) format}(arguments, new StringBuffer(), null).toString()</code>
+	 *     {@code (new {@link #LocaleMessageFormat(String) MessageFormat}(pattern)).{@link #format(java.lang.Object[],
+	 *     java.lang.StringBuffer, java.text.FieldPosition) format}(arguments, new StringBuffer(), null).toString()}
 	 * </blockquote>
 	 *
 	 * @param pattern the pattern of string.
 	 * @param arguments the dynamic arguments to put inside the string.
 	 * @return the formatted string.
 	 * @throws IllegalArgumentException if the pattern is invalid,
-	 *     or if an argument in the <code>arguments</code> array
+	 *     or if an argument in the {@code arguments} array
 	 *     is not of the type expected by the format element(s)
 	 *     that use it.
 	 */
@@ -193,7 +193,7 @@ public class LocaleMessageFormat extends MessageFormat {
 		 * @param toAppendTo is the string buffer into which the formatting result may be appended.
 		 * @param pos is on input: an alignment field, if desired. On output: the offsets of
 		 * 	   the alignment field.
-		 * @return the value passed in as <code>toAppendTo</code>
+		 * @return the value passed in as {@code toAppendTo}
 		 * @throws ArithmeticException if rounding is needed with rounding
 		 *                   mode being set to RoundingMode.UNNECESSARY
 		 * @see java.text.Format#format
@@ -214,7 +214,7 @@ public class LocaleMessageFormat extends MessageFormat {
 		 * @param toAppendTo is the string buffer into which the formatting result may be appended.
 		 * @param pos is on input: an alignment field, if desired. On output: the offsets of
 		 * 	   the alignment field.
-		 * @return the value passed in as <code>toAppendTo</code>
+		 * @return the value passed in as {@code toAppendTo}
 		 * @throws ArithmeticException if rounding is needed with rounding
 		 *                   mode being set to RoundingMode.UNNECESSARY
 		 * @see java.text.Format#format

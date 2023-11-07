@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,7 +89,7 @@ public class MapLayerAttributeChangeEvent extends ConsumableEvent {
 
 	/** Replies the old value of the attribute.
 	 *
-	 * @return the attribute value or <code>null</code>
+	 * @return the attribute value or {@code null}
 	 */
 	@Pure
 	public AttributeValue getOldValue() {
@@ -98,7 +98,7 @@ public class MapLayerAttributeChangeEvent extends ConsumableEvent {
 
 	/** Replies the new value of the attribute.
 	 *
-	 * @return the attribute value, never <code>null</code>
+	 * @return the attribute value, never {@code null}
 	 */
 	@Pure
 	public AttributeValue getValue() {
@@ -107,7 +107,7 @@ public class MapLayerAttributeChangeEvent extends ConsumableEvent {
 
 	/** Replies the changed attribute.
 	 *
-	 * @return the attribute, never <code>null</code>
+	 * @return the attribute, never {@code null}
 	 */
 	@Pure
 	public Attribute getAttribute() {
@@ -126,8 +126,8 @@ public class MapLayerAttributeChangeEvent extends ConsumableEvent {
 	/** Replies if the change in the layer was marked as temporary.
 	 * The usage of this information depends on the listener's behaviour.
 	 *
-	 * @return <code>true</code> if the change is temporary,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the change is temporary,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isTemporaryChange() {

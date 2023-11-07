@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,14 +46,14 @@ public final class ListUtil {
 
 	/** Remove the given element from the list using a dichotomic algorithm.
 	 *
-	 * <p>This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
+	 * <p>This function ensure that the comparator is invoked as: {@code comparator(data, dataAlreadyInList)}.
 	 *
 	 * @param <E> is the type of the elements in the list.
 	 * @param list is the list to change.
 	 * @param comparator is the comparator of elements.
 	 * @param data is the data to remove.
 	 * @return the index at which the element was removed in the list; or
-	 * <code>-1</code> if the element was not removed.
+	 * {@code -1} if the element was not removed.
 	 */
 	public static <E> int remove(List<E> list, Comparator<? super E> comparator, E data) {
 		assert list != null;
@@ -79,13 +79,13 @@ public final class ListUtil {
 
 	/** Add the given element in the main list using a dichotomic algorithm if the element is not already present.
 	 *
-	 * <p>This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
+	 * <p>This function ensure that the comparator is invoked as: {@code comparator(data, dataAlreadyInList)}.
 	 *
 	 * @param <E> is the type of the elements in the list.
 	 * @param list is the list to change.
 	 * @param comparator is the comparator of elements.
 	 * @param data is the data to insert.
-	 * @return the index where the element was inserted, or <code>-1</code>
+	 * @return the index where the element was inserted, or {@code -1}
 	 *     if the element was not inserted.
 	 * @since 14.0
 	 */
@@ -96,7 +96,7 @@ public final class ListUtil {
 
 	/** Add the given element in the main list using a dichotomic algorithm.
 	 *
-	 * <p>This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
+	 * <p>This function ensure that the comparator is invoked as: {@code comparator(data, dataAlreadyInList)}.
 	 *
 	 * @param <E> is the type of the elements in the list.
 	 * @param list is the list to change.
@@ -106,7 +106,7 @@ public final class ListUtil {
 	 *     occurrences of the same value are allowed in the list.
 	 * @param allowReplacement indicates if the given {@code elt} may replace
 	 *     the found element.
-	 * @return the index where the element was inserted, or <code>-1</code>
+	 * @return the index where the element was inserted, or {@code -1}
 	 *     if the element was not inserted.
 	 */
 	public static <E> int add(List<E> list, Comparator<? super E> comparator, E data,
@@ -139,13 +139,13 @@ public final class ListUtil {
 
 	/** Replies if the given element is inside the list, using a dichotomic algorithm.
 	 *
-	 * <p>This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
+	 * <p>This function ensure that the comparator is invoked as: {@code comparator(data, dataAlreadyInList)}.
 	 *
 	 * @param <E> is the type of the elements in the list.
 	 * @param list is the list to explore.
 	 * @param comparator is the comparator of elements.
 	 * @param data is the data to search for.
-	 * @return <code>true</code> if the data is inside the list, otherwise <code>false</code>
+	 * @return {@code true} if the data is inside the list, otherwise {@code false}
 	 */
 	@Pure
 	public static <E> boolean contains(List<E> list, Comparator<? super E> comparator, E data) {
@@ -181,7 +181,7 @@ public final class ListUtil {
 	 * @param list is the list inside which the element should be searched.
 	 * @param comparator is the comparator used to sort the list.
 	 * @param elt is the element to search for.
-	 * @return the index at which the element is, or <code>-1</code> if
+	 * @return the index at which the element is, or {@code -1} if
 	 *     the element was not found.
 	 */
 	@Pure
@@ -232,7 +232,7 @@ public final class ListUtil {
 	 * @param list is the list inside which the element should be searched.
 	 * @param comparator is the comparator used to sort the list.
 	 * @param elt is the element to search for.
-	 * @return the last index at which the element is, or <code>-1</code> if
+	 * @return the last index at which the element is, or {@code -1} if
 	 *     the element was not found.
 	 */
 	@Pure
@@ -345,7 +345,7 @@ public final class ListUtil {
 
 	/**
 	 * Returns the index of the leastest element in this list greater than or equal to
-	 * the given element, or <code>-1</code> if there is no such element.
+	 * the given element, or {@code -1} if there is no such element.
 	 *
 	 * <p>This function assumes that the given list is sorted
 	 * according to the given comparator.
@@ -356,7 +356,7 @@ public final class ListUtil {
 	 * @param comparator is the comparator used to sort the list.
 	 * @param elt is the value to match.
 	 * @return the index of leastest element greater than or equal to {@code elt}, or
-	 * <code>-1</code> if there is no such element.
+	 * {@code -1} if there is no such element.
 	 * @see NavigableSet#ceiling(Object)
 	 */
 	@Pure
@@ -399,7 +399,7 @@ public final class ListUtil {
 
 	/**
 	 * Returns the index of the greatest element in this list less than or equal to
-	 * the given element, or <code>-1</code> if there is no such element.
+	 * the given element, or {@code -1} if there is no such element.
 	 *
 	 * <p>This function assumes that the given list is sorted
 	 * according to the given comparator.
@@ -410,7 +410,7 @@ public final class ListUtil {
 	 * @param comparator is the comparator used to sort the list.
 	 * @param elt is the value to match.
 	 * @return the index of greatest element less than or equal to {@code elt}, or
-	 * <code>-1</code> if there is no such element.
+	 * {@code -1} if there is no such element.
 	 * @see NavigableSet#floor(Object)
 	 */
 	@Pure
@@ -450,7 +450,7 @@ public final class ListUtil {
 
 	/**
 	 * Returns the index of the least element in this list strictly greater
-	 * than the given element, or <code>-1</code> if there is no such element.
+	 * than the given element, or {@code -1} if there is no such element.
 	 *
 	 * <p>This function assumes that the given list is sorted
 	 * according to the given comparator.
@@ -461,7 +461,7 @@ public final class ListUtil {
 	 * @param comparator is the comparator used to sort the list.
 	 * @param elt is the value to match.
 	 * @return the index of least element strictly greater than to {@code elt}, or
-	 * <code>-1</code> if there is no such element.
+	 * {@code -1} if there is no such element.
 	 * @see NavigableSet#higher(Object)
 	 */
 	@Pure
@@ -499,7 +499,7 @@ public final class ListUtil {
 
 	/**
 	 * Returns the index of the greatest element in this list strictly lower
-	 * than the given element, or <code>-1</code> if there is no such element.
+	 * than the given element, or {@code -1} if there is no such element.
 	 *
 	 * <p>This function assumes that the given list is sorted
 	 * according to the given comparator.
@@ -510,7 +510,7 @@ public final class ListUtil {
 	 * @param comparator is the comparator used to sort the list.
 	 * @param elt is the value to match.
 	 * @return the index of greater element strictly lower than to {@code elt}, or
-	 * <code>-1</code> if there is no such element.
+	 * {@code -1} if there is no such element.
 	 * @see NavigableSet#lower(Object)
 	 */
 	@Pure

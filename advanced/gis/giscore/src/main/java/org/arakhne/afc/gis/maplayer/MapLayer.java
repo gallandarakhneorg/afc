@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,7 +110,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 
 	/** Create a new layer with the specified attribute source.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the provider of the layer's attributes.
 	 * @since 4.0
 	 */
@@ -120,7 +120,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 
 	/** Create a new layer with the specified attribute source.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the provider of the layer's attributes.
 	 * @param isTemp indicates if this layer is temporary.
 	 * @since 4.0
@@ -427,14 +427,14 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 * was inside the figure of this MapElement.
 	 *
 	 * <p>If this MapElement has no associated figure, this method
-	 * always returns <code>false</code>.
+	 * always returns {@code false}.
 	 *
 	 * @param point is a geo-referenced coordinate
 	 * @param delta is the geo-referenced distance that corresponds to a approximation
 	 *     distance in the screen coordinate system
-	 * @return <code>true</code> if this MapElement had an associated figure and
+	 * @return {@code true} if this MapElement had an associated figure and
 	 *     the specified point was inside this bounds of this figure, otherwhise
-	 * <code>false</code>
+	 * {@code false}
 	 */
 	@Pure
 	public boolean contains(Point2D<?, ?> point, double delta) {
@@ -459,12 +459,12 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 * was inside the figure of this MapElement.
 	 *
 	 * <p>If this MapElement has no associated figure, this method
-	 * always returns <code>false</code>.
+	 * always returns {@code false}.
 	 *
 	 * @param point is a geo-referenced coordinate
-	 * @return <code>true</code> if this MapElement had an associated figure and
+	 * @return {@code true} if this MapElement had an associated figure and
 	 *     the specified point was inside this bounds of this figure, otherwhise
-	 * <code>false</code>
+	 * {@code false}
 	 */
 	@Pure
 	public final boolean contains(Point2D<?, ?> point) {
@@ -474,7 +474,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	/** Replies the index of this layer in its parent.
 	 *
 	 * @return the index of this layer in its parent, or
-	 * <code>-1</code> if not found.
+	 * {@code -1} if not found.
 	 */
 	@Pure
 	public int indexInParent() {
@@ -490,13 +490,13 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 * with the specified rectangle.
 	 *
 	 * <p>If this MapElement has no associated figure, this method
-	 * always returns <code>false</code>.
+	 * always returns {@code false}.
 	 *
 	 *
 	 * @param rectangle the rectangle.
-	 * @return <code>true</code> if this MapElement has an associated figure and
+	 * @return {@code true} if this MapElement has an associated figure and
 	 *     the specified rectangle intersecting the figure, otherwhise
-	 * <code>false</code>
+	 * {@code false}
 	 */
 	@Pure
 	public boolean intersects(Shape2d<?> rectangle) {
@@ -511,8 +511,8 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 * Set the flag that indicates if this element use its color or
 	 * the container's color.
 	 *
-	 * @param useContainerColor must be <code>true</code> if this element must
-	 *     use the container's color, and must be <code>false</code> to use the
+	 * @param useContainerColor must be {@code true} if this element must
+	 *     use the container's color, and must be {@code false} to use the
 	 *     element's color.
 	 */
 	public void setContainerColorUse(boolean useContainerColor) {
@@ -523,8 +523,8 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 * Replies the flag that indicates if this element use its color or
 	 * the container's color.
 	 *
-	 * @return <code>true</code> if this element must
-	 *     use the container's color, and <code>false</code> to use the
+	 * @return {@code true} if this element must
+	 *     use the container's color, and {@code false} to use the
 	 *     element's color.
 	 */
 	@Pure
@@ -576,7 +576,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	/**
 	 * Set if this layer accepts the user clicks.
 	 *
-	 * @param clickable is <code>true</code> to set this layer allowing mouse click events.
+	 * @param clickable is {@code true} to set this layer allowing mouse click events.
 	 */
 	public void setClickable(boolean clickable) {
 		try {
@@ -589,7 +589,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	/**
 	 * Replies if this layer accepts the user clicks.
 	 *
-	 * @return <code>true</code> if this layer allows mouse click events, otherwise <code>false</code>
+	 * @return {@code true} if this layer allows mouse click events, otherwise {@code false}
 	 */
 	@Pure
 	public boolean isClickable() {
@@ -630,7 +630,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 * <p>A temporary layer means that any things inside this layer is
 	 * assumed to be lost when the layer will be destroyed.
 	 *
-	 * @return <code>true</code> if this layer is temporary, otherwise <code>false</code>
+	 * @return {@code true} if this layer is temporary, otherwise {@code false}
 	 */
 	@Pure
 	public final boolean isTemporaryLayer() {
@@ -654,7 +654,7 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 
 	/** Replies if this editable object want to be seen as a reed-only object.
 	 *
-	 * <p>Even if this object replies <code>true</code>, it is possible to change
+	 * <p>Even if this object replies {@code true}, it is possible to change
 	 * its attributes. The value replied by this function is just a desire
 	 * from this object. It could be used by the GUI to allow edition or not
 	 * from a graphical component.
@@ -686,8 +686,8 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 * its component. The usage of this state by
 	 * the container depends only of its implementation.
 	 *
-	 * @param removable is <code>true</code> to set this layer to be removable from its container,
-	 *     otherwise <code>false</code>
+	 * @param removable is {@code true} to set this layer to be removable from its container,
+	 *     otherwise {@code false}
 	 */
 	public void setRemovable(boolean removable) {
 		try {
@@ -704,8 +704,8 @@ public abstract class MapLayer extends AbstractBoundedGISElement<GISLayerContain
 	 * its component. The usage of this state by
 	 * the container depends only of its implementation.
 	 *
-	 * @return <code>true</code> if this layer is removable from its container,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this layer is removable from its container,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isRemovable() {

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ public class MapPolyline extends MapComposedElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @since 4.0
 	 */
 	public MapPolyline(UUID id) {
@@ -89,7 +89,7 @@ public class MapPolyline extends MapComposedElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the source of the attributes for this map element.
 	 * @since 4.0
 	 */
@@ -106,8 +106,8 @@ public class MapPolyline extends MapComposedElement {
 
 	/** Set if this polyline must be drawn with a wide height.
 	 *
-	 * @param isWidePolyline is <code>true</code> if this polyline must have
-	 *     a wide height, otherwise <code>false</code>
+	 * @param isWidePolyline is {@code true} if this polyline must have
+	 *     a wide height, otherwise {@code false}
 	 */
 	public void setWidePolyline(boolean isWidePolyline) {
 		this.isWidePolyline = isWidePolyline;
@@ -117,8 +117,8 @@ public class MapPolyline extends MapComposedElement {
 
 	/** Replies if this polyline must be drawn with a wide height.
 	 *
-	 * @return <code>true</code> if this polyline must have
-	 *     a wide height, otherwise <code>false</code>
+	 * @return {@code true} if this polyline must have
+	 *     a wide height, otherwise {@code false}
 	 */
 	@Pure
 	public boolean isWidePolyline() {
@@ -243,7 +243,7 @@ public class MapPolyline extends MapComposedElement {
 	 *
 	 * @param x is the point coordinate from which the distance must be computed
 	 * @param y is the point coordinate from which the distance must be computed
-	 * @param distance is the distance value that will be set by this function (if the parameter is not <code>null</code>).
+	 * @param distance is the distance value that will be set by this function (if the parameter is not {@code null}).
 	 * @return index of the nearest end point.
 	 */
 	@Pure
@@ -397,7 +397,7 @@ public class MapPolyline extends MapComposedElement {
 	 * <p>A subsegment is a pair if connected points in the polyline.
 	 *
 	 * @param distance is position on the polyline (in {@code 0} to {@code getLength()}).
-	 * @return the point pair, never <code>null</code>.
+	 * @return the point pair, never {@code null}.
 	 */
 	@Pure
 	public Segment1D<?, ?> getSubSegmentForDistance(double distance) {
@@ -442,8 +442,8 @@ public class MapPolyline extends MapComposedElement {
 	 * Replies if this element has an intersection
 	 * with the specified rectangle.
 	 *
-	 * @return <code>true</code> if this MapElement is intersecting the specified area,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this MapElement is intersecting the specified area,
+	 *     otherwise {@code false}
 	 */
 	@Override
 	@Pure
@@ -704,7 +704,7 @@ public class MapPolyline extends MapComposedElement {
 
 	/** Replies the Segment1D representation of this object.
 	 *
-	 * @return the Segment1D, never <code>null</code>.
+	 * @return the Segment1D, never {@code null}.
 	 * @since 4.0
 	 */
 	@Pure
@@ -713,14 +713,14 @@ public class MapPolyline extends MapComposedElement {
 	}
 
 	/** Replies the geo-location of the point described by the specified distance.
-	 * The desired distance is <code>0</code> for the starting point and {@link #getLength()}
+	 * The desired distance is {@code 0} for the starting point and {@link #getLength()}
 	 * for the ending point.
 	 *
 	 * @param desired_distance is the distance for which the geo location must be computed.
 	 * @param shifting is the shifting distance.
 	 * @param geoLocation is the point to set with geo-localized coordinates.
 	 * @param tangent is the vector which will be set by the coordinates of the tangent at the replied point.
-	 *     If <code>null</code> the tangent will not be computed.
+	 *     If {@code null} the tangent will not be computed.
 	 */
 	protected final void computeGeoLocationForDistance(double desired_distance, double shifting,
 			Point2D<?, ?> geoLocation, Vector2D<?, ?> tangent) {

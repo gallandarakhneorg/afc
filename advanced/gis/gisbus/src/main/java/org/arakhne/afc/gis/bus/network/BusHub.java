@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -170,7 +170,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	/**
 	 * Replies the geo-location of this hub.
 	 *
-	 * @return the geo-location of the hub, never <code>null</code>.
+	 * @return the geo-location of the hub, never {@code null}.
 	 */
 	@Override
 	@Pure
@@ -184,7 +184,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 
 	/** Replies the position of the bus hub.
 	 *
-	 * @return the position or <code>null</code> if never set before.
+	 * @return the position or {@code null} if never set before.
 	 */
 	@Pure
 	public GeoLocationPoint getGeoPosition() {
@@ -280,7 +280,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	/**
 	 * Replies if this hub is empty.
 	 *
-	 * @return <code>true</code> if the hub is empty, otherwise <code>false</code>
+	 * @return {@code true} if the hub is empty, otherwise {@code false}
 	 */
 	@Pure
 	public boolean isEmpty() {
@@ -296,8 +296,8 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	/**
 	 * Replies if this hub contains at least two bus stops.
 	 *
-	 * @return <code>true</code> if the hub contains at least 2 bus stops,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the hub contains at least 2 bus stops,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isSignificant() {
@@ -361,7 +361,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 * Add a bus stop inside the bus hub.
 	 *
 	 * @param busStop is the bus stop to insert.
-	 * @return <code>true</code> if the bus stop was added, otherwise <code>false</code>
+	 * @return {@code true} if the bus stop was added, otherwise {@code false}
 	 */
 	public boolean addBusStop(BusStop busStop) {
 		return addBusStop(busStop, true);
@@ -372,7 +372,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 *
 	 * @param busStop is the bus stop to insert.
 	 * @param fireEvents indicates if the events should be fired and the validity checked.
-	 * @return <code>true</code> if the bus stop was added, otherwise <code>false</code>
+	 * @return {@code true} if the bus stop was added, otherwise {@code false}
 	 */
 	boolean addBusStop(BusStop busStop, boolean fireEvents) {
 		if (busStop == null) {
@@ -422,7 +422,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 * Remove a bus stop from this hub.
 	 *
 	 * @param busStop is the bus stop to remove.
-	 * @return <code>true</code> if the bus stop was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus stop was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusStop(BusStop busStop) {
 		final int index = this.busStops.indexOf(busStop);
@@ -447,7 +447,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 * Remove the bus stop at the specified index.
 	 *
 	 * @param index is the index of the bus stop to remove.
-	 * @return <code>true</code> if the bus stop was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus stop was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusStop(int index) {
 		try {
@@ -483,7 +483,7 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 * Replies the index of the specified bus stop.
 	 *
 	 * @param busStop is the bus stop to search for.
-	 * @return the index or <code>-1</code> if it was not found.
+	 * @return the index or {@code -1} if it was not found.
 	 */
 	@Pure
 	public int indexOf(BusStop busStop) {
@@ -494,8 +494,8 @@ public class BusHub extends AbstractBusPrimitive<BusNetwork> implements Iterable
 	 * Replies if the given bus stop is inside this hub.
 	 *
 	 * @param busStop is the bus stop to search for.
-	 * @return <code>true</code> if the bus stop is inside the hub,
-	 * <code>false</code> otherwise.
+	 * @return {@code true} if the bus stop is inside the hub,
+	 * {@code false} otherwise.
 	 */
 	@Pure
 	public boolean contains(BusStop busStop) {

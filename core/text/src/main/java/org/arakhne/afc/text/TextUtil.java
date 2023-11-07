@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,14 +66,14 @@ public final class TextUtil {
 	}
 
 	/** Enforced version of the equality test on two strings with case ignoring.
-	 * This enforced version supported <code>null</code> values
+	 * This enforced version supported {@code null} values
 	 * given as parameters.
 	 *
 	 * @param firstText first text.
 	 * @param secondText second text.
-	 * @param isNullEmptyEquivalence indicates if the <code>null</code> value
+	 * @param isNullEmptyEquivalence indicates if the {@code null} value
 	 *     is assimilated to the empty string.
-	 * @return <code>true</code> if a is equal to b; otherwise <code>false</code>.
+	 * @return {@code true} if a is equal to b; otherwise {@code false}.
 	 */
 	@Pure
 	public static boolean equalsIgnoreCase(String firstText, String secondText, boolean isNullEmptyEquivalence) {
@@ -112,9 +112,9 @@ public final class TextUtil {
 	/** Replies the html-to-java's translation table.
 	 *
 	 * <p>This method read the translations from the
-	 * resource file <code>HTML_TRANS_TBL</code>.
+	 * resource file {@code HTML_TRANS_TBL}.
 	 *
-	 * @return the translation table or <code>null</code> if none was found.
+	 * @return the translation table or {@code null} if none was found.
 	 *     The translation table maps an HTML entity to its corresponding ISO chararacter code.
 	 * @since 4.0
 	 */
@@ -186,9 +186,9 @@ public final class TextUtil {
 	/** Replies the java-to-html's translation table.
 	 *
 	 * <p>This method read the translations from the
-	 * resource file <code>HTML_TRANS_TBL</code>.
+	 * resource file {@code HTML_TRANS_TBL}.
 	 *
-	 * @return the translation table or <code>null</code> if none was found.
+	 * @return the translation table or {@code null} if none was found.
 	 *     The translation table maps an ISO character code to its corresponding HTML entity.
 	 * @since 4.0
 	 */
@@ -375,7 +375,7 @@ public final class TextUtil {
 	 *
 	 * @param text is the string to cut
 	 * @param column is the column number that corresponds to the splitting point.
-	 * @return the given {@code text} splitted in lines separated by <code>\n</code>.
+	 * @return the given {@code text} splitted in lines separated by {@code \n}.
 	 */
 	@Pure
 	public static String cutString(String text, int column) {
@@ -389,7 +389,7 @@ public final class TextUtil {
 	 *
 	 * @param text is the string to cut
 	 * @param column is the column number that corresponds to the splitting point.
-	 * @return the given {@code text} splitted in lines separated by <code>\n</code>.
+	 * @return the given {@code text} splitted in lines separated by {@code \n}.
 	 */
 	@Pure
 	public static String[] cutStringAsArray(String text, int column) {
@@ -406,7 +406,7 @@ public final class TextUtil {
 	 *
 	 * @param text is the string to cut
 	 * @param critera is the critera to respect.
-	 * @param output is the given {@code text} splitted in lines separated by <code>\n</code>.
+	 * @param output is the given {@code text} splitted in lines separated by {@code \n}.
 	 * @since 4.0
 	 */
 	public static void cutStringAsArray(String text, CutStringCritera critera, List<String> output) {
@@ -467,7 +467,7 @@ public final class TextUtil {
 	/** Replies the character which follow the first '&amp;'.
 	 *
 	 * @param text is the text to scan.
-	 * @return the character that is following the first '&amp;' or '<code>\0</code>'
+	 * @return the character that is following the first '&amp;' or '{@code \0}'
 	 */
 	@Pure
 	public static char getMnemonicChar(String text) {
@@ -496,9 +496,9 @@ public final class TextUtil {
 	/** Replies the accent's translation table.
 	 *
 	 * <p>This method read the translations from the
-	 * resource file <code>ACCENT_TRANS_TBL</code>.
+	 * resource file {@code ACCENT_TRANS_TBL}.
 	 *
-	 *  @return the translation table or <code>null</code> if none was found.
+	 *  @return the translation table or {@code null} if none was found.
 	 */
 	@Pure
 	@SuppressWarnings("checkstyle:npathcomplexity")
@@ -599,12 +599,12 @@ public final class TextUtil {
 	 *
 	 * <p>Examples:
 	 * <ul>
-	 * <li><code>splitBrackets("{a}{b}{cd}")</code> returns the array
-	 * <code>["a","b","cd"]</code></li>
-	 * <li><code>splitBrackets("abcd")</code> returns the array
-	 * <code>["abcd"]</code></li>
-	 * <li><code>splitBrackets("a{bcd")</code> returns the array
-	 * <code>["a","bcd"]</code></li>
+	 * <li>{@code splitBrackets("{a}{b}{cd}")} returns the array
+	 * {@code ["a","b","cd"]}</li>
+	 * <li>{@code splitBrackets("abcd")} returns the array
+	 * {@code ["abcd"]}</li>
+	 * <li>{@code splitBrackets("a{bcd")} returns the array
+	 * {@code ["a","bcd"]}</li>
 	 * </ul>
 	 *
 	 * @param str is the strig with brackets.
@@ -622,12 +622,12 @@ public final class TextUtil {
 	 *
 	 * <p>Examples:
 	 * <ul>
-	 * <li><code>split('{','}',"{a}{b}{cd}")</code> returns the array
-	 * <code>["a","b","cd"]</code></li>
-	 * <li><code>split('{','}',"abcd")</code> returns the array
-	 * <code>["abcd"]</code></li>
-	 * <li><code>split('{','}',"a{bcd")</code> returns the array
-	 * <code>["a","bcd"]</code></li>
+	 * <li>{@code split('{','}',"{a}{b}{cd}")} returns the array
+	 * {@code ["a","b","cd"]}</li>
+	 * <li>{@code split('{','}',"abcd")} returns the array
+	 * {@code ["abcd"]}</li>
+	 * <li>{@code split('{','}',"a{bcd")} returns the array
+	 * {@code ["a","bcd"]}</li>
 	 * </ul>
 	 *
 	 * @param leftSeparator is the left separator.
@@ -649,12 +649,12 @@ public final class TextUtil {
 	 *
 	 * <p>Examples:
 	 * <ul>
-	 * <li><code>splitBrackets("{a}{b}{cd}")</code> returns the array
-	 * <code>["a","b","cd"]</code></li>
-	 * <li><code>splitBrackets("abcd")</code> returns the array
-	 * <code>["abcd"]</code></li>
-	 * <li><code>splitBrackets("a{bcd")</code> returns the array
-	 * <code>["a","bcd"]</code></li>
+	 * <li>{@code splitBrackets("{a}{b}{cd}")} returns the array
+	 * {@code ["a","b","cd"]}</li>
+	 * <li>{@code splitBrackets("abcd")} returns the array
+	 * {@code ["abcd"]}</li>
+	 * <li>{@code splitBrackets("a{bcd")} returns the array
+	 * {@code ["a","bcd"]}</li>
 	 * </ul>
 	 *
 	 * @param str is the elements enclosed by backets.
@@ -672,12 +672,12 @@ public final class TextUtil {
 	 *
 	 * <p>Examples:
 	 * <ul>
-	 * <li><code>split('{','}',"{a}{b}{cd}")</code> returns the array
-	 * <code>["a","b","cd"]</code></li>
-	 * <li><code>split('{','}',"abcd")</code> returns the array
-	 * <code>["abcd"]</code></li>
-	 * <li><code>split('{','}',"a{bcd")</code> returns the array
-	 * <code>["a","bcd"]</code></li>
+	 * <li>{@code split('{','}',"{a}{b}{cd}")} returns the array
+	 * {@code ["a","b","cd"]}</li>
+	 * <li>{@code split('{','}',"abcd")} returns the array
+	 * {@code ["abcd"]}</li>
+	 * <li>{@code split('{','}',"a{bcd")} returns the array
+	 * {@code ["a","bcd"]}</li>
 	 * </ul>
 	 *
 	 * @param leftSeparator is the left separator.
@@ -779,12 +779,12 @@ public final class TextUtil {
 	 *
 	 * <p>Examples:
 	 * <ul>
-	 * <li><code>splitBrackets("{a}{b}{cd}")</code> returns the array
-	 * <code>["a","b","cd"]</code></li>
-	 * <li><code>splitBrackets("abcd")</code> returns the array
-	 * <code>["abcd"]</code></li>
-	 * <li><code>splitBrackets("a{bcd")</code> returns the array
-	 * <code>["a","bcd"]</code></li>
+	 * <li>{@code splitBrackets("{a}{b}{cd}")} returns the array
+	 * {@code ["a","b","cd"]}</li>
+	 * <li>{@code splitBrackets("abcd")} returns the array
+	 * {@code ["abcd"]}</li>
+	 * <li>{@code splitBrackets("a{bcd")} returns the array
+	 * {@code ["a","bcd"]}</li>
 	 * </ul>
 	 *
 	 * @param str is the elements enclosed by backets.
@@ -802,12 +802,12 @@ public final class TextUtil {
 	 *
 	 * <p>Examples:
 	 * <ul>
-	 * <li><code>split('{','}',"{a}{b}{cd}")</code> returns the array
-	 * <code>["a","b","cd"]</code></li>
-	 * <li><code>split('{','}',"abcd")</code> returns the array
-	 * <code>["abcd"]</code></li>
-	 * <li><code>split('{','}',"a{bcd")</code> returns the array
-	 * <code>["a","bcd"]</code></li>
+	 * <li>{@code split('{','}',"{a}{b}{cd}")} returns the array
+	 * {@code ["a","b","cd"]}</li>
+	 * <li>{@code split('{','}',"abcd")} returns the array
+	 * {@code ["abcd"]}</li>
+	 * <li>{@code split('{','}',"a{bcd")} returns the array
+	 * {@code ["a","bcd"]}</li>
 	 * </ul>
 	 *
 	 * @param leftSeparator is the left separator.
@@ -829,10 +829,10 @@ public final class TextUtil {
 	 *
 	 * <p>Examples:
 	 * <ul>
-	 * <li><code>mergeBrackets("a","b","cd")</code> returns the string
-	 * <code>"{a}{b}{cd}"</code></li>
-	 * <li><code>mergeBrackets("a{bcd")</code> returns the string
-	 * <code>"{a{bcd}"</code></li>
+	 * <li>{@code mergeBrackets("a","b","cd")} returns the string
+	 * {@code "{a}{b}{cd}"}</li>
+	 * <li>{@code mergeBrackets("a{bcd")} returns the string
+	 * {@code "{a{bcd}"}</li>
 	 * </ul>
 	 *
 	 * @param <T> is the type of the parameters.
@@ -851,10 +851,10 @@ public final class TextUtil {
 	 *
 	 * <p>Examples:
 	 * <ul>
-	 * <li><code>mergeBrackets("a","b","cd")</code> returns the string
-	 * <code>"{a}{b}{cd}"</code></li>
-	 * <li><code>mergeBrackets("a{bcd")</code> returns the string
-	 * <code>"{a{bcd}"</code></li>
+	 * <li>{@code mergeBrackets("a","b","cd")} returns the string
+	 * {@code "{a}{b}{cd}"}</li>
+	 * <li>{@code mergeBrackets("a{bcd")} returns the string
+	 * {@code "{a{bcd}"}</li>
 	 * </ul>
 	 *
 	 * @param strs is the array of strings.
@@ -873,10 +873,10 @@ public final class TextUtil {
 	 *
 	 * <p>Examples:
 	 * <ul>
-	 * <li><code>merge('{','}',"a","b","cd")</code> returns the string
-	 * <code>"{a}{b}{cd}"</code></li>
-	 * <li><code>merge('{','}',"a{bcd")</code> returns the string
-	 * <code>"{a{bcd}"</code></li>
+	 * <li>{@code merge('{','}',"a","b","cd")} returns the string
+	 * {@code "{a}{b}{cd}"}</li>
+	 * <li>{@code merge('{','}',"a{bcd")} returns the string
+	 * {@code "{a{bcd}"}</li>
 	 * </ul>
 	 *
 	 * @param <T> is the type of the parameters.
@@ -905,10 +905,10 @@ public final class TextUtil {
 	 *
 	 * <p>Examples:
 	 * <ul>
-	 * <li><code>merge('{','}',"a","b","cd")</code> returns the string
-	 * <code>"{a}{b}{cd}"</code></li>
-	 * <li><code>merge('{','}',"a{bcd")</code> returns the string
-	 * <code>"{a{bcd}"</code></li>
+	 * <li>{@code merge('{','}',"a","b","cd")} returns the string
+	 * {@code "{a}{b}{cd}"}</li>
+	 * <li>{@code merge('{','}',"a{bcd")} returns the string
+	 * {@code "{a{bcd}"}</li>
 	 * </ul>
 	 *
 	 * @param leftSeparator is the left separator to use.
@@ -1328,23 +1328,23 @@ public final class TextUtil {
 	}
 
 	/**
-	 * Compares this <code>String</code> to another <code>String</code>,
+	 * Compares this {@code String} to another {@code String},
 	 * ignoring accent considerations.  Two strings are considered equal
 	 * ignoring accents if they are of the same length, and corresponding
 	 * characters in the two strings are equal ignoring accents.
 	 *
 	 * <p>This method is equivalent to:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * TextUtil.removeAccents(s1,map).equals(TextUtil.removeAccents(s2,map));
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @param   s1 is the first string to compare.
 	 * @param   s2 is the second string to compare.
 	 * @param map is the translation table from an accentuated character to an
 	 *     unaccentuated character.
-	 * @return  <code>true</code> if the argument is not <code>null</code>
-	 *          and the <code>String</code>s are equal,
-	 *          ignoring case; <code>false</code> otherwise.
+	 * @return  {@code true} if the argument is not {@code null}
+	 *          and the {@code String}s are equal,
+	 *          ignoring case; {@code false} otherwise.
 	 * @see     #removeAccents(String, Map)
 	 */
 	@Pure
@@ -1354,23 +1354,23 @@ public final class TextUtil {
 	}
 
 	/**
-	 * Compares this <code>String</code> to another <code>String</code>,
+	 * Compares this {@code String} to another {@code String},
 	 * ignoring case and accent considerations.  Two strings are considered equal
 	 * ignoring case and accents if they are of the same length, and corresponding
 	 * characters in the two strings are equal ignoring case and accents.
 	 *
 	 * <p>This method is equivalent to:
-	 * <pre><code>
+	 * <pre>{@code 
 	 * TextUtil.removeAccents(s1,map).equalsIgnoreCase(TextUtil.removeAccents(s2,map));
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @param   s1 is the first string to compare.
 	 * @param   s2 is the second string to compare.
 	 * @param map is the translation table from an accentuated character to an
 	 *     unaccentuated character.
-	 * @return  <code>true</code> if the argument is not <code>null</code>
-	 *          and the <code>String</code>s are equal,
-	 *          ignoring case; <code>false</code> otherwise.
+	 * @return  {@code true} if the argument is not {@code null}
+	 *          and the {@code String}s are equal,
+	 *          ignoring case; {@code false} otherwise.
 	 * @see     #removeAccents(String, Map)
 	 */
 	@Pure
@@ -1975,8 +1975,8 @@ public final class TextUtil {
 		 *
 		 * @param lineLength is the current length of the line.
 		 * @param word is the word to add.
-		 * @return <code>true</code> if the word is overfulling the line,
-		 * <code>false</code> otherwise.
+		 * @return {@code true} if the word is overfulling the line,
+		 * {@code false} otherwise.
 		 */
 		boolean isOverfull(long lineLength, String word);
 

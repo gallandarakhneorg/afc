@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ public abstract class AbstractPrefixDepthFirstTreeIterator<P extends IterableNod
 	 *
 	 * @param parent is the node from which the child node was retreived.
 	 * @param child is the child node to test.
-	 * @return the traversable node, or <code>null</code> if the node is not traversable.
+	 * @return the traversable node, or {@code null} if the node is not traversable.
 	 */
 	protected abstract P toTraversableChild(P parent, C child);
 
@@ -72,7 +72,7 @@ public abstract class AbstractPrefixDepthFirstTreeIterator<P extends IterableNod
 	 * the given child node retreived from the given parent node.
 	 *
 	 * @param parent is the node from which the child node was retreived.
-	 * @return <code>true</code> if the given node is traversable, <code>false</code>
+	 * @return {@code true} if the given node is traversable, {@code false}
 	 *     otherwise.
 	 */
 	@Pure

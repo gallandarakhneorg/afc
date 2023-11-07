@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public class TestGISReader extends AbstractShapeFileReader<MapElement> {
 	/** Extract the UUID from the attributes.
 	 *
 	 * @param provider is a provider of attributes
-	 * @return the uuid if found or <code>null</code> if none.
+	 * @return the uuid if found or {@code null} if none.
 	 */
 	protected static UUID extractUUID(AttributeCollection provider) {
 		AttributeValue value;

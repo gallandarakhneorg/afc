@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -122,14 +122,14 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	/** Replies the property for the x coordinate of the starting point.
 	 *
-	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO}.
+	 * @return the x coordinate, or {@code null} if the type is {@link PathElementType#MOVE_TO}.
 	 */
 	@Pure
 	public abstract DoubleProperty fromXProperty();
 
 	/** Replies the property for the y coordinate of the starting point.
 	 *
-	 * @return the y coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO}.
+	 * @return the y coordinate, or {@code null} if the type is {@link PathElementType#MOVE_TO}.
 	 */
 	@Pure
 	public abstract DoubleProperty fromYProperty();
@@ -219,7 +219,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	/** Replies the property for the x coordinate of the first control point.
 	 *
-	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the x coordinate, or {@code null} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -239,7 +239,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	/** Replies the property for the x coordinate of the second control point.
 	 *
-	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the x coordinate, or {@code null} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -249,7 +249,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	/** Replies the property for the y coordinate of the second control point.
 	 *
-	 * @return the y coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the y coordinate, or {@code null} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -259,7 +259,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	/** Replies the property for the radius along the x axis.
 	 *
-	 * @return the x radius, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 * @return the x radius, or {@code null} if the type is not {@link PathElementType#ARC_TO}.
 	 */
 	@Pure
 	public DoubleProperty radiusXProperty() {
@@ -268,7 +268,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	/** Replies the property for the radius along the y axis.
 	 *
-	 * @return the y radius, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 * @return the y radius, or {@code null} if the type is not {@link PathElementType#ARC_TO}.
 	 */
 	@Pure
 	public DoubleProperty radiusYProperty() {
@@ -277,7 +277,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	/** Replies the property for the rotation of the x axis.
 	 *
-	 * @return the x-axis rotation, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 * @return the x-axis rotation, or {@code null} if the type is not {@link PathElementType#ARC_TO}.
 	 */
 	@Pure
 	public DoubleProperty rotationXProperty() {
@@ -286,7 +286,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	/** Replies the property for the large ellipse arc flag.
 	 *
-	 * @return the flag, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 * @return the flag, or {@code null} if the type is not {@link PathElementType#ARC_TO}.
 	 */
 	@Pure
 	public BooleanProperty largeArcFlagProperty() {
@@ -295,14 +295,14 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	/** Replies the property for the sweep ellipse arc flag.
 	 *
-	 * @return the flag, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 * @return the flag, or {@code null} if the type is not {@link PathElementType#ARC_TO}.
 	 */
 	@Pure
 	public BooleanProperty sweepFlagProperty() {
 		return null;
 	}
 
-	/** An element of the path that represents a <code>MOVE_TO</code>.
+	/** An element of the path that represents a {@code MOVE_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @author $Author: hjaffali$
@@ -434,7 +434,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	}
 
-	/** An element of the path that represents a <code>LINE_TO</code>.
+	/** An element of the path that represents a {@code LINE_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @author $Author: hjaffali$
@@ -586,7 +586,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	}
 
-	/** An element of the path that represents a <code>QUAD_TO</code>.
+	/** An element of the path that represents a {@code QUAD_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @author $Author: hjaffali$
@@ -786,7 +786,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	}
 
-	/** An element of the path that represents a <code>CURVE_TO</code>.
+	/** An element of the path that represents a {@code CURVE_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @author $Author: hjaffali$
@@ -1037,7 +1037,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	}
 
-	/** An element of the path that represents a <code>CLOSE</code>.
+	/** An element of the path that represents a {@code CLOSE}.
 	 *
 	 * @author $Author: sgalland$
 	 * @author $Author: hjaffali$
@@ -1189,7 +1189,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 	}
 
-	/** An element of the path that represents a <code>ARC_TO</code>.
+	/** An element of the path that represents a {@code ARC_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -1221,8 +1221,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		 * @param xradius radius of the ellipse along its x axis.
 		 * @param yradius radius of the ellipse along its y axis.
 		 * @param xrotation rotation (in radians) of the ellipse's x axis.
-		 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
-		 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+		 * @param largeArcFlag {@code true} iff the path will sweep the long way around the ellipse.
+		 * @param sweepFlag {@code true} iff the path will sweep clockwise around the ellipse.
 		 */
 		ArcPathElement2dfx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty tox, DoubleProperty toy,
 		        DoubleProperty xradius, DoubleProperty yradius, DoubleProperty xrotation,
@@ -1250,8 +1250,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		 * @param xradius radius of the ellipse along its x axis.
 		 * @param yradius radius of the ellipse along its y axis.
 		 * @param xrotation rotation (in radians) of the ellipse's x axis.
-		 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
-		 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+		 * @param largeArcFlag {@code true} iff the path will sweep the long way around the ellipse.
+		 * @param sweepFlag {@code true} iff the path will sweep clockwise around the ellipse.
 		 */
 		ArcPathElement2dfx(Point2dfx fromPoint, Point2dfx toPoint, DoubleProperty xradius, DoubleProperty yradius,
 		        DoubleProperty xrotation, BooleanProperty largeArcFlag, BooleanProperty sweepFlag) {

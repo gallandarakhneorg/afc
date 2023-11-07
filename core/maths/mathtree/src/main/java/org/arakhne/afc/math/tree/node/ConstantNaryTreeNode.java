@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,16 +33,16 @@ import org.arakhne.afc.math.tree.TreeNode;
  * tree. This node has a constant count of children.
  * Indeed when a child node was removed, the count of children
  * is not changed. It also means that a child node could be
- * <code>null</code>. If you want a generic implementation
+ * {@code null}. If you want a generic implementation
  * of a tree node which has a dynamic count count of children,
  * please see {@link NaryTreeNode}.
  *
  * <h3>moveTo</h3>
  * According to its definition in
  * {@link TreeNode#moveTo(TreeNode, int)}, the binary
- * tree node implementation of <code>moveTo</code>
+ * tree node implementation of {@code moveTo}
  * replaces any existing node at the position given as
- * parameter of <code>moveTo</code>..
+ * parameter of {@code moveTo}..
  *
  * @param <D> is the type of the data inside the tree
  * @param <N> is the type of the tree nodes.
@@ -88,7 +88,7 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 	/** Construct a node.
 	 * @param childCount is the constant count of child
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 */
 	public ConstantNaryTreeNode(int childCount, boolean useLinkedList) {
 		super(useLinkedList);
@@ -98,10 +98,10 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 	/** Construct a node.
 	 * @param childCount is the constant count of child
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param copyDataCollection indicates if the given data collection is copied
-	 *     if <code>true</code> or the inner data collection will be the given
-	 *     collection itself if <code>false</code>.
+	 *     if {@code true} or the inner data collection will be the given
+	 *     collection itself if {@code false}.
 	 * @param data are the initial user data
 	 */
 	public ConstantNaryTreeNode(int childCount, boolean useLinkedList, boolean copyDataCollection, List<D> data) {
@@ -112,7 +112,7 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 	/** Construct a node.
 	 * @param childCount is the constant count of child
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param data are the initial user data
 	 */
 	public ConstantNaryTreeNode(int childCount, boolean useLinkedList, D data) {
@@ -155,7 +155,7 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 	 * If you want to unlink the first-level
 	 * child node with
 	 * this node but leave the rest of the tree
-	 * unchanged, please call <code>setChildAt(i,null)</code>.
+	 * unchanged, please call {@code setChildAt(i,null)}.
 	 */
 	@Override
 	public void clear() {
@@ -210,8 +210,8 @@ public abstract class ConstantNaryTreeNode<D, N extends ConstantNaryTreeNode<D, 
 
 	/** Set the child at the given index in this node.
 	 *
-	 * @param index is the index of the new child between <code>0</code>
-	 *     and <code>getChildCount()</code> (inclusive).
+	 * @param index is the index of the new child between {@code 0}
+	 *     and {@code getChildCount()} (inclusive).
 	 * @param newChild is the child to insert.
 	 */
 	@Override

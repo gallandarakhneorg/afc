@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -262,7 +262,7 @@ public enum MapMetricProjection {
 
 	/** Replies the default map metric projection.
 	 *
-	 * @return the default projection, never <code>null</code>.
+	 * @return the default projection, never {@code null}.
 	 */
 	@Pure
 	public static MapMetricProjection getDefault() {
@@ -280,7 +280,7 @@ public enum MapMetricProjection {
 	 *
 	 * @param newProjection is the target projection.
 	 * @param point is the point to convert in the current project.
-	 * @return the point converted into the target projection; never <code>null</code>.
+	 * @return the point converted into the target projection; never {@code null}.
 	 */
 	@Pure
 	public abstract Point2d convertTo(MapMetricProjection newProjection, Point2D<?, ?> point);

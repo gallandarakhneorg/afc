@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ public interface GISEditable extends GISPrimitive {
 
 	/** Replies the color stored inside this element.
 	 *
-	 * @return the color of this element, or <code>null</code>.
+	 * @return the color of this element, or {@code null}.
 	 */
 	@Pure
 	Integer getRawColor();
@@ -82,13 +82,13 @@ public interface GISEditable extends GISPrimitive {
 
 	/** Replies if this editable object want to be seen as a reed-only object.
 	 *
-	 * <p>Even if this object replies <code>true</code>, it is possible to change
+	 * <p>Even if this object replies {@code true}, it is possible to change
 	 * its attributes. The value replied by this function is just a desire
 	 * from this object. It could be used by the GUI to allow edition or not
 	 * from a graphical component.
 	 *
-	 * @return <code>true</code> if this object ant to be assumed as read-only,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this object ant to be assumed as read-only,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	boolean isReadOnlyObject();

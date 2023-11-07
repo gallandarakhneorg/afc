@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -136,7 +136,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	private Progression taskProgression;
 
 	/** Index of the next record to read.
-	 * If <code>-1</code>, the index is unknown.
+	 * If {@code -1}, the index is unknown.
 	 */
 	private int nextExpectedRecordIndex = -1;
 
@@ -177,7 +177,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 
 	/** Replies if the header was read.
 	 *
-	 * @return <code>true</code> if the header was read, otherwise <code>false</code>
+	 * @return {@code true} if the header was read, otherwise {@code false}
 	 */
 	@Pure
 	protected boolean isHeaderRead() {
@@ -186,7 +186,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 
 	/** Replies the task progression.
 	 *
-	 * @return the task progression object associated to this writer, or <code>null</code>
+	 * @return the task progression object associated to this writer, or {@code null}
 	 */
 	@Pure
 	public Progression getTaskProgression() {
@@ -195,7 +195,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 
 	/** Set the task progression associated to this writer.
 	 *
-	 * @param progressBar is the task progression object associated to this writer, or <code>null</code>
+	 * @param progressBar is the task progression object associated to this writer, or {@code null}
 	 */
 	public void setTaskProgression(Progression progressBar) {
 		this.taskProgression = progressBar;
@@ -217,7 +217,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 *
 	 * <p>This type of element is extracted from header.
 	 *
-	 * @return the type of element, or <code>null</code> if
+	 * @return the type of element, or {@code null} if
 	 *     the header could not be read.
 	 */
 	public ShapeElementType getShapeElementType() {
@@ -243,7 +243,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 
 	/** Replies the bounds read from the shape file header.
 	 *
-	 * @return the bounds or <code>null</code>
+	 * @return the bounds or {@code null}
 	 */
 	public ESRIBounds getBoundsFromHeader() {
 		try {
@@ -400,8 +400,8 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 
 	/** Replies if the seek feature is enabled.
 	 *
-	 * @return <code>true</code> if the seek feature is enabled,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the seek feature is enabled,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public boolean isSeekEnabled() {
@@ -422,7 +422,7 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 
 	/** Read the elements for a shape file.
 	 *
-	 * @return the list of the elements read from the Shape file or <code>null</code> on end-of-file.
+	 * @return the list of the elements read from the Shape file or {@code null} on end-of-file.
 	 * @throws IOException in case of error.
 	 */
 	public E read() throws IOException {
@@ -495,8 +495,8 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 
 	/** Called after all the entries was read.
 	 *
-	 * @param success is <code>true</code> is the reading was successfull,
-	 *     otherwhise <code>false</code>.
+	 * @param success is {@code true} is the reading was successfull,
+	 *     otherwhise {@code false}.
 	 * @throws IOException in case of error.
 	 */
 	protected void postReadingStage(boolean success) throws IOException {
@@ -507,8 +507,8 @@ public abstract class AbstractCommonShapeFileReader<E> implements Iterable<E>, A
 	 * were read.
 	 *
 	 * @param element_representation is the value returned by the reading function.
-	 * @return <code>true</code> if the object is assumed to be valid (ie. replies by
-	 *     the reading function, otherwhise <code>false</code>.
+	 * @return {@code true} if the object is assumed to be valid (ie. replies by
+	 *     the reading function, otherwhise {@code false}.
 	 * @throws IOException in case of error.
 	 */
 	protected boolean postRecordReadingStage(E element_representation) throws IOException {

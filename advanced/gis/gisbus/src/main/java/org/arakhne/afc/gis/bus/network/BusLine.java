@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 
 	/** Create bus line with a memory-based attribute provider.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param network is the network which is containing this bus line.
 	 * @param name is the name of the new bus line
 	 * @since 2.0
@@ -97,7 +97,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 
 	/** Create bus line.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param network is the network which is containing this bus line.
 	 * @param name is the name of the new bus line
 	 * @param attributeProvider the attribute provider.
@@ -119,7 +119,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 
 	/** Create bus line with a memory-based attribute provider.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param name is the name of the new bus line
 	 * @since 2.0
 	 */
@@ -138,7 +138,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 
 	/** Create bus line.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param name is the name of the new bus line
 	 * @param attributeProvider the attribute provider.
 	 * @since 2.0
@@ -158,7 +158,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 
 	/** Create bus line with a memory-based attribute provider.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param network is the network which is containing this bus line.
 	 * @since 2.0
 	 */
@@ -177,7 +177,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 
 	/** Create bus line.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param network is the network which is containing this bus line.
 	 * @param attributeProvider the attribute provider.
 	 * @since 2.0
@@ -195,7 +195,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 
 	/** Create bus line with a memory-based attribute provider.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @since 2.0
 	 */
 	public BusLine(UUID id) {
@@ -212,7 +212,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 
 	/** Create bus line.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeProvider the attribute provider.
 	 * @since 2.0
 	 */
@@ -394,7 +394,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	 * Add a bus itinerary inside the bus line.
 	 *
 	 * @param busItinerary is the bus itinerary to insert.
-	 * @return <code>true</code> if the bus itinerary was added, otherwise <code>false</code>
+	 * @return {@code true} if the bus itinerary was added, otherwise {@code false}
 	 */
 	public boolean addBusItinerary(BusItinerary busItinerary) {
 		if (busItinerary == null) {
@@ -431,7 +431,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	 *
 	 * @param busItinerary is the bus itinerary to insert.
 	 * @param index the index.
-	 * @return <code>true</code> if the bus itinerary was added, otherwise <code>false</code>
+	 * @return {@code true} if the bus itinerary was added, otherwise {@code false}
 	 */
 	public boolean addBusItinerary(BusItinerary busItinerary, int index) {
 		if (busItinerary == null) {
@@ -492,7 +492,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	 * All the associated stops will be removed also.
 	 *
 	 * @param itinerary is the bus itinerary to remove.
-	 * @return <code>true</code> if the bus itinerary was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus itinerary was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusItinerary(BusItinerary itinerary) {
 		final int index = this.itineraries.indexOf(itinerary);
@@ -507,7 +507,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	 * All the associated stops will be removed also.
 	 *
 	 * @param index is the index of the bus itinerary to remove.
-	 * @return <code>true</code> if the bus itinerary was successfully removed, otherwise <code>false</code>
+	 * @return {@code true} if the bus itinerary was successfully removed, otherwise {@code false}
 	 */
 	public boolean removeBusItinerary(int index) {
 		try {
@@ -541,7 +541,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	 * Replies the index of the specified bus itinerary.
 	 *
 	 * @param itinerary is the bus itinerary to search for.
-	 * @return the index or <code>-1</code> if it was not found.
+	 * @return the index or {@code -1} if it was not found.
 	 */
 	public int indexOf(BusItinerary itinerary) {
 		return this.itineraries.indexOf(itinerary);
@@ -571,7 +571,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	 * Replies the bus itinerary with the specified name.
 	 *
 	 * @param name is the desired name
-	 * @return a bus itinerary or <code>null</code>
+	 * @return a bus itinerary or {@code null}
 	 */
 	public BusItinerary getBusItinerary(String name) {
 		return getBusItinerary(name, null);
@@ -581,7 +581,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	 * Replies the bus itinerary with the specified uuid.
 	 *
 	 * @param uuid the identifier.
-	 * @return BusItinerary or <code>null</code>
+	 * @return BusItinerary or {@code null}
 	 */
 	public BusItinerary getBusItinerary(UUID uuid) {
 		if (uuid == null) {
@@ -600,7 +600,7 @@ public class BusLine extends AbstractBusContainer<BusNetwork, BusItinerary> {
 	 *
 	 * @param name is the desired name
 	 * @param nameComparator is used to compare the names.
-	 * @return a bus itinerary or <code>null</code>
+	 * @return a bus itinerary or {@code null}
 	 */
 	public BusItinerary getBusItinerary(String name, Comparator<String> nameComparator) {
 		if (name == null) {

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,9 +35,9 @@ import org.arakhne.afc.math.tree.TreeNode;
  * <h3>moveTo</h3>
  * According to its definition in
  * {@link TreeNode#moveTo(TreeNode, int)}, the binary
- * tree node implementation of <code>moveTo</code>
+ * tree node implementation of {@code moveTo}
  * replaces any existing node at the position given as
- * parameter of <code>moveTo</code>..
+ * parameter of {@code moveTo}..
  *
  * @param <D> is the type of the data inside the tree
  * @param <N> is the type of the tree nodes.
@@ -80,7 +80,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 
 	/** Construct node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 */
 	public BinaryTreeNode(boolean useLinkedList) {
 		super(useLinkedList);
@@ -90,10 +90,10 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 
 	/** Construct node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param copyDataCollection indicates if the given data collection is copied
-	 *     if <code>true</code> or the inner data collection will be the given
-	 *     collection itself if <code>false</code>.
+	 *     if {@code true} or the inner data collection will be the given
+	 *     collection itself if {@code false}.
 	 * @param data are the initial data.
 	 */
 	public BinaryTreeNode(boolean useLinkedList, boolean copyDataCollection, List<D> data) {
@@ -104,7 +104,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 
 	/** Construct node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param data are the initial data.
 	 */
 	public BinaryTreeNode(boolean useLinkedList, D data) {
@@ -142,7 +142,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 	 * If you want to unlink the first-level
 	 * child node with
 	 * this node but leave the rest of the tree
-	 * unchanged, please call <code>setChildAt(i,null)</code>.
+	 * unchanged, please call {@code setChildAt(i,null)}.
 	 */
 	@Override
 	public void clear() {
@@ -187,7 +187,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 	/** Replies the child node at the specified position.
 	 *
 	 * @param index is the position of the child to reply.
-	 * @return the child or <code>null</code>
+	 * @return the child or {@code null}
 	 * @throws IndexOutOfBoundsException if the provided index does not correspond to a child node.
 	 */
 	@Pure
@@ -205,7 +205,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 	/** Set the left child of this node.
 	 *
 	 * @param newChild is the new left child
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean setLeftChild(N newChild) {
 		final N oldChild = this.left;
@@ -239,7 +239,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 
 	/** Set the left child of this node.
 	 *
-	 * @return the left child or <code>null</code> if it does not exist
+	 * @return the left child or {@code null} if it does not exist
 	 */
 	@Pure
 	public final N getLeftChild() {
@@ -249,7 +249,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 	/** Set the right child of this node.
 	 *
 	 * @param newChild is the new left child
-	 * @return <code>true</code> on success, otherwise <code>false</code>
+	 * @return {@code true} on success, otherwise {@code false}
 	 */
 	public boolean setRightChild(N newChild) {
 		final N oldChild = this.right;
@@ -283,7 +283,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 
 	/** Set the right child of this node.
 	 *
-	 * @return the right child or <code>null</code> if it does not exist
+	 * @return the right child or {@code null} if it does not exist
 	 */
 	@Pure
 	public final N getRightChild() {
@@ -312,7 +312,7 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 	 *
 	 * @param zone is the zone to set
 	 * @param newChild is the child to insert
-	 * @return <code>true</code> if the child was added, otherwise <code>false</code>
+	 * @return {@code true} if the child was added, otherwise {@code false}
 	 * @throws IndexOutOfBoundsException if the provided index does not correspond to a child node.
 	 */
 	public final boolean setChildAt(BinaryTreeZone zone, N newChild) {
@@ -493,10 +493,10 @@ public abstract class BinaryTreeNode<D, N extends BinaryTreeNode<D, N>> extends 
 		/** Replies the zone corresponding to the given index.
 		 * The index is the same as the ordinal value of the
 		 * enumeration. If the given index does not correspond
-		 * to an ordinal value, <code>null</code> is replied.
+		 * to an ordinal value, {@code null} is replied.
 		 *
 		 * @param index the index.
-		 * @return the zone or <code>null</code>
+		 * @return the zone or {@code null}
 		 */
 		@Pure
 		public static BinaryTreeZone fromInteger(int index) {

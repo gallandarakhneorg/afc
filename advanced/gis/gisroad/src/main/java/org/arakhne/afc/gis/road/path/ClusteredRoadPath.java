@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -145,7 +145,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 *
 	 * @param segment a segment.
 	 * @return the index of the first occurrence. of the given road segment or
-	 * <code>-1</code> if the road segment was not found.
+	 * {@code -1} if the road segment was not found.
 	 */
 	@Pure
 	public int indexOf(RoadSegment segment) {
@@ -165,7 +165,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 *
 	 * @param segment a segment.
 	 * @return the index of the last occurrence. of the given road segment or
-	 * <code>-1</code> if the road segment was not found.
+	 * {@code -1} if the road segment was not found.
 	 */
 	@Pure
 	public int lastIndexOf(RoadSegment segment) {
@@ -206,7 +206,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 * at the given index.
 	 *
 	 * @param index is the index of the road segment.
-	 * @return the road path, never <code>null</code>.
+	 * @return the road path, never {@code null}.
 	 */
 	@Pure
 	public RoadPath getPathForRoadSegmentAt(int index) {
@@ -275,7 +275,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 * @param path a path.
 	 * @param index an index.
 	 * @param iterator an iterator.
-	 * @return the removed segment, never <code>null</code>.
+	 * @return the removed segment, never {@code null}.
 	 */
 	private RoadSegment removeRoadSegmentAt(RoadPath path, int index, PathIterator iterator) {
 		final int pathIndex = this.paths.indexOf(path);
@@ -324,7 +324,7 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 *
 	 * @param end is the road path to add
 	 * @return the road path inside which the road segments are added; it could
-	 *     be <var>e</var> itself; return <code>null</code> if the elements cannot be
+	 *     be <var>e</var> itself; return {@code null} if the elements cannot be
 	 *     added.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
@@ -594,10 +594,10 @@ public class ClusteredRoadPath implements Collection<RoadPath> {
 	 * is inside this ClusteredRoadPath.
 	 * If this ClusteredRoadPath does not
 	 * contains exactly one road path, this
-	 * function returns <code>null</code>.
+	 * function returns {@code null}.
 	 *
 	 * @return the road path inside this ClusteredRoadPath,
-	 *     or <code>null</code> if no road path or too many
+	 *     or {@code null} if no road path or too many
 	 *     road path in this ClusteredRoadPath.
 	 */
 	@Pure

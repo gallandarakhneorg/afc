@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -111,7 +111,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	}
 
 	/** Constructor.
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param originalBounds are the bounds of the road network.
 	 * @param attributeProvider is the attribute collection associated to this network.
 	 * @since 4.0
@@ -123,7 +123,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	}
 
 	/** Constructor.
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param originalBounds are the bounds of the road network.
 	 * @since 4.0
 	 */
@@ -452,7 +452,7 @@ public class StandardRoadNetwork extends AbstractBoundedGISElement<GISContainer<
 	/** Add a road segment inside the road network.
 	 *
 	 * @param segment is the road segment to insert
-	 * @return <code>true</code> if segment successfully added, otherwise <code>false</code>
+	 * @return {@code true} if segment successfully added, otherwise {@code false}
 	 * @throws RoadNetworkException in case of error.
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})

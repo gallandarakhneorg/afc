@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,12 +49,12 @@ final class RoadNetworkIterator extends GraphIterator<RoadSegment, RoadConnectio
 	 * @param network is the road network to iterator on.
 	 * @param segment is the segment from which to start.
 	 * @param starting_point is the segment's point indicating the direction.
-	 * @param allowManyReplies must be <code>true</code> to allow cycles, otherwise <code>false</code>.
+	 * @param allowManyReplies must be {@code true} to allow cycles, otherwise {@code false}.
 	 * @param assumeOrientedSegments indicates if the iterator is taking into account
-	 *     the orientation of the road segments. If <code>true</code> it assumes that
-	 *     a segment could be reached by both its end points. If <code>false</code> it
+	 *     the orientation of the road segments. If {@code true} it assumes that
+	 *     a segment could be reached by both its end points. If {@code false} it
 	 *     assumes that a segment could be reach only one time. This parameter is used only
-	 *     when <var>allowManyReplies</var> was set to <code>true</code>.
+	 *     when <var>allowManyReplies</var> was set to {@code true}.
 	 * @param distanceToReachStartingPoint is the distance to reach the starting point.
 	 *     It must be negative or nul.
 	 */

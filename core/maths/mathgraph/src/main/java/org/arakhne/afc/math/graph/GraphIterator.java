@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,11 +46,11 @@ import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
  * the iterator against graph cycles.
  *
  * <p>The {@code assumeOrientedSegments} parameter indicates how the segments are considered
- * by the iterator. If {@code assumeOrientedSegments} is <code>true</code> it means
+ * by the iterator. If {@code assumeOrientedSegments} is {@code true} it means
  * that a segment reached by one of its end point is different than the same segment reached
- * by the other end point. If {@code assumeOrientedSegments} is <code>false</code> it means
+ * by the other end point. If {@code assumeOrientedSegments} is {@code false} it means
  * that the end points of the segments are not take into account. This parameter is usefull
- * only if {@code allowManyReplies} is set to <code>false</code>.
+ * only if {@code allowManyReplies} is set to {@code false}.
  *
  * @param <PT> is the type of node in the graph
  * @param <ST> is the type of edge in the graph
@@ -85,11 +85,11 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @param graph1 is the graph associated to this iterator.
 	 * @param segment is the segment from which to start.
 	 * @param point is the segment's point indicating the direction.
-	 * @param allowManyReplies1 may be <code>true</code> to allow to reply many times
-	 *     the same segment, otherwhise <code>false</code>.
-	 * @param assumeOrientedSegments1 may be <code>true</code> to assume that the same segment has two different
+	 * @param allowManyReplies1 may be {@code true} to allow to reply many times
+	 *     the same segment, otherwhise {@code false}.
+	 * @param assumeOrientedSegments1 may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
-	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
+	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
 	 *     the end points of a segment are not distinguished.
 	 * @param distanceToReachStartingPoint is the distance to reach the starting point.
 	 *     It must be negative or nul.
@@ -104,11 +104,11 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @param courseModel1 is the course model to use.
 	 * @param segment is the segment from which to start.
 	 * @param point is the segment's point indicating the direction.
-	 * @param allowManyReplies1 may be <code>true</code> to allow to reply many times the
-	 *     same segment, otherwhise <code>false</code>.
-	 * @param assumeOrientedSegments1 may be <code>true</code> to assume that the same segment has two different
+	 * @param allowManyReplies1 may be {@code true} to allow to reply many times the
+	 *     same segment, otherwhise {@code false}.
+	 * @param assumeOrientedSegments1 may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
-	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
+	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
 	 *     the end points of a segment are not distinguished.
 	 * @param distanceToReachStartingPoint is the distance to reach the starting point.
 	 *     It must be negative or nul.
@@ -124,11 +124,11 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	 * @param courseModel is the course model to use.
 	 * @param segment is the segment from which to start.
 	 * @param point is the segment's point indicating the direction.
-	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the
-	 *     same segment, otherwhise <code>false</code>.
-	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
+	 * @param allowManyReplies may be {@code true} to allow to reply many times the
+	 *     same segment, otherwhise {@code false}.
+	 * @param assumeOrientedSegments may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
-	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
+	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
 	 *     the end points of a segment are not distinguished.
 	 * @param distanceToReachStartingPoint is the distance to reach the starting point.
 	 * @param distanceToConsumeAfter is the distance to consume after traversing the segment.
@@ -173,12 +173,12 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 
 	/** Invoked when a comparator on visited segments is required.
 	 *
-	 * @param assumeOrientedSegments1 may be <code>true</code> to assume that the same segment has two different
+	 * @param assumeOrientedSegments1 may be {@code true} to assume that the same segment has two different
 	 *     instances for graph iteration: the first instance is associated the first point of the segment and the second
-	 *     instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
+	 *     instance is associated to the last point of the segment. If this parameter is {@code false} to assume that
 	 *     the end points of a segment are not distinguished.
-	 * @return the graph element iterator, or <code>null</code> to use the
-	 *     default comparation behaviour of the <code>GraphIterationElement</code>.
+	 * @return the graph element iterator, or {@code null} to use the
+	 *     default comparation behaviour of the {@code GraphIterationElement}.
 	 */
 	@Pure
 	protected Comparator<GraphIterationElement<ST, PT>> createVisitedSegmentComparator(boolean assumeOrientedSegments1) {
@@ -205,7 +205,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 
 	/** Replies the next segments.
 	 *
-	 * @param avoid_visited_segments is <code>true</code> to avoid to reply already visited segments, otherwise <code>false</code>
+	 * @param avoid_visited_segments is {@code true} to avoid to reply already visited segments, otherwise {@code false}
 	 * @param element is the element from which the next segments must be replied.
 	 * @return the list of the following segments
 	 * @see #next()
@@ -373,7 +373,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 	/** Replies if the specified element could be added into the list of futher elements.
 	 *
 	 * @param element the element to test.
-	 * @return <code>true</code> if the given element is addable into the associated list.
+	 * @return {@code true} if the given element is addable into the associated list.
 	 */
 	@Pure
 	protected boolean canGotoIntoElement(GraphIterationElement<ST, PT> element) {
@@ -417,7 +417,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 
 	/** Replies if this iterator is assumed that a segment may be replied many times.
 	 *
-	 * @return <code>true</code> if this iterator allows cycles, otherwise <code>false</code>
+	 * @return {@code true} if this iterator allows cycles, otherwise {@code false}
 	 */
 	@Pure
 	public final boolean isManySegmentReplyEnabled() {
@@ -426,7 +426,7 @@ public class GraphIterator<ST extends GraphSegment<ST, PT>, PT extends GraphPoin
 
 	/** Replies if this iterator is assumed oriented segments or not.
 	 *
-	 * @return <code>true</code> if this iterator assumes oriented segments, otherwise <code>false</code>
+	 * @return {@code true} if this iterator assumes oriented segments, otherwise {@code false}
 	 */
 	@Pure
 	public final boolean isOrientedSegmentSupportEnabled() {

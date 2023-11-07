@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,8 +94,8 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	 *
 	 * @param inside is the path to change.
 	 * @param elements are the elements to insert.
-	 * @return <code>true</code> if all the elements were added;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if all the elements were added;
+	 *     otherwise {@code false}.
 	 * @since 4.0
 	 */
 	public static boolean addPathToPath(RoadPath inside, RoadPath elements) {
@@ -167,8 +167,8 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	/** Replies if the given road path is connectable to this road path.
 	 *
 	 * @param path a path.
-	 * @return <code>true</code> if the given road path is connectable;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given road path is connectable;
+	 *     otherwise {@code false}.
 	 * @since 4.0
 	 * @see #isFirstPointConnectableTo(RoadPath)
 	 * @see #isLastPointConnectableTo(RoadPath)
@@ -195,7 +195,7 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	 * that could be connected to the first point of the current path.
 	 *
 	 * @param path is the path from which a road segment should be read.
-	 * @return the connectable segment from the <var>path</var>; or <code>null</code>
+	 * @return the connectable segment from the <var>path</var>; or {@code null}
 	 *      if no connection is possible.
 	 * @since 4.0
 	 */
@@ -224,7 +224,7 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	 * that could be connected to the last point of the current path.
 	 *
 	 * @param path is the path from which a road segment should be read.
-	 * @return the connectable segment from the <var>path</var>; or <code>null</code>
+	 * @return the connectable segment from the <var>path</var>; or {@code null}
 	 *     if no connection is possible.
 	 * @since 4.0
 	 */
@@ -252,8 +252,8 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	/** Replies if the given road path is connectable to the first point of this road path.
 	 *
 	 * @param path a path
-	 * @return <code>true</code> if the given road path is connectable;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given road path is connectable;
+	 *     otherwise {@code false}.
 	 * @since 4.0
 	 * @see #isConnectableTo(RoadPath)
 	 * @see #isLastPointConnectableTo(RoadPath)
@@ -276,8 +276,8 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	/** Replies if the given road path is connectable to the last point of this road path.
 	 *
 	 * @param path a path.
-	 * @return <code>true</code> if the given road path is connectable;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given road path is connectable;
+	 *     otherwise {@code false}.
 	 * @since 4.0
 	 * @see #isConnectableTo(RoadPath)
 	 * @see #isFirstPointConnectableTo(RoadPath)
@@ -302,8 +302,8 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 	 * <p>This function is based on {@link RoadConnection#isReallyCulDeSac()}
 	 * which permits to identify the cul-de-sac ways.
 	 *
-	 * @return <code>true</code> if the last ponit in this path was marked
-	 *     as cul-de-sac, otherwise <code>false</code>.
+	 * @return {@code true} if the last ponit in this path was marked
+	 *     as cul-de-sac, otherwise {@code false}.
 	 * @see RoadConnection#isReallyCulDeSac()
 	 */
 	@Pure
@@ -314,7 +314,7 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 
 	/** Replies the first cross-road point in the path.
 	 *
-	 * @return the cross-road point or <code>null</code> if none.
+	 * @return the cross-road point or {@code null} if none.
 	 */
 	@Pure
 	public RoadConnection getFirstCrossRoad() {
@@ -328,7 +328,7 @@ public class RoadPath extends GraphPath<RoadPath, RoadSegment, RoadConnection> {
 
 	/** Replies the first cul-de-sac or cross-road point in the path.
 	 *
-	 * @return the cul-de-sac/cross-road point or <code>null</code> if none.
+	 * @return the cul-de-sac/cross-road point or {@code null} if none.
 	 */
 	@Pure
 	public CrossRoad getFirstJunctionPoint() {

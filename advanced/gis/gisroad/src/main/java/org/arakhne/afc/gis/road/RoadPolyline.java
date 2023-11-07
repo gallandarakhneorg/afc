@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,7 +112,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 
 	/** Create a new road segment.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @since 4.0
 	 */
 	public RoadPolyline(UUID id) {
@@ -121,7 +121,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 
 	/** Create a new road segment.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeProvider is the attribute provider associated to this segment.
 	 * @since 4.0
 	 */
@@ -237,7 +237,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	 *
 	 * @param <CT> is the type of the connection to reply
 	 * @param connectionClass is the type of the connection to reply
-	 * @return the first point of <code>null</code>
+	 * @return the first point of {@code null}
 	 */
 	@Pure
 	<CT extends RoadConnection> CT getBeginPoint(Class<CT> connectionClass) {
@@ -264,7 +264,7 @@ public class RoadPolyline extends MapPolyline implements RoadSegment {
 	 *
 	 * @param <CT> is the type of the connection to reply
 	 * @param connectionClass is the type of the connection to reply
-	 * @return the last point of <code>null</code>
+	 * @return the last point of {@code null}
 	 */
 	@Pure
 	<CT extends RoadConnection> CT getEndPoint(Class<CT> connectionClass) {

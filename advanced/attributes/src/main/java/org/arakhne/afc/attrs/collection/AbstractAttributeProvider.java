@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,13 +50,13 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 
 	private static final long serialVersionUID = 1219373996718945571L;
 
-	/** Ensure that the <code>null</code> value for {@code rawAttributeValue}
+	/** Ensure that the {@code null} value for {@code rawAttributeValue}
 	 * is catched and replaced by a dedicated representant object.
-	 * This function permits to keep the type of a value even if it is <code>null</code>.
+	 * This function permits to keep the type of a value even if it is {@code null}.
 	 *
 	 * @param rawAttributeValue is the value to protect.
 	 * @param type is the type of the attribute to preserve over time.
-	 * @return the value, or the representant of the java <code>null</code> value.
+	 * @return the value, or the representant of the java {@code null} value.
 	 * @throws NullPointerException if the attribute value is {@code null} and this
 	 *     type of value is not allowed.
 	 * @see #unprotectNull(Object)
@@ -71,9 +71,9 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return rawAttributeValue;
 	}
 
-	/** Ensure that the <code>null</code> value for {@code rawAttributeValue}
-	 * is catched and the dedicated representant object for <code>null</code>
-	 * if replace by the real <code>null</code> java value.
+	/** Ensure that the {@code null} value for {@code rawAttributeValue}
+	 * is catched and the dedicated representant object for {@code null}
+	 * if replace by the real {@code null} java value.
 	 *
 	 * @param rawAttributeValue is the value to protect.
 	 * @return the value.

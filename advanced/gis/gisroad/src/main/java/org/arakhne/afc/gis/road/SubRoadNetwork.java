@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1146,7 +1146,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 		/** Replies the terminal start point if it exists.
 		 *
-		 * @return the terminal start point or <code>null</code>
+		 * @return the terminal start point or {@code null}
 		 */
 		@Pure
 		public final RoadConnection getTerminalStart() {
@@ -1155,7 +1155,7 @@ public class SubRoadNetwork extends SubGraph<RoadSegment, RoadConnection, RoadPa
 
 		/** Replies the terminal end point if it exists.
 		 *
-		 * @return the terminal end point or <code>null</code>
+		 * @return the terminal end point or {@code null}
 		 */
 		@Pure
 		public final RoadConnection getTerminalEnd() {

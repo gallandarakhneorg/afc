@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public class GeomFactory3ifx extends AbstractGeomFactory3D<Vector3ifx, Point3ifx>
-		implements GeomFactory3ai<PathElement3ifx, Point3ifx, Vector3ifx, RectangularPrism3ifx> {
+		implements GeomFactory3ai<PathElement3ifx, Point3ifx, Vector3ifx, AlignedBox3ifx> {
 
 	/** The singleton of the factory.
 	 */
@@ -130,17 +130,17 @@ public class GeomFactory3ifx extends AbstractGeomFactory3D<Vector3ifx, Point3ifx
 	}
 
 	@Override
-	public RectangularPrism3ifx newBox() {
-		return new RectangularPrism3ifx();
+	public AlignedBox3ifx newBox() {
+		return new AlignedBox3ifx();
 	}
 
 	@Override
 	@SuppressWarnings("checkstyle:magicnumber")
-	public RectangularPrism3ifx newBox(int x, int y, int z, int width, int height, int depth) {
+	public AlignedBox3ifx newBox(int x, int y, int z, int width, int height, int depth) {
 		assert width >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert height >= 0 : AssertMessages.positiveOrZeroParameter(4);
 		assert depth >= 0 : AssertMessages.positiveOrZeroParameter(5);
-		return new RectangularPrism3ifx(x, y, z, width, height, depth);
+		return new AlignedBox3ifx(x, y, z, width, height, depth);
 	}
 
 	@Override

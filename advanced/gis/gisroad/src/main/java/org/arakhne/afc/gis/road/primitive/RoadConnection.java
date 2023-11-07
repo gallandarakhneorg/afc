@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	/** Replies if the specified point is near this connection point.
 	 *
 	 * @param point is the point to test
-	 * @return <code>true</code> if the point is near this connection, otherwise false.
+	 * @return {@code true} if the point is near this connection, otherwise false.
 	 */
 	@Pure
 	boolean isNearPoint(Point2D<?, ?> point);
@@ -146,46 +146,46 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	 *     <td>1</td>
 	 *     <td>false</td>
 	 *     <td>n/a</td>
-	 *     <td><code>true</code></td>
-	 *     <td><code>true</code></td>
+	 *     <td>{@code true}</td>
+	 *     <td>{@code true}</td>
 	 * </tr>
 	 * <tr>
 	 *     <td>true</td>
 	 *     <td>n</td>
 	 *     <td>false</td>
 	 *     <td>n/a</td>
-	 *     <td><code>false</code></td>
-	 *     <td><code>false</code></td>
+	 *     <td>{@code false}</td>
+	 *     <td>{@code false}</td>
 	 * </tr>
 	 * <tr>
 	 *     <td>true</td>
 	 *     <td>1</td>
 	 *     <td>true</td>
 	 *     <td>1</td>
-	 *     <td><code>true</code></td>
-	 *     <td><code>true</code></td>
+	 *     <td>{@code true}</td>
+	 *     <td>{@code true}</td>
 	 * </tr>
 	 * <tr>
 	 *     <td>true</td>
 	 *     <td>n</td>
 	 *     <td>true</td>
 	 *     <td>1</td>
-	 *     <td><code>true</code></td>
-	 *     <td><code>false</code></td>
+	 *     <td>{@code true}</td>
+	 *     <td>{@code false}</td>
 	 * </tr>
 	 * <tr>
 	 *     <td>true</td>
 	 *     <td>n</td>
 	 *     <td>true</td>
 	 *     <td>m&lt;=n</td>
-	 *     <td><code>false</code></td>
-	 *     <td><code>false</code></td>
+	 *     <td>{@code false}</td>
+	 *     <td>{@code false}</td>
 	 * </tr>
 	 * </tbody>
 	 * </table>
 	 *
-	 * @return <code>true</code> if zero or one segment was connected
-	 *     to this point, otherwise <code>false</code>
+	 * @return {@code true} if zero or one segment was connected
+	 *     to this point, otherwise {@code false}
 	 * @see #isReallyCulDeSac()
 	 */
 	@Override
@@ -216,46 +216,46 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	 *     <td>1</td>
 	 *     <td>false</td>
 	 *     <td>n/a</td>
-	 *     <td><code>true</code></td>
-	 *     <td><code>true</code></td>
+	 *     <td>{@code true}</td>
+	 *     <td>{@code true}</td>
 	 * </tr>
 	 * <tr>
 	 *     <td>true</td>
 	 *     <td>n</td>
 	 *     <td>false</td>
 	 *     <td>n/a</td>
-	 *     <td><code>false</code></td>
-	 *     <td><code>false</code></td>
+	 *     <td>{@code false}</td>
+	 *     <td>{@code false}</td>
 	 * </tr>
 	 * <tr>
 	 *     <td>true</td>
 	 *     <td>1</td>
 	 *     <td>true</td>
 	 *     <td>1</td>
-	 *     <td><code>true</code></td>
-	 *     <td><code>true</code></td>
+	 *     <td>{@code true}</td>
+	 *     <td>{@code true}</td>
 	 * </tr>
 	 * <tr>
 	 *     <td>true</td>
 	 *     <td>n</td>
 	 *     <td>true</td>
 	 *     <td>1</td>
-	 *     <td><code>true</code></td>
-	 *     <td><code>false</code></td>
+	 *     <td>{@code true}</td>
+	 *     <td>{@code false}</td>
 	 * </tr>
 	 * <tr>
 	 *     <td>true</td>
 	 *     <td>n</td>
 	 *     <td>true</td>
 	 *     <td>m&lt;=n</td>
-	 *     <td><code>false</code></td>
-	 *     <td><code>false</code></td>
+	 *     <td>{@code false}</td>
+	 *     <td>{@code false}</td>
 	 * </tr>
 	 * </tbody>
 	 * </table>
 	 *
-	 * @return <code>true</code> if zero or one segment was connected
-	 *     to this point, otherwise <code>false</code>
+	 * @return {@code true} if zero or one segment was connected
+	 *     to this point, otherwise {@code false}
 	 * @see #isFinalConnectionPoint()
 	 */
 	@Pure
@@ -263,20 +263,20 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 
 	/** Replies if this connection has no connected segment.
 	 *
-	 * @return <code>true</code> if this object has no connected segment,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this object has no connected segment,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	boolean isEmpty();
 
 	/** Replies the other segment also connected to this point.
 	 * If more than 2 segments were connected to this point,
-	 * this function replies <code>null</code>.
+	 * this function replies {@code null}.
 	 *
 	 * @param refSegment the segment.
 	 * @return the first segment if <var>ref_segment</var> was the second one.
 	 *     the second segment if <var>ref_segment</var> was the first one.
-	 *     otherwise <code>null</code>.
+	 *     otherwise {@code null}.
 	 */
 	@Pure
 	RoadSegment getOtherSideSegment(RoadSegment refSegment);
@@ -304,11 +304,11 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	 * RoadConnexion by its two ends.
 	 * The semantics of the these values are:
 	 * <ul>
-	 * <li><code>true</code>, the segment will be replied by the iterator
+	 * <li>{@code true}, the segment will be replied by the iterator
 	 * when its start point will be found in the list;</li>
-	 * <li><code>false</code>, the segment will be replied by the iterator
+	 * <li>{@code false}, the segment will be replied by the iterator
 	 * when its end point will be found in the list;</li>
-	 * <li><code>null</code>, the segment will be replied when it will be
+	 * <li>{@code null}, the segment will be replied when it will be
 	 * found at the first time in the list.</li>
 	 * </ul>
 	 *
@@ -356,11 +356,11 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	 * RoadConnexion by its two ends.
 	 * The semantics of the these values are:
 	 * <ul>
-	 * <li><code>true</code>, the segment will be replied by the iterator
+	 * <li>{@code true}, the segment will be replied by the iterator
 	 * when its start point will be found in the list;</li>
-	 * <li><code>false</code>, the segment will be replied by the iterator
+	 * <li>{@code false}, the segment will be replied by the iterator
 	 * when its end point will be found in the list;</li>
-	 * <li><code>null</code>, the segment will be replied when it will be
+	 * <li>{@code null}, the segment will be replied when it will be
 	 * found at the first time in the list.</li>
 	 * </ul>
 	 *
@@ -444,11 +444,11 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	 * RoadConnexion by its two ends.
 	 * The semantics of the these values are:
 	 * <ul>
-	 * <li><code>true</code>, the segment will be replied by the iterator
+	 * <li>{@code true}, the segment will be replied by the iterator
 	 * when its start point will be found in the list;</li>
-	 * <li><code>false</code>, the segment will be replied by the iterator
+	 * <li>{@code false}, the segment will be replied by the iterator
 	 * when its end point will be found in the list;</li>
-	 * <li><code>null</code>, the segment will be replied when it will be
+	 * <li>{@code null}, the segment will be replied when it will be
 	 * found at the first time in the list.</li>
 	 * </ul>
 	 *
@@ -495,11 +495,11 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	 * RoadConnexion by its two ends.
 	 * The semantics of the these values are:
 	 * <ul>
-	 * <li><code>true</code>, the segment will be replied by the iterator
+	 * <li>{@code true}, the segment will be replied by the iterator
 	 * when its start point will be found in the list;</li>
-	 * <li><code>false</code>, the segment will be replied by the iterator
+	 * <li>{@code false}, the segment will be replied by the iterator
 	 * when its end point will be found in the list;</li>
-	 * <li><code>null</code>, the segment will be replied when it will be
+	 * <li>{@code null}, the segment will be replied when it will be
 	 * found at the first time in the list.</li>
 	 * </ul>
 	 *
@@ -582,11 +582,11 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	 * RoadConnexion by its two ends.
 	 * The semantics of the these values are:
 	 * <ul>
-	 * <li><code>true</code>, the segment will be replied by the iterator
+	 * <li>{@code true}, the segment will be replied by the iterator
 	 * when its start point will be found in the list;</li>
-	 * <li><code>false</code>, the segment will be replied by the iterator
+	 * <li>{@code false}, the segment will be replied by the iterator
 	 * when its end point will be found in the list;</li>
-	 * <li><code>null</code>, the segment will be replied when it will be
+	 * <li>{@code null}, the segment will be replied when it will be
 	 * found at the first time in the list.</li>
 	 * </ul>
 	 *
@@ -634,11 +634,11 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	 * RoadConnexion by its two ends.
 	 * The semantics of the these values are:
 	 * <ul>
-	 * <li><code>true</code>, the segment will be replied by the iterator
+	 * <li>{@code true}, the segment will be replied by the iterator
 	 * when its start point will be found in the list;</li>
-	 * <li><code>false</code>, the segment will be replied by the iterator
+	 * <li>{@code false}, the segment will be replied by the iterator
 	 * when its end point will be found in the list;</li>
-	 * <li><code>null</code>, the segment will be replied when it will be
+	 * <li>{@code null}, the segment will be replied when it will be
 	 * found at the first time in the list.</li>
 	 * </ul>
 	 *
@@ -721,11 +721,11 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	 * RoadConnexion by its two ends.
 	 * The semantics of the these values are:
 	 * <ul>
-	 * <li><code>true</code>, the segment will be replied by the iterator
+	 * <li>{@code true}, the segment will be replied by the iterator
 	 * when its start point will be found in the list;</li>
-	 * <li><code>false</code>, the segment will be replied by the iterator
+	 * <li>{@code false}, the segment will be replied by the iterator
 	 * when its end point will be found in the list;</li>
-	 * <li><code>null</code>, the segment will be replied when it will be
+	 * <li>{@code null}, the segment will be replied when it will be
 	 * found at the first time in the list.</li>
 	 * </ul>
 	 *
@@ -772,11 +772,11 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 	 * RoadConnexion by its two ends.
 	 * The semantics of the these values are:
 	 * <ul>
-	 * <li><code>true</code>, the segment will be replied by the iterator
+	 * <li>{@code true}, the segment will be replied by the iterator
 	 * when its start point will be found in the list;</li>
-	 * <li><code>false</code>, the segment will be replied by the iterator
+	 * <li>{@code false}, the segment will be replied by the iterator
 	 * when its end point will be found in the list;</li>
-	 * <li><code>null</code>, the segment will be replied when it will be
+	 * <li>{@code null}, the segment will be replied when it will be
 	 * found at the first time in the list.</li>
 	 * </ul>
 	 *
@@ -875,8 +875,8 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 		INCLUDE_BOTH;
 
 		/** Replies if the current constant includes the start connection point.
-		 * @return <code>true</code> if this type of inclusion allows the start segment to be iterated,
-		 *     otherwise <code>false</code>
+		 * @return {@code true} if this type of inclusion allows the start segment to be iterated,
+		 *     otherwise {@code false}
 		 */
 		@Pure
 		public boolean includeStart() {
@@ -884,8 +884,8 @@ public interface RoadConnection extends GraphPoint<RoadConnection, RoadSegment> 
 		}
 
 		/** Replies if the current constant includes the end connection point.
-		 * @return <code>true</code> if this type of inclusion allows the end segment to be iterated,
-		 *     otherwise <code>false</code>
+		 * @return {@code true} if this type of inclusion allows the end segment to be iterated,
+		 *     otherwise {@code false}
 		 */
 		@Pure
 		public boolean includeEnd() {

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,8 +62,8 @@ public interface GeoLocation extends Comparable<GeoLocation> {
 	/** Replies if the specified location is equals to this one.
 	 *
 	 * @param location the location to test.
-	 * @return <code>true</code> if the given location is equal to this location,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the given location is equal to this location,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	@Override
@@ -82,7 +82,7 @@ public interface GeoLocation extends Comparable<GeoLocation> {
 	 * class should provides a significant GPS point.
 	 *
 	 * @return the WGS84 (GPS) representation of this point; or
-	 * <code>null</code> if the GPS point could not be computed.
+	 * {@code null} if the GPS point could not be computed.
 	 */
 	@Pure
 	GeodesicPosition toGeodesicPosition();

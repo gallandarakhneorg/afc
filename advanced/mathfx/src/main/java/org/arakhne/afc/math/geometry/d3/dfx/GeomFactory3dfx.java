@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public class GeomFactory3dfx extends AbstractGeomFactory3D<Vector3dfx, Point3dfx>
-		implements GeomFactory3afp<PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
+		implements GeomFactory3afp<PathElement3dfx, Point3dfx, Vector3dfx, AlignedBox3dfx> {
 
 	/** The singleton of the factory.
 	 */
@@ -139,21 +139,21 @@ public class GeomFactory3dfx extends AbstractGeomFactory3D<Vector3dfx, Point3dfx
 	}
 
 	@Override
-	public RectangularPrism3dfx newBox() {
-		return new RectangularPrism3dfx();
+	public AlignedBox3dfx newBox() {
+		return new AlignedBox3dfx();
 	}
 
 	@Override
 	@SuppressWarnings("checkstyle:magicnumber")
-	public RectangularPrism3dfx newBox(double x, double y, double z, double width, double height, double depth) {
+	public AlignedBox3dfx newBox(double x, double y, double z, double width, double height, double depth) {
 		assert width >= 0. : AssertMessages.positiveOrZeroParameter(3);
 		assert height >= 0. : AssertMessages.positiveOrZeroParameter(4);
 		assert depth >= 0. : AssertMessages.positiveOrZeroParameter(5);
-		return new RectangularPrism3dfx(x, y, z, width, height, depth);
+		return new AlignedBox3dfx(x, y, z, width, height, depth);
 	}
 
 	@Override
-	public Path3afp<?, ?, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> newPath(PathWindingRule rule) {
+	public Path3afp<?, ?, PathElement3dfx, Point3dfx, Vector3dfx, AlignedBox3dfx> newPath(PathWindingRule rule) {
 		assert rule != null : AssertMessages.notNullParameter();
 		return new Path3dfx(rule);
 	}

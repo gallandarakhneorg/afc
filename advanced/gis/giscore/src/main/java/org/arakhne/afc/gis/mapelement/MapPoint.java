@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,7 +92,7 @@ public class MapPoint extends MapPonctualElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param point is a location component of the point in the geo-referenced space.
 	 * @since 4.0
 	 */
@@ -102,7 +102,7 @@ public class MapPoint extends MapPonctualElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param geoX is a location component of the point in the geo-referenced space.
 	 * @param geoY is a location component of the point in the geo-referenced space.
 	 * @since 4.0
@@ -113,7 +113,7 @@ public class MapPoint extends MapPonctualElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the provider of the attributes for this element.
 	 * @param point is a location component of the point in the geo-referenced space.
 	 * @since 4.0
@@ -124,7 +124,7 @@ public class MapPoint extends MapPonctualElement {
 
 	/** Create a new map element.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
 	 * @param attributeSource is the provider of the attributes for this element.
 	 * @param geoX is a location component of the point in the geo-referenced space.
 	 * @param geoY is a location component of the point in the geo-referenced space.
@@ -146,8 +146,8 @@ public class MapPoint extends MapPonctualElement {
 	 * Replies if this element has an intersection
 	 * with the specified rectangle.
 	 *
-	 * @return <code>true</code> if this MapElement is intersecting the specified area,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this MapElement is intersecting the specified area,
+	 *     otherwise {@code false}
 	 */
 	@Override
 	@Pure
@@ -196,8 +196,8 @@ public class MapPoint extends MapPonctualElement {
 	/** Set if this point must be drawn with a
 	 * double frame.
 	 *
-	 * @param doubleFramed is <code>true</code> if the point must have a double frame,
-	 *     otherwise <code>false</code>
+	 * @param doubleFramed is {@code true} if the point must have a double frame,
+	 *     otherwise {@code false}
 	 */
 	public void setDoubleFramed(boolean doubleFramed) {
 		this.doubleFramed = doubleFramed;
@@ -207,7 +207,7 @@ public class MapPoint extends MapPonctualElement {
 
 	/** Replies if this point is dfouble framed.
 	 *
-	 * @return <code>true</code> if this point has a double frame, otherwise <code>false</code>
+	 * @return {@code true} if this point has a double frame, otherwise {@code false}
 	 */
 	@Pure
 	public boolean isDoubleFramed() {

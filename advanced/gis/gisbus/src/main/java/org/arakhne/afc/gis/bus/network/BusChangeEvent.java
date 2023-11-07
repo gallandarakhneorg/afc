@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ public class BusChangeEvent extends EventObject {
 	 * @param type is the type of the event.
 	 * @param subObject is a changed subobject.
 	 * @param index is the index of the subObject in its parent.
-	 * @param propertyName is the name of the changed property, or <code>null</code>
+	 * @param propertyName is the name of the changed property, or {@code null}
 	 *     if no property changed.
 	 * @param oldValue is the old value of the changed property.
 	 * @param newValue is the new value of the changed property.
@@ -82,7 +82,7 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the type of the event.
 	 *
-	 * @return the type of the event, never <code>null</code>.
+	 * @return the type of the event, never {@code null}.
 	 */
 	@Pure
 	public BusChangeEventType getEventType() {
@@ -98,7 +98,7 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the changed object.
 	 *
-	 * @return the changed object or <code>null</code>.
+	 * @return the changed object or {@code null}.
 	 */
 	@Pure
 	public Object getChangedObject() {
@@ -123,7 +123,7 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the bus network.
 	 *
-	 * @return the bus network or <code>null</code>.
+	 * @return the bus network or {@code null}.
 	 */
 	@Pure
 	public BusNetwork getBusNetwork() {
@@ -132,7 +132,7 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the bus primitive.
 	 *
-	 * @return the bus primitive or <code>null</code>.
+	 * @return the bus primitive or {@code null}.
 	 */
 	@Pure
 	public BusPrimitive<?> getBusPrimitive() {
@@ -141,7 +141,7 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the bus line.
 	 *
-	 * @return the bus line or <code>null</code>.
+	 * @return the bus line or {@code null}.
 	 */
 	@Pure
 	public BusLine getBusLine() {
@@ -150,7 +150,7 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the bus hub.
 	 *
-	 * @return the bus hub or <code>null</code>.
+	 * @return the bus hub or {@code null}.
 	 */
 	@Pure
 	public BusHub getBusHub() {
@@ -159,7 +159,7 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the bus halt which is the source of this event.
 	 *
-	 * @return the bus halt or <code>null</code>.
+	 * @return the bus halt or {@code null}.
 	 */
 	@Pure
 	public BusItineraryHalt getBusHalt() {
@@ -168,7 +168,7 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the bus stop which is the source of this event.
 	 *
-	 * @return the bus stop or <code>null</code>.
+	 * @return the bus stop or {@code null}.
 	 */
 	@Pure
 	public BusStop getBusStop() {
@@ -177,7 +177,7 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the bus itinerary  which is the source of this event.
 	 *
-	 * @return the bus itinerary or <code>null</code>.
+	 * @return the bus itinerary or {@code null}.
 	 */
 	@Pure
 	public BusItinerary getBusItinerary() {
@@ -186,7 +186,7 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the bus itinerary  which is the source of this event.
 	 *
-	 * @return the bus itinerary or <code>null</code>.
+	 * @return the bus itinerary or {@code null}.
 	 */
 	@Pure
 	public RoadSegment getRoadSegment() {
@@ -329,7 +329,7 @@ public class BusChangeEvent extends EventObject {
 		/** Replies the addition type according to the given type.
 		 *
 		 * @param type the type.
-		 * @return the event type or <code>null</code>
+		 * @return the event type or {@code null}
 		 */
 		@Pure
 		static BusChangeEventType addition(Class<?> type) {
@@ -357,7 +357,7 @@ public class BusChangeEvent extends EventObject {
 		/** Replies the removal type according to the given type.
 		 *
 		 * @param type the type.
-		 * @return the event type or <code>null</code>
+		 * @return the event type or {@code null}
 		 */
 		@Pure
 		static BusChangeEventType removal(Class<?> type) {
@@ -385,7 +385,7 @@ public class BusChangeEvent extends EventObject {
 		/** Replies the change type according to the given type.
 		 *
 		 * @param type the type.
-		 * @return the event type or <code>null</code>
+		 * @return the event type or {@code null}
 		 */
 		@Pure
 		static BusChangeEventType change(Class<?> type) {
@@ -438,7 +438,7 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the name of the changed property.
 	 *
-	 * @return the property name or <code>null</code> if no property has changed.
+	 * @return the property name or {@code null} if no property has changed.
 	 */
 	@Pure
 	public String getPropertyName() {
@@ -447,8 +447,8 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the old value of the property that has changed.
 	 *
-	 * @return the old value of the property or <code>null</code> if
-	 * {@link #getPropertyName} replies <code>null</code>.
+	 * @return the old value of the property or {@code null} if
+	 * {@link #getPropertyName} replies {@code null}.
 	 */
 	public Object getOldPropertyValue() {
 		return this.oldValue;
@@ -456,8 +456,8 @@ public class BusChangeEvent extends EventObject {
 
 	/** Replies the new value of the property that has changed.
 	 *
-	 * @return the new value of the property or <code>null</code> if
-	 * {@link #getPropertyName} replies <code>null</code>.
+	 * @return the new value of the property or {@code null} if
+	 * {@link #getPropertyName} replies {@code null}.
 	 */
 	@Pure
 	public Object getNewPropertyValue() {

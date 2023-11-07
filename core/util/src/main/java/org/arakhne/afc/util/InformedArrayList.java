@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,9 +35,9 @@ import org.arakhne.afc.vmutil.ReflectionUtil;
  * <p>For the removal actions, a flag is available to
  * force this informed array list to
  * compute the best fitting type after the removal action.
- * If this flag is <code>false</code>, this class will
+ * If this flag is {@code false}, this class will
  * keep unchanged the previously computed type.
- * By default, this flag is <code>false</code> (see
+ * By default, this flag is {@code false} (see
  * {@link #isTypeRecomputedAfterRemoval()}).
  *
  * @param <E> is the type of the list's elements.
@@ -125,11 +125,11 @@ public class InformedArrayList<E> extends ArrayList<E> implements InformedIterab
 
 	/** Replies if this informed array list is trying to
 	 * compute the best fitting type after a removal.
-	 * If <code>false</code>, this class will keep unchanged
+	 * If {@code false}, this class will keep unchanged
 	 * the previously computed type.
 	 *
-	 * @return <code>true</code> if the type is recomputed
-	 *     after a removal, <code>false</code> if not.
+	 * @return {@code true} if the type is recomputed
+	 *     after a removal, {@code false} if not.
 	 */
 	public boolean isTypeRecomputedAfterRemoval() {
 		return this.updateWhenRemove;
@@ -137,11 +137,11 @@ public class InformedArrayList<E> extends ArrayList<E> implements InformedIterab
 
 	/** Set if this informed array list is trying to
 	 * compute the best fitting type after a removal.
-	 * If <code>false</code>, this class will keep unchanged
+	 * If {@code false}, this class will keep unchanged
 	 * the previously computed type.
 	 *
-	 * @param update is <code>true</code> if the type is recomputed
-	 *     after a removal, <code>false</code> if not.
+	 * @param update is {@code true} if the type is recomputed
+	 *     after a removal, {@code false} if not.
 	 */
 	public void setTypeRecomputedAfterRemoval(boolean update) {
 		this.updateWhenRemove = update;

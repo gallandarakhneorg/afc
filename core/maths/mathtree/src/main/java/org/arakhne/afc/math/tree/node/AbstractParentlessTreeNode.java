@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,13 +78,13 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 	private List<D> data;
 
 	/** Indicates if a linked list must be used to store the data.
-	 * If <code>false</code>, an ArrayList will be used.
+	 * If {@code false}, an ArrayList will be used.
 	 */
 	private final boolean linkedList;
 
 	/** Construct node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 */
 	public AbstractParentlessTreeNode(boolean useLinkedList) {
 		this.linkedList = useLinkedList;
@@ -97,10 +97,10 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 
 	/** Construct node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param copyDataCollection indicates if the given data collection is copied
-	 *     if <code>true</code> or the inner data collection will be the given
-	 *     collection itself if <code>false</code>.
+	 *     if {@code true} or the inner data collection will be the given
+	 *     collection itself if {@code false}.
 	 * @param idata are the initial user data
 	 */
 	public AbstractParentlessTreeNode(boolean useLinkedList, boolean copyDataCollection, List<D> idata) {
@@ -126,7 +126,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 
 	/** Construct node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param idata are the initial user data
 	 */
 	public AbstractParentlessTreeNode(boolean useLinkedList, Collection<D> idata) {
@@ -148,7 +148,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 
 	/** Construct node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param idata are the initial user data
 	 */
 	public AbstractParentlessTreeNode(boolean useLinkedList, D idata) {
@@ -171,7 +171,7 @@ public abstract class AbstractParentlessTreeNode<D, N extends AbstractParentless
 
 	/** Cast this node to N.
 	 *
-	 *  @return <code>this</code>
+	 *  @return {@code this}
 	 */
 	@SuppressWarnings("unchecked")
 	@Pure

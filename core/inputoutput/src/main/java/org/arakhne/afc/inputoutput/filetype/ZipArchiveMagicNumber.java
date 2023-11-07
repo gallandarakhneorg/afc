@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -145,9 +145,9 @@ public abstract class ZipArchiveMagicNumber extends MagicNumber {
 	 *
 	 * @param zipStream is the stream of the Zip archive
 	 * @param zipEntry is the zip entry that is corresponding to the innerFile given as parameter
-	 *     of the constructor, or <code>null</code> not significant.
-	 * @param zipEntryStream is the stream on the data of the given zip entry, or <code>null</code> not significant.
-	 * @return <code>true</code> if the stream is containing this magic number, otherwise <code>false</code>
+	 *     of the constructor, or {@code null} not significant.
+	 * @param zipEntryStream is the stream on the data of the given zip entry, or {@code null} not significant.
+	 * @return {@code true} if the stream is containing this magic number, otherwise {@code false}
 	 */
 	protected abstract boolean isContentType(ZipInputStream zipStream, ZipEntry zipEntry, InputStream zipEntryStream);
 

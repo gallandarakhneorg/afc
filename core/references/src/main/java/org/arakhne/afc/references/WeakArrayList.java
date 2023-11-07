@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * <tt>false</tt> for a value that previously appeared to be in the list.
  *
  * <p>If this map does not use a "deep expurge" of the released references,
- * it could contains <code>null</code> values that corresponds to
+ * it could contains {@code null} values that corresponds to
  * values that are released by the garbage collector. If a "deep expurge"
  * is used, all the values released by the garbage collector will be
  * removed from the map.
@@ -228,7 +228,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
 			j = 0;
 			for (int i = 0; i < this.size; ++i) {
 				ref = (Reference<T>) this.data[i];
-				if ((ref == null) || (ref.isEnqueued()) || (ref.get() == null)) {
+				if ((ref == null) || (ref.refersTo(null)) || (ref.get() == null)) {
 					if (ref != null) {
 						ref.clear();
 					}

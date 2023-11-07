@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 
 	/** Construct node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 */
 	public AbstractTreeNode(boolean useLinkedList) {
 		super(useLinkedList);
@@ -64,10 +64,10 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 
 	/** Construct node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param copyDataCollection indicates if the given data collection is copied
-	 *     if <code>true</code> or the inner data collection will be the given
-	 *     collection itself if <code>false</code>.
+	 *     if {@code true} or the inner data collection will be the given
+	 *     collection itself if {@code false}.
 	 * @param data are the initial user data.
 	 */
 	public AbstractTreeNode(boolean useLinkedList, boolean copyDataCollection, List<D> data) {
@@ -77,7 +77,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 
 	/** Construct node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param data are the initial user data.
 	 */
 	public AbstractTreeNode(boolean useLinkedList, Collection<D> data) {
@@ -87,7 +87,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 
 	/** Construct node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 *     If <code>false</code>, an ArrayList will be used.
+	 *     If {@code false}, an ArrayList will be used.
 	 * @param data are the initial user data.
 	 */
 	public AbstractTreeNode(boolean useLinkedList, D data) {
@@ -118,8 +118,8 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 	 *
 	 * @param newParent is the new parent.
 	 * @param fireEvent indicates if the event must be fired or not.
-	 * @return <code>true</code> if an event must be fired due to
-	 *     the action of this function, otherwise <code>false</code>.
+	 * @return {@code true} if an event must be fired due to
+	 *     the action of this function, otherwise {@code false}.
 	 * @since 4.0
 	 */
 	boolean setParentNodeReference(N newParent, boolean fireEvent) {
@@ -170,7 +170,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 
 	/** Fire the event for the node child sets.
 	 *
-	 * @param childIndex is the index of the child that was set. If the added node was root, this parameter is <code>0</code>.
+	 * @param childIndex is the index of the child that was set. If the added node was root, this parameter is {@code 0}.
 	 * @param newChild is the child that was added.
 	 */
 	protected final void firePropertyChildAdded(int childIndex, N newChild) {
@@ -198,7 +198,7 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 
 	/** Fire the event for the removed node child.
 	 *
-	 * @param childIndex is the index of the child that was removed. If the added node was root, this parameter is <code>0</code>.
+	 * @param childIndex is the index of the child that was removed. If the added node was root, this parameter is {@code 0}.
 	 * @param oldChild is the child that was removed.
 	 */
 	protected final void firePropertyChildRemoved(int childIndex, N oldChild) {
@@ -297,11 +297,11 @@ public abstract class AbstractTreeNode<D, N extends AbstractTreeNode<D, N>> exte
 	 * @param newParent is the new parent for this node.
 	 * @param index is the position of this node in the new parent.
 	 * @param isDynamicChildList indicates if the parent node has a dynamic list of children.
-	 *     If <code>true</code> the given {@code index} is clamped to
+	 *     If {@code true} the given {@code index} is clamped to
 	 *     avoid {@link IndexOutOfBoundsException} when inserting this node in the parent node.
-	 *     If <code>false</code> an {@link IndexOutOfBoundsException} is thrown when
+	 *     If {@code false} an {@link IndexOutOfBoundsException} is thrown when
 	 *     the given {@code index} is outside the range of children of the parent node.
-	 * @return <code>true</code> on success, otherwise <code>false</code>.
+	 * @return {@code true} on success, otherwise {@code false}.
 	 */
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	protected boolean moveTo(N newParent, int index, boolean isDynamicChildList) {

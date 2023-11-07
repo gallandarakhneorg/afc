@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ public class MultiValue<T> implements Serializable {
 	 * Replies a string representation of the value in this object.
 	 * If this object is set and has multiple different values, the
 	 * parameter {@code multiValueLabel} is replied.
-	 * If this object is not set or equals to <code>null</code>,
+	 * If this object is not set or equals to {@code null},
 	 * the empty string is replied.
 	 * Otherwise the value is replied.
 	 *
@@ -102,7 +102,7 @@ public class MultiValue<T> implements Serializable {
 
 	/** Replies the type of the value.
 	 *
-	 * @return the type or <code>null</code> if there is no value.
+	 * @return the type or {@code null} if there is no value.
 	 */
 	@Pure
 	@SuppressWarnings("unchecked")
@@ -141,7 +141,7 @@ public class MultiValue<T> implements Serializable {
 
 	/** Replies if the value was set.
 	 *
-	 * @return <code>true</code> is the value was set, otherwise <code>false</code>
+	 * @return {@code true} is the value was set, otherwise {@code false}
 	 */
 	@Pure
 	public boolean isSet() {
@@ -150,7 +150,7 @@ public class MultiValue<T> implements Serializable {
 
 	/** Replies if this MultiValue contains different values.
 	 *
-	 * @return <code>true</code> is values are different, otherwise <code>false</code>
+	 * @return {@code true} is values are different, otherwise {@code false}
 	 */
 	@Pure
 	public boolean isMultipleDifferentValues() {
@@ -159,7 +159,7 @@ public class MultiValue<T> implements Serializable {
 
 	/** Set if this MultiValue contains different values.
 	 *
-	 * @param multiple is <code>true</code> is values are different, otherwise <code>false</code>
+	 * @param multiple is {@code true} is values are different, otherwise {@code false}
 	 */
 	public void setMultipleDifferentValues(boolean multiple) {
 		this.isMultiple = true;

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,14 +27,14 @@ import java.net.URLStreamHandlerFactory;
 import org.arakhne.afc.vmutil.URISchemeType;
 
 /**
- * This class defines a factory for <code>URL</code> stream
+ * This class defines a factory for {@code URL} stream
  * "resource" and "file" protocol handlers.
  *
- * <p>It is used by the <code>URL</code> class to create a
- * <code>URLStreamHandler</code> for a "resource" protocol.
+ * <p>It is used by the {@code URL} class to create a
+ * {@code URLStreamHandler} for a "resource" protocol.
  *
  * <p>To use this factory, invoke the following code only ONCE time:
- * <code>URL.setURLStreamHandlerFactory(new FileResourceURLStreamHandlerFactory());</code>.
+ * {@code URL.setURLStreamHandlerFactory(new FileResourceURLStreamHandlerFactory());}.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

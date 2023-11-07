@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,8 +79,8 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 
 	/** Create a GISElement with the specified attribute provider.
 	 *
-	 * @param id is the unique identifier of this element, or <code>null</code> if unknown.
-	 * @param attributeSource is the attribute provider to use. If <code>null</code> was specified
+	 * @param id is the unique identifier of this element, or {@code null} if unknown.
+	 * @param attributeSource is the attribute provider to use. If {@code null} was specified
 	 *     the new GISElement will use a default attribute provider (most of the time an
 	 * {@link HeapAttributeCollection}
 	 * @since 4.0
@@ -143,7 +143,7 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 
 	/** Replies the object which contains this MapElement.
 	 *
-	 * @return the container or <code>null</code>
+	 * @return the container or {@code null}
 	 */
 	@Pure
 	public C getContainer() {
@@ -152,7 +152,7 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 
 	/** Replies the top-most object which contains this MapElement.
 	 *
-	 * @return the top container or <code>null</code>
+	 * @return the top container or {@code null}
 	 */
 	@Pure
 	public Object getTopContainer() {
@@ -210,14 +210,14 @@ public abstract class AbstractGISElement<C extends GISContainer<?>, T extends Ab
 	 * that for two elements with the same geo-localized points, they
 	 * have the same geo-location identifier (Geo-Id) and they
 	 * have different unique ientifier (Uid):
-	 * <pre><code>
+	 * <pre>{@code 
 	 * GISElement obj1 = new MapPolyline(100,10,200,30,300,4);
 	 * GISElement obj2 = new MapPolyline(100,10,200,30,300,4);
 	 * assert( obj1.getGeoId().equals(obj2.getGeoId()) );
 	 * assert( obj2.getGeoId().equals(obj1.getGeoId()) );
 	 * assert( ! obj1.getUid().equals(obj2.getUid()) );
 	 * assert( ! obj2.getUid().equals(obj1.getUid()) );
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @return an identifier
 	 * @since 4.0

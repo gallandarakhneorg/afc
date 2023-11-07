@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,12 +44,12 @@ public interface AStarSegmentOrientation<ST extends GraphSegment<ST, PT>, PT ext
 	 * from the given connection point {@code p}.
 	 *
 	 * <p>By default, this function uses the segment orientation tool passed as parameter
-	 * of the constructor, or replies <code>true</code>.
+	 * of the constructor, or replies {@code true}.
 	 *
 	 * @param entrySegment is the last traversed segment.
 	 * @param connection is the graph connection to test.
-	 * @return <code>true</code> if the segment {@code s} is traversable,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the segment {@code s} is traversable,
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	default boolean isTraversable(ST entrySegment, GraphPointConnection<PT, ST> connection) {

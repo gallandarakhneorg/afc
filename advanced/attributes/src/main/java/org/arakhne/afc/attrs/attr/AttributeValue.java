@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	/**
 	 * Replies a comparator suitable for attribute values.
 	 *
-	 * @return a comparator, never <code>null</code>
+	 * @return a comparator, never {@code null}
 	 */
 	@Pure
 	Comparator<? extends AttributeValue> valueComparator();
@@ -59,11 +59,11 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	 * a base type, ie. a number, a boolean
 	 * or a string.
 	 *
-	 * <p>The following code is always <code>true</code>:<br>
-	 * <code>isObjectValue() == !isBaseValue()</code>
+	 * <p>The following code is always {@code true}:<br>
+	 * {@code isObjectValue() == !isBaseValue()}
 	 *
-	 * @return <code>true</code> if this attribute is containing a base type value,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this attribute is containing a base type value,
+	 *     otherwise {@code false}
 	 * @see #isNullAllowed()
 	 * @see #isObjectValue()
 	 */
@@ -97,7 +97,7 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	 * with the value.
 	 *
 	 * @param type is the new type of this attribute
-	 * @return <code>true</code> if the cast was sucessfully done,
+	 * @return {@code true} if the cast was sucessfully done,
 	 *         otherwhise, if the value was lost because of the
 	 *         cast operation.
 	 */
@@ -249,11 +249,11 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	 * Replies of the value of this attribute is
 	 * a data object ie, java object or icon.
 	 *
-	 * <p>The following code is always <code>true</code>:<br>
-	 * <code>isObjectValue() == !isBaseValue()</code>
+	 * <p>The following code is always {@code true}:<br>
+	 * {@code isObjectValue() == !isBaseValue()}
 	 *
-	 * @return <code>true</code> if this attribute contains a object as value (ie, not a base type),
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this attribute contains a object as value (ie, not a base type),
+	 *     otherwise {@code false}
 	 * @see #isBaseType()
 	 * @see #isNullAllowed()
 	 */
@@ -550,8 +550,8 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	/**
 	 * Replies if a value was affected to this attribute.
 	 *
-	 * @return <code>true</code> if this attribute is containing a value,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this attribute is containing a value,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	boolean isAssigned();
@@ -559,11 +559,11 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	/**
 	 * Replies if a null value is allowed for this attribute.
 	 *
-	 * <p>If {@link #isBaseType()} replies <code>true</code>,
-	 * this function must always replies <code>false</code>.
+	 * <p>If {@link #isBaseType()} replies {@code true},
+	 * this function must always replies {@code false}.
 	 *
-	 * @return <code>true</code> if <code>null</code> is assigned to this attribute,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if {@code null} is assigned to this attribute,
+	 *     otherwise {@code false}
 	 * @see #isBaseType()
 	 * @see #isObjectValue()
 	 */
@@ -580,28 +580,28 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	 * <p>By default, this function does nothing. It is dependant of the application
 	 * implementation.
 	 *
-	 * @return <code>true</code> if the value was written, otherwhise <code>false</code>
+	 * @return {@code true} if the value was written, otherwhise {@code false}
 	 */
 	boolean flush();
 
 	/** Replies if a value of the given attribute type may
 	 * be cast to a value of this attribute type.
 	 *
-	 * <p>Caution: even if isAssignableFrom is replying <code>true</code>,
+	 * <p>Caution: even if isAssignableFrom is replying {@code true},
 	 * the {@link AttributeValue#cast(AttributeType)} and
 	 * {@link AttributeValue#castAndSet(AttributeType, Object)} may fail
 	 * if the target type does not support a specifical value of the
-	 * source type. The isAssignableFrom function replies <code>true</code>
+	 * source type. The isAssignableFrom function replies {@code true}
 	 * if a least one value of the source type is assignable to a value
 	 * of the target type.
 	 *
 	 * <p>This function is equivalent to:
-	 * <code>this.getType().isAssignableFrom(type)</code>
+	 * {@code this.getType().isAssignableFrom(type)}
 	 *
 	 * @param type th etype.
-	 * @return <code>true</code> if a value of the given
+	 * @return {@code true} if a value of the given
 	 * {@code type} may be cast to a value of the same type as this;
-	 *     otherwise <code>false</code>.
+	 *     otherwise {@code false}.
 	 * @since 4.0
 	 */
 	@Pure
@@ -610,21 +610,21 @@ public interface AttributeValue extends Cloneable, Serializable, JsonableObject 
 	/** Replies if a value of the given attribute type may
 	 * be cast to a value of this attribute type.
 	 *
-	 * <p>Caution: even if isAssignableFrom is replying <code>true</code>,
+	 * <p>Caution: even if isAssignableFrom is replying {@code true},
 	 * the {@link AttributeValue#cast(AttributeType)} and
 	 * {@link AttributeValue#castAndSet(AttributeType, Object)} may fail
 	 * if the target type does not support a specifical value of the
-	 * source type. The isAssignableFrom function replies <code>true</code>
+	 * source type. The isAssignableFrom function replies {@code true}
 	 * if a least one value of the source type is assignable to a value
 	 * of the target type.
 	 *
 	 * <p>This function is equivalent to:
-	 * <code>this.getType().isAssignableFrom(value.getType())</code>
+	 * {@code this.getType().isAssignableFrom(value.getType())}
 	 *
 	 * @param value the value.
-	 * @return <code>true</code> if the given value may be cast to
+	 * @return {@code true} if the given value may be cast to
 	 *     a value of the same type as this;
-	 *     otherwise <code>false</code>.
+	 *     otherwise {@code false}.
 	 * @since 4.0
 	 */
 	@Pure

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -111,8 +111,8 @@ public class ShapeFileIndexWriter extends AbstractCommonShapeFileWriter<ShapeFil
 	 *
 	 * <p>The length if the count of bytes inside the record (including record header and
 	 * record content). Assuming record header with length of 8 bytes and record
-	 * content with length of <code>l</code> bytes, the total record length
-	 * is <code>l</code>+8 bytes.
+	 * content with length of {@code l} bytes, the total record length
+	 * is {@code l}+8 bytes.
 	 *
 	 * <p>Because the ESRI standard stores this value as a count of 16-bit words
 	 * (not a count of bytes), it means that the given length may be a

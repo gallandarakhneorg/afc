@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,8 +56,8 @@ class GridCellElement<P extends GISPrimitive> implements Comparable<GridCellElem
 	/** Add a reference from this element to a cell that is containing this element.
 	 *
 	 * @param cell the grid cell.
-	 * @return <code>true</code> if the added cell is the reference;
-	 * <code>false</code> if the added cell is not the reference.
+	 * @return {@code true} if the added cell is the reference;
+	 * {@code false} if the added cell is not the reference.
 	 */
 	public boolean addCellLink(GridCell<P> cell) {
 		if (this.cells.add(cell)) {
@@ -69,8 +69,8 @@ class GridCellElement<P extends GISPrimitive> implements Comparable<GridCellElem
 	/** Add a reference from this element to a cell that is containing this element.
 	 *
 	 * @param cell the grid cell.
-	 * @return <code>true</code> if the removed cell is the reference;
-	 * <code>false</code> if the removed cell is not the reference.
+	 * @return {@code true} if the removed cell is the reference;
+	 * {@code false} if the removed cell is not the reference.
 	 */
 	public boolean removeCellLink(GridCell<P> cell) {
 		final int idx = this.cells.indexOf(cell);
@@ -96,8 +96,8 @@ class GridCellElement<P extends GISPrimitive> implements Comparable<GridCellElem
 	 * be attached when it is supposed by be inside only one cell.
 	 *
 	 * @param cell is the cell to test
-	 * @return <code>true</code> if the specified cell is the reference cell;
-	 * <code>false</code> otherwise.
+	 * @return {@code true} if the specified cell is the reference cell;
+	 * {@code false} otherwise.
 	 */
 	@Pure
 	public boolean isReferenceCell(GridCell<P> cell) {

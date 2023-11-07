@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
 import com.google.common.base.Strings;
 import org.eclipse.xtext.xbase.lib.Inline;
 
-/** Class that is testing if <code>@Inline</code> annotation.
+/** Class that is testing if {@code @Inline} annotation.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -40,12 +40,12 @@ public final class XbaseInlineTestUtil {
 		//
 	}
 
-	/** Replies the <code>@Inline</code> annotation on the given method.
+	/** Replies the {@code @Inline} annotation on the given method.
 	 *
 	 * @param type the type.
 	 * @param methodName the method name.
 	 * @param parameters the list of parameter types.
-	 * @return the annotation or <code>null</code>.
+	 * @return the annotation or {@code null}.
 	 * @throws RuntimeException in the case the method cannot be found.
 	 */
 	public static Inline getInlineAnnotation(Class<?> type, String methodName, Class<?>... parameters) {

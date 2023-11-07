@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public class GISEditableChangeAttributeChangeAdapter implements AttributeChangeL
 	/** Constructor.
 	 * @param listener is the listener to notify about any attribute change.
 	 * @param wrapper is the GISEditable to give to the listener when an attribute has changed,
-	 *     if <code>null</code> only the attribute change events with a GISEditable source will
+	 *     if {@code null} only the attribute change events with a GISEditable source will
 	 *     be forwarded.
 	 */
 	public GISEditableChangeAttributeChangeAdapter(GISEditableChangeListener listener, GISEditable wrapper) {

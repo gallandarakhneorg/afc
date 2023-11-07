@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ import org.arakhne.afc.math.test.geometry.d3.ai.AbstractPath3aiTest;
 
 @SuppressWarnings("all")
 @Disabled("temporary")
-public class Path3ifxTest extends AbstractPath3aiTest<Path3ifx, RectangularPrism3ifx> {
+public class Path3ifxTest extends AbstractPath3aiTest<Path3ifx, AlignedBox3ifx> {
 
 	@Override
 	protected TestShapeFactory3ifx createFactory() {
@@ -66,9 +66,9 @@ public class Path3ifxTest extends AbstractPath3aiTest<Path3ifx, RectangularPrism
 	@Disabled
 	public void boundingBoxProperty(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		ObjectProperty<RectangularPrism3ifx> property = this.shape.boundingBoxProperty();
+		ObjectProperty<AlignedBox3ifx> property = this.shape.boundingBoxProperty();
 		assertNotNull(property);
-		RectangularPrism3ifx box = property.get();
+		AlignedBox3ifx box = property.get();
 		assertNotNull(box);
 		assertEquals(0, box.getMinX());
 		assertEquals(-5, box.getMinY());
@@ -81,9 +81,9 @@ public class Path3ifxTest extends AbstractPath3aiTest<Path3ifx, RectangularPrism
 	@Disabled
 	public void controlPointBoundingBoxProperty(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		ObjectProperty<RectangularPrism3ifx> property = this.shape.controlPointBoundingBoxProperty();
+		ObjectProperty<AlignedBox3ifx> property = this.shape.controlPointBoundingBoxProperty();
 		assertNotNull(property);
-		RectangularPrism3ifx box = property.get();
+		AlignedBox3ifx box = property.get();
 		assertNotNull(box);
 		assertEquals(0, box.getMinX());
 		assertEquals(-5, box.getMinY());

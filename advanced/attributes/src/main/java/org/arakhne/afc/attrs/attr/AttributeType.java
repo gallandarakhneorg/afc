@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1108,8 +1108,8 @@ public enum AttributeType {
 	/** Replies if the specified value is an instanceof the type..
 	 *
 	 *  @param value is the value to test.
-	 *  @return <code>true</code> if the given value is an instance of
-	 *      this attribute type, otherwise <code>false</code>.
+	 *  @return {@code true} if the given value is an instance of
+	 *      this attribute type, otherwise {@code false}.
 	 */
 	@Pure
 	public boolean instanceOf(Object value) {
@@ -1128,8 +1128,8 @@ public enum AttributeType {
 	 * a base type, ie. a number, a boolean
 	 * or a string.
 	 *
-	 * @return <code>true</code> if this type is a base type,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this type is a base type,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public abstract boolean isBaseType();
@@ -1139,8 +1139,8 @@ public enum AttributeType {
 	 * a number type.
 	 * A number type is always a base type.
 	 *
-	 * @return <code>true</code> if this type is a number type,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this type is a number type,
+	 *     otherwise {@code false}
 	 * @since 4.0
 	 */
 	@Pure
@@ -1149,8 +1149,8 @@ public enum AttributeType {
 	/**
 	 * Replies if a null value is allowed for this attribute type.
 	 *
-	 * @return <code>true</code> if this type allows <code>null</code> value,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if this type allows {@code null} value,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	public abstract boolean isNullAllowed();
@@ -1158,18 +1158,18 @@ public enum AttributeType {
 	/** Replies if a value of the given attribute type may
 	 * be cast to a value of this attribute type.
 	 *
-	 * <p>Caution: even if isAssignableFrom is replying <code>true</code>,
+	 * <p>Caution: even if isAssignableFrom is replying {@code true},
 	 * the {@link AttributeValue#cast(AttributeType)} and
 	 * {@link AttributeValue#castAndSet(AttributeType, Object)} may fail
 	 * if the target type does not support a specifical value of the
-	 * source type. The isAssignableFrom function replies <code>true</code>
+	 * source type. The isAssignableFrom function replies {@code true}
 	 * if a least one value of the source type is assignable to a value
 	 * of the target type.
 	 *
 	 * @param type the type.
-	 * @return <code>true</code> if a value of the given
-	 *     {@code type} may be cast to a value of <code>this</code>;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if a value of the given
+	 *     {@code type} may be cast to a value of {@code this};
+	 *     otherwise {@code false}.
 	 * @since 4.0
 	 */
 	@Pure

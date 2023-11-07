@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public interface AttributeProvider  extends Cloneable, Serializable, JsonableObj
 	/** Replies if the given attribute exists.
 	 *
 	 * @param name the name.
-	 * @return <code>true</code> is an attribute with the given name exists, otherwise <code>false</code>
+	 * @return {@code true} is an attribute with the given name exists, otherwise {@code false}
 	 */
 	@Pure
 	boolean hasAttribute(String name);
@@ -108,7 +108,7 @@ public interface AttributeProvider  extends Cloneable, Serializable, JsonableObj
 	/** Replies the value for the given attribute.
 	 *
 	 * @param name the name.
-	 * @return the value or <code>null</code>
+	 * @return the value or {@code null}
 	 */
 	@Pure
 	AttributeValue getAttribute(String name);
@@ -218,7 +218,7 @@ public interface AttributeProvider  extends Cloneable, Serializable, JsonableObj
 	 * @param name the name.
 	 * @param defaultValue is the default value replied if the attribute
 	 *     has no value.
-	 * @return the value or <code>null</code>
+	 * @return the value or {@code null}
 	 */
 	@Pure
 	AttributeValue getAttribute(String name, AttributeValue defaultValue);
@@ -267,7 +267,7 @@ public interface AttributeProvider  extends Cloneable, Serializable, JsonableObj
 	/** Replies the attribute with the given name.
 	 *
 	 * @param name the name.
-	 * @return the attribute or <code>null</code>
+	 * @return the attribute or {@code null}
 	 */
 	@Pure
 	Attribute getAttributeObject(String name);
@@ -413,7 +413,7 @@ public interface AttributeProvider  extends Cloneable, Serializable, JsonableObj
 	 * The replied map is a copy of or an unmodifiable version
 	 * of the internal map, if it exists.q
 	 *
-	 * @return the map, never <code>null</code>.
+	 * @return the map, never {@code null}.
 	 */
 	@Pure
 	default Map<String, Object> toMap() {
@@ -424,7 +424,7 @@ public interface AttributeProvider  extends Cloneable, Serializable, JsonableObj
 
 	/** Fill the given map with the values stored in this attribute provider.
 	 *
-	 * @param mapToFill is the map to fill, never <code>null</code>.
+	 * @param mapToFill is the map to fill, never {@code null}.
 	 */
 	void toMap(Map<String, Object> mapToFill);
 

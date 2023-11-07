@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,11 +47,11 @@ final class DistanceBasedRoadNetworkIterator extends DepthGraphIterator<RoadSegm
 	 *     the <var>starting_point</var> (in meters).
 	 * @param segment is the segment from which to start.
 	 * @param starting_point is the segment's point indicating the direction.
-	 * @param allowManyReplies may be <code>true</code> to allow to reply many times
-	 *     the same segment, otherwhise <code>false</code>.
+	 * @param allowManyReplies may be {@code true} to allow to reply many times
+	 *     the same segment, otherwhise {@code false}.
 	 * @param assumeOrientedSegments indicates if the iterator is taking into account
-	 *     the orientation of the road segments. If <code>true</code> it assumes that
-	 *     a segment could be reached by both its end points. If <code>false</code> it
+	 *     the orientation of the road segments. If {@code true} it assumes that
+	 *     a segment could be reached by both its end points. If {@code false} it
 	 *     assumes that a segment could be reach only one time.
 	 * @deprecated since 16.0,
 	 *     see {@link #DistanceBasedRoadNetworkIterator(RoadSegmentContainer, double, double, RoadSegment,
@@ -78,11 +78,11 @@ final class DistanceBasedRoadNetworkIterator extends DepthGraphIterator<RoadSegm
 	 *     the <var>starting_point</var> (in meters).
 	 * @param segment is the segment from which to start.
 	 * @param starting_point is the segment's point indicating the direction.
-	 * @param allowManyReplies may be <code>true</code> to allow to reply many times
-	 *     the same segment, otherwhise <code>false</code>.
+	 * @param allowManyReplies may be {@code true} to allow to reply many times
+	 *     the same segment, otherwhise {@code false}.
 	 * @param assumeOrientedSegments indicates if the iterator is taking into account
-	 *     the orientation of the road segments. If <code>true</code> it assumes that
-	 *     a segment could be reached by both its end points. If <code>false</code> it
+	 *     the orientation of the road segments. If {@code true} it assumes that
+	 *     a segment could be reached by both its end points. If {@code false} it
 	 *     assumes that a segment could be reach only one time.
 	 * @param dynamicDepthUpdate if not {@code null}, it is used to dynamically update the {@code depth}.
 	 * @since 16.0
