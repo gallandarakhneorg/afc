@@ -14,22 +14,22 @@
 	<properties>
 		<afc.version>18.0-SNAPSHOT</afc.version>
 		<afc.p2.stable.version>17.0</afc.p2.stable.version>
-		<min.java.version>11</min.java.version>
-		<year>2021</year>
+		<min.java.version>17</min.java.version>
+		<year>2023</year>
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
 		<sourceEncoding>UTF-8</sourceEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<bytecode.optimize>false</bytecode.optimize>
 		<bytecode.debug>true</bytecode.debug>
 		<!-- Version of Mockito library (mockito-core) -->
-		<mockito.version>4.0.0</mockito.version>
-		<mockito.version.osgi>4.0.0</mockito.version.osgi>
+		<mockito.version>5.6.0</mockito.version>
+		<mockito.version.osgi>5.6.0</mockito.version.osgi>
 		<!-- Version of Junit 5 library (junit-jupiter-engine) -->
-		<junit5.version>5.8.1</junit5.version>
+		<junit5.version>5.10.0</junit5.version>
 		<!-- Version of SLF4J library (org.slf4j:slf4j-api) -->
-		<slf4j.version>2.0.0-alpha1</slf4j.version>
+		<slf4j.version>2.0.9</slf4j.version>
 		<!--  Version of the Jackson API (usually included by Bootique) (com.fasterxml.jackson.core:jackson-core) -->
-		<jacksonapi.version>2.12.3</jacksonapi.version>
+		<jacksonapi.version>2.15.2</jacksonapi.version>
 		<!-- URL of the deployment server base -->
 		<afc.deployment.server>org.arakhne-ftp</afc.deployment.server>
 		<afc.deployment.base>${env.ARAKHNEORG_SFTP}</afc.deployment.base>
@@ -209,6 +209,11 @@
 			<!-- ################################################## Third-Party Libraries 
 				################################################## -->
 			<dependency>
+				<groupId>org.openjfx</groupId>
+				<artifactId>javafx-fxml</artifactId>
+				<version>17.0.7-ea+1</version>
+			</dependency>
+			<dependency>
 			    <groupId>com.sun.activation</groupId>
 			    <artifactId>javax.activation</artifactId>
 			    <version>1.2.0</version>
@@ -216,7 +221,7 @@
 			<dependency>
 				<groupId>io.bootique</groupId>
 				<artifactId>bootique</artifactId>
-				<version>2.0.M1</version>
+				<version>3.0.M1</version>
 				<exclusions>
 						<exclusion>
 							<groupId>com.fasterxml.jackson.core</groupId>
@@ -290,7 +295,7 @@
 			<dependency>
 				<groupId>org.eclipse.xtext</groupId>
 				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
-				<version>2.25.0</version>
+				<version>2.32.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.felix</groupId>
@@ -300,27 +305,27 @@
 			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.main</artifactId>
-				<version>7.0.1</version>
+				<version>7.0.5</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-plugin-api</artifactId>
-				<version>3.8.3</version>
+				<version>3.9.5</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact</artifactId>
-				<version>3.8.3</version>
+				<version>3.9.5</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
-				<version>3.8.3</version>
+				<version>3.9.5</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-compat</artifactId>
-				<version>3.8.3</version>
+				<version>3.9.5</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
@@ -347,7 +352,7 @@
 			<dependency>
 				<groupId>org.tmatesoft.svnkit</groupId>
 				<artifactId>svnkit</artifactId>
-				<version>1.10.3</version>
+				<version>1.10.11</version>
 			</dependency>
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
@@ -376,7 +381,6 @@
 		<module>maven</module>
 		<module>core</module>
 		<module>advanced</module>
-		<module>p2</module>
 	</modules>
 
 	<licenses>
@@ -553,7 +557,7 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-ssh</artifactId>
-				<version>3.4.3</version>
+				<version>3.5.3</version>
 			</extension>
 		</extensions>
 		<pluginManagement>
@@ -561,27 +565,27 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>3.2.1</version>
+					<version>3.3.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.1</version>
+					<version>3.11.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.2.0</version>
+					<version>3.3.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>3.0.0-M1</version>
+					<version>3.1.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-plugin-plugin</artifactId>
-					<version>3.6.1</version>
+					<version>3.9.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -591,17 +595,17 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>3.3.0</version>
+					<version>3.6.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.2.0</version>
+					<version>3.3.1</version>
 				</plugin>
 				<plugin>
 				    <groupId>org.apache.maven.plugins</groupId>
 				    <artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M5</version>
+					<version>3.1.2</version>
 				    <configuration>
 				    	<forkCount>0</forkCount>
         				<reuseForks>false</reuseForks>
@@ -611,7 +615,7 @@
 				<plugin>
 				    <groupId>org.apache.maven.plugins</groupId>
 				    <artifactId>maven-failsafe-plugin</artifactId>
-				    <version>3.0.0-M5</version>
+				    <version>3.1.2</version>
 				    <configuration>
 				        <argLine>--illegal-access=permit</argLine>
 				    </configuration>
@@ -619,22 +623,22 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.4.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>3.9.1</version>
+					<version>3.12.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.3.1</version>
+					<version>3.6.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>5.1.2</version>
+					<version>5.1.9</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -644,22 +648,17 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-gpg-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>3.1.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.gmavenplus</groupId>
 					<artifactId>gmavenplus-plugin</artifactId>
-					<version>1.8.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.reficio</groupId>
-					<artifactId>p2-maven-plugin</artifactId>
-					<version>1.7.0</version>
+					<version>3.0.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>3.1.2</version>
+					<version>3.3.0</version>
 					<executions>
 						<execution>
 							<phase>process-classes</phase>
@@ -691,7 +690,7 @@
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
 							<!-- Same version as inside Eclipse IDE -->
-							<version>8.44</version>
+							<version>10.10.0</version>
 						</dependency>
 					</dependencies>
 				</plugin>
