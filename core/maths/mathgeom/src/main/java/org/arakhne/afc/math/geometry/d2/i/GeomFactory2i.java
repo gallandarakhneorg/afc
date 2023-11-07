@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -154,7 +154,6 @@ public class GeomFactory2i extends AbstractGeomFactory2D<Vector2i, Point2i>
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:parameternumber")
 	public PathElement2i newArcPathElement(int startX, int startY, int targetX, int targetY, int radiusX, int radiusY,
 			double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
 		return new PathElement2i.ArcPathElement2i(startX, startY, targetX, targetY,

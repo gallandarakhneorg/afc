@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,13 +45,13 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiShape3i<T>>
-        implements MultiShape3ai<Shape3i<?>, MultiShape3i<T>, T, PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
+        implements MultiShape3ai<Shape3i<?>, MultiShape3i<T>, T, PathElement3i, Point3i, Vector3i, Quaternion4i, AlignedBox3i> {
 
 	private static final long serialVersionUID = -4727279807601027239L;
 
 	private List<T> elements = new ListResponseModel();
 
-	private RectangularPrism3i bounds;
+	private AlignedBox3i bounds;
 
 	/**
 	 * Construct an empty multishape.
@@ -96,7 +96,6 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		return this.elements.hashCode();
 	}
@@ -122,7 +121,7 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 
 	@Pure
 	@Override
-	public RectangularPrism3i toBoundingBox() {
+	public AlignedBox3i toBoundingBox() {
 		if (this.bounds == null) {
 			this.bounds = getGeomFactory().newBox();
 			MultiShape3ai.super.toBoundingBox(this.bounds);
@@ -132,7 +131,7 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 
 	@Pure
 	@Override
-	public void toBoundingBox(RectangularPrism3i box) {
+	public void toBoundingBox(AlignedBox3i box) {
 		assert box != null : AssertMessages.notNullParameter();
 		if (this.bounds == null) {
 			this.bounds = getGeomFactory().newBox();
@@ -144,7 +143,7 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 	@Override
 	public void translate(int dx, int dy, int dz) {
 		if (dx != 0 || dy != 0 || dz != 0) {
-			final RectangularPrism3i box = this.bounds;
+			final AlignedBox3i box = this.bounds;
 			MultiShape3ai.super.translate(dx, dy, dz);
 			if (box != null) {
 				box.translate(dx, dy, dz);

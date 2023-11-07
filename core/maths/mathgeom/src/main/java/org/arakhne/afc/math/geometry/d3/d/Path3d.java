@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,9 +46,8 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:magicnumber")
 public class Path3d extends AbstractShape3d<Path3d>
-	    implements Path3afp<Shape3d<?>, Path3d, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
+	    implements Path3afp<Shape3d<?>, Path3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
 
 	private static final long serialVersionUID = 4567950736238157802L;
 
@@ -101,12 +100,12 @@ public class Path3d extends AbstractShape3d<Path3d>
 	 * drawn). The control points of the curves are
 	 * not considered in this bounds.
 	 */
-	private SoftReference<RectangularPrism3d> graphicalBounds;
+	private SoftReference<AlignedBox3d> graphicalBounds;
 
 	/** Buffer for the bounds of the path that corresponds
 	 * to all the points added in the path.
 	 */
-	private SoftReference<RectangularPrism3d> logicalBounds;
+	private SoftReference<AlignedBox3d> logicalBounds;
 
 	/** Buffer for the length of the path.
 	 */
@@ -151,7 +150,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	/** Constructor by copy.
      * @param path the path to copy.
      */
-	public Path3d(Path3afp<?, ?, ?, ?, ?, ?> path) {
+	public Path3d(Path3afp<?, ?, ?, ?, ?, ?, ?> path) {
 		set(path);
 	}
 
@@ -169,7 +168,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Pure
 	@Override
-	public boolean containsControlPoint(Point3D<?, ?> point) {
+	public boolean containsControlPoint(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
         for (int i = 0; i < this.numCoords; i += 3) {
 			final double x = this.coords[i];
@@ -211,7 +210,6 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Pure
 	@Override
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + this.numCoords;
@@ -229,7 +227,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 			this.coords[i++] += dy;
 			this.coords[i++] += dz;
 		}
-		RectangularPrism3d bb;
+		AlignedBox3d bb;
         bb = this.logicalBounds == null ? null : this.logicalBounds.get();
         if (bb != null) {
             bb.translate(dx, dy, dz);
@@ -244,7 +242,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Override
 	public void transform(Transform3D transform) {
         assert transform != null : AssertMessages.notNullParameter();
-		final Point3D<?, ?> p = new InnerComputationPoint3afp();
+		final Point3D<?, ?, ?> p = new InnerComputationPoint3afp();
         for (int i = 0; i < this.numCoords; i += 3) {
             p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 			transform.transform(p);
@@ -275,11 +273,11 @@ public class Path3d extends AbstractShape3d<Path3d>
 	}
 
 	@Override
-	public RectangularPrism3d toBoundingBox() {
-        RectangularPrism3d bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
+	public AlignedBox3d toBoundingBox() {
+        AlignedBox3d bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
-			Path3afp.computeDrawableElementBoundingBox(
+			Path3afp.calculatesDrawableElementBoundingBox(
 					getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
@@ -289,12 +287,12 @@ public class Path3d extends AbstractShape3d<Path3d>
 	}
 
 	@Override
-	public void toBoundingBox(RectangularPrism3d box) {
+	public void toBoundingBox(AlignedBox3d box) {
 		assert box != null : AssertMessages.notNullParameter();
-        RectangularPrism3d bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
+        AlignedBox3d bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
-			Path3afp.computeDrawableElementBoundingBox(
+			Path3afp.calculatesDrawableElementBoundingBox(
 					getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
@@ -423,11 +421,11 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	@Pure
-	public RectangularPrism3d toBoundingBoxWithCtrlPoints() {
-        RectangularPrism3d bb = this.logicalBounds == null ? null : this.logicalBounds.get();
+	public AlignedBox3d toBoundingBoxWithCtrlPoints() {
+        AlignedBox3d bb = this.logicalBounds == null ? null : this.logicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
-			Path3afp.computeControlPointBoundingBox(
+			Path3afp.calculatesControlPointBoundingBox(
 					getPathIterator(),
 					bb);
 			this.logicalBounds = new SoftReference<>(bb);
@@ -437,12 +435,12 @@ public class Path3d extends AbstractShape3d<Path3d>
 
 	@Override
 	@Pure
-	public void toBoundingBoxWithCtrlPoints(RectangularPrism3d box) {
+	public void toBoundingBoxWithCtrlPoints(AlignedBox3d box) {
 		assert box != null : AssertMessages.notNullParameter();
-        RectangularPrism3d bb = this.logicalBounds == null ? null : this.logicalBounds.get();
+        AlignedBox3d bb = this.logicalBounds == null ? null : this.logicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
-			Path3afp.computeControlPointBoundingBox(
+			Path3afp.calculatesControlPointBoundingBox(
 					getPathIterator(),
 					bb);
 			this.logicalBounds = new SoftReference<>(bb);
@@ -459,7 +457,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 				clone[i] = (int) this.coords[i];
 			}
 		} else {
-			final Point3D<?, ?> p = new InnerComputationPoint3afp();
+			final Point3D<?, ?, ?> p = new InnerComputationPoint3afp();
             for (int i = 0; i < clone.length; i += 3) {
                 p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 				transform.transform(p);
@@ -480,7 +478,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 				clone[i] = (float) this.coords[i];
 			}
 		} else {
-			final Point3D<?, ?> p = new InnerComputationPoint3afp();
+			final Point3D<?, ?, ?> p = new InnerComputationPoint3afp();
             for (int i = 0; i < clone.length; i += 3) {
                 p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 				transform.transform(p);
@@ -498,7 +496,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
 		}
-		final Point3D<?, ?> p = new InnerComputationPoint3afp();
+		final Point3D<?, ?, ?> p = new InnerComputationPoint3afp();
 		final double[] clone = new double[this.numCoords];
         for (int i = 0; i < clone.length; i += 3) {
             p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
@@ -537,8 +535,9 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Pure
 	public Point3d getPointAt(int index) {
 		assert index >= 0 && index < size() : AssertMessages.outsideRangeInclusiveParameter(index, 0, index - 1);
+		final int baseIndex = index * 3;
 		return getGeomFactory().newPoint(
-                this.coords[index * 2], this.coords[index * 2 + 1], this.coords[index * 2 + 2]);
+                this.coords[baseIndex], this.coords[baseIndex + 1], this.coords[baseIndex + 2]);
 	}
 
 	@Override
@@ -675,7 +674,6 @@ public class Path3d extends AbstractShape3d<Path3d>
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:parameternumber")
 	public void curveTo(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
 		ensureSlots(true, 9);
 		this.types[this.numTypes++] = PathElementType.CURVE_TO;
@@ -725,7 +723,6 @@ public class Path3d extends AbstractShape3d<Path3d>
 	}
 
 	@Override
-	@SuppressWarnings({"checkstyle:fallthrough", "checkstyle:cyclomaticcomplexity", "checkstyle:booleanexpressioncomplexity"})
 	public boolean remove(double x, double y, double z) {
         for (int i = 0, j = 0; i < this.numCoords && j < this.numTypes;) {
             switch (this.types[j]) {
@@ -819,7 +816,7 @@ public class Path3d extends AbstractShape3d<Path3d>
 	@Pure
 	public double getLength() {
 		if (this.length == null) {
-			this.length = Double.valueOf(Path3afp.computeLength(getPathIterator()));
+			this.length = Double.valueOf(Path3afp.calculatesLength(getPathIterator()));
 		}
 		return this.length.doubleValue();
 	}

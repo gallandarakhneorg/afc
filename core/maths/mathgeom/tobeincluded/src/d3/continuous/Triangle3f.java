@@ -86,8 +86,8 @@ public class Triangle3f extends AbstractTriangle3F {
 	 * @param p2
 	 * @param p3
 	 * @param copyPoints indicates if the given points may be copied
-	 * or referenced by this triangle. If <code>true</code> points
-	 * will be copied, <code>false</code> points will be referenced.
+	 * or referenced by this triangle. If {@code true} points
+	 * will be copied, {@code false} points will be referenced.
 	 */
 	public Triangle3f(Point3f p_1, Point3f p_2, Point3f p_3, boolean copyPoints) {
 		if (copyPoints) {

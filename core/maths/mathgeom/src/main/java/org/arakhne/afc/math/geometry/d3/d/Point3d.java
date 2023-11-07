@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ import org.arakhne.afc.vmutil.json.JsonBuffer;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector3d> {
+public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector3d, Quaternion4d> {
 
 	private static final long serialVersionUID = -8318943957531471869L;
 
@@ -129,7 +129,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Pure
 	@Override
-	public double getDistanceSquared(Point3D<?, ?> pt) {
+	public double getDistanceSquared(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final double dx = this.x - pt.getX();
 		final double dy = this.y - pt.getY();
@@ -139,7 +139,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Pure
 	@Override
-	public double getDistance(Point3D<?, ?> pt) {
+	public double getDistance(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final double dx = this.x - pt.getX();
 		final double dy = this.y - pt.getY();
@@ -149,32 +149,32 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Pure
 	@Override
-	public double getDistanceL1(Point3D<?, ?> pt) {
+	public double getDistanceL1(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
         return Math.abs(this.x - pt.getX()) + Math.abs(this.y - pt.getY()) + Math.abs(this.z - pt.getZ());
 	}
 
 	@Pure
 	@Override
-	public double getDistanceLinf(Point3D<?, ?> pt) {
+	public double getDistanceLinf(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
         return MathUtil.max(Math.abs(this.x - pt.getX()), Math.abs(this.y - pt.getY()), Math.abs(this.z - pt.getZ()));
 	}
 
 	@Pure
 	@Override
-	public int getIdistanceL1(Point3D<?, ?> pt) {
+	public int getIdistanceL1(Point3D<?, ?, ?> pt) {
 		return (int) getDistanceL1(pt);
 	}
 
 	@Pure
 	@Override
-	public int getIdistanceLinf(Point3D<?, ?> pt) {
+	public int getIdistanceLinf(Point3D<?, ?, ?> pt) {
 		return (int) getDistanceLinf(pt);
 	}
 
 	@Override
-	public void add(Point3D<?, ?> point, Vector3D<?, ?> vector) {
+	public void add(Point3D<?, ?, ?> point, Vector3D<?, ?, ?> vector) {
 		assert point != null : AssertMessages.notNullParameter(0);
 		assert vector != null : AssertMessages.notNullParameter(1);
 		this.x = point.getX() + vector.getX();
@@ -183,7 +183,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	}
 
 	@Override
-	public void add(Vector3D<?, ?> vector, Point3D<?, ?> point) {
+	public void add(Vector3D<?, ?, ?> vector, Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter(0);
 		assert vector != null : AssertMessages.notNullParameter(1);
 		this.x = vector.getX() + point.getX();
@@ -192,7 +192,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	}
 
 	@Override
-	public void add(Vector3D<?, ?> vector) {
+	public void add(Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
 		this.x = this.x + vector.getX();
 		this.y = this.y + vector.getY();
@@ -200,7 +200,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	}
 
 	@Override
-	public void scaleAdd(int scale, Vector3D<?, ?> vector, Point3D<?, ?> point) {
+	public void scaleAdd(int scale, Vector3D<?, ?, ?> vector, Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter(1);
 		assert vector != null : AssertMessages.notNullParameter(2);
 		this.x = scale * vector.getX() + point.getX();
@@ -209,7 +209,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	}
 
 	@Override
-	public void scaleAdd(double scale, Vector3D<?, ?> vector, Point3D<?, ?> point) {
+	public void scaleAdd(double scale, Vector3D<?, ?, ?> vector, Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter(1);
 		assert vector != null : AssertMessages.notNullParameter(2);
 		this.x = scale * vector.getX() + point.getX();
@@ -218,7 +218,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	}
 
 	@Override
-	public void scaleAdd(int scale, Point3D<?, ?> point, Vector3D<?, ?> vector) {
+	public void scaleAdd(int scale, Point3D<?, ?, ?> point, Vector3D<?, ?, ?> vector) {
 		assert point != null : AssertMessages.notNullParameter(1);
 		assert vector != null : AssertMessages.notNullParameter(2);
 		this.x = scale * point.getX() + vector.getX();
@@ -227,7 +227,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	}
 
 	@Override
-	public void scaleAdd(double scale, Point3D<?, ?> point, Vector3D<?, ?> vector) {
+	public void scaleAdd(double scale, Point3D<?, ?, ?> point, Vector3D<?, ?, ?> vector) {
 		assert point != null : AssertMessages.notNullParameter(1);
 		assert vector != null : AssertMessages.notNullParameter(2);
 		this.x = scale * point.getX() + vector.getX();
@@ -236,7 +236,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	}
 
 	@Override
-	public void scaleAdd(int scale, Vector3D<?, ?> vector) {
+	public void scaleAdd(int scale, Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter(1);
 		this.x = scale * this.x + vector.getX();
 		this.y = scale * this.y + vector.getY();
@@ -244,7 +244,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	}
 
 	@Override
-	public void scaleAdd(double scale, Vector3D<?, ?> vector) {
+	public void scaleAdd(double scale, Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter(1);
 		this.x = scale * this.x + vector.getX();
 		this.y = scale * this.y + vector.getY();
@@ -252,7 +252,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	}
 
 	@Override
-	public void sub(Point3D<?, ?> point, Vector3D<?, ?> vector) {
+	public void sub(Point3D<?, ?, ?> point, Vector3D<?, ?, ?> vector) {
 		assert point != null : AssertMessages.notNullParameter(0);
 		assert vector != null : AssertMessages.notNullParameter(1);
 		this.x = point.getX() - vector.getX();
@@ -261,7 +261,7 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 	}
 
 	@Override
-	public void sub(Vector3D<?, ?> vector) {
+	public void sub(Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
 		this.x = this.x - vector.getX();
 		this.y = this.y - vector.getY();
@@ -270,18 +270,17 @@ public class Point3d extends Tuple3d<Point3d> implements Point3D<Point3d, Vector
 
 	@Pure
 	@Override
-	public UnmodifiablePoint3D<Point3d, Vector3d> toUnmodifiable() {
+	public UnmodifiablePoint3D<Point3d, Vector3d, Quaternion4d> toUnmodifiable() {
 		return new UnmodifiablePoint3D<>() {
 
 			private static final long serialVersionUID = 3305735799920201356L;
 
 			@Override
-			public GeomFactory3D<Vector3d, Point3d> getGeomFactory() {
+			public GeomFactory3D<Vector3d, Point3d, Quaternion4d> getGeomFactory() {
 				return Point3d.this.getGeomFactory();
 			}
 
 			@Override
-			@SuppressWarnings("checkstyle:superclone")
 			public Point3d clone() {
 				return Point3d.this.getGeomFactory().newPoint(Point3d.this.getX(), Point3d.this.getY(), Point3d.this.getZ());
 			}

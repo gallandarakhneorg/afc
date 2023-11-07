@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,21 +37,21 @@ public interface PathElement2afp extends PathElement2D {
 
 	/** Replies the x coordinate of the starting point.
 	 *
-	 * @return the x coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO}.
+	 * @return the x coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO}.
 	 */
 	@Pure
 	double getFromX();
 
 	/** Replies the y coordinate of the starting point.
 	 *
-	 * @return the y coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO}.
+	 * @return the y coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO}.
 	 */
 	@Pure
 	double getFromY();
 
 	/** Replies the x coordinate of the first control point.
 	 *
-	 * @return the x coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the x coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -59,7 +59,7 @@ public interface PathElement2afp extends PathElement2D {
 
 	/** Replies the y coordinate of the first control point.
 	 *
-	 * @return the y coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the y coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -67,7 +67,7 @@ public interface PathElement2afp extends PathElement2D {
 
 	/** Replies the x coordinate of the second control point.
 	 *
-	 * @return the x coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the x coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -75,7 +75,7 @@ public interface PathElement2afp extends PathElement2D {
 
 	/** Replies the y coordinate of the second  control point.
 	 *
-	 * @return the y coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the y coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -116,37 +116,37 @@ public interface PathElement2afp extends PathElement2D {
 
 	/** Replies the x radius of the arc-to ellipse.
 	 *
-	 * @return the x radius, or <code>0</code> if the type is not {@link PathElementType#ARC_TO}.
+	 * @return the x radius, or {@code 0} if the type is not {@link PathElementType#ARC_TO}.
 	 */
 	@Pure
 	double getRadiusX();
 
 	/** Replies the y radius of the arc-to ellipse.
 	 *
-	 * @return the y radius, or <code>0</code> if the type is not {@link PathElementType#ARC_TO}.
+	 * @return the y radius, or {@code 0} if the type is not {@link PathElementType#ARC_TO}.
 	 */
 	@Pure
 	double getRadiusY();
 
 	/** Replies the rotation of the x axis of the arc-to ellipse.
 	 *
-	 * @return the x axis rotation, or <code>0</code> if the type is not {@link PathElementType#ARC_TO}.
+	 * @return the x axis rotation, or {@code 0} if the type is not {@link PathElementType#ARC_TO}.
 	 */
 	@Pure
 	double getRotationX();
 
 	/** Replies if the arc-to will sweep the long way around the ellipse.
 	 *
-	 * @return <code>true</code> iff the element will sweep clockwise around the ellipse,
-	 *     or <code>0</code> if the type is not {@link PathElementType#ARC_TO}.
+	 * @return {@code true} iff the element will sweep clockwise around the ellipse,
+	 *     or {@code 0} if the type is not {@link PathElementType#ARC_TO}.
 	 */
 	@Pure
 	boolean getSweepFlag();
 
 	/** Replies if the arc-to will sweep clockwise around the ellipse.
 	 *
-	 * @return <code>true</code> iff the element will sweep clockwise around the ellipse,
-	 *     or <code>0</code> if the type is not {@link PathElementType#ARC_TO}.
+	 * @return {@code true} iff the element will sweep clockwise around the ellipse,
+	 *     or {@code 0} if the type is not {@link PathElementType#ARC_TO}.
 	 */
 	@Pure
 	boolean getLargeArcFlag();

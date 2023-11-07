@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
@@ -57,7 +57,6 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:methodcount")
 public interface Path2ai<
 		ST extends Shape2ai<?, ?, IE, P, V, B>,
 		IT extends Path2ai<?, ?, IE, P, V, B>,
@@ -85,9 +84,8 @@ public interface Path2ai<
 	 *
 	 * @param iterator the iterator on the path elements.
 	 * @param box the box to set.
-	 * @return <code>true</code> if a drawable element was found.
+	 * @return {@code true} if a drawable element was found.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean calculatesDrawableElementBoundingBox(PathIterator2ai<?> iterator,
 			Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
 		assert iterator != null : AssertMessages.notNullParameter(0);
@@ -227,10 +225,9 @@ public interface Path2ai<
 	 *
 	 * @param iterator the iterator on the path elements.
 	 * @param box the box to set.
-	 * @return <code>true</code> if a control point was found.
+	 * @return {@code true} if a control point was found.
 	 * @see #calculatesDrawableElementBoundingBox(PathIterator2ai, Rectangle2ai)
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean calculatesControlPointBoundingBox(PathIterator2ai<?> iterator,
 			Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
 		assert iterator != null : AssertMessages.notNullParameter(0);
@@ -410,11 +407,10 @@ public interface Path2ai<
 	 * @param y1 is the first point of the segment.
 	 * @param x2 is the first point of the segment.
 	 * @param y2 is the first point of the segment.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int calculatesCrossingsPathIteratorSegmentShadow(int crossings, PathIterator2ai<?> pi, int x1, int y1, int x2, int y2,
 			CrossingComputationType type) {
 		assert pi != null : AssertMessages.notNullParameter(1);
@@ -573,11 +569,10 @@ public interface Path2ai<
 	 * @param cx is the center of the circle.
 	 * @param cy is the center of the circle.
 	 * @param radius is the radius of the circle.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
 	static int calculatesCrossingsPathIteratorCircleShadow(int crossings, PathIterator2ai<?> pi, int cx, int cy, int radius,
 			CrossingComputationType type) {
 		assert pi != null : AssertMessages.notNullParameter(1);
@@ -747,12 +742,10 @@ public interface Path2ai<
 	 * @param pi is the description of the path.
 	 * @param px is the reference point to test.
 	 * @param py is the reference point to test.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
-			"checkstyle:returncount"})
 	static int calculatesCrossingsPathIteratorPointShadow(int crossings, PathIterator2ai<?> pi, int px, int py,
 			CrossingComputationType type) {
 		assert pi != null : AssertMessages.notNullParameter(1);
@@ -918,12 +911,11 @@ public interface Path2ai<
 	 * @param crossings the initial crossing.
 	 * @param iterator is the iterator on the path elements.
 	 * @param shadow is the description of the shape to project to the right.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossings.
 	 * @see "Weiler–Atherton clipping algorithm"
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int calculatesCrossingsPathIteratorPathShadow(
 			int crossings,
 			PathIterator2ai<?> iterator,
@@ -1111,7 +1103,7 @@ public interface Path2ai<
 	 *
 	 * <p>The points on the path are assumed to be outside the path area.
 	 * It means that is the rectangle is intersecting the path, this
-	 * function replies <code>false</code>.
+	 * function replies {@code false}.
 	 *
 	 * @param pi the specified {@code PathIterator2ai}
 	 * @param rx the lowest corner of the rectangle.
@@ -1121,7 +1113,6 @@ public interface Path2ai<
 	 * @return {@code true} if the specified rectangle is inside the
 	 *         specified {@code PathIterator2f}; {@code false} otherwise.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean containsRectangle(PathIterator2ai<?> pi, int rx, int ry, int rwidth, int rheight) {
 		assert pi != null : AssertMessages.notNullParameter(0);
 		assert rwidth >= 0 : AssertMessages.positiveOrZeroParameter(3);
@@ -1168,11 +1159,10 @@ public interface Path2ai<
 	 * @param rymin is the first corner of the rectangle.
 	 * @param rxmax is the second corner of the rectangle.
 	 * @param rymax is the second corner of the rectangle.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossings.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int calculatesCrossingsPathIteratorRectangleShadow(
 			int crossings,
 			PathIterator2ai<?> pi,
@@ -1360,7 +1350,6 @@ public interface Path2ai<
 	 *         the interior of the specified set of rectangular
 	 *         coordinates intersect each other; {@code false} otherwise.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean intersectsRectangle(PathIterator2ai<?> pi, int x, int y, int width, int height) {
 		assert pi != null : AssertMessages.notNullParameter(0);
 		assert width >= 0 : AssertMessages.positiveOrZeroParameter(3);
@@ -1436,7 +1425,7 @@ public interface Path2ai<
 	 * <p><strong>CAUTION:</strong> This function works only on path iterators
 	 * that are replying polyline primitives, ie. if the
 	 * {@link PathIterator2D#isPolyline()} of {@code pi} is replying
-	 * <code>true</code>.
+	 * {@code true}.
 	 * {@link #getClosestPointTo(Point2D)} avoids this restriction.
 	 *
 	 * @param pi is the iterator on the elements of the path.
@@ -1445,7 +1434,6 @@ public interface Path2ai<
 	 * @param result the closest point on the shape; or the point itself
 	 *     if it is inside the shape.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static void findsClosestPointPathIteratorPoint(PathIterator2ai<? extends PathElement2ai> pi, int x, int y,
 			Point2D<?, ?> result) {
 		assert pi != null : AssertMessages.notNullParameter(0);
@@ -1542,14 +1530,13 @@ public interface Path2ai<
 	 * <p><strong>CAUTION:</strong> This function works only on path iterators
 	 * that are replying not-curved primitives, ie. if the
 	 * {@link PathIterator2D#isCurved()} of {@code pi} is replying
-	 * <code>false</code>.
+	 * {@code false}.
 	 *
 	 * @param pi is the iterator of path elements, on one of which the closest point is located.
 	 * @param shape the shape to which the closest point must be computed.
 	 * @param result the closest point on pi.
-	 * @return <code>true</code> if a point was found. Otherwise <code>false</code>.
+	 * @return {@code true} if a point was found. Otherwise {@code false}.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	@Unefficient
 	static boolean findsClosestPointPathIteratorPathIterator(PathIterator2ai<? extends PathElement2ai> pi,
 			PathIterator2ai<? extends PathElement2ai> shape, Point2D<?, ?> result) {
@@ -1691,7 +1678,7 @@ public interface Path2ai<
 	 * <p><strong>CAUTION:</strong> This function works only on path iterators
 	 * that are replying polyline primitives, ie. if the
 	 * {@link PathIterator2D#isPolyline()} of {@code pi} is replying
-	 * <code>true</code>.
+	 * {@code true}.
 	 * {@link #getFarthestPointTo(Point2D)} avoids this restriction.
 	 *
 	 * @param pi is the iterator on the elements of the path.
@@ -1964,7 +1951,6 @@ public interface Path2ai<
 	 * @param type the specification of what additional path segments should
 	 *               be appended to lead the current path to the starting point.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber"})
 	default void arcTo(int ctrlx, int ctrly, int tox, int toy, double tfrom, double tto, ArcType type) {
 		// Copied from JavaFX Path2D
 		assert tfrom >= 0. : AssertMessages.positiveOrZeroParameter(4);
@@ -2040,9 +2026,9 @@ public interface Path2ai<
 	/**
 	 * Adds a section of an shallow ellipse to the current path.
 	 *
-	 * <p>This function is equivalent to:<pre><code>
+	 * <p>This function is equivalent to:<pre>{@code 
 	 * this.arcTo(ctrlx, ctrly, tox, toy, 0.0, 1.0, ArcType.ARCONLY);
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @param ctrlx the x coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
 	 * @param ctrly the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
@@ -2096,12 +2082,10 @@ public interface Path2ai<
 	 * @param radiusx the X radius of the tilted ellipse.
 	 * @param radiusy the Y radius of the tilted ellipse.
 	 * @param xAxisRotation the angle of tilt of the ellipse.
-	 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
-	 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+	 * @param largeArcFlag {@code true} iff the path will sweep the long way around the ellipse.
+	 * @param sweepFlag {@code true} iff the path will sweep clockwise around the ellipse.
 	 * @see "http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands"
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
-			"checkstyle:parameternumber"})
 	default void arcTo(int tox, int toy, int radiusx, int radiusy, double xAxisRotation,
 			boolean largeArcFlag, boolean sweepFlag) {
 		// Copied for JavaFX
@@ -2331,7 +2315,7 @@ public interface Path2ai<
 	 *
 	 * @param x the x coordinate of the point to remove.
 	 * @param y the y coordinate of the point to remove.
-	 * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
+	 * @return {@code true} if the point was removed; {@code false} otherwise.
 	 */
 	boolean remove(int x, int y);
 
@@ -2378,6 +2362,15 @@ public interface Path2ai<
 		return new PointCollection<>(this);
 	}
 
+	/** Replies this path with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the path.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toPolygonDefinition(2, toDoubleArray());
+	}
+
 	/** Private API for Path2ai.
 	 *
 	 * @author $Author: sgalland$
@@ -2403,12 +2396,11 @@ public interface Path2ai<
 		 * @param cury y coordinate of the current point.
 		 * @param movx x coordinate of the last move.
 		 * @param movy y coordinate of the last mobe.
-		 * @param intersectingBehavior <code>true</code> if the expected behavior is intersection,
-		 *     <code>false</code> for simple crossing computation.
+		 * @param intersectingBehavior {@code true} if the expected behavior is intersection,
+		 *     {@code false} for simple crossing computation.
 		 * @return thr crossing.
 		 */
 		@Pure
-		@SuppressWarnings("checkstyle:parameternumber")
 		private static int crossingHelper(
 				int crossings,
 				int rxmin, int rymin,
@@ -2506,7 +2498,6 @@ public interface Path2ai<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	class PathPathIterator<E extends PathElement2ai> extends AbstractPathIterator<E> {
 
 		private final Point2D<?, ?> p1;
@@ -2852,7 +2843,6 @@ public interface Path2ai<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	class FlatteningPathIterator<E extends PathElement2ai> implements PathIterator2ai<E> {
 
 		/** The source iterator.
@@ -2983,7 +2973,7 @@ public interface Path2ai<
 		 * quadratic curve specified by the control points stored in the
 		 * indicated array at the indicated index.
 		 * @param coords an array containing coordinate values
-		 * @param offset the index into <code>coords</code> from which to
+		 * @param offset the index into {@code coords} from which to
 		 *          to start getting the values from the array
 		 * @return the flatness of the quadratic curve that is defined by the
 		 *          values in the specified array at the specified index.
@@ -2997,18 +2987,18 @@ public interface Path2ai<
 
 		/**
 		 * Subdivides the quadratic curve specified by the coordinates
-		 * stored in the <code>src</code> array at indices
-		 * <code>srcoff</code> through <code>srcoff</code>&nbsp;+&nbsp;5
+		 * stored in the {@code src} array at indices
+		 * {@code srcoff} through {@code srcoff}&nbsp;+&nbsp;5
 		 * and stores the resulting two subdivided curves into the two
 		 * result arrays at the corresponding indices.
-		 * Either or both of the <code>left</code> and <code>right</code>
-		 * arrays can be <code>null</code> or a reference to the same array
-		 * and offset as the <code>src</code> array.
+		 * Either or both of the {@code left} and {@code right}
+		 * arrays can be {@code null} or a reference to the same array
+		 * and offset as the {@code src} array.
 		 * Note that the last point in the first subdivided curve is the
 		 * same as the first point in the second subdivided curve.  Thus,
-		 * it is possible to pass the same array for <code>left</code> and
-		 * <code>right</code> and to use offsets such that
-		 * <code>rightoff</code> equals <code>leftoff</code> + 4 in order
+		 * it is possible to pass the same array for {@code left} and
+		 * {@code right} and to use offsets such that
+		 * {@code rightoff} equals {@code leftoff} + 4 in order
 		 * to avoid allocating extra storage for this common point.
 		 * @param src the array holding the coordinates for the source curve
 		 * @param srcoff the offset into the array of the beginning of the
@@ -3065,10 +3055,10 @@ public interface Path2ai<
 		 * indicated index. The flatness is the maximum distance
 		 * of a control point from the line connecting the end points.
 		 * @param coords an array containing coordinates
-		 * @param offset the index of <code>coords</code> from which to begin
+		 * @param offset the index of {@code coords} from which to begin
 		 *          getting the end points and control points of the curve
-		 * @return the square of the flatness of the <code>CubicCurve2D</code>
-		 *          specified by the coordinates in <code>coords</code> at
+		 * @return the square of the flatness of the {@code CubicCurve2D}
+		 *          specified by the coordinates in {@code coords} at
 		 *          the specified offset.
 		 */
 		private static double getCurveSquaredFlatness(double[] coords, int offset) {
@@ -3091,18 +3081,18 @@ public interface Path2ai<
 
 		/**
 		 * Subdivides the cubic curve specified by the coordinates
-		 * stored in the <code>src</code> array at indices <code>srcoff</code>
-		 * through (<code>srcoff</code>&nbsp;+&nbsp;7) and stores the
+		 * stored in the {@code src} array at indices {@code srcoff}
+		 * through ({@code srcoff}&nbsp;+&nbsp;7) and stores the
 		 * resulting two subdivided curves into the two result arrays at the
 		 * corresponding indices.
-		 * Either or both of the <code>left</code> and <code>right</code>
-		 * arrays may be <code>null</code> or a reference to the same array
-		 * as the <code>src</code> array.
+		 * Either or both of the {@code left} and {@code right}
+		 * arrays may be {@code null} or a reference to the same array
+		 * as the {@code src} array.
 		 * Note that the last point in the first subdivided curve is the
 		 * same as the first point in the second subdivided curve. Thus,
-		 * it is possible to pass the same array for <code>left</code>
-		 * and <code>right</code> and to use offsets, such as <code>rightoff</code>
-		 * equals (<code>leftoff</code> + 6), in order
+		 * it is possible to pass the same array for {@code left}
+		 * and {@code right} and to use offsets, such as {@code rightoff}
+		 * equals ({@code leftoff} + 6), in order
 		 * to avoid allocating extra storage for this common point.
 		 * @param src the array holding the coordinates for the source curve
 		 * @param srcoff the offset into the array of the beginning of the
@@ -3187,7 +3177,6 @@ public interface Path2ai<
 			return x == this.lastNextX && y == this.lastNextY;
 		}
 
-		@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 		private void flattening() {
 			int level;
 

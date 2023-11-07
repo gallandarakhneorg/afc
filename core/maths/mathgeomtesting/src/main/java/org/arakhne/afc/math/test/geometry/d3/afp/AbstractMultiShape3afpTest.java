@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -43,14 +43,14 @@ import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
-import org.arakhne.afc.math.geometry.d3.afp.RectangularPrism3afp;
+import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Shape3afp;
 import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
 
 @SuppressWarnings("all")
-public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, C, ?, ?, ?, B>,
-		C extends Shape3afp<?, ?, ?, ?, ?, B>,
-		B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> extends AbstractShape3afpTest<T, B> {
+public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, C, ?, ?, ?, ?, B>,
+		C extends Shape3afp<?, ?, ?, ?, ?, ?, B>,
+		B extends AlignedBox3afp<?, ?, ?, ?, ?, ?, B>> extends AbstractShape3afpTest<T, B> {
 
 	protected C firstObject;
 	
@@ -59,16 +59,16 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	@Override
 	protected final T createShape() {
 		T shape = (T) createMultiShape();
-		this.firstObject = (C) createRectangularPrism(5, 8, 0, 2, 1, 0);
+		this.firstObject = (C) createAlignedBox(5, 8, 0, 2, 1, 0);
 		this.secondObject = (C) createSphere(-5, 18, 0, 2);
 		shape.add(this.firstObject);
 		shape.add(this.secondObject);
 		return shape;
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void testClone(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		MultiShape3afp clone = this.shape.clone();
@@ -87,9 +87,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void equalsObject(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.equals(null));
@@ -100,9 +100,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.equals(this.shape.clone()));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void equalsObject_withPathIterator(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.equals(createMultiShape().getPathIterator()));
@@ -111,9 +111,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.equals(this.shape.clone().getPathIterator()));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void equalsToPathIterator(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
@@ -123,9 +123,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.equalsToPathIterator(this.shape.clone().getPathIterator()));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void equalsToShape(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.equalsToShape(null));
@@ -134,9 +134,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.equalsToShape(this.shape.clone()));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void isEmpty(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.isEmpty());
@@ -144,9 +144,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.isEmpty());
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void clear(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		this.shape.clear();
@@ -154,10 +154,10 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void containsDoubleDouble(CoordinateSystem3D cs) {
+	@Override
+	public void containsDoubleDoubleDouble(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside bounding box
 		assertFalse(this.shape.contains(-10, 2, 0));
@@ -177,9 +177,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.contains(6, 8.25, 0));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void containsPoint3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside bounding box
@@ -200,25 +200,25 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.contains(createPoint(6, 8.25, 0)));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void containsRectangularPrism3afp(CoordinateSystem3D cs) {
+	@Override
+	public void containsAlignedBox3afp(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside
-		assertFalse(this.shape.contains(createRectangularPrism(-20, 14, 0, .5, .5, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(-2,-10, 0, .5, .5, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(-20, 14, 0, .5, .5, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(-2,-10, 0, .5, .5, 0)));
 		// Intersecting
-		assertFalse(this.shape.contains(createRectangularPrism(-6, 16, 0, .5, .5, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(4.75, 8, 0, .5, .5, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(-6, 16, 0, .5, .5, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(4.75, 8, 0, .5, .5, 0)));
 		// Inside
-		assertTrue(this.shape.contains(createRectangularPrism(-4, 18, 0, .5, .5, 0)));
-		assertTrue(this.shape.contains(createRectangularPrism(5.5, 8.5, 0, .5, .5, 0)));
+		assertTrue(this.shape.contains(createAlignedBox(-4, 18, 0, .5, .5, 0)));
+		assertTrue(this.shape.contains(createAlignedBox(5.5, 8.5, 0, .5, .5, 0)));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void getClosestPointTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D result;
@@ -264,9 +264,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(8.25, result.getY());
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void getFarthestPointTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D result;
@@ -312,9 +312,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(19.32662, result.getY());
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void getDistance(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside bounding box
@@ -335,9 +335,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(0, this.shape.getDistance(createPoint(6, 8.25, 0)));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void getDistanceSquared(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside bounding box
@@ -358,9 +358,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(0, this.shape.getDistanceSquared(createPoint(6, 8.25, 0)));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void getDistanceL1(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside bounding box
@@ -381,9 +381,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(0, this.shape.getDistanceL1(createPoint(6, 8.25, 0)));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void getDistanceLinf(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside bounding box
@@ -404,16 +404,16 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(0, this.shape.getDistanceLinf(createPoint(6, 8.25, 0)));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void setIT(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		this.shape.set((T) createMultiShape());
 		PathIterator3afp pi = this.shape.getPathIterator();
 		assertNoElement(pi);
 		MultiShape3afp newShape = createMultiShape();
-		newShape.add(createRectangularPrism(-6, 48, 0, 5, 7, 0));
+		newShape.add(createAlignedBox(-6, 48, 0, 5, 7, 0));
 		this.shape.set((T) newShape);
 		pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -6, 48);
@@ -424,10 +424,10 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void translateDoubleDouble(CoordinateSystem3D cs) {
+	@Override
+	public void translateDoubleDoubleDouble(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		this.shape.translate(10, -2, 0);
 		PathIterator3afp pi = this.shape.getPathIterator();
@@ -445,9 +445,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void translateVector3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		this.shape.translate(createVector(10, -2, 0));
@@ -466,9 +466,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void toBoundingBox(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		B box = this.shape.toBoundingBox();
@@ -479,12 +479,12 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(20, box.getMaxY());
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void toBoundingBoxB(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B box = createRectangularPrism(0, 0, 0, 0, 0, 0);
+		B box = createAlignedBox(0, 0, 0, 0, 0, 0);
 		this.shape.toBoundingBox(box);
 		assertEpsilonEquals(-7, box.getMinX());
 		assertEpsilonEquals(8, box.getMinY());
@@ -494,9 +494,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(20, box.getMaxZ());
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void getPathIterator(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		PathIterator3afp pi = this.shape.getPathIterator();
@@ -514,9 +514,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void getPathIteratorTransform3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		PathIterator3afp pi = this.shape.getPathIterator(null);
@@ -564,9 +564,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void createTransformedShape(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Transform3D transform = new Transform3D();
@@ -587,25 +587,25 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void intersectsRectangularPrism3afp(CoordinateSystem3D cs) {
+	@Override
+	public void intersectsAlignedBox3afp(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside
-		assertFalse(this.shape.intersects(createRectangularPrism(-20, 14, 0, .5, .5, 0)));
-		assertFalse(this.shape.intersects(createRectangularPrism(-2, -10, 0, .5, .5, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(-20, 14, 0, .5, .5, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(-2, -10, 0, .5, .5, 0)));
 		// Intersecting
-		assertTrue(this.shape.intersects(createRectangularPrism(-6, 16, 0, .5, .5, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(4.75, 8, 0, .5, .5, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(-6, 16, 0, .5, .5, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(4.75, 8, 0, .5, .5, 0)));
 		// Inside
-		assertTrue(this.shape.intersects(createRectangularPrism(-4, 18, 0, .5, .5, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(5.5, 8.5, 0, .5, .5, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(-4, 18, 0, .5, .5, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(5.5, 8.5, 0, .5, .5, 0)));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void intersectsSphere3afp(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside
@@ -619,9 +619,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.intersects(createSphere(5.5, 8.5, 0, .5)));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void intersectsSegment3afp(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside
@@ -635,9 +635,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.intersects(createSegment(5.5, 8.5, 0, 6, 8.5, 0)));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void intersectsPath3afp(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Path3afp path = createPath();
@@ -672,9 +672,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.intersects(path));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void intersectsPathIterator3afp(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Path3afp path = createPath();
@@ -709,9 +709,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void intersectsShape3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(this.shape.intersects((Shape3D) createSphere(4.75, 8, 0, .5)));
@@ -727,9 +727,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.intersects((Shape3D) path));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void operator_addVector3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		this.shape.operator_add(createVector(10, -2, 0));
@@ -748,9 +748,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void operator_plusVector3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		T shape = this.shape.operator_plus(createVector(10, -2, 0));
@@ -769,9 +769,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void operator_removeVector3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		this.shape.operator_remove(createVector(10, -2, 0));
@@ -790,9 +790,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void operator_minusVector3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		T shape = this.shape.operator_minus(createVector(10, -2, 0));
@@ -811,9 +811,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void operator_multiplyTransform3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Transform3D transform = new Transform3D();
@@ -834,9 +834,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertNoElement(pi);
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void operator_andPoint3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.operator_and(createPoint(-10, 2, 0)));
@@ -853,9 +853,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.operator_and(createPoint(6, 8.25, 0)));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void operator_andShape3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(this.shape.operator_and(createSphere(4.75, 8, 0, .5)));
@@ -871,9 +871,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertTrue(this.shape.operator_and(path));
 	}
 
-	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
+	@Override
 	public void operator_upToPoint3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(14.76305, this.shape.operator_upTo(createPoint(-10, 2, 0)));
@@ -890,9 +890,10 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(6, 8.25, 0)));
 	}
 
+	@DisplayName("getFirstShapeContaining(Point3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void getFirstShapeContainingPoint2D(CoordinateSystem3D cs) {
+	public void getFirstShapeContainingPoint3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside bounding box
 		assertNull(this.shape.getFirstShapeContaining(createPoint(-10, 2, 0)));
@@ -912,9 +913,10 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertSame(this.firstObject, this.shape.getFirstShapeContaining(createPoint(6, 8.25, 0)));
 	}
 	
+	@DisplayName("getShapesContaining(Point3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void getShapesContainingPoint2D(CoordinateSystem3D cs) {
+	public void getShapesContainingPoint3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside bounding box
 		assertTrue(this.shape.getShapesContaining(createPoint(-10, 2, 0)).isEmpty());
@@ -934,6 +936,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEquals(Arrays.asList(this.firstObject), this.shape.getShapesContaining(createPoint(6, 8.25, 0)));
 	}
 
+	@DisplayName("getFirstShapeIntersecting(Shape3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void getFirstShapeIntersectingShape3D(CoordinateSystem3D cs) {
@@ -955,6 +958,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertSame(this.firstObject, shape3d.getFirstShapeIntersecting(path));
 	}
 	
+	@DisplayName("getShapesIntersecting(Shape3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void getShapesIntersectingShape3D(CoordinateSystem3D cs) {
@@ -976,6 +980,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEquals(Arrays.asList(this.firstObject, this.secondObject), shape3d.getShapesIntersecting(path));
 	}
 
+	@DisplayName("getBackendDataList")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void getBackendDataList(CoordinateSystem3D cs) {
@@ -986,9 +991,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertSame(this.secondObject, this.shape.getBackendDataList().get(1));
 	}
 
+	@DisplayName("on geometry change - first object")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public void onGeometryChange_changeFirstObject(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		B box = this.shape.toBoundingBox();
@@ -1017,9 +1022,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(20, box.getMaxZ());
 	}
 	
+	@DisplayName("on geometry change - second object")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public void onGeometryChange_changeSecondObject(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		B box = this.shape.toBoundingBox();
@@ -1048,9 +1053,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(13, box.getMaxZ());
 	}
 
+	@DisplayName("on backend list change - addition")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public void onBackendDataListChange_addition(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		B box = this.shape.toBoundingBox();
@@ -1079,9 +1084,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(20, box.getMaxZ());
 	}
 
+	@DisplayName("on backend list change - remove first")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public void onBackendDataListChange_removalFirstObject(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		B box = this.shape.toBoundingBox();
@@ -1108,9 +1113,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(20, box.getMaxZ());
 	}
 
+	@DisplayName("on backend list change - remove second")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public void onBackendDataListChange_removalSecondObject(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		B box = this.shape.toBoundingBox();
@@ -1137,9 +1142,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(9, box.getMaxZ());
 	}
 
+	@DisplayName("on geometry stay unchanged after removal")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public void noGeometryChangeAfterRemoval(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		B box = this.shape.toBoundingBox();

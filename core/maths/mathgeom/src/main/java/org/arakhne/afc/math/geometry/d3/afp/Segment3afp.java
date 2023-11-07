@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,7 @@ package org.arakhne.afc.math.geometry.d3.afp;
 
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pair;
-import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
@@ -34,18 +32,21 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
-/** Fonctional interface that represented a 2D segment/line on a plane.
+/** Fonctional interface that represented a 3D segment/line.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
  * @param <V> is the type of the vectors.
+ * @param <Q> is the type of the quaternions.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -54,15 +55,15 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"checkstyle:methodcount", "checkstyle:parameternumber"})
 public interface Segment3afp<
-			ST extends Shape3afp<?, ?, IE, P, V, B>,
-			IT extends Segment3afp<?, ?, IE, P, V, B>,
+			ST extends Shape3afp<?, ?, IE, P, V, Q, B>,
+			IT extends Segment3afp<?, ?, IE, P, V, Q, B>,
 			IE extends PathElement3afp,
-			P extends Point3D<? super P, ? super V>,
-			V extends Vector3D<? super V, ? super P>,
-			B extends RectangularPrism3afp<?, ?, IE, P, V, B>>
-			extends Shape3afp<ST, IT, IE, P, V, B> {
+			P extends Point3D<? super P, ? super V, ? super Q>,
+			V extends Vector3D<? super V, ? super P, ? super Q>,
+			Q extends Quaternion<? super P, ? super V, ? super Q>,
+			B extends AlignedBox3afp<?, ?, IE, P, V, Q, B>>
+			extends Shape3afp<ST, IT, IE, P, V, Q, B> {
 
 	/**
 	 * Replies if two lines are colinear.
@@ -97,12 +98,12 @@ public interface Segment3afp<
 	 *            is the Y coordinate of the second point of the second line.
 	 * @param z4
 	 *            is the Z coordinate of the second point of the second line.
-	 * @return <code>true</code> if the two given lines are collinear.
+	 * @return {@code true} if the two given lines are collinear.
 	 * @see #isParallelLines(double, double, double, double, double, double, double, double, double, double, double, double)
 	 * @see Point3D#isCollinearPoints(double, double, double, double, double, double, double, double, double)
 	 */
 	@Pure
-	static boolean isCollinearLines(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
+	static boolean isColinearLines(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
 			double z3, double x4, double y4, double z4) {
 		return isParallelLines(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4)
 				&& Point3D.isCollinearPoints(x1, y1, z1, x2, y2, z2, x3, y3, z3);
@@ -115,7 +116,7 @@ public interface Segment3afp<
 	 * line, and {@code (x3,y3)} and {@code (x4,y4)} for the second line.
 	 *
 	 * <p>If you are interested to test if the two lines are colinear, see
-	 * {@link #isCollinearLines(double, double, double, double, double, double, double, double, double, double, double, double)}.
+	 * {@link #isColinearLines(double, double, double, double, double, double, double, double, double, double, double, double)}.
 	 *
 	 * @param x1
 	 *            is the X coordinate of the first point of the first line.
@@ -141,13 +142,13 @@ public interface Segment3afp<
 	 *            is the Y coordinate of the second point of the second line.
 	 * @param z4
 	 *            is the Z coordinate of the second point of the second line.
-	 * @return <code>true</code> if the two given lines are parallel.
-	 * @see #isCollinearLines(double, double, double, double, double, double, double, double, double, double, double, double)
+	 * @return {@code true} if the two given lines are parallel.
+	 * @see #isColinearLines(double, double, double, double, double, double, double, double, double, double, double, double)
 	 */
 	@Pure
 	static boolean isParallelLines(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
 			double z3, double x4, double y4, double z4) {
-		return Vector3D.isCollinearVectors(x2 - x1, y2 - y1, z2 - z1, x4 - x3, y4 - y3, z4 - z3);
+		return Vector3D.isColinearVectors(x2 - x1, y2 - y1, z2 - z1, x4 - x3, y4 - y3, z4 - z3);
 	}
 
 	/**
@@ -178,117 +179,141 @@ public interface Segment3afp<
 	 * @param z4
 	 *            is the Z coordinate of the second point of the second line.
 	 * @param result the intersection point.
-	 * @return <code>true</code> if an intersection exists.
+	 * @return {@code true} if an intersection exists.
+	 * @see #calculatesLineLineIntersection(double, double, double, double, double, double, double, double, double, double, double, double, Point3D)
 	 */
 	@Pure
-	static boolean computeSegmentSegmentIntersection(double x1, double y1, double z1, double x2, double y2, double z2,
+	static boolean calculatesSegmentSegmentIntersection(double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4,
-			Point3D<?, ?> result) {
-
-		final Pair<Double, Double> factors = computeSegmentSegmentIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4,
-				z4);
+			Point3D<?, ?, ?> result) {
+		final SegmentIntersection factors = calculatesSegmentSegmentIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
 		if (factors == null) {
 			return false;
 		}
-		final double s1 = factors.getKey().doubleValue();
-		final double s2 = factors.getValue().doubleValue();
-		if (s1 < 0. || s1 > 1. || s2 < 0. || s2 > 1.) {
-			return false;
-		}
 		result.set(
-				x1 + s1 * (x2 - x1),
-				y1 + s1 * (y2 - y1),
-				z1 + s1 * (z2 - z1));
+				x1 + factors.position1 * (x2 - x1),
+				y1 + factors.position1 * (y2 - y1),
+				z1 + factors.position1 * (z2 - z1));
 		return true;
 	}
 
 	/**
-	 * Replies one position factor for the intersection point between two lines.
+	 * Replies position factors for the intersection point between two segments.
 	 *
-	 * <p>Let line equations for L1 and L2:<br>
-	 * <code>L1: P1 + factor1 * (P2-P1)</code><br>
-	 * <code>L2: P3 + factor2 * (P4-P3)</code><br>
-	 * If lines are intersecting, then<br>
-	 * <code>P1 + factor1 * (P2-P1) = P3 + factor2 * (P4-P3)</code>
+	 * <p>Let segment equations for S1 and S2:<br>
+	 * {@code L1: P1 + factor1 * (P2-P1)} with {@code factor1} in {@code [0;1]}<br>
+	 * {@code L2: P3 + factor2 * (P4-P3)} with {@code factor2} in {@code [0;1]}<br>
+	 * If segments are intersecting, then<br>
+	 * {@code I = P1 + factor1 * (P2-P1) = P3 + factor2 * (P4-P3)}
 	 *
-	 *<p>This function computes and replies <code>factor1</code>.
+	 * <p>This function computes the intersection point(s) according to:<ul>
+	 * 	<li>If {@code S1} and {@code S2} are not colinear and intersecting:<ul>
+	 * 		<li>{@code position1} such that {@code I = P1 + position1 * (P2-P1)} with {@code position1} in {@code [0;1]}</li>
+	 * 		<li>{@code position2} such that {@code I = P3 + position2 * (P4-P3)} with {@code position2} in {@code [0;1]}</li>
+	 * 		<li>{@code position3} and {@code position4} are not computed, i.e. {@code NaN}</li>
+	 * 		</ul></li>
+	 * 	<li>If {@code S1} and {@code S2} are colinear and intersecting:<ul>
+	 * 		<li>{@code position1} is the position of {@code P1} on {@code S1}, i.e., {@code 0}.</li>
+	 * 		<li>{@code position2} is the position of {@code P2} on {@code S1}, i.e., {@code 1}.</li>
+	 * 		<li>{@code position3} is the position of {@code P3} on {@code S1}, such that {@code P3 = P1 + position4 * (P2-P1)}.</li>
+	 * 		<li>{@code position4} is the position of {@code P4} on {@code L1}, such that {@code P4 = P1 + position4 * (P2-P1)}.</li>
+	 * 		</ul></li>
+	 * </ul>
+	 *
+	 * <p>This function computes and replies {@code factor1}.
 	 *
 	 * @param x1
-	 *            is the X coordinate of the first point of the first line.
+	 *            is the X coordinate of the first point of the first segment.
 	 * @param y1
-	 *            is the Y coordinate of the first point of the first line.
+	 *            is the Y coordinate of the first point of the first segment.
 	 * @param z1
-	 *            is the Z coordinate of the first point of the first line.
+	 *            is the Z coordinate of the first point of the first segment.
 	 * @param x2
-	 *            is the X coordinate of the second point of the first line.
+	 *            is the X coordinate of the second point of the first segment.
 	 * @param y2
-	 *            is the Y coordinate of the second point of the first line.
+	 *            is the Y coordinate of the second point of the first segment.
 	 * @param z2
-	 *            is the Z coordinate of the second point of the first line.
+	 *            is the Z coordinate of the second point of the first segment.
 	 * @param x3
-	 *            is the X coordinate of the first point of the second line.
+	 *            is the X coordinate of the first point of the second segment.
 	 * @param y3
-	 *            is the Y coordinate of the first point of the second line.
+	 *            is the Y coordinate of the first point of the second segment.
 	 * @param z3
-	 *            is the Z coordinate of the first point of the second line.
+	 *            is the Z coordinate of the first point of the second segment.
 	 * @param x4
-	 *            is the X coordinate of the second point of the second line.
+	 *            is the X coordinate of the second point of the second segment.
 	 * @param y4
-	 *            is the Y coordinate of the second point of the second line.
+	 *            is the Y coordinate of the second point of the second segment.
 	 * @param z4
-	 *            is the Z coordinate of the second point of the second line.
-	 * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
+	 *            is the Z coordinate of the second point of the second segment.
+	 * @return the intersection description if there is intersection; or {@code null} if no intersection.
+	 * @see #calculatesLineLineIntersectionFactors(double, double, double, double, double, double, double, double, double, double, double, double)
 	 */
 	@Pure
-	static double computeSegmentSegmentIntersectionFactor(double x1, double y1, double z1, double x2, double y2, double z2,
-			double x3, double y3, double z3, double x4, double y4, double z4) {
-		final double x21 = x2 - x1;
-		final double y21 = y2 - y1;
-		final double z21 = z2 - z1;
-		final double x43 = x4 - x3;
-		final double y43 = y4 - y3;
-		final double z43 = z4 - z3;
-		final double x31 = x3 - x1;
-		final double y31 = y3 - y1;
-		final double z31 = z3 - z1;
-		final double x;
-		final double y;
-		final double z;
-
-		if (CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded()) {
-			x = y43 * z21 - z43 * y21;
-			y = z43 * x21 - x43 * z21;
-			z = x43 * y21 - y43 * x21;
-		} else {
-			x = y21 * z43 - z21 * y43;
-			y = z21 * x43 - x21 * z43;
-			z = x21 * y43 - y21 * x43;
+	static SegmentIntersection calculatesSegmentSegmentIntersectionFactors(double x1, double y1, double z1, double x2, double y2,
+			double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
+		final LineIntersection factors = calculatesLineLineIntersectionFactors(
+				x1, y1, z1, x2, y2, z2,
+				x3, y3, z3, x4, y4, z4);
+		if (factors == null) {
+			return null;
 		}
-
-		if (MathUtil.isEpsilonZero(x * x + y * y + z * z)) {
-			return Double.NaN;
+		if (factors.colinear) {
+			if (1. < factors.position3 || factors.position4 < 0.) {
+				return null;
+			}
+			// Selection heuristic:
+			// 			p1 = max(1,3)
+			// 			p2 = min(2,4)
+			// Cases of colinear segments and position values:
+			//			Segment Interval	Intersection	p1	p2
+			// 			3..4 1..2			n/a
+			// 			3..1|4..2			(1; 4)			1	4
+			// 			1|3|4..2			(1; 4)			1	4
+			// 			3..1..4..2			(1; 4)			1	4
+			// 			3|1..4..2			(1; 4)			1	4
+			// 			1..3|4..2			(3; 4)			3	4
+			// 			3..1..2|4			(1; 2)			1	2
+			// 			3|1..2|4			(1; 2)			1	2
+			// 			1..3..2|4			(3; 2)			3	2
+			// 			1..2|3|4			(3; 2)			3	2
+			// 			3..1..2..4			(1; 2)			1	2
+			// 			1|3..2..4			(1; 2)			1	2
+			// 			1..3..2..4			(3; 2)			3	2
+			// 			1..2|3..4			(3; 2)			3	2
+			// 			1..2 3..4			n/a
+			return new SegmentIntersection(factors.colinear,
+					Math.max(factors.position1, factors.position3),
+					Math.min(factors.position2, factors.position4));
 		}
-
-		if (MathUtil.isEpsilonZero(Vector3D.dotProduct(x31, y31, z31, x, y, z))) {
-			return Double.NaN;
+		if (factors.position1 < 0. || factors.position1 > 1. || factors.position2 < 0. || factors.position2 > 1.) {
+			return null;
 		}
-
-		return Vector3D.determinant(
-				x31, y31, z31,
-				x43, y43, z43,
-				x, y, z) / (x * x + y * y + z * z);
+		return new SegmentIntersection(factors.colinear, factors.position1, factors.position2);
 	}
 
 	/**
-	 * Replies one position factor for the intersection point between two lines.
+	 * Replies the position factors for the intersection point between two lines.
 	 *
 	 * <p>Let line equations for L1 and L2:<br>
-	 * <code>L1: P1 + factor1 * (P2-P1)</code><br>
-	 * <code>L2: P3 + factor2 * (P4-P3)</code><br>
+	 * {@code L1: P1 + factor1 * (P2-P1)}<br>
+	 * {@code L2: P3 + factor2 * (P4-P3)}<br>
 	 * If lines are intersecting, then<br>
-	 * <code>P1 + factor1 * (P2-P1) = P3 + factor2 * (P4-P3)</code>
+	 * {@code I = P1 + factor1 * (P2-P1) = P3 + factor2 * (P4-P3)}
 	 *
-	 * <p>This function computes and replies <code>factor1</code>.
+	 * <p>This function computes the intersection point(s) according to:<ul>
+	 * 	<li>If {@code L1} and {@code L2} are not colinear:<ul>
+	 * 		<li>{@code position1} such that {@code I = P1 + position1 * (P2-P1)}</li>
+	 * 		<li>{@code position2} such that {@code I = P3 + position2 * (P4-P3)}</li>
+	 * 		<li>{@code position3} and {@code position4} are not computed, i.e. {@code NaN}</li>
+	 * 		</ul></li>
+	 * 	<li>If {@code L1} and {@code L2} are colinear:<ul>
+	 * 		<li>{@code position1} is the position of {@code P1} on {@code L1}, i.e., {@code 0}.</li>
+	 * 		<li>{@code position2} is the position of {@code P2} on {@code L1}, i.e., {@code 1}.</li>
+	 * 		<li>{@code position3} is the position of {@code P3} on {@code L1}, such that {@code P3 = P1 + position4 * (P2-P1)}.</li>
+	 * 		<li>{@code position4} is the position of {@code P4} on {@code L1}, such that {@code P4 = P1 + position4 * (P2-P1)}.</li>
+	 * 		</ul></li>
+	 * </ul>
 	 *
 	 * @param x1
 	 *            is the X coordinate of the first point of the first line.
@@ -314,115 +339,77 @@ public interface Segment3afp<
 	 *            is the Y coordinate of the second point of the second line.
 	 * @param z4
 	 *            is the Z coordinate of the second point of the second line.
-	 * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
+	 * @return the intersection description if there is intersection; or {@code null} if no intersection.
+	 * @see #calculatesLineLineIntersectionFactors(double, double, double, double, double, double, double, double, double, double, double, double)
+	 * @since 18.0
 	 */
 	@Pure
-	static Pair<Double, Double> computeSegmentSegmentIntersectionFactors(double x1, double y1, double z1, double x2, double y2,
-			double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
-		final double x21 = x2 - x1;
-		final double y21 = y2 - y1;
-		final double z21 = z2 - z1;
-		final double x43 = x4 - x3;
-		final double y43 = y4 - y3;
-		final double z43 = z4 - z3;
-		final double x31 = x3 - x1;
-		final double y31 = y3 - y1;
-		final double z31 = z3 - z1;
-		final double x;
-		final double y;
-		final double z;
+	static LineIntersection calculatesLineLineIntersectionFactors(double x1, double y1, double z1, double x2, double y2, double z2,
+			double x3, double y3, double z3, double x4, double y4, double z4) {
+		//We compute the 4 vectors
+		final double ax = x2 - x1;
+		final double ay = y2 - y1;
+		final double az = z2 - z1;
 
-		if (CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded()) {
-			x = y43 * z21 - z43 * y21;
-			y = z43 * x21 - x43 * z21;
-			z = x43 * y21 - y43 * x21;
-		} else {
-			x = y21 * z43 - z21 * y43;
-			y = z21 * x43 - x21 * z43;
-			z = x21 * y43 - y21 * x43;
-		}
+		final double bx = x4 - x3;
+		final double by = y4 - y3;
+		final double bz = z4 - z3;
 
-		if (MathUtil.isEpsilonZero(x * x + y * y + z * z)) {
+		final double cx = x3 - x1;
+		final double cy = y3 - y1;
+		final double cz = z3 - z1;
+
+		// v = a X b (right-handed cross product)
+		// Only the right-handed cross product contributes to the computation of the correct factor.
+		final double vx = ay * bz - az * by;
+		final double vy = az * bx - ax * bz;
+	    final double vz = ax * by - ay * bx;
+
+        // If the cross product is zero then the two segments are parallel
+        final double vsqlength = vx * vx + vy * vy + vz * vz;
+		if (MathUtil.isEpsilonZero(vsqlength)) {
+			// Lines are parallel, are they colinear?
+			final double dx = ay * cz - cy * az;
+			final double dy = az * cx - cz * ax;
+			final double dz = ax * cy - cx * ay;
+			final double dl = dx * dx + dy * dy + dz * dz;
+			if (MathUtil.isEpsilonZero(dl)) {
+				// Compute the best factors on both segments
+				final double length = ax * ax + ay * ay + az * az;
+				final double proj3on1 = (cx * ax + cy * ay + cz * az) / length;
+				final double proj4on1 = ((x4 - x1) * ax + (y4 - y1) * ay + (z4 - z1) * az) / length;
+				final double f1;
+				final double f2;
+				if (proj3on1 <= proj4on1) {
+					f1 = proj3on1;
+					f2 = proj4on1;
+				} else {
+					f1 = proj4on1;
+					f2 = proj3on1;
+				}
+				return new LineIntersection(true, 0., 1., f1, f2);
+			}
 			return null;
 		}
 
-		if (MathUtil.isEpsilonZero(Vector3D.dotProduct(x31, y31, z31, x, y, z))) {
+		// w = c . v
+        final double w = Vector3D.dotProduct(cx, cy, cz, vx, vy, vz);
+		// If the determinant det(c,a,b) = c.(a x b) != 0 then the two segments are not colinear
+		if (!MathUtil.isEpsilonZero(w)) {
 			return null;
 		}
 
 		final double factor1 = Vector3D.determinant(
-				x31, y31, z31,
-				x43, y43, z43,
-				x, y, z) / (x * x + y * y + z * z);
+				cx, cy, cz,
+				bx, by, bz,
+				vx, vy, vz) / vsqlength;
 
 		final double factor2 = Vector3D.determinant(
-				x31, y31, z31,
-				x21, y21, z21,
-				x, y, z) / (x * x + y * y + z * z);
+				cx, cy, cz,
+				ax, ay, az,
+				vx, vy, vz) / vsqlength;
 
-		return new Pair<>(Double.valueOf(factor1), Double.valueOf(factor2));
-	}
-
-	/**
-	 * Replies the position factory for the intersection point between two lines.
-	 *
-	 * <p>Let line equations for L1 and L2:<br>
-	 * <code>L1: P1 + factor1 * (P2-P1)</code><br>
-	 * <code>L2: P3 + factor2 * (P4-P3)</code><br>
-	 * If lines are intersecting, then<br>
-	 * <code>P1 + factor1 * (P2-P1) = P3 + factor2 * (P4-P3)</code>
-	 *
-	 * <p>This function computes and replies <code>factor1</code>.
-	 *
-	 * @param x1
-	 *            is the X coordinate of the first point of the first line.
-	 * @param y1
-	 *            is the Y coordinate of the first point of the first line.
-	 * @param z1
-	 *            is the Z coordinate of the first point of the first line.
-	 * @param x2
-	 *            is the X coordinate of the second point of the first line.
-	 * @param y2
-	 *            is the Y coordinate of the second point of the first line.
-	 * @param z2
-	 *            is the Z coordinate of the second point of the first line.
-	 * @param x3
-	 *            is the X coordinate of the first point of the second line.
-	 * @param y3
-	 *            is the Y coordinate of the first point of the second line.
-	 * @param z3
-	 *            is the Z coordinate of the first point of the second line.
-	 * @param x4
-	 *            is the X coordinate of the second point of the second line.
-	 * @param y4
-	 *            is the Y coordinate of the second point of the second line.
-	 * @param z4
-	 *            is the Z coordinate of the second point of the second line.
-	 * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
-	 */
-	@Pure
-	static double computeLineLineIntersectionFactor(double x1, double y1, double z1, double x2, double y2, double z2,
-			double x3, double y3, double z3, double x4, double y4, double z4) {
-		final double vx1 = x2 - x1;
-		final double vy1 = y2 - y1;
-		final double vx2 = x4 - x3;
-		final double vy2 = y4 - y3;
-
-		// determinant is zero when parallel = det(L1,L2)
-		final double det = Vector2D.perpProduct(vx1, vy1, vx2, vy2);
-		if (det == 0.) {
-			return Double.NaN;
-		}
-
-		// Given line equations:
-		// Pa = P1 + ua (P2-P1), and
-		// Pb = P3 + ub (P4-P3)
-		// and
-		// V = (P1-P3)
-		// then
-		// ua = det(L2,V) / det(L1,L2)
-		// ub = det(L1,V) / det(L1,L2)
-		return Vector2D.perpProduct(vx2, vy2, x1 - x3, y1 - y3) / det;
+		return new LineIntersection(false, factor1, factor2, Double.NaN, Double.NaN);
 	}
 
 	/** Compute the intersection of two lines specified
@@ -441,38 +428,22 @@ public interface Segment3afp<
 	 * @param y4 y position of the second point of the line.
 	 * @param z4 z position of the second point of the line.
 	 * @param result the intersection point.
-	 * @return <code>true</code> if there is an intersection.
+	 * @return {@code true} if there is an intersection.
+	 * @see #calculatesLineLineIntersectionFactor(double, double, double, double, double, double, double, double, double, double, double, double)
 	 */
 	@Pure
-	static boolean computeLineLineIntersection(double x1, double y1, double z1, double x2, double y2, double z2,
+	static boolean calculatesLineLineIntersection(double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4,
-			Point3D<?, ?> result) {
-		assert result != null : AssertMessages.notNullParameter();
-		final double x21 = x2 - x1;
-		final double x43 = x4 - x3;
-		final double y21 = y2 - y1;
-		final double y43 = y4 - y3;
-		final double z21 = z2 - z1;
-		//TODO final double z43 = z4 - z3;
-
-		final double denom = y43 * x21 - x43 * y21;
-		if (denom == 0.) {
+			Point3D<?, ?, ?> result) {
+		assert result != null : AssertMessages.notNullParameter(13);
+		final LineIntersection factors = calculatesLineLineIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+		if (factors == null) {
 			return false;
 		}
-		final double x13 = x1 - x3;
-		final double y13 = y1 - y3;
-		//TODO final double z13 = z1 - z3;
-		double intersectionFactor1 = x43 * y13 - y43 * x13;
-		final double intersectionFactor2 = x21 * y13 - y21 * x13;
-		if (intersectionFactor1 == intersectionFactor2) {
-			return false;
-		}
-		intersectionFactor1 = intersectionFactor1 / denom;
-		// FIXME : incorrect formula
-		result.set(
-				x1 + intersectionFactor1 * x21,
-				y1 + intersectionFactor1 * y21,
-				z1 + intersectionFactor1 * z21);
+		final double x = x1 + factors.position1() * (x2 - x1);
+		final double y = y1 + factors.position1() * (y2 - y1);
+		final double z = z1 + factors.position1() * (z2 - z1);
+		result.set(x, y, z);
 		return true;
 	}
 
@@ -488,12 +459,12 @@ public interface Segment3afp<
 	 * @param py y position of the point.
 	 * @param pz z position of the point.
 	 * @return the distance beetween the point and the line.
-	 * @see #computeDistanceLinePoint(double, double, double, double, double, double, double, double, double)
+	 * @see #calculatesDistanceLinePoint(double, double, double, double, double, double, double, double, double)
 	 */
 	@Pure
-	static double computeDistanceSquaredLinePoint(double x1, double y1, double z1, double x2, double y2, double z2, double px,
+	static double calculatesDistanceSquaredLinePoint(double x1, double y1, double z1, double x2, double y2, double z2, double px,
 			double py, double pz) {
-		final double d = computeDistanceLinePoint(x1, y1, z1, x2, y2, z2, px, py, pz);
+		final double d = calculatesDistanceLinePoint(x1, y1, z1, x2, y2, z2, px, py, pz);
 		return d * d;
 	}
 
@@ -510,9 +481,10 @@ public interface Segment3afp<
 	 * @param pz z position of the point.
 	 * @return the distance beetween the point and the segment.
 	 */
-	static double computeDistanceSquaredSegmentPoint(double x1, double y1, double z1, double x2, double y2, double z2, double px,
+	@Pure
+	static double calculatesDistanceSquaredSegmentPoint(double x1, double y1, double z1, double x2, double y2, double z2, double px,
 			double py, double pz) {
-		final double ratio = computeProjectedPointOnLine(px, py, pz, x1, y1, z1, x2, y2, z2);
+		final double ratio = calculatesProjectedPointOnLine(px, py, pz, x1, y1, z1, x2, y2, z2);
 
 		if (ratio <= 0.) {
 			return Point3D.getDistanceSquaredPointPoint(px, py, pz, x1, y1, z1);
@@ -522,7 +494,7 @@ public interface Segment3afp<
 			return Point3D.getDistanceSquaredPointPoint(px, py, pz, x2, y2, z2);
 		}
 
-		return Point3D.getDistancePointPoint(
+		return Point3D.getDistanceSquaredPointPoint(
 				px, py, pz,
 				(1. - ratio) * x1 + ratio * x2,
 				(1. - ratio) * y1 + ratio * y2,
@@ -542,9 +514,9 @@ public interface Segment3afp<
 	 * @param pz z position of the point.
 	 * @return the distance beetween the point and the segment.
 	 */
-	static double computeDistanceSegmentPoint(double x1, double y1, double z1, double x2, double y2, double z2, double px,
+	static double calculatesDistanceSegmentPoint(double x1, double y1, double z1, double x2, double y2, double z2, double px,
 			double py, double pz) {
-		final double ratio = computeProjectedPointOnLine(px, py, pz, x1, y1, z1, x2, y2, z2);
+		final double ratio = calculatesProjectedPointOnLine(px, py, pz, x1, y1, z1, x2, y2, z2);
 
 		if (ratio <= 0.) {
 			return Point3D.getDistancePointPoint(px, py, pz, x1, y1, z1);
@@ -573,11 +545,11 @@ public interface Segment3afp<
 	 * @param py y position of the point.
 	 * @param pz z position of the point.
 	 * @return the distance beetween the point and the line.
-	 * @see #computeDistanceSquaredLinePoint(double, double, double, double, double, double, double, double, double)
-	 * @see #computeRelativeDistanceLinePoint(double, double, double, double, double, double, double, double, double)
+	 * @see #calculatesDistanceSquaredLinePoint(double, double, double, double, double, double, double, double, double)
+	 * @see #calculatesRelativeDistanceLinePoint(double, double, double, double, double, double, double, double, double)
 	 */
 	@Pure
-	static double computeDistanceLinePoint(double x1, double y1, double z1, double x2, double y2, double z2, double px, double py,
+	static double calculatesDistanceLinePoint(double x1, double y1, double z1, double x2, double y2, double z2, double px, double py,
 			double pz) {
 		final double vx1 = x2 - x1;
 		final double vy1 = y2 - y1;
@@ -603,6 +575,131 @@ public interface Segment3afp<
 		return Math.sqrt(x * x + y * y + z * z) / Math.sqrt(vx1 * vx1 + vy1 * vy1 + vz1 * vz1);
 	}
 
+	/** Compute the square distance between two segments.
+	 *
+	 * @param x1 x position of the first point of the first segment.
+	 * @param y1 y position of the first point of the first segment.
+	 * @param z1 z position of the first point of the first segment.
+	 * @param x2 x position of the second point of the first segment.
+	 * @param y2 y position of the second point of the first segment.
+	 * @param z2 y position of the second point of the first segment.
+	 * @param x3 x position of the first point of the second segment.
+	 * @param y3 y position of the first point of the second segment.
+	 * @param z3 z position of the first point of the second segment.
+	 * @param x4 x position of the second point of the second segment.
+	 * @param y4 y position of the second point of the second segment.
+	 * @param z4 y position of the second point of the second segment.
+	 * @return the distance beetween the segments.
+	 * @since 18.0
+	 */
+	@Pure
+	static double calculatesDistanceSquaredSegmentSegment(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
+		final InnerComputationVector3afp u = new InnerComputationVector3afp(x2 - x1, y2 - y1, z2 - z1);
+		final InnerComputationVector3afp v = new InnerComputationVector3afp(x4 - x3, y4 - y3, z4 - z3);
+		final InnerComputationVector3afp w = new InnerComputationVector3afp(x1 - x3, y1 - y3, z1 - z3);
+
+		final double a = u.dot(u);
+		final double b = u.dot(v);
+		final double c = v.dot(v);
+		final double d = u.dot(w);
+		final double e = v.dot(w);
+		final double D = a * c - b * b;
+
+		double sc, sN, tc, tN;
+		double sD = D;
+		double tD = D;
+
+		// Compute the line parameters of the two closest points
+		if (MathUtil.isEpsilonZero(D)) { 
+			// The lines are almost parallel
+			// force using point P0 on segment S1
+			// to prevent possible division by 0.0 later
+			sN = 0.;
+			sD = 1.;         
+			tN = e;
+			tD = c;
+		}
+		else {
+			// Get the closest points on the infinite lines
+			sN = b*e - c*d;
+			tN = a*e - b*d;
+			if (sN < 0.) {
+				// sc < 0 => the s=0 edge is visible
+				sN = 0.;
+				tN = e;
+				tD = c;
+			} else if (sN > sD) {
+				// sc > 1  => the s=1 edge is visible
+				sN = sD;
+				tN = e + b;
+				tD = c;
+			}
+		}
+
+		if (tN < 0.) {
+			// tc < 0 => the t=0 edge is visible
+			tN = 0.;
+			// Recompute sc for this edge
+			if (-d < 0.)
+				sN = 0.;
+			else if (-d > a)
+				sN = sD;
+			else {
+				sN = -d;
+				sD = a;
+			}
+		}
+		else if (tN > tD) {
+			// tc > 1  => the t=1 edge is visible
+			tN = tD;
+			// Recompute sc for this edge
+			if ((-d + b) < 0.)
+				sN = 0;
+			else if ((-d + b) > a)
+				sN = sD;
+			else {
+				sN = (-d +  b);
+				sD = a;
+			}
+		}
+		// Finally do the division to get sc and tc
+		sc = (MathUtil.isEpsilonZero(sN) ? 0. : sN / sD);
+		tc = (MathUtil.isEpsilonZero(tN) ? 0. : tN / tD);
+
+		// get the difference of the two closest points
+		// =  S1(sc) - S2(tc)
+
+		// Reuse u, v, w
+		u.scale(sc);
+		w.add(u);
+		v.scale(tc);
+		w.sub(v);
+
+		return w.getLengthSquared();
+	}
+
+	/** Compute the square distance between two segments.
+	 *
+	 * @param x1 x position of the first point of the first segment.
+	 * @param y1 y position of the first point of the first segment.
+	 * @param z1 z position of the first point of the first segment.
+	 * @param x2 x position of the second point of the first segment.
+	 * @param y2 y position of the second point of the first segment.
+	 * @param z2 y position of the second point of the first segment.
+	 * @param x3 x position of the first point of the second segment.
+	 * @param y3 y position of the first point of the second segment.
+	 * @param z3 z position of the first point of the second segment.
+	 * @param x4 x position of the second point of the second segment.
+	 * @param y4 y position of the second point of the second segment.
+	 * @param z4 y position of the second point of the second segment.
+	 * @return the distance beetween the segments.
+	 * @since 18.0
+	 */
+	@Pure
+	static double calculatesDistanceSegmentSegment(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
+		return Math.sqrt(calculatesDistanceSquaredSegmentSegment(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4));
+	}
+
 	/** Replies if a point is closed to a segment.
 	 *
 	 * @param x1 x location of the segment begining.
@@ -615,15 +712,14 @@ public interface Segment3afp<
 	 * @param y y location of the point.
 	 * @param z z location of the point.
 	 * @param hitDistance is the maximal hitting distance.
-	 * @return <code>true</code> if the point and the
+	 * @return {@code true} if the point and the
 	 *         line have closed locations.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean isPointClosedToSegment(double x1, double y1, double z1, double x2, double y2, double z2, double x, double y,
 			double z, double hitDistance) {
 		assert hitDistance >= 0. : AssertMessages.positiveOrZeroParameter(9);
-		return computeDistanceSegmentPoint(x1, y1, z1, x2, y2, z2, x, y, z) < hitDistance;
+		return calculatesDistanceSegmentPoint(x1, y1, z1, x2, y2, z2, x, y, z) < hitDistance;
 	}
 
 	/** Replies if a point is closed to a line.
@@ -638,15 +734,14 @@ public interface Segment3afp<
 	 * @param y y location of the point.
 	 * @param z z location of the point.
 	 * @param hitDistance is the maximal hitting distance.
-	 * @return <code>true</code> if the point and the
+	 * @return {@code true} if the point and the
 	 *         line have closed locations.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean isPointClosedToLine(double x1, double y1, double z1, double x2, double y2, double z2, double x, double y,
 			double z, double hitDistance) {
 		assert hitDistance >= 0. : AssertMessages.positiveOrZeroParameter(9);
-		return computeDistanceLinePoint(x1, y1, z1, x2, y2, z2, x, y, z) < hitDistance;
+		return calculatesDistanceLinePoint(x1, y1, z1, x2, y2, z2, x, y, z) < hitDistance;
 	}
 
 	/**
@@ -679,7 +774,7 @@ public interface Segment3afp<
 	 *     outside on the side of the second segment point.
 	 */
 	@Pure
-	static double computeProjectedPointOnLine(double px, double py, double pz, double s1x, double s1y, double s1z, double s2x,
+	static double calculatesProjectedPointOnLine(double px, double py, double pz, double s1x, double s1y, double s1z, double s2x,
 			double s2y, double s2z) {
 		final double vx = s2x - s1x;
 		final double vy = s2y - s1y;
@@ -714,10 +809,10 @@ public interface Segment3afp<
 	 *            the Z coordinate of the specified point to be compared with the specified line segment
 	 * @return the positive or negative distance from the point to the line
 	 * @see #ccw(double, double, double, double, double, double, double, double, double, double)
-	 * @see #computeSideLinePoint(double, double, double, double, double, double, double, double, double, double)
+	 * @see #calculatesSideLinePoint(double, double, double, double, double, double, double, double, double, double)
 	 */
 	@Pure
-	static double computeRelativeDistanceLinePoint(double x1, double y1, double z1, double x2, double y2, double z2, double px,
+	static double calculatesRelativeDistanceLinePoint(double x1, double y1, double z1, double x2, double y2, double z2, double px,
 			double py, double pz) {
 		final double x21 = x2 - x1;
 		final double y21 = y2 - y1;
@@ -728,152 +823,6 @@ public interface Segment3afp<
 		}
 		final double factor = ((y1 - py) * x21 - (x1 - px) * y21) / denomenator;
 		return factor * Math.sqrt(denomenator);
-	}
-
-	/**
-	 * Replies on which side of a line the given point is located.
-	 *
-	 * <p>A return value of 1 indicates that the line segment must turn in the direction that takes the positive X axis towards
-	 * the negative Y axis. In the default coordinate system used by Java 2D, this direction is counterclockwise.
-	 *
-	 * <p>A return value of -1 indicates that the line segment must turn in the direction that takes the positive X axis towards
-	 * the positive Y axis. In the default coordinate system, this direction is clockwise.
-	 *
-	 * <p>A return value of 0 indicates that the point lies exactly on the line segment. Note that an indicator value of 0 is rare
-	 * and not useful for determining colinearity because of floating point rounding issues.
-	 *
-	 * <p>This function uses the equal-to-zero test with the error {@link Math#ulp(double)}.
-	 *
-	 * <p>In opposite of {@link #ccw(double, double, double, double, double, double, double, double, double, double)}, this
-	 * function does not try to classify the point if it is colinear to the segment. If the point is colinear, O is always
-	 * returned.
-	 *
-	 * @param x1
-	 *            the X coordinate of the start point of the specified line segment
-	 * @param y1
-	 *            the Y coordinate of the start point of the specified line segment
-	 * @param z1
-	 *            the Z coordinate of the start point of the specified line segment
-	 * @param x2
-	 *            the X coordinate of the end point of the specified line segment
-	 * @param y2
-	 *            the Y coordinate of the end point of the specified line segment
-	 * @param z2
-	 *            the Z coordinate of the end point of the specified line segment
-	 * @param px
-	 *            the X coordinate of the specified point to be compared with the specified line segment
-	 * @param py
-	 *            the Y coordinate of the specified point to be compared with the specified line segment
-	 * @param pz
-	 *            the Z coordinate of the specified point to be compared with the specified line segment
-	 * @param epsilon
-	 *            approximate epsilon.
-	 * @return an integer that indicates the position of the third specified coordinates with respect to the line segment formed
-	 *         by the first two specified coordinates.
-	 * @see #computeRelativeDistanceLinePoint(double, double, double, double, double, double, double, double, double)
-	 * @see MathUtil#isEpsilonZero(double)
-	 * @see #ccw(double, double, double, double, double, double, double, double, double, double)
-	 */
-	@Pure
-	static int computeSideLinePoint(double x1, double y1, double z1, double x2, double y2, double z2, double px, double py,
-			double pz, double epsilon) {
-		final double x21 = x2 - x1;
-		final double y21 = y2 - y1;
-		final double xp1 = px - x1;
-		final double yp1 = py - y1;
-		double side = xp1 * y21 - yp1 * x21;
-		if (side != 0f && MathUtil.isEpsilonZero(side, epsilon)) {
-			side = 0f;
-		}
-		return (side < 0) ? -1 : ((side > 0) ? 1 : 0);
-	}
-
-	/**
-	 * Replies the relative counterclockwise (CCW) of a segment against a point. Returns an indicator of where
-	 * the specified point {@code (px,py)} lies with respect to the line segment from {@code (x1,y1)}
-	 *  to {@code (x2,y2)}. The return value can be either 1, -1, or 0 and indicates in which
-	 *  direction the specified line must pivot around its first end point, {@code (x1,y1)}, in
-	 *  order to point at the specified point {@code (px,py)}.
-	 * In other words, given three point P1, P2, and P, is the segments (P1-P2-P) a counterclockwise turn?
-	 *
-	 * <p>In opposite to
-	 * {@link #computeSideLinePoint(double, double, double, double, double, double, double, double, double, double)},
-	 * this function tries to classifies the point if it is colinear to the segment.
-	 * The classification is explained below.
-	 *
-	 * <p>A return value of 1 indicates that the line segment must turn in the direction that takes the
-	 * positive X axis towards the negative Y axis. In the default coordinate system used by Java 2D,
-	 * this direction is counterclockwise.
-	 *
-	 * <p>A return value of -1 indicates that the line segment must turn in the direction that takes the
-	 * positive X axis towards the positive Y axis. In the default coordinate system, this
-	 * direction is clockwise.
-	 *
-	 * <p>A return value of 0 indicates that the point lies exactly on the line segment.
-	 * Note that an indicator value of 0 is rare and not useful for determining colinearity
-	 * because of floating point rounding issues.
-	 *
-	 * <p>If the point is colinear with the line segment, but not between the end points, then the value will be
-	 * -1 if the point lies "beyond {@code (x1,y1)}" or 1 if the point lies "beyond {@code (x2,y2)}".
-	 *
-	 * @param x1
-	 *            the X coordinate of the start point of the specified line segment
-	 * @param y1
-	 *            the Y coordinate of the start point of the specified line segment
-	 * @param z1
-	 *            the Z coordinate of the start point of the specified line segment
-	 * @param x2
-	 *            the X coordinate of the end point of the specified line segment
-	 * @param y2
-	 *            the Y coordinate of the end point of the specified line segment
-	 * @param z2
-	 *            the Z coordinate of the end point of the specified line segment
-	 * @param px
-	 *            the X coordinate of the specified point to be compared with the specified line segment
-	 * @param py
-	 *            the Y coordinate of the specified point to be compared with the specified line segment
-	 * @param pz
-	 *            the Z coordinate of the specified point to be compared with the specified line segment
-	 * @param epsilon approximation of the tests for equality to zero.
-	 * @return an integer that indicates the position of the third specified coordinates with respect to
-	 *     the line segment formed by the first two specified coordinates.
-	 * @see #computeRelativeDistanceLinePoint(double, double, double, double, double, double, double, double, double)
-	 * @see #computeSideLinePoint(double, double, double, double, double, double, double, double, double, double)
-	 */
-	@Pure
-	static int ccw(double x1, double y1, double z1, double x2, double y2, double z2, double px, double py, double pz,
-			double epsilon) {
-		final double x21 = x2 - x1;
-		final double y21 = y2 - y1;
-		//TODO final double z21 = z2 - z1;
-		double xp1 = px - x1;
-		double yp1 = py - y1;
-		double ccw = xp1 * y21 - yp1 * x21;
-		if (MathUtil.isEpsilonZero(ccw, epsilon)) {
-			// The point is colinear, classify based on which side of
-			// the segment the point falls on. We can calculate a
-			// relative value using the projection of px,py onto the
-			// segment - a negative value indicates the point projects
-			// outside of the segment in the direction of the particular
-			// endpoint used as the origin for the projection.
-			ccw = xp1 * x21 + yp1 * y21;
-			if (ccw > 0.) {
-				// Reverse the projection to be relative to the original x2,y2
-				// x2 and y2 are simply negated.
-				// px and py need to have (x2 - x1) or (y2 - y1) subtracted
-				// from them (based on the original values)
-				// Since we really want to get a positive answer when the
-				// point is "beyond (x2,y2)", then we want to calculate
-				// the inverse anyway - thus we leave x2 & y2 negated.
-				xp1 -= x21;
-				yp1 -= y21;
-				ccw = xp1 * x21 + yp1 * y21;
-				if (ccw < 0) {
-					ccw = 0.;
-				}
-			}
-		}
-		return (ccw < 0.) ? -1 : ((ccw > 0.) ? 1 : 0);
 	}
 
 	/** Compute the interpolate point between the two points.
@@ -889,7 +838,7 @@ public interface Segment3afp<
 	 */
 	@Pure
 	static void interpolate(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double factor,
-			Point3D<?, ?> result) {
+			Point3D<?, ?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter();
 		assert factor >= 0. && factor <= 1. : AssertMessages.outsideRangeInclusiveParameter(factor, 0, 1);
 		final double vx = p2x - p1x;
@@ -915,8 +864,8 @@ public interface Segment3afp<
 	 * @param result the farthest point on the shape.
 	 */
 	@Pure
-	static void computeFarthestPointTo(double ax, double ay, double az, double bx, double by, double bz, double px, double py,
-			double pz, Point3D<?, ?> result) {
+	static void calculatesFarthestPointTo(double ax, double ay, double az, double bx, double by, double bz, double px, double py,
+			double pz, Point3D<?, ?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter();
 		final double xpa = px - ax;
 		final double ypa = py - ay;
@@ -945,11 +894,11 @@ public interface Segment3afp<
 	 * @param result the is point on the shape.
 	 */
 	@Pure
-	static void computeClosestPointToPoint(
+	static void calculatesClosestPointToPoint(
 			double ax, double ay, double az, double bx, double by, double bz, double px, double py, double pz,
-			Point3D<?, ?> result) {
+			Point3D<?, ?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter();
-		final double ratio = Segment3afp.computeProjectedPointOnLine(px, py, pz, ax, ay, az, bx, by, bz);
+		final double ratio = Segment3afp.calculatesProjectedPointOnLine(px, py, pz, ax, ay, az, bx, by, bz);
 		if (ratio <= 0.) {
 			result.set(ax, ay, az);
 		} else if (ratio >= 1.) {
@@ -962,7 +911,7 @@ public interface Segment3afp<
 		}
 	}
 
-	/** Replies the point on the segment that is closest to the rectangle.
+	/** Replies the point on the segment that is closest to the aligned box.
 	 *
 	 * @param sx1 is the x coordinate of the first point of the segment.
 	 * @param sy1 is the y coordinate of the first point of the segment.
@@ -979,9 +928,8 @@ public interface Segment3afp<
 	 * @param result the is point on the segment.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
-	static void computeClosestPointToRectangle(double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
-			double rx, double ry, double rz, double rwidth, double rheight, double rdepth, Point3D<?, ?> result) {
+	static void calculatesClosestPointToAlignedBox(double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
+			double rx, double ry, double rz, double rwidth, double rheight, double rdepth, Point3D<?, ?, ?> result) {
 		assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(10);
 		assert rheight >= 0. : AssertMessages.positiveOrZeroParameter(11);
 		assert rdepth >= 0. : AssertMessages.positiveOrZeroParameter(12);
@@ -990,39 +938,39 @@ public interface Segment3afp<
 		final double rmaxz = rz + rdepth;
 		final int code1 = MathUtil.getCohenSutherlandCode3D(sx1, sy1, sz1, rx, ry, rz, rmaxx, rmaxy, rmaxz);
 		final int code2 = MathUtil.getCohenSutherlandCode3D(sx2, sy2, sz1, rx, ry, rz, rmaxx, rmaxy, rmaxz);
-		final Point3D<?, ?> tmp1 = new InnerComputationPoint3afp();
-		final Point3D<?, ?> tmp2 = new InnerComputationPoint3afp();
-		final int zone = RectangularPrism3afp.reduceCohenSutherlandZoneRectangleSegment(
+		final Point3D<?, ?, ?> tmp1 = new InnerComputationPoint3afp();
+		final Point3D<?, ?, ?> tmp2 = new InnerComputationPoint3afp();
+		final int zone = AlignedBox3afp.reduceCohenSutherlandZoneAlignedBoxSegment(
 				rx, ry, rz, rmaxx, rmaxy, rmaxz,
 				sx1, sy1, sz1, sx2, sy2, sz2,
 				code1, code2,
 				tmp1, tmp2);
 		if ((zone & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
-			computeClosestPointToSegment(
+			calculatesClosestPointToSegment(
 					sx1, sy1, sz1, sx2, sy2, sz2,
 					rx, ry, rz, rx, rmaxy, rmaxz, result);
 		} else if ((zone & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
-			computeClosestPointToSegment(
+			calculatesClosestPointToSegment(
 					sx1, sy1, sz1, sx2, sy2, sz2,
 					rmaxx, ry, rz, rmaxx, rmaxy, rmaxz, result);
 		} else if ((zone & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
-			computeClosestPointToSegment(
+			calculatesClosestPointToSegment(
 					sx1, sy1, sz1, sx2, sy2, sz2,
 					rx, ry, rz, rmaxx, ry, rmaxz, result);
 		} else if ((zone & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
-			computeClosestPointToSegment(
+			calculatesClosestPointToSegment(
 					sx1, sy1, sz1, sx2, sy2, sz2,
 					rx, rmaxy, rz, rmaxx, rmaxy, rmaxz, result);
 		} else if ((zone & MathConstants.COHEN_SUTHERLAND_FRONT) != 0) {
-			computeClosestPointToSegment(
+			calculatesClosestPointToSegment(
 					sx1, sy1, sz1, sx2, sy2, sz2,
 					rx, ry, rz, rmaxx, rmaxy, rz, result);
 		} else if ((zone & MathConstants.COHEN_SUTHERLAND_BACK) != 0) {
-			computeClosestPointToSegment(
+			calculatesClosestPointToSegment(
 					sx1, sy1, sz1, sx2, sy2, sz2,
 					rx, ry, rmaxz, rmaxx, rmaxy, rmaxz, result);
 		} else {
-			computeClosestPointToPoint(
+			calculatesClosestPointToPoint(
 					tmp1.getX(), tmp1.getY(), tmp1.getZ(), tmp2.getX(), tmp2.getY(), tmp2.getZ(),
 					(rx + rmaxx) / 2., (ry + rmaxy) / 2., (rz + rmaxz) / 2., result);
 		}
@@ -1046,12 +994,11 @@ public interface Segment3afp<
 	 * @return the square distance between the segments.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
-	static double computeClosestPointToSegment(
+	static double calculatesClosestPointToSegment(
 			double s1x1, double s1y1, double s1z1, double s1x2, double s1y2, double s1z2,
 			double s2x1, double s2y1, double s2z1, double s2x2, double s2y2, double s2z2,
-			Point3D<?, ?> result) {
-		return computeClosestPointToSegment(
+			Point3D<?, ?, ?> result) {
+		return calculatesClosestPointToSegment(
 				s1x1, s1y1, s1z1, s1x2, s1y2, s1z2, s2x1, s2y1, s2z1, s2x2, s2y2, s2z2,
 				result, null);
 	}
@@ -1075,11 +1022,10 @@ public interface Segment3afp<
 	 * @return the square distance between the segments.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
-	static double computeClosestPointToSegment(
+	static double calculatesClosestPointToSegment(
 			double s1x1, double s1y1, double s1z1, double s1x2, double s1y2, double s1z2,
 			double s2x1, double s2y1, double s2z1, double s2x2, double s2y2, double s2z2,
-			Point3D<?, ?> resultOnFirstSegment, Point3D<?, ?> resultOnSecondSegment) {
+			Point3D<?, ?, ?> resultOnFirstSegment, Point3D<?, ?, ?> resultOnSecondSegment) {
 		final double ux = s1x2 - s1x1;
 		final double uy = s1y2 - s1y1;
 		final double uz = s1z2 - s1z1;
@@ -1180,7 +1126,7 @@ public interface Segment3afp<
 	 * -1 is returned for a crossing where the Y coordinate is decreasing
 	 *
 	 * <p>This function differs from
-	 * {@link #computeCrossingsFromPointWithoutEquality(double, double, double, double, double, double, double, double, double)}.
+	 * {@link #calculatesCrossingsFromPointWithoutEquality(double, double, double, double, double, double, double, double, double)}.
 	 * The equality test is used in this function.
 	 *
 	 * @param px is the reference point to test.
@@ -1195,8 +1141,7 @@ public interface Segment3afp<
 	 * @return the crossing.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:npathcomplexity")
-	static int computeCrossingsFromPoint(
+	static int calculatesCrossingsFromPoint(
 			double px, double py, double pz,
 			double x0, double y0, double z0,
 			double x1, double y1, double z1) {
@@ -1229,7 +1174,7 @@ public interface Segment3afp<
 	 * -1 is returned for a crossing where the Y coordinate is decreasing
 	 *
 	 * <p>This function differs from
-	 * {@link #computeCrossingsFromPoint(double, double, double, double, double, double, double, double, double)}.
+	 * {@link #calculatesCrossingsFromPoint(double, double, double, double, double, double, double, double, double)}.
 	 * The equality test is not used in this function.
 	 *
 	 * @param px is the reference point to test.
@@ -1244,8 +1189,7 @@ public interface Segment3afp<
 	 * @return the crossing.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:npathcomplexity")
-	static int computeCrossingsFromPointWithoutEquality(
+	static int calculatesCrossingsFromPointWithoutEquality(
 			double px, double py, double pz,
 			double x0, double y0, double z0,
 			double x1, double y1, double z1) {
@@ -1270,259 +1214,6 @@ public interface Segment3afp<
 		return (y0 < y1) ? 1 : -1;
 	}
 
-	/**
-	 * Calculates the number of times the line from (x0,y0,z0) to (x1,y1,z1)
-	 * crosses the segment (sx0,sy0,sz0) to (sx1,sy1,sz1) extending to the right.
-	 *
-	 * @param crossings is the initial value for the number of crossings.
-	 * @param sx1 is the first point of the segment to extend.
-	 * @param sy1 is the first point of the segment to extend.
-	 * @param sz1 is the first point of the segment to extend.
-	 * @param sx2 is the second point of the segment to extend.
-	 * @param sy2 is the second point of the segment to extend.
-	 * @param sz2 is the second point of the segment to extend.
-	 * @param x0 is the first point of the line.
-	 * @param y0 is the first point of the line.
-	 * @param z0 is the first point of the line.
-	 * @param x1 is the second point of the line.
-	 * @param y1 is the second point of the line.
-	 * @param z1 is the second point of the line.
-	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
-	 */
-	@Pure
-	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
-	// TODO : check 3D version
-	static int computeCrossingsFromSegment(
-			int crossings,
-			double sx1, double sy1, double sz1,
-			double sx2, double sy2, double sz2,
-			double x0, double y0, double z0,
-			double x1, double y1, double z1) {
-		int numCrosses = crossings;
-
-		final double xmin = Math.min(sx1, sx2);
-		final double xmax = Math.max(sx1, sx2);
-		final double ymin = Math.min(sy1, sy2);
-		final double ymax = Math.max(sy1, sy2);
-		//TODO final double zmin = Math.min(sz1, sz2);
-		//TODO final double zmax = Math.max(sz1, sz2);
-
-		if (y0 <= ymin && y1 <= ymin) {
-			return numCrosses;
-		}
-		if (y0 >= ymax && y1 >= ymax) {
-			return numCrosses;
-		}
-		if (x0 <= xmin && x1 <= xmin) {
-			return numCrosses;
-		}
-		if (x0 >= xmax && x1 >= xmax) {
-			// The line is entirely at the right of the shadow
-			if (y0 < y1) {
-				if (y0 <= ymin) {
-					++numCrosses;
-				}
-				if (y1 >= ymax) {
-					++numCrosses;
-				}
-			} else {
-				if (y1 <= ymin) {
-					--numCrosses;
-				}
-				if (y0 >= ymax) {
-					--numCrosses;
-				}
-			}
-		} else if (intersectsSegmentSegmentWithEnds(x0, y0, z0, x1, y1, z1, sx1, sy1, sz1, sx2, sy2, sz2)) {
-			return GeomConstants.SHAPE_INTERSECTS;
-		} else {
-			final int side1;
-			final int side2;
-			if (sy1 <= sy2) {
-				side1 = computeSideLinePoint(sx1, sy1, sz1, sx2, sy2, sz2, x0, y0, z0, 0.);
-				side2 = computeSideLinePoint(sx1, sy1, sz1, sx2, sy2, sz2, x1, y1, z1, 0.);
-			} else {
-				side1 = computeSideLinePoint(sx2, sy2, sz2, sx1, sy1, sz1, x0, y0, z1, 0.);
-				side2 = computeSideLinePoint(sx2, sy2, sz2, sx1, sy1, sz1, x1, y1, z1, 0.);
-			}
-			if (side1 > 0 || side2 > 0) {
-				final int n1 = computeCrossingsFromPoint(sx1, sy1, sz1, x0, y0, z0, x1, y1, z1);
-				final int n2;
-				if (n1 != 0) {
-					n2 = computeCrossingsFromPointWithoutEquality(sx2, sy2, sz2, x0, y0, z0, x1, y1, z1);
-				} else {
-					n2 = computeCrossingsFromPoint(sx2, sy2, sz2, x0, y0, z0, x1, y1, z1);
-				}
-				numCrosses += n1;
-				numCrosses += n2;
-			}
-		}
-
-		return numCrosses;
-	}
-
-	/**
-	 * Calculates the number of times the line from (x0,y0,z0) to (x1,y1,z1)
-	 * crosses the sphere (cx,cy,cz,radius) with radius extending to the right.
-	 *
-	 * @param crossings is the initial value for the number of crossings.
-	 * @param cx is the center of the circle to extend.
-	 * @param cy is the center of the circle to extend.
-	 * @param cz is the center of the circle to extend.
-	 * @param radius is the radius of the circle to extend.
-	 * @param x0 is the first point of the line.
-	 * @param y0 is the first point of the line.
-	 * @param z0 is the first point of the line.
-	 * @param x1 is the second point of the line.
-	 * @param y1 is the secondpoint of the line.
-	 * @param z1 is the secondpoint of the line.
-	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
-	 */
-	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
-	// TODO : implement 3D version
-	static int computeCrossingsFromSphere(
-			int crossings,
-			double cx, double cy, double cz,
-			double radius,
-			double x0, double y0, double z0,
-			double x1, double y1, double z1) {
-		assert radius >= 0. : AssertMessages.positiveOrZeroParameter(4);
-		//		int numCrosses = crossings;
-		//
-		//		double xmin = cx - Math.abs(radius);
-		//		double ymin = cy - Math.abs(radius);
-		//		double ymax = cy + Math.abs(radius);
-		//
-		//		if (y0<=ymin && y1<=ymin) return numCrosses;
-		//		if (y0>=ymax && y1>=ymax) return numCrosses;
-		//		if (x0<=xmin && x1<=xmin) return numCrosses;
-		//
-		//		if (x0>=cx+radius && x1>=cx+radius) {
-		//			// The line is entirely at the right of the shadow
-		//			if (y0<y1) {
-		//				if (y0<=ymin) ++numCrosses;
-		//				if (y1>=ymax) ++numCrosses;
-		//			}
-		//			else {
-		//				if (y1<=ymin) --numCrosses;
-		//				if (y0>=ymax) --numCrosses;
-		//			}
-		//		}
-		//		else if (Sphere3afp.intersectsCircleSegment(
-		//				cx, cy, radius,
-		//				x0, y0, x1, y1)) {
-		//			return GeomConstants.SHAPE_INTERSECTS;
-		//		} else {
-		//			numCrosses += computeCrossingsFromPoint(cx, ymin, x0, y0, x1, y1);
-		//			numCrosses += computeCrossingsFromPoint(cx, ymax, x0, y0, x1, y1);
-		//		}
-		//
-		//		return numCrosses;
-		return -1;
-	}
-
-	/**
-	 * Accumulate the number of times the line crosses the shadow
-	 * extending to the right of the rectangle.  See the comment
-	 * for the {@link GeomConstants#SHAPE_INTERSECTS} constant for more complete details.
-	 *
-	 * @param crossings is the initial value for the number of crossings.
-	 * @param rxmin is the first corner of the rectangle.
-	 * @param rymin is the first corner of the rectangle.
-	 * @param rzmin is the first corner of the rectangle.
-	 * @param rxmax is the second corner of the rectangle.
-	 * @param rymax is the second corner of the rectangle.
-	 * @param rzmax is the second corner of the rectangle.
-	 * @param x0 is the first point of the line.
-	 * @param y0 is the first point of the line.
-	 * @param z0 is the first point of the line.
-	 * @param x1 is the second point of the line.
-	 * @param y1 is the secondpoint of the line.
-	 * @param z1 is the secondpoint of the line.
-	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
-	 */
-	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
-	// TODO : implement 3D version
-	static int computeCrossingsFromRect(
-			int crossings,
-			double rxmin, double rymin, double rzmin,
-			double rxmax, double rymax, double rzmax,
-			double x0, double y0, double z0,
-			double x1, double y1, double z1) {
-		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(1,  rxmin, 4, rxmax);
-		assert rymin <= rymax : AssertMessages.lowerEqualParameters(2,  rymin, 5, rymax);
-		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(3,  rzmin, 6, rzmax);
-		//		int numCrosses = crossings;
-		//
-		//		if (y0 >= rymax && y1 >= rymax) return numCrosses;
-		//		if (y0 <= rymin && y1 <= rymin) return numCrosses;
-		//		if (x0 <= rxmin && x1 <= rxmin) return numCrosses;
-		//		if (x0 >= rxmax && x1 >= rxmax) {
-		//			// Line is entirely to the right of the rect
-		//			// and the vertical ranges of the two overlap by a non-empty amount
-		//			// Thus, this line segment is partially in the "right-shadow"
-		//			// Path may have done a complete crossing
-		//			// Or path may have entered or exited the right-shadow
-		//			if (y0 < y1) {
-		//				// y-increasing line segment...
-		//				// We know that y0 < rymax and y1 > rymin
-		//				if (y0 <= rymin) ++numCrosses;
-		//				if (y1 >= rymax) ++numCrosses;
-		//			}
-		//			else if (y1 < y0) {
-		//				// y-decreasing line segment...
-		//				// We know that y1 < rymax and y0 > rymin
-		//				if (y1 <= rymin) --numCrosses;
-		//				if (y0 >= rymax) --numCrosses;
-		//			}
-		//			return numCrosses;
-		//		}
-		//		// Remaining case:
-		//		// Both x and y ranges overlap by a non-empty amount
-		//		// First do trivial INTERSECTS rejection of the cases
-		//		// where one of the endpoints is inside the rectangle.
-		//		if ((x0 > rxmin && x0 < rxmax && y0 > rymin && y0 < rymax) ||
-		//				(x1 > rxmin && x1 < rxmax && y1 > rymin && y1 < rymax)) {
-		//			return GeomConstants.SHAPE_INTERSECTS;
-		//		}
-		//		// Otherwise calculate the y intercepts and see where
-		//		// they fall with respect to the rectangle
-		//		double xi0 = x0;
-		//		if (y0 < rymin) {
-		//			xi0 += ((rymin - y0) * (x1 - x0) / (y1 - y0));
-		//		}
-		//		else if (y0 > rymax) {
-		//			xi0 += ((rymax - y0) * (x1 - x0) / (y1 - y0));
-		//		}
-		//		double xi1 = x1;
-		//		if (y1 < rymin) {
-		//			xi1 += ((rymin - y1) * (x0 - x1) / (y0 - y1));
-		//		}
-		//		else if (y1 > rymax) {
-		//			xi1 += ((rymax - y1) * (x0 - x1) / (y0 - y1));
-		//		}
-		//		if (xi0 <= rxmin && xi1 <= rxmin) return numCrosses;
-		//		if (xi0 >= rxmax && xi1 >= rxmax) {
-		//			if (y0 < y1) {
-		//				// y-increasing line segment...
-		//				// We know that y0 < rymax and y1 > rymin
-		//				if (y0 <= rymin) ++numCrosses;
-		//				if (y1 >= rymax) ++numCrosses;
-		//			}
-		//			else if (y1 < y0) {
-		//				// y-decreasing line segment...
-		//				// We know that y1 < rymax and y0 > rymin
-		//				if (y1 <= rymin) --numCrosses;
-		//				if (y0 >= rymax) --numCrosses;
-		//			}
-		//			return numCrosses;
-		//		}
-		//		return GeomConstants.SHAPE_INTERSECTS;
-		return -1;
-	}
-
 	/** Replies if two lines are intersecting.
 	 *
 	 * @param x1 is the first point of the first line.
@@ -1537,8 +1228,8 @@ public interface Segment3afp<
 	 * @param x4 is the second point of the second line.
 	 * @param y4 is the second point of the second line.
 	 * @param z4 is the second point of the second line.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
 	@Pure
 	static boolean intersectsLineLine(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
@@ -1550,6 +1241,11 @@ public interface Segment3afp<
 	}
 
 	/** Replies if a segment and a line are intersecting.
+	 * This function considers that the ends of
+	 * the segments are intersecting.
+	 * To ignore the ends of the segments, see
+	 * {@link #intersectsSegmentLineWithoutEnds(double, double, double, double, double,
+	 *     double, double, double, double, double, double, double)}.
 	 *
 	 * @param x1 is the first point of the first segment.
 	 * @param y1 is the first point of the first segment.
@@ -1563,23 +1259,26 @@ public interface Segment3afp<
 	 * @param x4 is the second point of the second line.
 	 * @param y4 is the second point of the second line.
 	 * @param z4 is the second point of the second line.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
+	 * @since 18.0
 	 */
 	@Pure
-	static boolean intersectsSegmentLine(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
+	static boolean intersectsSegmentLineWithEnds(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
 			double z3, double x4, double y4, double z4) {
-		return (computeSideLinePoint(x3, y3, z3, x4, y4, z4, x1, y1, z1, Double.NaN)
-				* computeSideLinePoint(x3, y3, z3, x4, y4, z4, x2, y2, z2, Double.NaN)) <= 0;
+		final LineIntersection factors = calculatesLineLineIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+		if (factors == null) {
+			return false;
+		}
+		return factors.colinear || (factors.position1 >= 0. && factors.position1 <= 1.);
 	}
 
-	/** Do an intersection test of two segments for ensuring that the answer of "no intersect" is safe.
-	 *
-	 * <p>If the function replies {@link UncertainIntersection#NO}, we are sure that the two given segments are not
-	 * intersecting. If the function replies {@link UncertainIntersection#PERHAPS}, the two segments may intersects
-	 * (uncertain answer).
-	 *
-	 * <p>This function considers that the ends of the segments are intersecting.
+	/** Replies if a segment and a line are intersecting.
+	 * This function considers that the ends of
+	 * the segments are not intersecting.
+	 * To include the ends of the segments, see
+	 * {@link #intersectsSegmentLineWithEnds(double, double, double, double, double,
+	 *     double, double, double, double, double, double, double)}.
 	 *
 	 * @param x1 is the first point of the first segment.
 	 * @param y1 is the first point of the first segment.
@@ -1587,183 +1286,24 @@ public interface Segment3afp<
 	 * @param x2 is the second point of the first segment.
 	 * @param y2 is the second point of the first segment.
 	 * @param z2 is the second point of the first segment.
-	 * @param x3 is the first point of the second segment.
-	 * @param y3 is the first point of the second segment.
-	 * @param z3 is the first point of the second segment.
-	 * @param x4 is the second point of the second segment.
-	 * @param y4 is the second point of the second segment.
-	 * @param z4 is the second point of the second segment.
-	 * @return the type of intersection.
-	 * @see #intersectsSegmentSegmentWithEnds(double, double, double, double, double,
-	 *     double, double, double, double, double, double, double)
+	 * @param x3 is the first point of the second line.
+	 * @param y3 is the first point of the second line.
+	 * @param z3 is the first point of the second line.
+	 * @param x4 is the second point of the second line.
+	 * @param y4 is the second point of the second line.
+	 * @param z4 is the second point of the second line.
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
+	 * @since 18.0
 	 */
 	@Pure
-	// TODO : implement 3D
-	static UncertainIntersection getNoSegmentSegmentWithEndsIntersection(double x1, double y1, double z1, double x2, double y2,
-			double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
-		final double vx1 = x2 - x1;
-		final double vy1 = y2 - y1;
-
-		// Based on CCW. It is different than MathUtil.ccw(); because
-		// this small algorithm is computing a ccw of 0 for colinear points.
-		final double vx2a = x3 - x1;
-		final double vy2a = y3 - y1;
-		double f1 = vx2a * vy1 - vy2a * vx1;
-
-		final double vx2b = x4 - x1;
-		final double vy2b = y4 - y1;
-		double f2 = vx2b * vy1 - vy2b * vx1;
-
-		// s = f1 * f2
-		//
-		// f1  f2  s   intersect
-		// -1  -1   1  F
-		// -1   0   0  ON SEGMENT?
-		// -1   1  -1  T
-		//  0  -1   0  ON SEGMENT?
-		//  0   0   0  SEGMENT INTERSECTION?
-		//  0   1   1  ON SEGMENT?
-		//  1  -1  -1  T
-		//  1   0   0  ON SEGMENT?
-		//  1   1   1  F
-		final double sign = f1 * f2;
-
-		if (sign < 0) {
-			return UncertainIntersection.PERHAPS;
+	static boolean intersectsSegmentLineWithoutEnds(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
+			double z3, double x4, double y4, double z4) {
+		final LineIntersection factors = calculatesLineLineIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+		if (factors == null) {
+			return false;
 		}
-		if (sign > 0) {
-			return UncertainIntersection.NO;
-		}
-
-		final double squaredLength = vx1 * vx1 + vy1 * vy1;
-
-		if (f1 == 0f && f2 == 0) {
-			// Projection of the point on the segment line:
-			// <0 -> means before first point
-			// >1 -> means after second point
-			// otherwhise on the segment.
-
-			f1 = (vx2a * vx1 + vy2a * vy1) / squaredLength;
-			f2 = (vx2b * vx1 + vy2b * vy1) / squaredLength;
-
-			// No intersection when:
-			// f1<0 && f2<0 or
-			// f1>1 && f2>1
-
-			return UncertainIntersection.fromBoolean((f1 >= 0f || f2 >= 0) && (f1 <= 1f || f2 <= 1));
-		}
-
-		if (f1 == 0) {
-			// Projection of the point on the segment line:
-			// <0 -> means before first point
-			// >1 -> means after second point
-			// otherwhise on the segment.
-
-			f1 = (vx2a * vx1 + vy2a * vy1) / squaredLength;
-
-			// No intersection when:
-			// f1<=0 && f2<=0 or
-			// f1>=1 && f2>=1
-
-			return UncertainIntersection.fromBoolean(f1 >= 0f && f1 <= 1);
-		}
-
-		if (f2 == 0) {
-			// Projection of the point on the segment line:
-			// <0 -> means before first point
-			// >1 -> means after second point
-			// otherwhise on the segment.
-
-			f2 = (vx2b * vx1 + vy2b * vy1) / squaredLength;
-
-			// No intersection when:
-			// f1<0 && f2<0 or
-			// f1>1 && f2>1
-
-			return UncertainIntersection.fromBoolean(f2 >= 0 && f2 <= 1);
-		}
-
-		return UncertainIntersection.NO;
-	}
-
-	/** Do an intersection test of two segments for ensuring that the answer of "no intersect" is safe.
-	 * If the function replies <code>true</code>, it may
-	 * This function does not consider that the ends of
-	 * the segments are intersecting.
-	 *
-	 * @param x1 is the first point of the first segment.
-	 * @param y1 is the first point of the first segment.
-	 * @param z1 is the first point of the first segment.
-	 * @param x2 is the second point of the first segment.
-	 * @param y2 is the second point of the first segment.
-	 * @param z2 is the second point of the first segment.
-	 * @param x3 is the first point of the second segment.
-	 * @param y3 is the first point of the second segment.
-	 * @param z3 is the first point of the second segment.
-	 * @param x4 is the second point of the second segment.
-	 * @param y4 is the second point of the second segment.
-	 * @param z4 is the second point of the second segment.
-	 * @return the type of intersection.
-	 * @see #intersectsSegmentSegmentWithoutEnds(double, double, double, double,
-	 *  double, double, double, double, double, double, double, double)
-	 */
-	@Pure
-	// TODO : implement 3D
-	static UncertainIntersection getNoSegmentSegmentWithoutEndsIntersection(double x1, double y1, double z1, double x2, double y2,
-			double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
-
-		final double vx1 = x2 - x1;
-		final double vy1 = y2 - y1;
-
-		final double vx2a = x3 - x1;
-		final double vy2a = y3 - y1;
-		double f1 = vx2a * vy1 - vy2a * vx1;
-
-		final double vx2b = x4 - x1;
-		final double vy2b = y4 - y1;
-		double f2 = vx2b * vy1 - vy2b * vx1;
-
-		// s = f1 * f2
-		//
-		// f1  f2  s   intersect
-		// -1  -1   1  F
-		// -1   0   0  F
-		// -1   1  -1  T
-		//  0  -1   0  F
-		//  0   0   0  SEGMENT INTERSECTION?
-		//  0   1   1  F
-		//  1  -1  -1  T
-		//  1   0   0  F
-		//  1   1   1  F
-
-		final double sign = f1 * f2;
-
-		if (sign < 0) {
-			return UncertainIntersection.PERHAPS;
-		}
-		if (sign > 0) {
-			return UncertainIntersection.NO;
-		}
-
-		if (f1 == 0f && f2 == 0) {
-			// Projection of the point on the segment line:
-			// <0 -> means before first point
-			// >1 -> means after second point
-			// otherwhise on the segment.
-
-			final double squaredLength = vx1 * vx1 + vy1 * vy1;
-
-			f1 = (vx2a * vx1 + vy2a * vy1) / squaredLength;
-			f2 = (vx2b * vx1 + vy2b * vy1) / squaredLength;
-
-			// No intersection when:
-			// f1<=0 && f2<=0 or
-			// f1>=1 && f2>=1
-
-			return UncertainIntersection.fromBoolean((f1 > 0f || f2 > 0) && (f1 < 1f || f2 < 1));
-		}
-
-		return UncertainIntersection.NO;
+		return factors.colinear || (factors.position1 > 0. && factors.position1 < 1.);
 	}
 
 	/** Replies if two segments are intersecting.
@@ -1785,20 +1325,22 @@ public interface Segment3afp<
 	 * @param x4 is the second point of the second segment.
 	 * @param y4 is the second point of the second segment.
 	 * @param z4 is the second point of the second segment.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 * @see #intersectsSegmentSegmentWithEnds(double, double, double, double, double, double,
 	 *     double, double, double, double, double, double)
 	 */
 	@Pure
 	static boolean intersectsSegmentSegmentWithoutEnds(double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
-		final UncertainIntersection r;
-		r = getNoSegmentSegmentWithoutEndsIntersection(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
-		if (!r.booleanValue()) {
-			return r.booleanValue();
+		final SegmentIntersection factors = calculatesSegmentSegmentIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+		if (factors == null) {
+			return false;
 		}
-		return getNoSegmentSegmentWithoutEndsIntersection(x3, y3, z3, x4, y4, z4, x1, y1, z1, x2, y2, z2).booleanValue();
+		if (factors.colinear) {
+			return factors.position1 < 1. && factors.position2 > 0.; 
+		}
+		return factors.position1 > 0. && factors.position1 < 1. && factors.position2 > 0. && factors.position2 < 1.;
 	}
 
 	/** Replies if two segments are intersecting.
@@ -1820,20 +1362,19 @@ public interface Segment3afp<
 	 * @param x4 is the second point of the second segment.
 	 * @param y4 is the second point of the second segment.
 	 * @param z4 is the second point of the second segment.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 * @see #intersectsSegmentSegmentWithoutEnds(double, double, double, double, double, double, double,
 	 *     double, double, double, double, double)
 	 */
 	@Pure
 	static boolean intersectsSegmentSegmentWithEnds(double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
-		final UncertainIntersection r;
-		r = getNoSegmentSegmentWithEndsIntersection(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
-		if (!r.booleanValue()) {
-			return r.booleanValue();
+		final SegmentIntersection factors = calculatesSegmentSegmentIntersectionFactors(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
+		if (factors == null) {
+			return false;
 		}
-		return getNoSegmentSegmentWithEndsIntersection(x3, y3, z3, x4, y4, z4, x1, y1, z1, x2, y2, z2).booleanValue();
+		return factors.colinear || factors.position1 >= 0. && factors.position1 <= 1. && factors.position2 >= 0. && factors.position2 <= 1.;
 	}
 
 	@Pure
@@ -1875,7 +1416,7 @@ public interface Segment3afp<
 	 * @param firstPoint the first point.
 	 * @param secondPoint the second point.
 	 */
-	default void set(Point3D<?, ?> firstPoint, Point3D<?, ?> secondPoint) {
+	default void set(Point3D<?, ?, ?> firstPoint, Point3D<?, ?, ?> secondPoint) {
 		assert firstPoint != null : AssertMessages.notNullParameter(0);
 		assert secondPoint != null : AssertMessages.notNullParameter(1);
 		set(firstPoint.getX(), firstPoint.getY(), firstPoint.getZ(), secondPoint.getX(), secondPoint.getY(), secondPoint.getZ());
@@ -1997,7 +1538,7 @@ public interface Segment3afp<
 	 *
 	 * @param point the first point.
 	 */
-	default void setP1(Point3D<?, ?> point) {
+	default void setP1(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
 		set(point.getX(), point.getY(), point.getZ(), getX2(), getY2(), getZ2());
 	}
@@ -2016,7 +1557,7 @@ public interface Segment3afp<
 	 *
 	 * @param point the second point.
 	 */
-	default void setP2(Point3D<?, ?> point) {
+	default void setP2(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
 		set(getX1(), getY1(), getZ1(), point.getX(), point.getY(), point.getZ());
 	}
@@ -2054,9 +1595,9 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point3D<?, ?> point) {
+	default double getDistanceSquared(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
-		return computeDistanceSquaredSegmentPoint(
+		return calculatesDistanceSquaredSegmentPoint(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
 				point.getX(), point.getY(), point.getZ());
@@ -2064,9 +1605,9 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point3D<?, ?> point) {
+	default double getDistanceL1(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
-		double ratio = computeProjectedPointOnLine(point.getX(), point.getY(), point.getZ(), getX1(), getY1(), getZ1(), getX2(),
+		double ratio = calculatesProjectedPointOnLine(point.getX(), point.getY(), point.getZ(), getX1(), getY1(), getZ1(), getX2(),
 				getY2(), getZ2());
 		ratio = MathUtil.clamp(ratio, 0, 1);
 		final double vx = (getX2() - getX1()) * ratio;
@@ -2079,9 +1620,9 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point3D<?, ?> point) {
+	default double getDistanceLinf(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
-		double ratio = computeProjectedPointOnLine(point.getX(), point.getY(), point.getZ(), getX1(), getY1(), getZ1(), getX2(),
+		double ratio = calculatesProjectedPointOnLine(point.getX(), point.getY(), point.getZ(), getX1(), getY1(), getZ1(), getX2(),
 				getY2(), getZ2());
 		ratio = MathUtil.clamp(ratio, 0, 1);
 		final double vx = (getX2() - getX1()) * ratio;
@@ -2102,23 +1643,98 @@ public interface Segment3afp<
 	@Override
 	default boolean contains(double x, double y, double z) {
 		return MathUtil.isEpsilonZero(
-				computeDistanceSquaredSegmentPoint(
+				calculatesDistanceSquaredSegmentPoint(
 						getX1(), getY1(), getZ1(),
 						getX2(), getY2(), getZ2(),
 						x, y, z));
 	}
 
 	@Override
-	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : AssertMessages.notNullParameter();
+	default boolean contains(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> AlignedBox) {
+		assert AlignedBox != null : AssertMessages.notNullParameter();
 		return (getX1() == getX2() || getY1() == getY2() || getZ1() == getZ2())
-				&& contains(rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ())
-				&& contains(rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ());
+				&& contains(AlignedBox.getMinX(), AlignedBox.getMinY(), AlignedBox.getMinZ())
+				&& contains(AlignedBox.getMaxX(), AlignedBox.getMaxY(), AlignedBox.getMaxZ());
 	}
 
 	@Override
 	default void translate(double dx, double dy, double dz) {
 		set(getX1() + dx, getY1() + dy, getZ1() + dz, getX2() + dx, getY2() + dy, getZ2() + dz);
+	}
+
+	/** Rotates this segment according to the given quaternion around the given rotation center (pivot).
+	 *
+	 * @param qx x component of the quaternion.
+	 * @param qy y component of the quaternion.
+	 * @param qz z component of the quaternion.
+	 * @param qw w component of the quaternion.
+	 * @param px x components of the pivot point.
+	 * @param py y components of the pivot point.
+	 * @param pz z components of the pivot point.
+	 * @since 18.0
+	 */
+	default void rotate(double qx, double qy, double qz, double qw, double px, double py, double pz) {
+		final Transform3D m = new Transform3D();
+		m.setRotation(qx, qy, qz, qw);
+
+		final Point3D<?, ?, ?> point1 = new InnerComputationPoint3afp(
+				getX1() - px, getY1() - py, getZ1() - pz);
+		m.transform(point1);
+		point1.add(px, py, pz);
+
+		final Point3D<?, ?, ?> point2 = new InnerComputationPoint3afp(
+				getX2() - px, getY2() - py, getZ2() - pz);
+		m.transform(point2);
+		point2.add(px, py, pz);
+
+		set(point1.getX(), point1.getY(), point1.getZ(), point2.getX(), point2.getY(), point2.getZ());
+	}
+
+	/** Rotates this segment according to the given quaternion around the given rotation center (pivot).
+	 *
+	 * @param quaternion the rotation quaternion.
+	 * @param pivot the pivot point. If the pivot is {@code null}, the pivot point {@code (0,0,0)} is assumed.
+	 * @since 18.0
+	 */
+	default void rotate(Quaternion<?, ?, ?> quaternion, Point3D<?, ?, ?> pivot) {
+		assert quaternion != null : AssertMessages.notNullParameter(0);
+		if (pivot == null) {
+			rotate(quaternion.getX(), quaternion.getY(), quaternion.getZ(), quaternion.getW());
+		} else {
+			rotate(quaternion.getX(), quaternion.getY(), quaternion.getZ(), quaternion.getW(),
+					pivot.getX(), pivot.getY(), pivot.getZ());
+		}
+	}
+
+	/** Rotates this segment according to the given quaternion around the rotation center {@code (0, 0, 0)}.
+	 *
+	 * @param qx x component of the quaternion.
+	 * @param qy y component of the quaternion.
+	 * @param qz z component of the quaternion.
+	 * @param qw w component of the quaternion.
+	 * @since 18.0
+	 */
+	default void rotate(double qx, double qy, double qz, double qw) {
+		final Transform3D m = new Transform3D();
+		m.setRotation(qx, qy, qz, qw);
+
+		final Point3D<?, ?, ?> point1 = new InnerComputationPoint3afp(getX1(), getY1(), getZ1());
+		m.transform(point1);
+
+		final Point3D<?, ?, ?> point2 = new InnerComputationPoint3afp(getX2(), getY2(), getZ2());
+		m.transform(point2);
+
+		set(point1.getX(), point1.getY(), point1.getZ(), point2.getX(), point2.getY(), point2.getZ());
+	}
+
+	/** Rotates this segment according to the given quaternion around the rotation center {@code (0, 0, 0)}.
+	 *
+	 * @param quaternion the rotation quaternion.
+	 * @since 18.0
+	 */
+	default void rotate(Quaternion<?, ?, ?> quaternion) {
+		assert quaternion != null : AssertMessages.notNullParameter();
+		rotate(quaternion.getX(), quaternion.getY(), quaternion.getZ(), quaternion.getW());
 	}
 
 	/** Transform the current segment.
@@ -2129,7 +1745,7 @@ public interface Segment3afp<
 	 */
 	default void transform(Transform3D transform) {
 		assert transform != null : AssertMessages.notNullParameter();
-		final Point3D<?, ?> p = new InnerComputationPoint3afp(getX1(),  getY1(), getZ1());
+		final Point3D<?, ?, ?> p = new InnerComputationPoint3afp(getX1(),  getY1(), getZ1());
 		transform.transform(p);
 		final double x1 = p.getX();
 		final double y1 = p.getY();
@@ -2144,8 +1760,85 @@ public interface Segment3afp<
 		set(0, 0, 0, 0, 0, 0);
 	}
 
-	/** Clip the segment against the clipping rectangle
-	 * according to the <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
+	/** Clip the segment against the clipping box
+	 * according to the adaptation of the
+	 * <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>
+	 * to 3D.
+	 *
+	 * @param box the box that corresponds to the clipping area.
+	 * @return {@code true} if the segment has an intersection with the
+	 *     box and the segment was clipped; {@code false} if the segment
+	 *     does not intersect the box.
+	 */
+	@Pure
+	default boolean clipToBox(Box3afp<?, ?, ?, ?, ?, ?, ?> box) {
+		assert box != null : AssertMessages.notNullParameter();
+		return clipToBox(
+				box.getMinX(), box.getMinY(), box.getMinZ(),
+				box.getMaxX(), box.getMaxY(), box.getMaxZ());
+	}
+
+	/** Calculate the intersection point between a line and a plane.
+	 *
+	 * @param lx1 x coordinate of the first point of the line.
+	 * @param ly1 y coordinate of the first point of the line.
+	 * @param lz1 z coordinate of the first point of the line.
+	 * @param lx2 x coordinate of the second point of the line.
+	 * @param ly2 y coordinate of the second point of the line.
+	 * @param lz2 z coordinate of the second point of the line.
+	 * @param a a component of the plane equation.
+	 * @param b b component of the plane equation.
+	 * @param c c component of the plane equation.
+	 * @param d d component of the plane equation.
+	 * @param result the intersection point.
+	 * @return {@code true} if there is an intersection point; {@code false} if there is no intersection.
+	 * @since 18.0
+	 */
+	@Pure
+	public static boolean calculatesLinePlaneIntersection(
+			double lx1, double ly1, double lz1, double lx2, double ly2, double lz2,
+			double a, double b, double c, double d,
+			Point3D<?, ?, ?> result) {
+		final double nx = a;
+		final double ny = b;
+		final double nz = c;
+
+		double ux = lx2 - lx1;
+		double uy = ly2 - ly1;
+		double uz = lz2 - lz1;
+		final double ul = Math.sqrt(ux * ux + uy * uy + uz * uz);
+		ux /= ul;
+		uy /= ul;
+		uz /= ul;
+		
+		final double s = Vector3D.dotProduct(nx, ny, nz, ux, uy, uz);
+		if (MathUtil.isEpsilonZero(s)) {
+			// line and plane are parallel
+			return false;
+		}
+
+		// Assuming L: P0 + si * u
+		//
+		//      -(a x0 + b y0 + c z0 + d)
+		// si = -------------------------
+		//               n.u
+		double si = -(a * lx1 + b * ly1 + c * lz1 + d) / s;
+
+		ux *= si;
+		uy *= si;
+		uz *= si;
+
+		if (result != null) {
+			result.set(lx1 + ux, ly1 + uy, lz1 + uz);
+		}
+
+		return true;
+	}
+
+	/** Clip the segment against the clipping box
+	 * according to the adaptation of the
+	 * <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>
+	 * to 3D.
 	 *
 	 * @param rxmin is the min of the coordinates of the rectangle.
 	 * @param rymin is the min of the coordinates of the rectangle.
@@ -2153,14 +1846,12 @@ public interface Segment3afp<
 	 * @param rxmax is the max of the coordinates of the rectangle.
 	 * @param rymax is the max of the coordinates of the rectangle.
 	 * @param rzmax is the max of the coordinates of the rectangle.
-	 * @return <code>true</code> if the segment has an intersection with the
-	 *     rectangle and the segment was clipped; <code>false</code> if the segment
-	 *     does not intersect the rectangle.
+	 * @return {@code true} if the segment has an intersection with the
+	 *     box and the segment was clipped; {@code false} if the segment
+	 *     does not intersect the box.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
-	// TODO
-	default boolean clipToRectangle(double rxmin, double rymin, double rzmin, double rxmax, double rymax, double rzmax) {
+	default boolean clipToBox(double rxmin, double rymin, double rzmin, double rxmax, double rymax, double rzmax) {
 		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(0, rxmin, 3, rxmax);
 		assert rymin <= rymax : AssertMessages.lowerEqualParameters(1, rymin, 4, rymax);
 		assert rzmin <= rzmax : AssertMessages.lowerEqualParameters(2, rzmin, 5, rzmax);
@@ -2174,9 +1865,7 @@ public interface Segment3afp<
 		int code2 = MathUtil.getCohenSutherlandCode3D(x1, y1, z1, rxmin, rymin, rzmin, rxmax, rymax, rzmax);
 		boolean accept = false;
 		boolean cont = true;
-		double x = 0;
-		double y = 0;
-		final double z = 0;
+		final Point3D<?, ?, ?> point = new InnerComputationPoint3afp();
 
 		while (cont) {
 			if ((code1 | code2) == 0) {
@@ -2187,32 +1876,49 @@ public interface Segment3afp<
 				// Bitwise AND is not 0. Trivially reject and get out of loop
 				cont = false;
 			} else {
-				// failed both tests, so calculate the line segment to clip
-				// from an outside point to an intersection with clip edge
+				// Failed both tests, so calculate the line segment to clip
+				// from an outside point to an intersection with clip plan
 
-				// At least one endpoint is outside the clip rectangle; pick it.
+				// At least one endpoint is outside the clip box; pick it.
 				int code3 = code1 != 0 ? code1 : code2;
 
-				// TODO update formula & use FRONT / BACK for z coordinate
-
 				// Now find the intersection point;
-				// use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
 				if ((code3 & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
-					// point is above the clip rectangle
-					x = x0 + (x1 - x0) * (rymax - y0) / (y1 - y0);
-					y = rymax;
+					// y > rymax
+					calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							0, 1, 0, -rymax,
+							point);
 				} else if ((code3 & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
-					// point is below the clip rectangle
-					x = x0 + (x1 - x0) * (rymin - y0) / (y1 - y0);
-					y = rymin;
+					// y < rymin
+					calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							0, 1, 0, -rymin,
+							point);
 				} else if ((code3 & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
-					// point is to the right of clip rectangle
-					y = y0 + (y1 - y0) * (rxmax - x0) / (x1 - x0);
-					x = rxmax;
+					// x > rxmax
+					calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							1, 0, 0, -rxmax,
+							point);
 				} else if ((code3 & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
-					// point is to the left of clip rectangle
-					y = y0 + (y1 - y0) * (rxmin - x0) / (x1 - x0);
-					x = rxmin;
+					// x < rxmin
+					calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							1, 0, 0, -rxmin,
+							point);
+				} else if ((code3 & MathConstants.COHEN_SUTHERLAND_BACK) != 0) {
+					// z > rzmax
+					calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							0, 0, 1, -rzmax,
+							point);
+				} else if ((code3 & MathConstants.COHEN_SUTHERLAND_FRONT) != 0) {
+					// z < rzmin
+					calculatesLinePlaneIntersection(
+							x0, y0, z0, x1, y1, z1,
+							0, 0, 1, -rzmin,
+							point);
 				} else {
 					code3 = 0;
 				}
@@ -2221,14 +1927,14 @@ public interface Segment3afp<
 					// Now we move outside point to intersection point to clip
 					// and get ready for next pass.
 					if (code3 == code1) {
-						x0 = x;
-						y0 = y;
-						z0 = z;
+						x0 = point.getX();
+						y0 = point.getY();
+						z0 = point.getZ();
 						code1 = MathUtil.getCohenSutherlandCode3D(x0, y0, z0, rxmin, rymin, rzmin, rxmax, rymax, rzmax);
 					} else {
-						x1 = x;
-						y1 = y;
-						z1 = z;
+						x1 = point.getX();
+						y1 = point.getY();
+						z1 = point.getZ();
 						code2 = MathUtil.getCohenSutherlandCode3D(x1, y1, z1, rxmin, rymin, rzmin, rxmax, rymax, rzmax);
 					}
 				}
@@ -2242,7 +1948,7 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		return Sphere3afp.intersectsSphereSegment(
 				sphere.getX(), sphere.getY(), sphere.getZ(),
@@ -2253,18 +1959,18 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
-	default boolean intersects(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
+	default boolean intersects(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> prism) {
 		assert prism != null : AssertMessages.notNullParameter();
-		return RectangularPrism3afp.intersectsRectangleSegment(
-				prism.getMinX(), prism.getMinY(),
-				prism.getMaxX(), prism.getMaxY(),
-				getX1(), getY1(),
-				getX2(), getY2());
+		return AlignedBox3afp.intersectsAlignedBoxSegment(
+				prism.getMinX(), prism.getMinY(), prism.getMinZ(),
+				prism.getMaxX(), prism.getMaxY(), prism.getMaxZ(),
+				getX1(), getY1(), getZ1(),
+				getX2(), getY2(), getZ2());
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsSegmentSegmentWithEnds(
 				getX1(), getY1(), getZ1(),
@@ -2278,71 +1984,16 @@ public interface Segment3afp<
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final int crossings = Path3afp.computeCrossingsFromSegment(
-				0,
-				iterator,
-				getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+		//TODO
+		return false;
 
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
-	}
-
-	/**
-	 * Result of the intersection between segments in a context where a single test is not enough.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 * @see Segment3afp#getNoSegmentSegmentWithEndsIntersection(double, double, double, double, double, double, double, double,
-	 *      double, double, double, double)
-	 * @see Segment3afp#getNoSegmentSegmentWithoutEndsIntersection(double, double, double, double, double, double, double, double,
-	 *      double, double, double, double)
-	 */
-	enum UncertainIntersection {
-		/** Intersection, uncertainly.
-		 */
-		PERHAPS {
-			@Override
-			public boolean booleanValue() {
-				return true;
-			}
-		},
-		/** No intersection, certainly.
-		 */
-		NO {
-			@Override
-			public boolean booleanValue() {
-				return false;
-			}
-		};
-
-		/** Replies the boolean representation of the constant.
-		 *
-		 * @return the boolean representation.
-		 */
-		public abstract boolean booleanValue();
-
-		/** Replies the UncertainIntersection for the given boolean.
-		 *
-		 * @param value the boolean value.
-		 * @return the UncertainIntersection.
-		 */
-		public static UncertainIntersection fromBoolean(boolean value) {
-			if (value) {
-				return UncertainIntersection.PERHAPS;
-			}
-			return UncertainIntersection.NO;
-		}
-
 	}
 
 	@Pure
@@ -2353,10 +2004,10 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point3D<?, ?> pt) {
+	default P getClosestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
-		Segment3afp.computeClosestPointToPoint(
+		Segment3afp.calculatesClosestPointToPoint(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
 				pt.getX(), pt.getY(), pt.getZ(),
@@ -2366,14 +2017,14 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+	default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		return getClosestPointTo(sphere.getCenter());
 	}
 
 	@Override
 	@Unefficient
-	default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
+	default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?, ?> path) {
 		assert path != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		Path3afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
@@ -2382,10 +2033,10 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangle) {
+	default P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> rectangle) {
 		assert rectangle != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
-		computeClosestPointToRectangle(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), rectangle.getMinX(),
+		calculatesClosestPointToAlignedBox(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), rectangle.getMinX(),
 				rectangle.getMinY(), rectangle.getMinZ(), rectangle.getWidth(), rectangle.getHeight(), rectangle.getDepth(),
 				point);
 		return point;
@@ -2393,25 +2044,102 @@ public interface Segment3afp<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+	default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
-		computeClosestPointToSegment(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
+		calculatesClosestPointToSegment(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
 				segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2(), point);
 		return point;
 	}
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point3D<?, ?> pt) {
+	default P getFarthestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
-		Segment3afp.computeFarthestPointTo(
+		Segment3afp.calculatesFarthestPointTo(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
 				pt.getX(), pt.getY(), pt.getZ(),
 				point);
 		return point;
+	}
+
+	/** Replies the unit vector for the direction of this segment.
+	 * This function replies a vector that is colinear to the one
+	 * replied by {@link #getSegmentVector()}, but it is always
+	 * a unit vector. The vector replied by {@link #getSegmentVector()}
+	 * has a length equal to the distanc ebetween the two segment points.
+	 *
+	 * @return the direction's unit vector.
+	 * @see #getSegmentVector()
+	 */
+	@Pure
+	default V getDirection() {
+		final double vx = getX2() - getX1();
+		final double vy = getY2() - getY1();
+		final double vz = getZ2() - getZ1();
+		final double l = Math.sqrt(vx * vx + vy * vy + vz * vz);
+		return getGeomFactory().newVector(vx / l, vy / l, vz / l);
+	}
+
+	/** Replies the vector between the two points of the segment.
+	 * This function replies a vector that is colinear to the one
+	 * replied by {@link #getDirection()}, but with a length equals
+	 * to the distance between the two segment points.
+	 *
+	 * @return the segment vector.
+	 * @see #getDirection()
+	 */
+	@Pure
+	default V getSegmentVector() {
+		final double vx = getX2() - getX1();
+		final double vy = getY2() - getY1();
+		final double vz = getZ2() - getZ1();
+		return getGeomFactory().newVector(vx, vy, vz);
+	}
+
+	/** Replies this segment with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the segment.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toSegmentDefinition(3, getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2());
+	}
+
+	/** Description of an intersection between two lines.
+	 *
+	 * @param colinear indicates if the two elements are colinear, i.e., the intersection concerns multiple points of the two geometric elements.
+	 * @param position1 the position factor of the intersection point on the first geometric element. The value is in [0;1] if it is located on the first segment.
+	 * @param position2 if elements are not colinear, it is the position factor of the intersection point on the second geometric element. The value is in [0;1] if it is located on the second segment.
+	 *     If the elements are colinear, it is the position factor of the second point of the first geometric element. The value is in [0;1] if it is located on the first segment.
+	 * @param position3 if the elements are colinear, it is the position factor of the first point of the second geometric element. The value is in [0;1] if it is located on the first segment.
+	 * @param position4 if the elements are colinear, it is the position factor of the second point of the second geometric element. The value is in [0;1] if it is located on the first segment.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 18.0
+	 */
+	record LineIntersection(boolean colinear, double position1, double position2, double position3, double position4) {
+		//
+	}
+
+	/** Description of an intersection between two segments.
+	 *
+	 * @param colinear indicates if the two elements are colinear, i.e., the intersection concerns multiple points of the two geometric elements.
+	 * @param position1 the position factor of the intersection point on the first geometric element. The value is in [0;1] if it is located on the first segment.
+	 * @param position2 if elements are not colinear, it is the position factor of the intersection point on the second geometric element. The value is in [0;1] if it is located on the second segment.
+	 *     If the elements are colinear, it is the position factor of the second point of intersection on the first geometric element. The value is in [0;1] if it is located on the first segment.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 18.0
+	 */
+	record SegmentIntersection(boolean colinear, double position1, double position2) {
+		//
 	}
 
 	/** Iterator on the path elements of the segment.
@@ -2425,11 +2153,11 @@ public interface Segment3afp<
 	 */
 	class SegmentPathIterator<T extends PathElement3afp> implements PathIterator3afp<T> {
 
-		private final Segment3afp<?, ?, T, ?, ?, ?> segment;
+		private final Segment3afp<?, ?, T, ?, ?, ?, ?> segment;
 
-		private final Point3D<?, ?> p1;
+		private final Point3D<?, ?, ?> p1;
 
-		private final Point3D<?, ?> p2;
+		private final Point3D<?, ?, ?> p2;
 
 		private final Transform3D transform;
 
@@ -2449,9 +2177,9 @@ public interface Segment3afp<
 
 		/** Constructor.
 		 * @param segment the iterated segment.
-		 * @param transform the transformation, or <code>null</code>.
+		 * @param transform the transformation, or {@code null}.
 		 */
-		public SegmentPathIterator(Segment3afp<?, ?, T, ?, ?, ?> segment, Transform3D transform) {
+		public SegmentPathIterator(Segment3afp<?, ?, T, ?, ?, ?, ?> segment, Transform3D transform) {
 			assert segment != null : AssertMessages.notNullParameter();
 			this.segment = segment;
 			this.p1 = new InnerComputationPoint3afp();
@@ -2544,7 +2272,7 @@ public interface Segment3afp<
 		}
 
 		@Override
-		public GeomFactory3afp<T, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3afp<T, ?, ?, ?, ?> getGeomFactory() {
 			return this.segment.getGeomFactory();
 		}
 

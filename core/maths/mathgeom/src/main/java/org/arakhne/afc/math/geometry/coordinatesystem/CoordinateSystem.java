@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,14 +43,14 @@ public interface CoordinateSystem {
 
 	/** Replies if this coordinate system is a right-hand coordinate system.
 	 *
-	 * @return <code>true</code> if this coordinate system is right-handed, otherwise <code>false</code>
+	 * @return {@code true} if this coordinate system is right-handed, otherwise {@code false}
 	 */
 	@Pure
 	boolean isRightHanded();
 
 	/** Replies if this coordinate system is a left-hand coordinate system.
 	 *
-	 * @return <code>true</code> if this coordinate system is left-handed, otherwise <code>false</code>
+	 * @return {@code true} if this coordinate system is left-handed, otherwise {@code false}
 	 */
 	@Pure
 	boolean isLeftHanded();

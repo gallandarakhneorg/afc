@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,24 +33,28 @@ import java.util.Iterator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
-import org.arakhne.afc.math.geometry.d3.afp.RectangularPrism3afp;
+import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
 import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
-public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? super P, ? super V>,
-		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3afp<?, ?, ?, P, V, B>> extends AbstractMathTestCase {
+public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>,
+		B extends AlignedBox3afp<?, ?, ?, P, V, Q, B>> extends AbstractMathTestCase {
 	
 	/** Is the shape to test.
 	 */
-	protected Path3afp<?, ?, ?, P, V, B> shape;
+	protected Path3afp<?, ?, ?, P, V, Q, B> shape;
 	
 	/** Is the collection to test.
 	 */
@@ -58,9 +62,9 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
 	
 	/** Shape factory.
 	 */
-	protected TestShapeFactory3afp<P, V, B> factory;
+	protected TestShapeFactory3afp<P, V, Q, B> factory;
 
-	protected abstract TestShapeFactory3afp<P, V, B> createFactory();
+	protected abstract TestShapeFactory3afp<P, V, Q, B> createFactory();
 
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -91,8 +95,11 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
 		}
 	}
 	
-	@Test
-    public void size() {
+	@DisplayName("size")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void size(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	assertEquals(7, this.collection.size());
     	this.shape.removeLast();
     	assertEquals(7, this.collection.size());
@@ -102,8 +109,11 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertEquals(0, this.collection.size());
     }
 
-	@Test
-    public void isEmpty() {
+	@DisplayName("isEmpty")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void isEmpty(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	assertFalse(this.collection.isEmpty());
     	this.shape.removeLast();
     	assertFalse(this.collection.isEmpty());
@@ -113,18 +123,22 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertTrue(this.collection.isEmpty());
     }
 
-	@Test
-	@Disabled
-    public void containsObject() {
+	@DisplayName("contains(Object)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void containsObject(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	assertFalse(this.collection.contains(new Object()));
     	assertTrue(this.collection.contains(this.factory.createPoint(2, 2, 0)));
     	assertTrue(this.collection.contains(this.factory.createPoint(6, 5, 0)));
     	assertFalse(this.collection.contains(this.factory.createPoint(-1, 6, 0)));
     }
 
-	@Test
-	@Disabled
-    public void iterator() {
+	@DisplayName("iterator")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void iterator(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	Point3D p;
     	Iterator<P> iterator = this.collection.iterator();
     	assertTrue(iterator.hasNext());
@@ -165,9 +179,11 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertFalse(iterator.hasNext());
     }
 
-	@Test
-	@Disabled
-    public void toArray() {
+	@DisplayName("toArray")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void toArray(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	Object[] tab = this.collection.toArray();
     	assertEquals(7, tab.length);
     	assertTrue(tab[0] instanceof Point3D);
@@ -200,9 +216,11 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertEpsilonEquals(0, ((Point3D) tab[6]).getZ());
     }
 
-	@Test
-	@Disabled
-    public void toArrayArray() {
+	@DisplayName("toArray(Point3D[])")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void toArrayArray(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	Point3D[] tab = new Point3D[5];
     	Point3D[] tab2 = this.collection.toArray(tab);
     	assertSame(tab, tab2);
@@ -224,9 +242,11 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertEpsilonEquals(0, tab[4].getZ());
     }
 
-	@Test
-	@Disabled
-    public void add() {
+	@DisplayName("add(Point3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void add(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	assertTrue(this.collection.add(this.factory.createPoint(123, 456, 0)));
     	assertCoords(1, 1, 0, 2, 2, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0, 123, 456, 0);
     	this.shape.clear();
@@ -237,9 +257,11 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertCoords(123, 456, 0, 789, 1011, 0);
     }
 
-	@Test
-	@Disabled
-    public void remove() {
+	@DisplayName("remove(Object)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void remove(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	assertFalse(this.collection.remove(new Object()));
     	assertTrue(this.collection.remove(this.factory.createPoint(2, 2, 0)));
     	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0);
@@ -247,32 +269,42 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0);
     }
 
-	@Test
-    public void containsAll() {
+	@DisplayName("containsAll(Collection)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void containsAll(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	assertTrue(this.collection.containsAll(
     			Arrays.asList(this.factory.createPoint(1, 1, 0), this.factory.createPoint(6, 5, 0))));
     	assertFalse(this.collection.containsAll(
     			Arrays.asList(this.factory.createPoint(1, 1, 0), this.factory.createPoint(6, 6, 0))));
     }
 
-	@Test
-	@Disabled
-    public void addAll() {
+	@DisplayName("addAll(Collection)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void addAll(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	this.collection.addAll(
     			Arrays.asList(this.factory.createPoint(123, 456, 0), this.factory.createPoint(789, 1011, 0)));
     	assertCoords(1, 1, 0, 2, 2, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0, 123, 456, 0, 789, 1011, 0);
     }
 
-	@Test
-	@Disabled
-    public void removeAll() {
+	@DisplayName("removeAll(Collection)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void removeAll(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	this.collection.removeAll(
     			Arrays.asList(this.factory.createPoint(123, 456, 0), this.factory.createPoint(2, 2, 0)));
     	assertCoords(1, 1, 0, 3, 0, 0, 4, 3, 0, 5, -1, 0, 6, 5, 0, 7, -5, 0);
     }
 
-	@Test
-    public void retainAll() {
+	@DisplayName("retainAll(Collection)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void retainAll(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	try {
     		this.collection.retainAll(Collections.emptyList());
     		fail("Expecting an exception"); //$NON-NLS-1$
@@ -283,8 +315,11 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     	}
     }
 
-	@Test
-    public void clear() {
+	@DisplayName("clear")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+    public void clear(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
     	this.collection.clear();
     	assertCoords();
     }

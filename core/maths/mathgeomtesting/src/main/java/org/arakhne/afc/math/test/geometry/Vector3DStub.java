@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 @SuppressWarnings("all")
-public final class Vector3DStub implements UnmodifiableVector3D<Vector3DStub, Point3DStub> {
+public final class Vector3DStub implements UnmodifiableVector3D<Vector3DStub, Point3DStub, QuaternionStub> {
 
 	private static final long serialVersionUID = 1169443458519502398L;
 
@@ -134,7 +134,7 @@ public final class Vector3DStub implements UnmodifiableVector3D<Vector3DStub, Po
 	}
 
 	@Override
-	public UnmodifiableVector3D<Vector3DStub, Point3DStub> toUnmodifiable() {
+	public UnmodifiableVector3D<Vector3DStub, Point3DStub, QuaternionStub> toUnmodifiable() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -144,7 +144,7 @@ public final class Vector3DStub implements UnmodifiableVector3D<Vector3DStub, Po
 	}
 
 	@Override
-	public GeomFactory3D<Vector3DStub, Point3DStub> getGeomFactory() {
+	public GeomFactory3D<Vector3DStub, Point3DStub, QuaternionStub> getGeomFactory() {
 		return new GeomFactory3DStub();
 	}
 	

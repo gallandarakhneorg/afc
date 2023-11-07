@@ -92,7 +92,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * The thirds axis is computed from the cross product with the two other axis.
 	 * The cross product may be {@link Vector3f#crossLeftHand(org.arakhne.afc.math.geometry.d3.Vector3D)}
 	 * or {@link Vector3f#crossRightHand(org.arakhne.afc.math.geometry.d3.Vector3D)} according to
-	 * the given <code>system</code>.
+	 * the given {@code system}.
 	 *
 	 * @param cx x coordinate of the box center.
 	 * @param cy y coordinate of the box center.
@@ -569,7 +569,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * The thirds axis is computed from the cross product with the two other axis.
 	 * The cross product may be {@link Vector3f#crossLeftHand(org.arakhne.afc.math.geometry.d3.Vector3D)}
 	 * or {@link Vector3f#crossRightHand(org.arakhne.afc.math.geometry.d3.Vector3D)} according to
-	 * the given <code>system</code>.
+	 * the given {@code system}.
 	 *
 	 * @param cx x coordinate of the box center.
 	 * @param cy y coordinate of the box center.

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,18 +30,18 @@ import org.arakhne.afc.vmutil.annotations.XtextOperator;
  * This enumeration describes a intersection classification.
  *
  * <p>The operation intersection is not commutative. So,
- * <code>classify(A, B)</code> could not provides the
+ * {@code classify(A, B)} could not provides the
  * same intersection classification as
- * <code>classify(B, A)</code>.
+ * {@code classify(B, A)}.
  *
- * <p>The call <code>classify(A, B)</code> replies the following values:
+ * <p>The call {@code classify(A, B)} replies the following values:
  * <ul>
- * <li><code>INSIDE</code>: <code>A</code> is entirely inside <code>B</code>,</li>
- * <li><code>OUTSIDE</code>: <code>A</code> and <code>B</code> have not intersection,</li>
- * <li><code>SPANNING</code>: <code>A</code> and <code>B</code> have an intersection but
- * <code>A</code> is not entirely inside <code>B</code> nor <code>B</code> is not
- * entirely inside <code>A</code>,</li>
- * <li><code>ENCLOSING</code>: <code>B</code>  is entirely inside <code>A</code>,</li>
+ * <li>{@code INSIDE}: {@code A} is entirely inside {@code B},</li>
+ * <li>{@code OUTSIDE}: {@code A} and {@code B} have not intersection,</li>
+ * <li>{@code SPANNING}: {@code A} and {@code B} have an intersection but
+ * {@code A} is not entirely inside {@code B} nor {@code B} is not
+ * entirely inside {@code A},</li>
+ * <li>{@code ENCLOSING}: {@code B}  is entirely inside {@code A},</li>
  * </ul>
  *
  * @author $Author: sgalland$
@@ -77,11 +77,11 @@ public enum IntersectionType {
 	 *
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code t}</td><td>result</td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 * </table>
 	 *
 	 * @param t the type.
@@ -108,11 +108,11 @@ public enum IntersectionType {
 	 *
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code t}</td><td>result</td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 * </table>
 	 *
 	 * @return the inverted classification
@@ -131,35 +131,35 @@ public enum IntersectionType {
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code f1}</td><td>{@code f2}</td><td>result</td></tr>
 	 *
-	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SPANNING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SAME</code></td><td><code>INSIDE</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SPANNING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SAME}</td><td>{@code INSIDE}</td></tr>
 	 *
-	 * <tr><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>SPANNING</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>SAME</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 *
 	 * </table>
 	 *
@@ -187,35 +187,35 @@ public enum IntersectionType {
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code this}</td><td>{@code f2}</td><td>result</td></tr>
 	 *
-	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SPANNING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SAME</code></td><td><code>INSIDE</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SPANNING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SAME}</td><td>{@code INSIDE}</td></tr>
 	 *
-	 * <tr><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>SPANNING</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SAME</code></td><td><code>ENCLOSING</code></td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SAME}</td><td>{@code ENCLOSING}</td></tr>
 	 *
-	 * <tr><td><code>SAME</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 *
 	 * </table>
 	 *
@@ -234,35 +234,35 @@ public enum IntersectionType {
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code left}</td><td>{@code right}</td><td>result</td></tr>
 	 *
-	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SAME</code></td><td><code>INSIDE</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SAME}</td><td>{@code INSIDE}</td></tr>
 	 *
-	 * <tr><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SAME</code></td><td><code>OUTSIDE</code></td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SAME}</td><td>{@code OUTSIDE}</td></tr>
 	 *
-	 * <tr><td><code>SPANNING</code></td><td><code>INSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code INSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SAME</code></td><td><code>ENCLOSING</code></td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SAME}</td><td>{@code ENCLOSING}</td></tr>
 	 *
-	 * <tr><td><code>SAME</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 *
 	 * </table>
 	 *
@@ -289,35 +289,35 @@ public enum IntersectionType {
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code this}</td><td>{@code type}</td><td>result</td></tr>
 	 *
-	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SAME</code></td><td><code>OUTSIDE</code></td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SAME}</td><td>{@code OUTSIDE}</td></tr>
 	 *
-	 * <tr><td><code>SPANNING</code></td><td><code>INSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code INSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SAME</code></td><td><code>ENCLOSING</code></td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SAME}</td><td>{@code ENCLOSING}</td></tr>
 	 *
-	 * <tr><td><code>SAME</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 *
 	 * </table>
 	 *
@@ -336,35 +336,35 @@ public enum IntersectionType {
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code this}</td><td>{@code type}</td><td>result</td></tr>
 	 *
-	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SAME</code></td><td><code>OUTSIDE</code></td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SAME}</td><td>{@code OUTSIDE}</td></tr>
 	 *
-	 * <tr><td><code>SPANNING</code></td><td><code>INSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code INSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SAME</code></td><td><code>ENCLOSING</code></td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SAME}</td><td>{@code ENCLOSING}</td></tr>
 	 *
-	 * <tr><td><code>SAME</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 *
 	 * </table>
 	 *
@@ -385,35 +385,35 @@ public enum IntersectionType {
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code left}</td><td>{@code right}</td><td>result</td></tr>
 	 *
-	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SAME</code></td><td><code>INSIDE</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SAME}</td><td>{@code INSIDE}</td></tr>
 	 *
-	 * <tr><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SAME</code></td><td><code>OUTSIDE</code></td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SAME}</td><td>{@code OUTSIDE}</td></tr>
 	 *
-	 * <tr><td><code>SPANNING</code></td><td><code>INSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code INSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SAME</code></td><td><code>ENCLOSING</code></td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SAME}</td><td>{@code ENCLOSING}</td></tr>
 	 *
-	 * <tr><td><code>SAME</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 *
 	 * </table>
 	 *
@@ -436,35 +436,35 @@ public enum IntersectionType {
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code this}</td><td>{@code type}</td><td>result</td></tr>
 	 *
-	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SAME</code></td><td><code>OUTSIDE</code></td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SAME}</td><td>{@code OUTSIDE}</td></tr>
 	 *
-	 * <tr><td><code>SPANNING</code></td><td><code>INSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code INSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SAME</code></td><td><code>ENCLOSING</code></td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SAME}</td><td>{@code ENCLOSING}</td></tr>
 	 *
-	 * <tr><td><code>SAME</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 *
 	 * </table>
 	 *
@@ -485,35 +485,35 @@ public enum IntersectionType {
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code left}</td><td>{@code right}</td><td>result</td></tr>
 	 *
-	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SAME</code></td><td><code>INSIDE</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SAME}</td><td>{@code INSIDE}</td></tr>
 	 *
-	 * <tr><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SAME</code></td><td><code>OUTSIDE</code></td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SAME}</td><td>{@code OUTSIDE}</td></tr>
 	 *
-	 * <tr><td><code>SPANNING</code></td><td><code>INSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code INSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SAME</code></td><td><code>ENCLOSING</code></td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SAME}</td><td>{@code ENCLOSING}</td></tr>
 	 *
-	 * <tr><td><code>SAME</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 *
 	 * </table>
 	 *
@@ -537,35 +537,35 @@ public enum IntersectionType {
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code this}</td><td>{@code f2}</td><td>result</td></tr>
 	 *
-	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SPANNING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SAME</code></td><td><code>INSIDE</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SPANNING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SAME}</td><td>{@code INSIDE}</td></tr>
 	 *
-	 * <tr><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>SPANNING</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SAME</code></td><td><code>ENCLOSING</code></td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SAME}</td><td>{@code ENCLOSING}</td></tr>
 	 *
-	 * <tr><td><code>SAME</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 *
 	 * </table>
 	 *
@@ -588,35 +588,35 @@ public enum IntersectionType {
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code f1}</td><td>{@code f2}</td><td>result</td></tr>
 	 *
-	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SPANNING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SAME</code></td><td><code>INSIDE</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SPANNING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SAME}</td><td>{@code INSIDE}</td></tr>
 	 *
-	 * <tr><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>SPANNING</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>SAME</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 *
 	 * </table>
 	 *
@@ -640,35 +640,35 @@ public enum IntersectionType {
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code f1}</td><td>{@code f2}</td><td>result</td></tr>
 	 *
-	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SPANNING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SAME</code></td><td><code>INSIDE</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SPANNING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SAME}</td><td>{@code INSIDE}</td></tr>
 	 *
-	 * <tr><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>SPANNING</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>SAME</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 *
 	 * </table>
 	 *
@@ -692,35 +692,35 @@ public enum IntersectionType {
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code this}</td><td>{@code f2}</td><td>result</td></tr>
 	 *
-	 * <tr><td><code>INSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SPANNING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>SAME</code></td><td><code>INSIDE</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SPANNING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code SAME}</td><td>{@code INSIDE}</td></tr>
 	 *
-	 * <tr><td><code>OUTSIDE</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>SPANNING</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SAME</code></td><td><code>SPANNING</code></td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SAME}</td><td>{@code SPANNING}</td></tr>
 	 *
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>SAME</code></td><td><code>ENCLOSING</code></td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code SAME}</td><td>{@code ENCLOSING}</td></tr>
 	 *
-	 * <tr><td><code>SAME</code></td><td><code>INSIDE</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>OUTSIDE</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>ENCLOSING</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code INSIDE}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code OUTSIDE}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code ENCLOSING}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 *
 	 * </table>
 	 *
@@ -738,11 +738,11 @@ public enum IntersectionType {
 	 *
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code t}</td><td>result</td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 * </table>
 	 *
 	 * @return the inverted classification
@@ -758,11 +758,11 @@ public enum IntersectionType {
 	 *
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code t}</td><td>result</td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 * </table>
 	 *
 	 * @param t the type.
@@ -780,11 +780,11 @@ public enum IntersectionType {
 	 *
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code t}</td><td>result</td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 * </table>
 	 *
 	 * @return the inverted classification
@@ -801,11 +801,11 @@ public enum IntersectionType {
 	 *
 	 * <table border="1" width="100%" summary="Intersection Classification">
 	 * <tr><td>{@code t}</td><td>result</td></tr>
-	 * <tr><td><code>INSIDE</code></td><td><code>ENCLOSING</code></td></tr>
-	 * <tr><td><code>OUTSIDE</code></td><td><code>OUTSIDE</code></td></tr>
-	 * <tr><td><code>SPANNING</code></td><td><code>SPANNING</code></td></tr>
-	 * <tr><td><code>ENCLOSING</code></td><td><code>INSIDE</code></td></tr>
-	 * <tr><td><code>SAME</code></td><td><code>SAME</code></td></tr>
+	 * <tr><td>{@code INSIDE}</td><td>{@code ENCLOSING}</td></tr>
+	 * <tr><td>{@code OUTSIDE}</td><td>{@code OUTSIDE}</td></tr>
+	 * <tr><td>{@code SPANNING}</td><td>{@code SPANNING}</td></tr>
+	 * <tr><td>{@code ENCLOSING}</td><td>{@code INSIDE}</td></tr>
+	 * <tr><td>{@code SAME}</td><td>{@code SAME}</td></tr>
 	 * </table>
 	 *
 	 * @param t the type.

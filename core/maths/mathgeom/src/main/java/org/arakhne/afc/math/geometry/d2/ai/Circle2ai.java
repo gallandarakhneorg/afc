@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -68,10 +68,9 @@ public interface Circle2ai<
      * @param cr is the radius of the circle center
      * @param x is the x-coordinate of the point
      * @param y is the y-coordinate of the point
-     * @return <code>true</code> if the point is inside the circle.
+     * @return {@code true} if the point is inside the circle.
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean containsCirclePoint(int cx, int cy, int cr, int x, int y) {
         assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
 
@@ -150,10 +149,9 @@ public interface Circle2ai<
      * @param quadrant is the quadrant, see table in the method description.
      * @param x is the x-coordinate of the point
      * @param y is the y-coordinate of the point
-     * @return <code>true</code> if the point is inside the circle.
+     * @return {@code true} if the point is inside the circle.
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean containsCircleQuadrantPoint(int cx, int cy, int cr, int quadrant, int x, int y) {
         assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
         assert quadrant >= 0 && quadrant <= 3 : AssertMessages.outsideRangeInclusiveParameter(3, quadrant, 0, 3);
@@ -215,8 +213,6 @@ public interface Circle2ai<
 
     @Pure
     @Override
-    @SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber",
-            "checkstyle:booleanexpressioncomplexity"})
     default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
         assert box != null : AssertMessages.notNullParameter();
         final int cx = getX();
@@ -293,7 +289,6 @@ public interface Circle2ai<
      * @param y is the point
      * @param result the closest point in the circle to the point.
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     static void findsClosestPointCirclePoint(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
         assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
         assert result != null : AssertMessages.notNullParameter(5);
@@ -362,7 +357,6 @@ public interface Circle2ai<
      * @param y is the point
      * @param result the farthest point in the circle to the point.
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     static void findsFarthestPointCirclePoint(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
         assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
 
@@ -418,11 +412,10 @@ public interface Circle2ai<
      * @param x2 is the center of the second circle
      * @param y2 is the center of the second circle
      * @param radius2 is the radius of the second circle
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean intersectsCircleCircle(int x1, int y1, int radius1, int x2, int y2, int radius2) {
         assert radius1 >= 0 : AssertMessages.positiveOrZeroParameter(2);
         assert radius2 >= 0 : AssertMessages.positiveOrZeroParameter(5);
@@ -440,8 +433,8 @@ public interface Circle2ai<
      * @param y2 is the first corner of the rectangle.
      * @param x3 is the second corner of the rectangle.
      * @param y3 is the second corner of the rectangle.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
     static boolean intersectsCircleRectangle(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
@@ -460,8 +453,8 @@ public interface Circle2ai<
      * @param y2 is the first point of the segment.
      * @param x3 is the second point of the segment.
      * @param y3 is the second point of the segment.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
     static boolean intersectsCircleSegment(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
@@ -484,7 +477,6 @@ public interface Circle2ai<
      * @return the points on the perimeters.
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static <P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>>
             Iterator<P> newPointIterator(int cx, int cy,  int radius, int firstOctantIndex, int nbOctants,
             GeomFactory2ai<?, P, V, ?> factory) {
@@ -519,7 +511,6 @@ public interface Circle2ai<
      */
     @Pure
     @Override
-    @SuppressWarnings("checkstyle:magicnumber")
     default Iterator<P> getPointIterator() {
         return new CirclePerimeterIterator<>(getGeomFactory(), getX(), getY(), getRadius(), 0, 8, true);
     }
@@ -801,6 +792,15 @@ public interface Circle2ai<
                 Path2ai.DEFAULT_FLATTENING_LIMIT);
     }
 
+	/** Replies this circle with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the circle.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toCircleDefinition(2, getX(), getY(), getRadius());
+	}
+
     /** Abstract iterator on the path elements of the circle.
      *
      * @param <IE> is the type of the path elements.
@@ -810,7 +810,6 @@ public interface Circle2ai<
      * @mavenartifactid $ArtifactId$
      * @since 13.0
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     abstract class AbstractCirclePathIterator<IE extends PathElement2ai> implements PathIterator2ai<IE> {
 
         /**
@@ -905,7 +904,6 @@ public interface Circle2ai<
      * @mavenartifactid $ArtifactId$
      * @since 13.0
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     class CirclePathIterator<IE extends PathElement2ai> extends AbstractCirclePathIterator<IE> {
 
         private int x;
@@ -996,7 +994,6 @@ public interface Circle2ai<
      * @mavenartifactid $ArtifactId$
      * @since 13.0
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     class TransformedCirclePathIterator<IE extends PathElement2ai> extends AbstractCirclePathIterator<IE> {
 
         private final Transform2D transform;
@@ -1109,7 +1106,6 @@ public interface Circle2ai<
      * @mavenartifactid $ArtifactId$
      * @since 13.0
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     class CirclePerimeterIterator<P extends Point2D<? super P, ? super V>,
             V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
 
@@ -1148,7 +1144,6 @@ public interface Circle2ai<
          * @param skip indicates if the first point on an octant must be skip, because it is already replied when treating the
          *     previous octant.
          */
-        @SuppressWarnings("checkstyle:magicnumber")
         public CirclePerimeterIterator(GeomFactory2D<V, P> factory,
                 int centerX, int centerY, int radius, int initialOctant, int lastOctant, boolean skip) {
             assert factory != null : AssertMessages.notNullParameter(0);
@@ -1191,7 +1186,6 @@ public interface Circle2ai<
             return this.next != null;
         }
 
-        @SuppressWarnings("checkstyle:cyclomaticcomplexity")
         private void searchNext() {
             if (this.currentOctant >= this.maxOctant) {
                 this.next = null;

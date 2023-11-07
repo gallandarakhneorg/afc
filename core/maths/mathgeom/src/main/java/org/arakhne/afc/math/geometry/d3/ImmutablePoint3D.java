@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,8 @@
 
 package org.arakhne.afc.math.geometry.d3;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.vmutil.json.JsonBuffer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Immutable point 3D.
@@ -33,7 +32,7 @@ import org.arakhne.afc.vmutil.json.JsonBuffer;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class ImmutablePoint3D implements UnmodifiablePoint3D<ImmutablePoint3D, ImmutableVector3D> {
+public final class ImmutablePoint3D implements UnmodifiablePoint3D<ImmutablePoint3D, ImmutableVector3D, ImmutableQuaternion> {
 
 	private static final long serialVersionUID = 407348048685709808L;
 
@@ -145,7 +144,7 @@ public final class ImmutablePoint3D implements UnmodifiablePoint3D<ImmutablePoin
 	}
 
 	@Override
-	public GeomFactory3D<ImmutableVector3D, ImmutablePoint3D> getGeomFactory() {
+	public GeomFactory3D<ImmutableVector3D, ImmutablePoint3D, ImmutableQuaternion> getGeomFactory() {
 		return ImmutableGeomFactory3D.SINGLETON;
 	}
 }

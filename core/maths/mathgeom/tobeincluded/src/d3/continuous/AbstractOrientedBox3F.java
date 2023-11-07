@@ -51,6 +51,64 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 
 	private static final long serialVersionUID = -3095583019793802300L;
 
+
+	/**
+	 * Tests if the axis-aligned box is intersecting a segment.
+	 *
+	 * @param sx1 x coordinate of the first point of the segment.
+	 * @param sy1 y coordinate of the first point of the segment.
+	 * @param sz1 z coordinate of the first point of the segment.
+	 * @param sx2 x coordinate of the second point of the segment.
+	 * @param sy2 y coordinate of the second point of the segment.
+	 * @param sz2 z coordinate of the second point of the segment.
+	 * @param centerx is the center point of the oriented box.
+	 * @param centery is the center point of the oriented box.
+	 * @param centerz is the center point of the oriented box.
+	 * @param axis1x are the unit vectors of the oriented box axis.
+	 * @param axis1y are the unit vectors of the oriented box axis.
+	 * @param axis1z are the unit vectors of the oriented box axis.
+	 * @param axis2x are the unit vectors of the oriented box axis.
+	 * @param axis2y are the unit vectors of the oriented box axis.
+	 * @param axis2z are the unit vectors of the oriented box axis.
+	 * @param axis3x are the unit vectors of the oriented box axis.
+	 * @param axis3y are the unit vectors of the oriented box axis.
+	 * @param axis3z are the unit vectors of the oriented box axis.
+	 * @param extentAxis1 are the sizes of the oriented box.
+	 * @param extentAxis2 are the sizes of the oriented box.
+	 * @param extentAxis3 are the sizes of the oriented box.
+	 * @return {@code true} if the two shapes intersect each 
+	 * other; {@code false} otherwise.
+	 */
+	@Pure
+	public static boolean intersectsSegmentOrientedBox(
+			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
+			double centerx,double  centery,double  centerz,
+			double axis1x, double axis1y, double axis1z,
+			double axis2x, double axis2y, double axis2z,
+			double axis3x, double axis3y, double axis3z,
+			double extentAxis1, double extentAxis2, double extentAxis3) {
+		// project the segment in the OBB axis base.
+		double px1 = sx1 - centerx;
+		double py1 = sy1 - centery;
+		double pz1 = sz1 - centerz;
+		double px2 = sx2 - centerx;
+		double py2 = sy2 - centery;
+		double pz2 = sz2 - centerz;
+
+		double x1 = FunctionalVector3D.dotProduct(px1, py1, pz1, axis1x, axis1y, axis1z);
+		double y1 = FunctionalVector3D.dotProduct(px1, py1, pz1, axis2x, axis2y, axis2z);
+		double z1 = FunctionalVector3D.dotProduct(px1, py1, pz1, axis3x, axis3y, axis3z);
+
+		double x2 = FunctionalVector3D.dotProduct(px2, py2, pz2, axis1x, axis1y, axis1z);
+		double y2 = FunctionalVector3D.dotProduct(px2, py2, pz2, axis2x, axis2y, axis2z);
+		double z2 = FunctionalVector3D.dotProduct(px2, py2, pz2, axis3x, axis3y, axis3z);
+
+		return intersectsSegmentAlignedBox(
+				x1, y1, z1, x2, y2, z2,
+				-extentAxis1, -extentAxis2, -extentAxis3,
+				extentAxis1, extentAxis2, extentAxis3);
+	}
+
 	/**
 	 * Compute intersection between an OBB and a capsule.
 	 * 
@@ -76,7 +134,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * @param capsule1By y coordinate of the second point of the capsule medial line.
 	 * @param capsule1Bz z coordinate of the second point of the capsule medial line.
 	 * @param capsule1Radius - capsule radius
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
+	 * @return {@code true} if intersecting, otherwise {@code false}
 	 */
 	@Pure
 	public static boolean intersectsOrientedBoxCapsule(
@@ -122,7 +180,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * or equal to <var>ux1</var>, <var>ly1</var> is lower
 	 * or equal to <var>uy1</var>, and so on.
 	 * The extents are assumed to be positive or zero.
-	 * The lengths of the given arrays are assumed to be <code>3</code>.
+	 * The lengths of the given arrays are assumed to be {@code 3}.
 	 * <p>
 	 * This function uses the "separating axis theorem" which states that 
 	 * for any two OBBs (AABB is a special case of OBB)
@@ -153,7 +211,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * @param upperx coordinates of the uppermost point of the first AABB box.
 	 * @param uppery coordinates of the uppermost point of the first AABB box.
 	 * @param upperz coordinates of the uppermost point of the first AABB box.
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
+	 * @return {@code true} if intersecting, otherwise {@code false}
 	 * @see "RTCD pages 102-105"
 	 * @see <a href="http://www.gamasutra.com/features/19991018/Gomez_5.htm">OBB collision detection on Gamasutra.com</a>
 	 */
@@ -195,7 +253,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	/** Replies if the specified boxes intersect.
 	 * <p>
 	 * The extents are assumed to be positive or zero.
-	 * The lengths of the given arrays are assumed to be <code>3</code>.
+	 * The lengths of the given arrays are assumed to be {@code 3}.
 	 * <p>
 	 * This function uses the "separating axis theorem" which states that 
 	 * for any two OBBs (AABB is a special case of OBB)
@@ -236,7 +294,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * @param box2ExtentAxis1 is the size of the first axis of the second oriented box.
 	 * @param box2ExtentAxis2 is the size of the first axis of the second oriented box.
 	 * @param box2ExtentAxis3 is the size of the first axis of the second oriented box.
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
+	 * @return {@code true} if intersecting, otherwise {@code false}
 	 * @see "RTCD pages 102-105"
 	 * @see <a href="http://www.gamasutra.com/features/19991018/Gomez_5.htm">OBB collision detection on Gamasutra.com</a>
 	 */
@@ -407,8 +465,8 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * @param px x coordinate of the point.
 	 * @param py y coordinate of the point.
 	 * @param pz z coordinate of the point.
-	 * @return <code>true</code> if the given point is inside this
-	 * shape, otherwise <code>false</code>.
+	 * @return {@code true} if the given point is inside this
+	 * shape, otherwise {@code false}.
 	 */
 	@Pure
 	public static boolean containsOrientedBoxPoint(
@@ -471,8 +529,8 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
 	 * @param z z coordinate of the point.
-	 * @param closest set with the coordinates of the closest point, if not <code>null</code>.
-	 * @param farthest set with the coordinates of the farthest point, if not <code>null</code>.
+	 * @param closest set with the coordinates of the closest point, if not {@code null}.
+	 * @param farthest set with the coordinates of the farthest point, if not {@code null}.
 	 */
 	public static void computeClosestFarestOBBPoints(
 			double cx, double cy, double cz,
@@ -988,7 +1046,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * The thirds axis is computed from the cross product with the two other axis.
 	 * The cross product may be {@link Vector3f#crossLeftHand(org.arakhne.afc.math.geometry.d3.Vector3D)}
 	 * or {@link Vector3f#crossRightHand(org.arakhne.afc.math.geometry.d3.Vector3D)} according to
-	 * the given <code>system</code>.
+	 * the given {@code system}.
 	 *
 	 * @param cx x coordinate of the box center.
 	 * @param cy y coordinate of the box center.
@@ -1381,7 +1439,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * The default pivot point of the center of the box.
 	 *
 	 * @param rotation the rotation.
-	 * @param pivot the pivot point. If <code>null</code> the default pivot point is used.
+	 * @param pivot the pivot point. If {@code null} the default pivot point is used.
 	 */
 	public void rotate(Quaternion rotation, Point3D pivot) {
 		if (pivot!=null) {

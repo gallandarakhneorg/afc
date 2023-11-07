@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,83 +26,85 @@ import org.eclipse.xtext.xbase.lib.Pure;
  *
  * @param <RP> is the type of points that can be returned by this tuple.
  * @param <RV> is the type of vectors that can be returned by this tuple.
+ * @param <RQ> is the type of quaternions that can be returned by this tuple.
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface UnmodifiablePoint3D<RP extends Point3D<? super RP, ? super RV>,
-		RV extends Vector3D<? super RV, ? super RP>> extends UnmodifiableTuple3D<RP>, Point3D<RP, RV> {
+public interface UnmodifiablePoint3D<RP extends Point3D<? super RP, ? super RV, ? super RQ>,
+		RV extends Vector3D<? super RV, ? super RP, ? super RQ>,
+		RQ extends Quaternion<? super RP, ? super RV, ? super RQ>> extends UnmodifiableTuple3D<RP>, Point3D<RP, RV, RQ> {
 
 	@Override
-	default void add(Point3D<?, ?> point, Vector3D<?, ?> vector) {
+	default void add(Point3D<?, ?, ?> point, Vector3D<?, ?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void add(Vector3D<?, ?> point, Point3D<?, ?> vector) {
+	default void add(Vector3D<?, ?, ?> point, Point3D<?, ?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void add(Vector3D<?, ?> vector) {
+	default void add(Vector3D<?, ?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void scaleAdd(int scale, Vector3D<?, ?> vector, Point3D<?, ?> point) {
+	default void scaleAdd(int scale, Vector3D<?, ?, ?> vector, Point3D<?, ?, ?> point) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void scaleAdd(double scale, Vector3D<?, ?> vector, Point3D<?, ?> point) {
+	default void scaleAdd(double scale, Vector3D<?, ?, ?> vector, Point3D<?, ?, ?> point) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void scaleAdd(int scale, Point3D<?, ?> point, Vector3D<?, ?> vector) {
+	default void scaleAdd(int scale, Point3D<?, ?, ?> point, Vector3D<?, ?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void scaleAdd(double scale, Point3D<?, ?> point, Vector3D<?, ?> vector) {
+	default void scaleAdd(double scale, Point3D<?, ?, ?> point, Vector3D<?, ?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void scaleAdd(int scale, Vector3D<?, ?> vector) {
+	default void scaleAdd(int scale, Vector3D<?, ?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void scaleAdd(double scale, Vector3D<?, ?> vector) {
+	default void scaleAdd(double scale, Vector3D<?, ?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void sub(Point3D<?, ?> point, Vector3D<?, ?> vector) {
+	default void sub(Point3D<?, ?, ?> point, Vector3D<?, ?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void sub(Vector3D<?, ?> vector) {
+	default void sub(Vector3D<?, ?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Pure
 	@Override
-	default UnmodifiablePoint3D<RP, RV> toUnmodifiable() {
+	default UnmodifiablePoint3D<RP, RV, RQ> toUnmodifiable() {
 		return this;
 	}
 
 	@Override
-	default void operator_add(Vector3D<?, ?> v) {
+	default void operator_add(Vector3D<?, ?, ?> v) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void operator_remove(Vector3D<?, ?> v) {
+	default void operator_remove(Vector3D<?, ?, ?> v) {
 		throw new UnsupportedOperationException();
 	}
 }

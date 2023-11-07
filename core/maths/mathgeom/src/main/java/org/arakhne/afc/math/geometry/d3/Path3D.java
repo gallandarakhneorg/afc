@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
  * @param <I> is the type of the iterator used to obtain the elements of the path.
  * @param <P> is the type of the points.
  * @param <V> is the type of the vectors.
+ * @param <Q> is the type of the quaternions.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
@@ -42,13 +43,14 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
  * @mavenartifactid $ArtifactId$
  */
 public interface Path3D<
-		ST extends Shape3D<?, ?, I, P, V, B>,
-		IT extends Shape3D<?, ?, I, P, V, B>,
-		I extends PathIterator3D<?>,
-		P extends Point3D<? super P, ? super V>,
-		V extends Vector3D<? super V, ? super P>,
-		B extends Shape3D<?, ?, I, P, V, B>>
-		extends Shape3D<ST, IT, I, P, V, B> {
+	ST extends Shape3D<?, ?, I, P, V, Q, B>,
+	IT extends Shape3D<?, ?, I, P, V, Q, B>,
+	I extends PathIterator3D<?>,
+	P extends Point3D<? super P, ? super V, ? super Q>,
+	V extends Vector3D<? super V, ? super P, ? super Q>,
+	Q extends Quaternion<? super P, ? super V, ? super Q>,
+	B extends Shape3D<?, ?, I, P, V, Q, B>>
+	extends Shape3D<ST, IT, I, P, V, Q, B> {
 
 	/** Replies the winding rule for the path.
 	 *
@@ -64,11 +66,11 @@ public interface Path3D<
 	void setWindingRule(PathWindingRule rule);
 
 	/** Replies the path is composed only by
-	 * one <code>MOVE_TO</code>, and a sequence of <code>LINE_TO</code>
+	 * one {@code MOVE_TO}, and a sequence of {@code LINE_TO}
 	 * primitives.
 	 *
-	 * @return <code>true</code> if the path does not
-	 *     contain curve primitives, <code>false</code>
+	 * @return {@code true} if the path does not
+	 *     contain curve primitives, {@code false}
 	 *     otherwise.
 	 */
 	@Pure
@@ -76,29 +78,29 @@ public interface Path3D<
 
 	/** Replies the path contains a curve..
 	 *
-	 * @return <code>true</code> if the path does not
-	 *     contain curve primitives, <code>false</code>
+	 * @return {@code true} if the path does not
+	 *     contain curve primitives, {@code false}
 	 *     otherwise.
 	 */
 	@Pure
 	boolean isCurved();
 
-	/** Replies the path has multiple parts, i.e. multiple <code>MOVE_TO</code> are inside.
+	/** Replies the path has multiple parts, i.e. multiple {@code MOVE_TO} are inside.
 	 * primitives.
 	 *
-	 * @return <code>true</code> if the path has multiple move-to primitive, <code>false</code>
+	 * @return {@code true} if the path has multiple move-to primitive, {@code false}
 	 *     otherwise.
 	 */
 	@Pure
 	boolean isMultiParts();
 
 	/** Replies the path is composed only by
-	 * one <code>MOVE_TO</code>, a sequence of <code>LINE_TO</code>
-	 * or <code>QUAD_TO</code> or <code>CURVE_TO</code>, and a
-	 * single <code>CLOSE</code> primitives.
+	 * one {@code MOVE_TO}, a sequence of {@code LINE_TO}
+	 * or {@code QUAD_TO} or {@code CURVE_TO}, and a
+	 * single {@code CLOSE} primitives.
 	 *
-	 * @return <code>true</code> if the path does not
-	 *     contain curve primitives, <code>false</code>
+	 * @return {@code true} if the path does not
+	 *     contain curve primitives, {@code false}
 	 *     otherwise.
 	 */
 	@Pure
@@ -133,7 +135,7 @@ public interface Path3D<
 	 *
 	 * @param position the new position.
 	 */
-	void moveTo(Point3D<?, ?> position);
+	void moveTo(Point3D<?, ?, ?> position);
 
 	/**
 	 * Adds a point to the path by drawing a straight line from the
@@ -142,7 +144,7 @@ public interface Path3D<
 	 *
 	 * @param to the end point
 	 */
-	void lineTo(Point3D<?, ?> to);
+	void lineTo(Point3D<?, ?, ?> to);
 
 	/**
 	 * Adds a curved segment, defined by two new points, to the path by
@@ -155,7 +157,7 @@ public interface Path3D<
 	 * @param ctrl the quadratic control point
 	 * @param to the final end point
 	 */
-	void quadTo(Point3D<?, ?> ctrl, Point3D<?, ?> to);
+	void quadTo(Point3D<?, ?, ?> ctrl, Point3D<?, ?, ?> to);
 
 	/**
 	 * Adds a curved segment, defined by three new points, to the path by
@@ -169,7 +171,7 @@ public interface Path3D<
 	 * @param ctrl2 the second B&eacute;zier control point
 	 * @param to the final end point
 	 */
-	void curveTo(Point3D<?, ?> ctrl1, Point3D<?, ?> ctrl2, Point3D<?, ?> to);
+	void curveTo(Point3D<?, ?, ?> ctrl1, Point3D<?, ?, ?> ctrl2, Point3D<?, ?, ?> to);
 
 	/**
 	 * Closes the current subpath by drawing a straight line back to
@@ -342,40 +344,41 @@ public interface Path3D<
 	 *
 	 * @param point the point.
 	 */
-	void setLastPoint(Point3D<?, ?> point);
+	void setLastPoint(Point3D<?, ?, ?> point);
 
 	/** Replies if the given points exists in the coordinates of this path.
 	 *
 	 * @param point the point.
-	 * @return <code>true</code> if the point is a control point of the path.
+	 * @return {@code true} if the point is a control point of the path.
 	 */
 	@Pure
-	boolean containsControlPoint(Point3D<?, ?> point);
+	boolean containsControlPoint(Point3D<?, ?, ?> point);
 
-    /**
-     * Type of drawing to used when drawing an arc.
-     *
-     * @author $Author: sgalland$
-     * @version $FullVersion$
-     * @mavengroupid $GroupId$
-     * @mavenartifactid $ArtifactId$
-     * @since 13.0
-     */
-    enum ArcType {
+	/**
+	 * Type of drawing to used when drawing an arc.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	enum ArcType {
 
-        /**
-         * Draw only the ellipse arc.
-         */
-        ARC_ONLY,
+		/**
+		 * Draw only the ellipse arc.
+		 */
+		ARC_ONLY,
 
-        /**
-         * Move to and draw the ellipse arc.
-         */
-        MOVE_THEN_ARC,
+		/**
+		 * Move to and draw the ellipse arc.
+		 */
+		MOVE_THEN_ARC,
 
-        /**
-         * Draw a line to and the ellipse arc.
-         */
-        LINE_THEN_ARC
-    }
+		/**
+		 * Draw a line to and the ellipse arc.
+		 */
+		LINE_THEN_ARC
+
+	}
 }

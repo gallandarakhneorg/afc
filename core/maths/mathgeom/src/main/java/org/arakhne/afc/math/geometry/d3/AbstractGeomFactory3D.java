@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,15 +26,17 @@ import org.arakhne.afc.math.geometry.AbstractGeomFactoryBase;
  *
  * @param <V> the types of the vectors.
  * @param <P> is the type of the points.
+ * @param <Q> is the type of the quaternions.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-public abstract class AbstractGeomFactory3D<V extends Vector3D<? super V, ? super P>,
-		P extends Point3D<? super P, ? super V>>
+public abstract class AbstractGeomFactory3D<V extends Vector3D<? super V, ? super P, ? super Q>,
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>>
 		extends AbstractGeomFactoryBase
-		implements GeomFactory3D<V, P> {
+		implements GeomFactory3D<V, P, Q> {
 	//
 }

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ public enum Direction1D {
 
 	/** Replies if the segment direction is allowed.
 	 *
-	 * @return <code>true</code> if the segment direction is allowed, otherwise <code>false</code>
+	 * @return {@code true} if the segment direction is allowed, otherwise {@code false}
 	 */
 	@Pure
 	public boolean isSegmentDirection() {
@@ -58,7 +58,7 @@ public enum Direction1D {
 
 	/** Replies if the reverted segment direction is allowed.
 	 *
-	 * @return <code>true</code> if the reverted segment direction is allowed, otherwise <code>false</code>
+	 * @return {@code true} if the reverted segment direction is allowed, otherwise {@code false}
 	 */
 	@Pure
 	public boolean isRevertedSegmentDirection() {
@@ -67,9 +67,9 @@ public enum Direction1D {
 
 	/** Replies the direction according to the given integer value.
 	 *
-	 * <p>The <var>value</var> is mapped to <code>SEGMENT_DIRECTION</code> if positive.
-	 * It is mapped to <code>REVERSED_SEGMENT_DIRECTION</code> if negative. And it
-	 * is mapped to <code>BOTH_DIRECTIONS</code> if nul.
+	 * <p>The <var>value</var> is mapped to {@code SEGMENT_DIRECTION} if positive.
+	 * It is mapped to {@code REVERSED_SEGMENT_DIRECTION} if negative. And it
+	 * is mapped to {@code BOTH_DIRECTIONS} if nul.
 	 *
 	 * @param value the value to convert.
 	 * @return the direction which is corresponding to the given <var>value</var>.
@@ -87,9 +87,9 @@ public enum Direction1D {
 
 	/** Replies integer value that is corresponding to the direction.
 	 *
-	 * <p>The returned value is positive if <code>SEGMENT_DIRECTION</code>.
-	 * It is negative if <code>REVERSED_DIRECTION</code> if negative. And it
-	 * is zero if <code>BOTH_DIRECTIONS</code>.
+	 * <p>The returned value is positive if {@code SEGMENT_DIRECTION}.
+	 * It is negative if {@code REVERSED_DIRECTION} if negative. And it
+	 * is zero if {@code BOTH_DIRECTIONS}.
 	 *
 	 * @return the direction which is corresponding to the given <var>value</var>.
 	 */

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,16 +37,16 @@ import org.arakhne.afc.math.geometry.PathElementType;
 public interface PathElement3D extends Serializable, Cloneable {
 	/** Replies the type of the element.
 	 *
-	 * @return <code>true</code> if the points are
-	 *     the same; otherwise <code>false</code>.
+	 * @return {@code true} if the points are
+	 *     the same; otherwise {@code false}.
 	 */
 	@Pure
 	PathElementType getType();
 
 	/** Replies if the element is empty, ie. the points are the same.
 	 *
-	 * @return <code>true</code> if the points are
-	 *     the same; otherwise <code>false</code>.
+	 * @return {@code true} if the points are
+	 *     the same; otherwise {@code false}.
 	 */
 	@Pure
 	boolean isEmpty();
@@ -54,10 +54,10 @@ public interface PathElement3D extends Serializable, Cloneable {
 	/** Replies if the element is not empty and is drawable.
 	 *
 	 * <p>Only the path elements that may produce pixels on the screen
-	 * must reply <code>true</code> in this function.
+	 * must reply {@code true} in this function.
 	 *
-	 * @return <code>true</code> if the path element
-	 *     is drawable; otherwise <code>false</code>.
+	 * @return {@code true} if the path element
+	 *     is drawable; otherwise {@code false}.
 	 */
 	@Pure
 	boolean isDrawable();

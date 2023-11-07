@@ -220,7 +220,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param maxx x coordinate of the upper corner of the aligned box.
 	 * @param maxy y coordinate of the upper corner of the aligned box.
 	 * @param maxz z coordinate of the upper corner of the aligned box.
-	 * @return <code>true</code> if the triangle and aligned box are intersecting.
+	 * @return {@code true} if the triangle and aligned box are intersecting.
 	 */
 	@Pure
 	public static boolean intersectsTriangleAlignedBox(
@@ -573,7 +573,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param cy2 y coordinate of the second point of the capsule medial.
 	 * @param cz2 z coordinate of the second point of the capsule medial.
 	 * @param radius radius of the capsule.
-	 * @return <code>true</code> if the triangle and capsule are intersecting.
+	 * @return {@code true} if the triangle and capsule are intersecting.
 	 * @see "https://github.com/juj/MathGeoLib"
 	 */
 	@Pure
@@ -618,7 +618,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param u3x x coordinate of the third point of the second triangle.
 	 * @param u3y y coordinate of the third point of the second triangle.
 	 * @param u3z z coordinate of the third point of the second triangle.
-	 * @return <code>true</code> if the two triangles are intersecting.
+	 * @return {@code true} if the two triangles are intersecting.
 	 */
 	@Pure
 	public static boolean intersectsCoplanarTriangleTriangle(
@@ -706,7 +706,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param centery y coordinate of the center of the sphere.
 	 * @param centerz z coordinate of the center of the sphere.
 	 * @param radius the radius of the sphere.
-	 * @return <code>true</code> if the triangle and sphere are intersecting.
+	 * @return {@code true} if the triangle and sphere are intersecting.
 	 * @see "http://realtimecollisiondetection.net/blog/?p=103"
 	 */
 	@Pure
@@ -861,7 +861,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param ae1 the extent of the first axis.
 	 * @param ae2 the extent of the second axis.
 	 * @param ae3 the extent of the third axis.
-	 * @return <code>true</code> if the triangle and oriented box are intersecting.
+	 * @return {@code true} if the triangle and oriented box are intersecting.
 	 */
 	@Pure
 	public static boolean intersectsTriangleOrientedBox(
@@ -924,7 +924,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param sx2 x coordinate of the second point of the segment.
 	 * @param sy2 y coordinate of the second point of the segment.
 	 * @param sz2 z coordinate of the second axis of the oriented box.
-	 * @return <code>true</code> if the triangle and segment are intersecting.
+	 * @return {@code true} if the triangle and segment are intersecting.
 	 */
 	@Pure
 	public static boolean intersectsTriangleSegment(
@@ -1358,56 +1358,56 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * <tr>Point is coplanar?</tr>
 	 * <tr>Point projection on plane is inside triangle?</tr>
 	 * <tr><var>forceCoplanar</var></tr>
-	 * <tr><code>intersectsPointTrangle()</code> Result</tr>
+	 * <tr>{@code intersectsPointTrangle()} Result</tr>
 	 * </tr>
 	 * </thead>
 	 * <tr>
-	 * <td><code>true</code></td>
-	 * <td><code>true</code></td>
-	 * <td><code>true</code></td>
-	 * <td><code>true</code></td>
+	 * <td>{@code true}</td>
+	 * <td>{@code true}</td>
+	 * <td>{@code true}</td>
+	 * <td>{@code true}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>true</code></td>
-	 * <td><code>true</code></td>
-	 * <td><code>false</code></td>
-	 * <td><code>true</code></td>
+	 * <td>{@code true}</td>
+	 * <td>{@code true}</td>
+	 * <td>{@code false}</td>
+	 * <td>{@code true}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>true</code></td>
-	 * <td><code>false</code></td>
-	 * <td><code>true</code></td>
-	 * <td><code>false</code></td>
+	 * <td>{@code true}</td>
+	 * <td>{@code false}</td>
+	 * <td>{@code true}</td>
+	 * <td>{@code false}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>true</code></td>
-	 * <td><code>false</code></td>
-	 * <td><code>false</code></td>
-	 * <td><code>false</code></td>
+	 * <td>{@code true}</td>
+	 * <td>{@code false}</td>
+	 * <td>{@code false}</td>
+	 * <td>{@code false}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>false</code></td>
-	 * <td><code>true</code></td>
-	 * <td><code>true</code></td>
-	 * <td><code>false</code></td>
+	 * <td>{@code false}</td>
+	 * <td>{@code true}</td>
+	 * <td>{@code true}</td>
+	 * <td>{@code false}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>false</code></td>
-	 * <td><code>true</code></td>
-	 * <td><code>false</code></td>
-	 * <td><code>true</code></td>
+	 * <td>{@code false}</td>
+	 * <td>{@code true}</td>
+	 * <td>{@code false}</td>
+	 * <td>{@code true}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>false</code></td>
-	 * <td><code>false</code></td>
-	 * <td><code>true</code></td>
-	 * <td><code>false</code></td>
+	 * <td>{@code false}</td>
+	 * <td>{@code false}</td>
+	 * <td>{@code true}</td>
+	 * <td>{@code false}</td>
 	 * </tr>
 	 * <tr>
-	 * <td><code>false</code></td>
-	 * <td><code>false</code></td>
-	 * <td><code>false</code></td>
-	 * <td><code>false</code></td>
+	 * <td>{@code false}</td>
+	 * <td>{@code false}</td>
+	 * <td>{@code false}</td>
+	 * <td>{@code false}</td>
 	 * </tr>
 	 * </table>
 	 * <p>
@@ -1490,13 +1490,13 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param px the X coordinate of the point
 	 * @param py the Y coordinate of the point
 	 * @param pz the Z coordinate of the point
-	 * @param forceCoplanar is <code>true</code> to force to test
-	 * if the given point is coplanar to the triangle, <code>false</code>
+	 * @param forceCoplanar is {@code true} to force to test
+	 * if the given point is coplanar to the triangle, {@code false}
 	 * to not consider coplanarity of the point.
 	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
-	 * @return <code>true</code> if the points is coplanar - or not,
+	 * @return {@code true} if the points is coplanar - or not,
 	 * depending on <var>forceCoplanar</var> - to the triangle and
-	 * lies inside it, otherwise <code>false</code>
+	 * lies inside it, otherwise {@code false}
 	 * @since 3.0
 	 */
 	@Pure
@@ -1575,7 +1575,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * Checks if a point is inside this triangle.
 	 * 
 	 * @param point is the the point
-	 * @return <code>true</code> if the point is in the triangle , otherwise <code>false</code>.
+	 * @return {@code true} if the point is in the triangle , otherwise {@code false}.
 	 */
 	@Pure
 	public boolean contains(FunctionalPoint3D point) {
@@ -1884,7 +1884,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 
 	/** Change the pivot point for this triangle.
 	 *
-	 * @param point is the new pivot point. If <code>null</code>, the default pivot point
+	 * @param point is the new pivot point. If {@code null}, the default pivot point
 	 * is restored (the first point of the triangle).
 	 */
 	abstract public void setPivot(FunctionalPoint3D point);
@@ -1955,7 +1955,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * The default pivot point of the segment is its first point.
 	 *
 	 * @param rotation the rotation.
-	 * @param pivot1 the pivot point. If <code>null</code> the default pivot point is used.
+	 * @param pivot1 the pivot point. If {@code null} the default pivot point is used.
 	 */
 	public void rotate(Quaternion rotation, Point3D pivot1) {
 		if (pivot1==null) {
@@ -2048,7 +2048,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * Checks if the projection of a point on the triangle's plane is inside the triangle.
 	 * 
 	 * @param point is the the point
-	 * @return <code>true</code> if the projection of the point is in the triangle, otherwise <code>false</code>.
+	 * @return {@code true} if the projection of the point is in the triangle, otherwise {@code false}.
 	 */
 	@Pure
 	public boolean containsProjectionOf(Point3f point) {
@@ -2061,7 +2061,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return <code>true</code> if the projection of the point is in the triangle, otherwise <code>false</code>.
+	 * @return {@code true} if the projection of the point is in the triangle, otherwise {@code false}.
 	 */
 	@Pure
 	public boolean containsProjectionOf(double x, double y, double z) {

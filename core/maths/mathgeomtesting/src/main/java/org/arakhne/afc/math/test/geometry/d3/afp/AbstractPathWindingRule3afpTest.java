@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,33 +24,42 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
-
+import org.junit.jupiter.params.provider.MethodSource;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
-import org.arakhne.afc.math.geometry.d3.afp.RectangularPrism3afp;
+import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
 import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
-public abstract class AbstractPathWindingRule3afpTest<P extends Point3D<? super P, ? super V>,
-		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3afp<?, ?, ?, P, V, B>> extends AbstractMathTestCase {
+public abstract class AbstractPathWindingRule3afpTest<P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>,
+		B extends AlignedBox3afp<?, ?, ?, P, V, Q, B>> extends AbstractMathTestCase {
 	
 	/** Is the shape to test.
 	 */
-	protected Path3afp<?, ?, ?, P, V, B> shape;
+	protected Path3afp<?, ?, ?, P, V, Q, B> shape;
 	
 	/** Shape factory.
 	 */
-	protected TestShapeFactory3afp<P, V, B> factory;
+	protected TestShapeFactory3afp<P, V, Q, B> factory;
 
-	protected abstract TestShapeFactory3afp<P, V, B> createFactory();
+	protected abstract TestShapeFactory3afp<P, V, Q, B> createFactory();
 
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -83,10 +92,21 @@ public abstract class AbstractPathWindingRule3afpTest<P extends Point3D<? super 
 		this.shape = null;
 		this.factory = null;
 	}
+
+	private static Stream<Arguments> proposeArguments() {
+		final List<Arguments> list = new ArrayList<>();
+		for (final CoordinateSystem3D cs : CoordinateSystem3D.values()) {
+			for (final PathWindingRule pr : PathWindingRule.values()) {
+				list.add(Arguments.of(cs, pr));
+			}
+		}
+		return list.stream();
+	}
 	
-	@ParameterizedTest
-	@EnumSource(PathWindingRule.class)
-    public void containsPoint_outsideExternal_evenOdd(PathWindingRule rule) {
+	@DisplayName("contains(double,double,double) outside-external event-odd")
+	@ParameterizedTest(name = "{index} => {0}")
+	@MethodSource("proposeArguments")
+    public void containsPoint_outsideExternal_evenOdd(CoordinateSystem3D cs, PathWindingRule rule) {
 		createTestShape(rule);
 		assumeTrue(this.shape.getWindingRule() == PathWindingRule.EVEN_ODD);
 		assertFalse(this.shape.contains(0, 0, 0));
@@ -96,9 +116,10 @@ public abstract class AbstractPathWindingRule3afpTest<P extends Point3D<? super 
 		assertFalse(this.shape.contains(8, -5, 0));
     }
    
-	@ParameterizedTest
-	@EnumSource(PathWindingRule.class)
-    public void containsPoint_outsideExternal_nonZero(PathWindingRule rule) {
+	@DisplayName("contains(double,double,double) outside-external non-zero")
+	@ParameterizedTest(name = "{index} => {0}")
+	@MethodSource("proposeArguments")
+    public void containsPoint_outsideExternal_nonZero(CoordinateSystem3D cs, PathWindingRule rule) {
 		createTestShape(rule);
 		assumeTrue(this.shape.getWindingRule() == PathWindingRule.NON_ZERO);
 		assertFalse(this.shape.contains(0, 0, 0));
@@ -108,27 +129,30 @@ public abstract class AbstractPathWindingRule3afpTest<P extends Point3D<? super 
 		assertFalse(this.shape.contains(8, -5, 0));
     }
 
-	@ParameterizedTest
-	@EnumSource(PathWindingRule.class)
-    public void containsPoint_outsideInternal_evenOdd(PathWindingRule rule) {
+	@DisplayName("contains(double,double,double) outside-internal event-odd")
+	@ParameterizedTest(name = "{index} => {0}")
+	@MethodSource("proposeArguments")
+    public void containsPoint_outsideInternal_evenOdd(CoordinateSystem3D cs, PathWindingRule rule) {
 		createTestShape(rule);
 		assumeTrue(this.shape.getWindingRule() == PathWindingRule.EVEN_ODD);
 		assertFalse(this.shape.contains(6, 2, 0));
 		assertFalse(this.shape.contains(5, 2, 0));
     }
 
-	@ParameterizedTest
-	@EnumSource(PathWindingRule.class)
-    public void containsPoint_outsideInternal_nonZero(PathWindingRule rule) {
+	@DisplayName("contains(double,double,double) outside-internal non-zero")
+	@ParameterizedTest(name = "{index} => {0}")
+	@MethodSource("proposeArguments")
+    public void containsPoint_outsideInternal_nonZero(CoordinateSystem3D cs, PathWindingRule rule) {
 		createTestShape(rule);
 		assumeTrue(this.shape.getWindingRule() == PathWindingRule.NON_ZERO);
 		assertFalse(this.shape.contains(6, 2, 0));
 		assertFalse(this.shape.contains(5, 2, 0));
     }
 
-	@ParameterizedTest
-	@EnumSource(PathWindingRule.class)
-    public void containsPoint_inside_evenOdd(PathWindingRule rule) {
+	@DisplayName("contains(double,double,double) inside event-odd")
+	@ParameterizedTest(name = "{index} => {0}")
+	@MethodSource("proposeArguments")
+    public void containsPoint_inside_evenOdd(CoordinateSystem3D cs, PathWindingRule rule) {
 		createTestShape(rule);
 		assumeTrue(this.shape.getWindingRule() == PathWindingRule.EVEN_ODD);
 		assertTrue(this.shape.contains(3, 2, 0));
@@ -138,9 +162,10 @@ public abstract class AbstractPathWindingRule3afpTest<P extends Point3D<? super 
 		assertTrue(this.shape.contains(5, -4, 0));
     }
 
-	@ParameterizedTest
-	@EnumSource(PathWindingRule.class)
-    public void containsPoint_inside_nonZero(PathWindingRule rule) {
+	@DisplayName("contains(double,double,double) inside non-zero")
+	@ParameterizedTest(name = "{index} => {0}")
+	@MethodSource("proposeArguments")
+    public void containsPoint_inside_nonZero(CoordinateSystem3D cs, PathWindingRule rule) {
 		createTestShape(rule);
 		assumeTrue(this.shape.getWindingRule() == PathWindingRule.NON_ZERO);
 		assertTrue(this.shape.contains(3, 2, 0));
@@ -150,9 +175,10 @@ public abstract class AbstractPathWindingRule3afpTest<P extends Point3D<? super 
 		assertTrue(this.shape.contains(5, -4, 0));
     }
 
-	@ParameterizedTest
-	@EnumSource(PathWindingRule.class)
-    public void containsPoint_insideWindingZone_evenOdd(PathWindingRule rule) {
+	@DisplayName("contains(double,double,double) inside-winding even-odd")
+	@ParameterizedTest(name = "{index} => {0}")
+	@MethodSource("proposeArguments")
+    public void containsPoint_insideWindingZone_evenOdd(CoordinateSystem3D cs, PathWindingRule rule) {
 		createTestShape(rule);
 		assumeTrue(this.shape.getWindingRule() == PathWindingRule.EVEN_ODD);
 		assertFalse(this.shape.contains(7, -1, 0));
@@ -160,9 +186,10 @@ public abstract class AbstractPathWindingRule3afpTest<P extends Point3D<? super 
 		assertFalse(this.shape.contains(6, -2.5, 0));
     }
 
-	@ParameterizedTest
-	@EnumSource(PathWindingRule.class)
-    public void containsPoint_insideWindingZone_nonZero(PathWindingRule rule) {
+	@DisplayName("contains(double,double,double) inside-winding non-zero")
+	@ParameterizedTest(name = "{index} => {0}")
+	@MethodSource("proposeArguments")
+    public void containsPoint_insideWindingZone_nonZero(CoordinateSystem3D cs, PathWindingRule rule) {
 		createTestShape(rule);
 		assumeTrue(this.shape.getWindingRule() == PathWindingRule.NON_ZERO);
 		assertTrue(this.shape.contains(7, -1, 0));

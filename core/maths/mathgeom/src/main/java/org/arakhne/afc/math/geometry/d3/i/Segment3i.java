@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public class Segment3i extends AbstractShape3i<Segment3i>
-	implements Segment3ai<Shape3i<?>, Segment3i, PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
+	implements Segment3ai<Shape3i<?>, Segment3i, PathElement3i, Point3i, Vector3i, Quaternion4i, AlignedBox3i> {
 
 	private static final long serialVersionUID = 4069080422632034507L;
 
@@ -62,14 +62,14 @@ public class Segment3i extends AbstractShape3i<Segment3i>
      * @param p1 first point.
      * @param p2 second point.
      */
-	public Segment3i(Point3D<?, ?> p1, Point3D<?, ?> p2) {
+	public Segment3i(Point3D<?, ?, ?> p1, Point3D<?, ?, ?> p2) {
 		this(p1.ix(), p1.iy(), p1.iz(), p2.ix(), p2.iy(), p2.iz());
 	}
 
 	/** Constructor by copy.
      * @param segment the segment to copy.
      */
-	public Segment3i(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+	public Segment3i(Segment3ai<?, ?, ?, ?, ?, ?, ?> segment) {
 		this(segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2());
 	}
 
@@ -87,7 +87,6 @@ public class Segment3i extends AbstractShape3i<Segment3i>
 
 	@Pure
 	@Override
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + this.ax;

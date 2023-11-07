@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -148,7 +148,7 @@ public abstract class PathElement2d implements PathElement2afp {
 	@Pure
 	public abstract double[] toArray();
 
-	/** An element of the path that represents a <code>MOVE_TO</code>.
+	/** An element of the path that represents a {@code MOVE_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -239,7 +239,7 @@ public abstract class PathElement2d implements PathElement2afp {
 
 	}
 
-	/** An element of the path that represents a <code>LINE_TO</code>.
+	/** An element of the path that represents a {@code LINE_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -348,7 +348,7 @@ public abstract class PathElement2d implements PathElement2afp {
 
 	}
 
-	/** An element of the path that represents a <code>QUAD_TO</code>.
+	/** An element of the path that represents a {@code QUAD_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -356,7 +356,6 @@ public abstract class PathElement2d implements PathElement2afp {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	static class QuadPathElement2d extends PathElement2d {
 
 		private static final long serialVersionUID = 6092391345111872481L;
@@ -486,7 +485,7 @@ public abstract class PathElement2d implements PathElement2afp {
 
 	}
 
-	/** An element of the path that represents a <code>CURVE_TO</code>.
+	/** An element of the path that represents a {@code CURVE_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -494,7 +493,6 @@ public abstract class PathElement2d implements PathElement2afp {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	static class CurvePathElement2d extends PathElement2d {
 
 		private static final long serialVersionUID = -2831895270995173092L;
@@ -653,7 +651,7 @@ public abstract class PathElement2d implements PathElement2afp {
 
 	}
 
-	/** An element of the path that represents a <code>CLOSE</code>.
+	/** An element of the path that represents a {@code CLOSE}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -762,7 +760,7 @@ public abstract class PathElement2d implements PathElement2afp {
 
 	}
 
-	/** An element of the path that represents a <code>Arc_TO</code>.
+	/** An element of the path that represents a {@code Arc_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -770,7 +768,6 @@ public abstract class PathElement2d implements PathElement2afp {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	static class ArcPathElement2d extends PathElement2d {
 
 		private static final long serialVersionUID = -2831895270995173092L;
@@ -799,8 +796,8 @@ public abstract class PathElement2d implements PathElement2afp {
 		 * @param xradius radius of the ellipse along its x axis.
 		 * @param yradius radius of the ellipse along its y axis.
 		 * @param xrotation rotation (in radians) of the ellipse's x axis.
-		 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
-		 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+		 * @param largeArcFlag {@code true} iff the path will sweep the long way around the ellipse.
+		 * @param sweepFlag {@code true} iff the path will sweep clockwise around the ellipse.
 		 */
 		ArcPathElement2d(double fromx, double fromy, double tox, double toy, double xradius,
 				double yradius, double xrotation, boolean largeArcFlag, boolean sweepFlag) {

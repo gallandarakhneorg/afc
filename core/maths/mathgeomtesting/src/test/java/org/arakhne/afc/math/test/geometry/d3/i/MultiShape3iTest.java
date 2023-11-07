@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,13 @@ package org.arakhne.afc.math.test.geometry.d3.i;
 import org.junit.jupiter.api.Disabled;
 
 import org.arakhne.afc.math.geometry.d3.i.MultiShape3i;
-import org.arakhne.afc.math.geometry.d3.i.RectangularPrism3i;
+import org.arakhne.afc.math.geometry.d3.i.AlignedBox3i;
 import org.arakhne.afc.math.geometry.d3.i.Shape3i;
 import org.arakhne.afc.math.test.geometry.d3.ai.AbstractMultiShape3aiTest;
 
 @SuppressWarnings("all")
 @Disabled
-public class MultiShape3iTest extends AbstractMultiShape3aiTest<MultiShape3i<Shape3i<?>>, Shape3i<?>, RectangularPrism3i> {
+public class MultiShape3iTest extends AbstractMultiShape3aiTest<MultiShape3i<Shape3i<?>>, Shape3i<?>, AlignedBox3i> {
 
 	@Override
 	protected TestShapeFactory3i createFactory() {

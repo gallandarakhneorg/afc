@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,25 +32,27 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
-import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai;
+import org.arakhne.afc.math.geometry.d3.ai.AlignedBox3ai;
 import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
-public abstract class AbstractPathWindingRule3aiTest<P extends Point3D<? super P, ? super V>,
-		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3ai<?, ?, ?, P, V, B>> extends AbstractMathTestCase {
+public abstract class AbstractPathWindingRule3aiTest<P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>,
+		B extends AlignedBox3ai<?, ?, ?, P, V, Q, B>> extends AbstractMathTestCase {
 	
 	/** Is the shape to test.
 	 */
-	protected Path3ai<?, ?, ?, P, V, B> shape;
+	protected Path3ai<?, ?, ?, P, V, Q, B> shape;
 	
 	/** Shape factory.
 	 */
-	protected TestShapeFactory3ai<P, V, B> factory;
+	protected TestShapeFactory3ai<P, V, Q, B> factory;
 
-	protected abstract TestShapeFactory3ai<P, V, B> createFactory();
+	protected abstract TestShapeFactory3ai<P, V, Q, B> createFactory();
 
 	@BeforeEach
 	@ParameterizedTest

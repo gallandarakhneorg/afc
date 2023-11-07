@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -149,8 +149,8 @@ public interface Shape2afp<
 	/** Replies if the given rectangle is inside this shape.
 	 *
 	 * @param rectangle the rectangle.
-	 * @return <code>true</code> if the given rectangle is inside this
-	 *     shape, otherwise <code>false</code>.
+	 * @return {@code true} if the given rectangle is inside this
+	 *     shape, otherwise {@code false}.
 	 */
 	@Pure
 	boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle);
@@ -159,8 +159,8 @@ public interface Shape2afp<
 	 *
 	 * @param x x coordinate of the point to test.
 	 * @param y y coordinate of the point to test.
-	 * @return <code>true</code> if the given point is inside this
-	 *     shape, otherwise <code>false</code>.
+	 * @return {@code true} if the given point is inside this
+	 *     shape, otherwise {@code false}.
 	 */
 	@Pure
 	boolean contains(double x, double y);
@@ -182,7 +182,6 @@ public interface Shape2afp<
 	@Pure
 	@Unefficient
 	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	default boolean intersects(Shape2D<?, ?, ?, ?, ?, ?> shape) {
 		// CAUTION:
 		// It is important to test several types in the reverse order than the inheritance hierarchy.
@@ -226,8 +225,8 @@ public interface Shape2afp<
 	/** Replies if this shape is intersecting the given ellipse.
 	 *
 	 * @param ellipse the ellipse.
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse);
@@ -235,8 +234,8 @@ public interface Shape2afp<
 	/** Replies if this shape is intersecting the given circle.
 	 *
 	 * @param circle the circle.
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle);
@@ -244,8 +243,8 @@ public interface Shape2afp<
 	/** Replies if this shape is intersecting the given rectangle.
 	 *
 	 * @param rectangle the rectangle.
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle);
@@ -253,8 +252,8 @@ public interface Shape2afp<
 	/** Replies if this shape is intersecting the given line.
 	 *
 	 * @param segment the segment.
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment);
@@ -262,8 +261,8 @@ public interface Shape2afp<
 	/** Replies if this shape is intersecting the given triangle.
 	 *
 	 * @param triangle the triangle.
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle);
@@ -271,8 +270,8 @@ public interface Shape2afp<
 	/** Replies if this shape is intersecting the given path.
 	 *
 	 * @param path the other path.
-	 * @return <code>true</code> if this shape is intersecting the given path;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given path;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	default boolean intersects(Path2afp<?, ?, ?, ?, ?, ?> path) {
@@ -283,8 +282,8 @@ public interface Shape2afp<
 	/** Replies if this shape is intersecting the shape representing the given path iterator.
 	 *
 	 * @param iterator the path iterator.
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(PathIterator2afp<?> iterator);
@@ -292,8 +291,8 @@ public interface Shape2afp<
 	/** Replies if this shape is intersecting the given rectangle.
 	 *
 	 * @param orientedRectangle the oriented rectangle.
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle);
@@ -301,8 +300,8 @@ public interface Shape2afp<
 	/** Replies if this shape is intersecting the given parallelogram.
 	 *
 	 * @param parallelogram the parallelogram.
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram);
@@ -310,8 +309,8 @@ public interface Shape2afp<
 	/** Replies if this shape is intersecting the given rectangle.
 	 *
 	 * @param roundRectangle the round rectangle.
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle);
@@ -319,8 +318,8 @@ public interface Shape2afp<
 	/** Replies if this shape is intersecting the given multishape.
 	 *
 	 * @param multishape the multishape.
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape);
@@ -328,7 +327,6 @@ public interface Shape2afp<
 	@Pure
 	@Unefficient
 	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	default double getDistanceSquared(Shape2D<?, ?, ?, ?, ?, ?> shape) {
 		// CAUTION:
 		// It is important to test several types in the reverse order than the inheritance hierarchy.
@@ -487,7 +485,6 @@ public interface Shape2afp<
 	@Pure
 	@Unefficient
 	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	default P getClosestPointTo(Shape2D<?, ?, ?, ?, ?, ?> shape) {
 		// CAUTION:
 		// It is important to test several types in the reverse order than the inheritance hierarchy.

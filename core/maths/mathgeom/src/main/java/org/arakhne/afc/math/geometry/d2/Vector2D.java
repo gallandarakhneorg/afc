@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:methodcount")
 public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extends Point2D<? super RP, ? super RV>>
 		extends Tuple2D<RV> {
 
@@ -58,7 +57,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 *
 	 * @param x is the X coordinate of the vector.
 	 * @param y is the Y coordinate of the vector.
-	 * @return <code>true</code> if the two given vectors are colinear.
+	 * @return {@code true} if the two given vectors are colinear.
 	 * @since 13.0
 	 * @see MathUtil#isEpsilonEqual(double, double, double)
 	 * @see GeomConstants#UNIT_VECTOR_EPSILON
@@ -77,12 +76,12 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * <p>Due to the precision on floating-point computations, the test of unit-vector
 	 * must consider that the norm of the given vector is approximatively equal
 	 * to 1. The precision (i.e. the number of significant decimals) is given
-	 * by <code>epsilon</code>.
+	 * by {@code epsilon}.
 	 *
 	 * @param x is the X coordinate of the vector.
 	 * @param y is the Y coordinate of the vector.
 	 * @param epsilon the precision distance to assumed for equality.
-	 * @return <code>true</code> if the two given vectors are colinear.
+	 * @return {@code true} if the two given vectors are colinear.
 	 * @since 13.0
 	 * @see MathUtil#isEpsilonEqual(double, double, double)
 	 * @see #isUnitVector(double, double)
@@ -97,8 +96,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	/** Replies if this vector is a unit vector.
 	 * A unit vector has a length equal to 1.
 	 *
-	 * @return <code>true</code> if the vector has a length equal to 1.
-	 * <code>false</code> otherwise.
+	 * @return {@code true} if the vector has a length equal to 1.
+	 * {@code false} otherwise.
 	 */
 	@Pure
 	default boolean isUnitVector() {
@@ -115,7 +114,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param y1 is the Y coordinate of the first unit vector.
 	 * @param x2 is the X coordinate of the second unit vector.
 	 * @param y2 is the Y coordinate of the second unit vector.
-	 * @return <code>true</code> if the two given vectors are colinear.
+	 * @return {@code true} if the two given vectors are colinear.
 	 * @since 13.0
 	 * @see MathUtil#isEpsilonEqual(double, double, double)
 	 * @see GeomConstants#ORTHOGONAL_VECTOR_EPSILON
@@ -136,7 +135,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param x2 is the X coordinate of the second unit vector.
 	 * @param y2 is the Y coordinate of the second unit vector.
 	 * @param epsilon the precision distance to assumed for equality.
-	 * @return <code>true</code> if the two given vectors are orthogonal.
+	 * @return {@code true} if the two given vectors are orthogonal.
 	 * @since 13.0
 	 * @see #isOrthogonal(double, double, double,  double)
 	 */
@@ -150,8 +149,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	/** Replies if this vector is orthogonal to the given vector.
 	 *
 	 * @param vector the vector to compare to this vector.
-	 * @return <code>true</code> if the vectors are orthogonal.
-	 * <code>false</code> otherwise.
+	 * @return {@code true} if the vectors are orthogonal.
+	 * {@code false} otherwise.
 	 */
 	@Pure
 	default boolean isOrthogonal(Vector2D<?, ?> vector) {
@@ -172,7 +171,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 *            is the X coordinate of the second vector
 	 * @param y2
 	 *            is the Y coordinate of the second vector
-	 * @return <code>true</code> if the two given vectors are colinear.
+	 * @return {@code true} if the two given vectors are colinear.
 	 * @since 13.0
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
@@ -190,18 +189,18 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	/** Compute the the perpendicular product of
 	 * the two vectors (aka. the determinant of two vectors).
 	 *
-	 * <pre><code>det(X1,X2) = |X1|.|X2|.sin(a)</code></pre>
-	 * where <code>X1</code> and <code>X2</code> are two vectors
-	 * and <code>a</code> is the angle between <code>X1</code>
-	 * and <code>X2</code>.
+	 * <pre>{@code det(X1,X2) = |X1|.|X2|.sin(a)}</pre>
+	 * where {@code X1} and {@code X2} are two vectors
+	 * and {@code a} is the angle between {@code X1}
+	 * and {@code X2}.
 	 *
 	 * <p>Let consider that dotProduct projects the point (px,py) on the
 	 * Ox axis, and perpProduct projects the point (py,py) on the Oy
 	 * axis. Then:
-	 * <pre><code>perpProduct(ax, ay, px, py) = dotProduct(px, py, -ay, ax)</code></pre>
+	 * <pre>{@code perpProduct(ax, ay, px, py) = dotProduct(px, py, -ay, ax)}</pre>
 	 * You could note that the semantics of the parameters differ:<ul>
-	 * <li><code>perpProduct(axisX, axisY, pointX, pointY)</code></li>
-	 * <li><code>dotProduct(pointX, pointY, axisX, axisY)</code></li>
+	 * <li>{@code perpProduct(axisX, axisY, pointX, pointY)}</li>
+	 * <li>{@code dotProduct(pointX, pointY, axisX, axisY)}</li>
 	 * </ul>
 	 *
 	 * @param x1 x coordinate of the first vector.
@@ -221,10 +220,10 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * <p>Let consider that dotProduct projects the point (px,py) on the
 	 * Ox axis, and perpProduct projects the point (py,py) on the Oy
 	 * axis. Then:
-	 * <pre><code>perpProduct(ax, ay, px, py) = dotProduct(px, py, -ay, ax)</code></pre>
+	 * <pre>{@code perpProduct(ax, ay, px, py) = dotProduct(px, py, -ay, ax)}</pre>
 	 * You could note that the semantics of the parameters differ:<ul>
-	 * <li><code>perpProduct(axisX, axisY, pointX, pointY)</code></li>
-	 * <li><code>dotProduct(pointX, pointY, axisX, axisY)</code></li>
+	 * <li>{@code perpProduct(axisX, axisY, pointX, pointY)}</li>
+	 * <li>{@code dotProduct(pointX, pointY, axisX, axisY)}</li>
 	 * </ul>
 	 *
 	 * @param x1 x coordinate of the first vector.
@@ -253,7 +252,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param y1 the second coordinate of the first vector.
 	 * @param x2 the first coordinate of the second vector.
 	 * @param y2 the second coordinate of the second vector.
-	 * @return <code>true</code> if the vectors are defined in a counter-clockwise order.
+	 * @return {@code true} if the vectors are defined in a counter-clockwise order.
 	 * @see #signedAngle(double, double, double, double)
 	 * @see #perpProduct(double, double, double, double)
 	 */
@@ -270,7 +269,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param y1 the second coordinate of the first vector.
 	 * @param x2 the first coordinate of the second vector.
 	 * @param y2 the second coordinate of the second vector.
-	 * @return the angle between <code>-PI</code> and <code>PI</code>.
+	 * @return the angle between {@code -PI} and {@code PI}.
 	 * @see #isCCW(double, double, double, double)
 	 */
 	@Pure
@@ -533,10 +532,10 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	/** Compute the the perpendicular product of
 	 * the two vectors (aka. the determinant of two vectors).
 	 *
-	 * <pre><code>det(X1, X2) = |X1|.|X2|.sin(a)</code></pre>
-	 * where <code>X1</code> and <code>X2</code> are two vectors
-	 * and <code>a</code> is the angle between <code>X1</code>
-	 * and <code>X2</code>.
+	 * <pre>{@code det(X1, X2) = |X1|.|X2|.sin(a)}</pre>
+	 * where {@code X1} and {@code X2} are two vectors
+	 * and {@code a} is the angle between {@code X1}
+	 * and {@code X2}.
 	 *
 	 * @param vector the vertor.
 	 * @return the determinant
@@ -1501,7 +1500,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 
 		/** Replies if the result is vectorial.
 		 *
-		 * @return <code>true</code> if the result is vectorial. <code>false</code>
+		 * @return {@code true} if the result is vectorial. {@code false}
 		 *      if the result if scalar.
 		 */
 		@Pure

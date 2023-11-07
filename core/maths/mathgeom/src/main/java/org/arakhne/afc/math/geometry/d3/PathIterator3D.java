@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,11 +45,11 @@ public interface PathIterator3D<T extends PathElement3D> extends Iterator<T> {
 	PathWindingRule getWindingRule();
 
 	/** Replies the path is composed only by
-	 * one <code>MOVE_TO</code>, and a sequence of <code>LINE_TO</code>
+	 * one {@code MOVE_TO}, and a sequence of {@code LINE_TO}
 	 * primitives.
 	 *
-	 * @return <code>true</code> if the path does not
-	 *     contain curve primitives, <code>false</code>
+	 * @return {@code true} if the path does not
+	 *     contain curve primitives, {@code false}
 	 *     otherwise.
 	 */
 	@Pure
@@ -57,29 +57,29 @@ public interface PathIterator3D<T extends PathElement3D> extends Iterator<T> {
 
 	/** Replies the path contains a curve.
 	 *
-	 * @return <code>true</code> if the path contains
-	 *     curve primitives, <code>false</code>
+	 * @return {@code true} if the path contains
+	 *     curve primitives, {@code false}
 	 *     otherwise.
 	 */
 	@Pure
 	boolean isCurved();
 
-	/** Replies the path has multiple parts, i.e. multiple <code>MOVE_TO</code> are inside.
+	/** Replies the path has multiple parts, i.e. multiple {@code MOVE_TO} are inside.
 	 * primitives.
 	 *
-	 * @return <code>true</code> if the path has multiple move-to primitive, <code>false</code>
+	 * @return {@code true} if the path has multiple move-to primitive, {@code false}
 	 *     otherwise.
 	 */
 	@Pure
 	boolean isMultiParts();
 
 	/** Replies the path is composed only by
-	 * one <code>MOVE_TO</code>, a sequence of <code>LINE_TO</code>
-	 * or <code>QUAD_TO</code> or <code>CURVE_TO</code>, and a
-	 * single <code>CLOSE</code> primitives.
+	 * one {@code MOVE_TO}, a sequence of {@code LINE_TO}
+	 * or {@code QUAD_TO} or {@code CURVE_TO}, and a
+	 * single {@code CLOSE} primitives.
 	 *
-	 * @return <code>true</code> if the path does not
-	 *     contain curve primitives, <code>false</code>
+	 * @return {@code true} if the path does not
+	 *     contain curve primitives, {@code false}
 	 *     otherwise.
 	 */
 	@Pure

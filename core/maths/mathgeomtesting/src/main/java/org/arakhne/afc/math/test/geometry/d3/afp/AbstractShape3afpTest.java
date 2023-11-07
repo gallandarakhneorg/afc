@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,31 +33,28 @@ import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
 import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathElement3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
-import org.arakhne.afc.math.geometry.d3.afp.RectangularPrism3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Shape3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
 import org.arakhne.afc.math.test.AbstractMathTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 
 @SuppressWarnings("all")
-public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?>,
-		B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> extends AbstractMathTestCase {
+public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?, ?>,
+		B extends AlignedBox3afp<?, ?, ?, ?, ?, ?, B>> extends AbstractMathTestCase {
 	
 	/** Is the rectangular shape to test.
 	 */
@@ -65,7 +62,7 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	
 	/** Shape factory.
 	 */
-	protected TestShapeFactory3afp<? extends Point3D, ? extends Vector3D, B> factory;
+	protected TestShapeFactory3afp<? extends Point3D, ? extends Vector3D, ? extends Quaternion, B> factory;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -73,7 +70,7 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 		this.shape = createShape();
 	}
 	
-	protected abstract TestShapeFactory3afp<? extends Point3D, ? extends Vector3D, B> createFactory();
+	protected abstract TestShapeFactory3afp<? extends Point3D, ? extends Vector3D, ? extends Quaternion, B> createFactory();
 	
 	/** Create the shape to test.
 	 * 
@@ -81,20 +78,19 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	 */
 	protected abstract T createShape();
 	
-	public final Segment3afp<?, ?, ?, ?, ?, B> createSegment(double x1, double y1, double z1, double x2, double y2, double z2) {
+	public final Segment3afp<?, ?, ?, ?, ?, ?, B> createSegment(double x1, double y1, double z1, double x2, double y2, double z2) {
 		return this.factory.createSegment(x1, y1, z1, x2, y2, z2);
 	}
 	
-	public final B createRectangularPrism(double x, double y, double z, double width, double height, double depth) {
-		return this.factory.createRectangularPrism(x, y, z, width, height, depth);
+	public final B createAlignedBox(double x, double y, double z, double width, double height, double depth) {
+		return this.factory.createAlignedBox(x, y, z, width, height, depth);
 	}
 
-	
-	public final Sphere3afp<?, ?, ?, ?, ?, B> createSphere(double x, double y, double z, double radius) {
+	public final Sphere3afp<?, ?, ?, ?, ?, ?, B> createSphere(double x, double y, double z, double radius) {
 		return this.factory.createSphere(x, y, z, radius);
 	}
 	
-	public final MultiShape3afp<?, ?, ?, ?, ?, ?, B> createMultiShape() {
+	public final MultiShape3afp<?, ?, ?, ?, ?, ?, ?, B> createMultiShape() {
 		return this.factory.createMultiShape();
 	}
 
@@ -106,16 +102,16 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 		return this.factory.createVector(x, y, z);
 	}
 
-	public final Path3afp<?, ?, ?, ?, ?, B> createPath() {
+	public final Path3afp<?, ?, ?, ?, ?, ?, B> createPath() {
 		return this.factory.createPath(null);
 	}
 
-	public final Path3afp<?, ?, ?, ?, ?, B> createPath(PathWindingRule rule) {
+	public final Path3afp<?, ?, ?, ?, ?, ?, B> createPath(PathWindingRule rule) {
 		return this.factory.createPath(rule);
 	}
 
-	public final Path3afp<?, ?, ?, ?, ?, B> createPolyline(double... coordinates) {
-		Path3afp<?, ?, ?, ?, ?, B>  path = createPath();
+	public final Path3afp<?, ?, ?, ?, ?, ?, B> createPolyline(double... coordinates) {
+		Path3afp<?, ?, ?, ?, ?, ?, B>  path = createPath();
 		path.moveTo(coordinates[0], coordinates[1], coordinates[2]);
 		for (int i = 3; i < coordinates.length; i += 3) {
 			path.lineTo(coordinates[i], coordinates[i + 1], coordinates[i + 2]);
@@ -157,10 +153,10 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	 * 
 	 * @param a a set of coordinates.
 	 * @param b a set of coordinates.
-	 * @return <code>true</code> if the two arrays are equal, otherwise
-	 * <code>false</code>.
+	 * @return {@code true} if the two arrays are equal, otherwise
+	 * {@code false}.
 	 */
-	public boolean isEpsilonEquals(float[] a, float[] b) {
+	public boolean isEpsilonEquals(double[] a, double[] b) {
 		if (a==b) return true;
 		if (a==null && b!=null) return false;
 		if (a!=null && b==null) return false;
@@ -177,8 +173,8 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	 * 
 	 * @param a a set of coordinates.
 	 * @param b a set of coordinates.
-	 * @return <code>true</code> if the two arrays are equal, otherwise
-	 * <code>false</code>.
+	 * @return {@code true} if the two arrays are equal, otherwise
+	 * {@code false}.
 	 */
 	protected boolean isEquals(int[] a, int[] b) {
 		if (a==b) return true;
@@ -203,199 +199,124 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 		}
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("clone")
 	public abstract void testClone(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("equals(Object)")
 	public abstract void equalsObject(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("equals(Object) with path iterator")
 	public abstract void equalsObject_withPathIterator(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("equalsToPathIterator(PathIterator3afp)")
 	public abstract void equalsToPathIterator(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("equalsToShape(Shape3D)")
 	public abstract void equalsToShape(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
+	@DisplayName("isEmpty")
 	public abstract void isEmpty(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
+	@DisplayName("clear")
 	public abstract void clear(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("contains(Point3D)")
 	public abstract void containsPoint3D(CoordinateSystem3D cs);
 	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("getClosestPointTo(Point3D)")
 	public abstract void getClosestPointTo(CoordinateSystem3D cs);
 	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("getFarthestPointTo(Point3D)")
 	public abstract void getFarthestPointTo(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("getDistance(Point3D)")
 	public abstract void getDistance(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("getDistanceSquared(Point3D)")
 	public abstract void getDistanceSquared(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("getDistanceL1(Point3D)")
 	public abstract void getDistanceL1(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("getDistanceLinf(Point3D)")
 	public abstract void getDistanceLinf(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("set(Shape3D)")
 	public abstract void setIT(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("getPathIterator")
 	public abstract void getPathIterator(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("getPathIterator(Transform3D)")
 	public abstract void getPathIteratorTransform3D(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("createTransformedShape(Transform3D)")
 	public abstract void createTransformedShape(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("translate(Vector3D)")
 	public abstract void translateVector3D(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("toBoudingBox")
 	public abstract void toBoundingBox(CoordinateSystem3D cs);
 	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("toBoudingBox(Shape3D)")
 	public abstract void toBoundingBoxB(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
-	public abstract void containsRectangularPrism3afp(CoordinateSystem3D cs);
+	@DisplayName("contains(AlignedBox3afp)")
+	public abstract void containsAlignedBox3afp(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
-	public abstract void intersectsRectangularPrism3afp(CoordinateSystem3D cs);
+	@DisplayName("intersects(AlignedBox3afp)")
+	public abstract void intersectsAlignedBox3afp(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("contains(Sphere3afp)")
 	public abstract void intersectsSphere3afp(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("contains(Segment3afp)")
 	public abstract void intersectsSegment3afp(CoordinateSystem3D cs);
 	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("contains(Path3afp)")
 	public abstract void intersectsPath3afp(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("contains(PathIterator3afp)")
 	public abstract void intersectsPathIterator3afp(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
-	public abstract void translateDoubleDouble(CoordinateSystem3D cs);
+	@DisplayName("translate(double,double,double)")
+	public abstract void translateDoubleDoubleDouble(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
-	public abstract void containsDoubleDouble(CoordinateSystem3D cs);
+	@DisplayName("contains(double,double,double)")
+	public abstract void containsDoubleDoubleDouble(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
+	@DisplayName("getGeomFactory")
 	public void getGeomFactory(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertNotNull(this.shape.getGeomFactory());
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("intersects(Shape3D)")
 	public abstract void intersectsShape3D(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("s += Vector3D")
 	public abstract void operator_addVector3D(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("s + Vector3D")
 	public abstract void operator_plusVector3D(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("s += Vector3D")
 	public abstract void operator_removeVector3D(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("s - Vector3D")
 	public abstract void operator_minusVector3D(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("s * Transform3D")
 	public abstract void operator_multiplyTransform3D(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("s && Point3D")
 	public abstract void operator_andPoint3D(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("s && Shape3D")
 	public abstract void operator_andShape3D(CoordinateSystem3D cs);
 
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
+	@DisplayName("s .. Point3D")
 	public abstract void operator_upToPoint3D(CoordinateSystem3D cs);
 
 	/** Generate a bitmap containing the given Shape2D.
@@ -404,16 +325,26 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	 * @return the filename
 	 * @throws IOException Input/output exception
 	 */
-	public static File generateTestPicture(Shape3afp<?, ?, ?, ?, ?, ?> shape) throws IOException {
+	public static File generateTestPicture(Shape3afp<?, ?, ?, ?, ?, ?, ?> shape) throws IOException {
+		final AlignedBox3afp box = shape.toBoundingBox();
+		final PathIterator3afp<?> iterator = shape.getPathIterator();
+		return generateTestPicture(1., box, iterator);
+	}
+
+	/** Generate a bitmap containing the given Shape2D.
+	 *
+	 * @param shape.
+	 * @return the filename
+	 * @throws IOException Input/output exception
+	 */
+	public static File generateTestPicture(double factor, AlignedBox3afp box, PathIterator3afp<?> iterator) throws IOException {
 		File filename = File.createTempFile("testShape", ".png"); //$NON-NLS-1$ //$NON-NLS-2$
-		RectangularPrism3afp box = shape.toBoundingBox();
-		PathIterator3afp<?> iterator = shape.getPathIterator();
 		Path2D path = new Path2D.Double(
 				iterator.getWindingRule() == PathWindingRule.NON_ZERO ? Path2D.WIND_NON_ZERO : Path2D.WIND_EVEN_ODD);
 		while (iterator.hasNext()) {
 			PathElement3afp element = iterator.next();
-			double tox = (element.getToX() - box.getMinX()) * 2.;
-			double toy = (box.getMaxY() - (element.getToY() - box.getMinY())) * 2.;
+			double tox = (element.getToX() - box.getMinX()) * 2. * factor;
+			double toy = (box.getMaxY() - (element.getToY() - box.getMinY())) * 2. * factor;
 			switch (element.getType()) {
 			case LINE_TO:
 				path.lineTo(tox, toy);
@@ -444,14 +375,55 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 			}
 		}
 		BufferedImage image = new BufferedImage(
-				(int) Math.floor(box.getWidth() * 2.) + 1,
-				(int) Math.floor(box.getHeight() * 2.) + 1,
+				(int) Math.floor(box.getWidth() * 2. * factor) + 1,
+				(int) Math.floor(box.getHeight() * 2. * factor) + 1,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
 		g2d.setColor(Color.BLACK);
 		g2d.draw(path);
 		ImageIO.write(image, "png", filename); //$NON-NLS-1$
 		return filename;
+	}	
+
+	/** Generate a string containing the given Shape2D with Geogebra syntax.
+	 *
+	 * @param shape.
+	 * @return the Geogebra string
+	 * @since 18.0
+	 */
+	public static String generateGeogebraPolygon(PathIterator3afp<?> iterator) {
+		final StringBuilder output = new StringBuilder();
+		output.append("POLYGONE(");
+		boolean first = true;
+		while (iterator.hasNext()) {
+			final PathElement3afp element = iterator.next();
+			switch (element.getType()) {
+			case LINE_TO:
+				output.append(",(").append(element.getToX());
+				output.append(",").append(element.getToY());
+				output.append(",").append(element.getToZ()).append(")");
+				break;
+			case MOVE_TO:
+				if (first) {
+					first = false;
+				} else {
+					output.append("), POLYGONE(");
+				}
+				output.append("(").append(element.getToX());
+				output.append(",").append(element.getToY());
+				output.append(",").append(element.getToZ()).append(")");
+				break;
+			case CURVE_TO:
+			case QUAD_TO:
+			case ARC_TO:
+				throw new IllegalArgumentException();
+			case CLOSE:
+				break;
+			default:
+			}
+		}
+		output.append(")");
+		return output.toString();
 	}	
 
 }

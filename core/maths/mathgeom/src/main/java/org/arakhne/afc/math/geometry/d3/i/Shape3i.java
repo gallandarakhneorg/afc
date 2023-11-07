@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,6 @@ import org.arakhne.afc.math.geometry.d3.ai.Shape3ai;
  * @since 13.0
  */
 public interface Shape3i<IT extends Shape3i<?>>
-		extends Shape3ai<Shape3i<?>, IT, PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
+		extends Shape3ai<Shape3i<?>, IT, PathElement3i, Point3i, Vector3i, Quaternion4i, AlignedBox3i> {
 	// Provided for making easier the type tests.
 }

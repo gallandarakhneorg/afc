@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,36 +24,41 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.PathIterator3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
 
-/** Factory of geometrical elements.
+/** Factory of geometric elements.
  *
  * @param <E> the types of the path elements.
  * @param <P> is the type of the points.
  * @param <V> is the type of the vectors.
+ * @param <Q> is the type of the quaternion.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface GeomFactory3afp<E extends PathElement3afp, P extends Point3D<? super P, ? super V>,
-		V extends Vector3D<? super V, ? super P>, B extends RectangularPrism3afp<?, ?, E, P, V, B>>
-		extends GeomFactory3D<V, P> {
+public interface GeomFactory3afp<E extends PathElement3afp,
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>,
+		B extends AlignedBox3afp<?, ?, E, P, V, Q, B>>
+		extends GeomFactory3D<V, P, Q> {
 
 	/** Create an empty path with the given winding rule.
 	 *
 	 * @param rule the rule.
 	 * @return the new path.
 	 */
-	Path3afp<?, ?, E, P, V, B> newPath(PathWindingRule rule);
+	Path3afp<?, ?, E, P, V, Q, B> newPath(PathWindingRule rule);
 
 	/** Create an empty multishape.
 	 *
 	 * @return the new multishape.
 	 */
-	MultiShape3afp<?, ?, ?, E, P, V, B> newMultiShape();
+	MultiShape3afp<?, ?, ?, E, P, V, Q, B> newMultiShape();
 
 	/** Create an empty bounding box.
 	 *
@@ -120,7 +125,6 @@ public interface GeomFactory3afp<E extends PathElement3afp, P extends Point3D<? 
      * @param targetZ z coordinate of the target point.
      * @return the path element.
      */
-    @SuppressWarnings("checkstyle:parameternumber")
     E newCurvePathElement(double startX, double startY, double startZ, double controlX, double controlY, double controlZ,
             double targetX, double targetY, double targetZ);
 
@@ -140,10 +144,8 @@ public interface GeomFactory3afp<E extends PathElement3afp, P extends Point3D<? 
      * @param targetZ z coordinate of the target point.
      * @return the path element.
      */
-    @SuppressWarnings("checkstyle:parameternumber")
     E newCurvePathElement(double startX, double startY, double startZ, double controlX1, double controlY1, double controlZ1,
             double controlX2, double controlY2, double controlZ2, double targetX, double targetY, double targetZ);
-
 
 	/** Create a segment.
 	 *
@@ -155,9 +157,15 @@ public interface GeomFactory3afp<E extends PathElement3afp, P extends Point3D<? 
 	 * @param z2 the z coordinate of the second point of the segment.
 	 * @return the new segment.
 	 */
-	Segment3afp<?, ?, E, P, V, B> newSegment(double x1, double y1, double z1, double x2, double y2, double z2);
+	Segment3afp<?, ?, ?, P, V, Q, B> newSegment(double x1, double y1, double z1, double x2, double y2, double z2);
 
-    /** Replies the {@link PathIterator3afp} that is corresponding to the given element.
+	/** Create a segment.
+	 *
+	 * @return the new segment.
+	 */
+	Segment3afp<?, ?, ?, P, V, Q, B>  newSegment();
+
+	/** Replies the {@link PathIterator3afp} that is corresponding to the given element.
      *
      * <p>If the given element is already a {@link PathIterator3afp}, returns {@code this}.
      *

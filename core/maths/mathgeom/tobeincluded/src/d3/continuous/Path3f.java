@@ -63,7 +63,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * <strong>CAUTION:</strong> This function works only on path iterators
 	 * that are replying polyline primitives, ie. if the
 	 * {@link PathIterator3f#isPolyline()} of <var>pi</var> is replying
-	 * <code>true</code>.
+	 * {@code true}.
 	 * {@link #getClosestPointTo(Point3D)} avoids this restriction.
 	 * 
 	 * @param pi is the iterator on the elements of the path.
@@ -147,7 +147,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * <strong>CAUTION:</strong> This function works only on path iterators
 	 * that are replying polyline primitives, ie. if the
 	 * {@link PathIterator3f#isPolyline()} of <var>pi</var> is replying
-	 * <code>true</code>.
+	 * {@code true}.
 	 * {@link #getFarthestPointTo(Point3D)} avoids this restriction.
 	 * 
 	 * @param pi is the iterator on the elements of the path.
@@ -436,7 +436,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
+	 * @return {@code true} if the point was removed; {@code false} otherwise.
 	 */
 	boolean remove(double x, double y, double z) {
 		for(int i=0, j=0; i<this.numCoords && j<this.numTypes;) {
@@ -496,7 +496,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	/** Replies if the given points exists in the coordinates of this path.
 	 * 
 	 * @param p
-	 * @return <code>true</code> if the point is a control point of the path.
+	 * @return {@code true} if the point is a control point of the path.
 	 */
 	@Pure
 	boolean containsControlPoint(Point3D p) {
@@ -1667,7 +1667,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * The iterator for this class is not multi-threaded safe.
 	 *
 	 * @param transform is an optional affine Transform3D to be applied to the
-	 * coordinates as they are returned in the iteration, or <code>null</code> if 
+	 * coordinates as they are returned in the iteration, or {@code null} if 
 	 * untransformed coordinates are desired.
 	 * @param flatness is the maximum distance that the line segments used to approximate
 	 * the curved segments are allowed to deviate from any point on the original curve.
@@ -1713,7 +1713,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * The iterator for this class is not multi-threaded safe.
 	 *
 	 * @param transform is an optional affine Transform3D to be applied to the
-	 * coordinates as they are returned in the iteration, or <code>null</code> if 
+	 * coordinates as they are returned in the iteration, or {@code null} if 
 	 * untransformed coordinates are desired.
 	 * @param flatness is the maximum distance that the line segments used to approximate
 	 * the curved segments are allowed to deviate from any point on the original curve.
@@ -2903,7 +2903,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		 * quadratic curve specified by the control points stored in the
 		 * indicated array at the indicated index.
 		 * @param coords an array containing coordinate values
-		 * @param offset the index into <code>coords</code> from which to
+		 * @param offset the index into {@code coords} from which to
 		 *          to start getting the values from the array
 		 * @return the flatness of the quadratic curve that is defined by the
 		 *          values in the specified array at the specified index.
@@ -2918,18 +2918,18 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 
 		/**
 		 * Subdivides the quadratic curve specified by the coordinates
-		 * stored in the <code>src</code> array at indices
-		 * <code>srcoff</code> through <code>srcoff</code>&nbsp;+&nbsp;8
+		 * stored in the {@code src} array at indices
+		 * {@code srcoff} through {@code srcoff}&nbsp;+&nbsp;8
 		 * and stores the resulting two subdivided curves into the two
 		 * result arrays at the corresponding indices.
-		 * Either or both of the <code>left</code> and <code>right</code>
-		 * arrays can be <code>null</code> or a reference to the same array
-		 * and offset as the <code>src</code> array.
+		 * Either or both of the {@code left} and {@code right}
+		 * arrays can be {@code null} or a reference to the same array
+		 * and offset as the {@code src} array.
 		 * Note that the last point in the first subdivided curve is the
 		 * same as the first point in the second subdivided curve.  Thus,
-		 * it is possible to pass the same array for <code>left</code> and
-		 * <code>right</code> and to use offsets such that
-		 * <code>rightoff</code> equals <code>leftoff</code> + 6 in order
+		 * it is possible to pass the same array for {@code left} and
+		 * {@code right} and to use offsets such that
+		 * {@code rightoff} equals {@code leftoff} + 6 in order
 		 * to avoid allocating extra storage for this common point.
 		 * @param src the array holding the coordinates for the source curve
 		 * @param srcoff the offset into the array of the beginning of the
@@ -2998,10 +2998,10 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		 * indicated index. The flatness is the maximum distance
 		 * of a control point from the line connecting the end points.
 		 * @param coords an array containing coordinates
-		 * @param offset the index of <code>coords</code> from which to begin
+		 * @param offset the index of {@code coords} from which to begin
 		 *          getting the end points and control points of the curve
-		 * @return the square of the flatness of the <code>CubicCurve3D</code>
-		 *          specified by the coordinates in <code>coords</code> at
+		 * @return the square of the flatness of the {@code CubicCurve3D}
+		 *          specified by the coordinates in {@code coords} at
 		 *          the specified offset.
 		 */
 		@Pure
@@ -3031,18 +3031,18 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 
 		/**
 		 * Subdivides the cubic curve specified by the coordinates
-		 * stored in the <code>src</code> array at indices <code>srcoff</code>
-		 * through (<code>srcoff</code>&nbsp;+&nbsp;11) and stores the
+		 * stored in the {@code src} array at indices {@code srcoff}
+		 * through ({@code srcoff}&nbsp;+&nbsp;11) and stores the
 		 * resulting two subdivided curves into the two result arrays at the
 		 * corresponding indices.
-		 * Either or both of the <code>left</code> and <code>right</code>
-		 * arrays may be <code>null</code> or a reference to the same array
-		 * as the <code>src</code> array.
+		 * Either or both of the {@code left} and {@code right}
+		 * arrays may be {@code null} or a reference to the same array
+		 * as the {@code src} array.
 		 * Note that the last point in the first subdivided curve is the
 		 * same as the first point in the second subdivided curve. Thus,
-		 * it is possible to pass the same array for <code>left</code>
-		 * and <code>right</code> and to use offsets, such as <code>rightoff</code>
-		 * equals (<code>leftoff</code> + 9), in order
+		 * it is possible to pass the same array for {@code left}
+		 * and {@code right} and to use offsets, such as {@code rightoff}
+		 * equals ({@code leftoff} + 9), in order
 		 * to avoid allocating extra storage for this common point.
 		 * @param src the array holding the coordinates for the source curve
 		 * @param srcoff the offset into the array of the beginning of the

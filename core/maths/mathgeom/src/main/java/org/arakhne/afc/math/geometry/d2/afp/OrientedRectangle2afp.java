@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ package org.arakhne.afc.math.geometry.d2.afp;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
@@ -183,11 +183,10 @@ public interface OrientedRectangle2afp<
      *            is the extent of the axis 1 of the oriented rectangle.
      * @param axis2Extent
      *            is the extent of the axis 2 of the oriented rectangle.
-     * @return <code>true</code> if the given point is inside the oriented rectangle;
-     *     otherwise <code>false</code>.
+     * @return {@code true} if the given point is inside the oriented rectangle;
+     *     otherwise {@code false}.
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean containsOrientedRectanglePoint(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -229,14 +228,11 @@ public interface OrientedRectangle2afp<
      *            is the width of the rectangle.
      * @param rheight
      *            is the height of the rectangle.
-     * @return <code>true</code> if the given rectangle is inside the oriented rectangle;
-     *     otherwise <code>false</code>.
+     * @return {@code true} if the given rectangle is inside the oriented rectangle;
+     *     otherwise {@code false}.
      */
     @Pure
     @Unefficient
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:returncount",
-            "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
-            "checkstyle:magicnumber"})
     static boolean containsOrientedRectangleRectangle(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -316,10 +312,9 @@ public interface OrientedRectangle2afp<
      *            is the extent of the axis 1 of the oriented rectangle.
      * @param axis2Extent
      *            is the extent of the axis 2 of the oriented rectangle.
-     * @param closest the closest point. If <code>null</code>, the closest point is not computed.
-     * @param farthest the farthest point. If <code>null</code>, the farthest point is not computed.
+     * @param closest the closest point. If {@code null}, the closest point is not computed.
+     * @param farthest the farthest point. If {@code null}, the farthest point is not computed.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void findsClosestFarthestPointsPointOrientedRectangle(
             double px, double py,
             double centerX, double centerY,
@@ -392,10 +387,9 @@ public interface OrientedRectangle2afp<
      * @param s1y is the Y coordinate of the first point of the segment.
      * @param s2x is the X coordinate of the second point of the segment.
      * @param s2y is the Y coordinate of the second point of the segment.
-     * @return <code>true</code> if intersecting, otherwise <code>false</code>
+     * @return {@code true} if intersecting, otherwise {@code false}
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsOrientedRectangleSegment(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -440,10 +434,9 @@ public interface OrientedRectangle2afp<
      * @param s2y is the Y coordinate of the second point of the triangle.
      * @param s3x is the X coordinate of the third point of the triangle.
      * @param s3y is the Y coordinate of the third point of the triangle.
-     * @return <code>true</code> if intersecting, otherwise <code>false</code>
+     * @return {@code true} if intersecting, otherwise {@code false}
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsOrientedRectangleTriangle(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -490,11 +483,10 @@ public interface OrientedRectangle2afp<
      * @param ey is the coordinate of the min point of the ellipse rectangle.
      * @param ewidth is the width of the ellipse.
      * @param eheight is the height of the ellipse.
-     * @return <code>true</code> if intersecting, otherwise <code>false</code>
+     * @return {@code true} if intersecting, otherwise {@code false}
      */
     @Pure
     @Unefficient
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsOrientedRectangleEllipse(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -557,10 +549,9 @@ public interface OrientedRectangle2afp<
      * @param circleX is the coordinate of the circle center.
      * @param circleY is the coordinate of the circle center.
      * @param circleRadius is the radius of the circle.
-     * @return <code>true</code> if intersecting, otherwise <code>false</code>
+     * @return {@code true} if intersecting, otherwise {@code false}
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsOrientedRectangleCircle(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -590,7 +581,7 @@ public interface OrientedRectangle2afp<
     /** Replies if the specified rectangles intersect.
      *
      * <p>The extents are assumed to be positive or zero.
-     * The lengths of the given arrays are assumed to be <code>2</code>.
+     * The lengths of the given arrays are assumed to be {@code 2}.
      *
      * <p>This function uses the "separating axis theorem" which states that
      * for any two oriented rectangles (AABB is a special case of oriented rectangle)
@@ -626,12 +617,11 @@ public interface OrientedRectangle2afp<
      *            is the extent of the axis 1 of the oriented rectangle.
      * @param axis2Extent2
      *            is the extent of the axis 2 of the oriented rectangle.
-     * @return <code>true</code> if intersecting, otherwise <code>false</code>
+     * @return {@code true} if intersecting, otherwise {@code false}
      * @see "RTCD pages 102-105"
      * @see <a href="http://www.jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf">Intersection between two oriented boudning rectangles</a>
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsOrientedRectangleOrientedRectangle(
             double centerX1, double centerY1,
             double axis1X1, double axis1Y1,
@@ -719,7 +709,7 @@ public interface OrientedRectangle2afp<
      * or equal to {@code ux1}, and {@code ly1} is lower
      * or equal to {@code uy1}.
      * The extents are assumed to be positive or zero.
-     * The lengths of the given arrays are assumed to be <code>2</code>.
+     * The lengths of the given arrays are assumed to be {@code 2}.
      *
      * <p>This function uses the "separating axis theorem" which states that
      * for any two oriented rectangles (AABB is a special case of oriented rectangle)
@@ -749,12 +739,11 @@ public interface OrientedRectangle2afp<
      *            is the width of the rectangle.
      * @param rheight
      *            is the height of the rectangle.
-     * @return <code>true</code> if intersecting, otherwise <code>false</code>
+     * @return {@code true} if intersecting, otherwise {@code false}
      * @see "RTCD pages 102-105"
      * @see <a href="http://www.gamasutra.com/features/19991018/Gomez_5.htm">OBB collision detection on Gamasutra.com</a>
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsOrientedRectangleRectangle(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -839,12 +828,10 @@ public interface OrientedRectangle2afp<
      *            is the width of the rectangle arcs.
      * @param rArcHeight
      *            is the height of the rectangle arcs.
-     * @return <code>true</code> if intersecting, otherwise <code>false</code>.
+     * @return {@code true} if intersecting, otherwise {@code false}.
      */
     @Pure
     @Unefficient
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber",
-    	"checkstyle:npathcomplexity"})
     static boolean intersectsOrientedRectangleRoundRectangle(
             double centerX, double centerY,
             double axis1X, double axis1Y,
@@ -948,11 +935,10 @@ public interface OrientedRectangle2afp<
      * @param extent1 the extent the rectangle along the first axis.
      * @param extent2 the extent the rectangle along the second axis.
      * @param pathIterator the specified {@link PathIterator2afp}.
-     * @return <code>true</code> if the specified {@link PathIterator2afp} and
+     * @return {@code true} if the specified {@link PathIterator2afp} and
      *         the interior of the specified set of rectangular
-     *         coordinates intersect each other; <code>false</code> otherwise.
+     *         coordinates intersect each other; {@code false} otherwise.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static <T extends PathElement2afp> boolean intersectsOrientedRectanglePathIterator(
             double centerX, double centerY, double axis1X, double axis1Y, double extent1, double extent2,
             PathIterator2afp<T> pathIterator) {
@@ -977,7 +963,6 @@ public interface OrientedRectangle2afp<
 
     @Pure
     @Override
-    @SuppressWarnings("checkstyle:booleanexpressioncomplexity")
     default boolean equalsToShape(IT shape) {
         if (shape == null) {
             return false;
@@ -1394,7 +1379,24 @@ public interface OrientedRectangle2afp<
         setFirstAxis(newAxis.getX(), newAxis.getY());
     }
 
-    /** Abstract iterator on the path elements of the oriented rectangle.
+	/** Replies this oriented rectangle with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the oriented rectangle.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toPolygonDefinition(2,
+				getCenterX() - getFirstAxisExtent() * getFirstAxisX() - getSecondAxisExtent() * getSecondAxisX(),
+				getCenterY() - getFirstAxisExtent() * getFirstAxisY() - getSecondAxisExtent() * getSecondAxisY(),
+				getCenterX() + getFirstAxisExtent() * getFirstAxisX() - getSecondAxisExtent() * getSecondAxisX(),
+				getCenterY() + getFirstAxisExtent() * getFirstAxisY() - getSecondAxisExtent() * getSecondAxisY(),
+				getCenterX() + getFirstAxisExtent() * getFirstAxisX() + getSecondAxisExtent() * getSecondAxisX(),
+				getCenterY() + getFirstAxisExtent() * getFirstAxisY() + getSecondAxisExtent() * getSecondAxisY(),
+				getCenterX() - getFirstAxisExtent() * getFirstAxisX() + getSecondAxisExtent() * getSecondAxisX(),
+				getCenterY() - getFirstAxisExtent() * getFirstAxisY() + getSecondAxisExtent() * getSecondAxisY());
+	}
+
+	/** Abstract iterator on the path elements of the oriented rectangle.
      *
      * @param <T> the type of the path elements.
      * @author $Author: sgalland$

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,18 +23,17 @@ package org.arakhne.afc.math.test.geometry.d3.d;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Disabled;
-
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
+import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
 import org.arakhne.afc.math.geometry.d3.d.Sphere3d;
 import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.arakhne.afc.math.test.geometry.AbstractUnmodifiablePoint3DTest;
 
 @SuppressWarnings("all")
-@Disabled("temporary")
-public class UnmodifiablePoint3dTest extends AbstractUnmodifiablePoint3DTest<Point3d, Vector3d> {
+public class UnmodifiablePoint3dTest extends AbstractUnmodifiablePoint3DTest<Point3d, Vector3d, Quaternion4d> {
 
 	@Override
 	public boolean isIntCoordinates() {
@@ -57,7 +56,8 @@ public class UnmodifiablePoint3dTest extends AbstractUnmodifiablePoint3DTest<Poi
 	}
 
 	@Override
-	public void operator_andShape3D() {
+	public void operator_andShape3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Shape3D shape = new Sphere3d(5, 8, 0, 5);
 		assertFalse(createPoint(0,0, 0).operator_and(shape));
 		assertFalse(createPoint(11,10, 0).operator_and(shape));
@@ -71,7 +71,8 @@ public class UnmodifiablePoint3dTest extends AbstractUnmodifiablePoint3DTest<Poi
 	}
 	
 	@Override
-	public void operator_upToShape3D() {
+	public void operator_upToShape3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Shape3D shape = new Sphere3d(5, 8, 0, 5);
 		assertEpsilonEquals(3.74643, createPoint(.5,.5, 0).operator_upTo(shape));
 		assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4, 0).operator_upTo(shape));

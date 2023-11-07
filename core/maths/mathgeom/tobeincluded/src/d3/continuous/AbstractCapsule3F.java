@@ -48,6 +48,37 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 
 	private static final long serialVersionUID = -5215944836678687801L;
 
+
+	/**
+	 * Tests if the capsule is intersecting a segment.
+	 *
+	 * @param sx1 x coordinate of the first point of the segment.
+	 * @param sy1 y coordinate of the first point of the segment.
+	 * @param sz1 z coordinate of the first point of the segment.
+	 * @param sx2 x coordinate of the second point of the segment.
+	 * @param sy2 y coordinate of the second point of the segment.
+	 * @param sz2 z coordinate of the second point of the segment.
+	 * @param mx1 x coordinate of the first point of the capsule's segment.
+	 * @param my1 y coordinate of the first point of the capsule's segment.
+	 * @param mz1 z coordinate of the first point of the capsule's segment.
+	 * @param mx2 x coordinate of the second point of the capsule's segment.
+	 * @param my2 y coordinate of the second point of the capsule's segment.
+	 * @param mz2 z coordinate of the second point of the capsule's segment.
+	 * @param radius radius of the capsule.
+	 * @return {@code true} if the two shapes intersect each 
+	 * other; {@code false} otherwise.
+	 * @see "http://books.google.ca/books?id=fvA7zLEFWZgC"
+	 */
+	@Pure
+	public static boolean intersectsSegmentCapsule(
+			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
+			double mx1, double my1, double mz1, double mx2, double my2, double mz2, double radius) {
+		double d = distanceSquaredSegmentSegment(
+				sx1, sy1, sz1, sx2, sy2, sz2,
+				mx1, my1, mz1, mx2, my2, mz2);
+		return d < (radius * radius);
+	}
+
 	/**
 	 * Compute intersection between a point and a capsule.
 	 *
@@ -61,7 +92,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * @param px - the point to test
 	 * @param py - the point to test
 	 * @param pz - the point to test
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
+	 * @return {@code true} if intersecting, otherwise {@code false}
 	 */
 	@Pure
 	public static boolean containsCapsulePoint(
@@ -88,7 +119,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * @param maxx x coordinate of the upper corner of the aligned box.
 	 * @param maxy y coordinate of the upper corner of the aligned box.
 	 * @param maxz z coordinate of the upper corner of the aligned box.
-	 * @return <code>true</code> if the capsule and aligned box are intersecting.
+	 * @return {@code true} if the capsule and aligned box are intersecting.
 	 */
 	@Pure
 	public static boolean intersectsCapsuleAlignedBox(
@@ -128,7 +159,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * @param capsule2By - Medial line segment end point of the second capsule
 	 * @param capsule2Bz - Medial line segment end point of the second capsule
 	 * @param capsule2Radius - radius of the second capsule
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
+	 * @return {@code true} if intersecting, otherwise {@code false}
 	 */
 	@Pure
 	public static boolean intersectsCapsuleCapsule(

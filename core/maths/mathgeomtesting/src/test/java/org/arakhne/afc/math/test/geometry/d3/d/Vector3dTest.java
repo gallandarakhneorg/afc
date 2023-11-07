@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,15 @@
 
 package org.arakhne.afc.math.test.geometry.d3.d;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.math.geometry.d3.d.Point3d;
+import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
 import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.arakhne.afc.math.test.geometry.AbstractVector3DTest;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("all")
-@Disabled("temporary")
-public class Vector3dTest extends AbstractVector3DTest<Vector3d, Point3d, Vector3d> {
+public class Vector3dTest extends AbstractVector3DTest<Vector3d, Point3d, Quaternion4d, Vector3d> {
 
 	@Override
 	public boolean isIntCoordinates() {

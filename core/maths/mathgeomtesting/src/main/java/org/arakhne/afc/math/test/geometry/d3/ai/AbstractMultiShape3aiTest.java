@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,13 +44,13 @@ import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.ai.MultiShape3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
 import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
-import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai;
+import org.arakhne.afc.math.geometry.d3.ai.AlignedBox3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Shape3ai;
 
 @SuppressWarnings("all")
-public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C, ?, ?, ?, B>,
-		C extends Shape3ai<?, ?, ?, ?, ?, B>,
-		B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
+public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C, ?, ?, ?, ?, B>,
+		C extends Shape3ai<?, ?, ?, ?, ?, ?, B>,
+		B extends AlignedBox3ai<?, ?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
 
 	private C firstObject;
 	private C secondObject;
@@ -58,7 +58,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	@Override
 	protected final T createShape() {
 		T shape = (T) createMultiShape();
-		this.firstObject = (C) createRectangularPrism(5, 8, 0, 2, 1, 0);
+		this.firstObject = (C) createAlignedBox(5, 8, 0, 2, 1, 0);
 		this.secondObject = (C) createSphere(-5, 18, 0, 2);
 		shape.add(this.firstObject);
 		shape.add(this.secondObject);
@@ -202,16 +202,16 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void containsRectangularPrism3ai(CoordinateSystem3D cs) {
+	public void containsAlignedBox3ai(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside
-		assertFalse(this.shape.contains(createRectangularPrism(-20, 14, 0, 1, 1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(-2,-10, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(-20, 14, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(-2,-10, 0, 1, 1, 0)));
 		// Intersecting
-		assertFalse(this.shape.contains(createRectangularPrism(-6,16, 0, 1, 1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(4, 8, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(-6,16, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(4, 8, 0, 1, 1, 0)));
 		// Inside
-		assertTrue(this.shape.contains(createRectangularPrism(5, 8, 0, 1, 1, 0)));
+		assertTrue(this.shape.contains(createAlignedBox(5, 8, 0, 1, 1, 0)));
 	}
 
 	@Override
@@ -411,7 +411,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 		PathIterator3ai pi = this.shape.getPathIterator();
 		assertNoElement(pi);
 		MultiShape3ai newShape = createMultiShape();
-		newShape.add(createRectangularPrism(-6, 48, 0, 5, 7, 0));
+		newShape.add(createAlignedBox(-6, 48, 0, 5, 7, 0));
 		this.shape.set((T) newShape);
 		pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -6, 48, 0);
@@ -482,7 +482,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	@EnumSource(CoordinateSystem3D.class)
 	public void toBoundingBoxB(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B box = createRectangularPrism(0, 0, 0, 0, 0, 0);
+		B box = createAlignedBox(0, 0, 0, 0, 0, 0);
 		this.shape.toBoundingBox(box);
 		assertEpsilonEquals(-7, box.getMinX());
 		assertEpsilonEquals(8, box.getMinY());
@@ -586,17 +586,17 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void intersectsRectangularPrism3ai(CoordinateSystem3D cs) {
+	public void intersectsAlignedBox3ai(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		// Outside
-		assertFalse(this.shape.intersects(createRectangularPrism(-20, 14, 0, 1, 1, 0)));
-		assertFalse(this.shape.intersects(createRectangularPrism(-2, -10, 0, 1, 1, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(-20, 14, 0, 1, 1, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(-2, -10, 0, 1, 1, 0)));
 		// Intersecting
-		assertTrue(this.shape.intersects(createRectangularPrism(-6, 16, 0, 1, 1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(4, 8, 0, 2, 2, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(-6, 16, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(4, 8, 0, 2, 2, 0)));
 		// Inside
-		assertTrue(this.shape.intersects(createRectangularPrism(-4, 18, 0, 1, 1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(5, 8, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(-4, 18, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(5, 8, 0, 1, 1, 0)));
 	}
 
 	@Override
@@ -837,7 +837,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	public void operator_andShape3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(this.shape.operator_and(createSphere(-6, 16, 0, 1)));
-		assertTrue(this.shape.operator_and(createRectangularPrism(-6, 16, 0, 1, 1, 0)));
+		assertTrue(this.shape.operator_and(createAlignedBox(-6, 16, 0, 1, 1, 0)));
 
 	}
 
@@ -866,7 +866,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	public void intersectsShape3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(this.shape.intersects((Shape3D) createSphere(-6, 16, 0, 1)));
-		assertTrue(this.shape.intersects((Shape3D) createRectangularPrism(-6, 16, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects((Shape3D) createAlignedBox(-6, 16, 0, 1, 1, 0)));
 	}
 
 	@Override

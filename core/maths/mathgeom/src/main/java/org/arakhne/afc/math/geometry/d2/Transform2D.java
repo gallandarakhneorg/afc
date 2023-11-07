@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,11 +34,11 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * matrix mathematics.
  *
  * <p>The transformation matrix is:
- * <pre><code>
+ * <pre>{@code 
  * | cos(theta)   | -+sin(theta) | Tx |
  * | -+sin(theta) |   cos(theta) | Ty |
  * | 0            | 0            | 1  |
- * </code></pre>
+ * }</pre>
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -283,7 +283,6 @@ public class Transform2D extends Matrix3d {
 	 * @param scales the scaling factors.
 	 * @param rots the rotation factors.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	protected void getScaleRotate2x2(double[] scales, double[] rots) {
 		final double[] tmp = new double[9];
 
@@ -309,7 +308,6 @@ public class Transform2D extends Matrix3d {
 	 * @return the rotation angle of this matrix. The value is in [-PI; PI]
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
 	public double getRotation() {
 		final double[] tmpScale = new double[3];
 		final double[] tmpRot = new double[9];
@@ -333,7 +331,6 @@ public class Transform2D extends Matrix3d {
 	 *
 	 * @param angle the rotation angle.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	public void setRotation(double angle) {
 		final double[] tmpScale = new double[3];
 		final double[] tmpRot = new double[9];
@@ -413,7 +410,6 @@ public class Transform2D extends Matrix3d {
 	 * @return the scale factor of this matrix.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
 	public double getScale() {
 		final double[] tmpScale = new double[3];
 		final double[] tmpRot = new double[9];
@@ -427,7 +423,6 @@ public class Transform2D extends Matrix3d {
 	 * @return the x scale factor.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
 	public double getScaleX() {
 		final double[] tmpScale = new double[3];
 		final double[] tmpRot = new double[9];
@@ -441,7 +436,6 @@ public class Transform2D extends Matrix3d {
 	 * @return the y scale factor.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
 	public double getScaleY() {
 		final double[] tmpScale = new double[3];
 		final double[] tmpRot = new double[9];
@@ -455,7 +449,6 @@ public class Transform2D extends Matrix3d {
 	 * @param scale the tuple to set.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
 	public void getScaleVector(Tuple2D<?> scale) {
 		assert scale != null : AssertMessages.notNullParameter();
 		final double[] tmpScale = new double[3];
@@ -471,7 +464,6 @@ public class Transform2D extends Matrix3d {
 	 * @param scaleY the scaling factor along y axis.
 	 * @see #makeScaleMatrix(double, double)
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	public void setScale(double scaleX, double scaleY) {
 		final double[] tmpScale = new double[3];
 		final double[] tmpRot = new double[9];
@@ -652,14 +644,30 @@ public class Transform2D extends Matrix3d {
 	/**
 	 * Multiply this matrix by the tuple t and place the result back into the
 	 * tuple (t = this*t).
+	 * This functions applies the rotation and translation to the point.
 	 *
 	 * @param tuple
 	 *            the tuple to be multiplied by this matrix and then replaced
 	 */
-	public void transform(Tuple2D<?> tuple) {
+	public void transform(Point2D<?, ?> tuple) {
 		assert tuple != null : AssertMessages.notNullParameter();
 		final double x = this.m00 * tuple.getX() + this.m01 * tuple.getY() + this.m02;
 		final double y = this.m10 * tuple.getX() + this.m11 * tuple.getY() + this.m12;
+		tuple.set(x, y);
+	}
+
+	/**
+	 * Multiply this matrix by the tuple t and place the result back into the
+	 * tuple (t = this*t).
+	 * This functions applies the rotation only, and NOT the translation to the point.
+	 *
+	 * @param tuple
+	 *            the tuple to be multiplied by this matrix and then replaced
+	 */
+	public void transform(Vector2D<?, ?> tuple) {
+		assert tuple != null : AssertMessages.notNullParameter();
+		final double x = this.m00 * tuple.getX() + this.m01 * tuple.getY();
+		final double y = this.m10 * tuple.getX() + this.m11 * tuple.getY();
 		tuple.set(x, y);
 	}
 
@@ -678,8 +686,9 @@ public class Transform2D extends Matrix3d {
 	 *            the tuple to be multiplied by this matrix
 	 * @param result
 	 *            the tuple into which the product is placed
+	 * @since 18.0
 	 */
-	public void transform(Tuple2D<?> tuple, Tuple2D<?> result) {
+	public void transform(Point2D<?, ?> tuple, Point2D<?, ?> result) {
 		assert tuple != null : AssertMessages.notNullParameter(0);
 		assert result != null : AssertMessages.notNullParameter(1);
 		result.set(
@@ -688,7 +697,32 @@ public class Transform2D extends Matrix3d {
 	}
 
 	/**
-	 * Returns an <code>Transform2D</code> object representing the
+	 * Multiply this matrix by the tuple t and and place the result into the
+	 * tuple "result".
+	 *
+	 * <p>This function is equivalent to:
+	 * <pre>
+	 * result = this *  [   t.x   ]
+	 *                  [   t.y   ]
+	 *                  [   0     ]
+	 * </pre>
+	 *
+	 * @param tuple
+	 *            the tuple to be multiplied by this matrix
+	 * @param result
+	 *            the tuple into which the product is placed
+	 * @since 18.0
+	 */
+	public void transform(Vector2D<?, ?> tuple, Vector2D<?, ?> result) {
+		assert tuple != null : AssertMessages.notNullParameter(0);
+		assert result != null : AssertMessages.notNullParameter(1);
+		result.set(
+				this.m00 * tuple.getX() + this.m01 * tuple.getY(),
+				this.m10 * tuple.getX() + this.m11 * tuple.getY());
+	}
+
+	/**
+	 * Returns an {@code Transform2D} object representing the
 	 * inverse transformation.
 	 * The inverse transform Tx' of this transform Tx
 	 * maps coordinates transformed by Tx back
@@ -699,10 +733,10 @@ public class Transform2D extends Matrix3d {
 	 * then it will not have an inverse, since coordinates that do
 	 * not lie on the destination point or line will not have an inverse
 	 * mapping.
-	 * The <code>determinant</code> method can be used to determine if this
+	 * The {@code determinant} method can be used to determine if this
 	 * transform has no inverse, in which case an exception will be
-	 * thrown if the <code>createInverse</code> method is called.
-	 * @return a new <code>Transform2D</code> object representing the
+	 * thrown if the {@code createInverse} method is called.
+	 * @return a new {@code Transform2D} object representing the
 	 *     inverse transformation.
 	 * @see #determinant()
 	 */
@@ -752,9 +786,9 @@ public class Transform2D extends Matrix3d {
 	 * then it will not have an inverse, since coordinates that do
 	 * not lie on the destination point or line will not have an inverse
 	 * mapping.
-	 * The <code>determinant</code> method can be used to determine if this
+	 * The {@code determinant} method can be used to determine if this
 	 * transform has no inverse, in which case an exception will be
-	 * thrown if the <code>createInverse</code> method is called.
+	 * thrown if the {@code createInverse} method is called.
 	 * @see #determinant()
 	 */
 	@Override
@@ -783,9 +817,9 @@ public class Transform2D extends Matrix3d {
 	 * then it will not have an inverse, since coordinates that do
 	 * not lie on the destination point or line will not have an inverse
 	 * mapping.
-	 * The <code>determinant</code> method can be used to determine if this
+	 * The {@code determinant} method can be used to determine if this
 	 * transform has no inverse, in which case an exception will be
-	 * thrown if the <code>createInverse</code> method is called.
+	 * thrown if the {@code createInverse} method is called.
 	 * @param matrix is the matrix to invert
 	 * @see #determinant()
 	 */

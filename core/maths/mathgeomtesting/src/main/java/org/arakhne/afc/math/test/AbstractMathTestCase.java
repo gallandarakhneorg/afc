@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.function.Supplier;
 
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Test;
 import org.opentest4j.TestAbortedException;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -243,6 +244,47 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 				&& isEpsilonEquals(expected.getZ(), actual.getZ());
 	}
 
+	/** Test if the actual vector is colinear to the expected vector with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @since 18.0
+	 */
+	public void assertEpsilonColinear(Vector3D<?, ?, ?> expected, Vector3D<?, ?, ?> actual) {
+		assertEpsilonColinear(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual vector is colinear to the expected vector with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonColinear(Vector3D<?, ?, ?> expected, Vector3D<?, ?, ?> actual, String message) {
+		assertEpsilonColinear(expected, actual, () -> message);
+	}
+
+	/** Test if the actual vector is colinear to the expected vector with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonColinear(Vector3D<?, ?, ?> expected, Vector3D<?, ?, ?> actual, Supplier<String> message) {
+		final Vector3D<?, ?, ?> cross = expected.cross(actual);
+		if (!isEpsilonEquals(cross.getLengthSquared(), 0.)) {
+			failCompare(
+					formatFailMessage(message, "not colinear vectors", expected, actual),  //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+	}
+
 	/** Test if the actual value is not equal to the expected value with
 	 * a distance of epsilon.
 	 * 
@@ -305,6 +347,18 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 */
 	public void assertEpsilonEquals(Quaternion expected, Quaternion actual) {
 		assertEpsilonEquals(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon and independently of the sign.
+	 * So that, {@code expected == actual} or {@code -expected == actual}.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @since 18.0
+	 */
+	public void assertEpsilonEqualsAbs(Quaternion expected, Quaternion actual) {
+		assertEpsilonEqualsAbs(expected, actual, NO_MESSAGE);
 	}
 
 	/** Test if the actual value is not equal to the expected value with
@@ -372,6 +426,36 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 		if (!isEpsilonEquals(expected.getW(), actual.getW())) {
 			failCompare(
 					formatFailMessage(message, "not same w value", expected, actual),  //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon, independently of the sign.
+	 * So that, {@code expected == actual} or {@code -expected == actual}.
+	 * 
+	 * @param expected the expected value.
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 * @since 18.0
+	 */
+	public void assertEpsilonEqualsAbs(Quaternion expected, Quaternion actual, Supplier<String> message) {
+		final boolean sx1 = isEpsilonEquals(expected.getX(), actual.getX());
+		final boolean sy1 = isEpsilonEquals(expected.getY(), actual.getY());
+		final boolean sz1 = isEpsilonEquals(expected.getZ(), actual.getZ());
+		final boolean sw1 = isEpsilonEquals(expected.getW(), actual.getW());
+		final boolean success1 = sx1 && sy1 && sz1 && sw1;
+		
+		final boolean sx2 = isEpsilonEquals(-expected.getX(), actual.getX());
+		final boolean sy2 = isEpsilonEquals(-expected.getY(), actual.getY());
+		final boolean sz2 = isEpsilonEquals(-expected.getZ(), actual.getZ());
+		final boolean sw2 = isEpsilonEquals(-expected.getW(), actual.getW());
+		final boolean success2 = sx2 && sy2 && sz2 && sw2;
+
+		if (!success1 && !success2) {
+			failCompare(
+					formatFailMessage(message, "not same abs value", expected, actual),  //$NON-NLS-1$
 					expected.toString(),
 					actual.toString());
 		}
@@ -711,7 +795,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y the expected y.
 	 * @param z the expected z.
 	 */
-	public void assertFpVectorEquals(double x, double y, double z, Vector3D<?, ?> v) {
+	public void assertFpVectorEquals(double x, double y, double z, Vector3D<?, ?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double dz = z - v.getZ();
@@ -731,7 +815,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y the expected y.
 	 * @param z the expected z.
 	 */
-	public void assertIntVectorEquals(int x, int y, int z, Vector3D<?, ?> v) {
+	public void assertIntVectorEquals(int x, int y, int z, Vector3D<?, ?, ?> v) {
 		if (x != v.ix() || y != v.iy() || z != v.iz()) {
 			final String str1 = "(" + x + ", " + y + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -747,7 +831,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param z the expected z.
 	 * @param v the actual value.
 	 */
-	public void assertFpVectorNotEquals(double x, double y, double z, Vector3D<?, ?> v) {
+	public void assertFpVectorNotEquals(double x, double y, double z, Vector3D<?, ?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double dz = z - v.getZ();
@@ -767,7 +851,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y the expected y.
 	 * @param z the expected z.
 	 */
-	public void assertIntVectorNotEquals(int x, int y, int z, Vector3D<?, ?> v) {
+	public void assertIntVectorNotEquals(int x, int y, int z, Vector3D<?, ?, ?> v) {
 		if (x == v.ix() && y == v.iy() && z == v.iz()) {
 			final String str1 = "(" + x + ", " + y + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";    //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -848,7 +932,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y the expected y.
 	 * @param z the expected z.
 	 */
-	public void assertFpPointEquals(double x, double y, double z, Point3D<?, ?> v) {
+	public void assertFpPointEquals(double x, double y, double z, Point3D<?, ?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double dz = z - v.getZ();
@@ -867,7 +951,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y the expected y.
 	 * @param z the expected z.
 	 */
-	public void assertIntPointEquals(int x, int y, int z, Point3D<?, ?> v) {
+	public void assertIntPointEquals(int x, int y, int z, Point3D<?, ?, ?> v) {
 		if (x != v.ix() || y != v.iy() || z != v.iz()) {
 			failCompare("Not same point", //$NON-NLS-1$
 					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -882,7 +966,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y the expected y.
 	 * @param z the expected z.
 	 */
-	public void assertFpPointNotEquals(double x, double y, double z, Point3D<?, ?> v) {
+	public void assertFpPointNotEquals(double x, double y, double z, Point3D<?, ?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double dz = z - v.getZ();
@@ -901,7 +985,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y the expected y.
 	 * @param z the expected z.
 	 */
-	public void assertIntPointNotEquals(int x, int y, int z, Point3D<?, ?> v) {
+	public void assertIntPointNotEquals(int x, int y, int z, Point3D<?, ?, ?> v) {
 		if (x == v.ix() && y == v.iy() && z == v.iz()) {
 			failCompare("Same point", //$NON-NLS-1$
 					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -915,12 +999,32 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(Matrix2d expected, Matrix2d actual) {
+		assertEpsilonEquals(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual matrix is equal to the expected values.
+	 * 
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 */
+	public void assertEpsilonEquals(Matrix2d expected, Matrix2d actual, String message) {
+		assertEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual matrix is equal to the expected values.
+	 * 
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
+	 * @param message the provider of the error message.
+	 */
+	public void assertEpsilonEquals(Matrix2d expected, Matrix2d actual, Supplier<String> message) {
 		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
 			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
 			||(!isEpsilonEquals(expected.getM10(), actual.getM10()))
 			||(!isEpsilonEquals(expected.getM11(), actual.getM11()))) {
 			failCompare(
-					formatFailMessage(NO_MESSAGE, "Not same matrices", expected, actual),  //$NON-NLS-1$
+					formatFailMessage(message, "Not same matrices", expected, actual),  //$NON-NLS-1$
 					expected.toString(), actual.toString());
 		}
 	}
@@ -931,12 +1035,32 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(Matrix2d expected, Matrix2d actual) {
+		assertNotEpsilonEquals(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual matrix is different from the expected values.
+	 * 
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 */
+	public void assertNotEpsilonEquals(Matrix2d expected, Matrix2d actual, String message) {
+		assertNotEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual matrix is different from the expected values.
+	 * 
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
+	 * @param message the provider of the error message.
+	 */
+	public void assertNotEpsilonEquals(Matrix2d expected, Matrix2d actual, Supplier<String> message) {
 		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
 			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
 			&&(isEpsilonEquals(expected.getM10(), actual.getM10()))
 			&&(isEpsilonEquals(expected.getM11(), actual.getM11()))) {
 			failCompare(
-					formatFailMessage(NO_MESSAGE, "Not same matrices", expected, actual),  //$NON-NLS-1$
+					formatFailMessage(message, "Not same matrices", expected, actual),  //$NON-NLS-1$
 					expected.toString(), actual.toString());
 		}
 	}
@@ -947,6 +1071,26 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(Matrix3d expected, Matrix3d actual) {
+		assertEpsilonEquals(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual matrix is equal to the expected values.
+	 * 
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 */
+	public void assertEpsilonEquals(Matrix3d expected, Matrix3d actual, String message) {
+		assertEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual matrix is equal to the expected values.
+	 * 
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
+	 * @param message the provider of the error message.
+	 */
+	public void assertEpsilonEquals(Matrix3d expected, Matrix3d actual, Supplier<String> message) {
 		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
 			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
 			||(!isEpsilonEquals(expected.getM02(), actual.getM02()))
@@ -957,7 +1101,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			||(!isEpsilonEquals(expected.getM21(), actual.getM21()))
 			||(!isEpsilonEquals(expected.getM22(), actual.getM22()))) {
 			failCompare(
-					formatFailMessage(NO_MESSAGE, "Not same matrices", expected, actual),  //$NON-NLS-1$
+					formatFailMessage(message, "Not same matrices", expected, actual),  //$NON-NLS-1$
 					expected.toString(), actual.toString());
 		}
 	}
@@ -968,6 +1112,26 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(Matrix3d expected, Matrix3d actual) {
+		assertNotEpsilonEquals(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual matrix is different from the expected values.
+	 * 
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 */
+	public void assertNotEpsilonEquals(Matrix3d expected, Matrix3d actual, String message) {
+		assertNotEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual matrix is different from the expected values.
+	 * 
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
+	 * @param message the provider of the error message.
+	 */
+	public void assertNotEpsilonEquals(Matrix3d expected, Matrix3d actual, Supplier<String> message) {
 		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
 			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
 			&&(isEpsilonEquals(expected.getM02(), actual.getM02()))
@@ -978,7 +1142,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			&&(isEpsilonEquals(expected.getM21(), actual.getM21()))
 			&&(isEpsilonEquals(expected.getM22(), actual.getM22()))) {
 			failCompare(
-					formatFailMessage(NO_MESSAGE, "Not same matrices", expected, actual),  //$NON-NLS-1$
+					formatFailMessage(message, "Not same matrices", expected, actual),  //$NON-NLS-1$
 					expected.toString(), actual.toString());
 		}
 	}
@@ -989,6 +1153,26 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param actual the actual value.
 	 */
 	public void assertEpsilonEquals(Matrix4d expected, Matrix4d actual) {
+		assertEpsilonEquals(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual matrix is equal to the expected values.
+	 * 
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 */
+	public void assertEpsilonEquals(Matrix4d expected, Matrix4d actual, String message) {
+		assertEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual matrix is equal to the expected values.
+	 * 
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
+	 * @param message the provider of the error message.
+	 */
+	public void assertEpsilonEquals(Matrix4d expected, Matrix4d actual, Supplier<String> message) {
 		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
 			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
 			||(!isEpsilonEquals(expected.getM02(), actual.getM02()))
@@ -1006,7 +1190,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			||(!isEpsilonEquals(expected.getM32(), actual.getM32()))
 			||(!isEpsilonEquals(expected.getM33(), actual.getM33()))) {
 			failCompare(
-					formatFailMessage(NO_MESSAGE, "Not same matrices", expected, actual),  //$NON-NLS-1$
+					formatFailMessage(message, "Not same matrices", expected, actual),  //$NON-NLS-1$
 					expected.toString(), actual.toString());
 		}
 	}
@@ -1017,6 +1201,26 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param actual the actual value.
 	 */
 	public void assertNotEpsilonEquals(Matrix4d expected, Matrix4d actual) {
+		assertNotEpsilonEquals(expected, actual, NO_MESSAGE);
+	}
+
+	/** Test if the actual matrix is different from the expected values.
+	 * 
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
+	 * @param message the error message.
+	 */
+	public void assertNotEpsilonEquals(Matrix4d expected, Matrix4d actual, String message) {
+		assertNotEpsilonEquals(expected, actual, () -> message);
+	}
+
+	/** Test if the actual matrix is different from the expected values.
+	 * 
+	 * @param expected the expected value. 
+	 * @param actual the actual value.
+	 * @param message the provider of the error message.
+	 */
+	public void assertNotEpsilonEquals(Matrix4d expected, Matrix4d actual, Supplier<String> message) {
 		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
 			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
 			&&(isEpsilonEquals(expected.getM02(), actual.getM02()))
@@ -1034,7 +1238,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			&&(isEpsilonEquals(expected.getM32(), actual.getM32()))
 			&&(isEpsilonEquals(expected.getM33(), actual.getM33()))) {
 			failCompare(
-					formatFailMessage(NO_MESSAGE, "Not same matrices", expected, actual),  //$NON-NLS-1$
+					formatFailMessage(message, "Not same matrices", expected, actual),  //$NON-NLS-1$
 					expected.toString(), actual.toString());
 		}
 	}
@@ -1087,6 +1291,11 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			return;
 		}
 		throw new TestAbortedException("Object is mutable"); //$NON-NLS-1$
+	}
+	
+	@Test
+	public void iddle() {
+		//
 	}
 
 }

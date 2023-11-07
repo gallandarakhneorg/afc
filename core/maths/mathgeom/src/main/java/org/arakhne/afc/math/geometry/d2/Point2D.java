@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:methodcount")
 public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends Vector2D<? super RV, ? super RP>>
         extends Tuple2D<RP> {
 
@@ -63,7 +62,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      *            is the X coordinate of the third point
      * @param y3
      *            is the Y coordinate of the third point
-     * @return <code>true</code> if the three given points are colinear.
+     * @return {@code true} if the three given points are colinear.
      * @since 3.0
      * @see MathUtil#isEpsilonZero(double)
      */
@@ -580,7 +579,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
      *
      * @param shape the shape to test.
-     * @return <code>true</code> if the point is inside the shape. Otherwise, <code>false</code>.
+     * @return {@code true} if the point is inside the shape. Otherwise, {@code false}.
      * @see Shape2D#contains(Point2D)
      */
     @Pure
@@ -678,7 +677,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
      * the <a href="http://scala-lang.org/">Scala Language</a>.
      *
      * @param shape the shape to test.
-     * @return <code>true</code> if the point is inside the shape. Otherwise, <code>false</code>.
+     * @return {@code true} if the point is inside the shape. Otherwise, {@code false}.
      * @see Shape2D#contains(Point2D)
      */
     @Pure

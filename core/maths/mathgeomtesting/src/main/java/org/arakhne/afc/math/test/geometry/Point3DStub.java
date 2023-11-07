@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,13 @@ package org.arakhne.afc.math.test.geometry;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
 import org.arakhne.afc.vmutil.json.JsonBuffer;
 
 @SuppressWarnings("all")
-public final class Point3DStub implements Point3D<Point3DStub, Vector3DStub> {
+public final class Point3DStub implements Point3D<Point3DStub, Vector3DStub, QuaternionStub> {
 
 	private static final long serialVersionUID = 8895374463661941246L;
 
@@ -139,7 +140,7 @@ public final class Point3DStub implements Point3D<Point3DStub, Vector3DStub> {
 	}
 
 	@Override
-	public UnmodifiablePoint3D<Point3DStub, Vector3DStub> toUnmodifiable() {
+	public UnmodifiablePoint3D<Point3DStub, Vector3DStub, QuaternionStub> toUnmodifiable() {
 		throw new UnsupportedOperationException();
 	}
 

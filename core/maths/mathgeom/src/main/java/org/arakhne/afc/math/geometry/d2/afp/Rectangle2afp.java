@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ package org.arakhne.afc.math.geometry.d2.afp;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
@@ -52,7 +52,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:methodcount")
 public interface Rectangle2afp<
         ST extends Shape2afp<?, ?, IE, P, V, B>,
         IT extends Rectangle2afp<?, ?, IE, P, V, B>,
@@ -109,7 +108,6 @@ public interface Rectangle2afp<
      * @param rmaxy2 the maximum y coordinate of the second rectangle.
      * @param closest is set with the closest point on the first rectangle.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void findsClosestPointRectangleRectangle(
             double rx1, double ry1, double rmaxx1, double rmaxy1,
             double rx2, double ry2, double rmaxx2, double rmaxy2,
@@ -151,7 +149,6 @@ public interface Rectangle2afp<
      * @param sy2 the y coordinate of the second point of the segment.
      * @param closest is set with the closest point on the rectangle.
      */
-    @SuppressWarnings("checkstyle:parameternumber")
     static void findsClosestPointRectangleSegment(
             double rx, double ry, double rmaxx, double rmaxy,
             double sx1, double sy1, double sx2, double sy2,
@@ -219,7 +216,6 @@ public interface Rectangle2afp<
      * @param axis2Extent the size of the parallelogram along its second axis.
      * @param closest is set with the closest point on the first rectangle.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void findsClosestPointRectangleParallelogram(
             double rx, double ry, double rmaxx, double rmaxy,
             double centerX, double centerY, double axis1X, double axis1Y, double axis1Extent,
@@ -288,13 +284,12 @@ public interface Rectangle2afp<
      * @param sy2 is the second point of the segment.
      * @param codePoint1 the Cohen-Sutherland code for the first point of the segment.
      * @param codePoint2 the Cohen-Sutherland code for the second point of the segment.
-     * @param newSegmentP1 is set with the new coordinates of the segment first point. If <code>null</code>,
+     * @param newSegmentP1 is set with the new coordinates of the segment first point. If {@code null},
      *     this parameter is ignored.
-     * @param newSegmentP2 is set with the new coordinates of the segment second point. If <code>null</code>,
+     * @param newSegmentP2 is set with the new coordinates of the segment second point. If {@code null},
      *     this parameter is ignored.
      * @return the rectricted Cohen-Sutherland zone.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
     static int reducesCohenSutherlandZoneRectangleSegment(double rx1, double ry1, double rx2, double ry2,
             double sx1, double sy1, double sx2, double sy2, int codePoint1, int codePoint2,
             Tuple2D<?> newSegmentP1, Tuple2D<?> newSegmentP2) {
@@ -422,11 +417,10 @@ public interface Rectangle2afp<
      * @param y3 is the first corner of the second rectangle.
      * @param x4 is the second corner of the second rectangle.
      * @param y4 is the second corner of the second rectangle.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean intersectsRectangleRectangle(double x1, double y1, double x2, double y2,
             double x3, double y3, double x4, double y4) {
         assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 2, x2);
@@ -446,8 +440,8 @@ public interface Rectangle2afp<
      * @param y3 is the first point of the line.
      * @param x4 is the second point of the line.
      * @param y4 is the second point of the line.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
     static boolean intersectsRectangleLine(double x1, double y1, double x2, double y2,
@@ -477,11 +471,10 @@ public interface Rectangle2afp<
      * @param sy1 is the first point of the segment.
      * @param sx2 is the second point of the segment.
      * @param sy2 is the second point of the segment.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings("checkstyle:npathcomplexity")
     static boolean intersectsRectangleSegment(double rx1, double ry1, double rx2, double ry2,
             double sx1, double sy1, double sx2, double sy2) {
         assert rx1 <= rx2 : AssertMessages.lowerEqualParameters(0, rx1, 2, rx2);
@@ -561,11 +554,10 @@ public interface Rectangle2afp<
      * @param innerY1 is the lowest corner of the inner-candidate rectangle.
      * @param innerX2 is the uppest corner of the inner-candidate rectangle.
      * @param innerY2 is the uppest corner of the inner-candidate rectangle.
-     * @return <code>true</code> if the given rectangle is inside the ellipse;
-     *     otherwise <code>false</code>.
+     * @return {@code true} if the given rectangle is inside the ellipse;
+     *     otherwise {@code false}.
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean containsRectangleRectangle(double enclosingX1, double enclosingY1,
             double enclosingX2, double enclosingY2,
             double innerX1, double innerY1,
@@ -588,8 +580,8 @@ public interface Rectangle2afp<
      * @param ry2 is the uppest corner of the rectangle.
      * @param px is the point.
      * @param py is the point.
-     * @return <code>true</code> if the given point is inside the rectangle;
-     *     otherwise <code>false</code>.
+     * @return {@code true} if the given point is inside the rectangle;
+     *     otherwise {@code false}.
      */
     @Pure
     static boolean containsRectanglePoint(
@@ -627,7 +619,6 @@ public interface Rectangle2afp<
      * It means that the rectangle is set to the enclosing box related to the given parameters.
      */
     @Override
-    @SuppressWarnings("checkstyle:magicnumber")
     default void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent,
             double axis2Extent) {
         assert Vector2D.isUnitVector(axis1x, axis1y) : AssertMessages.normalizedParameters(2, 3);
@@ -784,11 +775,11 @@ public interface Rectangle2afp<
     /** Compute and replies the union of this rectangle and the given rectangle.
      * This function does not change this rectangle.
      *
-     * <p>It is equivalent to (where <code>ur</code> is the union):
-     * <pre><code>
+     * <p>It is equivalent to (where {@code ur} is the union):
+     * <pre>{@code 
      * Rectangle2f ur = new Rectangle2f(this);
      * ur.setUnion(r);
-     * </code></pre>
+     * }</pre>
      *
      * @param rect the rectangular shape.
      * @return the union of this rectangle and the given rectangle.
@@ -806,11 +797,11 @@ public interface Rectangle2afp<
     /** Compute and replies the intersection of this rectangle and the given rectangle.
      * This function does not change this rectangle.
      *
-     * <p>It is equivalent to (where <code>ir</code> is the intersection):
-     * <pre><code>
+     * <p>It is equivalent to (where {@code ir} is the intersection):
+     * <pre>{@code 
      * Rectangle2f ir = new Rectangle2f(this);
      * ir.setIntersection(r);
-     * </code></pre>
+     * }</pre>
      *
      * @param rect the rectangular shape.
      * @return the union of this rectangle and the given rectangle.
@@ -1401,7 +1392,6 @@ public interface Rectangle2afp<
 	 *     {@link IntersectionType#SPANNING} otherwise.
 	 * @since 14.0
      */
-    @SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity", "checkstyle:returncount"})
     static IntersectionType classifiesRectangleRectangle(double lx1, double ly1, double ux1, double uy1,
     		double lx2, double ly2, double ux2, double uy2) {
     	assert lx1 <= ux1 : AssertMessages.lowerEqualParameters(0, lx1, 2, ux1);
@@ -1490,7 +1480,18 @@ public interface Rectangle2afp<
     	setFromCorners(minx, miny, maxx, maxy);
     }
 
-    /** Iterator on the path elements of the rectangle.
+	/** Replies this rectangle with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the rectangle.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toPolygonDefinition(2,
+				getMinX(), getMinY(), getMaxX(), getMinY(),
+				getMaxX(), getMaxY(), getMinX(), getMaxY());
+	}
+
+	/** Iterator on the path elements of the rectangle.
      *
      * @param <T> the type of the path elements.
      * @author $Author: sgalland$
@@ -1499,7 +1500,6 @@ public interface Rectangle2afp<
      * @mavenartifactid $ArtifactId$
      * @since 13.0
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     class RectanglePathIterator<T extends PathElement2afp>
             implements PathIterator2afp<T> {
 
@@ -1621,7 +1621,6 @@ public interface Rectangle2afp<
      * @mavengroupid $GroupId$
      * @mavenartifactid $ArtifactId$
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     class TransformedRectanglePathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
 
         private final Transform2D transform;

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,11 +64,11 @@ public interface Path2D<
 	void setWindingRule(PathWindingRule rule);
 
 	/** Replies the path is composed only by
-	 * one <code>MOVE_TO</code>, and a sequence of <code>LINE_TO</code>
+	 * one {@code MOVE_TO}, and a sequence of {@code LINE_TO}
 	 * primitives.
 	 *
-	 * @return <code>true</code> if the path does not
-	 *     contain curve primitives, <code>false</code>
+	 * @return {@code true} if the path does not
+	 *     contain curve primitives, {@code false}
 	 *     otherwise.
 	 */
 	@Pure
@@ -76,30 +76,30 @@ public interface Path2D<
 
 	/** Replies the path contains a curve..
 	 *
-	 * @return <code>true</code> if the path does not
-	 *     contain curve primitives, <code>false</code>
+	 * @return {@code true} if the path does not
+	 *     contain curve primitives, {@code false}
 	 *     otherwise.
 	 */
 	@Pure
 	boolean isCurved();
 
-	/** Replies the path has multiple parts, i.e. multiple <code>MOVE_TO</code> are inside.
+	/** Replies the path has multiple parts, i.e. multiple {@code MOVE_TO} are inside.
 	 * primitives.
 	 *
-	 * @return <code>true</code> if the path has multiple move-to primitive, <code>false</code>
+	 * @return {@code true} if the path has multiple move-to primitive, {@code false}
 	 *     otherwise.
 	 */
 	@Pure
 	boolean isMultiParts();
 
 	/** Replies the path is composed only by
-	 * one <code>MOVE_TO</code>, a sequence of <code>LINE_TO</code>
-	 * or <code>QUAD_TO</code> or <code>CURVE_TO</code>,
-	 * or <code>ARC_TO</code>, and a
-	 * single <code>CLOSE</code> primitives.
+	 * one {@code MOVE_TO}, a sequence of {@code LINE_TO}
+	 * or {@code QUAD_TO} or {@code CURVE_TO},
+	 * or {@code ARC_TO}, and a
+	 * single {@code CLOSE} primitives.
 	 *
-	 * @return <code>true</code> if the path does not
-	 *     contain curve primitives, <code>false</code>
+	 * @return {@code true} if the path does not
+	 *     contain curve primitives, {@code false}
 	 *     otherwise.
 	 */
 	@Pure
@@ -228,9 +228,9 @@ public interface Path2D<
 	/**
 	 * Adds a section of an shallow ellipse to the current path.
 	 *
-	 * <p>This function is equivalent to:<pre><code>
+	 * <p>This function is equivalent to:<pre>{@code 
 	 * this.arcTo(ctrl, to, 0.0, 1.0, ArcType.ARCONLY);
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @param ctrl the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
 	 * @param to the target point.
@@ -273,8 +273,8 @@ public interface Path2D<
 	 * @param to the target point.
 	 * @param radii the X and Y radii of the tilted ellipse.
 	 * @param xAxisRotation the angle of tilt of the ellipse.
-	 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
-	 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+	 * @param largeArcFlag {@code true} iff the path will sweep the long way around the ellipse.
+	 * @param sweepFlag {@code true} iff the path will sweep clockwise around the ellipse.
 	 * @see "http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands"
 	 */
 	void arcTo(Point2D<?, ?> to, Vector2D<?, ?> radii, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag);
@@ -455,7 +455,7 @@ public interface Path2D<
 	/** Replies if the given points exists in the coordinates of this path.
 	 *
 	 * @param point the point.
-	 * @return <code>true</code> if the point is a control point of the path.
+	 * @return {@code true} if the point is a control point of the path.
 	 */
 	@Pure
 	boolean containsControlPoint(Point2D<?, ?> point);

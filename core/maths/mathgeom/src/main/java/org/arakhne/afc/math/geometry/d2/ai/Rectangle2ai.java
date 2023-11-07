@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
@@ -70,11 +70,10 @@ public interface Rectangle2ai<
      * @param y3 is the first corner of the second rectangle.
      * @param x4 is the second corner of the second rectangle.
      * @param y4 is the second corner of the second rectangle.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean intersectsRectangleRectangle(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
         assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 2, x2);
         assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 3, y2);
@@ -99,11 +98,10 @@ public interface Rectangle2ai<
      * @param y3 is the first point of the segment.
      * @param x4 is the second point of the segment.
      * @param y4 is the second point of the segment.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings("checkstyle:cyclomaticcomplexity")
     static boolean intersectsRectangleSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
         assert x1 <= x2 : AssertMessages.lowerEqualParameters(0, x1, 2, x2);
         assert y1 <= y2 : AssertMessages.lowerEqualParameters(1, y1, 3, y2);
@@ -190,7 +188,6 @@ public interface Rectangle2ai<
      * @param rmaxy2 the maximum y coordinate of the second rectangle.
      * @param closest is set with the closest point on the first rectangle.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void findsClosestPointRectangleRectangle(
             int rx1, int ry1, int rmaxx1, int rmaxy1,
             int rx2, int ry2, int rmaxx2, int rmaxy2,
@@ -232,7 +229,6 @@ public interface Rectangle2ai<
      * @param sy2 the y coordinate of the second point of the segment.
      * @param closest is set with the closest point on the rectangle.
      */
-    @SuppressWarnings("checkstyle:parameternumber")
     static void findsClosestPointRectangleSegment(
             int rx, int ry, int rmaxx, int rmaxy,
             int sx1, int sy1, int sx2, int sy2,
@@ -294,7 +290,6 @@ public interface Rectangle2ai<
      * @param py is the y-coordinate of the point.
      * @param result the closest point.
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     static void findsClosestPointRectanglePoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
         assert minx <= maxx : AssertMessages.lowerEqualParameters(0, minx, 2, maxx);
         assert miny <= maxy : AssertMessages.lowerEqualParameters(1, miny, 3, maxy);
@@ -336,7 +331,6 @@ public interface Rectangle2ai<
      * @param py is the y-coordinate of the point.
      * @param result the farthest point.
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     static void findsFarthestPointRectanglePoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
         assert minx <= maxx : AssertMessages.lowerEqualParameters(0, minx, 2, maxx);
         assert miny <= maxy : AssertMessages.lowerEqualParameters(1, miny, 3, maxy);
@@ -378,13 +372,12 @@ public interface Rectangle2ai<
      * @param sy2 is the second point of the segment.
      * @param codePoint1 the Cohen-Sutherland code for the first point of the segment.
      * @param codePoint2 the Cohen-Sutherland code for the second point of the segment.
-     * @param newSegmentP1 is set with the new coordinates of the segment first point. If <code>null</code>,
+     * @param newSegmentP1 is set with the new coordinates of the segment first point. If {@code null},
      *     this parameter is ignored.
-     * @param newSegmentP2 is set with the new coordinates of the segment second point. If <code>null</code>,
+     * @param newSegmentP2 is set with the new coordinates of the segment second point. If {@code null},
      *     this parameter is ignored.
      * @return the rectricted Cohen-Sutherland zone.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
     static int reducesCohenSutherlandZoneRectangleSegment(int rx1, int ry1, int rx2, int ry2,
             int sx1, int sy1, int sx2, int sy2, int codePoint1, int codePoint2,
             Point2D<?, ?> newSegmentP1, Point2D<?, ?> newSegmentP2) {
@@ -705,11 +698,11 @@ public interface Rectangle2ai<
     /** Compute and replies the union of this rectangle and the given rectangle.
      * This function does not change this rectangle.
      *
-     * <p>It is equivalent to (where <code>ur</code> is the union):
-     * <pre><code>
+     * <p>It is equivalent to (where {@code ur} is the union):
+     * <pre>{@code 
      * Rectangle2f ur = new Rectangle2f(this);
      * ur.setUnion(r);
-     * </code></pre>
+     * }</pre>
      *
      * @param rect the rectangular shape.
      * @return the union of this rectangle and the given rectangle.
@@ -727,11 +720,11 @@ public interface Rectangle2ai<
     /** Compute and replies the intersection of this rectangle and the given rectangle.
      * This function does not change this rectangle.
      *
-     * <p>It is equivalent to (where <code>ir</code> is the intersection):
-     * <pre><code>
+     * <p>It is equivalent to (where {@code ir} is the intersection):
+     * <pre>{@code 
      * Rectangle2f ir = new Rectangle2f(this);
      * ir.setIntersection(r);
-     * </code></pre>
+     * }</pre>
      *
      * @param rect the rectangular shape.
      * @return the union of this rectangle and the given rectangle.
@@ -789,6 +782,19 @@ public interface Rectangle2ai<
             clear();
         }
     }
+
+	/** Replies this rectangle with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the rectangle.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toPolygonDefinition(2,
+				getMinX(), getMinY(),
+				getMaxX(), getMinY(),
+				getMaxX(), getMaxY(),
+				getMinX(), getMaxY());
+	}
 
     /** Sides of a rectangle.
      *
@@ -866,7 +872,6 @@ public interface Rectangle2ai<
         }
 
         @Override
-        @SuppressWarnings("checkstyle:npathcomplexity")
         public P next() {
             final int x;
             final int y;
@@ -942,7 +947,6 @@ public interface Rectangle2ai<
      * @mavenartifactid $ArtifactId$
      * @since 13.0
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     class RectanglePathIterator<E extends PathElement2ai> implements PathIterator2ai<E> {
 
         private final Rectangle2ai<?, ?, E, ?, ?, ?> rectangle;
@@ -1052,7 +1056,6 @@ public interface Rectangle2ai<
      * @mavenartifactid $ArtifactId$
      * @since 13.0
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     class TransformedRectanglePathIterator<E extends PathElement2ai> implements PathIterator2ai<E> {
 
         private final Rectangle2ai<?, ?, E, ?, ?, ?> rectangle;

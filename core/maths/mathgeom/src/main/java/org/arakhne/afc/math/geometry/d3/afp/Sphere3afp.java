@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,24 +22,26 @@ package org.arakhne.afc.math.geometry.d3.afp;
 
 import java.util.NoSuchElementException;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D sphere on a plane.
+/** Fonctional interface that represented a 3D sphere.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
  * @param <V> is the type of the vectors.
+ * @param <Q> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -49,13 +51,14 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public interface Sphere3afp<
-		ST extends Shape3afp<?, ?, IE, P, V, B>,
-		IT extends Sphere3afp<?, ?, IE, P, V, B>,
-		IE extends PathElement3afp,
-		P extends Point3D<? super P, ? super V>,
-		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3afp<?, ?, IE, P, V, B>>
-		extends Prism3afp<ST, IT, IE, P, V, B> {
+			ST extends Shape3afp<?, ?, IE, P, V, Q, B>,
+			IT extends Sphere3afp<?, ?, IE, P, V, Q, B>,
+			IE extends PathElement3afp,
+			P extends Point3D<? super P, ? super V, ? super Q>,
+			V extends Vector3D<? super V, ? super P, ? super Q>,
+			Q extends Quaternion<? super P, ? super V, ? super Q>,
+			B extends AlignedBox3afp<?, ?, IE, P, V, Q, B>>
+		extends Box3afp<ST, IT, IE, P, V, Q, B> {
 
 	/**
 	 * Replies if the given point is inside the given ellipse.
@@ -67,8 +70,8 @@ public interface Sphere3afp<
 	 * @param cy is the center of the sphere.
 	 * @param cz is the center of the sphere.
 	 * @param radius is the radius of the sphere.
-	 * @return <code>true</code> if the point is inside the sphere;
-	 * <code>false</code> if not.
+	 * @return {@code true} if the point is inside the sphere;
+	 * {@code false} if not.
 	 */
 	@Pure
 	static boolean containsSpherePoint(double cx, double cy, double cz, double radius, double px, double py, double pz) {
@@ -78,7 +81,7 @@ public interface Sphere3afp<
 				cx, cy, cz) <= (radius * radius);
 	}
 
-	/** Replies if a rectangular prism is inside in the sphere.
+	/** Replies if an aligned box is inside in the sphere.
 	 *
 	 * @param cx is the center of the sphere.
 	 * @param cy is the center of the sphere.
@@ -90,12 +93,11 @@ public interface Sphere3afp<
 	 * @param rxmax is the uppest corner of the rectangle.
 	 * @param rymax is the uppest corner of the rectangle.
 	 * @param rzmax is the uppest corner of the rectangle.
-	 * @return <code>true</code> if the given rectangle is inside the sphere;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given rectangle is inside the sphere;
+	 *     otherwise {@code false}.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
-    static boolean containsSphereRectangularPrism(double cx, double cy, double cz, double radius, double rxmin, double rymin,
+    static boolean containsSphereAlignedBox(double cx, double cy, double cz, double radius, double rxmin, double rymin,
             double rzmin, double rxmax, double rymax, double rzmax) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(4, rxmin, 7, rxmax);
@@ -135,11 +137,10 @@ public interface Sphere3afp<
 	 * @param y2 is the center of the second sphere
 	 * @param z2 is the center of the second sphere
 	 * @param radius2 is the radius of the second sphere
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsSphereSphere(double x1, double y1, double z1, double radius1, double x2, double y2, double z2,
             double radius2) {
 		assert radius1 >= 0 : AssertMessages.positiveOrZeroParameter(3);
@@ -148,7 +149,7 @@ public interface Sphere3afp<
 		return Point3D.getDistanceSquaredPointPoint(x1, y1, z1, x2, y2, z2) < (r * r);
 	}
 
-	/** Replies if a sphere and a rectangle are intersecting.
+	/** Replies if a sphere and an aligned box are intersecting.
 	 *
 	 * @param x1 is the center of the sphere
 	 * @param y1 is the center of the sphere
@@ -160,12 +161,11 @@ public interface Sphere3afp<
 	 * @param x3 is the second corner of the rectangle.
 	 * @param y3 is the second corner of the rectangle.
 	 * @param z3 is the second corner of the rectangle.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
-    static boolean intersectsSpherePrism(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
+    static boolean intersectsSphereAlignedBox(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
             double x3, double y3, double z3) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert x2 <= x3 : AssertMessages.lowerEqualParameters(4, x2, 7, x3);
@@ -210,15 +210,14 @@ public interface Sphere3afp<
 	 * @param x3 is the second point of the line.
 	 * @param y3 is the second point of the line.
 	 * @param z3 is the second point of the line.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsSphereLine(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
             double x3, double y3, double z3) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
-		return Segment3afp.computeDistanceSquaredLinePoint(x2, y2, z2, x3, y3, z3, x1, y1, z1) < (radius * radius);
+		return Segment3afp.calculatesDistanceSquaredLinePoint(x2, y2, z2, x3, y3, z3, x1, y1, z1) < (radius * radius);
 	}
 
 	/** Replies if a sphere and a segment are intersecting.
@@ -233,15 +232,14 @@ public interface Sphere3afp<
 	 * @param x3 is the second point of the segment.
 	 * @param y3 is the second point of the segment.
 	 * @param z3 is the second point of the segment.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsSphereSegment(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
             double x3, double y3, double z3) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
-		return Segment3afp.computeDistanceSquaredSegmentPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1) < (radius * radius);
+		return Segment3afp.calculatesDistanceSquaredSegmentPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1) < (radius * radius);
 	}
 
 	@Pure
@@ -295,7 +293,7 @@ public interface Sphere3afp<
 	 * @param center the center point.
 	 */
 	@Override
-	default void setCenter(Point3D<?, ?> center) {
+	default void setCenter(Point3D<?, ?, ?> center) {
 		assert center != null : AssertMessages.notNullParameter();
 		set(center.getX(), center.getY(), center.getZ(), getRadius());
 	}
@@ -359,7 +357,7 @@ public interface Sphere3afp<
      * @param center the center point.
      * @param radius the radius.
 	 */
-	default void set(Point3D<?, ?> center, double radius) {
+	default void set(Point3D<?, ?, ?> center, double radius) {
 		assert center != null : AssertMessages.notNullParameter();
 		set(center.getX(), center.getY(), center.getZ(), radius);
 	}
@@ -394,7 +392,7 @@ public interface Sphere3afp<
 
 	@Pure
 	@Override
-	default double getDistance(Point3D<?, ?> pt) {
+	default double getDistance(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		double distance = Point3D.getDistancePointPoint(getX(), getY(), getZ(), pt.getX(), pt.getY(), pt.getZ());
 		distance = distance - getRadius();
@@ -403,7 +401,7 @@ public interface Sphere3afp<
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point3D<?, ?> pt) {
+	default double getDistanceSquared(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final double x = getX();
 		final double y = getY();
@@ -422,17 +420,17 @@ public interface Sphere3afp<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point3D<?, ?> pt) {
+	default double getDistanceL1(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final Point3D<?, ?> r = getClosestPointTo(pt);
+		final Point3D<?, ?, ?> r = getClosestPointTo(pt);
 		return r.getDistanceL1(pt);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point3D<?, ?> pt) {
+	default double getDistanceLinf(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
-		final Point3D<?, ?> r = getClosestPointTo(pt);
+		final Point3D<?, ?, ?> r = getClosestPointTo(pt);
 		return r.getDistanceLinf(pt);
 	}
 
@@ -443,11 +441,11 @@ public interface Sphere3afp<
 	}
 
 	@Override
-	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : AssertMessages.notNullParameter();
-        return containsSphereRectangularPrism(getX(), getY(), getZ(), getRadius(), rectangularPrism.getMinX(),
-                rectangularPrism.getMinY(), rectangularPrism.getMinZ(), rectangularPrism.getMaxX(), rectangularPrism.getMaxY(),
-                rectangularPrism.getMaxZ());
+	default boolean contains(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> AlignedBox) {
+		assert AlignedBox != null : AssertMessages.notNullParameter();
+        return containsSphereAlignedBox(getX(), getY(), getZ(), getRadius(), AlignedBox.getMinX(),
+                AlignedBox.getMinY(), AlignedBox.getMinZ(), AlignedBox.getMaxX(), AlignedBox.getMaxY(),
+                AlignedBox.getMaxZ());
 	}
 
 	@Override
@@ -457,16 +455,16 @@ public interface Sphere3afp<
 
 	@Pure
 	@Override
-	default boolean intersects(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
+	default boolean intersects(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> prism) {
 		assert prism != null : AssertMessages.notNullParameter();
-		return intersectsSpherePrism(
+		return intersectsSphereAlignedBox(
 				getX(), getY(), getZ(), getRadius(),
 				prism.getMinX(), prism.getMinY(), prism.getMinZ(), prism.getMaxX(), prism.getMaxY(), prism.getMaxZ());
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		return intersectsSphereSphere(
 				getX(), getY(), getZ(), getRadius(),
@@ -475,7 +473,7 @@ public interface Sphere3afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsSphereSegment(
 				getX(), getY(), getZ(), getRadius(),
@@ -488,25 +486,21 @@ public interface Sphere3afp<
 	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert iterator != null : AssertMessages.notNullParameter();
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-		final int crossings = Path3afp.computeCrossingsFromSphere(
-				0,
-				iterator,
-				getX(), getY(), getZ(), getRadius(),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-        return crossings == GeomConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
+		//TODO
+        return false;
 
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point3D<?, ?> pt) {
+	default P getClosestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final double x = getX();
 		final double y = getY();
@@ -525,47 +519,47 @@ public interface Sphere3afp<
 
     @Pure
     @Override
-    default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+    default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
         assert sphere != null : AssertMessages.notNullParameter();
-        final Point3D<?, ?> point = sphere.getClosestPointTo(getCenter());
+        final Point3D<?, ?, ?> point = sphere.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
     @Pure
     @Override
-    default P getClosestPointTo(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
-        assert rectangularPrism != null : AssertMessages.notNullParameter();
-        final Point3D<?, ?> point = rectangularPrism.getClosestPointTo(getCenter());
+    default P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> AlignedBox) {
+        assert AlignedBox != null : AssertMessages.notNullParameter();
+        final Point3D<?, ?, ?> point = AlignedBox.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
     @Pure
     @Override
-    default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+    default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
-        final Point3D<?, ?> point = segment.getClosestPointTo(getCenter());
+        final Point3D<?, ?, ?> point = segment.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
     @Pure
     @Override
-    default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
+    default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
-        final Point3D<?, ?> point = path.getClosestPointTo(getCenter());
+        final Point3D<?, ?, ?> point = path.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
     @Pure
     @Override
-    default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+    default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
         assert multishape != null : AssertMessages.notNullParameter();
-        final Point3D<?, ?> point = multishape.getClosestPointTo(getCenter());
+        final Point3D<?, ?, ?> point = multishape.getClosestPointTo(getCenter());
         return getClosestPointTo(point);
     }
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point3D<?, ?> pt) {
+	default P getFarthestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final double x = getX();
 		final double y = getY();
@@ -588,7 +582,7 @@ public interface Sphere3afp<
         if (transform == null || transform.isIdentity()) {
 			return new SpherePathIterator<>(this);
 		}
-		return new TransformedCirclePathIterator<>(this, transform);
+		return new TransformedSpherePathIterator<>(this, transform);
 	}
 
 	@Override
@@ -627,7 +621,7 @@ public interface Sphere3afp<
 	 *
 	 * <p>The sphere is set in order to be enclosed inside the given box.
 	 * It means that the center of the sphere is the center of the box, and the
-	 * radius of the sphere is the minimum of the demi-width and demi-height.
+	 * radius of the sphere is the minimum of the demi-width, demi-height and demi-depth.
 	 */
 	@Override
 	default void setFromCorners(double x1, double y1, double z1, double x2, double y2, double z2) {
@@ -749,6 +743,15 @@ public interface Sphere3afp<
 		return getZ() + getRadius();
 	}
 
+	/** Replies this sphere with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the sphere.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toCircleDefinition(3, getX(), getY(), getZ(), getRadius());
+	}
+
 	/** {@inheritDoc}
 	 *
 	 * <p>Assuming that the minimum Z coordinate should not change, the center of
@@ -818,18 +821,18 @@ public interface Sphere3afp<
 
 		/** The iterated shape.
 		 */
-		protected final Sphere3afp<?, ?, T, ?, ?, ?> sphere;
+		protected final Sphere3afp<?, ?, T, ?, ?, ?, ?> sphere;
 
 		/** Constructor.
 		 * @param sphere the sphere.
 		 */
-		public AbstractSpherePathIterator(Sphere3afp<?, ?, T, ?, ?, ?> sphere) {
+		public AbstractSpherePathIterator(Sphere3afp<?, ?, T, ?, ?, ?, ?> sphere) {
 			assert sphere != null : AssertMessages.notNullParameter();
 			this.sphere = sphere;
 		}
 
 		@Override
-		public GeomFactory3afp<T, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3afp<T, ?, ?, ?, ?> getGeomFactory() {
 			return this.sphere.getGeomFactory();
 		}
 
@@ -871,7 +874,6 @@ public interface Sphere3afp<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	class SpherePathIterator<T extends PathElement3afp> extends AbstractSpherePathIterator<T> {
 
 		private double x;
@@ -899,7 +901,7 @@ public interface Sphere3afp<
 		/** Constructor.
 		 * @param sphere the sphere to iterate on.
 		 */
-		public SpherePathIterator(Sphere3afp<?, ?, T, ?, ?, ?> sphere) {
+		public SpherePathIterator(Sphere3afp<?, ?, T, ?, ?, ?, ?> sphere) {
 			super(sphere);
 			if (sphere.isEmpty()) {
 				this.index = NUMBER_ELEMENTS;
@@ -974,12 +976,11 @@ public interface Sphere3afp<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
-	class TransformedCirclePathIterator<T extends PathElement3afp> extends AbstractSpherePathIterator<T> {
+	class TransformedSpherePathIterator<T extends PathElement3afp> extends AbstractSpherePathIterator<T> {
 
 		private final Transform3D transform;
 
-		private final Point3D<?, ?> tmpPoint;
+		private final Point3D<?, ?, ?> tmpPoint;
 
 		private double x;
 
@@ -1007,7 +1008,7 @@ public interface Sphere3afp<
 		 * @param sphere the iterated sphere.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedCirclePathIterator(Sphere3afp<?, ?, T, ?, ?, ?> sphere, Transform3D transform) {
+		public TransformedSpherePathIterator(Sphere3afp<?, ?, T, ?, ?, ?, ?> sphere, Transform3D transform) {
 			super(sphere);
 			assert transform != null : AssertMessages.notNullParameter();
 			this.transform = transform;
@@ -1026,7 +1027,7 @@ public interface Sphere3afp<
 
 		@Override
 		public PathIterator3afp<T> restartIterations() {
-			return new TransformedCirclePathIterator<>(this.sphere, this.transform);
+			return new TransformedSpherePathIterator<>(this.sphere, this.transform);
 		}
 
 		@Pure

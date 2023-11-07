@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,28 +33,25 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
-import org.arakhne.afc.math.geometry.d3.ai.BasicPathShadow3ai;
+import org.arakhne.afc.math.geometry.d3.ai.AlignedBox3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
 import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
-import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Shape3ai;
+import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
-		B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
+public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, ?, B>,
+		B extends AlignedBox3ai<?, ?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
 
 	@Override
 	protected final T createShape() {
@@ -65,6 +62,12 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path.curveTo(5, -1, 0, 6, 5, 0, 7, -5, 0);
 		path.closePath();
 		return path;
+	}
+
+	protected static Quaternion4d newAxisAngleZ(double angle) {
+		final Quaternion4d q = new Quaternion4d();
+		q.setAxisAngle(0, 0, 1, angle);
+		return q;
 	}
 	
 	@Override
@@ -93,7 +96,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		assertFalse(this.shape.equals(null));
 		assertFalse(this.shape.equals(new Object()));
 		assertFalse(this.shape.equals(createPath()));
-		assertFalse(this.shape.equals(createRectangularPrism(5, 8, 0, 10, 6, 0)));
+		assertFalse(this.shape.equals(createAlignedBox(5, 8, 0, 10, 6, 0)));
 		assertTrue(this.shape.equals(this.shape));
 		Path3ai path = createPath();
 		path.moveTo(0, 0, 0);
@@ -110,7 +113,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	public void equalsObject_withPathIterator(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.equals(createPath().getPathIterator()));
-		assertFalse(this.shape.equals(createRectangularPrism(5, 8, 0, 10, 6, 0).getPathIterator()));
+		assertFalse(this.shape.equals(createAlignedBox(5, 8, 0, 10, 6, 0).getPathIterator()));
 		assertTrue(this.shape.equals(this.shape.getPathIterator()));
 		Path3ai path = createPath();
 		path.moveTo(0, 0, 0);
@@ -145,7 +148,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
 		assertFalse(this.shape.equalsToPathIterator(createPath().getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createRectangularPrism(5, 8, 0, 10, 6, 0).getPathIterator()));
+		assertFalse(this.shape.equalsToPathIterator(createAlignedBox(5, 8, 0, 10, 6, 0).getPathIterator()));
 		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
 		Path3ai path = createPath();
 		path.moveTo(0, 0, 0);
@@ -513,237 +516,6 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Disabled
-	public void staticComputeCrossingsFromPath_notCloseable_noOnlyIntersectWhenOpen(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai path1;
-		Path3ai path2;
-		
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		assertEquals(1, Path3ai.computeCrossingsFromPath(
-		        0,
-				(PathIterator3ai) path2.getPathIterator(),
-				new BasicPathShadow3ai(path1),
-				CrossingComputationType.STANDARD));
-
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path1.closePath();
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-		        0,
-				(PathIterator3ai) path2.getPathIterator(),
-				new BasicPathShadow3ai(path1),
-				CrossingComputationType.STANDARD));
-
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		path2.closePath();
-		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-		        0,
-				(PathIterator3ai) path2.getPathIterator(),
-				new BasicPathShadow3ai(path1),
-				CrossingComputationType.STANDARD));
-
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path1.closePath();
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		path2.closePath();
-		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-		        0,
-				(PathIterator3ai) path2.getPathIterator(),
-				new BasicPathShadow3ai(path1),
-				CrossingComputationType.STANDARD));
-	}
-	
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
-	public void staticComputeCrossingsFromPath_closeable_noOnlyIntersectWhenOpen(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai path1;
-		Path3ai path2;
-		
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-		        0,
-				(PathIterator3ai) path2.getPathIterator(),
-				new BasicPathShadow3ai(path1),
-				CrossingComputationType.AUTO_CLOSE));
-
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path1.closePath();
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-				0,
-		        (PathIterator3ai) path2.getPathIterator(),
-				new BasicPathShadow3ai(path1),
-				CrossingComputationType.AUTO_CLOSE));
-
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		path2.closePath();
-		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-		        0,
-				(PathIterator3ai) path2.getPathIterator(),
-				new BasicPathShadow3ai(path1),
-				CrossingComputationType.AUTO_CLOSE));
-
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path1.closePath();
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		path2.closePath();
-		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-		        0,
-				(PathIterator3ai) path2.getPathIterator(),
-				new BasicPathShadow3ai(path1),
-				CrossingComputationType.AUTO_CLOSE));
-	}
-		
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
-	public void staticComputeCrossingsFromPath_noCloseable_onlyIntersectWhenOpen(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai path1;
-		Path3ai path2;
-		
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		assertEquals(0, Path3ai.computeCrossingsFromPath(
-		        0,
-				(PathIterator3ai) path2.getPathIterator(),
-				new BasicPathShadow3ai(path1),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path1.closePath();
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-		        0,
-				(PathIterator3ai) path2.getPathIterator(),
-				new BasicPathShadow3ai(path1),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		path2.closePath();
-		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-		        0,
-				(PathIterator3ai) path2.getPathIterator(),
-				new BasicPathShadow3ai(path1),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-
-		path1 = createPath();
-		path1.moveTo(-33, 98, 0);
-		path1.lineTo(-35, 98, 0);
-		path1.lineTo(-35, 101, 0);
-		path1.lineTo(-33, 101, 0);
-		path1.closePath();
-		path2 = createPath();
-		path2.moveTo(-33, 99, 0);
-		path2.lineTo(-31, 99, 0);
-		path2.lineTo(-31, 103, 0);
-		path2.lineTo(-34, 103, 0);
-		path2.closePath();
-		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
-		        0,
-				(PathIterator3ai) path2.getPathIterator(),
-				new BasicPathShadow3ai(path1),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-	}
-
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public void staticContainsPathIterator2iIntInt(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 0, 0, 0));
@@ -1084,7 +856,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	public void transformTransform3D_rotation(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Transform3D tr2 = new Transform3D();
-		tr2.makeRotationMatrix(-MathConstants.DEMI_PI);
+		tr2.makeRotationMatrix(newAxisAngleZ(-MathConstants.DEMI_PI));
 		
 		Path3ai clone = this.shape.clone();
 		clone.transform(tr2);
@@ -1104,7 +876,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	public void createTransformedShape_rotation(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Transform3D tr2 = new Transform3D();
-		tr2.makeRotationMatrix(-MathConstants.DEMI_PI);
+		tr2.makeRotationMatrix(newAxisAngleZ(-MathConstants.DEMI_PI));
 		
 		Path3ai clone = (Path3ai) this.shape.createTransformedShape(tr2);
 
@@ -1125,7 +897,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		Transform3D tr = new Transform3D();
 		tr.makeTranslationMatrix(3, 4, 0);
 		Transform3D tr2 = new Transform3D();
-		tr2.makeRotationMatrix(-MathConstants.DEMI_PI);
+		tr2.makeRotationMatrix(newAxisAngleZ(-MathConstants.DEMI_PI));
 		Transform3D tr3 = new Transform3D();
 		tr3.mul(tr, tr2);
 
@@ -1147,7 +919,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		Transform3D tr = new Transform3D();
 		tr.makeTranslationMatrix(3, 4, 0);
 		Transform3D tr2 = new Transform3D();
-		tr2.makeRotationMatrix(-MathConstants.DEMI_PI);
+		tr2.makeRotationMatrix(newAxisAngleZ(-MathConstants.DEMI_PI));
 		Transform3D tr3 = new Transform3D();
 		tr3.mul(tr, tr2);
 
@@ -1177,47 +949,47 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Override
-	public void containsRectangularPrism3ai(CoordinateSystem3D cs) {
+	public void containsAlignedBox3ai(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.contains(createRectangularPrism(0, 0, 0, 1, 1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(4, 3, 0, 1, 1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(2, 2, 0, 1, 1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(2, 1, 0, 1, 1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(3, 0, 0, 1, 1, 0)));
-		assertTrue(this.shape.contains(createRectangularPrism(3, 0, 0, 1, 0, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(3, 0, 0, 2, 1, 0)));
-		assertTrue(this.shape.contains(createRectangularPrism(3, 0, 0, 2, 0, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(-1, -1, 0, 1, 1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(4, -3, 0, 1, 1, 0)));
-		assertTrue(this.shape.contains(createRectangularPrism(5, -3, 0, 0, 1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(-3, 4, 0, 1, 1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(6, -5, 0, 1, 1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(4, 0, 0, 1, 1, 0)));
-		assertTrue(this.shape.contains(createRectangularPrism(4, 0, 0, 1, 0, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(5, 0, 0, 1, 1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(5, 0, 0, 1, 0, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(5, 0, 0, 0, 1, 0)));
-		assertTrue(this.shape.contains(createRectangularPrism(5, 0, 0, 0, 0, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(5, 0, 0, 2, 1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(6, 0, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(0, 0, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(4, 3, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(2, 2, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(2, 1, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(3, 0, 0, 1, 1, 0)));
+		assertTrue(this.shape.contains(createAlignedBox(3, 0, 0, 1, 0, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(3, 0, 0, 2, 1, 0)));
+		assertTrue(this.shape.contains(createAlignedBox(3, 0, 0, 2, 0, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(-1, -1, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(4, -3, 0, 1, 1, 0)));
+		assertTrue(this.shape.contains(createAlignedBox(5, -3, 0, 0, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(-3, 4, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(6, -5, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(4, 0, 0, 1, 1, 0)));
+		assertTrue(this.shape.contains(createAlignedBox(4, 0, 0, 1, 0, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(5, 0, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(5, 0, 0, 1, 0, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(5, 0, 0, 0, 1, 0)));
+		assertTrue(this.shape.contains(createAlignedBox(5, 0, 0, 0, 0, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(5, 0, 0, 2, 1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(6, 0, 0, 1, 1, 0)));
 	}
 
 	@Override
-	public void intersectsRectangularPrism3ai(CoordinateSystem3D cs) {
+	public void intersectsAlignedBox3ai(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertTrue(this.shape.intersects(createRectangularPrism(0, 0, 0, 1, 1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(4, 3, 0, 1, 1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(2, 2, 0, 1, 1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(2, 1, 0, 1, 1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(3, 0, 0, 1, 1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(-1, -1, 0, 1, 1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(4, -3, 0, 1, 1, 0)));
-		assertFalse(this.shape.intersects(createRectangularPrism(-3, 4, 0, 1, 1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(6, -5, 0, 1, 1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(4, 0, 0, 1, 1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(5, 0, 0, 1, 1, 0)));
-		assertFalse(this.shape.intersects(createRectangularPrism(0, -3, 0, 1, 1, 0)));
-		assertFalse(this.shape.intersects(createRectangularPrism(0, -3, 0, 2, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(0, 0, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(4, 3, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(2, 2, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(2, 1, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(3, 0, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(-1, -1, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(4, -3, 0, 1, 1, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(-3, 4, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(6, -5, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(4, 0, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(5, 0, 0, 1, 1, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(0, -3, 0, 1, 1, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(0, -3, 0, 2, 1, 0)));
 	}
 
 	@Override
@@ -1333,7 +1105,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Override
 	public void toBoundingBoxB(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B bb = createRectangularPrism(0, 0, 0, 0, 0, 0);
+		B bb = createAlignedBox(0, 0, 0, 0, 0, 0);
 		this.shape.toBoundingBox(bb);
 		assertEquals(0, bb.getMinX());
 		assertEquals(-5, bb.getMinY());
@@ -1506,7 +1278,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Disabled
 	public void staticComputeDrawableElementBoundingBox(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B box = createRectangularPrism(0, 0, 0, 0, 0, 0);
+		B box = createAlignedBox(0, 0, 0, 0, 0, 0);
 		assertTrue(Path3ai.computeDrawableElementBoundingBox(this.shape.getPathIterator(), box));
 		assertEquals(0, box.getMinX());
 		assertEquals(-5, box.getMinY());
@@ -1591,7 +1363,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@EnumSource(CoordinateSystem3D.class)
 	public void moveToIntInt(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(15, 145, 0);
 
 		PathIterator3ai<?> pi = tmpShape.getPathIterator();
@@ -1611,7 +1383,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@EnumSource(CoordinateSystem3D.class)
 	public void moveToPoint3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(createPoint(15, 145, 0));
 
 		PathIterator3ai<?> pi = tmpShape.getPathIterator();
@@ -1632,7 +1404,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	public void lineToIntInt_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.lineTo(15, 145, 0);
 		});
 	}
@@ -1642,7 +1414,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Disabled
 	public void lineToIntInt_moveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(15, 145, 0);
 		tmpShape.lineTo(189, -45, 0);
 
@@ -1668,7 +1440,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	public void lineToPoint3D_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.lineTo(createPoint(15, 145, 0));
 		});
 	}
@@ -1678,7 +1450,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Disabled
 	public void lineToPoint3D_moveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(15, 145, 0);
 		tmpShape.lineTo(createPoint(189, -45, 0));
 
@@ -1704,7 +1476,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	public void quadToIntIntIntInt_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.quadTo(15, 145, 0, 50, 20, 0);
 		});
 	}
@@ -1714,7 +1486,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Disabled
 	public void quadToIntIntIntInt_moveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6, 0);
 		tmpShape.quadTo(15, 145, 0, 50, 20, 0);
 
@@ -1740,7 +1512,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	public void quadToPoint3DPoint3D_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.quadTo(createPoint(15, 145, 0), createPoint(50, 20, 0));
 		});
 	}
@@ -1750,7 +1522,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Disabled
 	public void quadToPoint3DPoint3D_moveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6, 0);
 		tmpShape.quadTo(createPoint(15, 145, 0), createPoint(50, 20, 0));
 
@@ -1776,7 +1548,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	public void curveToIntIntIntIntIntInt_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.curveTo(15, 145, 0, 50, 20, 0, 0, 0, 0);
 		});
 	}
@@ -1786,7 +1558,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Disabled
 	public void curveToIntIntIntIntIntInt_moveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6, 0);
 		tmpShape.curveTo(15, 145, 0, 50, 20, 0, 0, 0, 0);
 
@@ -1812,7 +1584,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	public void curveToPoint3DPoint3DPoint3D_noMoveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(IllegalStateException.class, () -> {
-			Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+			Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 			tmpShape.curveTo(createPoint(15, 145, 0), createPoint(50, 20, 0), createPoint(0, 0, 0));
 		});
 	}
@@ -1822,7 +1594,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Disabled
 	public void curveToPoint3DPoint3DPoint3Dt_moveTo(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6, 0);
 		tmpShape.curveTo(createPoint(15, 145, 0), createPoint(50, 20, 0), createPoint(0, 0, 0));
 
@@ -2007,7 +1779,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	public void intersectsShape3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(this.shape.intersects((Shape3D) createSphere(3, 0, 0, 1)));
-		assertTrue(this.shape.intersects((Shape3D) createRectangularPrism(-1, -1, 0, 1, 1, 0)));
+		assertTrue(this.shape.intersects((Shape3D) createAlignedBox(-1, -1, 0, 1, 1, 0)));
 	}
 
 	@Override
@@ -2068,7 +1840,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		Transform3D tr = new Transform3D();
 		tr.makeTranslationMatrix(3, 4, 0);
 		Transform3D tr2 = new Transform3D();
-		tr2.makeRotationMatrix(-MathConstants.DEMI_PI);
+		tr2.makeRotationMatrix(newAxisAngleZ(-MathConstants.DEMI_PI));
 		Transform3D tr3 = new Transform3D();
 		tr3.mul(tr, tr2);
 
@@ -2101,7 +1873,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	public void operator_andShape3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(this.shape.operator_and(createSphere(3, 0, 0, 1)));
-		assertTrue(this.shape.operator_and(createRectangularPrism(-1, -1, 0, 1, 1, 0)));
+		assertTrue(this.shape.operator_and(createAlignedBox(-1, -1, 0, 1, 1, 0)));
 	}
 
 	@Override

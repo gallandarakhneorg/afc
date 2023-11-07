@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ package org.arakhne.afc.math.test.matrix;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -33,6 +34,7 @@ import org.arakhne.afc.math.test.AbstractMathTestCase;
 @SuppressWarnings("all")
 public class Matrix4dTest extends AbstractMathTestCase{
 
+	@DisplayName("setIdentiity")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void setIdentity(CoordinateSystem3D cs) {
@@ -43,6 +45,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(new Matrix4d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1), matrix);
 	}
 	
+	@DisplayName("add(double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void addDouble(CoordinateSystem3D cs) {
@@ -57,9 +60,10 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m1);
 	}
 	
+	@DisplayName("add(double,Matrix4d)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void addDoubleMatrix4D(CoordinateSystem3D cs) {
+	public void addDoubleMatrix4d(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Matrix4d m1 = this.randomMatrix4d();
 		Matrix4d m2 = m1.clone();
@@ -71,9 +75,10 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m1);
 	}
 	
+	@DisplayName("add(Matrix4d,Matrix4d)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void addMatrix4DMatrix4D(CoordinateSystem3D cs) {
+	public void addMatrix4dMatrix4d(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Matrix4d m1 = this.randomMatrix4d();
 		Matrix4d m2 = this.randomMatrix4d();
@@ -86,9 +91,10 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m3);
 	}
 	
+	@DisplayName("add(Matrix4d)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void addMatrix4D(CoordinateSystem3D cs) {
+	public void addMatrix4d(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Matrix4d m1 = this.randomMatrix4d();
 		Matrix4d m2 = this.randomMatrix4d();
@@ -101,9 +107,10 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m3);
 	}
 	
+	@DisplayName("sub(Matrix4d,Matrix4d)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void subMatrix4DMatrix4D(CoordinateSystem3D cs) {
+	public void subMatrix4dMatrix4d(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Matrix4d m1 = this.randomMatrix4d();
 		Matrix4d m2 = this.randomMatrix4d();
@@ -116,9 +123,10 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m3);
 	}
 	
+	@DisplayName("sub(Matrix4d)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void subMatrix4D(CoordinateSystem3D cs) {
+	public void subMatrix4d(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Matrix4d m1 = this.randomMatrix4d();
 		Matrix4d m2 = this.randomMatrix4d();
@@ -131,6 +139,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m3);
 	}
 	
+	@DisplayName("transpose")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void transpose(CoordinateSystem3D cs) {
@@ -157,9 +166,10 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(transpose, m1);
 	}
 	
+	@DisplayName("transpose(Matrix4d)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void transposeMatrix4D(CoordinateSystem3D cs) {
+	public void transposeMatrix4d(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Matrix4d m1 = this.randomMatrix4d();
 		Matrix4d transpose = new Matrix4d();
@@ -183,6 +193,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(transpose, m1);
 	}
 	
+	@DisplayName("determinant")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void determinant(CoordinateSystem3D cs) {
@@ -211,6 +222,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(determinant,m1.determinant());
 	}
 	
+	@DisplayName("mul(double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void mulDouble(CoordinateSystem3D cs) {
@@ -240,9 +252,10 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m1, m2);
 	}
 	
+	@DisplayName("mul(double,Matrix4d)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void mulDoubleMatrix4D(CoordinateSystem3D cs) {
+	public void mulDoubleMatrix4d(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		double a = getRandom().nextDouble()*50;
 		double b = getRandom().nextDouble()*50;
@@ -269,9 +282,10 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m1, m2);
 	}
 	
+	@DisplayName("mul(Matrix4d)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void mulMatrix4D(CoordinateSystem3D cs) {
+	public void mulMatrix4d(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		double a = getRandom().nextDouble()*50;
 		double b = getRandom().nextDouble()*50;
@@ -336,9 +350,10 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(matrix1, prod);
 	}
 	
+	@DisplayName("mul(Matrix4d,Matrix4d) 1")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void mulMatrix4DMatrix4D(CoordinateSystem3D cs) {
+	public void mulMatrix4dMatrix4d_1(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		double a = getRandom().nextDouble()*50;
 		double b = getRandom().nextDouble()*50;
@@ -403,6 +418,32 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(matrix1, prod);
 	}
 	
+	@DisplayName("mul(Matrix4d,Matrix4d) 2")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void mulMatrix4dMatrix4d_2(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		Matrix4d matrix1 = new Matrix4d(
+				1,2,6,3,
+				4,7,10,11,
+				12,9,13,14,
+				8,15,16,5);
+		Matrix4d matrix2 = new Matrix4d(
+				201,203,205,2013,
+				204,206,208,209,
+				2010,2011,202,2012,
+				2014,2015,2016,207);
+		Matrix4d expected = new Matrix4d(
+				18711, 18726, 7881, 15124,
+				44486, 44529, 26472, 31912,
+				58574, 58643, 35182, 55091,
+				46898, 46965, 18072, 52466);
+		Matrix4d res = new Matrix4d();
+		res.mul(matrix1,matrix2);
+		assertEpsilonEquals(expected, res);
+	}
+
+	@DisplayName("equals(Object)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void equals(CoordinateSystem3D cs) {
@@ -413,6 +454,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m1, m2);
 	}
 	
+	@DisplayName("setZero")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void setZero(CoordinateSystem3D cs) {
@@ -423,6 +465,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(new Matrix4d(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0), m1);
 	}
 	
+	@DisplayName("setDiagonal(double,double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void setDiagonalDoubleDoubleDoubleDouble(CoordinateSystem3D cs) {
@@ -438,6 +481,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(new Matrix4d(a,0,0,0,0,b,0,0,0,0,c,0,0,0,0,d), m1);
 	}
 	
+	@DisplayName("negate")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void negate(CoordinateSystem3D cs) {
@@ -452,9 +496,10 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m1);
 	}
 	
+	@DisplayName("negate(Matrix4d)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void negateMatrix4D(CoordinateSystem3D cs) {
+	public void negateMatrix4d(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Matrix4d m1 = this.randomMatrix4d();
 		Matrix4d m2 = m1.clone();
@@ -466,6 +511,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m1);
 	}
 	
+	@DisplayName("clone")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void testClone(CoordinateSystem3D cs) {
@@ -479,6 +525,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m3);
 	}
 	
+	@DisplayName("isSymmetric")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void isSymmetric(CoordinateSystem3D cs) {
@@ -503,6 +550,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertFalse(m1.isSymmetric());
 	}
 	
+	@DisplayName("isIdentity")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void isIdentity(CoordinateSystem3D cs) {
@@ -516,6 +564,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertFalse(m1.isIdentity());
 	}
 	
+	@DisplayName("m += Matrix4d")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_addMatrix4f(CoordinateSystem3D cs) {
@@ -531,6 +580,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m3);
 	}
 
+	@DisplayName("m += double")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_addDouble(CoordinateSystem3D cs) {
@@ -545,6 +595,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m1);
 	}
 
+	@DisplayName("m -= Matrix4d")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_removeMatrix4f(CoordinateSystem3D cs) {
@@ -560,6 +611,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m3);
 	}
 
+	@DisplayName("m -= double")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_removeDouble(CoordinateSystem3D cs) {
@@ -574,6 +626,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m1);
 	}
 
+	@DisplayName("m + Matrix4d")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_plusMatrix4f(CoordinateSystem3D cs) {
@@ -589,6 +642,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, r);
 	}
 
+	@DisplayName("m + double")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_plusDouble(CoordinateSystem3D cs) {
@@ -603,6 +657,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, r);
 	}
 
+	@DisplayName("m - Matrix4d")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_minusMatrix4f(CoordinateSystem3D cs) {
@@ -618,6 +673,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, r);
 	}
 
+	@DisplayName("m - double")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_minusDouble(CoordinateSystem3D cs) {
@@ -632,6 +688,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, r);
 	}
 
+	@DisplayName("-m")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_minus(CoordinateSystem3D cs) {
@@ -645,9 +702,10 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, r);
 	}
 
+	@DisplayName("m * Matrix4d")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void operator_multiplyMatrix3f(CoordinateSystem3D cs) {
+	public void operator_multiplyMatrix4d(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		double a = getRandom().nextDouble()*50;
 		double b = getRandom().nextDouble()*50;
@@ -712,6 +770,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(prod, r);
 	}
 
+	@DisplayName("m * double")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_multiplyDouble(CoordinateSystem3D cs) {
@@ -741,6 +800,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, result);
 	}
 
+	@DisplayName("m / double")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_divideDouble(CoordinateSystem3D cs) {
@@ -770,6 +830,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, result);
 	}
 
+	@DisplayName("m++")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_plusPlus(CoordinateSystem3D cs) {
@@ -783,6 +844,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m1);
 	}
 
+	@DisplayName("m--")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_moinsMoins(CoordinateSystem3D cs) {
@@ -796,6 +858,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 		assertEpsilonEquals(m2, m1);
 	}
 
+	@DisplayName("!m")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void operator_not(CoordinateSystem3D cs) {

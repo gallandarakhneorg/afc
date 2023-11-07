@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,8 +77,8 @@ public interface Shape2ai<
      *
      * @param x x coordinate of the point to test.
      * @param y y coordinate of the point to test.
-     * @return <code>true</code> if the given point is inside this
-     *     shape, otherwise <code>false</code>.
+     * @return {@code true} if the given point is inside this
+     *     shape, otherwise {@code false}.
      */
     @Pure
     boolean contains(int x, int y);
@@ -86,7 +86,7 @@ public interface Shape2ai<
     /** Replies if the given rectangle is inside this shape.
      *
      * @param box the rectangle to test.
-     * @return <code>true</code> if the given box is inside the shape.
+     * @return {@code true} if the given box is inside the shape.
      */
     @Pure
     boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box);
@@ -197,8 +197,8 @@ public interface Shape2ai<
     /** Replies if this shape is intersecting the given rectangle.
      *
      * @param rectangle the rectangle.
-     * @return <code>true</code> if this shape is intersecting the given shape;
-     * <code>false</code> if there is no intersection.
+     * @return {@code true} if this shape is intersecting the given shape;
+     * {@code false} if there is no intersection.
      */
     @Pure
     boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle);
@@ -206,8 +206,8 @@ public interface Shape2ai<
     /** Replies if this shape is intersecting the given circle.
      *
      * @param circle the circle.
-     * @return <code>true</code> if this shape is intersecting the given shape;
-     * <code>false</code> if there is no intersection.
+     * @return {@code true} if this shape is intersecting the given shape;
+     * {@code false} if there is no intersection.
      */
     @Pure
     boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> circle);
@@ -215,8 +215,8 @@ public interface Shape2ai<
     /** Replies if this shape is intersecting the given segment.
      *
      * @param segment the segment.
-     * @return <code>true</code> if this shape is intersecting the given shape;
-     * <code>false</code> if there is no intersection.
+     * @return {@code true} if this shape is intersecting the given shape;
+     * {@code false} if there is no intersection.
      */
     @Pure
     boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> segment);
@@ -224,8 +224,8 @@ public interface Shape2ai<
     /** Replies if this shape is intersecting the given multishape.
      *
      * @param multishape the multishape.
-     * @return <code>true</code> if this shape is intersecting the given shape;
-     * <code>false</code> if there is no intersection.
+     * @return {@code true} if this shape is intersecting the given shape;
+     * {@code false} if there is no intersection.
      */
     @Pure
     boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape);
@@ -233,8 +233,8 @@ public interface Shape2ai<
     /** Replies if this shape is intersecting the given path.
      *
      * @param path the path.
-     * @return <code>true</code> if this shape is intersecting the given shape;
-     * <code>false</code> if there is no intersection.
+     * @return {@code true} if this shape is intersecting the given shape;
+     * {@code false} if there is no intersection.
      */
     @Pure
     default boolean intersects(Path2ai<?, ?, ?, ?, ?, ?> path) {
@@ -244,8 +244,8 @@ public interface Shape2ai<
     /** Replies if this shape is intersecting the path described by the given iterator.
      *
      * @param iterator the path iterator.
-     * @return <code>true</code> if this shape is intersecting the given shape;
-     * <code>false</code> if there is no intersection.
+     * @return {@code true} if this shape is intersecting the given shape;
+     * {@code false} if there is no intersection.
      */
     @Pure
     boolean intersects(PathIterator2ai<?> iterator);

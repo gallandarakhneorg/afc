@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ package org.arakhne.afc.math.geometry.d2.afp;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
@@ -48,7 +48,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:methodcount")
 public interface Triangle2afp<
         ST extends Shape2afp<?, ?, IE, P, V, B>,
         IT extends Triangle2afp<?, ?, IE, P, V, B>,
@@ -70,7 +69,6 @@ public interface Triangle2afp<
      * @param py y coordinate of the reference point.
      * @return the closest triangle feature to the reference point.
      */
-    @SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
     static TriangleFeature findsClosestFeatureTrianglePoint(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double px, double py) {
         final double apx = px - tx1;
@@ -146,7 +144,7 @@ public interface Triangle2afp<
      *            is the X coordinate of the third point
      * @param y3
      *            is the Y coordinate of the third point
-     * @return <code>true</code> if the three given points are defined in a counter-clockwise order.
+     * @return {@code true} if the three given points are defined in a counter-clockwise order.
      */
     @Pure
     static boolean isCCW(double x1, double y1, double x2, double y2, double x3, double y3) {
@@ -155,7 +153,7 @@ public interface Triangle2afp<
 
     /** Replies if the points of the triangle are defined in a counter-clockwise order.
      *
-     * @return <code>true</code> if the triangle points are defined in a counter-clockwise order.
+     * @return {@code true} if the triangle points are defined in a counter-clockwise order.
      */
     boolean isCCW();
 
@@ -170,8 +168,8 @@ public interface Triangle2afp<
      * @param ty3 y coordinate of the third point of the triangle.
      * @param px is the point to test.
      * @param py is the point to test.
-     * @return <code>true</code> if the point is inside the triangle;
-     * <code>false</code> if not.
+     * @return {@code true} if the point is inside the triangle;
+     * {@code false} if not.
      */
     @Pure
     static boolean containsTrianglePoint(double tx1, double ty1, double tx2, double ty2,
@@ -206,11 +204,10 @@ public interface Triangle2afp<
      * @param ry is the y coordinate of the rectangle.
      * @param rwidth the width of the rectangle.
      * @param rheight the height of the rectangle.
-     * @return <code>true</code> if the rectangle is inside the triangle;
-     * <code>false</code> if not.
+     * @return {@code true} if the rectangle is inside the triangle;
+     * {@code false} if not.
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean containsTriangleRectangle(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double rx, double ry, double rwidth, double rheight) {
         assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(8);
@@ -235,7 +232,6 @@ public interface Triangle2afp<
      * @param closest the closest point.
      * @param farthest the farthest point.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void findsClosestFarthestPointsTrianglePoint(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double px, double py, Point2D<?, ?> closest, Point2D<?, ?> farthest) {
         assert closest != null || farthest != null : AssertMessages.oneNotNullParameter(8, 9);
@@ -301,7 +297,6 @@ public interface Triangle2afp<
      * @see #isCCW(double, double, double, double, double, double)
      */
     @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
     static double calculatesSquaredDistanceTrianglePoint(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double px, double py) {
         final double bx;
@@ -354,11 +349,10 @@ public interface Triangle2afp<
      * @param cx is the center of the circle
      * @param cy is the center of the circle
      * @param cradius is the radius of the circle
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsTriangleCircle(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double cx, double cy, double cradius) {
         assert cradius >= 0 : AssertMessages.positiveOrZeroParameter(8);
@@ -379,11 +373,10 @@ public interface Triangle2afp<
      * @param ey is the position of the ellipse
      * @param ewidth is the width of the ellipse
      * @param eheight is the height of the ellipse
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsTriangleEllipse(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double ex, double ey, double ewidth, double eheight) {
         assert ewidth >= 0 : AssertMessages.positiveOrZeroParameter(8);
@@ -415,11 +408,10 @@ public interface Triangle2afp<
      * @param sy1 y coordinate of the first point of the segment.
      * @param sx2 x coordinate of the second point of the segment.
      * @param sy2 y coordinate of the second point of the segment.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
     static boolean intersectsTriangleSegment(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double sx1, double sy1, double sx2, double sy2) {
         // Separated axis theory on 4 axis (3 directions of the triangle, 1 direction of the segment)
@@ -486,11 +478,10 @@ public interface Triangle2afp<
      * @param t2y2 y coordinate of the second point of the second triangle.
      * @param t2x3 x coordinate of the third point of the second triangle.
      * @param t2y3 y coordinate of the third point of the second triangle.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsTriangleTriangle(double t1x1, double t1y1, double t1x2, double t1y2,
             double t1x3, double t1y3, double t2x1, double t2y1, double t2x2, double t2y2,
             double t2x3, double t2y3) {
@@ -540,11 +531,10 @@ public interface Triangle2afp<
      * @param ry y coordinate of the minimum corner of the rectangle.
      * @param rwidth width of the rectangle.
      * @param rheight height of the rectangle.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static boolean intersectsTriangleRectangle(double tx1, double ty1, double tx2, double ty2,
             double tx3, double ty3, double rx, double ry, double rwidth, double rheight) {
         assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(8);
@@ -766,7 +756,6 @@ public interface Triangle2afp<
     }
 
     @Override
-    @SuppressWarnings("checkstyle:npathcomplexity")
     default void toBoundingBox(B box) {
         assert box != null : AssertMessages.notNullParameter();
         double minx = getX1();
@@ -1057,7 +1046,16 @@ public interface Triangle2afp<
         return new TransformedTrianglePathIterator<>(this, transform);
     }
 
-    /** Abstract iterator on the path elements of the triangle.
+	/** Replies this triangle with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the triangle.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toPolygonDefinition(2, getX1(), getY1(), getX2(), getY2(), getX3(), getY3());
+	}
+
+	/** Abstract iterator on the path elements of the triangle.
      *
      * @param <T> the type of the path elements.
      * @author $Author: sgalland$

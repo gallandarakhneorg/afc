@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,29 +30,30 @@ import org.arakhne.afc.math.geometry.d3.ai.Sphere3ai;
 import org.arakhne.afc.math.geometry.d3.i.MultiShape3i;
 import org.arakhne.afc.math.geometry.d3.i.Path3i;
 import org.arakhne.afc.math.geometry.d3.i.Point3i;
-import org.arakhne.afc.math.geometry.d3.i.RectangularPrism3i;
+import org.arakhne.afc.math.geometry.d3.i.Quaternion4i;
+import org.arakhne.afc.math.geometry.d3.i.AlignedBox3i;
 import org.arakhne.afc.math.geometry.d3.i.Segment3i;
 import org.arakhne.afc.math.geometry.d3.i.Sphere3i;
 import org.arakhne.afc.math.geometry.d3.i.Vector3i;
 import org.arakhne.afc.math.test.geometry.d3.ai.TestShapeFactory3ai;
 
 @SuppressWarnings("all")
-public class TestShapeFactory3i implements TestShapeFactory3ai<Point3i, Vector3i, RectangularPrism3i> {
+public class TestShapeFactory3i implements TestShapeFactory3ai<Point3i, Vector3i, Quaternion4i, AlignedBox3i> {
 	
 	public static final TestShapeFactory3i SINGLETON = new TestShapeFactory3i();
 	
 	@Override
-	public Segment3ai<?, ?, ?, Point3i, Vector3i, RectangularPrism3i> createSegment(int x1, int y1, int z1, int x2, int y2, int z2) {
+	public Segment3ai<?, ?, ?, Point3i, Vector3i, Quaternion4i, AlignedBox3i> createSegment(int x1, int y1, int z1, int x2, int y2, int z2) {
 		return new Segment3i(x1, y1, z1, x2, y2, z2);
 	}
 	
 	@Override
-	public RectangularPrism3i createRectangularPrism(int x, int y, int z, int width, int height, int depth) {
-		return new RectangularPrism3i(x, y, z, width, height, depth);
+	public AlignedBox3i createAlignedBox(int x, int y, int z, int width, int height, int depth) {
+		return new AlignedBox3i(x, y, z, width, height, depth);
 	}
 
 	@Override
-	public Sphere3ai<?, ?, ?, Point3i, Vector3i, RectangularPrism3i> createSphere(int x, int y, int z, int radius) {
+	public Sphere3ai<?, ?, ?, Point3i, Vector3i, Quaternion4i, AlignedBox3i> createSphere(int x, int y, int z, int radius) {
 		return new Sphere3i(x, y, z, radius);
 	}
 	
@@ -67,7 +68,7 @@ public class TestShapeFactory3i implements TestShapeFactory3ai<Point3i, Vector3i
 	}
 
 	@Override
-	public Path3ai<?, ?, ?, Point3i, Vector3i, RectangularPrism3i> createPath(PathWindingRule rule) {
+	public Path3ai<?, ?, ?, Point3i, Vector3i, Quaternion4i, AlignedBox3i> createPath(PathWindingRule rule) {
 		if (rule == null) {
 			return new Path3i();
 		}
@@ -75,7 +76,7 @@ public class TestShapeFactory3i implements TestShapeFactory3ai<Point3i, Vector3i
 	}
 	
 	@Override
-	public MultiShape3ai<?, ?, ?, ?, Point3i, Vector3i, RectangularPrism3i> createMultiShape() {
+	public MultiShape3ai<?, ?, ?, ?, Point3i, Vector3i, Quaternion4i, AlignedBox3i> createMultiShape() {
 		return new MultiShape3i();
 	}
 

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,7 +93,6 @@ public class BasicPathShadow2ai {
      * @param maxX maximum x coordinate of the bounding box enclosing the primitives of the path iterator.
      * @param maxY maximum y coordinate of the bounding box enclosing the primitives of the path iterator.
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     public BasicPathShadow2ai(PathIterator2ai<?> pathIterator, int minX, int minY, int maxX, int maxY) {
         assert pathIterator != null : AssertMessages.notNullParameter(0);
         assert minX <= maxX : AssertMessages.lowerEqualParameters(1, minX, 3, maxX);
@@ -179,8 +178,6 @@ public class BasicPathShadow2ai {
         return numCrosses;
     }
 
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-            "checkstyle:npathcomplexity"})
     private void discretizePathIterator(
             PathIterator2ai<?> pi,
             int x1, int y1, int x2, int y2) {
@@ -333,8 +330,6 @@ public class BasicPathShadow2ai {
     * @param sx1 x coordinate of the second point of the segment.
     * @param sy1 y coordinate of the second point of the segment.
     */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-            "checkstyle:npathcomplexity"})
     private void crossSegmentTwoShadowLines(
             int shadowX0, int shadowY0,
             int shadowX1, int shadowY1,
@@ -445,7 +440,7 @@ public class BasicPathShadow2ai {
      * @param sy0 y coordinate of the first point of the segment.
      * @param sx1 x coordinate of the second point of the segment.
      * @param sy1 y coordinate of the second point of the segment.
-     * @param isMax <code>true</code> if the shadow line is for ymax; <code>false</code> if it is for
+     * @param isMax {@code true} if the shadow line is for ymax; {@code false} if it is for
      *     ymin.
      * @param data the data to update.
      */

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,6 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:magicnumber")
 public class Path2i extends AbstractShape2i<Path2i>
 		implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectangle2i> {
 
@@ -231,7 +230,6 @@ public class Path2i extends AbstractShape2i<Path2i>
 
 	@Pure
 	@Override
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + Integer.hashCode(this.numCoords);
@@ -708,7 +706,6 @@ public class Path2i extends AbstractShape2i<Path2i>
 	}
 
 	@Override
-	@SuppressWarnings({"checkstyle:fallthrough", "checkstyle:cyclomaticcomplexity"})
 	public boolean remove(int x, int y) {
 		for (int i = 0, j = 0; i < this.numCoords && j < this.numTypes;) {
 			switch (this.types[j]) {

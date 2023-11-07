@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -40,7 +41,7 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.GeomFactory3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PathElement3afp;
-import org.arakhne.afc.math.geometry.d3.afp.RectangularPrism3afp;
+import org.arakhne.afc.math.geometry.d3.afp.AlignedBox3afp;
 import org.arakhne.afc.math.test.AbstractMathTestCase;
 import org.arakhne.afc.math.test.geometry.Point3DStub;
 import org.arakhne.afc.math.test.geometry.Vector3DStub;
@@ -48,9 +49,9 @@ import org.arakhne.afc.math.test.geometry.Vector3DStub;
 @SuppressWarnings("all")
 public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 
-	private GeomFactory3afp<?, ?, ?, ?> factory;
+	private GeomFactory3afp<?, ?, ?, ?, ?> factory;
 
-	protected abstract GeomFactory3afp<?, ?, ?, ?> createFactory();
+	protected abstract GeomFactory3afp<?, ?, ?, ?, ?> createFactory();
 	
 	protected abstract Point3D createPoint(double x, double y, double z);
 
@@ -65,7 +66,8 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 	public void tearDown() throws Exception {
 		this.factory = null;
 	}
-	
+
+	@DisplayName("convertToPoint(Point3D) - expected type")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void convertToPointPoint3D_expectedPointType(CoordinateSystem3D cs) {
@@ -75,6 +77,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertSame(p, p2);
 	}
 	
+	@DisplayName("convertToPoint(Point3D) - not expected type")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void convertToPointPoint3D_notExpectedPointType(CoordinateSystem3D cs) {
@@ -85,6 +88,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEquals(p, p2);
 	}
 
+	@DisplayName("convertToVector(Point3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void convertToVectorPoint3D(CoordinateSystem3D cs) {
@@ -95,6 +99,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEquals(p, v);
 	}
 
+	@DisplayName("convertToPoint(Vector3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void convertToPointVector3D(CoordinateSystem3D cs) {
@@ -105,6 +110,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEquals(v, p);
 	}
 
+	@DisplayName("convertToVector(Vector3D) - expected type")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void convertToVectorVector3D_expectedVectorType(CoordinateSystem3D cs) {
@@ -114,9 +120,10 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertSame(v, v2);
 	}
 	
+	@DisplayName("convertToVector(Vector3D) - not expected type")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void convertToVectorVector2D_notExpectedVectorType(CoordinateSystem3D cs) {
+	public void convertToVectorVector3D_notExpectedVectorType(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Vector3D v = new Vector3DStub(45, 56, 72);
 		Vector3D v2 = this.factory.convertToVector(v);
@@ -124,6 +131,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEquals(v, v2);
 	}
 
+	@DisplayName("newPoint")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void newPoint(CoordinateSystem3D cs) {
@@ -137,6 +145,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEquals(ref.getClass(), p.getClass());
 	}
 
+	@DisplayName("newPoint(int,int,int)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void newPointIntIntInt(CoordinateSystem3D cs) {
@@ -150,6 +159,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEquals(ref.getClass(), p.getClass());
 	}
 
+	@DisplayName("newPoint(double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Disabled
@@ -164,6 +174,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEquals(ref.getClass(), p.getClass());
 	}
 
+	@DisplayName("newVector")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void newVector(CoordinateSystem3D cs) {
@@ -176,6 +187,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEquals(ref.getClass(), p.getClass());
 	}
 
+	@DisplayName("newVector(int,int,int)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void newVectorIntIntInt(CoordinateSystem3D cs) {
@@ -189,6 +201,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEquals(ref.getClass(), p.getClass());
 	}
 
+	@DisplayName("newVector(double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void newVectorDoubleDouble(CoordinateSystem3D cs) {
@@ -202,31 +215,34 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEquals(ref.getClass(), p.getClass());
 	}
 
+	@DisplayName("newPath(NON_ZERO)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void newPath_NONZERO(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3afp<?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.NON_ZERO);
+		Path3afp<?, ?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.NON_ZERO);
 		assertNotNull(path);
 		assertSame(PathWindingRule.NON_ZERO, path.getWindingRule());
 		assertEquals(0, path.size());
 	}
 	
+	@DisplayName("newPath(EVEN_ODD)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void newPath_EVENODD(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3afp<?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.EVEN_ODD);
+		Path3afp<?, ?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.EVEN_ODD);
 		assertNotNull(path);
 		assertSame(PathWindingRule.EVEN_ODD, path.getWindingRule());
 		assertEquals(0, path.size());
 	}
 
+	@DisplayName("newBox")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void newBox(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		RectangularPrism3afp<?, ?, ?, ?, ?, ?> r = this.factory.newBox();
+		AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> r = this.factory.newBox();
 		assertNotNull(r);
 		assertEpsilonEquals(0, r.getMinX());
 		assertEpsilonEquals(0, r.getMinY());
@@ -236,11 +252,12 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEpsilonEquals(0, r.getMaxZ());
 	}
 
+	@DisplayName("newBox(double,double,double,double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void newBoxNumberNumberNumberNumber(CoordinateSystem3D cs) {
+	public void newBoxDoubleDoubleDoubleDoubleDoubleDouble(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		RectangularPrism3afp<?, ?, ?, ?, ?, ?> r = this.factory.newBox(1, 2, 3, 4, 5, 6);
+		AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> r = this.factory.newBox(1, 2, 3, 4, 5, 6);
 		assertNotNull(r);
 		assertEpsilonEquals(1, r.getMinX());
 		assertEpsilonEquals(2, r.getMinY());
@@ -250,6 +267,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEpsilonEquals(9, r.getMaxZ());
 	}
 
+	@DisplayName("newMovePathElement(double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Disabled
@@ -272,6 +290,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEpsilonEquals(3, element.getToZ());
 	}
 	
+	@DisplayName("newLinePathElement(double,double,double,double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void newLinePathElement(CoordinateSystem3D cs) {
@@ -293,6 +312,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEpsilonEquals(6, element.getToZ());
 	}
 
+	@DisplayName("newClosePathElement(double,double,double,double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void newClosePathElement(CoordinateSystem3D cs) {
@@ -314,6 +334,7 @@ public abstract class AbstractGeomFactory3afpTest extends AbstractMathTestCase {
 		assertEpsilonEquals(6, element.getToZ());
 	}
 
+	@DisplayName("newCurvePathElement(double,double,double,double,double,double,double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public void newCurvePathElement_quad(CoordinateSystem3D cs) {

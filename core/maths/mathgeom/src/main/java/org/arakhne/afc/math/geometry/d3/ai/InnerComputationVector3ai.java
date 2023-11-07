@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import org.arakhne.afc.vmutil.json.JsonBuffer;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class InnerComputationVector3ai implements Vector3D<InnerComputationVector3ai, InnerComputationPoint3ai> {
+public class InnerComputationVector3ai implements Vector3D<InnerComputationVector3ai, InnerComputationPoint3ai, InnerComputationQuaternionai> {
 
 	private static final long serialVersionUID = -9075498295363704480L;
 
@@ -132,7 +132,7 @@ public class InnerComputationVector3ai implements Vector3D<InnerComputationVecto
 	}
 
 	@Override
-	public GeomFactory3D<InnerComputationVector3ai, InnerComputationPoint3ai> getGeomFactory() {
+	public GeomFactory3D<InnerComputationVector3ai, InnerComputationPoint3ai, InnerComputationQuaternionai> getGeomFactory() {
 		return InnerComputationGeomFactory.SINGLETON;
 	}
 
@@ -149,7 +149,7 @@ public class InnerComputationVector3ai implements Vector3D<InnerComputationVecto
 	}
 
 	@Override
-	public UnmodifiableVector3D<InnerComputationVector3ai, InnerComputationPoint3ai> toUnmodifiable() {
+	public UnmodifiableVector3D<InnerComputationVector3ai, InnerComputationPoint3ai, InnerComputationQuaternionai> toUnmodifiable() {
 		throw new UnsupportedOperationException();
 	}
 

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@
 
 package org.arakhne.afc.math.test.geometry.d3.ai;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -33,32 +33,29 @@ import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d3.ai.AlignedBox3ai;
 import org.arakhne.afc.math.geometry.d3.ai.MultiShape3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
 import org.arakhne.afc.math.geometry.d3.ai.PathElement3ai;
 import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
-import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Segment3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Shape3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Sphere3ai;
 import org.arakhne.afc.math.test.AbstractMathTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
-		B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> extends AbstractMathTestCase {
+public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, ?, B>,
+		B extends AlignedBox3ai<?, ?, ?, ?, ?, ?, B>> extends AbstractMathTestCase {
 	
 	/** Is the rectangular shape to test.
 	 */
@@ -66,7 +63,7 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	
 	/** Factory of shapes.
 	 */
-	protected TestShapeFactory3ai<?, ?, B> factory;
+	protected TestShapeFactory3ai<?, ?, ?, B> factory;
 
 	@BeforeEach
 	public void setUp() {
@@ -74,7 +71,7 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 		this.shape = createShape();
 	}
 	
-	protected abstract TestShapeFactory3ai<?, ? ,B> createFactory();
+	protected abstract TestShapeFactory3ai<?, ?, ? ,B> createFactory();
 	
 	/** Create the shape to test.
 	 * 
@@ -82,15 +79,15 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	 */
 	protected abstract T createShape();
 	
-	public final Segment3ai<?, ?, ?, ?, ?, B> createSegment(int x1, int y1, int z1, int x2, int y2, int z2) {
+	public final Segment3ai<?, ?, ?, ?, ?, ?, B> createSegment(int x1, int y1, int z1, int x2, int y2, int z2) {
 		return this.factory.createSegment(x1, y1, z1, x2, y2, z2);
 	}
 	
-	public final B createRectangularPrism(int x, int y, int z, int width, int height, int depth) {
-		return this.factory.createRectangularPrism(x, y, z, width, height, depth);
+	public final B createAlignedBox(int x, int y, int z, int width, int height, int depth) {
+		return this.factory.createAlignedBox(x, y, z, width, height, depth);
 	}
 
-	public final Sphere3ai<?, ?, ?, ?, ?, B> createSphere(int x, int y, int z, int radius) {
+	public final Sphere3ai<?, ?, ?, ?, ?, ?, B> createSphere(int x, int y, int z, int radius) {
 		return this.factory.createSphere(x, y, z, radius);
 	}
 	
@@ -102,15 +99,15 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 		return this.factory.createVector(x, y, z);
 	}
 
-	public final Path3ai<?, ?, ?, ?, ?, B> createPath() {
+	public final Path3ai<?, ?, ?, ?, ?, ?, B> createPath() {
 		return this.factory.createPath(null);
 	}
 	
-	public final Path3ai<?, ?, ?, ?, ?, B> createPath(PathWindingRule rule) {
+	public final Path3ai<?, ?, ?, ?, ?, ?, B> createPath(PathWindingRule rule) {
 		return this.factory.createPath(rule);
 	}
 	
-	public final MultiShape3ai<?, ?, ?, ?, ?, ?, B> createMultiShape() {
+	public final MultiShape3ai<?, ?, ?, ?, ?, ?, ?, B> createMultiShape() {
 		return this.factory.createMultiShape();
 	}
 
@@ -146,8 +143,8 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	 * 
 	 * @param a a set of coordinates.
 	 * @param b a set of coordinates.
-	 * @return <code>true</code> if the two arrays are equal, otherwise
-	 * <code>false</code>.
+	 * @return {@code true} if the two arrays are equal, otherwise
+	 * {@code false}.
 	 */
 	public boolean isEpsilonEquals(float[] a, float[] b) {
 		if (a==b) return true;
@@ -166,8 +163,8 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	 * 
 	 * @param a a set of coordinates.
 	 * @param b a set of coordinates.
-	 * @return <code>true</code> if the two arrays are equal, otherwise
-	 * <code>false</code>.
+	 * @return {@code true} if the two arrays are equal, otherwise
+	 * {@code false}.
 	 */
 	protected boolean isEquals(int[] a, int[] b) {
 		if (a==b) return true;
@@ -191,153 +188,147 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 		}
 	}
 
+	@DisplayName("clone")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void testClone(CoordinateSystem3D cs);
 
+	@DisplayName("equals(Object)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void equalsObject(CoordinateSystem3D cs);
 
+	@DisplayName("equals(Object) with path iterator")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void equalsObject_withPathIterator(CoordinateSystem3D cs);
 
+	@DisplayName("equalsToPathIterator")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void equalsToPathIterator(CoordinateSystem3D cs);
 
+	@DisplayName("equalsToShape")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void equalsToShape(CoordinateSystem3D cs);
 
+	@DisplayName("isEmpty")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void isEmpty(CoordinateSystem3D cs);
 
+	@DisplayName("clear")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	public abstract void clear(CoordinateSystem3D cs);
 
+	@DisplayName("contains(Point3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void containsPoint3D(CoordinateSystem3D cs);
 	
+	@DisplayName("getClosestPointTo")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void getClosestPointTo(CoordinateSystem3D cs);
 	
+	@DisplayName("getFarthestPointTo")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void getFarthestPointTo(CoordinateSystem3D cs);
 
+	@DisplayName("getDistance")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void getDistance(CoordinateSystem3D cs);
 
+	@DisplayName("getDistanceSquared")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void getDistanceSquared(CoordinateSystem3D cs);
 
+	@DisplayName("getDistanceL1")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void getDistanceL1(CoordinateSystem3D cs);
 
+	@DisplayName("getDistanceLinf")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void getDistanceLinf(CoordinateSystem3D cs);
 
+	@DisplayName("set(Shape)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void setIT(CoordinateSystem3D cs);
 
+	@DisplayName("getPathIterator")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void getPathIterator(CoordinateSystem3D cs);
 
+	@DisplayName("getPathIterator(Transform3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void getPathIteratorTransform3D(CoordinateSystem3D cs);
 
+	@DisplayName("createTransformedShape")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void createTransformedShape(CoordinateSystem3D cs);
 
+	@DisplayName("translate(Vector3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void translateVector3D(CoordinateSystem3D cs);
 
+	@DisplayName("toBoundingBox")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void toBoundingBox(CoordinateSystem3D cs);
 	
+	@DisplayName("toBonudingBox(Box3D)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void toBoundingBoxB(CoordinateSystem3D cs);
 
+	@DisplayName("getPointIterator")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void getPointIterator(CoordinateSystem3D cs);
 
+	@DisplayName("contains(AlignedBox3afp)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
-	public abstract void containsRectangularPrism3ai(CoordinateSystem3D cs);
+	public abstract void containsAlignedBox3ai(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
-	public abstract void intersectsRectangularPrism3ai(CoordinateSystem3D cs);
+	public abstract void intersectsAlignedBox3ai(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void intersectsSphere3ai(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void intersectsSegment3ai(CoordinateSystem3D cs);
 	
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void intersectsPath3ai(CoordinateSystem3D cs);
 	
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void intersectsPathIterator3ai(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void translateIntInt(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void containsIntInt(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
@@ -349,47 +340,38 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void intersectsShape3D(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void operator_addVector3D(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void operator_plusVector3D(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void operator_removeVector3D(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void operator_minusVector3D(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void operator_multiplyTransform3D(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void operator_andPoint3D(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void operator_andShape3D(CoordinateSystem3D cs);
 
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	@Disabled
 	public abstract void operator_upToPoint3D(CoordinateSystem3D cs);
 
 	/** Generate a bitmap containing the given Shape2D.
@@ -398,9 +380,9 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	 * @return the filename
 	 * @throws IOException Input/output exception
 	 */
-	public static File generateTestPicture(Shape3ai<?, ?, ?, ?, ?, ?> shape) throws IOException {
+	public static File generateTestPicture(Shape3ai<?, ?, ?, ?, ?, ?, ?> shape) throws IOException {
 		File filename = File.createTempFile("testShape", ".png"); //$NON-NLS-1$ //$NON-NLS-2$
-		RectangularPrism3ai box = shape.toBoundingBox();
+		AlignedBox3ai box = shape.toBoundingBox();
 		PathIterator3ai<?> iterator = shape.getPathIterator();
 		Path2D path = new Path2D.Double(
 				iterator.getWindingRule() == PathWindingRule.NON_ZERO ? Path2D.WIND_NON_ZERO : Path2D.WIND_EVEN_ODD);

@@ -60,7 +60,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @param boxExtentAxis1 extent of the first axis of the oriented box.
 	 * @param boxExtentAxis2 extent of the second axis of the oriented box.
 	 * @param boxExtentAxis3 extent of the third axis of the oriented box.
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
+	 * @return {@code true} if intersecting, otherwise {@code false}
 	 */
 	@Pure
 	public static boolean intersectsSolidSphereOrientedBox(
@@ -106,7 +106,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @param capsuleBy - Medial line segment end point of the capsule
 	 * @param capsuleBz - Medial line segment end point of the capsule
 	 * @param capsuleRadius - radius of the capsule
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
+	 * @return {@code true} if intersecting, otherwise {@code false}
 	 */
 	@Pure
 	public static boolean intersectsSphereCapsule(
@@ -143,7 +143,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
      * @param upperx coordinates of the uppermost point of the box.
      * @param uppery coordinates of the uppermost point of the box.
      * @param upperz coordinates of the uppermost point of the box.
-     * @return <code>true</code> if intersecting, otherwise <code>false</code>
+     * @return {@code true} if intersecting, otherwise {@code false}
      */
 	@Pure
     public static boolean intersectsSolidSphereHollowAlignedBox(
@@ -224,7 +224,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
      * @param upperx coordinates of the uppermost point of the box.
      * @param uppery coordinates of the uppermost point of the box.
      * @param upperz coordinates of the uppermost point of the box.
-     * @return <code>true</code> if intersecting, otherwise <code>false</code>
+     * @return {@code true} if intersecting, otherwise {@code false}
      */
 	@Pure
     public static boolean intersectsHollowSphereSolidAlignedBox(
@@ -293,7 +293,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
      * @param upperx coordinates of the uppermost point of the box.
      * @param uppery coordinates of the uppermost point of the box.
      * @param upperz coordinates of the uppermost point of the box.
-     * @return <code>true</code> if intersecting, otherwise <code>false</code>
+     * @return {@code true} if intersecting, otherwise {@code false}
      */
 	@Pure
     public static boolean intersectsHollowSphereHollowAlignedBox(
@@ -385,8 +385,8 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @param px is the point to test.
 	 * @param py is the point to test.
 	 * @param pz is the point to test.
-	 * @return <code>true</code> if the point is inside the circle;
-	 * <code>false</code> if not.
+	 * @return {@code true} if the point is inside the circle;
+	 * {@code false} if not.
 	 */
 	@Pure
 	public static boolean containsSpherePoint(double cx, double cy, double cz, double radius,
@@ -408,8 +408,8 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @param bsx is the X size of the box.
 	 * @param bsy is the Y size of the box.
 	 * @param bsz is the Z size of the box.
-	 * @return <code>true</code> if the given box is inside the sphere;
-	 * otherwise <code>false</code>.
+	 * @return {@code true} if the given box is inside the sphere;
+	 * otherwise {@code false}.
 	 */
 	@Pure
 	public static boolean containsSphereAlignedBox(
@@ -440,8 +440,8 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @param y2 is the center of the second sphere
 	 * @param z2 is the center of the second sphere
 	 * @param radius2 is the radius of the second sphere
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
 	@Pure
 	public static boolean intersectsSphereSphere(
@@ -471,8 +471,8 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @param bsx is the X size of the box.
 	 * @param bsy is the Y size of the box.
 	 * @param bsz is the Z size of the box.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
 	@Pure
 	public static boolean intersectsSolidSphereSolidAlignedBox(
@@ -523,8 +523,8 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @param x3 is the second point of the line.
 	 * @param y3 is the second point of the line.
 	 * @param z3 is the second point of the line.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
 	@Pure
 	public static boolean intersectsSphereLine(
@@ -547,8 +547,8 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @param x3 is the second point of the line.
 	 * @param y3 is the second point of the line.
 	 * @param z3 is the second point of the line.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
 	@Pure
 	public static boolean intersectsSphereSegment(
@@ -567,8 +567,8 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	/** Replies if the sphere is empty.
 	 * The sphere is empty when the radius is nul.
 	 * 
-	 * @return <code>true</code> if the radius is nul;
-	 * otherwise <code>false</code>.
+	 * @return {@code true} if the radius is nul;
+	 * otherwise {@code false}.
 	 */
 	@Pure
 	@Override

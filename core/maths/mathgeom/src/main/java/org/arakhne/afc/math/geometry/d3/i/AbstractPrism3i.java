@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ package org.arakhne.afc.math.geometry.d3.i;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d3.ai.Prism3ai;
+import org.arakhne.afc.math.geometry.d3.ai.Box3ai;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** A rectangular shape with 2 integer numbers.
@@ -37,7 +37,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  */
 public abstract class AbstractPrism3i<IT extends AbstractPrism3i<?>>
 	extends AbstractShape3i<IT>
-	implements Prism3ai<Shape3i<?>, IT, PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
+	implements Box3ai<Shape3i<?>, IT, PathElement3i, Point3i, Vector3i, Quaternion4i, AlignedBox3i> {
 
 	private static final long serialVersionUID = -6441506445885829836L;
 
@@ -62,7 +62,7 @@ public abstract class AbstractPrism3i<IT extends AbstractPrism3i<?>>
 	/** Constructor by copy.
 	 * @param shape the shape to copy.
 	 */
-	public AbstractPrism3i(Prism3ai<?, ?, ?, ?, ?, ?> shape) {
+	public AbstractPrism3i(Box3ai<?, ?, ?, ?, ?, ?, ?> shape) {
 	    assert shape != null : AssertMessages.notNullParameter();
 	    this.minx = shape.getMinX();
 	    this.miny = shape.getMinY();
@@ -216,7 +216,6 @@ public abstract class AbstractPrism3i<IT extends AbstractPrism3i<?>>
 
 	@Pure
 	@Override
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + this.minx;

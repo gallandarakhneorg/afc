@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ package org.arakhne.afc.math.geometry.d2.afp;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
@@ -66,11 +66,10 @@ public interface Ellipse2afp<
      * @param ellh is the height of the ellipse.
      * @param px is the point to test.
      * @param py is the point to test.
-     * @return <code>true</code> if the point is inside the ellipse;
-     * <code>false</code> if not.
+     * @return {@code true} if the point is inside the ellipse;
+     * {@code false} if not.
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean containsEllipsePoint(double ellx, double elly, double ellw, double ellh, double px, double py) {
         assert ellw >= 0. : AssertMessages.positiveOrZeroParameter(2);
         assert ellh >= 0. : AssertMessages.positiveOrZeroParameter(3);
@@ -99,7 +98,6 @@ public interface Ellipse2afp<
      * @see #findsClosestPointShallowEllipsePoint(double, double, double, double, double, double, Point2D)
      */
     @Unefficient
-    @SuppressWarnings("checkstyle:magicnumber")
     static void findsClosestPointSolidEllipsePoint(
             double px, double py, double ex, double ey, double ew, double eh,
             Point2D<?, ?> result) {
@@ -183,7 +181,6 @@ public interface Ellipse2afp<
      * @see #findsClosestPointSolidEllipsePoint(double, double, double, double, double, double, Point2D)
      */
     @Unefficient
-    @SuppressWarnings("checkstyle:magicnumber")
     static void findsClosestPointShallowEllipsePoint(double px, double py, double ex, double ey, double ew, double eh,
             Point2D<?, ?> result) {
         assert ew >= 0. : AssertMessages.positiveOrZeroParameter(4);
@@ -265,7 +262,6 @@ public interface Ellipse2afp<
      * @param result the farthest point in the ellipse.
      */
     @Unefficient
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static void findsFarthestPointShallowEllipsePoint(double px, double py, double ex, double ey,
             double ew, double eh, Point2D<?, ?> result) {
         assert ew >= 0. : AssertMessages.positiveOrZeroParameter(4);
@@ -346,11 +342,10 @@ public interface Ellipse2afp<
      * @param rymin is the lowest corner of the rectangle.
      * @param rxmax is the uppest corner of the rectangle.
      * @param rymax is the uppest corner of the rectangle.
-     * @return <code>true</code> if the given rectangle is inside the ellipse;
-     *     otherwise <code>false</code>.
+     * @return {@code true} if the given rectangle is inside the ellipse;
+     *     otherwise {@code false}.
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean containsEllipseRectangle(double ex, double ey, double ewidth, double eheight,
             double rxmin, double rymin, double rxmax, double rymax) {
         assert ewidth >= 0. : AssertMessages.positiveOrZeroParameter(2);
@@ -386,12 +381,11 @@ public interface Ellipse2afp<
      * @param y2 is the lowest corner of the second ellipse.
      * @param width2 is the width of the second ellipse.
      * @param height2 is the height of the second ellipse.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
     @Unefficient
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean intersectsEllipseEllipse(double x1, double y1, double width1, double height1,
             double x2, double y2, double width2, double height2) {
         assert width1 >= 0. : AssertMessages.positiveOrZeroParameter(2);
@@ -424,12 +418,11 @@ public interface Ellipse2afp<
      * @param cx is the center of the circle.
      * @param cy is the center of the circle.
      * @param cradius the radius of the circle.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
     @Unefficient
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean intersectsEllipseCircle(double ex, double ey, double ewidth, double eheight,
             double cx, double cy, double cradius) {
         assert ewidth >= 0. : AssertMessages.positiveOrZeroParameter(2);
@@ -452,8 +445,8 @@ public interface Ellipse2afp<
      * @param y1 is the first point of the line.
      * @param x2 is the second point of the line.
      * @param y2 is the second point of the line.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      * @see "http://blog.csharphelper.com/2012/09/24/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c.aspx"
      */
     @Pure
@@ -507,12 +500,11 @@ public interface Ellipse2afp<
      * @param y2 is the second point of the segment.
      * @param intersectsWhenTouching indicates if there is an intersection if the segment is touching
      *     the ellipse at one point.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      * @see "http://blog.csharphelper.com/2012/09/24/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c.aspx"
      */
     @Pure
-    @SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsEllipseSegment(double ex, double ey, double ew, double eh,
             double x1, double y1, double x2, double y2, boolean intersectsWhenTouching) {
         assert ew >= 0. : AssertMessages.positiveOrZeroParameter(2);
@@ -581,11 +573,10 @@ public interface Ellipse2afp<
      * @param y3 is the first corner of the second rectangle.
      * @param x4 is the second corner of the second rectangle.
      * @param y4 is the second corner of the second rectangle.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean intersectsEllipseRectangle(double ex, double ey, double ewidth, double eheight,
             double x3, double y3, double x4, double y4) {
         assert ewidth >= 0. : AssertMessages.positiveOrZeroParameter(2);
@@ -985,6 +976,23 @@ public interface Ellipse2afp<
         return factory.newPoint(centerX, centerY + focusDistance);
     }
 
+	/** Replies this ellipse with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the ellipse.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		final P focus1 = getMinFocusPoint();
+		final P focus2 = getMaxFocusPoint();
+		final double r1 = getHorizontalRadius();
+		final double r2 = getVerticalRadius();
+		final double r = Math.max(r1, r2);
+		return GeogebraUtil.toEllipseDefinition(2,
+				focus1.getX(), focus2.getY(),
+				focus2.getX(), focus2.getY(),
+				r);
+	}
+
     /** Abstract iterator on the path elements of the ellipse.
      *
      * @param <T> the type of the path elements.
@@ -1126,7 +1134,6 @@ public interface Ellipse2afp<
         }
 
         @Override
-        @SuppressWarnings("checkstyle:magicnumber")
         public T next() {
             if (this.index >= NUMBER_ELEMENTS) {
                 throw new NoSuchElementException();
@@ -1174,7 +1181,6 @@ public interface Ellipse2afp<
      * @mavenartifactid $ArtifactId$
      * @since 13.0
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     class TransformedEllipsePathIterator<T extends PathElement2afp> extends AbstractEllipsePathIterator<T> {
 
         private final Transform2D transform;
@@ -1330,7 +1336,7 @@ public interface Ellipse2afp<
          * @param verticalRadius the vertical radius.
          * @param computeDistance indicates if the distance musst be computed and replied.
          * @return the triplet (closest point x, closest point y, distance to closest point) if
-         * <code>computeDistance</code> if <code>true</code>. Otherwise, the triplet (closest point x, closest point y).
+         * {@code computeDistance} if {@code true}. Otherwise, the triplet (closest point x, closest point y).
          */
         @Unefficient
         public static double[] computeClosestPointOnShallowEllipseInPositiveQuadrant(
@@ -1413,10 +1419,9 @@ public interface Ellipse2afp<
          * @param verticalRadius the vertical radius.
          * @param computeDistance indicates if the distance musst be computed and replied.
          * @return the triplet (closest point x, closest point y, distance to closest point) if
-         * <code>computeDistance</code> if <code>true</code>. Otherwise, the triplet (closest point x, closest point y).
+         * {@code computeDistance} if {@code true}. Otherwise, the triplet (closest point x, closest point y).
          */
         @Unefficient
-        @SuppressWarnings("checkstyle:nestedifdepth")
         public static double[] computeClosestPointOnSolidEllipseInPositiveQuadrant(
                 double px, double py,
                 double horizontalRadius, double verticalRadius,
@@ -1534,7 +1539,7 @@ public interface Ellipse2afp<
          * @param verticalRadius the vertical radius.
          * @param computeDistance indicates if the distance musst be computed and replied.
          * @return the triplet (closest point x, closest point y, distance to closest point) if
-         * <code>computeDistance</code> if <code>true</code>. Otherwise, the triplet (closest point x, closest point y).
+         * {@code computeDistance} if {@code true}. Otherwise, the triplet (closest point x, closest point y).
          */
         @Unefficient
         public static double[] computeFarthestPointOnShallowEllipseInPositiveQuadrant(

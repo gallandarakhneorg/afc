@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
-import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai;
+import org.arakhne.afc.math.geometry.d3.ai.AlignedBox3ai;
 
 @SuppressWarnings("all")
-public abstract class AbstractPrism3aiTest<T extends RectangularPrism3ai<?, T, ?, ?, ?, B>,
-		B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
+public abstract class AbstractPrism3aiTest<T extends AlignedBox3ai<?, T, ?, ?, ?, ?, B>,
+		B extends AlignedBox3ai<?, ?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
 
 	protected static final int MINX = 5;
 	
@@ -52,7 +52,7 @@ public abstract class AbstractPrism3aiTest<T extends RectangularPrism3ai<?, T, ?
 	@Override
 	public void toBoundingBoxB(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B box = createRectangularPrism(0, 0, 0, 0, 0, 0);
+		B box = createAlignedBox(0, 0, 0, 0, 0, 0);
 		this.shape.toBoundingBox(box);
 		assertEquals(this.shape.getMinX(), box.getMinX());
 		assertEquals(this.shape.getMinY(), box.getMinY());

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-@SuppressWarnings("checkstyle:methodcount")
 public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	RV extends Vector1D<? super RV, ? super RP, ? super RS>,
 	RS extends Segment1D<?, ?>>
@@ -100,11 +99,11 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	/** Replies if this pint is located on the segment.
 	 *
 	 * <p>The point is located on the segment only if its curviline
-	 * coordinate is in <code>[0;length]</code>, where
-	 * <code>length</code> is the length of the segment.
+	 * coordinate is in {@code [0;length]}, where
+	 * {@code length} is the length of the segment.
 	 *
-	 * @return <code>true</code> if the point is on the segment,
-	 *     otherwise <code>false</code>
+	 * @return {@code true} if the point is on the segment,
+	 *     otherwise {@code false}
 	 */
 	@Pure
 	default boolean isOnSegment() {
@@ -123,8 +122,8 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	/** Replies if this point is located on the same segment as the given one.
 	 *
 	 * @param point the point to test.
-	 * @return <code>true</code> if the points are on the same segment,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the points are on the same segment,
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	default boolean isOnSameSegment(Point1D<?, ?, ?> point) {
@@ -138,7 +137,7 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 	/** Replies if this point is equals to the given point.
 	 *
 	 * @param tuple the point to test.
-	 * @return <code>true</code> if this point has the same coordinates
+	 * @return {@code true} if this point has the same coordinates
 	 *     on the same segment as for the given point.
 	 */
 	@Pure
@@ -150,16 +149,16 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 		}
 	}
 
-	/** Returns <code>true</code> if the L-infinite distance between this point and point
+	/** Returns {@code true} if the L-infinite distance between this point and point
 	 * <var>p</var> is less than or equal to the epsilon parameter,
-	 * otherwise returns <code>false</code>. The L-infinite
+	 * otherwise returns {@code false}. The L-infinite
 	 * distance is equal to MAX[abs(curviline-curviline), abs(curviline-curviline)].
 	 *
 	 * <p>If the points are not on the same segments, they are not equals.
 	 *
 	 * @param tuple the point to be compared to this point
 	 * @param epsilon the threshold value.
-	 * @return <code>true</code> if the points are equals, otherwise <code>false</code>
+	 * @return {@code true} if the points are equals, otherwise {@code false}
 	 */
 	@Pure
 	default boolean epsilonEquals(Point1D<?, ?, ?> tuple, double epsilon) {
@@ -336,7 +335,7 @@ public interface Point1D<RP extends Point1D<? super RP, ? super RV, ? super RS>,
 
 	/** Replies the segment.
 	 *
-	 * @return the segment or <code>null</code> if the weak reference has lost the segment.
+	 * @return the segment or {@code null} if the weak reference has lost the segment.
 	 */
 	@Pure
 	RS getSegment();

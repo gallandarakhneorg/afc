@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:magicnumber")
 public abstract class PathElement3i implements PathElement3ai {
 
     private static final long serialVersionUID = -7762354100984227855L;
@@ -127,7 +126,7 @@ public abstract class PathElement3i implements PathElement3ai {
     public abstract int[] toArray();
 
     /**
-     * An element of the path that represents a <code>MOVE_TO</code>.
+     * An element of the path that represents a {@code MOVE_TO}.
      *
      * @author $Author: sgalland$
      * @author $Author: tpiotrow$
@@ -257,7 +256,7 @@ public abstract class PathElement3i implements PathElement3ai {
     }
 
     /**
-     * An element of the path that represents a <code>LINE_TO</code>.
+     * An element of the path that represents a {@code LINE_TO}.
      *
      * @author $Author: sgalland$
      * @author $Author: tpiotrow$
@@ -403,7 +402,7 @@ public abstract class PathElement3i implements PathElement3ai {
     }
 
     /**
-     * An element of the path that represents a <code>QUAD_TO</code>.
+     * An element of the path that represents a {@code QUAD_TO}.
      *
      * @author $Author: sgalland$
      * @author $Author: tpiotrow$
@@ -572,7 +571,7 @@ public abstract class PathElement3i implements PathElement3ai {
     }
 
     /**
-     * An element of the path that represents a <code>CURVE_TO</code>.
+     * An element of the path that represents a {@code CURVE_TO}.
      *
      * @author $Author: sgalland$
      * @author $Author: tpiotrow$
@@ -617,7 +616,6 @@ public abstract class PathElement3i implements PathElement3ai {
          * @param toy y coordinate of the target point.
          * @param toz z coordinate of the target point.
          */
-        @SuppressWarnings("checkstyle:parameternumber")
         CurvePathElement3i(int fromx, int fromy, int fromz, int ctrlx1, int ctrly1, int ctrlz1, int ctrlx2, int ctrly2,
                 int ctrlz2, int tox, int toy, int toz) {
             super(PathElementType.CURVE_TO, tox, toy, toz);
@@ -670,7 +668,6 @@ public abstract class PathElement3i implements PathElement3ai {
 
         @Pure
         @Override
-        @SuppressWarnings("checkstyle:booleanexpressioncomplexity")
         public boolean isEmpty() {
             return (this.fromX == this.toX) && (this.fromY == this.toY) && (this.ctrlX1 == this.toX) && (this.ctrlY1 == this.toY)
                     && (this.ctrlZ1 == this.toZ) && (this.ctrlX2 == this.toX) && (this.ctrlY2 == this.toY)
@@ -715,7 +712,6 @@ public abstract class PathElement3i implements PathElement3ai {
 
         @Pure
         @Override
-        @SuppressWarnings("checkstyle:arraytrailingcomma")
         public int[] toArray() {
             return new int[] {this.ctrlX1, this.ctrlY1, this.ctrlZ1, this.ctrlX2, this.ctrlY2, this.ctrlZ2,
                 this.toX, this.toY, this.toZ};
@@ -769,7 +765,7 @@ public abstract class PathElement3i implements PathElement3ai {
     }
 
     /**
-     * An element of the path that represents a <code>CLOSE</code>.
+     * An element of the path that represents a {@code CLOSE}.
      *
      * @author $Author: sgalland$
      * @author $Author: tpiotrow$

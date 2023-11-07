@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -128,7 +128,6 @@ public class Parallelogram2d extends AbstractShape2d<Parallelogram2d>
 	 * @param axis2Y is the Y coordinate of second axis of the parallelogram.
 	 * @param axis2Extent is the extent of the second parallelogram.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	public Parallelogram2d(double centerX, double centerY,
 			double axis1X, double axis1Y, double axis1Extent,
 			double axis2X, double axis2Y, double axis2Extent) {
@@ -154,7 +153,6 @@ public class Parallelogram2d extends AbstractShape2d<Parallelogram2d>
 
 	@Pure
 	@Override
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + Double.hashCode(this.cx);
@@ -302,7 +300,6 @@ public class Parallelogram2d extends AbstractShape2d<Parallelogram2d>
 	}
 
 	@Override
-	@SuppressWarnings({"checkstyle:booleanexpressioncomplexity", "checkstyle:magicnumber"})
 	public void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent, double axis2x,
 			double axis2y, double axis2Extent) {
 		assert Vector2D.isUnitVector(axis1x, axis1y) : AssertMessages.normalizedParameters(2, 3);

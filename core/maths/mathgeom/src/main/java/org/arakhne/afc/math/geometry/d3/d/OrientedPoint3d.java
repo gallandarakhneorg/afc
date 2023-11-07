@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,17 +27,14 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
-/** 2D oriented point with double precision floating-point numbers.
+/** 3D oriented point with double precision floating-point numbers.
  *
  * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-// TODO : enforce orthogonality constraint
-public class OrientedPoint3d
-    extends Point3d
-    implements OrientedPoint3D<Point3d, Vector3d> {
+public class OrientedPoint3d extends Point3d implements OrientedPoint3D<Point3d, Vector3d, Quaternion4d> {
 
     private static final long serialVersionUID = 6296312122530686621L;
 
@@ -79,7 +76,7 @@ public class OrientedPoint3d
      * @param point the point.
      * @param vector the tangent vector.
      */
-    public OrientedPoint3d(Point3D<?, ?> point, Vector3D<?, ?> vector) {
+    public OrientedPoint3d(Point3D<?, ?, ?> point, Vector3D<?, ?, ?> vector) {
         this(point.getX(), point.getY(), point.getZ(), vector.getX(), vector.getY(), vector.getZ());
     }
 
@@ -114,7 +111,6 @@ public class OrientedPoint3d
 
     @Pure
     @Override
-    @SuppressWarnings("checkstyle:equalshashcode")
     public int hashCode() {
         int bits = 1;
         bits = 31 * bits + super.hashCode();

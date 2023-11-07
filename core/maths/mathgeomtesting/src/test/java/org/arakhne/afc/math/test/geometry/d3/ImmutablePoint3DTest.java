@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,17 @@
 
 package org.arakhne.afc.math.test.geometry.d3;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.*;
-
-import org.junit.jupiter.api.Disabled;
-
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.ImmutablePoint3D;
+import org.arakhne.afc.math.geometry.d3.ImmutableQuaternion;
 import org.arakhne.afc.math.geometry.d3.ImmutableVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.test.geometry.AbstractUnmodifiablePoint3DTest;
+import org.junit.jupiter.api.Disabled;
 
 @SuppressWarnings("all")
 @Disabled("temporary")
-public class ImmutablePoint3DTest extends AbstractUnmodifiablePoint3DTest<ImmutablePoint3D, ImmutableVector3D> {
+public class ImmutablePoint3DTest extends AbstractUnmodifiablePoint3DTest<ImmutablePoint3D, ImmutableVector3D, ImmutableQuaternion> {
 	
 	@Override
 	public ImmutableVector3D createVector(final double tx, final double ty, final double tz) {
@@ -55,12 +53,12 @@ public class ImmutablePoint3DTest extends AbstractUnmodifiablePoint3DTest<Immuta
 	}
 	
 	@Override
-	public void operator_upToShape3D() {
+	public void operator_upToShape3D(CoordinateSystem3D cs) {
 		//
 	}
 	
 	@Override
-	public void operator_andShape3D() {
+	public void operator_andShape3D(CoordinateSystem3D cs) {
 		//
 	}
 

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d3.d;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -45,13 +46,13 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiShape3d<T>>
-        implements MultiShape3afp<Shape3d<?>, MultiShape3d<T>, T, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
+        implements MultiShape3afp<Shape3d<?>, MultiShape3d<T>, T, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
 
 	private static final long serialVersionUID = -4727279807601027239L;
 
 	private List<T> elements = new ListResponseModel();
 
-	private RectangularPrism3d bounds;
+	private AlignedBox3d bounds;
 
 	/**
 	 * Construct an empty multishape.
@@ -98,7 +99,6 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 
 	@Override
 	@Pure
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		return this.elements.hashCode();
 	}
@@ -124,7 +124,7 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 
 	@Pure
 	@Override
-	public RectangularPrism3d toBoundingBox() {
+	public AlignedBox3d toBoundingBox() {
 		if (this.bounds == null) {
 			this.bounds = getGeomFactory().newBox();
 			MultiShape3afp.super.toBoundingBox(this.bounds);
@@ -134,7 +134,7 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 
 	@Pure
 	@Override
-	public void toBoundingBox(RectangularPrism3d box) {
+	public void toBoundingBox(AlignedBox3d box) {
 		assert box != null : AssertMessages.notNullParameter();
 		if (this.bounds == null) {
 			this.bounds = getGeomFactory().newBox();
@@ -146,7 +146,7 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 	@Override
 	public void translate(double dx, double dy, double dz) {
 		if (dx != 0 || dy != 0 || dz != 0) {
-			final RectangularPrism3d box = this.bounds;
+			final AlignedBox3d box = this.bounds;
 			MultiShape3afp.super.translate(dx, dy, dz);
 			if (box != null) {
 				box.translate(dx, dy, dz);
@@ -218,6 +218,18 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 		@Override
 		public void shapeGeometryChange(Shape3d<?> shape) {
 			onContentGeometryChange();
+		}
+
+		@Override
+		public boolean addAll(Collection<? extends T> c) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public void planeGeometryChange(AbstractPlane3d<?> shape) {
+			// TODO Auto-generated method stub
+			
 		}
 
 	}

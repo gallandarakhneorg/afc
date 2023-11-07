@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -35,8 +36,9 @@ import org.arakhne.afc.math.test.AbstractMathTestCase;
 
 @SuppressWarnings("all")
 public class Matrix2dTest extends AbstractMathTestCase {
-	
-	@ParameterizedTest(name = "{index} => {0}")
+
+	@DisplayName("setIdentity")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void setIdentity(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -46,7 +48,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(new Matrix2d(1,0,0,1), matrix);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("add(double)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void addDouble(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -60,9 +63,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m2, m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("add(double,Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void addDoubleMatrix2D(CoordinateSystem2D cs) {
+	public void addDoubleMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m1 = this.randomMatrix2d();
 		Matrix2d m2 = m1.clone();
@@ -74,9 +78,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m2, m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("add(Matrix2d,Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void addMatrix2DMatrix2D(CoordinateSystem2D cs) {
+	public void addMatrix2dMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m1 = this.randomMatrix2d();
 		Matrix2d m2 = this.randomMatrix2d();
@@ -88,9 +93,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m3, m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("add(Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void addMatrix2D(CoordinateSystem2D cs) {
+	public void addMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m1 = this.randomMatrix2d();
 		Matrix2d m2 = this.randomMatrix2d();
@@ -102,9 +108,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m3, m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("sub(Matrix2d,Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void subMatrix2DMatrix2D(CoordinateSystem2D cs) {
+	public void subMatrix2dMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m1 = this.randomMatrix2d();
 		Matrix2d m2 = this.randomMatrix2d();
@@ -116,9 +123,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m3, m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("sub(Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void subMatrix2D(CoordinateSystem2D cs) {
+	public void subMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m1 = this.randomMatrix2d();
 		Matrix2d m2 = this.randomMatrix2d();
@@ -130,7 +138,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m3, m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("transpose")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void transpose(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -150,9 +159,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(transpose,m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("transpose(Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void transposeMatrix2D(CoordinateSystem2D cs) {
+	public void transposeMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m1 = this.randomMatrix2d();
 		Matrix2d transpose = new Matrix2d();
@@ -170,7 +180,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(transpose, m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("determinant")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void determinant(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -186,7 +197,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(determinant, matrix.determinant());
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("mul(double)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void mulDouble(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -204,9 +216,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(prodScal, matrix);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("mul(double,Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void mulDoubleMatrix2D(CoordinateSystem2D cs) {
+	public void mulDoubleMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		double a = getRandom().nextDouble();
 		double b = getRandom().nextDouble();
@@ -222,9 +235,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(prodScal, matrix);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("mul(Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void mulMatrix2D(CoordinateSystem2D cs) {
+	public void mulMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		double a = getRandom().nextDouble();
 		double b = getRandom().nextDouble();
@@ -252,9 +266,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(prod, m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("mul(Vector2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void mulVector2D(CoordinateSystem2D cs) {
+	public void mulVector2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Vector2d vector = this.randomVector2f();
 		Matrix2d matrix = new Matrix2d(1,2,4,-1);
@@ -267,9 +282,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(product, result);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("mul(Matrix2d,Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void mulMatrix2DMatrix2D(CoordinateSystem2D cs) {
+	public void mulMatrix2dMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		double a = getRandom().nextDouble();
 		double b = getRandom().nextDouble();
@@ -297,7 +313,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(prod, m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("mulTransposeBoth(Matrix2d,Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void mulTransposeBoth(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -313,7 +330,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(multrans, m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("mulTransposeRight(Matrix2d,Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void mulTransposeRight(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -329,7 +347,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(multrans, m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("mulTransposeLeft(Matrix2d,Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void mulTransposeLeft(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -345,7 +364,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(multrans, m1);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("normalizeCP with zero")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void normalizeCP_zero(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -357,7 +377,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertNaN(m.getM10());
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("normalizeCP with identity")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void normalizeCP_identity(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -370,7 +391,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(1, m.getM11());
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("normalizeCP with values")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void normalizeCP_std(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -382,9 +404,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(4/Math.sqrt(20), m.getM11());
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("normalizeCP(Matrix2d) with zero")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void normalizeCPMatrix2D_zero(CoordinateSystem2D cs) {
+	public void normalizeCPMatrix2d_zero(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m = new Matrix2d();
 		Matrix2d r = new Matrix2d();
@@ -395,9 +418,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertNaN(r.getM01());
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("normalizeCP(Matrix2d) with identity")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void normalizeCPMatrix2D_identity(CoordinateSystem2D cs) {
+	public void normalizeCPMatrix2d_identity(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m = new Matrix2d();
 		m.setIdentity();
@@ -409,9 +433,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(1, r.getM11());
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("normalizeCP(Matrix2d) with values")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void normalizeCPMatrix2D_std(CoordinateSystem2D cs) {
+	public void normalizeCPMatrix2d_std(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m = new Matrix2d(1, 2, 3, 4);
 		Matrix2d r = new Matrix2d();
@@ -422,7 +447,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(4/Math.sqrt(20), r.getM11());
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("setZero")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void setZero(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -431,7 +457,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(new Matrix2d(0,0,0,0), m);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("setDiagonal(double,double)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void setDiagonal(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -441,7 +468,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(new Matrix2d(s,0,0,s), m);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("negate")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void negate(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -463,9 +491,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(temp, temp2);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("negate(Matrix2d)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void negateMatrix2D(CoordinateSystem2D cs) {
+	public void negateMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m1 = this.randomMatrix2d();
 		Matrix2d m2 = m1.clone();
@@ -485,7 +514,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(temp, temp2);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("clone")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void cloneTest(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -494,7 +524,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m, m2);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("isSymmetric")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void isSymmetric(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -512,7 +543,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertFalse(m.isSymmetric());
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("eigenVectorsOfSymmetricMatrix(Matrix2d) with zero")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void eigenVectorsOfSymmetricMatrix_zero(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -531,7 +563,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertFpVectorEquals(0, 1, vector2);
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("eigenVectorsOfSymmetricMatrix(Matrix2d) with identity")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void eigenVectorsOfSymmetricMatrix_identity(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -551,7 +584,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertFpVectorEquals(0, 1, vector2);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("eigenVectorsOfSymmetricMatrix(Matrix2d) with values")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void eigenVectorsOfSymmetricMatrix_sym(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -571,7 +605,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertFpVectorEquals(0.67101, 0.74145, vector2);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("isIdentity")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void isIdentity(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -589,7 +624,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertFalse(m.isIdentity());
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("cov(Vector2d,Vector2d...)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void covMatrix2Tuple2dArray_theory(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -612,16 +648,16 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m, mean);
 		for(int i=0; i<2; ++i) {
 			for(int j=0; j<2; ++j) {
-				assertEpsilonEquals("i="+i+"; j="+j,   //$NON-NLS-1$ //$NON-NLS-2$
+				assertEpsilonEquals(
 						expected.getElement(i, j), 
-						mat.getElement(i, j));
+						mat.getElement(i, j),
+						"i="+i+"; j="+j); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}
 	
-	/**
-	 */
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("cov(Vector2d,Point2d...)")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void covMatrix2Tuple2dArray_example(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -657,16 +693,18 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(expectedMean, mean);
 		for(int i=0; i<2; ++i) {
 			for(int j=0; j<2; ++j) {
-				assertEpsilonEquals("i="+i+"; j="+j,   //$NON-NLS-1$ //$NON-NLS-2$
+				assertEpsilonEquals(
 						expectedCov.getElement(i, j), 
-						cov.getElement(i, j));
+						cov.getElement(i, j),
+						"i="+i+"; j="+j); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}
 	
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m += Matrix2d")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void operator_addMatrix2f(CoordinateSystem2D cs) {
+	public void operator_addMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m1 = this.randomMatrix2d();
 		Matrix2d m2 = this.randomMatrix2d();
@@ -678,7 +716,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m3, m1);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m += double")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void operator_addDouble(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -692,9 +731,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m2, m1);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m -= Matrix4d")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void operator_removeMatrix2f(CoordinateSystem2D cs) {
+	public void operator_removeMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m1 = this.randomMatrix2d();
 		Matrix2d m2 = this.randomMatrix2d();
@@ -706,7 +746,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m3, m1);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m -= double")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void operator_removeDouble(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -720,9 +761,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m2, m1);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m + Matrix2d")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void operator_plusMatrix2f(CoordinateSystem2D cs) {
+	public void operator_plusMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m1 = this.randomMatrix2d();
 		Matrix2d m2 = this.randomMatrix2d();
@@ -734,7 +776,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m3, r);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m + double")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void operator_plusDouble(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -748,9 +791,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m2, r);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m - Matrix2d")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void operator_minusMatrix2f(CoordinateSystem2D cs) {
+	public void operator_minusMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		Matrix2d m1 = this.randomMatrix2d();
 		Matrix2d m2 = this.randomMatrix2d();
@@ -762,7 +806,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m3, r);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m - double")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void operator_minusDouble(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -776,7 +821,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m2, r);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("-m")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void operator_minus(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -788,9 +834,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m2, r);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m * Matrix2d")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
-	public void operator_multiplyMatrix2f(CoordinateSystem2D cs) {
+	public void operator_multiplyMatrix2d(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		double a = getRandom().nextDouble() * 100;
 		double b = getRandom().nextDouble() * 100;
@@ -818,7 +865,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(prod, r);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m * double")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void operator_multiplyDouble(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -836,7 +884,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(prodScal, r);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m / double")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void operator_divideDouble(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -854,7 +903,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(prodScal, r);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m++")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void operator_plusPlus(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -867,7 +917,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m2, m1);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("m--")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void operator_moinsMoins(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
@@ -880,7 +931,8 @@ public class Matrix2dTest extends AbstractMathTestCase {
 		assertEpsilonEquals(m2, m1);
 	}
 
-	@ParameterizedTest(name = "{index} => {0}")
+	@DisplayName("!m")
+	@ParameterizedTest
 	@EnumSource(CoordinateSystem2D.class)
 	public void operator_not(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);

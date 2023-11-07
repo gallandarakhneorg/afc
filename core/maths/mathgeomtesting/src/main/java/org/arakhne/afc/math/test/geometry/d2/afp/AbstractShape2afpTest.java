@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -203,8 +203,8 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	 * 
 	 * @param a a first set of coordinates.
 	 * @param b a second set of coordinates.
-	 * @return <code>true</code> if the two arrays are equal, otherwise
-	 * <code>false</code>.
+	 * @return {@code true} if the two arrays are equal, otherwise
+	 * {@code false}.
 	 */
 	public boolean isEpsilonEquals(float[] a, float[] b) {
 		if (a==b) return true;
@@ -223,8 +223,8 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	 * 
 	 * @param a a first set of coordinates.
 	 * @param b a second set of coordinates.
-	 * @return <code>true</code> if the two arrays are equal, otherwise
-	 * <code>false</code>.
+	 * @return {@code true} if the two arrays are equal, otherwise
+	 * {@code false}.
 	 */
 	protected boolean isEquals(int[] a, int[] b) {
 		if (a==b) return true;

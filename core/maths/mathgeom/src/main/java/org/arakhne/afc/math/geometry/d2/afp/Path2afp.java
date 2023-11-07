@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
@@ -56,7 +56,6 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:methodcount")
 public interface Path2afp<
 		ST extends Shape2afp<?, ?, IE, P, V, B>, IT extends Path2afp<?, ?, IE, P, V, B>,
 		IE extends PathElement2afp, P extends Point2D<? super P, ? super V>,
@@ -84,12 +83,11 @@ public interface Path2afp<
 	 * @param crossings is the initial value for crossing.
 	 * @param iterator is the iterator on the path elements.
 	 * @param shadow is the description of the shape to project to the right.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossings.
 	 * @see "Weiler–Atherton clipping algorithm"
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int calculatesCrossingsPathIteratorPathShadow(int crossings, PathIterator2afp<?> iterator,
 			BasicPathShadow2afp shadow, CrossingComputationType type) {
 		assert iterator != null : AssertMessages.notNullParameter(1);
@@ -215,7 +213,7 @@ public interface Path2afp<
 	 *
 	 * <p><strong>CAUTION:</strong> This function works only on path iterators
 	 * that are replying not-curved primitives, ie. if the {@link PathIterator2D#isCurved()} of {@code pi} is replying
-	 * <code>false</code>. {@link #getClosestPointTo(Point2D)} avoids this restriction.
+	 * {@code false}. {@link #getClosestPointTo(Point2D)} avoids this restriction.
 	 * @param pi is the iterator on the elements of the path.
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
@@ -291,14 +289,13 @@ public interface Path2afp<
 	 *
 	 * <p><strong>CAUTION:</strong> This function works only on path iterators
 	 * that are replying not-curved primitives, ie. if the {@link PathIterator2D#isCurved()} of {@code pi} is replying
-	 * <code>false</code>. {@link #getClosestPointTo(org.arakhne.afc.math.geometry.d2.Shape2D)} avoids this restriction.
+	 * {@code false}. {@link #getClosestPointTo(org.arakhne.afc.math.geometry.d2.Shape2D)} avoids this restriction.
 	 *
 	 * @param pi is the iterator of path elements, on one of which the closest point is located.
 	 * @param shape the shape to which the closest point must be computed.
 	 * @param result the closest point on pi.
-	 * @return <code>true</code> if a point was found. Otherwise <code>false</code>.
+	 * @return {@code true} if a point was found. Otherwise {@code false}.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	@Unefficient
 	static boolean findsClosestPointPathIteratorPathIterator(PathIterator2afp<? extends PathElement2afp> pi,
 			PathIterator2afp<? extends PathElement2afp> shape, Point2D<?, ?> result) {
@@ -532,7 +529,7 @@ public interface Path2afp<
 	 *
 	 * <p><strong>CAUTION:</strong> This function works only on path iterators
 	 * that are replying not-curved primitives, ie. if the {@link PathIterator2D#isCurved()} of {@code pi} is replying
-	 * <code>false</code>. {@link #getFarthestPointTo(Point2D)} avoids this restriction.
+	 * {@code false}. {@link #getFarthestPointTo(Point2D)} avoids this restriction.
 	 * @param pi is the iterator on the elements of the path.
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
@@ -599,7 +596,6 @@ public interface Path2afp<
 	 * @param rheight is the width of the rectangle.
 	 * @return {@code true} if the specified rectangle is inside the specified {@code PathIterator2f}; {@code false} otherwise.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean containsRectangle(PathIterator2afp<? extends PathElement2afp> pi, double rx, double ry,
 			double rwidth, double rheight) {
 		assert pi != null : AssertMessages.notNullParameter(0);
@@ -624,10 +620,9 @@ public interface Path2afp<
 	 * @param y the specified Y coordinate of the rectangle.
 	 * @param width the width of the specified rectangular coordinates.
 	 * @param height the height of the specified rectangular coordinates.
-	 * @return <code>true</code> if the specified {@link PathIterator2afp} and the interior of the specified set of rectangular
-	 *         coordinates intersect each other; <code>false</code> otherwise.
+	 * @return {@code true} if the specified {@link PathIterator2afp} and the interior of the specified set of rectangular
+	 *         coordinates intersect each other; {@code false} otherwise.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean intersectsPathIteratorRectangle(PathIterator2afp<? extends PathElement2afp> pi, double x, double y,
 			double width, double height) {
 		assert pi != null : AssertMessages.notNullParameter(0);
@@ -652,12 +647,10 @@ public interface Path2afp<
 	 * @param iterator is the description of the path.
 	 * @param px is the reference point to test.
 	 * @param py is the reference point to test.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
-			"checkstyle:npathcomplexity"})
 	static int calculatesCrossingsPathIteratorPointShadow(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
 			double px, double py, CrossingComputationType type) {
 		assert iterator != null : AssertMessages.notNullParameter(1);
@@ -819,12 +812,10 @@ public interface Path2afp<
 	 * @param ey is the first point of the ellipse.
 	 * @param ew is the width of the ellipse.
 	 * @param eh is the height of the ellipse.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing or {@link GeomConstants#SHAPE_INTERSECTS}
 	 */
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-		"checkstyle:npathcomplexity", "checkstyle:magicnumber"})
 	static int calculatesCrossingsPathIteratorEllipseShadow(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
 			double ex, double ey, double ew, double eh, CrossingComputationType type) {
 		assert iterator != null : AssertMessages.notNullParameter(1);
@@ -988,12 +979,10 @@ public interface Path2afp<
 	 * @param y2 is the second corner of the rectangle.
 	 * @param arcWidth is the width of the arc.
 	 * @param arcHeight is the width of the arc.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing or {@link GeomConstants#SHAPE_INTERSECTS}
 	 */
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-		"checkstyle:npathcomplexity", "checkstyle:magicnumber"})
 	static int calculatesCrossingsPathIteratorRoundRectangleShadow(int crossings,
 			PathIterator2afp<? extends PathElement2afp> iterator, double x1, double y1, double x2, double y2,
 			double arcWidth, double arcHeight, CrossingComputationType type) {
@@ -1151,12 +1140,10 @@ public interface Path2afp<
 	 * @param cx is the center of the circle.
 	 * @param cy is the center of the circle.
 	 * @param radius is the radius of the circle.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-		"checkstyle:npathcomplexity", "checkstyle:magicnumber"})
 	static int calculatesCrossingsPathIteratorCircleShadow(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
 			double cx, double cy, double radius, CrossingComputationType type) {
 		assert iterator != null : AssertMessages.notNullParameter(1);
@@ -1315,11 +1302,10 @@ public interface Path2afp<
 	 * @param y1 is the first point of the segment.
 	 * @param x2 is the first point of the segment.
 	 * @param y2 is the first point of the segment.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int calculatesCrossingsPathIteratorSegmentShadow(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
 			double x1, double y1, double x2, double y2, CrossingComputationType type) {
 		assert iterator != null : AssertMessages.notNullParameter(1);
@@ -1479,11 +1465,10 @@ public interface Path2afp<
 	 * @param rymin is the first corner of the rectangle.
 	 * @param rxmax is the second corner of the rectangle.
 	 * @param rymax is the second corner of the rectangle.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossings.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity", "checkstyle:magicnumber"})
 	static int calculatesCrossingsPathIteratorRectangleShadow(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
 			double rxmin, double rymin, double rxmax, double rymax, CrossingComputationType type) {
 		assert iterator != null : AssertMessages.notNullParameter(1);
@@ -1658,11 +1643,10 @@ public interface Path2afp<
 	 * @param y2 is the second point of the triangle.
 	 * @param x3 is the third point of the triangle.
 	 * @param y3 is the third point of the triangle.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 * @param type is the type of special computation to apply. If {@code null}, it
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossings.
 	 */
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int calculatesCrossingsPathIteratorTriangleShadow(int crossings, PathIterator2afp<? extends PathElement2afp> iterator,
 			double x1, double y1, double x2, double y2, double x3, double y3, CrossingComputationType type) {
 		assert iterator != null : AssertMessages.notNullParameter(1);
@@ -1822,10 +1806,9 @@ public interface Path2afp<
 	 *
 	 * @param iterator the iterator on the path elements.
 	 * @param box the box to set.
-	 * @return <code>true</code> if a drawable element was found.
+	 * @return {@code true} if a drawable element was found.
 	 * @see #calculatesControlPointBoundingBox(PathIterator2afp, Rectangle2afp)
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean calculatesDrawableElementBoundingBox(PathIterator2afp<?> iterator, Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
 		assert iterator != null : AssertMessages.notNullParameter(0);
 		assert box != null : AssertMessages.notNullParameter(1);
@@ -1965,10 +1948,9 @@ public interface Path2afp<
 	 * of the drawn lines and cruves, use {@link #calculatesDrawableElementBoundingBox(PathIterator2afp, Rectangle2afp)}.
 	 * @param iterator the iterator on the path elements.
 	 * @param box the box to set.
-	 * @return <code>true</code> if a control point was found.
+	 * @return {@code true} if a control point was found.
 	 * @see #calculatesDrawableElementBoundingBox(PathIterator2afp, Rectangle2afp)
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean calculatesControlPointBoundingBox(PathIterator2afp<?> iterator, Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
 		assert iterator != null : AssertMessages.notNullParameter(0);
 		assert box != null : AssertMessages.notNullParameter(1);
@@ -2406,7 +2388,6 @@ public interface Path2afp<
 	 * @param type the specification of what additional path segments should
 	 *               be appended to lead the current path to the starting point.
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber"})
 	default void arcTo(double ctrlx, double ctrly, double tox, double toy, double tfrom, double tto, ArcType type) {
 		// Copied from JavaFX Path2D
 		assert tfrom >= 0. : AssertMessages.positiveOrZeroParameter(4);
@@ -2484,9 +2465,9 @@ public interface Path2afp<
 	/**
 	 * Adds a section of an shallow ellipse to the current path.
 	 *
-	 * <p>This function is equivalent to:<pre><code>
+	 * <p>This function is equivalent to:<pre>{@code 
 	 * this.arcTo(ctrl, to, 0.0, 1.0, ArcType.ARCONLY);
-	 * </code></pre>
+	 * }</pre>
 	 *
 	 * @param ctrlx the x coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
 	 * @param ctrly the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
@@ -2540,11 +2521,10 @@ public interface Path2afp<
 	 * @param radiusx the X radius of the tilted ellipse.
 	 * @param radiusy the Y radius of the tilted ellipse.
 	 * @param xAxisRotation the angle of tilt of the ellipse.
-	 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
-	 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+	 * @param largeArcFlag {@code true} iff the path will sweep the long way around the ellipse.
+	 * @param sweepFlag {@code true} iff the path will sweep clockwise around the ellipse.
 	 * @see "http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands"
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	default void arcTo(double tox, double toy, double radiusx, double radiusy, double xAxisRotation,
 			boolean largeArcFlag, boolean sweepFlag) {
 		// Copied for JavaFX
@@ -2898,7 +2878,7 @@ public interface Path2afp<
 	 * <p>The iterator for this class is not multi-threaded safe.
 	 *
 	 * @param transform is an optional affine Transform2D to be applied to the
-	 *     coordinates as they are returned in the iteration, or <code>null</code> if
+	 *     coordinates as they are returned in the iteration, or {@code null} if
 	 *     untransformed coordinates are desired.
 	 * @param flatness is the maximum distance that the line segments used to approximate
 	 *     the curved segments are allowed to deviate from any point on the original curve.
@@ -2955,7 +2935,7 @@ public interface Path2afp<
 	 *
 	 * @param x the x coordinate of the ponit to remove.
 	 * @param y the y coordinate of the ponit to remove.
-	 * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
+	 * @return {@code true} if the point was removed; {@code false} otherwise.
 	 */
 	boolean remove(double x, double y);
 
@@ -2965,6 +2945,15 @@ public interface Path2afp<
 		Path2afp.calculatesDrawableElementBoundingBox(
 				getPathIterator(getGeomFactory().getSplineApproximationRatio()),
 				box);
+	}
+
+	/** Replies this path with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the path.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toPolygonDefinition(2, toDoubleArray());
 	}
 
 	/** Abstract iterator on the path elements of the path.
@@ -3077,7 +3066,6 @@ public interface Path2afp<
 		}
 
 		@Override
-		@SuppressWarnings("checkstyle:magicnumber")
 		public T next() {
 			final Path2afp<?, ?, T, ?, ?, ?> path = getPath();
 			final int type = this.typeIndex;
@@ -3307,7 +3295,6 @@ public interface Path2afp<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	class FlatteningPathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
 
 		/** The source iterator.
@@ -3439,7 +3426,7 @@ public interface Path2afp<
 		 * quadratic curve specified by the control points stored in the
 		 * indicated array at the indicated index.
 		 * @param coords an array containing coordinate values
-		 * @param offset the index into <code>coords</code> from which to
+		 * @param offset the index into {@code coords} from which to
 		 *          to start getting the values from the array
 		 * @return the flatness of the quadratic curve that is defined by the
 		 *          values in the specified array at the specified index.
@@ -3453,18 +3440,18 @@ public interface Path2afp<
 
 		/**
 		 * Subdivides the quadratic curve specified by the coordinates
-		 * stored in the <code>src</code> array at indices
-		 * <code>srcoff</code> through <code>srcoff</code>&nbsp;+&nbsp;5
+		 * stored in the {@code src} array at indices
+		 * {@code srcoff} through {@code srcoff}&nbsp;+&nbsp;5
 		 * and stores the resulting two subdivided curves into the two
 		 * result arrays at the corresponding indices.
-		 * Either or both of the <code>left</code> and <code>right</code>
-		 * arrays can be <code>null</code> or a reference to the same array
-		 * and offset as the <code>src</code> array.
+		 * Either or both of the {@code left} and {@code right}
+		 * arrays can be {@code null} or a reference to the same array
+		 * and offset as the {@code src} array.
 		 * Note that the last point in the first subdivided curve is the
 		 * same as the first point in the second subdivided curve.  Thus,
-		 * it is possible to pass the same array for <code>left</code> and
-		 * <code>right</code> and to use offsets such that
-		 * <code>rightoff</code> equals <code>leftoff</code> + 4 in order
+		 * it is possible to pass the same array for {@code left} and
+		 * {@code right} and to use offsets such that
+		 * {@code rightoff} equals {@code leftoff} + 4 in order
 		 * to avoid allocating extra storage for this common point.
 		 * @param src the array holding the coordinates for the source curve
 		 * @param srcoff the offset into the array of the beginning of the
@@ -3521,10 +3508,10 @@ public interface Path2afp<
 		 * indicated index. The flatness is the maximum distance
 		 * of a control point from the line connecting the end points.
 		 * @param coords an array containing coordinates
-		 * @param offset the index of <code>coords</code> from which to begin
+		 * @param offset the index of {@code coords} from which to begin
 		 *          getting the end points and control points of the curve
-		 * @return the square of the flatness of the <code>CubicCurve2D</code>
-		 *          specified by the coordinates in <code>coords</code> at
+		 * @return the square of the flatness of the {@code CubicCurve2D}
+		 *          specified by the coordinates in {@code coords} at
 		 *          the specified offset.
 		 */
 		private static double getCurveSquaredFlatness(double[] coords, int offset) {
@@ -3547,18 +3534,18 @@ public interface Path2afp<
 
 		/**
 		 * Subdivides the cubic curve specified by the coordinates
-		 * stored in the <code>src</code> array at indices <code>srcoff</code>
-		 * through (<code>srcoff</code>&nbsp;+&nbsp;7) and stores the
+		 * stored in the {@code src} array at indices {@code srcoff}
+		 * through ({@code srcoff}&nbsp;+&nbsp;7) and stores the
 		 * resulting two subdivided curves into the two result arrays at the
 		 * corresponding indices.
-		 * Either or both of the <code>left</code> and <code>right</code>
-		 * arrays may be <code>null</code> or a reference to the same array
-		 * as the <code>src</code> array.
+		 * Either or both of the {@code left} and {@code right}
+		 * arrays may be {@code null} or a reference to the same array
+		 * as the {@code src} array.
 		 * Note that the last point in the first subdivided curve is the
 		 * same as the first point in the second subdivided curve. Thus,
-		 * it is possible to pass the same array for <code>left</code>
-		 * and <code>right</code> and to use offsets, such as <code>rightoff</code>
-		 * equals (<code>leftoff</code> + 6), in order
+		 * it is possible to pass the same array for {@code left}
+		 * and {@code right} and to use offsets, such as {@code rightoff}
+		 * equals ({@code leftoff} + 6), in order
 		 * to avoid allocating extra storage for this common point.
 		 * @param src the array holding the coordinates for the source curve
 		 * @param srcoff the offset into the array of the beginning of the 6 source coordinates
@@ -3617,7 +3604,6 @@ public interface Path2afp<
 			}
 		}
 
-		@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 		private void searchNext() {
 			int level;
 

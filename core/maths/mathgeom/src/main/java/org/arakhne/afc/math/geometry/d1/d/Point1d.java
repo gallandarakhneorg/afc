@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -153,7 +153,6 @@ public class Point1d extends Tuple1d<Point1d> implements Point1D<Point1d, Vector
 			private static final long serialVersionUID = 7256619908484020358L;
 
 			@Override
-			@SuppressWarnings("checkstyle:superclone")
 			public Point1d clone() {
 				return Point1d.this.getGeomFactory().newPoint(Point1d.this.getSegment(),
 						Point1d.this.getX(), Point1d.this.getY());

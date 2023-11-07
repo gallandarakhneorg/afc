@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,21 +54,21 @@ public interface Segment1D<RP extends Point2D<?, ?>, RV extends Vector2D<?, ?>> 
 
 	/** Replies the 2D cooordinate of the first point of the segment.
 	 *
-	 * @return the 2D coordinate or <code>null</code> if 2D mapping is impossible.
+	 * @return the 2D coordinate or {@code null} if 2D mapping is impossible.
 	 */
 	@Pure
 	RP getFirstPoint();
 
 	/** Replies the 2D cooordinates of the last point of the segment.
 	 *
-	 * @return the 2D coordinates or <code>null</code> if 2D mapping is impossible.
+	 * @return the 2D coordinates or {@code null} if 2D mapping is impossible.
 	 */
 	@Pure
 	RP getLastPoint();
 
 	/** Replies the 2D tangent at the position on the segment.
 	 *
-	 * @param positionOnSegment is the position on the segment (in <code>0..length</code>).
+	 * @param positionOnSegment is the position on the segment (in {@code 0..length}).
 	 * @return the 2D tangent at the position on the segment.
 	 */
 	@Pure
@@ -76,7 +76,7 @@ public interface Segment1D<RP extends Point2D<?, ?>, RV extends Vector2D<?, ?>> 
 
 	/** Replies the 2D position and the 2D tangent at the position on the segment.
 	 *
-	 * @param positionOnSegment is the position on the segment (in <code>0..length</code>).
+	 * @param positionOnSegment is the position on the segment (in {@code 0..length}).
 	 * @param position is the position to fill.
 	 * @param tangent is the tangent to the segment at the given position.
 	 */
@@ -84,7 +84,7 @@ public interface Segment1D<RP extends Point2D<?, ?>, RV extends Vector2D<?, ?>> 
 
 	/** Replies the 2D position and the 2D tangent at the position on the segment.
 	 *
-	 * @param positionOnSegment is the position on the segment (in <code>0..length</code>).
+	 * @param positionOnSegment is the position on the segment (in {@code 0..length}).
 	 * @param shiftDistance is the distance that permits to shift the position from the segment.
 	 * @param position is the position to fill.
 	 * @param tangent is the tangent to the segment at the given position.
@@ -95,8 +95,8 @@ public interface Segment1D<RP extends Point2D<?, ?>, RV extends Vector2D<?, ?>> 
 	/** Replies if this segment is connected to the specified segment by its first point.
 	 *
 	 * @param otherSegment is the segment to match.
-	 * @return <code>true</code> if this segment is connected to the given one,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if this segment is connected to the given one,
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	boolean isFirstPointConnectedTo(Segment1D<?, ?> otherSegment);
@@ -104,8 +104,8 @@ public interface Segment1D<RP extends Point2D<?, ?>, RV extends Vector2D<?, ?>> 
 	/** Replies if this segment is connected to the specified segment by its last point.
 	 *
 	 * @param otherSegment is the segment to match.
-	 * @return <code>true</code> if this segment is connected to the given one,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if this segment is connected to the given one,
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	boolean isLastPointConnectedTo(Segment1D<?, ?> otherSegment);

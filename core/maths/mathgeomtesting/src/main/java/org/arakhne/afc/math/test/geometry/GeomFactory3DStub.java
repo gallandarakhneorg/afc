@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,17 +24,18 @@ import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
+import org.arakhne.afc.math.geometry.d3.Quaternion.QuaternionComponents;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 @SuppressWarnings("all")
-public final class GeomFactory3DStub implements GeomFactory3D<Vector3DStub, Point3DStub> {
+public final class GeomFactory3DStub implements GeomFactory3D<Vector3DStub, Point3DStub, QuaternionStub> {
 
 	public GeomFactory3DStub() {
 		//
 	}
 
 	@Override
-	public Point3DStub convertToPoint(Point3D<?, ?> p) {
+	public Point3DStub convertToPoint(Point3D<?, ?, ?> p) {
 		if (p instanceof Point3DStub) {
 			return (Point3DStub) p;
 		}
@@ -52,7 +53,7 @@ public final class GeomFactory3DStub implements GeomFactory3D<Vector3DStub, Poin
 	}
 
 	@Override
-	public Vector3DStub convertToVector(Point3D<?, ?> p) {
+	public Vector3DStub convertToVector(Point3D<?, ?, ?> p) {
 		double x, y, z;
 		if (p == null) {
 			x = 0;
@@ -67,7 +68,7 @@ public final class GeomFactory3DStub implements GeomFactory3D<Vector3DStub, Poin
 	}
 
 	@Override
-	public Point3DStub convertToPoint(Vector3D<?, ?> v) {
+	public Point3DStub convertToPoint(Vector3D<?, ?, ?> v) {
 		double x, y, z;
 		if (v == null) {
 			x = 0;
@@ -82,7 +83,7 @@ public final class GeomFactory3DStub implements GeomFactory3D<Vector3DStub, Poin
 	}
 
 	@Override
-	public Vector3DStub convertToVector(Vector3D<?, ?> v) {
+	public Vector3DStub convertToVector(Vector3D<?, ?, ?> v) {
 		if (v instanceof Vector3DStub) {
 			return (Vector3DStub) v;
 		}
@@ -130,16 +131,6 @@ public final class GeomFactory3DStub implements GeomFactory3D<Vector3DStub, Poin
 	}
 
 	@Override
-	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Quaternion newQuaternion(double attitude, double bank, double heading) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public double getSplineApproximationRatio() {
 		return GeomConstants.SPLINE_APPROXIMATION_RATIO;
 	}
@@ -147,6 +138,28 @@ public final class GeomFactory3DStub implements GeomFactory3D<Vector3DStub, Poin
 	@Override
 	public void setSplineApproximationRatio(Double distance) {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public QuaternionStub newQuaternion(double x, double y, double z, double w) {
+		return new QuaternionStub(x, y, z, w);
+	}
+
+	@Override
+	public QuaternionStub newQuaternion(int x, int y, int z, int w) {
+		return new QuaternionStub(x, y, z, w);
+	}
+
+	@Override
+	public QuaternionStub newQuaternionFromAxisAngle(double x, double y, double z, double angle) {
+		final QuaternionComponents comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
+		return new QuaternionStub(comps.x(), comps.y(), comps.z(), comps.w());
+	}
+
+	@Override
+	public QuaternionStub newQuaternionFromAxisAngle(int x, int y, int z, int angle) {
+		final QuaternionComponents comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
+		return new QuaternionStub(comps.x(), comps.y(), comps.z(), comps.w());
 	}
 	
 }

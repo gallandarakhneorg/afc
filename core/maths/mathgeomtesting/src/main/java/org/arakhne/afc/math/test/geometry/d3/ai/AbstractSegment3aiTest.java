@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,13 +41,20 @@ import org.arakhne.afc.math.geometry.d3.Shape3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
 import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
-import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai;
+import org.arakhne.afc.math.geometry.d3.ai.AlignedBox3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Segment3ai;
+import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
 
 @SuppressWarnings("all")
-public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?, B>,
-		B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
+public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?, ?, B>,
+		B extends AlignedBox3ai<?, ?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
 
+	protected static Quaternion4d newAxisAngleZ(double angle) {
+		final Quaternion4d q = new Quaternion4d();
+		q.setAxisAngle(0, 0, 1, angle);
+		return q;
+	}
+	
 	@Override
 	protected final T createShape() {
 		return (T) createSegment(0, 0, 0, 10, 5, 0);
@@ -77,7 +84,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertFalse(this.shape.equals(new Object()));
 		assertFalse(this.shape.equals(createSegment(0, 0, 0, 5, 5, 0)));
 		assertFalse(this.shape.equals(createSegment(0, 0, 0, 10, 6, 0)));
-		assertFalse(this.shape.equals(createRectangularPrism(0, 0, 0, 10, 5, 0)));
+		assertFalse(this.shape.equals(createAlignedBox(0, 0, 0, 10, 5, 0)));
 		assertTrue(this.shape.equals(this.shape));
 		assertTrue(this.shape.equals(createSegment(0, 0, 0, 10, 5, 0)));
 	}
@@ -89,7 +96,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(this.shape.equals(createSegment(0, 0, 0, 5, 5, 0).getPathIterator()));
 		assertFalse(this.shape.equals(createSegment(0, 0, 0, 10, 6, 0).getPathIterator()));
-		assertFalse(this.shape.equals(createRectangularPrism(0, 0, 0, 10, 5, 0).getPathIterator()));
+		assertFalse(this.shape.equals(createAlignedBox(0, 0, 0, 10, 5, 0).getPathIterator()));
 		assertTrue(this.shape.equals(this.shape.getPathIterator()));
 		assertTrue(this.shape.equals(createSegment(0, 0, 0, 10, 5, 0).getPathIterator()));
 	}
@@ -114,7 +121,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
 		assertFalse(this.shape.equalsToPathIterator(createSegment(0, 0, 0, 5, 5, 0).getPathIterator()));
 		assertFalse(this.shape.equalsToPathIterator(createSegment(0, 0, 0, 10, 6, 0).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createRectangularPrism(0, 0, 0, 10, 5, 0).getPathIterator()));
+		assertFalse(this.shape.equalsToPathIterator(createAlignedBox(0, 0, 0, 10, 5, 0).getPathIterator()));
 		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
 		assertTrue(this.shape.equalsToPathIterator(createSegment(0, 0, 0, 10, 5, 0).getPathIterator()));
 	}
@@ -394,7 +401,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertNoElement(pi);
 
 		tr = new Transform3D();
-		tr.makeRotationMatrix(MathConstants.QUARTER_PI);
+		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
 		pi = this.shape.getPathIterator(tr); 
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 4, 11, 0);
@@ -423,7 +430,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEquals(10, s.getY2());
 
     	tr = new Transform3D();
-    	tr.setRotation(MathConstants.PI);
+    	tr.setRotation(newAxisAngleZ(MathConstants.PI));
     	s = (T) this.shape.createTransformedShape(tr);
 		assertEquals(0, s.getX1());
 		assertEquals(0, s.getY1());
@@ -431,7 +438,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEquals(-5, s.getY2());
 
     	tr = new Transform3D();
-    	tr.setRotation(MathConstants.QUARTER_PI);
+    	tr.setRotation(newAxisAngleZ(MathConstants.QUARTER_PI));
     	s = (T) this.shape.createTransformedShape(tr);
 		assertEquals(0, s.getX1());
 		assertEquals(0, s.getY1());
@@ -465,7 +472,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
     	assertEquals(10, s.getY2());
 
     	tr = new Transform3D();
-    	tr.makeRotationMatrix(MathConstants.PI);
+    	tr.makeRotationMatrix(newAxisAngleZ(MathConstants.PI));
     	s = this.shape.clone();
     	s.transform(tr);
     	assertEquals(0, s.getX1());
@@ -474,7 +481,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
     	assertEquals(-5, s.getY2());
 
     	tr = new Transform3D();
-    	tr.makeRotationMatrix(MathConstants.QUARTER_PI);
+    	tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
     	s = this.shape.clone();
     	s.transform(tr);
     	assertEquals(0, s.getX1());
@@ -975,7 +982,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	@EnumSource(CoordinateSystem3D.class)
 	public void toBoundingBoxB(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B bb = createRectangularPrism(0, 0, 0, 0, 0, 0);
+		B bb = createAlignedBox(0, 0, 0, 0, 0, 0);
 		this.shape.toBoundingBox(bb);
 		assertEpsilonEquals(0, bb.getMinX());
 		assertEpsilonEquals(0, bb.getMinY());
@@ -987,18 +994,18 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
 	@Disabled
-	public void containsRectangularPrism3ai(CoordinateSystem3D cs) {
+	public void containsAlignedBox3ai(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,1,1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,8,1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,8,6, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,100,100, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(7,10, 0,1,1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(16,0, 0,100,100, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(0,3, 0,3,10, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(0,0, 0,1,1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(0,0, 0,8,1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(0,0, 0,8,6, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(0,0, 0,100,100, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(7,10, 0,1,1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(16,0, 0,100,100, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(0,3, 0,3,10, 0)));
 		
 		this.shape = (T) createSegment(0, 0, 0, 10, 0, 0);
-		assertTrue(this.shape.contains(createRectangularPrism(0,0, 0,2,0, 0)));
+		assertTrue(this.shape.contains(createAlignedBox(0,0, 0,2,0, 0)));
 	}
 
 	@ParameterizedTest(name = "{index} => {0}")
@@ -1029,15 +1036,15 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void intersectsRectangularPrism3ai(CoordinateSystem3D cs) {
+	public void intersectsAlignedBox3ai(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertTrue(this.shape.intersects(createRectangularPrism(0,0, 0,1,1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(0,0, 0,8,1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(0,0, 0,8,6, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(0,0, 0,100,100, 0)));
-		assertFalse(this.shape.intersects(createRectangularPrism(7,10, 0,1,1, 0)));
-		assertFalse(this.shape.intersects(createRectangularPrism(16,0, 0,100,100, 0)));
-		assertFalse(this.shape.intersects(createRectangularPrism(0,3, 0,3,10, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(0,0, 0,1,1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(0,0, 0,8,1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(0,0, 0,8,6, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(0,0, 0,100,100, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(7,10, 0,1,1, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(16,0, 0,100,100, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(0,3, 0,3,10, 0)));
 	}
 
 	@Override
@@ -1132,7 +1139,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	public void intersectsShape3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(this.shape.intersects((Shape3D) createSphere(16,0, 0,100)));
-		assertTrue(this.shape.intersects((Shape3D) createRectangularPrism(0,0, 0,100,100, 0)));
+		assertTrue(this.shape.intersects((Shape3D) createAlignedBox(0,0, 0,100,100, 0)));
 	}
 
 	@Override
@@ -1197,7 +1204,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEquals(10, s.getY2());
 
     	tr = new Transform3D();
-    	tr.setRotation(MathConstants.PI);
+    	tr.setRotation(newAxisAngleZ(MathConstants.PI));
     	s = (T) this.shape.operator_multiply(tr);
 		assertEquals(0, s.getX1());
 		assertEquals(0, s.getY1());
@@ -1205,7 +1212,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 		assertEquals(-5, s.getY2());
 
     	tr = new Transform3D();
-    	tr.setRotation(MathConstants.QUARTER_PI);
+    	tr.setRotation(newAxisAngleZ(MathConstants.QUARTER_PI));
     	s = (T) this.shape.operator_multiply(tr);
 		assertEquals(0, s.getX1());
 		assertEquals(0, s.getY1());
@@ -1234,7 +1241,7 @@ public abstract class AbstractSegment3aiTest<T extends Segment3ai<?, T, ?, ?, ?,
 	public void operator_andShape3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(this.shape.operator_and(createSphere(16,0, 0,100)));
-		assertTrue(this.shape.operator_and(createRectangularPrism(0,0, 0,100,100, 0)));
+		assertTrue(this.shape.operator_and(createAlignedBox(0,0, 0,100,100, 0)));
 	}
 
 	@Override

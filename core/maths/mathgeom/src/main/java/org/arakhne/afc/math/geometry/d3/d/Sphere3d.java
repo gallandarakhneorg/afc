@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  */
 public class Sphere3d
 		extends AbstractShape3d<Sphere3d>
-		implements Sphere3afp<Shape3d<?>, Sphere3d, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
+		implements Sphere3afp<Shape3d<?>, Sphere3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
 
 	private static final long serialVersionUID = -8532584773530573738L;
 
@@ -60,7 +60,7 @@ public class Sphere3d
 	 * @param center the center of the circle.
 	 * @param radius the radius of the circle.
 	 */
-	public Sphere3d(Point3D<?, ?> center, double radius) {
+	public Sphere3d(Point3D<?, ?, ?> center, double radius) {
 		set(center.getX(), center.getY(), center.getZ(), radius);
 	}
 
@@ -77,14 +77,13 @@ public class Sphere3d
 	/** Construct a sphere from a sphere.
 	 * @param sphere the sphere to copy.
 	 */
-	public Sphere3d(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+	public Sphere3d(Sphere3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
 	}
 
 	@Pure
 	@Override
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + Double.hashCode(this.centerX);

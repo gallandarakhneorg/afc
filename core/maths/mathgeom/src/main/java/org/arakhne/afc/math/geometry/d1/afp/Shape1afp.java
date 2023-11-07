@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,8 +76,8 @@ public interface Shape1afp<
 	/** Replies if the given rectangle is inside this shape.
 	 *
 	 * @param rectangle the rectangle.
-	 * @return <code>true</code> if the given rectangle is inside this
-	 *     shape, otherwise <code>false</code>.
+	 * @return {@code true} if the given rectangle is inside this
+	 *     shape, otherwise {@code false}.
 	 */
 	@Pure
 	boolean contains(Rectangle1afp<?, ?, ?, ?, ?, ?> rectangle);
@@ -87,8 +87,8 @@ public interface Shape1afp<
 	 * @param segment the segment to test.
 	 * @param x x coordinate of the point to test.
 	 * @param y y coordinate of the point to test.
-	 * @return <code>true</code> if the given point is inside this
-	 *     shape, otherwise <code>false</code>.
+	 * @return {@code true} if the given point is inside this
+	 *     shape, otherwise {@code false}.
 	 */
 	@Pure
 	boolean contains(Segment1D<?, ?> segment, double x, double y);
@@ -110,7 +110,6 @@ public interface Shape1afp<
 	@Pure
 	@Unefficient
 	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	default boolean intersects(Shape1D<?, ?, ?, ?, ?, ?> shape) {
 		if (shape instanceof Rectangle1afp) {
 			return intersects((Rectangle1afp<?, ?, ?, ?, ?, ?>) shape);
@@ -121,8 +120,8 @@ public interface Shape1afp<
 	/** Replies if this shape is intersecting the given rectangle.
 	 *
 	 * @param rectangle the rectangle.
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(Rectangle1afp<?, ?, ?, ?, ?, ?> rectangle);
@@ -130,7 +129,6 @@ public interface Shape1afp<
 	@Pure
 	@Unefficient
 	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	default double getDistanceSquared(Shape1D<?, ?, ?, ?, ?, ?> shape) {
 		if (shape instanceof Rectangle1afp) {
 			return getDistanceSquared((Rectangle1afp<?, ?, ?, ?, ?, ?>) shape);
@@ -152,7 +150,6 @@ public interface Shape1afp<
 	@Pure
 	@Unefficient
 	@Override
-	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	default P getClosestPointTo(Shape1D<?, ?, ?, ?, ?, ?> shape) {
 		if (shape instanceof Rectangle1afp) {
 			return getClosestPointTo((Rectangle1afp<?, ?, ?, ?, ?, ?>) shape);

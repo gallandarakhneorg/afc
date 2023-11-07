@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -210,7 +210,6 @@ public class Path2d
 
 	@Pure
 	@Override
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + Integer.hashCode(this.numCoords);
@@ -545,7 +544,6 @@ public class Path2d
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:magicnumber")
 	public void removeLast() {
 		if (this.numTypes > 0) {
 			switch (this.types[this.numTypes - 1]) {
@@ -629,7 +627,6 @@ public class Path2d
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:magicnumber")
 	public void quadTo(double x1, double y1, double x2, double y2) {
 		ensureSlots(true, 4);
 		this.types[this.numTypes++] = PathElementType.QUAD_TO;
@@ -647,7 +644,6 @@ public class Path2d
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:magicnumber")
 	public void curveTo(double x1, double y1, double x2, double y2, double x3, double y3) {
 		ensureSlots(true, 6);
 		this.types[this.numTypes++] = PathElementType.CURVE_TO;
@@ -693,8 +689,6 @@ public class Path2d
 	}
 
 	@Override
-	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:fallthrough",
-			"checkstyle:cyclomaticcomplexity"})
 	public boolean remove(double x, double y) {
 		for (int i = 0, j = 0; i < this.numCoords && j < this.numTypes;) {
 			switch (this.types[j]) {

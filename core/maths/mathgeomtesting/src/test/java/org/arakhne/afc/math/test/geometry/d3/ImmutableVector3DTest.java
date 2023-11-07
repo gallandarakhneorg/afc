@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,14 @@ package org.arakhne.afc.math.test.geometry.d3;
 import org.junit.jupiter.api.Disabled;
 
 import org.arakhne.afc.math.geometry.d3.ImmutablePoint3D;
+import org.arakhne.afc.math.geometry.d3.ImmutableQuaternion;
 import org.arakhne.afc.math.geometry.d3.ImmutableVector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.test.geometry.AbstractUnmodifiableVector3DTest;
 
 @SuppressWarnings("all")
 @Disabled("temporary")
-public class ImmutableVector3DTest extends AbstractUnmodifiableVector3DTest<ImmutableVector3D, ImmutablePoint3D> {
+public class ImmutableVector3DTest extends AbstractUnmodifiableVector3DTest<ImmutableVector3D, ImmutablePoint3D, ImmutableQuaternion> {
 	
 	@Override
 	public ImmutableVector3D createVector(final double tx, final double ty, final double tz) {

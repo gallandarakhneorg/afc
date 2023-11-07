@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
@@ -50,7 +50,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("checkstyle:methodcount")
 public interface Parallelogram2afp<
 		ST extends Shape2afp<?, ?, IE, P, V, B>,
 		IT extends Parallelogram2afp<?, ?, IE, P, V, B>,
@@ -64,8 +63,8 @@ public interface Parallelogram2afp<
 	 * Compute the axes of an oriented bounding rectangle that is enclosing the set of points.
 	 *
 	 * @param points is the list of the points enclosed by the OBR.
-	 * @param raxis is the vector where the R axis of the OBR is put. If <code>null</code>, S must be not <code>null</code>.
-	 * @param saxis is the vector where the S axis of the OBR is put. If <code>null</code>, R must be not <code>null</code>.
+	 * @param raxis is the vector where the R axis of the OBR is put. If {@code null}, S must be not {@code null}.
+	 * @param saxis is the vector where the S axis of the OBR is put. If {@code null}, R must be not {@code null}.
 	 * @see "MGPCG pages 219-221"
 	 */
 	static void calculatesOrthogonalAxes(Iterable<? extends Point2D<?, ?>> points,
@@ -155,7 +154,6 @@ public interface Parallelogram2afp<
 	 * @see "MGPCG pages 222-223 (oriented bounding box)"
 	 * @see OrientedRectangle2afp#calculatesCenterPointAxisExtents(Iterable, Vector2D, Point2D, Tuple2D)
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	static void calculatesCenterPointAxisExtents(
 			Iterable<? extends Point2D<?, ?>> points,
 					Vector2D<?, ?> raxis, Vector2D<?, ?> saxis,
@@ -240,7 +238,6 @@ public interface Parallelogram2afp<
 	 * @param closest the closest point.
 	 */
 	@Unefficient
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static void findsClosestPointPointParallelogram(
 			double px, double py,
 			double centerX, double centerY,
@@ -385,7 +382,6 @@ public interface Parallelogram2afp<
 	 * @param farthest the farthest point.
 	 */
 	@Unefficient
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static void findsFarthestPointPointParallelogram(
 			double px, double py,
 			double centerX, double centerY,
@@ -471,11 +467,10 @@ public interface Parallelogram2afp<
 	 *            is the Y coordinate of the axis 2 unit vector.
 	 * @param axis2Extent
 	 *            is the extent of the axis 2 of the parallelogram.
-	 * @return <code>true</code> if the given point is inside the parallelogram;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given point is inside the parallelogram;
+	 *     otherwise {@code false}.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean containsParallelogramPoint(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -526,14 +521,11 @@ public interface Parallelogram2afp<
 	 *            is the width of the rectangle.
 	 * @param rheight
 	 *            is the height of the rectangle.
-	 * @return <code>true</code> if the given rectangle is inside the parallelogram;
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if the given rectangle is inside the parallelogram;
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	@Unefficient
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:returncount",
-		"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
-		"checkstyle:magicnumber"})
 	static boolean containsParallelogramRectangle(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -614,10 +606,9 @@ public interface Parallelogram2afp<
 	 * @param s1y is the Y coordinate of the first point of the segment.
 	 * @param s2x is the X coordinate of the second point of the segment.
 	 * @param s2y is the Y coordinate of the second point of the segment.
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
+	 * @return {@code true} if intersecting, otherwise {@code false}
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean intersectsParallelogramSegment(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -670,10 +661,9 @@ public interface Parallelogram2afp<
 	 * @param ty2 is the Y coordinate of the second point of the triangle.
 	 * @param tx3 is the X coordinate of the third point of the triangle.
 	 * @param ty3 is the Y coordinate of the third point of the triangle.
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
+	 * @return {@code true} if intersecting, otherwise {@code false}
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean intersectsParallelogramTriangle(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -727,10 +717,9 @@ public interface Parallelogram2afp<
 	 * @param circleX is the coordinate of the circle center.
 	 * @param circleY is the coordinate of the circle center.
 	 * @param circleRadius is the radius of the circle.
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
+	 * @return {@code true} if intersecting, otherwise {@code false}
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean intersectsParallelogramCircle(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -781,11 +770,10 @@ public interface Parallelogram2afp<
 	 * @param ey is the coordinate of the min point of the ellipse rectangle.
 	 * @param ewidth is the width of the ellipse.
 	 * @param eheight is the height of the ellipse.
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
+	 * @return {@code true} if intersecting, otherwise {@code false}
 	 */
 	@Pure
 	@Unefficient
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean intersectsParallelogramEllipse(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -860,11 +848,10 @@ public interface Parallelogram2afp<
 	 *            is the width of the rectangle.
 	 * @param rheight
 	 *            is the height of the rectangle.
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>.
+	 * @return {@code true} if intersecting, otherwise {@code false}.
 	 */
 	@Pure
 	@Unefficient
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean intersectsParallelogramRectangle(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -957,11 +944,10 @@ public interface Parallelogram2afp<
 	 *            is the Y coordinate of the axis 2 unit vector.
 	 * @param axis2Extent2
 	 *            is the extent of the axis 2 of the second parallelogram.
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>.
+	 * @return {@code true} if intersecting, otherwise {@code false}.
 	 */
 	@Pure
 	@Unefficient
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static boolean intersectsParallelogramParallelogram(
 			double centerX1, double centerY1,
 			double axis1X1, double axis1Y1,
@@ -1036,12 +1022,10 @@ public interface Parallelogram2afp<
 	 *            is the width of the rectangle arcs.
 	 * @param rArcHeight
 	 *            is the height of the rectangle arcs.
-	 * @return <code>true</code> if intersecting, otherwise <code>false</code>.
+	 * @return {@code true} if intersecting, otherwise {@code false}.
 	 */
 	@Pure
 	@Unefficient
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber",
-		"checkstyle:npathcomplexity"})
 	static boolean intersectsParallelogramRoundRectangle(
 			double centerX, double centerY,
 			double axis1X, double axis1Y,
@@ -1147,11 +1131,10 @@ public interface Parallelogram2afp<
 	 * @param axis2Y the Y coordinate of the second axis of the parallelogram.
 	 * @param extent2 the extent the rectangle along the second axis.
 	 * @param pathIterator the specified {@link PathIterator2afp}.
-	 * @return <code>true</code> if the specified {@link PathIterator2afp} and
+	 * @return {@code true} if the specified {@link PathIterator2afp} and
 	 *         the interior of the specified set of rectangular
-	 *         coordinates intersect each other; <code>false</code> otherwise.
+	 *         coordinates intersect each other; {@code false} otherwise.
 	 */
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static <T extends PathElement2afp> boolean intersectsParallelogramPathIterator(
 			double centerX, double centerY, double axis1X, double axis1Y, double extent1,
 			double axis2X, double axis2Y, double extent2,
@@ -1178,7 +1161,6 @@ public interface Parallelogram2afp<
 
 	@Pure
 	@Override
-	@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
 	default boolean equalsToShape(IT shape) {
 		if (shape == null) {
 			return false;
@@ -1822,10 +1804,27 @@ public interface Parallelogram2afp<
 
 	/** Replies if the axes of the parallelogram are defined in a counter-clockwise order.
 	 *
-	 * @return <code>true</code> if the paralelogram axes are defined in a counter-clockwise order.
+	 * @return {@code true} if the paralelogram axes are defined in a counter-clockwise order.
 	 */
 	default boolean isCCW() {
 		return Vector2D.isCCW(getFirstAxisX(), getFirstAxisY(), getSecondAxisX(), getSecondAxisY());
+	}
+
+	/** Replies this parallelogram with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the parallelogram.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toPolygonDefinition(2,
+				getCenterX() - getFirstAxisExtent() * getFirstAxisX() - getSecondAxisExtent() * getSecondAxisX(),
+				getCenterY() - getFirstAxisExtent() * getFirstAxisY() - getSecondAxisExtent() * getSecondAxisY(),
+				getCenterX() + getFirstAxisExtent() * getFirstAxisX() - getSecondAxisExtent() * getSecondAxisX(),
+				getCenterY() + getFirstAxisExtent() * getFirstAxisY() - getSecondAxisExtent() * getSecondAxisY(),
+				getCenterX() + getFirstAxisExtent() * getFirstAxisX() + getSecondAxisExtent() * getSecondAxisX(),
+				getCenterY() + getFirstAxisExtent() * getFirstAxisY() + getSecondAxisExtent() * getSecondAxisY(),
+				getCenterX() - getFirstAxisExtent() * getFirstAxisX() + getSecondAxisExtent() * getSecondAxisX(),
+				getCenterY() - getFirstAxisExtent() * getFirstAxisY() + getSecondAxisExtent() * getSecondAxisY());
 	}
 
 	/** Abstract iterator on the path elements of the parallelogram.

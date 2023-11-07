@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,13 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3iComparator;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
@@ -44,6 +45,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
  * @param <V> is the type of the vectors.
+ * @param <Q> is the type of the quaternions.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -53,13 +55,14 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public interface Sphere3ai<
-		ST extends Shape3ai<?, ?, IE, P, V, B>,
-		IT extends Sphere3ai<?, ?, IE, P, V, B>,
+		ST extends Shape3ai<?, ?, IE, P, V, Q, B>,
+		IT extends Sphere3ai<?, ?, IE, P, V, Q, B>,
 		IE extends PathElement3ai,
-		P extends Point3D<? super P, ? super V>,
-		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3ai<?, ?, IE, P, V, B>>
-		extends Shape3ai<ST, IT, IE, P, V, B> {
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>,
+		B extends AlignedBox3ai<?, ?, IE, P, V, Q, B>>
+		extends Shape3ai<ST, IT, IE, P, V, Q, B> {
 
 	/** Replies if the given point is inside the sphere.
 	 *
@@ -70,10 +73,9 @@ public interface Sphere3ai<
 	 * @param x is the x-coordinate of the point
 	 * @param y is the y-coordinate of the point
 	 * @param z is the z-coordinate of the point
-	 * @return <code>true</code> if the point is inside the sphere.
+	 * @return {@code true} if the point is inside the sphere.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean contains(int cx, int cy, int cz, int cr, int x, int y, int z) {
 		assert cr >= 0 : AssertMessages.positiveOrZeroParameter(2);
 
@@ -101,12 +103,12 @@ public interface Sphere3ai<
             }
 
 			boolean allNull = true;
-            final SpherePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai> iterator =
+            final SpherePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator =
                     new SpherePerimeterIterator<>(
                     InnerComputationGeomFactory.SINGLETON, cx, cy, cz, cr, octant, octant + 2, false);
 
 			while (iterator.hasNext()) {
-			    final Point3D<?, ?> pt = iterator.next();
+			    final Point3D<?, ?, ?> pt = iterator.next();
 			    // Trivial case
 			    if (pt.ix() == x && pt.iy() == y) {
 			        return true;
@@ -152,10 +154,9 @@ public interface Sphere3ai<
 	 * @param x is the x-coordinate of the point
 	 * @param y is the y-coordinate of the point
 	 * @param z is the z-coordinate of the point
-	 * @return <code>true</code> if the point is inside the sphere.
+	 * @return {@code true} if the point is inside the sphere.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean contains(int cx, int cy, int cz, int cr, int quadrant, int x, int y, int z) {
 		assert cr >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert quadrant >= 0 && quadrant <= 3 : AssertMessages.outsideRangeInclusiveParameter(quadrant, 0, 3);
@@ -185,12 +186,12 @@ public interface Sphere3ai<
                 return false;
             }
 
-			final SpherePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai> iterator =
+			final SpherePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator =
 					new SpherePerimeterIterator<>(InnerComputationGeomFactory.SINGLETON,
 					        cx, cy, cz, cr, octant, octant + 2, false);
 
 			while (iterator.hasNext()) {
-				final Point3D<?, ?> p = iterator.next();
+				final Point3D<?, ?, ?> p = iterator.next();
 				final int px = cy - p.iy();
 				final int py = p.ix() - cx;
 				final int cpx = x - p.ix();
@@ -217,8 +218,7 @@ public interface Sphere3ai<
     // TODO : integrate z coordinate
     @Pure
     @Override
-    @SuppressWarnings({"checkstyle:booleanexpressioncomplexity", "checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity"})
-    default boolean contains(RectangularPrism3ai<?, ?, ?, ?, ?, ?> box) {
+    default boolean contains(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> box) {
         assert box != null : AssertMessages.notNullParameter();
         final int cx = getX();
         final int cy = getY();
@@ -257,7 +257,7 @@ public interface Sphere3ai<
 
             for (int i = 0; i < quadrants.length; ++i) {
                 if (quadrants[i] != 0) {
-                    final SpherePerimeterIterator<P, V> iterator = new SpherePerimeterIterator<>(
+                    final SpherePerimeterIterator<P, V, Q> iterator = new SpherePerimeterIterator<>(
                             getGeomFactory(), cx, cy, cz, radius, i * 2, i * 2 + 2, false);
                     while (iterator.hasNext()) {
                         final P p = iterator.next();
@@ -299,8 +299,7 @@ public interface Sphere3ai<
 	 * @param result the closest point in the sphere to the point.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
-	static void computeClosestPointTo(int cx, int cy, int cz, int cr, int x, int y, int z, Point3D<?, ?> result) {
+	static void computeClosestPointTo(int cx, int cy, int cz, int cr, int x, int y, int z, Point3D<?, ?, ?> result) {
 		assert cr >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert result != null : AssertMessages.notNullParameter(7);
 
@@ -324,14 +323,14 @@ public interface Sphere3ai<
             }
         }
 
-		final SpherePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai> iterator =
+		final SpherePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator =
                 new SpherePerimeterIterator<>(InnerComputationGeomFactory.SINGLETON, cx, cy, cz, cr, octant, octant + 2, false);
 
 		boolean isInside = true;
 		int minDist = Integer.MAX_VALUE;
 
 		while (iterator.hasNext()) {
-			final Point3D<?, ?> p = iterator.next();
+			final Point3D<?, ?, ?> p = iterator.next();
 			final int px = cy - p.iy();
 			final int py = p.ix() - cx;
 			final int cpx = x - p.ix();
@@ -369,8 +368,7 @@ public interface Sphere3ai<
 	 * @param result the farthest point in the sphere to the point.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
-	static void computeFarthestPointTo(int cx, int cy, int cz, int cr, int x, int y, int z, Point3D<?, ?> result) {
+	static void computeFarthestPointTo(int cx, int cy, int cz, int cr, int x, int y, int z, Point3D<?, ?, ?> result) {
 		assert cr >= 0 : AssertMessages.positiveOrZeroParameter(3);
 
 		final int vx = x - cx;
@@ -393,7 +391,7 @@ public interface Sphere3ai<
             }
         }
 
-		final SpherePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai> iterator =
+		final SpherePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator =
                 new SpherePerimeterIterator<>(InnerComputationGeomFactory.SINGLETON, cx, cy, cz, cr, octant, octant + 2, false);
 
 		int maxL1Dist = Integer.MIN_VALUE;
@@ -401,7 +399,7 @@ public interface Sphere3ai<
 		result.set(x, y, z);
 
 		while (iterator.hasNext()) {
-		    final Point3D<?, ?>  p = iterator.next();
+		    final Point3D<?, ?, ?>  p = iterator.next();
 			final int cpx = Math.abs(p.ix() - x);
 			final int cpy = Math.abs(p.iy() - y);
 			// Mahantan distance
@@ -425,15 +423,14 @@ public interface Sphere3ai<
 	 * @param y2 is the center of the second sphere
 	 * @param z2 is the center of the second sphere
 	 * @param radius2 is the radius of the second sphere
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean intersectsSphereSphere(int x1, int y1, int z1, int radius1, int x2, int y2, int z2, int radius2) {
 		assert radius1 >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert radius2 >= 0 : AssertMessages.positiveOrZeroParameter(7);
-		final Point3D<?, ?> point = new InnerComputationPoint3ai();
+		final Point3D<?, ?, ?> point = new InnerComputationPoint3ai();
 		computeClosestPointTo(x1, y1, z1, radius1, x2, y2, z2, point);
 		return contains(x2, y2, z2, radius2, point.ix(), point.iy(), point.iz());
 	}
@@ -450,16 +447,15 @@ public interface Sphere3ai<
 	 * @param x3 is the second corner of the rectangle.
 	 * @param y3 is the second corner of the rectangle.
 	 * @param z3 is the second corner of the rectangle.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
-    static boolean intersectsSphereRectangularPrism(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3,
+    static boolean intersectsSphereAlignedBox(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3,
             int z3) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
-		final Point3D<?, ?> point = new InnerComputationPoint3ai();
-		RectangularPrism3ai.computeClosestPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1, point);
+		final Point3D<?, ?, ?> point = new InnerComputationPoint3ai();
+		AlignedBox3ai.computeClosestPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1, point);
 		return contains(x1, y1, z1, radius, point.ix(), point.iy(), point.iz());
 	}
 
@@ -475,13 +471,12 @@ public interface Sphere3ai<
 	 * @param x3 is the second point of the segment.
 	 * @param y3 is the second point of the segment.
 	 * @param z3 is the second point of the segment.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
-	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean intersectsSphereSegment(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3, int z3) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
-		final Point3D<?, ?> point = new InnerComputationPoint3ai();
+		final Point3D<?, ?, ?> point = new InnerComputationPoint3ai();
 		Segment3ai.computeClosestPointToPoint(x2, y2, z1, x3, y3, z3, x1, y1, z1, point);
 		return contains(x1, y1, z1, radius, point.ix(), point.iy(), point.iz());
 	}
@@ -490,6 +485,7 @@ public interface Sphere3ai<
 	 *
 	 * @param <P> the type of the points.
 	 * @param <V> the type of the vectors.
+	 * @param <Q> the type of the quaternions.
 	 * @param cx is the center of the radius.
 	 * @param cy is the center of the radius.
 	 * @param cz is the center of the radius.
@@ -500,10 +496,10 @@ public interface Sphere3ai<
 	 * @return the points on the perimeters.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
-	static <P extends Point3D<? super P, ? super V>, V extends Vector3D<? super V, ? super P>>
+	static <P extends Point3D<? super P, ? super V, ? super Q>, V extends Vector3D<? super V, ? super P, ? super Q>,
+			Q extends Quaternion<? super P, ? super V, ? super Q>>
 	  Iterator<P> getPointIterator(int cx, int cy, int cz, int radius, int firstOctantIndex, int nbOctants,
-			GeomFactory3ai<?, P, V, ?> factory) {
+			GeomFactory3ai<?, P, V, Q, ?> factory) {
 		assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert firstOctantIndex >= 0 && firstOctantIndex < 8
 				: AssertMessages.outsideRangeInclusiveParameter(firstOctantIndex, 0, 7);
@@ -524,7 +520,6 @@ public interface Sphere3ai<
      */
     @Pure
     @Override
-    @SuppressWarnings("checkstyle:magicnumber")
     default Iterator<P> getPointIterator() {
         return new SpherePerimeterIterator<>(getGeomFactory(), getX(), getY(), getZ(), getRadius(), 0, 8, true);
     }
@@ -576,7 +571,7 @@ public interface Sphere3ai<
 	 * @param center the center of the sphere.
 	 * @param radius the radius of the sphere.
 	 */
-	default void set(Point3D<?, ?> center, int radius) {
+	default void set(Point3D<?, ?, ?> center, int radius) {
 		set(center.ix(), center.iy(), center.iz(), Math.abs(radius));
 	}
 
@@ -593,7 +588,7 @@ public interface Sphere3ai<
 	 *
 	 * @param center the center of the sphere.
 	 */
-	default void setCenter(Point3D<?, ?> center) {
+	default void setCenter(Point3D<?, ?, ?> center) {
 		set(center.ix(), center.iy(), center.iz(), getRadius());
 	}
 
@@ -691,7 +686,7 @@ public interface Sphere3ai<
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point3D<?, ?> pt) {
+	default double getDistanceSquared(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P c = getClosestPointTo(pt);
 		return c.getDistanceSquared(pt);
@@ -699,7 +694,7 @@ public interface Sphere3ai<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point3D<?, ?> pt) {
+	default double getDistanceL1(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P c = getClosestPointTo(pt);
 		return c.getDistanceL1(pt);
@@ -707,14 +702,14 @@ public interface Sphere3ai<
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point3D<?, ?> pt) {
+	default double getDistanceLinf(Point3D<?, ?, ?> pt) {
 		final P c = getClosestPointTo(pt);
 		return c.getDistanceLinf(pt);
 	}
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point3D<?, ?> pt) {
+	default P getClosestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointTo(getX(), getY(), getZ(), getRadius(), pt.ix(), pt.iy(), pt.iz(), point);
@@ -722,33 +717,33 @@ public interface Sphere3ai<
 	}
 
     @Override
-    default P getClosestPointTo(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangle) {
+    default P getClosestPointTo(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> rectangle) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?> circle) {
+    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?, ?> circle) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?, ?> segment) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+    default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?> path) {
+    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?, ?> path) {
         throw new UnsupportedOperationException();
     }
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point3D<?, ?> pt) {
+	default P getFarthestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeFarthestPointTo(getX(), getY(), getZ(), getRadius(), pt.ix(), pt.iy(), pt.iz(), point);
@@ -757,17 +752,17 @@ public interface Sphere3ai<
 
 	@Pure
 	@Override
-	default boolean intersects(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : AssertMessages.notNullParameter();
-		return intersectsSphereRectangularPrism(
+	default boolean intersects(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> AlignedBox) {
+		assert AlignedBox != null : AssertMessages.notNullParameter();
+		return intersectsSphereAlignedBox(
 				getX(), getY(), getZ(), getRadius(),
-				rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ(),
-				rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ());
+				AlignedBox.getMinX(), AlignedBox.getMinY(), AlignedBox.getMinZ(),
+				AlignedBox.getMaxX(), AlignedBox.getMaxY(), AlignedBox.getMaxZ());
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
+	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		return intersectsSphereSphere(
 				getX(), getY(), getZ(), getRadius(),
@@ -776,7 +771,7 @@ public interface Sphere3ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsSphereSegment(
 				getX(), getY(), getZ(), getRadius(),
@@ -799,7 +794,7 @@ public interface Sphere3ai<
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
@@ -818,6 +813,15 @@ public interface Sphere3ai<
 		return new TransformedCirclePathIterator<>(this, transform);
 	}
 
+	/** Replies this sphere with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the sphere.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toCircleDefinition(3, getX(), getY(), getZ(), getRadius());
+	}
+
 	/** Abstract iterator on the path elements of the sphere.
 	 *
 	 * @param <IE> is the type of the path elements.
@@ -828,7 +832,6 @@ public interface Sphere3ai<
 	 * @since 13.0
 	 */
 	// TODO integrate z coordinate
-	@SuppressWarnings("checkstyle:magicnumber")
 	abstract class AbstractCirclePathIterator<IE extends PathElement3ai> implements PathIterator3ai<IE> {
 
 		/**
@@ -865,12 +868,12 @@ public interface Sphere3ai<
 		/**
 		 * The element factory.
 		 */
-		protected final Sphere3ai<?, ?, IE, ?, ?, ?> sphere;
+		protected final Sphere3ai<?, ?, IE, ?, ?, ?, ?> sphere;
 
 		/** Constructor.
 		 * @param sphere the sphere.
 		 */
-		public AbstractCirclePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?> sphere) {
+		public AbstractCirclePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?, ?> sphere) {
 			assert sphere != null : AssertMessages.notNullParameter();
 			this.sphere = sphere;
 		}
@@ -893,7 +896,7 @@ public interface Sphere3ai<
 		}
 
 		@Override
-		public GeomFactory3ai<IE, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3ai<IE, ?, ?, ?, ?> getGeomFactory() {
 			return this.sphere.getGeomFactory();
 		}
 
@@ -924,7 +927,6 @@ public interface Sphere3ai<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	class SpherePathIterator<IE extends PathElement3ai> extends AbstractCirclePathIterator<IE> {
 
 		private int x;
@@ -952,7 +954,7 @@ public interface Sphere3ai<
 		/** Constructor.
 		 * @param sphere the sphere to iterate on.
 		 */
-		public SpherePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?> sphere) {
+		public SpherePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?, ?> sphere) {
 			super(sphere);
 			if (sphere.isEmpty()) {
 				this.index = 6;
@@ -1029,7 +1031,6 @@ public interface Sphere3ai<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	class TransformedCirclePathIterator<IE extends PathElement3ai> extends AbstractCirclePathIterator<IE> {
 
 		private final Transform3D transform;
@@ -1050,19 +1051,19 @@ public interface Sphere3ai<
 
 		private int movez;
 
-		private Point3D<?, ?> p1;
+		private Point3D<?, ?, ?> p1;
 
-		private Point3D<?, ?> p2;
+		private Point3D<?, ?, ?> p2;
 
-		private Point3D<?, ?> ptmp1;
+		private Point3D<?, ?, ?> ptmp1;
 
-		private Point3D<?, ?> ptmp2;
+		private Point3D<?, ?, ?> ptmp2;
 
 		/** Constructor.
 		 * @param sphere the sphere to iterate on.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedCirclePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?> sphere, Transform3D transform) {
+		public TransformedCirclePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?, ?> sphere, Transform3D transform) {
 			super(sphere);
 			assert transform != null : AssertMessages.notNullParameter(1);
 			this.transform = transform;
@@ -1136,17 +1137,18 @@ public interface Sphere3ai<
 	 *
 	 * @param <P> the type of the points.
 	 * @param <V> the type of the vectors.
+	 * @param <Q> the type of the quaternions.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
-	class SpherePerimeterIterator<P extends Point3D<? super P, ? super V>,
-			V extends Vector3D<? super V, ? super P>> implements Iterator<P> {
+	class SpherePerimeterIterator<P extends Point3D<? super P, ? super V, ? super Q>,
+			V extends Vector3D<? super V, ? super P, ? super Q>,
+			Q extends Quaternion<? super P, ? super V, ? super Q>> implements Iterator<P> {
 
-		private final GeomFactory3D<V, P> factory;
+		private final GeomFactory3D<V, P, Q> factory;
 
 		private final int cx;
 
@@ -1186,7 +1188,7 @@ public interface Sphere3ai<
 		 * @param skip indicates if the first point on an octant must be skip, because it is already replied when treating the
 		 *     previous octant.
 		 */
-		public SpherePerimeterIterator(GeomFactory3D<V, P> factory,
+		public SpherePerimeterIterator(GeomFactory3D<V, P, Q> factory,
 				int centerX, int centerY, int centerZ, int radius, int initialOctant, int lastOctant, boolean skip) {
 			assert factory != null : AssertMessages.notNullParameter(0);
 			assert radius >= 0 : AssertMessages.positiveOrZeroParameter(4);
@@ -1230,7 +1232,6 @@ public interface Sphere3ai<
 		}
 
 		// TODO : integrate z coordinate
-		@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 		private void searchNext() {
             if (this.currentOctant >= this.maxOctant) {
 				this.next = null;

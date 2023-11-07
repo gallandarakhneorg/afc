@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.arakhne.afc.vmutil.json.JsonBuffer;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Point3i> {
+public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Point3i, Quaternion4i> {
 
 	private static final long serialVersionUID = -7228108517874845303L;
 
@@ -122,14 +122,14 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 
 	@Pure
 	@Override
-	public double dot(Vector3D<?, ?> vector) {
+	public double dot(Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
         return this.x * vector.getX() + this.y * vector.getY() + this.z * vector.getZ();
 	}
 
 	@Pure
 	@Override
-	public double perp(Vector3D<?, ?> vector) {
+	public double perp(Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
         return this.x * vector.getY() + this.y * vector.getZ() + this.z * vector.getX() - this.z * vector.getY()
                 - this.x * vector.getZ() - this.y * vector.getX();
@@ -148,7 +148,7 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 	}
 
 	@Override
-	public void add(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
+	public void add(Vector3D<?, ?, ?> vector1, Vector3D<?, ?, ?> vector2) {
 		assert vector1 != null : AssertMessages.notNullParameter(0);
 		assert vector2 != null : AssertMessages.notNullParameter(1);
 		this.x = (int) Math.round(vector1.getX() + vector2.getX());
@@ -157,7 +157,7 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 	}
 
 	@Override
-	public void add(Vector3D<?, ?> vector) {
+	public void add(Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
 		this.x = (int) Math.round(this.x + vector.getX());
 		this.y = (int) Math.round(this.y + vector.getY());
@@ -165,7 +165,7 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 	}
 
 	@Override
-	public void scaleAdd(int scale, Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
+	public void scaleAdd(int scale, Vector3D<?, ?, ?> vector1, Vector3D<?, ?, ?> vector2) {
 		assert vector1 != null : AssertMessages.notNullParameter(1);
 		assert vector2 != null : AssertMessages.notNullParameter(2);
 		this.x = (int) Math.round(scale * vector1.getX() + vector2.getX());
@@ -174,7 +174,7 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 	}
 
 	@Override
-	public void scaleAdd(double scale, Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
+	public void scaleAdd(double scale, Vector3D<?, ?, ?> vector1, Vector3D<?, ?, ?> vector2) {
 		assert vector1 != null : AssertMessages.notNullParameter(1);
 		assert vector2 != null : AssertMessages.notNullParameter(2);
 		this.x = (int) Math.round(scale * vector1.getX() + vector2.getX());
@@ -183,7 +183,7 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 	}
 
 	@Override
-	public void scaleAdd(int scale, Vector3D<?, ?> vector) {
+	public void scaleAdd(int scale, Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter(1);
 		this.x = (int) Math.round(scale * this.x + vector.getX());
 		this.y = (int) Math.round(scale * this.y + vector.getY());
@@ -191,7 +191,7 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 	}
 
 	@Override
-	public void scaleAdd(double scale, Vector3D<?, ?> vector) {
+	public void scaleAdd(double scale, Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter(1);
 		this.x = (int) Math.round(scale * this.x + vector.getX());
 		this.y = (int) Math.round(scale * this.y + vector.getY());
@@ -199,7 +199,7 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 	}
 
 	@Override
-	public void sub(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
+	public void sub(Vector3D<?, ?, ?> vector1, Vector3D<?, ?, ?> vector2) {
 		assert vector1 != null : AssertMessages.notNullParameter(0);
 		assert vector2 != null : AssertMessages.notNullParameter(1);
 		this.x = (int) Math.round(vector1.getX() - vector2.getX());
@@ -208,7 +208,7 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 	}
 
 	@Override
-	public void sub(Point3D<?, ?> point1, Point3D<?, ?> point2) {
+	public void sub(Point3D<?, ?, ?> point1, Point3D<?, ?, ?> point2) {
 		assert point1 != null : AssertMessages.notNullParameter(0);
 		assert point2 != null : AssertMessages.notNullParameter(1);
 		this.x = (int) Math.round(point1.getX() - point2.getX());
@@ -217,7 +217,7 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 	}
 
 	@Override
-	public void sub(Vector3D<?, ?> vector) {
+	public void sub(Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
 		this.x = (int) Math.round(this.x - vector.getX());
 		this.y = (int) Math.round(this.y - vector.getY());
@@ -245,13 +245,13 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 
 	@Pure
 	@Override
-	public UnmodifiableVector3D<Vector3i, Point3i> toUnmodifiable() {
+	public UnmodifiableVector3D<Vector3i, Point3i, Quaternion4i> toUnmodifiable() {
 		return new UnmodifiableVector3D<>() {
 
 			private static final long serialVersionUID = 7684988962796497763L;
 
 			@Override
-			public GeomFactory3D<Vector3i, Point3i> getGeomFactory() {
+			public GeomFactory3D<Vector3i, Point3i, Quaternion4i> getGeomFactory() {
 				return Vector3i.this.getGeomFactory();
 			}
 
@@ -261,7 +261,6 @@ public class Vector3i extends Tuple3i<Vector3i> implements Vector3D<Vector3i, Po
 			}
 
 			@Override
-			@SuppressWarnings("checkstyle:superclone")
 			public Vector3i clone() {
 				return Vector3i.this.getGeomFactory().newVector(
 						Vector3i.this.ix(),

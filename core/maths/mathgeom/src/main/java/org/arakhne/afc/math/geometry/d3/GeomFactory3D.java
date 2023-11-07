@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,23 +28,24 @@ import org.arakhne.afc.math.geometry.GeomFactoryBase;
  *
  * @param <V> the types of the vectors.
  * @param <P> is the type of the points.
+ * @param <Q> is the type of the quaternions.
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>,
-		P extends Point3D<? super P, ? super V>>
+public interface GeomFactory3D<V extends Vector3D<? super V, ? super P, ? super Q>,
+		P extends Point3D<? super P, ? super V, ? super Q>, Q extends Quaternion<? super P, ? super V, ? super Q>>
 		extends GeomFactoryBase {
 
 	/** Convert the given point if it is not of the right type.
 	 *
 	 * @param point the point to convert.
-	 * @return <code>p</code> if it is of type <code>P</code>, or a copy of <code>p</code>.
+	 * @return {@code p} if it is of type {@code P}, or a copy of {@code p}.
 	 */
 	@Pure
-	P convertToPoint(Point3D<?, ?> point);
+	P convertToPoint(Point3D<?, ?, ?> point);
 
 	/** Convert the given vector.
 	 *
@@ -52,7 +53,7 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>,
 	 * @return the point.
 	 */
 	@Pure
-	P convertToPoint(Vector3D<?, ?> vector);
+	P convertToPoint(Vector3D<?, ?, ?> vector);
 
 	/** Convert the given point.
 	 *
@@ -60,7 +61,7 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>,
 	 * @return the vector.
 	 */
 	@Pure
-	V convertToVector(Point3D<?, ?> point);
+	V convertToVector(Point3D<?, ?, ?> point);
 
 	/** Convert the given vector.
 	 *
@@ -68,7 +69,7 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>,
 	 * @return the vector.
 	 */
 	@Pure
-	V convertToVector(Vector3D<?, ?> vector);
+	V convertToVector(Vector3D<?, ?, ?> vector);
 
 	/** Create a point.
 	 *
@@ -126,21 +127,50 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>,
 
 	/** Creates a Quaternion.
 	 *
-	 * @param axis the axis of the quaternion.
-	 * @param angle the angle of the quaternion.
+	 * @param x the x component of the quaternion.
+	 * @param y the y component of the quaternion.
+	 * @param z the z component of the quaternion.
+	 * @param w the w component of the quaternion.
 	 * @return the quaternion.
+	 * @since 18.0
 	 */
 	@Pure
-	Quaternion newQuaternion(Vector3D<?, ?> axis, double angle);
+	Q newQuaternion(double x, double y, double z, double w);
 
-	/**Creates a Quaternion.
+	/** Creates a Quaternion.
 	 *
-	 * @param attitude the attitude of the quaternion
-	 * @param bank the bank of the quaternion
-	 * @param heading the heading of the quaternion
-	 * @return the quaternion
+	 * @param x the x component of the quaternion.
+	 * @param y the y component of the quaternion.
+	 * @param z the z component of the quaternion.
+	 * @param w the w component of the quaternion.
+	 * @return the quaternion.
+	 * @since 18.0
 	 */
 	@Pure
-	Quaternion newQuaternion(double attitude, double bank, double heading);
+	Q newQuaternion(int x, int y, int z, int w);
+
+	/** Creates a Quaternion from an axis-angle.
+	 *
+	 * @param x the x component of the rotation axis.
+	 * @param y the y component of the rotation axis.
+	 * @param z the z component of the rotation axis.
+	 * @param angle the rotation angle around {@code (x, y, z)}.
+	 * @return the quaternion.
+	 * @since 18.0
+	 */
+	@Pure
+	Q newQuaternionFromAxisAngle(double x, double y, double z, double angle);
+
+	/** Creates a Quaternion from an axis-angle.
+	 *
+	 * @param x the x component of the rotation axis.
+	 * @param y the y component of the rotation axis.
+	 * @param z the z component of the rotation axis.
+	 * @param angle the rotation angle around {@code (x, y, z)}.
+	 * @return the quaternion.
+	 * @since 18.0
+	 */
+	@Pure
+	Q newQuaternionFromAxisAngle(int x, int y, int z, int angle);
 
 }

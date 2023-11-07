@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -43,6 +44,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
  * @param <V> is the type of the vectors.
+ * @param <Q> is the type of the quaternions.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -51,13 +53,14 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public interface Segment3ai<
-		ST extends Shape3ai<?, ?, IE, P, V, B>,
-		IT extends Segment3ai<?, ?, IE, P, V, B>,
+		ST extends Shape3ai<?, ?, IE, P, V, Q, B>,
+		IT extends Segment3ai<?, ?, IE, P, V, Q, B>,
 		IE extends PathElement3ai,
-		P extends Point3D<? super P, ? super V>,
-		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3ai<?, ?, IE, P, V, B>>
-		extends Shape3ai<ST, IT, IE, P, V, B> {
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>,
+		B extends AlignedBox3ai<?, ?, IE, P, V, Q, B>>
+		extends Shape3ai<ST, IT, IE, P, V, Q, B> {
 
 	/** Replies the closest point in a circle to a point.
 	 *
@@ -73,9 +76,8 @@ public interface Segment3ai<
 	 * @param result the closest point in the segment to the point.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
     static void computeClosestPointToPoint(int ax, int ay, int az, int bx, int by, int bz, int px, int py, int pz,
-            Point3D<?, ?> result) {
+            Point3D<?, ?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter();
 
 		// Special case
@@ -101,7 +103,7 @@ public interface Segment3ai<
 		result.set(ax, ay, az);
 		// Only for internal use
 		final InnerComputationPoint3ai cp = new InnerComputationPoint3ai();
-        final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai> iterator = new BresenhamLineIterator<>(
+        final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator = new BresenhamLineIterator<>(
                 InnerComputationGeomFactory.SINGLETON, ax, ay, az, bx, by, bz);
 		while (iterator.hasNext()) {
 			iterator.next(cp);
@@ -157,11 +159,10 @@ public interface Segment3ai<
      * @return the square distance between the segments.
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
     static double computeClosestPointToSegment(
             int s1x1, int s1y1, int s1z1, int s1x2, int s1y2, int s1z2,
             int s2x1, int s2y1, int s2z1, int s2x2, int s2y2, int s2z2,
-            Point3D<?, ?> result) {
+            Point3D<?, ?, ?> result) {
         return computeClosestPointToSegment(
                 s1x1, s1y1, s1z1, s1x2, s1y2, s1z2, s2x1, s2y1, s2z1, s2x2, s2y2, s2z2,
                 result, null);
@@ -186,18 +187,17 @@ public interface Segment3ai<
      * @return the square distance between the segments.
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
     static double computeClosestPointToSegment(
             int s1x1, int s1y1, int s1z1, int s1x2, int s1y2, int s1z2,
             int s2x1, int s2y1, int s2z1, int s2x2, int s2y2, int s2z2,
-            Point3D<?, ?> resultOnFirstSegment, Point3D<?, ?> resultOnSecondSegment) {
-        final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai> it1 =
+            Point3D<?, ?, ?> resultOnFirstSegment, Point3D<?, ?, ?> resultOnSecondSegment) {
+        final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> it1 =
                 new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, s1x1, s1y1, s1z1, s1x2, s1y2, s1z2);
-        final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai> it2 =
+        final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> it2 =
                 new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, s2x1, s2y1, s2z1, s2x2, s2y2, s2z2);
 
-        final Point3D<?, ?> p1 = new InnerComputationPoint3ai();
-        final Point3D<?, ?> p2 = new InnerComputationPoint3ai();
+        final Point3D<?, ?, ?> p1 = new InnerComputationPoint3ai();
+        final Point3D<?, ?, ?> p2 = new InnerComputationPoint3ai();
 
         assert it1.hasNext();
         it1.next(p1);
@@ -286,9 +286,8 @@ public interface Segment3ai<
      * @return the square distance between the segments.
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber", "checkstyle:npathcomplexity"})
     static double computeClosestPointToRectangle(int sx1, int sy1, int sz1, int sx2, int sy2, int sz2,
-            int rx, int ry, int rz, int rwidth, int rheight, int rdepth, Point3D<?, ?> result) {
+            int rx, int ry, int rz, int rwidth, int rheight, int rdepth, Point3D<?, ?, ?> result) {
         assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(9);
         assert rheight >= 0. : AssertMessages.positiveOrZeroParameter(10);
         assert rdepth >= 0. : AssertMessages.positiveOrZeroParameter(11);
@@ -297,9 +296,9 @@ public interface Segment3ai<
         final int rmaxz = rz + rdepth;
         final int code1 = MathUtil.getCohenSutherlandCode3D(sx1, sy1, sz1, rx, ry, rz, rmaxx, rmaxy, rmaxz);
         final int code2 = MathUtil.getCohenSutherlandCode3D(sx2, sy2, sz2, rx, ry, rz, rmaxx, rmaxy, rmaxz);
-        final Point3D<?, ?> tmp1 = new InnerComputationPoint3ai();
-        final Point3D<?, ?> tmp2 = new InnerComputationPoint3ai();
-        final int zone = RectangularPrism3ai.reduceCohenSutherlandZoneRectangularPrismSegment(
+        final Point3D<?, ?, ?> tmp1 = new InnerComputationPoint3ai();
+        final Point3D<?, ?, ?> tmp2 = new InnerComputationPoint3ai();
+        final int zone = AlignedBox3ai.reduceCohenSutherlandZoneAlignedBoxSegment(
                 rx, ry, rz, rmaxx, rmaxy, rmaxz,
                 sx1, sy1, sz1, sx2, sy2, sz2,
                 code1, code2,
@@ -356,9 +355,8 @@ public interface Segment3ai<
 	 * @param result the farthest point in the segment to the point.
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
     static void computeFarthestPointTo(int ax, int ay, int az, int bx, int by, int bz, int px, int py, int pz,
-            Point3D<?, ?> result) {
+            Point3D<?, ?, ?> result) {
 		assert result != null : AssertMessages.notNullParameter();
         final int v1x = px - ax;
         final int v1y = py - ay;
@@ -408,7 +406,6 @@ public interface Segment3ai<
      */
 	@Pure
 	// TODO : integrate z coordinate
-	@SuppressWarnings("checkstyle:parameternumber")
 	static int computeSideLinePoint(int x1, int y1, int z1, int x2, int y2, int z2, int px, int py, int pz) {
 		final int segmentX = x2 - x1;
 		final int segmentY = y2 - y1;
@@ -448,7 +445,6 @@ public interface Segment3ai<
 	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
 	static int computeCrossingsFromSphere(
 			int crossings,
 			int cx, int cy, int cz,
@@ -538,7 +534,6 @@ public interface Segment3ai<
 	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static int computeCrossingsFromSegment(
 	        int crossings,
 	        int sx1, int sy1, int sz1,
@@ -654,8 +649,6 @@ public interface Segment3ai<
 	 * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
-	@SuppressWarnings({ "checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity",
-	  "checkstyle:booleanexpressioncomplexity", "checkstyle:nestedifdepth", "checkstyle:returncount"})
 	static int computeCrossingsFromRect(
 			int crossings,
 			int rxmin, int rymin, int rzmin,
@@ -719,7 +712,7 @@ public interface Segment3ai<
 
             // Otherwise calculate the y intercepts and see where
             // they fall with respect to the rectangle
-            final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai> iterator;
+            final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator;
             final int ymaxline;
             if (y0 <= y1) {
                 iterator = new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, x0, y0, z0, x1, y1, z1);
@@ -846,7 +839,6 @@ public interface Segment3ai<
 	 * @return the crossing, {@link GeomConstants#SHAPE_INTERSECTS}
 	 */
 	@Pure
-	@SuppressWarnings("checkstyle:parameternumber")
 	static int computeCrossingsFromPoint(
 			int crossing,
 			int px, int py, int pz,
@@ -885,7 +877,6 @@ public interface Segment3ai<
 	 * @return the crossing; or {@link GeomConstants#SHAPE_INTERSECTS} if the segment is on the point.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	static int computeCrossingsFromPoint(
 			int crossing,
 			int px, int py, int pz,
@@ -910,12 +901,12 @@ public interface Segment3ai<
 	    }
 
 		// General case: try to detect crossing
-		final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai> iterator =
+		final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator =
 				new BresenhamLineIterator<>(
 						InnerComputationGeomFactory.SINGLETON, x0, y0, z0, x1, y1, z1);
 
 		// Only for internal use.
-		final Point3D<?, ?> p = new InnerComputationPoint3ai();
+		final Point3D<?, ?, ?> p = new InnerComputationPoint3ai();
 		while (iterator.hasNext()) {
 			iterator.next(p);
             if (p.iy() == py) {
@@ -965,11 +956,10 @@ public interface Segment3ai<
 	 * @param x4 is the second point of the second segment.
 	 * @param y4 is the second point of the second segment.
 	 * @param z4 is the second point of the second segment.
-	 * @return <code>true</code> if the two shapes are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two shapes are intersecting; otherwise
+	 * {@code false}
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:parameternumber"})
     static boolean intersectsSegmentSegment(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4,
             int y4, int z4) {
 		final int side1 = computeSideLinePoint(x1, y1, z1, x2, y2, z2, x3, y3, z3);
@@ -1001,12 +991,11 @@ public interface Segment3ai<
 	 * @param enableThirdPoint indicates if the intersection on the third point is computed.
 	 * @param enableFourthPoint indicates if the intersection on the fourth point is computed.
 	 * @param intersectionPoint are the coordinates of the intersection, if exist.
-	 * @return <code>true</code> if the two segments are intersecting; otherwise
-	 * <code>false</code>
+	 * @return {@code true} if the two segments are intersecting; otherwise
+	 * {@code false}
 	 */
-	@SuppressWarnings({"checkstyle:parameternumber"})
 	static boolean intersectsSegmentSegment(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3, int x4,
-            int y4, int z4, boolean enableThirdPoint, boolean enableFourthPoint, Point3D<?, ?> intersectionPoint) {
+            int y4, int z4, boolean enableThirdPoint, boolean enableFourthPoint, Point3D<?, ?, ?> intersectionPoint) {
         return computeIntersectionTypeSegmentSegment(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, enableThirdPoint,
                 enableFourthPoint, intersectionPoint) != 0;
 	}
@@ -1032,22 +1021,21 @@ public interface Segment3ai<
 	 * @param enableThirdPoint indicates if the intersection on the third point is computed.
 	 * @param enableFourthPoint indicates if the intersection on the fourth point is computed.
 	 * @param intersectionPoint are the coordinates of the intersection, if exist.
-	 * @return an integer value; if <code>0</code> the two segments are not intersecting;
-	 *     <code>1</code> if the two segments are intersecting and the segment 2 has pixels on both
-	 *     sides of the segment 1; <code>2</code> if the segments are intersecting and the segment 2
+	 * @return an integer value; if {@code 0} the two segments are not intersecting;
+	 *     {@code 1} if the two segments are intersecting and the segment 2 has pixels on both
+	 *     sides of the segment 1; {@code 2} if the segments are intersecting and the segment 2
 	 *     is only in one side of the segment 1.
 	 */
-	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
     static int computeIntersectionTypeSegmentSegment(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3,
             int x4, int y4, int z4,
-			boolean enableThirdPoint, boolean enableFourthPoint, Point3D<?, ?> intersectionPoint) {
-		final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai> it1;
+			boolean enableThirdPoint, boolean enableFourthPoint, Point3D<?, ?, ?> intersectionPoint) {
+		final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> it1;
         if (x1 < x2) {
             it1 = new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, x1, y1, z1, x2, y2, z2);
         } else {
             it1 = new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, x2, y2, z2, x1, y1, z1);
         }
-        final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai> it2;
+        final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> it2;
         if (x3 < x4) {
             it2 = new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, x3, y3, z3, x4, y4, z4);
         } else {
@@ -1056,9 +1044,9 @@ public interface Segment3ai<
 
         if (it1.hasNext() && it2.hasNext()) {
             // Only for internal use
-            final Point3D<?, ?> p1 = new InnerComputationPoint3ai();
+            final Point3D<?, ?, ?> p1 = new InnerComputationPoint3ai();
             // Only for internal use
-            final Point3D<?, ?> p2 = new InnerComputationPoint3ai();
+            final Point3D<?, ?, ?> p2 = new InnerComputationPoint3ai();
 
             boolean isFirstPointOfSecondSegment = true;
 
@@ -1177,7 +1165,7 @@ public interface Segment3ai<
 	 * @param firstPoint the first point.
 	 * @param secondPoint the second point.
 	 */
-	default void set(Point3D<?, ?> firstPoint, Point3D<?, ?> secondPoint) {
+	default void set(Point3D<?, ?, ?> firstPoint, Point3D<?, ?, ?> secondPoint) {
 		assert firstPoint != null : AssertMessages.notNullParameter(0);
 		assert secondPoint != null : AssertMessages.notNullParameter(1);
 		set(firstPoint.ix(), firstPoint.iy(), firstPoint.iz(), secondPoint.ix(), secondPoint.iy(), secondPoint.iz());
@@ -1296,7 +1284,7 @@ public interface Segment3ai<
 	 * @param point the first point.
 	 */
 	@Pure
-	default void setP1(Point3D<?, ?> point) {
+	default void setP1(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
 		set(point.ix(), point.iy(), point.iz(), getX2(), getY2(), getZ2());
 	}
@@ -1317,7 +1305,7 @@ public interface Segment3ai<
 	 * @param point the second point.
 	 */
 	@Pure
-	default void setP2(Point3D<?, ?> point) {
+	default void setP2(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
 		set(getX1(), getY1(), getZ1(), point.ix(), point.iy(), point.iz());
 	}
@@ -1342,7 +1330,7 @@ public interface Segment3ai<
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point3D<?, ?> pt) {
+	default double getDistanceSquared(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P closestPoint = getClosestPointTo(pt);
 		return closestPoint.getDistanceSquared(pt);
@@ -1350,7 +1338,7 @@ public interface Segment3ai<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point3D<?, ?> pt) {
+	default double getDistanceL1(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P closestPoint = getClosestPointTo(pt);
 		return closestPoint.getDistanceL1(pt);
@@ -1358,7 +1346,7 @@ public interface Segment3ai<
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point3D<?, ?> pt) {
+	default double getDistanceLinf(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P closestPoint = getClosestPointTo(pt);
 		return closestPoint.getDistanceLinf(pt);
@@ -1379,8 +1367,8 @@ public interface Segment3ai<
 			}
 
 			int minDist = Integer.MAX_VALUE;
-			final Point3D<?, ?> p = new InnerComputationPoint3ai();
-            final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai> iterator =
+			final Point3D<?, ?, ?> p = new InnerComputationPoint3ai();
+            final BresenhamLineIterator<InnerComputationPoint3ai, InnerComputationVector3ai, InnerComputationQuaternionai> iterator =
                     new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, ax, ay, az, bx, by, bz);
 			while (iterator.hasNext()) {
 				iterator.next(p);
@@ -1402,13 +1390,13 @@ public interface Segment3ai<
 
 	@Pure
 	@Override
-	default boolean contains(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
+	default boolean contains(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> AlignedBox) {
 		return false;
 	}
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point3D<?, ?> pt) {
+	default P getClosestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointToPoint(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), pt.ix(), pt.iy(), pt.iz(), point);
@@ -1416,13 +1404,13 @@ public interface Segment3ai<
 	}
 
     @Override
-    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?> circle) {
+    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?, ?> circle) {
         assert circle != null : AssertMessages.notNullParameter();
         return getClosestPointTo(circle.getCenter());
     }
 
     @Override
-    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         computeClosestPointToSegment(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), segment.getX1(), segment.getY1(),
@@ -1431,7 +1419,7 @@ public interface Segment3ai<
     }
 
     @Override
-    default P getClosestPointTo(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangle) {
+    default P getClosestPointTo(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
         final P point = getGeomFactory().newPoint();
         computeClosestPointToRectangle(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), rectangle.getMinX(),
@@ -1441,13 +1429,13 @@ public interface Segment3ai<
     }
 
     @Override
-    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?> path) {
+    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?, ?> path) {
         throw new UnsupportedOperationException();
     }
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point3D<?, ?> pt) {
+	default P getFarthestPointTo(Point3D<?, ?, ?> pt) {
 		assert pt != null : AssertMessages.notNullParameter();
 		final P point = getGeomFactory().newPoint();
 		computeFarthestPointTo(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(), pt.ix(), pt.iy(), pt.iz(), point);
@@ -1520,11 +1508,10 @@ public interface Segment3ai<
 	 * @param rxmax is the max of the coordinates of the rectangle.
 	 * @param rymax is the max of the coordinates of the rectangle.
 	 * @param rzmax is the max of the coordinates of the rectangle.
-	 * @return <code>true</code> if the segment has an intersection with the
-	 *     rectangle and the segment was clipped; <code>false</code> if the segment
+	 * @return {@code true} if the segment has an intersection with the
+	 *     rectangle and the segment was clipped; {@code false} if the segment
 	 *     does not intersect the rectangle.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	// TODO : integrate z coordinate
 	default boolean clipToRectangle(int rxmin, int rymin, int rzmin, int rxmax, int rymax, int rzmax) {
 		assert rxmin <= rxmax : AssertMessages.lowerEqualParameters(0, rxmin, 3, rxmax);
@@ -1608,18 +1595,18 @@ public interface Segment3ai<
 
 	@Pure
 	@Override
-	default boolean intersects(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : AssertMessages.notNullParameter();
-		return RectangularPrism3ai.intersectsRectangleSegment(
-				rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ(),
-				rectangularPrism.getMaxX(), rectangularPrism.getMaxY(), rectangularPrism.getMaxZ(),
+	default boolean intersects(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> AlignedBox) {
+		assert AlignedBox != null : AssertMessages.notNullParameter();
+		return AlignedBox3ai.intersectsAlignedBoxSegment(
+				AlignedBox.getMinX(), AlignedBox.getMinY(), AlignedBox.getMinZ(),
+				AlignedBox.getMaxX(), AlignedBox.getMaxY(), AlignedBox.getMaxZ(),
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2());
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
+	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		return Sphere3ai.intersectsSphereSegment(
 				sphere.getX(), sphere.getY(), sphere.getZ(),
@@ -1630,7 +1617,7 @@ public interface Segment3ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
 		return intersectsSegmentSegment(
 				getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
@@ -1651,9 +1638,18 @@ public interface Segment3ai<
 
 	}
 
+	/** Replies this segment with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the segment.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toSegmentDefinition(3, getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2());
+	}
+
 	@Pure
 	@Override
-	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
 		return multishape.intersects(this);
 	}
@@ -1677,6 +1673,7 @@ public interface Segment3ai<
 	 *
 	 * @param <P> the type of the points.
 	 * @param <V> the type of the vectors.
+	 * @param <Q> the type of the quaternios.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -1684,10 +1681,11 @@ public interface Segment3ai<
 	 * @since 13.0
 	 */
 	// TODO : integrate z coordinate
-	class BresenhamLineIterator<P extends Point3D<? super P, ? super V>,
-			V extends Vector3D<? super V, ? super P>> implements Iterator<P> {
+	class BresenhamLineIterator<P extends Point3D<? super P, ? super V, ? super Q>,
+			V extends Vector3D<? super V, ? super P, ? super Q>,
+			Q extends Quaternion<? super P, ? super V, ? super Q>> implements Iterator<P> {
 
-		private final GeomFactory3D<V, P> factory;
+		private final GeomFactory3D<V, P, Q> factory;
 
 		private final boolean steep;
 
@@ -1722,7 +1720,7 @@ public interface Segment3ai<
 		 * @param y1 is the y-coordinate of the last point of the Bresenham line.
 		 * @param z1 is the z-coordinate of the last point of the Bresenham line.
 		 */
-		public BresenhamLineIterator(GeomFactory3D<V, P> factory, int x0, int y0, int z0, int x1, int y1, int z1) {
+		public BresenhamLineIterator(GeomFactory3D<V, P, Q> factory, int x0, int y0, int z0, int x1, int y1, int z1) {
 			assert factory != null : AssertMessages.notNullParameter(0);
 			this.factory = factory;
 			int localx0 = x0;
@@ -1795,7 +1793,7 @@ public interface Segment3ai<
 		 *
 		 * @param point the output point.
 		 */
-		public void next(Point3D<?, ?> point) {
+		public void next(Point3D<?, ?, ?> point) {
 
 			// FIXME : correct formula
 
@@ -1843,12 +1841,12 @@ public interface Segment3ai<
 
 		/** Element.
 		 */
-		protected final Segment3ai<?, ?, IE, ?, ?, ?> segment;
+		protected final Segment3ai<?, ?, IE, ?, ?, ?, ?> segment;
 
 		/** Constructor.
 		 * @param segment the element.
 		 */
-		public AbstractSegmentPathIterator(Segment3ai<?, ?, IE, ?, ?, ?> segment) {
+		public AbstractSegmentPathIterator(Segment3ai<?, ?, IE, ?, ?, ?, ?> segment) {
 			assert segment != null : AssertMessages.notNullParameter();
 			this.segment = segment;
 		}
@@ -1885,7 +1883,7 @@ public interface Segment3ai<
 		}
 
 		@Override
-		public GeomFactory3ai<IE, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3ai<IE, ?, ?, ?, ?> getGeomFactory() {
 			return this.segment.getGeomFactory();
 		}
 
@@ -1904,9 +1902,9 @@ public interface Segment3ai<
 
 		private final Transform3D transform;
 
-		private Point3D<?, ?> p1;
+		private Point3D<?, ?, ?> p1;
 
-		private Point3D<?, ?> p2;
+		private Point3D<?, ?, ?> p2;
 
 		private int x1;
 
@@ -1926,7 +1924,7 @@ public interface Segment3ai<
 		 * @param segment the segment to iterate on.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedSegmentPathIterator(Segment3ai<?, ?, IE, ?, ?, ?> segment, Transform3D transform) {
+		public TransformedSegmentPathIterator(Segment3ai<?, ?, IE, ?, ?, ?, ?> segment, Transform3D transform) {
 			super(segment);
 			assert transform != null : AssertMessages.notNullParameter();
 			this.transform = transform;
@@ -2014,7 +2012,7 @@ public interface Segment3ai<
 		/** Constructor.
 		 * @param segment the segment to iterate on.
 		 */
-		public SegmentPathIterator(Segment3ai<?, ?, IE, ?, ?, ?> segment) {
+		public SegmentPathIterator(Segment3ai<?, ?, IE, ?, ?, ?, ?> segment) {
 			super(segment);
 			if (segment.getX1() == segment.getX2() && segment.getY1() == segment.getY2()) {
 				this.index = 2;

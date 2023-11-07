@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 14.0
  */
-@SuppressWarnings("checkstyle:methodcount")
 public interface Vector1D<
 		RV extends Vector1D<? super RV, ? super RP, ? super RS>,
 		RP extends Point1D<? super RP, ? super RV, ? super RS>,
@@ -71,7 +70,7 @@ public interface Vector1D<
 
 	/** Replies the segment.
 	 *
-	 * @return the segment or <code>null</code> if the weak reference has lost the segment.
+	 * @return the segment or {@code null} if the weak reference has lost the segment.
 	 */
 	@Pure
 	RS getSegment();
@@ -86,7 +85,7 @@ public interface Vector1D<
 	 *
 	 * @param x is the X coordinate of the vector.
 	 * @param y is the Y coordinate of the vector.
-	 * @return <code>true</code> if the two given vectors are colinear.
+	 * @return {@code true} if the two given vectors are colinear.
 	 * @since 13.0
 	 * @see MathUtil#isEpsilonEqual(double, double, double)
 	 * @see GeomConstants#UNIT_VECTOR_EPSILON
@@ -105,12 +104,12 @@ public interface Vector1D<
 	 * <p>Due to the precision on floating-point computations, the test of unit-vector
 	 * must consider that the norm of the given vector is approximatively equal
 	 * to 1. The precision (i.e. the number of significant decimals) is given
-	 * by <code>epsilon</code>.
+	 * by {@code epsilon}.
 	 *
 	 * @param x is the X coordinate of the vector.
 	 * @param y is the Y coordinate of the vector.
 	 * @param epsilon the precision distance to assumed for equality.
-	 * @return <code>true</code> if the two given vectors are colinear.
+	 * @return {@code true} if the two given vectors are colinear.
 	 * @since 13.0
 	 * @see MathUtil#isEpsilonEqual(double, double, double)
 	 * @see #isUnitVector(double, double)
@@ -125,8 +124,8 @@ public interface Vector1D<
 	/** Replies if this vector is a unit vector.
 	 * A unit vector has a length equal to 1.
 	 *
-	 * @return <code>true</code> if the vector has a length equal to 1.
-	 * <code>false</code> otherwise.
+	 * @return {@code true} if the vector has a length equal to 1.
+	 * {@code false} otherwise.
 	 */
 	@Pure
 	default boolean isUnitVector() {
@@ -139,7 +138,7 @@ public interface Vector1D<
 	/** Replies if this point is equals to the given point.
 	 *
 	 * @param tuple the tuple
-	 * @return <code>true</code> if this point has the same coordinates
+	 * @return {@code true} if this point has the same coordinates
 	 *     on the same segment as for the given point.
 	 */
 	@Pure

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,9 +24,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
+import org.arakhne.afc.math.geometry.d3.afp.InnerComputationPoint3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 
-/** A 2D segment/line with 2 double precision floating-point numbers.
+/** A 3D segment/line with 6 double precision floating-point numbers.
  *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -35,9 +36,10 @@ import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
+ * @see PointSegment3d
  */
 public class Segment3d extends AbstractShape3d<Segment3d>
-	implements Segment3afp<Shape3d<?>, Segment3d, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
+	implements Segment3afp<Shape3d<?>, Segment3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
 
 	private static final long serialVersionUID = -5667213589442134247L;
 
@@ -63,14 +65,14 @@ public class Segment3d extends AbstractShape3d<Segment3d>
      * @param p1 first point.
      * @param p2 second point.
      */
-	public Segment3d(Point3D<?, ?> p1, Point3D<?, ?> p2) {
+	public Segment3d(Point3D<?, ?, ?> p1, Point3D<?, ?, ?> p2) {
 		this(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ());
 	}
 
 	/** Constructor by copy.
      * @param segment the segment to copy.
      */
-	public Segment3d(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+	public Segment3d(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
 		this(segment.getX1(), segment.getY1(), segment.getZ1(), segment.getX2(), segment.getY2(), segment.getZ2());
 	}
 
@@ -88,7 +90,6 @@ public class Segment3d extends AbstractShape3d<Segment3d>
 
 	@Pure
 	@Override
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + Double.hashCode(this.ax);
@@ -106,7 +107,7 @@ public class Segment3d extends AbstractShape3d<Segment3d>
 		if (transform == null || transform.isIdentity()) {
 			return clone();
 		}
-		final Point3d point = getGeomFactory().newPoint(getX1(), getY1(), getZ1());
+		final Point3D<?, ?, ?> point = new InnerComputationPoint3afp(getX1(), getY1(), getZ1());
 		transform.transform(point);
 		final double x1 = point.getX();
 		final double y1 = point.getY();

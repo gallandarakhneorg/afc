@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,7 +91,6 @@ class ClosestPointPathShadow2afp {
      * @param y1 is the second point of the segment.
      * @return the crossings or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
-    @SuppressWarnings("checkstyle:npathcomplexity")
     public int computeCrossings(
             int crossings,
             double x0, double y0,
@@ -142,8 +141,6 @@ class ClosestPointPathShadow2afp {
         return crossings + numCrosses;
     }
 
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-        "checkstyle:npathcomplexity", "checkstyle:returncount"})
     private void discretizePathIterator(
             PathIterator2afp<?> pi,
             double x1, double y1, double x2, double y2) {
@@ -318,8 +315,6 @@ class ClosestPointPathShadow2afp {
      * @param sx1 x coordinate of the second point of the segment.
      * @param sy1 y coordinate of the second point of the segment.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-            "checkstyle:npathcomplexity"})
     private void crossSegmentTwoShadowLines(
             double shadowX0, double shadowY0,
             double shadowX1, double shadowY1,

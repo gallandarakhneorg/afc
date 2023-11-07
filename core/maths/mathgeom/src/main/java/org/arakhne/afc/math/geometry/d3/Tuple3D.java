@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,8 @@ package org.arakhne.afc.math.geometry.d3;
 import java.io.Serializable;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
+import org.arakhne.afc.math.GnuOctaveUtil;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonableObject;
@@ -757,5 +758,23 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 	@Pure
 	@Override
 	int hashCode();
+
+	/** Replies this tuple with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the tuple.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toTupleDefinition(3, getX(), getY(), getZ());
+	}
+
+	/** Replies this tuple with a GNU Octave-compatible form.
+	 *
+	 * @return the GNU Octave representation of the tuple.
+	 * @since 18.0
+	 */
+	default String toGnuOctave() {
+		return GnuOctaveUtil.toTupleDefinition(3, getX(), getY(), getZ());
+	}
 
 }

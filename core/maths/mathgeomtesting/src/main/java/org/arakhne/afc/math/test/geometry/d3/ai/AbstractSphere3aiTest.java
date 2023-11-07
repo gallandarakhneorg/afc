@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,10 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
@@ -41,12 +37,22 @@ import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.ai.GeomFactory3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
 import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
-import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai;
+import org.arakhne.afc.math.geometry.d3.ai.AlignedBox3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Sphere3ai;
+import org.arakhne.afc.math.geometry.d3.d.Quaternion4d;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
-public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B>,
-		B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
+public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, ?, B>,
+		B extends AlignedBox3ai<?, ?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
+
+	protected static Quaternion4d newAxisAngleZ(double angle) {
+		final Quaternion4d q = new Quaternion4d();
+		q.setAxisAngle(0, 0, 1, angle);
+		return q;
+	}
 
 	@Override
 	protected final T createShape() {
@@ -154,7 +160,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 	@Override
 	public void toBoundingBox(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		RectangularPrism3ai<?, ?, ?, ?, ?, ?> r1 = this.shape.toBoundingBox();
+		AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> r1 = this.shape.toBoundingBox();
 		assertEquals(0, r1.getMinX());
 		assertEquals(3, r1.getMinY());
 		assertEquals(-5, r1.getMinZ());
@@ -227,7 +233,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 	@EnumSource(CoordinateSystem3D.class)
 	public void getPointIterator_small(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Sphere3ai<?, ?, ?, ?, ?, ?> circle = createSphere(4, 6, 0, 3);
+		Sphere3ai<?, ?, ?, ?, ?, ?, ?> circle = createSphere(4, 6, 0, 3);
 		Iterator<? extends Point3D> iterator = circle.getPointIterator();
 		Point3D p;
 		
@@ -363,28 +369,28 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void containsRectangularPrism3ai(CoordinateSystem3D cs) {
+	public void containsAlignedBox3ai(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,1,1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,8,1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,8,6, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(0,0, 0,100,100, 0)));
-		assertTrue(this.shape.contains(createRectangularPrism(7,10, 0,1,1, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(16,0, 0,100,100, 0)));
-		assertFalse(this.shape.contains(createRectangularPrism(9,11, 0,5,5, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(0,0, 0,1,1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(0,0, 0,8,1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(0,0, 0,8,6, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(0,0, 0,100,100, 0)));
+		assertTrue(this.shape.contains(createAlignedBox(7,10, 0,1,1, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(16,0, 0,100,100, 0)));
+		assertFalse(this.shape.contains(createAlignedBox(9,11, 0,5,5, 0)));
 	}
 
 	@Override
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void intersectsRectangularPrism3ai(CoordinateSystem3D cs) {
+	public void intersectsAlignedBox3ai(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(this.shape.intersects(createRectangularPrism(0,0, 0,1,1, 0)));
-		assertFalse(this.shape.intersects(createRectangularPrism(0,0, 0,8,1, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(0,0, 0,8,6, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(0,0, 0,100,100, 0)));
-		assertTrue(this.shape.intersects(createRectangularPrism(7,10, 0,1,1, 0)));
-		assertFalse(this.shape.intersects(createRectangularPrism(16,0, 0,100,100, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(0,0, 0,1,1, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(0,0, 0,8,1, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(0,0, 0,8,6, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(0,0, 0,100,100, 0)));
+		assertTrue(this.shape.intersects(createAlignedBox(7,10, 0,1,1, 0)));
+		assertFalse(this.shape.intersects(createAlignedBox(16,0, 0,100,100, 0)));
 	}
 
 	@Override
@@ -501,7 +507,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertNoElement(pi);
 
 		tr = new Transform3D();
-		tr.makeRotationMatrix(MathConstants.QUARTER_PI);
+		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
 		
 		pi = this.shape.getPathIterator(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 1,13,0);
@@ -544,7 +550,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertNoElement(pi);
 
 		tr = new Transform3D();
-		tr.makeRotationMatrix(MathConstants.QUARTER_PI);
+		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
 		pi = this.shape.createTransformedShape(tr).getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 1,13,0);
 		assertElement(pi, PathElementType.CURVE_TO, -1,15,0, -4,15,0, -6,13,0);
@@ -639,7 +645,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 	@Override
 	public void toBoundingBoxB(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		B r = createRectangularPrism(0, 0, 0, 0, 0, 0);
+		B r = createAlignedBox(0, 0, 0, 0, 0, 0);
 		this.shape.toBoundingBox(r);
 		assertEquals(0, r.getMinX());
 		assertEquals(3, r.getMinY());
@@ -839,14 +845,14 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 	
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
-	public void staticintersectsSphereRectangularPrism(CoordinateSystem3D cs) {
+	public void staticintersectsSphereAlignedBox(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		assertFalse(Sphere3ai.intersectsSphereRectangularPrism(0, 0, 0, 1, 5, 8, 0, 15, 13, 0));
-		assertFalse(Sphere3ai.intersectsSphereRectangularPrism(0, 0, 0, 8, 5, 8, 0, 15, 13, 0));
-		assertTrue(Sphere3ai.intersectsSphereRectangularPrism(0, 0, 0, 100, 5, 8, 0, 15, 13, 0));
-		assertTrue(Sphere3ai.intersectsSphereRectangularPrism(7, 10, 0, 1, 5, 8, 0, 15, 13, 0));
-		assertFalse(Sphere3ai.intersectsSphereRectangularPrism(16, 0, 0, 5, 5, 8, 0, 15, 13, 0));
-		assertFalse(Sphere3ai.intersectsSphereRectangularPrism(5, 15, 0, 1, 5, 8, 0, 15, 13, 0));
+		assertFalse(Sphere3ai.intersectsSphereAlignedBox(0, 0, 0, 1, 5, 8, 0, 15, 13, 0));
+		assertFalse(Sphere3ai.intersectsSphereAlignedBox(0, 0, 0, 8, 5, 8, 0, 15, 13, 0));
+		assertTrue(Sphere3ai.intersectsSphereAlignedBox(0, 0, 0, 100, 5, 8, 0, 15, 13, 0));
+		assertTrue(Sphere3ai.intersectsSphereAlignedBox(7, 10, 0, 1, 5, 8, 0, 15, 13, 0));
+		assertFalse(Sphere3ai.intersectsSphereAlignedBox(16, 0, 0, 5, 5, 8, 0, 15, 13, 0));
+		assertFalse(Sphere3ai.intersectsSphereAlignedBox(5, 15, 0, 1, 5, 8, 0, 15, 13, 0));
 	}
 	
 	@ParameterizedTest(name = "{index} => {0}")
@@ -903,7 +909,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 	public void intersectsShape3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(this.shape.intersects((Shape3D) createSphere(0,0, 0,100)));
-		assertTrue(this.shape.intersects((Shape3D) createRectangularPrism(0,0, 0,100,100, 0)));
+		assertTrue(this.shape.intersects((Shape3D) createAlignedBox(0,0, 0,100,100, 0)));
 	}
 
 	@Override
@@ -970,7 +976,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 		assertNoElement(pi);
 
 		tr = new Transform3D();
-		tr.makeRotationMatrix(MathConstants.QUARTER_PI);
+		tr.makeRotationMatrix(newAxisAngleZ(MathConstants.QUARTER_PI));
 		pi = this.shape.operator_multiply(tr).getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 1,13,0);
 		assertElement(pi, PathElementType.CURVE_TO, -1,15,0, -4,15,0, -6,13,0);
@@ -999,7 +1005,7 @@ public abstract class AbstractSphere3aiTest<T extends Sphere3ai<?, T, ?, ?, ?, B
 	public void operator_andShape3D(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(this.shape.operator_and(createSphere(0,0,0,100)));
-		assertTrue(this.shape.operator_and(createRectangularPrism(0,0,0,100,100,0)));
+		assertTrue(this.shape.operator_and(createAlignedBox(0,0,0,100,100,0)));
 	}
 
 	@Override

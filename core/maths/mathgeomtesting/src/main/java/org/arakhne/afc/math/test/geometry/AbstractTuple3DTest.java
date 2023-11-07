@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import java.time.Month;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -51,10 +52,7 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 	}
 	
 	@BeforeEach
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public void setUp(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+	public void setUp() {
 		this.t = createTuple(1, -2, 0);
 	}
 	
@@ -66,61 +64,94 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 	public abstract TT createTuple(double x, double y, double z);
 	
 	public abstract boolean isIntCoordinates();
-	
-	@Test
-	public final void getX() {
+
+	@DisplayName("getX")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void getX(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(1., getT().getX());
 	}
 
-	@Test
-	public final void ix() {
+	@DisplayName("ix")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void ix(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEquals(1, getT().ix());
 	}
 	
-	@Test
-	public final void getY() {
+	@DisplayName("getY")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void getY(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(-2., getT().getY());
 	}
 	
-	@Test
-	public final void iy() {
+	@DisplayName("iy")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void iy(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEquals(-2, getT().iy());
 	}
 
-	@Test
-	public final void getZ() {
+	@DisplayName("getZ")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void getZ(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEpsilonEquals(0., getT().getZ());
 	}
 
-	@Test
-	public final void iz() {
+	@DisplayName("iz")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void iz(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertEquals(0, getT().iz());
 	}
 
-	@Test
-	public final void equals_notEquals() {
+	@DisplayName("equals(Tuple3D) inequality")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void equals_notEquals(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Tuple3D c = new Tuple3d();
 		assertFalse(getT().equals(c));
 	}
 		
-	@Test
-	public final void equals_equals() {
+	@DisplayName("equals(Tuple3D) equality")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void equals_equals(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Tuple3D c = new Tuple3d(1, -2, 0);
 		assertTrue(getT().equals(c));
 	}
 
-	@Test
-	public final void equals_same() {
+	@DisplayName("equals(Tuple3D) same")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void equals_same(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertTrue(getT().equals(getT()));
 	}
 
-	@Test
-	public final void equals_null() {
+	@DisplayName("equals(Tuple3D) null")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void equals_null(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertFalse(getT().equals(null));
 	}
 
-	@Test
-	public final void testCloneTuple() {
+	@DisplayName("clone")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void testCloneTuple(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Tuple3D clone = getT().clone();
 		assertNotNull(clone);
 		assertNotSame(getT(), clone);
@@ -129,16 +160,22 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(getT().getZ(), clone.getZ());
 	}
 
-	@Test
-	public void absolute() {
+	@DisplayName("absolute")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void absolute(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().absolute();
 		assertEpsilonEquals(1, getT().getX());
 		assertEpsilonEquals(2, getT().getY());
 		assertEpsilonEquals(0, getT().getZ());
 	}
 
-	@Test
-	public void absoluteT() {
+	@DisplayName("absolute(Tuple3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void absoluteT(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Tuple3D c = new Tuple3d();
 		getT().absolute(c);
 		assertEpsilonEquals(1, getT().getX());
@@ -149,16 +186,22 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(0, c.getZ());
 	}
 
-	@Test
-	public void addIntIntInt() {
+	@DisplayName("add(int,int,int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addIntIntInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().add(6, 7, 1);
 		assertEpsilonEquals(7, getT().getX());
 		assertEpsilonEquals(5, getT().getY());
 		assertEpsilonEquals(1, getT().getZ());
 	}
 
-	@Test
-	public void addDoubleDouble_iffp() {
+	@DisplayName("add(double,double,double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addDoubleDoubleDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		getT().add(6.5, 7.5, 5.5);
 		assertEpsilonEquals(7.5, getT().getX());
@@ -166,8 +209,11 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(5.5, getT().getY());
 	}
 
-	@Test
-	public void addDoubleDouble_ifi() {
+	@DisplayName("add(double,double,double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addDoubleDoubleDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		getT().add(6.5, 7.5, 5.5);
 		assertEquals(8, getT().ix());
@@ -175,16 +221,22 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEquals(11, getT().iz());
 	}
 
-	@Test
-	public void addXInt() {
+	@DisplayName("addX(int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addXInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().addX(6);
 		assertEpsilonEquals(7, getT().getX());
 		assertEpsilonEquals(-2, getT().getY());
 		assertEpsilonEquals(0, getT().getZ());
 	}
 
-	@Test
-	public void addXDouble_iffp() {
+	@DisplayName("addX(double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addXDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		getT().addX(6.5);
 		assertEpsilonEquals(7.5, getT().getX());
@@ -192,8 +244,11 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(0, getT().getZ());
 	}
 
-	@Test
-	public void addXDouble_ifi() {
+	@DisplayName("addX(double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addXDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		getT().addX(6.5);
 		assertEquals(8, getT().ix());
@@ -201,16 +256,22 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEquals(0, getT().iz());
 	}
 	
-	@Test
-	public void addYInt() {
+	@DisplayName("addY(int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addYInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().addY(6);
 		assertEpsilonEquals(1, getT().getX());
 		assertEpsilonEquals(4, getT().getY());
 		assertEpsilonEquals(0, getT().getZ());
 	}
 	
-	@Test
-	public void addYDouble_iffp() {
+	@DisplayName("addY(double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addYDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		getT().addY(6.5);
 		assertEpsilonEquals(1, getT().getX());
@@ -218,8 +279,11 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(0, getT().getZ());
 	}
 	
-	@Test
-	public void addYDouble_ifi() {
+	@DisplayName("addY(double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addYDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		getT().addY(6.5);
 		assertEquals(1, getT().ix());
@@ -227,16 +291,22 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEquals(0, getT().iz());
 	}
 
-	@Test
-	public void addZInt() {
+	@DisplayName("addZ(int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addZInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().addZ(5);
 		assertEpsilonEquals(1, getT().getX());
 		assertEpsilonEquals(-2, getT().getY());
 		assertEpsilonEquals(5, getT().getZ());
 	}
 
-	@Test
-	public void addZDouble_iffp() {
+	@DisplayName("addZ(double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addZDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		getT().addZ(5.5);
 		assertEpsilonEquals(1, getT().getX());
@@ -244,8 +314,11 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(5.5, getT().getZ());
 	}
 
-	@Test
-	public void addZDouble_ifi() {
+	@DisplayName("addZ(double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addZDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		getT().addZ(5.5);
 		assertEquals(1, getT().ix());
@@ -253,8 +326,11 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEquals(6, getT().iz());
 	}
 
-	@Test
-	public void negateT() {
+	@DisplayName("negate(Tuple3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void negateT(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Tuple3D c = new Tuple3d();
 		getT().negate(c);
 		assertEpsilonEquals(0, getT().getX());
@@ -268,16 +344,22 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(17, getT().getZ());
 	}
 
-	@Test
-	public void negate() {
+	@DisplayName("negate")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void negate(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().negate();
 		assertEpsilonEquals(-1, getT().getX());
 		assertEpsilonEquals(2, getT().getY());
 		assertEpsilonEquals(-0, getT().getZ());
 	}
 
-	@Test
-	public void scaleIntT() {
+	@DisplayName("scale(int,Tuple3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleIntT(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Tuple3D c = new Tuple3d(2, -1, -2);
 		getT().scale(4, c);
 		assertEpsilonEquals(8, getT().getX());
@@ -285,8 +367,11 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(-8, getT().getZ());
 	}
 
-	@Test
-	public void scaleDoubleT_iffp() {
+	@DisplayName("scale(double,Tuple3D) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleDoubleT_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		Tuple3D c = new Tuple3d(2, -1, 0);
 		getT().scale(4.5, c);
@@ -295,8 +380,11 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(0, getT().getZ());
 	}
 
-	@Test
-	public void scaleDoubleT_ifi() {
+	@DisplayName("scale(double,Tuple3D) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleDoubleT_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		Tuple3D c = new Tuple3d(2, -1, 0);
 		getT().scale(4.5, c);
@@ -305,16 +393,22 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEquals(0, getT().iz());
 	}
 
-	@Test
-	public void scaleInt() {
+	@DisplayName("scale(int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().scale(4);
 		assertEpsilonEquals(4, getT().getX());
 		assertEpsilonEquals(-8, getT().getY());
 		assertEpsilonEquals(0, getT().getZ());
 	}
 
-	@Test
-	public void scaleDouble_iffp() {
+	@DisplayName("scale(double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		getT().scale(4.5);
 		assertEpsilonEquals(4.5, getT().getX());
@@ -322,8 +416,11 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(0, getT().getZ());
 	}
 
-	@Test
-	public void scaleDouble_ifi() {
+	@DisplayName("scale(double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		getT().scale(4.5);
 		assertEquals(5, getT().ix());
@@ -331,8 +428,11 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEquals(0, getT().iz());
 	}
 
-	@Test
-	public void setTuple3D() {
+	@DisplayName("set(Tuple3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setTuple3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Tuple3D c = new Tuple3d(-45, 78, 1);
 		getT().set(c);
 		assertEpsilonEquals(-45, getT().getX());
@@ -340,16 +440,22 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(1, getT().getZ());
 	}
 
-	@Test
-	public void setIntIntInt() {
+	@DisplayName("set(int,int,int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setIntIntInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().set(-45, 78, 1);
 		assertEpsilonEquals(-45, getT().getX());
 		assertEpsilonEquals(78, getT().getY());
 		assertEpsilonEquals(1, getT().getZ());
 	}
 
-	@Test
-	public void setDoubleDouble_iffp() {
+	@DisplayName("set(double,double,double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setDoubleDoubleDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		getT().set(-45.5, 78.5, 1.1);
 		assertEpsilonEquals(-45.5, getT().getX());
@@ -357,8 +463,11 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(1.1, getT().getZ());
 	}
 
-	@Test
-	public void setDoubleDouble_ifi() {
+	@DisplayName("set(double,double,double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setDoubleDoubleDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		getT().set(-45.5, 78.5, 1.1);
 		assertEquals(-45, getT().ix());
@@ -366,15 +475,21 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEquals(1, getT().iz());
 	}
 
-	@Test
-	public void setIntArray() {
+	@DisplayName("set(int[])")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setIntArray(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().set(new int[]{-45, 78, 1});
 		assertEpsilonEquals(-45, getT().getX());
 		assertEpsilonEquals(78, getT().getY());
 	}
 
-	@Test
-	public void setDoubleArray_iffp() {
+	@DisplayName("set(double[]) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setDoubleArray_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		getT().set(new double[]{-45.5, 78.5, 1.1});
 		assertEpsilonEquals(-45.5, getT().getX());
@@ -382,8 +497,11 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(1.1, getT().getZ());
 	}
 
-	@Test
-	public void setDoubleArray_ifi() {
+	@DisplayName("set(double[]) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setDoubleArray_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		getT().set(new double[]{-45.5, 78.5, 1.1});
 		assertEquals(-45, getT().ix());
@@ -391,16 +509,22 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEquals(1, getT().iz());
 	}
 
-	@Test
-	public void setXInt() {
+	@DisplayName("setX(int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setXInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().setX(45);
 		assertEpsilonEquals(45, getT().getX());
 		assertEpsilonEquals(-2, getT().getY());
 		assertEpsilonEquals(0, getT().getZ());
 	}
 
-	@Test
-	public void setXDouble_iffp() {
+	@DisplayName("setX(double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setXDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		getT().setX(45.5);
 		assertEpsilonEquals(45.5, getT().getX());
@@ -408,8 +532,11 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEpsilonEquals(0, getT().getZ());
 	}
 
-	@Test
-	public void setXDouble_ifi() {
+	@DisplayName("setX(double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setXDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		getT().setX(45.5);
 		assertEquals(46, getT().ix());
@@ -417,96 +544,196 @@ public abstract class AbstractTuple3DTest<TT extends Tuple3D> extends AbstractMa
 		assertEquals(0, getT().iz());
 	}
 
-	@Test
-	public void setYInt() {
+	@DisplayName("setY(int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setYInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().setY(45);
 		assertEpsilonEquals(1, getT().getX());
 		assertEpsilonEquals(45, getT().getY());
 	}
 
-	@Test
-	public void setYDouble_ifi() {
+	@DisplayName("setY(double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setYDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		getT().setY(45.5);
 		assertEquals(1, getT().ix());
 		assertEquals(46, getT().iy());
 	}
 
-	@Test
-	public void setYDouble_iffp() {
+	@DisplayName("setY(double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setYDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		getT().setY(45.5);
 		assertEpsilonEquals(1, getT().getX());
 		assertEpsilonEquals(45.5, getT().getY());
 	}
 
-	@Test
-	public void subIntIntInt() {
+	@DisplayName("setZ(int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setZInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		getT().setZ(45);
+		assertEpsilonEquals(1, getT().getX());
+		assertEpsilonEquals(45, getT().getZ());
+	}
+
+	@DisplayName("setZ(double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setZDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		assumeTrue(isIntCoordinates());
+		getT().setZ(45.5);
+		assertEquals(1, getT().ix());
+		assertEquals(46, getT().iz());
+	}
+
+	@DisplayName("setZ(double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void setZDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		assumeFalse(isIntCoordinates());
+		getT().setZ(45.5);
+		assertEpsilonEquals(1, getT().getX());
+		assertEpsilonEquals(45.5, getT().getZ());
+	}
+
+	@DisplayName("sub(int,int,int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subIntIntInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().sub(45, 78, 0);
 		assertEpsilonEquals(-44, getT().getX());
 		assertEpsilonEquals(-80, getT().getY());
 	}
 
-	@Test
-	public void subXInt() {
+	@DisplayName("subX(int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subXInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().subX(45);
 		assertEpsilonEquals(-44, getT().getX());
 		assertEpsilonEquals(-2, getT().getY());
 	}
 
-	@Test
-	public void subYInt() {
+	@DisplayName("subY(int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subYInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		getT().subY(78);
 		assertEpsilonEquals(1, getT().getX());
 		assertEpsilonEquals(-80, getT().getY());
 	}
 
-	@Test
-	public void subDoubleDouble_iffp() {
+	@DisplayName("subZ(int)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subZInt(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		getT().subZ(78);
+		assertEpsilonEquals(1, getT().getX());
+		assertEpsilonEquals(-78, getT().getZ());
+	}
+
+	@DisplayName("sub(double,double,double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subDoubleDoubleDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		getT().sub(45.5, 78.5, 0);
 		assertEpsilonEquals(-44.5, getT().getX());
 		assertEpsilonEquals(-80.5, getT().getY());
 	}
 
-	@Test
-	public void subDoubleDouble_ifi() {
+	@DisplayName("sub(double,double,double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subDoubleDoubleDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		getT().sub(45.5, 78.5, 0);
 		assertEquals(-44, getT().ix());
 		assertEquals(-80, getT().iy());
 	}
 
-	@Test
-	public void subXDouble_iffp() {
+	@DisplayName("subX(double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subXDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		getT().subX(45.5);
 		assertEpsilonEquals(-44.5, getT().getX());
 		assertEpsilonEquals(-2, getT().getY());
 	}
 
-	@Test
-	public void subXDouble_ifi() {
+	@DisplayName("subX(double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subXDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		getT().subX(45.5);
 		assertEquals(-44, getT().ix());
 		assertEquals(-2, getT().iy());
 	}
 
-	@Test
-	public void subYDouble_iffp() {
+	@DisplayName("subY(double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subYDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		getT().subY(78.5);
 		assertEpsilonEquals(1, getT().getX());
 		assertEpsilonEquals(-80.5, getT().getY());
 	}
 
-	@Test
-	public void subYDouble_ifi() {
+	@DisplayName("subY(double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subYDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		getT().subY(78.5);
 		assertEquals(1, getT().ix());
 		assertEquals(-80, getT().iy());
+	}
+
+	@DisplayName("subZ(double) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subZDouble_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		assumeFalse(isIntCoordinates());
+		getT().subZ(78.5);
+		assertEpsilonEquals(1, getT().getX());
+		assertEpsilonEquals(-78.5, getT().getZ());
+	}
+
+	@DisplayName("subZ(double) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subZDouble_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		assumeTrue(isIntCoordinates());
+		getT().subZ(78.5);
+		assertEquals(1, getT().ix());
+		assertEquals(-79, getT().iz());
 	}
 
 }

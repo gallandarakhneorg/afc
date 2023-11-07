@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public class Sphere3i extends AbstractShape3i<Sphere3i>
-        implements Sphere3ai<Shape3i<?>, Sphere3i, PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
+        implements Sphere3ai<Shape3i<?>, Sphere3i, PathElement3i, Point3i, Vector3i, Quaternion4i, AlignedBox3i> {
 
 	private static final long serialVersionUID = -7692549016859323986L;
 
@@ -57,7 +57,7 @@ public class Sphere3i extends AbstractShape3i<Sphere3i>
      * @param center the center position of the sphere.
      * @param radius the radius of the sphere.
      */
-	public Sphere3i(Point3D<?, ?> center, int radius) {
+	public Sphere3i(Point3D<?, ?, ?> center, int radius) {
 		assert center != null : AssertMessages.notNullParameter(0);
 		set(center.ix(), center.iy(), center.iz(), radius);
 	}
@@ -75,14 +75,13 @@ public class Sphere3i extends AbstractShape3i<Sphere3i>
 	/** Construct a sphere from a sphere.
 	 * @param sphere the sphere to copy.
 	 */
-	public Sphere3i(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
+	public Sphere3i(Sphere3ai<?, ?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
 	}
 
 	@Pure
 	@Override
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + this.centerX;

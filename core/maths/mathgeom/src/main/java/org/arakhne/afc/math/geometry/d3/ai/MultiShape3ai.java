@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.MultiShape3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -45,6 +46,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
  * @param <V> is the type of the vectors.
+ * @param <Q> is the type of the quaternions.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
@@ -54,19 +56,20 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public interface MultiShape3ai<
-		ST extends Shape3ai<?, ?, IE, P, V, B>,
-		IT extends MultiShape3ai<?, ?, CT, IE, P, V, B>,
-		CT extends Shape3ai<?, ?, IE, P, V, B>,
+		ST extends Shape3ai<?, ?, IE, P, V, Q, B>,
+		IT extends MultiShape3ai<?, ?, CT, IE, P, V, Q, B>,
+		CT extends Shape3ai<?, ?, IE, P, V, Q, B>,
 		IE extends PathElement3ai,
-		P extends Point3D<? super P, ? super V>,
-		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3ai<?, ?, IE, P, V, B>>
-		extends Shape3ai<ST, IT, IE, P, V, B>,
-		MultiShape3D<ST, IT, CT, PathIterator3ai<IE>, P, V, B> {
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>,
+		B extends AlignedBox3ai<?, ?, IE, P, V, Q, B>>
+		extends Shape3ai<ST, IT, IE, P, V, Q, B>,
+		MultiShape3D<ST, IT, CT, PathIterator3ai<IE>, P, V, Q, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
+	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		if (sphere.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
@@ -80,11 +83,11 @@ public interface MultiShape3ai<
 
 	@Pure
 	@Override
-	default boolean intersects(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : AssertMessages.notNullParameter();
-		if (rectangularPrism.intersects(toBoundingBox())) {
+	default boolean intersects(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> AlignedBox) {
+		assert AlignedBox != null : AssertMessages.notNullParameter();
+		if (AlignedBox.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
-				if (shape.intersects(rectangularPrism)) {
+				if (shape.intersects(AlignedBox)) {
 					return true;
 				}
 			}
@@ -94,7 +97,7 @@ public interface MultiShape3ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
 		if (segment.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
@@ -122,11 +125,11 @@ public interface MultiShape3ai<
 	@Pure
 	@Override
 	@Unefficient
-	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+	default boolean intersects(MultiShape3ai<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
 		if (multishape.toBoundingBox().intersects(toBoundingBox())) {
 			for (final CT shape1 : getBackendDataList()) {
-				for (final Shape3ai<?, ?, ?, ?, ?, ?> shape2 : multishape.getBackendDataList()) {
+				for (final Shape3ai<?, ?, ?, ?, ?, ?, ?> shape2 : multishape.getBackendDataList()) {
 					if (shape1.intersects(shape2)) {
 						return true;
 					}
@@ -151,11 +154,11 @@ public interface MultiShape3ai<
 
 	@Pure
 	@Override
-	default boolean contains(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : AssertMessages.notNullParameter();
-		if (rectangularPrism.intersects(toBoundingBox())) {
+	default boolean contains(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> AlignedBox) {
+		assert AlignedBox != null : AssertMessages.notNullParameter();
+		if (AlignedBox.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
-				if (shape.contains(rectangularPrism)) {
+				if (shape.contains(AlignedBox)) {
 					return true;
 				}
 			}
@@ -243,27 +246,27 @@ public interface MultiShape3ai<
 	}
 
     @Override
-    default P getClosestPointTo(RectangularPrism3ai<?, ?, ?, ?, ?, ?> rectangle) {
+    default P getClosestPointTo(AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> rectangle) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?> circle) {
+    default P getClosestPointTo(Sphere3ai<?, ?, ?, ?, ?, ?, ?> circle) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?> segment) {
+    default P getClosestPointTo(Segment3ai<?, ?, ?, ?, ?, ?, ?> segment) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+    default P getClosestPointTo(MultiShape3ai<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?> path) {
+    default P getClosestPointTo(Path3ai<?, ?, ?, ?, ?, ?, ?> path) {
         throw new UnsupportedOperationException();
     }
 
@@ -279,11 +282,11 @@ public interface MultiShape3ai<
 
 	    /** Iterated list.
 	     */
-	    protected final List<? extends Shape3ai<?, ?, IE, ?, ?, ?>> list;
+	    protected final List<? extends Shape3ai<?, ?, IE, ?, ?, ?, ?>> list;
 
-		private final GeomFactory3ai<IE, ?, ?, ?> factory;
+		private final GeomFactory3ai<IE, ?, ?, ?, ?> factory;
 
-		private Iterator<? extends Shape3ai<?, ?, IE, ?, ?, ?>> shapesIterator;
+		private Iterator<? extends Shape3ai<?, ?, IE, ?, ?, ?, ?>> shapesIterator;
 
 		private PathIterator3ai<IE> shapeIterator;
 
@@ -301,8 +304,8 @@ public interface MultiShape3ai<
 		 * @param list the list of the shapes to iterate on.
 		 * @param factory the factory of path elements.
 		 */
-		public AbstractMultiShapePathIterator(List<? extends Shape3ai<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory3ai<IE, ?, ?, ?> factory) {
+		public AbstractMultiShapePathIterator(List<? extends Shape3ai<?, ?, IE, ?, ?, ?, ?>> list,
+				GeomFactory3ai<IE, ?, ?, ?, ?> factory) {
 			assert list != null : AssertMessages.notNullParameter(0);
 			assert factory != null : AssertMessages.notNullParameter(1);
 			this.list = list;
@@ -314,7 +317,7 @@ public interface MultiShape3ai<
 		 *
 		 * @param list the list to iterate on.
 		 */
-		protected void delayedInit(List<? extends Shape3ai<?, ?, IE, ?, ?, ?>> list) {
+		protected void delayedInit(List<? extends Shape3ai<?, ?, IE, ?, ?, ?, ?>> list) {
 			if (this.shapesIterator.hasNext()) {
 				this.shapeIterator = getPathIteratorFrom(this.shapesIterator.next());
 				searchNext();
@@ -338,7 +341,7 @@ public interface MultiShape3ai<
 		 * @param shape the shape.
 		 * @return the path iterator.
 		 */
-		protected abstract PathIterator3ai<IE> getPathIteratorFrom(Shape3ai<?, ?, IE, ?, ?, ?> shape);
+		protected abstract PathIterator3ai<IE> getPathIteratorFrom(Shape3ai<?, ?, IE, ?, ?, ?, ?> shape);
 
 		@Override
 		public boolean hasNext() {
@@ -394,7 +397,7 @@ public interface MultiShape3ai<
 		}
 
 		@Override
-		public GeomFactory3ai<IE, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3ai<IE, ?, ?, ?, ?> getGeomFactory() {
 			return this.factory;
 		}
 
@@ -414,8 +417,8 @@ public interface MultiShape3ai<
 		 * @param list the list of the shapes to iterate on.
 		 * @param factory the factory of path elements.
 		 */
-		public MultiShapePathIterator(List<? extends Shape3ai<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory3ai<IE, ?, ?, ?> factory) {
+		public MultiShapePathIterator(List<? extends Shape3ai<?, ?, IE, ?, ?, ?, ?>> list,
+				GeomFactory3ai<IE, ?, ?, ?, ?> factory) {
 			super(list, factory);
 			delayedInit(list);
 		}
@@ -426,7 +429,7 @@ public interface MultiShape3ai<
 		}
 
 		@Override
-		protected PathIterator3ai<IE> getPathIteratorFrom(Shape3ai<?, ?, IE, ?, ?, ?> shape) {
+		protected PathIterator3ai<IE> getPathIteratorFrom(Shape3ai<?, ?, IE, ?, ?, ?, ?> shape) {
 			return shape.getPathIterator();
 		}
 
@@ -449,8 +452,8 @@ public interface MultiShape3ai<
 		 * @param factory the factory of path elements.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedMultiShapePathIterator(List<? extends Shape3ai<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory3ai<IE, ?, ?, ?> factory, Transform3D transform) {
+		public TransformedMultiShapePathIterator(List<? extends Shape3ai<?, ?, IE, ?, ?, ?, ?>> list,
+				GeomFactory3ai<IE, ?, ?, ?, ?> factory, Transform3D transform) {
 			super(list, factory);
 			assert transform != null : AssertMessages.notNullParameter();
 			this.transform = transform;
@@ -463,7 +466,7 @@ public interface MultiShape3ai<
 		}
 
 		@Override
-		protected PathIterator3ai<IE> getPathIteratorFrom(Shape3ai<?, ?, IE, ?, ?, ?> shape) {
+		protected PathIterator3ai<IE> getPathIteratorFrom(Shape3ai<?, ?, IE, ?, ?, ?, ?> shape) {
 			return shape.getPathIterator(this.transform);
 		}
 
@@ -473,15 +476,17 @@ public interface MultiShape3ai<
 	 *
 	 * @param <P> the type of the points.
 	 * @param <V> the type of the vectors.
+	 * @param <Q> the type of the quaternions.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class MultiShapePointIterator<P extends Point3D<? super P, ? super V>,
-			V extends Vector3D<? super V, ? super P>>	 implements Iterator<P> {
+	class MultiShapePointIterator<P extends Point3D<? super P, ? super V, ? super Q>,
+			V extends Vector3D<? super V, ? super P, ? super Q>,
+			Q extends Quaternion<? super P, ? super V, ? super Q>> implements Iterator<P> {
 
-		private final Iterator<? extends Shape3ai<?, ?, ?, P, V, ?>> elements;
+		private final Iterator<? extends Shape3ai<?, ?, ?, P, V, Q, ?>> elements;
 
 		private Iterator<P> currentIterator;
 
@@ -491,7 +496,7 @@ public interface MultiShape3ai<
 		 * @param list the list of the shapes to iterate on.
 		 *
 		 */
-		public MultiShapePointIterator(List<? extends Shape3ai<?, ?, ?, P, V, ?>> list) {
+		public MultiShapePointIterator(List<? extends Shape3ai<?, ?, ?, P, V, Q, ?>> list) {
 			assert list != null : AssertMessages.notNullParameter();
 			this.elements = list.iterator();
 			if (this.elements.hasNext()) {

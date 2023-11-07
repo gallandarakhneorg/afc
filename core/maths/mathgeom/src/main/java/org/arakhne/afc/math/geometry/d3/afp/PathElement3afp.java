@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,28 +37,28 @@ public interface PathElement3afp extends PathElement3D {
 
 	/** Replies the x coordinate of the starting point.
 	 *
-	 * @return the x coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO}.
+	 * @return the x coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO}.
 	 */
 	@Pure
 	double getFromX();
 
 	/** Replies the y coordinate of the starting point.
 	 *
-	 * @return the y coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO}.
+	 * @return the y coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO}.
 	 */
 	@Pure
 	double getFromY();
 
 	/** Replies the z coordinate of the starting point.
 	 *
-	 * @return the z coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO}.
+	 * @return the z coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO}.
 	 */
 	@Pure
 	double getFromZ();
 
 	/** Replies the x coordinate of the first control point.
 	 *
-	 * @return the x coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the x coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -66,7 +66,7 @@ public interface PathElement3afp extends PathElement3D {
 
 	/** Replies the y coordinate of the first control point.
 	 *
-	 * @return the y coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the y coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -74,7 +74,7 @@ public interface PathElement3afp extends PathElement3D {
 
 	/** Replies the z coordinate of the first control point.
 	 *
-	 * @return the z coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the z coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -82,7 +82,7 @@ public interface PathElement3afp extends PathElement3D {
 
 	/** Replies the x coordinate of the second control point.
 	 *
-	 * @return the x coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the x coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -90,7 +90,7 @@ public interface PathElement3afp extends PathElement3D {
 
 	/** Replies the y coordinate of the second  control point.
 	 *
-	 * @return the y coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the y coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -98,7 +98,7 @@ public interface PathElement3afp extends PathElement3D {
 
 	/** Replies the z coordinate of the second  control point.
 	 *
-	 * @return the z coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
+	 * @return the z coordinate, or {@code 0} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure

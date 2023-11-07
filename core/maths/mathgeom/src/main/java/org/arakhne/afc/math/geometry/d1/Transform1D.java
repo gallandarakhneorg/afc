@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * a point and change its associated segment if required. If no path was given to
  * this transformation, all the translation will be located on the current segment
  * space (even if the coordinates are too big or too low to be on the segment).
- * The transformed entities (<code>Point1D5</code>...) is supposed to be on
+ * The transformed entities ({@code Point1D5}...) is supposed to be on
  * the segments of the path if it was supplied. The path is the list of the segments
  * which must follow the current segment of the entity.
  *
@@ -65,7 +65,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
 public class Transform1D<S extends Segment1D<?, ?>> {
 
     /** Indicates if the matrix is identity.
-     * If <code>null</code> the identity flag must be determined.
+     * If {@code null} the identity flag must be determined.
      */
     protected Boolean isIdentity;
 
@@ -205,8 +205,8 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 
 	/** Replies if this transformation has a path.
 	 *
-	 * @return <code>true</code> if this transformation has a path,
-	 *     otherwise <code>false</code>.
+	 * @return {@code true} if this transformation has a path,
+	 *     otherwise {@code false}.
 	 */
 	@Pure
 	public boolean hasPath() {
@@ -321,7 +321,7 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 
 	/** Set the position. This function does not change the path.
 	 *
-	 * @param position where <code>x</code> is the curviline coordinate and <code>y</code> is the shift coordinate.
+	 * @param position where {@code x} is the curviline coordinate and {@code y} is the shift coordinate.
 	 */
 	public void setTranslation(Tuple2D<?> position) {
 		assert position != null : AssertMessages.notNullParameter();
@@ -336,7 +336,7 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	 * the transformation will follow the segment's direction.
 	 *
 	 * @param path the path to follow.
-	 * @param position where <code>x</code> is the curviline coordinate and <code>y</code> is the shift coordinate.
+	 * @param position where {@code x} is the curviline coordinate and {@code y} is the shift coordinate.
 	 */
 	@Inline(value = "setTranslation($1, null, $2)")
 	public void setTranslation(List<? extends S> path, Tuple2D<?> position) {
@@ -347,7 +347,7 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	 *
 	 * @param path the path to follow.
 	 * @param direction is the direction to follow on the path if the path contains only one segment.
-	 * @param position where <code>x</code> is the curviline coordinate and <code>y</code> is the shift coordinate.
+	 * @param position where {@code x} is the curviline coordinate and {@code y} is the shift coordinate.
 	 */
 	public void setTranslation(List<? extends S> path, Direction1D direction, Tuple2D<?> position) {
 		assert position != null : AssertMessages.notNullParameter(3);
@@ -400,7 +400,7 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 
 	/** Translate the coordinates. This function does not change the path.
 	 *
-	 * @param move where <code>x</code> is the curviline coordinate and <code>y</code> is the shift coordinate.
+	 * @param move where {@code x} is the curviline coordinate and {@code y} is the shift coordinate.
 	 */
 	public void translate(Tuple2D<?> move) {
 		assert move != null : AssertMessages.notNullParameter();
@@ -415,7 +415,7 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	 * the transformation will follow the segment's direction.
 	 *
 	 * @param thePath the path to follow.
-	 * @param move where <code>x</code> is the curviline coordinate and <code>y</code> is the shift coordinate.
+	 * @param move where {@code x} is the curviline coordinate and {@code y} is the shift coordinate.
 	 */
 	@Inline(value = "translate($1, null, $2)")
 	public void translate(List<? extends S> thePath, Tuple2D<?> move) {
@@ -426,7 +426,7 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	 *
 	 * @param thePath the path to follow.
 	 * @param direction is the direction to follow on the path if the path contains only one segment.
-	 * @param move where <code>x</code> is the curviline coordinate and <code>y</code> is the shift coordinate.
+	 * @param move where {@code x} is the curviline coordinate and {@code y} is the shift coordinate.
 	 */
 	public void translate(List<? extends S> thePath, Direction1D direction, Tuple2D<?> move) {
 		assert move != null : AssertMessages.notNullParameter(2);
@@ -462,7 +462,7 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	 *
 	 * @param point the point to transform.
 	 * @return the index of the segment on which the point lies in the segment path;
-	 *     or <code>-1</code> if the segment of the point is not the first segment in the path.
+	 *     or {@code -1} if the segment of the point is not the first segment in the path.
 	 */
 	@Inline(value = "transform($1, null)")
 	public int transform(Point1D<?, ?, ? super S> point) {
@@ -477,10 +477,10 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	 * @param point the point to transform.
 	 * @param appliedTranslation is set by this function with the really applied distances. The values are always positives.
 	 * @return the index of the segment on which the point lies in the segment path;
-	 *      or <code>-1</code> if the segment of the point is not the first segment in the path.
+	 *      or {@code -1} if the segment of the point is not the first segment in the path.
 	 */
 	@Pure
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:nestedifdepth", "rawtypes", "unchecked"})
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public int transform(Point1D<?, ?, ? super S> point, Tuple2D<?> appliedTranslation) {
 		assert point != null : AssertMessages.notNullParameter(0);
 		assert point.getSegment() != null;
@@ -609,7 +609,7 @@ public class Transform1D<S extends Segment1D<?, ?>> {
 	/** Replies a 2D transformation that is corresponding to this transformation.
 	 *
 	 * @param segment is the segment.
-	 * @return the 2D transformation or <code>null</code> if the segment could not be mapped
+	 * @return the 2D transformation or {@code null} if the segment could not be mapped
 	 *     to 2D.
 	 */
 	@Pure

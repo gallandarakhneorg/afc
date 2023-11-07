@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,10 @@ package org.arakhne.afc.math.geometry.d2;
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.arakhne.afc.vmutil.json.JsonableObject;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape.
  *
@@ -64,8 +63,8 @@ public interface Shape2D<
      * depends on the implemented shape. See the
      * subclasses for details.
      *
-     * @return <code>true</code> if the shape is empty;
-     * <code>false</code> otherwise.
+     * @return {@code true} if the shape is empty;
+     * {@code false} otherwise.
      */
     @Pure
     boolean isEmpty();
@@ -85,7 +84,7 @@ public interface Shape2D<
      * @param <IT> type of the shapes to compare.
      * @param obj1 the first object to compare.
      * @param obj2 the second object to compare.
-     * @return <code>true</code> if the two shapes are equal.
+     * @return {@code true} if the two shapes are equal.
      * @since 13.0
      */
     @Pure
@@ -116,7 +115,7 @@ public interface Shape2D<
     /** Replies this shape as the same path iterator as the given one.
      *
      * <p>The equality test does not flatten the paths. It means that
-     * is function has is functionnality equivalent to: <pre><code>
+     * is function has is functionnality equivalent to: <pre>{@code 
      * PathIterator2D it = this.getPathIterator();
      * while (it.hasNext() &amp;&amp; pathIterator.hasNext()) {
      *   PathElement2D e1 = it.next();
@@ -124,10 +123,10 @@ public interface Shape2D<
      *   if (!e1.equals(e2)) return false;
      * }
      * return !it.hasNext() &amp;&amp; !pathIterator.hasNext();
-     * </code></pre>
+     * }</pre>
      *
      * @param pathIterator the path iterator to compare to the one of this shape.
-     * @return <code>true</code> if the path iterator of this shape replies the same
+     * @return {@code true} if the path iterator of this shape replies the same
      *     elements as the given path iterator.
      */
     @Pure
@@ -151,7 +150,7 @@ public interface Shape2D<
     /** Replies this shape is equal to the given shape.
      *
      * @param shape the shape to compare to.
-     * @return <code>true</code> if this shape is equal is equal to the given path.
+     * @return {@code true} if this shape is equal is equal to the given path.
      */
     @Pure
     boolean equalsToShape(IT shape);
@@ -164,8 +163,8 @@ public interface Shape2D<
     /** Replies if the given point is inside this shape.
      *
      * @param point the point.
-     * @return <code>true</code> if the given shape is intersecting this
-     *     shape, otherwise <code>false</code>.
+     * @return {@code true} if the given shape is intersecting this
+     *     shape, otherwise {@code false}.
      */
     @Pure
     boolean contains(Point2D<?, ?> point);
@@ -177,8 +176,8 @@ public interface Shape2D<
      * to the tests against the types of the given shape, and the cast operators.
      *
      * @param shape the shape to compare to.
-     * @return <code>true</code> if the given shape is inside this shape;
-     * <code>false</code> otherwise.
+     * @return {@code true} if the given shape is inside this shape;
+     * {@code false} otherwise.
      */
     @Pure
     @Unefficient
@@ -335,8 +334,8 @@ public interface Shape2D<
      * to the tests against the types of the given shape, and the cast operators.
      *
      * @param shape the shape to compare to.
-     * @return <code>true</code> if this shape is intersecting the given shape;
-     * <code>false</code> if there is no intersection.
+     * @return {@code true} if this shape is intersecting the given shape;
+     * {@code false} if there is no intersection.
      */
     @Pure
     @Unefficient
@@ -428,7 +427,7 @@ public interface Shape2D<
      * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
      *
      * @param point the point to test.
-     * @return <code>true</code> if the point is inside the shape. Otherwise, <code>false</code>.
+     * @return {@code true} if the point is inside the shape. Otherwise, {@code false}.
      * @see #createTransformedShape(Transform2D)
      */
     @Pure
@@ -447,7 +446,7 @@ public interface Shape2D<
      * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
      *
      * @param shape the shape to test.
-     * @return <code>true</code> if the shapes are intersecting. Otherwise, <code>false</code>.
+     * @return {@code true} if the shapes are intersecting. Otherwise, {@code false}.
      * @see #intersects(Shape2D)
      */
     @Pure
@@ -470,5 +469,12 @@ public interface Shape2D<
     default double operator_upTo(Point2D<?, ?> pt) {
         return getDistance(pt);
     }
+
+	/** Replies this tuple with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the tuple.
+	 * @since 18.0
+	 */
+	String toGeogebra();
 
 }

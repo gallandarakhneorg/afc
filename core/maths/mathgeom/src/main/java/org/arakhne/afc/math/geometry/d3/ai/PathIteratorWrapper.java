@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
 @SuppressWarnings("rawtypes")
 class PathIteratorWrapper implements PathIterator3ai {
 
-    private final GeomFactory3ai<?, ?, ?, ?> factory;
+    private final GeomFactory3ai<?, ?, ?, ?, ?> factory;
 
     private final PathIterator3afp<?> iterator;
 
@@ -46,13 +46,13 @@ class PathIteratorWrapper implements PathIterator3ai {
      * @param factory the geometry factory.
      * @param iterator the original iterator.
      */
-    PathIteratorWrapper(GeomFactory3ai<?, ?, ?, ?> factory, PathIterator3afp<?> iterator) {
+    PathIteratorWrapper(GeomFactory3ai<?, ?, ?, ?, ?> factory, PathIterator3afp<?> iterator) {
         this.factory = factory;
         this.iterator = iterator;
     }
 
     @Override
-    public GeomFactory3ai<?, ?, ?, ?> getGeomFactory() {
+    public GeomFactory3ai<?, ?, ?, ?, ?> getGeomFactory() {
         return this.factory;
     }
 

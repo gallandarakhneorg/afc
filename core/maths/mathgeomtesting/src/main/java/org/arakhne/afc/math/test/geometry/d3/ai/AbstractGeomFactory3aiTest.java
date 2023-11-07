@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.ai.GeomFactory3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Path3ai;
 import org.arakhne.afc.math.geometry.d3.ai.PathElement3ai;
-import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai;
+import org.arakhne.afc.math.geometry.d3.ai.AlignedBox3ai;
 import org.arakhne.afc.math.geometry.d3.ai.Segment3ai;
 import org.arakhne.afc.math.test.AbstractMathTestCase;
 import org.arakhne.afc.math.test.geometry.Point3DStub;
@@ -48,9 +48,9 @@ import org.arakhne.afc.math.test.geometry.Vector3DStub;
 @SuppressWarnings("all")
 public abstract class AbstractGeomFactory3aiTest extends AbstractMathTestCase {
 
-	private GeomFactory3ai<?, ?, ?, ?> factory;
+	private GeomFactory3ai<?, ?, ?, ?, ?> factory;
 	
-	protected abstract GeomFactory3ai<?, ?, ?, ?> createFactory();
+	protected abstract GeomFactory3ai<?, ?, ?, ?, ?> createFactory();
 	
 	protected abstract Point3D createPoint(int x, int y, int z);
 
@@ -206,7 +206,7 @@ public abstract class AbstractGeomFactory3aiTest extends AbstractMathTestCase {
 	@EnumSource(CoordinateSystem3D.class)
 	public void newPath_NONZERO(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.NON_ZERO);
+		Path3ai<?, ?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.NON_ZERO);
 		assertNotNull(path);
 		assertSame(PathWindingRule.NON_ZERO, path.getWindingRule());
 		assertEquals(0, path.size());
@@ -216,7 +216,7 @@ public abstract class AbstractGeomFactory3aiTest extends AbstractMathTestCase {
 	@EnumSource(CoordinateSystem3D.class)
 	public void newPath_EVENODD(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Path3ai<?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.EVEN_ODD);
+		Path3ai<?, ?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.EVEN_ODD);
 		assertNotNull(path);
 		assertSame(PathWindingRule.EVEN_ODD, path.getWindingRule());
 		assertEquals(0, path.size());
@@ -226,7 +226,7 @@ public abstract class AbstractGeomFactory3aiTest extends AbstractMathTestCase {
 	@EnumSource(CoordinateSystem3D.class)
 	public void newSegment(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Segment3ai<?, ?, ?, ?, ?, ?> s = this.factory.newSegment(1, 2, 3, 4, 5, 6);
+		Segment3ai<?, ?, ?, ?, ?, ?, ?> s = this.factory.newSegment(1, 2, 3, 4, 5, 6);
 		assertNotNull(s);
 		assertEquals(1, s.getX1());
 		assertEquals(2, s.getY1());
@@ -240,7 +240,7 @@ public abstract class AbstractGeomFactory3aiTest extends AbstractMathTestCase {
 	@EnumSource(CoordinateSystem3D.class)
 	public void newBox(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		RectangularPrism3ai<?, ?, ?, ?, ?, ?> r = this.factory.newBox();
+		AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> r = this.factory.newBox();
 		assertNotNull(r);
 		assertEquals(0, r.getMinX());
 		assertEquals(0, r.getMinY());
@@ -254,7 +254,7 @@ public abstract class AbstractGeomFactory3aiTest extends AbstractMathTestCase {
 	@EnumSource(CoordinateSystem3D.class)
 	public void newBoxIntIntIntIntIntInt(CoordinateSystem3D cs) {
 		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		RectangularPrism3ai<?, ?, ?, ?, ?, ?> r = this.factory.newBox(1, 2, 3, 4, 5, 6);
+		AlignedBox3ai<?, ?, ?, ?, ?, ?, ?> r = this.factory.newBox(1, 2, 3, 4, 5, 6);
 		assertNotNull(r);
 		assertEquals(1, r.getMinX());
 		assertEquals(2, r.getMinY());

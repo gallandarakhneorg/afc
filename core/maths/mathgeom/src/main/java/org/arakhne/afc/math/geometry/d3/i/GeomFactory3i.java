@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.AbstractGeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
+import org.arakhne.afc.math.geometry.d3.Quaternion.QuaternionComponents;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.ai.GeomFactory3ai;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -37,15 +38,15 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class GeomFactory3i extends AbstractGeomFactory3D<Vector3i, Point3i>
-		implements GeomFactory3ai<PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
+public class GeomFactory3i extends AbstractGeomFactory3D<Vector3i, Point3i, Quaternion4i>
+		implements GeomFactory3ai<PathElement3i, Point3i, Vector3i, Quaternion4i, AlignedBox3i> {
 
 	/** The singleton of the factory.
 	 */
 	public static final GeomFactory3i SINGLETON = new GeomFactory3i();
 
 	@Override
-	public Point3i convertToPoint(Point3D<?, ?> point) {
+	public Point3i convertToPoint(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
 		try {
 			return (Point3i) point;
@@ -55,19 +56,19 @@ public class GeomFactory3i extends AbstractGeomFactory3D<Vector3i, Point3i>
 	}
 
     @Override
-    public Point3i convertToPoint(Vector3D<?, ?> vector) {
+    public Point3i convertToPoint(Vector3D<?, ?, ?> vector) {
         assert vector != null : AssertMessages.notNullParameter();
         return new Point3i(vector.ix(), vector.iy(), vector.iz());
     }
 
 	@Override
-	public Vector3i convertToVector(Point3D<?, ?> point) {
+	public Vector3i convertToVector(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
 		return new Vector3i(point.ix(), point.iy(), point.iz());
 	}
 
 	@Override
-	public Vector3i convertToVector(Vector3D<?, ?> vector) {
+	public Vector3i convertToVector(Vector3D<?, ?, ?> vector) {
 		assert vector != null : AssertMessages.notNullParameter();
 		Vector3i vv;
 		try {
@@ -115,17 +116,16 @@ public class GeomFactory3i extends AbstractGeomFactory3D<Vector3i, Point3i>
 	}
 
 	@Override
-	public RectangularPrism3i newBox() {
-		return new RectangularPrism3i();
+	public AlignedBox3i newBox() {
+		return new AlignedBox3i();
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:magicnumber")
-	public RectangularPrism3i newBox(int x, int y, int z, int width, int height, int depth) {
+	public AlignedBox3i newBox(int x, int y, int z, int width, int height, int depth) {
 		assert width >= 0 : AssertMessages.positiveOrZeroParameter(3);
 		assert height >= 0 : AssertMessages.positiveOrZeroParameter(4);
 		assert depth >= 0 : AssertMessages.positiveOrZeroParameter(5);
-		return new RectangularPrism3i(x, y, z, width, height, depth);
+		return new AlignedBox3i(x, y, z, width, height, depth);
 	}
 
 	@Override
@@ -145,7 +145,6 @@ public class GeomFactory3i extends AbstractGeomFactory3D<Vector3i, Point3i>
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:parameternumber")
 	public PathElement3i newCurvePathElement(int startX, int startY, int startZ, int controlX, int controlY, int controlZ,
 			int targetX, int targetY, int targerZ) {
         return new PathElement3i.QuadPathElement3i(startX, startY, startZ, controlX, controlY, controlZ, targetX, targetY,
@@ -153,7 +152,6 @@ public class GeomFactory3i extends AbstractGeomFactory3D<Vector3i, Point3i>
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:parameternumber")
 	public PathElement3i newCurvePathElement(int startX, int startY, int startZ, int controlX1, int controlY1, int controlZ1,
 			int controlX2, int controlY2, int controlZ2, int targetX, int targetY, int targetZ) {
 		return new PathElement3i.CurvePathElement3i(startX, startY, startZ, controlX1, controlY1, controlZ1,
@@ -171,15 +169,25 @@ public class GeomFactory3i extends AbstractGeomFactory3D<Vector3i, Point3i>
 	}
 
 	@Override
-	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
-		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$
-		// TODO
+	public Quaternion4i newQuaternion(double x, double y, double z, double w) {
+		return new Quaternion4i(x, y, z, w);
 	}
 
 	@Override
-	public Quaternion newQuaternion(double attitude, double bank, double heading) {
-		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$
-		// TODO
+	public Quaternion4i newQuaternion(int x, int y, int z, int w) {
+		return new Quaternion4i(x, y, z, w);
+	}
+
+	@Override
+	public Quaternion4i newQuaternionFromAxisAngle(double x, double y, double z, double angle) {
+		final QuaternionComponents comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
+		return new Quaternion4i(comps.x(), comps.y(), comps.z(), comps.w());
+	}
+
+	@Override
+	public Quaternion4i newQuaternionFromAxisAngle(int x, int y, int z, int angle) {
+		final QuaternionComponents comps = Quaternion.computeWithAxisAngle(x, y, z, angle);
+		return new Quaternion4i(comps.x(), comps.y(), comps.z(), comps.w());
 	}
 
 }

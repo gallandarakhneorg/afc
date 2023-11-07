@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @param <I> is the type of the iterator used to obtain the elements of the path.
  * @param <P> is the type of the points.
  * @param <V> is the type of the vectors.
+ * @param <Q> is the type of the quaternions.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
@@ -49,21 +50,22 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  */
 public interface MultiShape3D<
-		ST extends Shape3D<?, ?, I, P, V, B>,
-		IT extends MultiShape3D<?, ?, CT, I, P, V, B>,
-		CT extends Shape3D<?, ?, I, P, V, B>,
-		I extends PathIterator3D<?>,
-		P extends Point3D<? super P, ? super V>,
-		V extends Vector3D<? super V, ? super P>,
-		B extends Shape3D<?, ?, I, P, V, B>> extends Shape3D<ST, IT, I, P, V, B>, List<CT> {
+ST extends Shape3D<?, ?, I, P, V, Q, B>,
+IT extends MultiShape3D<?, ?, CT, I, P, V, Q, B>,
+CT extends Shape3D<?, ?, I, P, V, Q, B>,
+I extends PathIterator3D<?>,
+P extends Point3D<? super P, ? super V, ? super Q>,
+V extends Vector3D<? super V, ? super P, ? super Q>,
+Q extends Quaternion<? super P, ? super V, ? super Q>,
+B extends Shape3D<?, ?, I, P, V, Q, B>> extends Shape3D<ST, IT, I, P, V, Q, B>, List<CT> {
 
 	/** Get the first shape in this multishape that is containing the given point.
 	 *
 	 * @param point the point.
-	 * @return the shape, or <code>null</code> if no shape contains the given point.
+	 * @return the shape, or {@code null} if no shape contains the given point.
 	 */
 	@Pure
-	default CT getFirstShapeContaining(Point3D<?, ?> point) {
+	default CT getFirstShapeContaining(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
 		if (toBoundingBox().contains(point)) {
 			for (final CT shape : getBackendDataList()) {
@@ -82,7 +84,7 @@ public interface MultiShape3D<
 	 */
 	@Pure
 	@Unefficient
-	default List<CT> getShapesContaining(Point3D<?, ?> point) {
+	default List<CT> getShapesContaining(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
 		final List<CT> list = new ArrayList<>();
 		if (toBoundingBox().contains(point)) {
@@ -98,7 +100,7 @@ public interface MultiShape3D<
 	/** Get the first shape in this multishape that is intersecting the given shape.
 	 *
 	 * @param shape the shape.
-	 * @return the shape, or <code>null</code> if no shape intersecting the given shape.
+	 * @return the shape, or {@code null} if no shape intersecting the given shape.
 	 */
 	@Pure
 	CT getFirstShapeIntersecting(ST shape);
@@ -136,12 +138,12 @@ public interface MultiShape3D<
 		onBackendDataChange();
 	}
 
-    @Override
-    default CT set(int index, CT element) {
-        final CT old = getBackendDataList().set(index, element);
-        onBackendDataChange();
-        return old;
-    }
+	@Override
+	default CT set(int index, CT element) {
+		final CT old = getBackendDataList().set(index, element);
+		onBackendDataChange();
+		return old;
+	}
 
 	@Override
 	@Pure
@@ -169,7 +171,7 @@ public interface MultiShape3D<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point3D<?, ?> point) {
+	default P getClosestPointTo(Point3D<?, ?, ?> point) {
 		P closestPoint = null;
 		double minDist = Double.POSITIVE_INFINITY;
 		for (final CT shape : getBackendDataList()) {
@@ -185,7 +187,7 @@ public interface MultiShape3D<
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point3D<?, ?> point) {
+	default P getFarthestPointTo(Point3D<?, ?, ?> point) {
 		P farthestPoint = null;
 		double maxDist = Double.NEGATIVE_INFINITY;
 		for (final CT shape : getBackendDataList()) {
@@ -201,7 +203,7 @@ public interface MultiShape3D<
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point3D<?, ?> point) {
+	default double getDistanceSquared(Point3D<?, ?, ?> point) {
 		double minDist = Double.POSITIVE_INFINITY;
 		for (final CT shape : getBackendDataList()) {
 			final double dist = shape.getDistanceSquared(point);
@@ -214,7 +216,7 @@ public interface MultiShape3D<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point3D<?, ?> point) {
+	default double getDistanceL1(Point3D<?, ?, ?> point) {
 		double minDist = Double.POSITIVE_INFINITY;
 		for (final CT shape : getBackendDataList()) {
 			final double dist = shape.getDistanceL1(point);
@@ -227,7 +229,7 @@ public interface MultiShape3D<
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point3D<?, ?> point) {
+	default double getDistanceLinf(Point3D<?, ?, ?> point) {
 		double minDist = Double.POSITIVE_INFINITY;
 		for (final CT shape : getBackendDataList()) {
 			final double dist = shape.getDistanceLinf(point);
@@ -276,11 +278,11 @@ public interface MultiShape3D<
 		return false;
 	}
 
-    @Override
-    default void add(int index, CT element) {
-        getBackendDataList().add(index, element);
-        onBackendDataChange();
-    }
+	@Override
+	default void add(int index, CT element) {
+		getBackendDataList().add(index, element);
+		onBackendDataChange();
+	}
 
 	@Override
 	default boolean remove(Object obj) {
@@ -291,12 +293,12 @@ public interface MultiShape3D<
 		return false;
 	}
 
-    @Override
-    default CT remove(int index) {
-        final CT removed = getBackendDataList().remove(index);
-        onBackendDataChange();
-        return removed;
-    }
+	@Override
+	default CT remove(int index) {
+		final CT removed = getBackendDataList().remove(index);
+		onBackendDataChange();
+		return removed;
+	}
 
 	@Pure
 	@Override
@@ -375,6 +377,22 @@ public interface MultiShape3D<
 		return new BackendList<>(this, getBackendDataList().subList(fromIndex, toIndex));
 	}
 
+	/** Replies this multishape with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the multishape.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		final StringBuilder geogebra = new StringBuilder();
+		for (final CT shape : this) {
+			if (geogebra.length() > 0) {
+				geogebra.append("\n");
+			}
+			geogebra.append(shape.toGeogebra());
+		}
+		return geogebra.toString();
+	}
+
 	/** Iterator on elements of a list that is able to notify the backend when
 	 * the iterator has change the backend data.
 	 *
@@ -384,9 +402,9 @@ public interface MultiShape3D<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class BackendIterator<CT extends Shape3D<?, ?, ?, ?, ?, ?>> implements ListIterator<CT> {
+	class BackendIterator<CT extends Shape3D<?, ?, ?, ?, ?, ?, ?>> implements ListIterator<CT> {
 
-		private final MultiShape3D<?, ?, CT, ?, ?, ?, ?> backend;
+		private final MultiShape3D<?, ?, CT, ?, ?, ?, ?, ?> backend;
 
 		private final ListIterator<CT> iterator;
 
@@ -394,7 +412,7 @@ public interface MultiShape3D<
 		 * @param backend the associated backend.
 		 * @param iterator the original iterator.
 		 */
-		public BackendIterator(MultiShape3D<?, ?, CT, ?, ?, ?, ?> backend, ListIterator<CT> iterator) {
+		public BackendIterator(MultiShape3D<?, ?, CT, ?, ?, ?, ?, ?> backend, ListIterator<CT> iterator) {
 			assert backend != null : AssertMessages.notNullParameter();
 			assert iterator != null : AssertMessages.notNullParameter();
 			this.backend = backend;
@@ -464,9 +482,9 @@ public interface MultiShape3D<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class BackendList<CT extends Shape3D<?, ?, ?, ?, ?, ?>> implements List<CT> {
+	class BackendList<CT extends Shape3D<?, ?, ?, ?, ?, ?, ?>> implements List<CT> {
 
-		private final MultiShape3D<?, ?, CT, ?, ?, ?, ?> backend;
+		private final MultiShape3D<?, ?, CT, ?, ?, ?, ?, ?> backend;
 
 		private final List<CT> list;
 
@@ -474,7 +492,7 @@ public interface MultiShape3D<
 		 * @param backend the associated backend.
 		 * @param list the original list.
 		 */
-		public BackendList(MultiShape3D<?, ?, CT, ?, ?, ?, ?> backend, List<CT> list) {
+		public BackendList(MultiShape3D<?, ?, CT, ?, ?, ?, ?, ?> backend, List<CT> list) {
 			assert backend != null : AssertMessages.notNullParameter();
 			assert list != null : AssertMessages.notNullParameter();
 			this.backend = backend;
@@ -525,11 +543,11 @@ public interface MultiShape3D<
 			return false;
 		}
 
-        @Override
-        public void add(int index, CT element) {
-            this.list.add(index, element);
-            this.backend.onBackendDataChange();
-        }
+		@Override
+		public void add(int index, CT element) {
+			this.list.add(index, element);
+			this.backend.onBackendDataChange();
+		}
 
 		@Override
 		public boolean remove(Object obj) {
@@ -540,12 +558,12 @@ public interface MultiShape3D<
 			return false;
 		}
 
-        @Override
-        public CT remove(int index) {
-            final CT old = this.list.remove(index);
-            this.backend.onBackendDataChange();
-            return old;
-        }
+		@Override
+		public CT remove(int index) {
+			final CT old = this.list.remove(index);
+			this.backend.onBackendDataChange();
+			return old;
+		}
 
 		@Pure
 		@Override

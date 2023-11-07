@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public interface GeomFactory2D<V extends Vector2D<? super V, ? super P>, P exten
 	/** Convert the given point if it is not of the right type.
 	 *
 	 * @param pt the point to convert.
-	 * @return <code>p</code> if it is of type <code>P</code>, or a copy of <code>p</code>.
+	 * @return {@code p} if it is of type {@code P}, or a copy of {@code p}.
 	 */
 	@Pure
 	P convertToPoint(Point2D<?, ?> pt);

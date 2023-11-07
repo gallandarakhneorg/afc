@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ public interface Shape1D<
 
 	/** Replies the segment.
 	 *
-	 * @return the segment or <code>null</code> if the weak reference has lost the segment.
+	 * @return the segment or {@code null} if the weak reference has lost the segment.
 	 */
 	@Pure
 	S getSegment();
@@ -76,8 +76,8 @@ public interface Shape1D<
 	 * depends on the implemented shape. See the
 	 * subclasses for details.
 	 *
-	 * @return <code>true</code> if the shape is empty;
-	 * <code>false</code> otherwise.
+	 * @return {@code true} if the shape is empty;
+	 * {@code false} otherwise.
 	 */
 	@Pure
 	boolean isEmpty();
@@ -92,7 +92,7 @@ public interface Shape1D<
 	/** Replies this shape is equal to the given shape.
 	 *
 	 * @param shape the shape to compare to.
-	 * @return <code>true</code> if this shape is equal is equal to the given path.
+	 * @return {@code true} if this shape is equal is equal to the given path.
 	 */
 	@Pure
 	boolean equalsToShape(IT shape);
@@ -105,8 +105,8 @@ public interface Shape1D<
 	/** Replies if the given point is inside this shape.
 	 *
 	 * @param point the point.
-	 * @return <code>true</code> if the given shape is intersecting this
-	 *     shape, otherwise <code>false</code>.
+	 * @return {@code true} if the given shape is intersecting this
+	 *     shape, otherwise {@code false}.
 	 */
 	@Pure
 	boolean contains(Point1D<?, ?, ?> point);
@@ -118,8 +118,8 @@ public interface Shape1D<
 	 * to the tests against the types of the given shape, and the cast operators.
 	 *
 	 * @param shape the shape to compare to.
-	 * @return <code>true</code> if the given shape is inside this shape;
-	 * <code>false</code> otherwise.
+	 * @return {@code true} if the given shape is inside this shape;
+	 * {@code false} otherwise.
 	 */
 	@Pure
 	@Unefficient
@@ -248,8 +248,8 @@ public interface Shape1D<
 	 * to the tests against the types of the given shape, and the cast operators.
 	 *
 	 * @param shape the shape to compare to.
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
+	 * @return {@code true} if this shape is intersecting the given shape;
+	 * {@code false} if there is no intersection.
 	 */
 	@Pure
 	@Unefficient
@@ -326,7 +326,7 @@ public interface Shape1D<
 	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
 	 *
 	 * @param point the point to test.
-	 * @return <code>true</code> if the point is inside the shape. Otherwise, <code>false</code>.
+	 * @return {@code true} if the point is inside the shape. Otherwise, {@code false}.
 	 */
 	@Pure
 	default boolean operator_and(Point1D<?, ?, ?> point) {
@@ -344,7 +344,7 @@ public interface Shape1D<
 	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
 	 *
 	 * @param shape the shape to test.
-	 * @return <code>true</code> if the shapes are intersecting. Otherwise, <code>false</code>.
+	 * @return {@code true} if the shapes are intersecting. Otherwise, {@code false}.
 	 * @see #intersects(Shape1D)
 	 */
 	@Pure

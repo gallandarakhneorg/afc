@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Container for grouping of shapes.
  *
@@ -61,7 +60,7 @@ public interface MultiShape2D<
 	/** Get the first shape in this multishape that is containing the given point.
 	 *
 	 * @param point the point.
-	 * @return the shape, or <code>null</code> if no shape contains the given point.
+	 * @return the shape, or {@code null} if no shape contains the given point.
 	 */
 	@Pure
 	default CT getFirstShapeContaining(Point2D<?, ?> point) {
@@ -99,7 +98,7 @@ public interface MultiShape2D<
 	/** Get the first shape in this multishape that is intersecting the given shape.
 	 *
 	 * @param shape the shape.
-	 * @return the shape, or <code>null</code> if no shape intersecting the given shape.
+	 * @return the shape, or {@code null} if no shape intersecting the given shape.
 	 */
 	@Pure
 	CT getFirstShapeIntersecting(ST shape);
@@ -374,6 +373,22 @@ public interface MultiShape2D<
 	@Override
 	default List<CT> subList(int fromIndex, int toIndex) {
 		return new BackendList<>(this, getBackendDataList().subList(fromIndex, toIndex));
+	}
+
+	/** Replies this multishape with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the multishape.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		final StringBuilder geogebra = new StringBuilder();
+		for (final CT shape : this) {
+			if (geogebra.length() > 0) {
+				geogebra.append("\n");
+			}
+			geogebra.append(shape.toGeogebra());
+		}
+		return geogebra.toString();
 	}
 
 	/** Iterator on elements of a list that is able to notify the backend when

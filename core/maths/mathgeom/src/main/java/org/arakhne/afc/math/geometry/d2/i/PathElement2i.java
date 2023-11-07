@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:magicnumber")
 public abstract class PathElement2i implements PathElement2ai {
 
 	private static final long serialVersionUID = -7762354100984227855L;
@@ -149,7 +148,7 @@ public abstract class PathElement2i implements PathElement2ai {
 		return false;
 	}
 
-	/** An element of the path that represents a <code>MOVE_TO</code>.
+	/** An element of the path that represents a {@code MOVE_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -240,7 +239,7 @@ public abstract class PathElement2i implements PathElement2ai {
 
 	}
 
-	/** An element of the path that represents a <code>LINE_TO</code>.
+	/** An element of the path that represents a {@code LINE_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -343,7 +342,7 @@ public abstract class PathElement2i implements PathElement2ai {
 
 	}
 
-	/** An element of the path that represents a <code>QUAD_TO</code>.
+	/** An element of the path that represents a {@code QUAD_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -473,7 +472,7 @@ public abstract class PathElement2i implements PathElement2ai {
 
 	}
 
-	/** An element of the path that represents a <code>CURVE_TO</code>.
+	/** An element of the path that represents a {@code CURVE_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -630,7 +629,7 @@ public abstract class PathElement2i implements PathElement2ai {
 
 	}
 
-	/** An element of the path that represents a <code>CLOSE</code>.
+	/** An element of the path that represents a {@code CLOSE}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -734,7 +733,7 @@ public abstract class PathElement2i implements PathElement2ai {
 
 	}
 
-	/** An element of the path that represents a <code>Arc_TO</code>.
+	/** An element of the path that represents a {@code Arc_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -742,7 +741,6 @@ public abstract class PathElement2i implements PathElement2ai {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	static class ArcPathElement2i extends PathElement2i {
 
 		private static final long serialVersionUID = 8586418464458281967L;
@@ -771,8 +769,8 @@ public abstract class PathElement2i implements PathElement2ai {
 		 * @param xradius radius of the ellipse along its x axis.
 		 * @param yradius radius of the ellipse along its y axis.
 		 * @param xrotation rotation (in radians) of the ellipse's x axis.
-		 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
-		 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+		 * @param largeArcFlag {@code true} iff the path will sweep the long way around the ellipse.
+		 * @param sweepFlag {@code true} iff the path will sweep clockwise around the ellipse.
 		 */
 		ArcPathElement2i(int fromx, int fromy, int tox, int toy, int xradius,
 				int yradius, double xrotation, boolean largeArcFlag, boolean sweepFlag) {

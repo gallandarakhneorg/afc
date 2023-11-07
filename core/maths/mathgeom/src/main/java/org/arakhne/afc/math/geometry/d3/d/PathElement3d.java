@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:magicnumber")
 public abstract class PathElement3d implements PathElement3afp {
 
 	private static final long serialVersionUID = -9217295344283468162L;
@@ -118,7 +117,7 @@ public abstract class PathElement3d implements PathElement3afp {
 	@Pure
 	public abstract double[] toArray();
 
-	/** An element of the path that represents a <code>MOVE_TO</code>.
+	/** An element of the path that represents a {@code MOVE_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @author $Author: tpiotrow$
@@ -249,7 +248,7 @@ public abstract class PathElement3d implements PathElement3afp {
 
 	}
 
-	/** An element of the path that represents a <code>LINE_TO</code>.
+	/** An element of the path that represents a {@code LINE_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @author $Author: tpiotrow$
@@ -349,7 +348,7 @@ public abstract class PathElement3d implements PathElement3afp {
 			assert array.length >= 3 : AssertMessages.tooSmallArrayParameter(array.length, 3);
 			array[0] = this.toX;
 			array[1] = this.toY;
-			array[2] = this.toY;
+			array[2] = this.toZ;
 		}
 
 		@Pure
@@ -405,7 +404,7 @@ public abstract class PathElement3d implements PathElement3afp {
 
 	}
 
-	/** An element of the path that represents a <code>QUAD_TO</code>.
+	/** An element of the path that represents a {@code QUAD_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @author $Author: tpiotrow$
@@ -589,7 +588,7 @@ public abstract class PathElement3d implements PathElement3afp {
 
 	}
 
-	/** An element of the path that represents a <code>CURVE_TO</code>.
+	/** An element of the path that represents a {@code CURVE_TO}.
 	 *
 	 * @author $Author: sgalland$
 	 * @author $Author: tpiotrow$
@@ -636,7 +635,6 @@ public abstract class PathElement3d implements PathElement3afp {
          * @param toy y coordinate of the target point.
          * @param toz z coordinate of the target point.
          */
-	    @SuppressWarnings("checkstyle:parameternumber")
 	    CurvePathElement3d(double fromx, double fromy, double fromz, double ctrlx1, double ctrly1, double ctrlz1, double ctrlx2,
                 double ctrly2, double ctrlz2, double tox, double toy, double toz) {
 			super(PathElementType.CURVE_TO, tox, toy, toz);
@@ -697,7 +695,6 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Pure
 		@Override
-		@SuppressWarnings("checkstyle:booleanexpressioncomplexity")
 		public boolean isEmpty() {
 			if (this.isEmpty == null) {
 				this.isEmpty = MathUtil.isEpsilonEqual(this.fromX, this.toX)
@@ -751,7 +748,6 @@ public abstract class PathElement3d implements PathElement3afp {
 
 		@Pure
 		@Override
-		@SuppressWarnings("checkstyle:arraytrailingcomma")
 		public double[] toArray() {
             return new double[] {this.ctrlX1, this.ctrlY1, this.ctrlZ1, this.ctrlX2, this.ctrlY2, this.ctrlZ2, this.toX,
                                  this.toY, this.toZ};
@@ -804,7 +800,7 @@ public abstract class PathElement3d implements PathElement3afp {
 
 	}
 
-	/** An element of the path that represents a <code>CLOSE</code>.
+	/** An element of the path that represents a {@code CLOSE}.
 	 *
 	 * @author $Author: sgalland$
 	 * @author $Author: tpiotrow$

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,7 +119,6 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	 * @param axis1Extent is the extent of the first axis.
 	 * @param axis2Extent is the extent of the second axis.
 	 */
-	@SuppressWarnings("checkstyle:magicnumber")
 	public OrientedRectangle2d(double centerX, double centerY,
 			double axis1X, double axis1Y, double axis1Extent,
 			double axis2Extent) {
@@ -142,7 +141,6 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 
 	@Pure
 	@Override
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + Double.hashCode(this.cx);
@@ -288,7 +286,6 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:magicnumber")
 	public void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent, double axis2Extent) {
 		assert Vector2D.isUnitVector(axis1x, axis1y) : AssertMessages.normalizedParameters(2, 3);
 		assert axis1Extent >= 0. : AssertMessages.positiveOrZeroParameter(4);

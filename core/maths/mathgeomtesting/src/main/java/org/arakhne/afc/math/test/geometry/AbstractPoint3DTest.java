@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,14 +31,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 @SuppressWarnings("all")
-public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V>, V extends Vector3D<? super V, ? super P>,
+public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>,
 		TT extends Tuple3D>
 		extends AbstractTuple3DTest<TT> {
 	
@@ -46,6 +52,7 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 
 	public abstract V createVector(double x, double y, double z);
 	
+	@DisplayName("isCollinearPoints(double,double,double,double,double,double)")
 	@Test
 	public final void staticIsCollinearPoints() {
 		assertTrue(Point3D.isCollinearPoints(0, 0, 0, 0, 0, 0, 0, 0, 0));
@@ -53,6 +60,7 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFalse(Point3D.isCollinearPoints(0, 0, 0, 1, 1, 0, 1, -5, 0));
 	}
 
+	@DisplayName("getDistancePointPoint(double,double,double,double,double,double)")
 	@Test
 	public final void staticGetDistancePointPoint() {
 		assertEpsilonEquals(0, Point3D.getDistancePointPoint(0, 0, 0, 0, 0, 0));
@@ -60,6 +68,7 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertEpsilonEquals(Math.sqrt(2), Point3D.getDistancePointPoint(0, 0, 0, 1, 1, 0));
 	}
 
+	@DisplayName("getDistanceSquaredPointPoint(double,double,double,double,double,double)")
 	@Test
 	public final void staticGetDistanceSquaredPointPoint() {
 		assertEpsilonEquals(0, Point3D.getDistanceSquaredPointPoint(0, 0, 0, 0, 0, 0));
@@ -67,6 +76,7 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertEpsilonEquals(2, Point3D.getDistanceSquaredPointPoint(0, 0, 0, 1, 1, 0));
 	}
 
+	@DisplayName("getDistanceL1PointPoint(double,double,double,double,double,double)")
 	@Test
 	public final void staticGetDistanceL1PointPoint() {
 		assertEpsilonEquals(4, Point3D.getDistanceL1PointPoint(1.0, 2.0, 0, 3.0, 0, 0));
@@ -75,16 +85,20 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertEpsilonEquals(4, Point3D.getDistanceL1PointPoint(1.0, 2.0, 0, -1, 0, 0));
 	}
 
+	@DisplayName("getDistanceLinfPointPoint(double,double,double,double,double,double)")
 	@Test
 	public final void staticGetDistanceLinfPointPoint() {
 		assertEpsilonEquals(2, Point3D.getDistanceLinfPointPoint(1.0, 2.0, 0, 3.0, 0, 0));
 		assertEpsilonEquals(0, Point3D.getDistanceLinfPointPoint(1.0, 2.0, 0, 1, 2, 0));
-		assertEpsilonEquals(0, Point3D.getDistanceLinfPointPoint(1, 2, 1.0, 0, 2.0, 0));
+		assertEpsilonEquals(1, Point3D.getDistanceLinfPointPoint(1, 2., 1.0, 0, 2.0, 0));
 		assertEpsilonEquals(2, Point3D.getDistanceLinfPointPoint(1.0, 2.0, 0, -1, 0, 0));
 	}
 
-	@Test
-	public final void getDistanceSquaredPoint3D() {
+	@DisplayName("getDistanceSquared(Point3d)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void getDistanceSquaredPoint3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(0, 0, 0);
 		Point3D point2 = createPoint(0, 0, 0);
 		Point3D point3 = createPoint(1, 2, 0);
@@ -94,8 +108,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertEpsilonEquals(2, point.getDistanceSquared(point4));
 	}
 	
-	@Test
-	public final void getDistancePoint3D() {
+	@DisplayName("getDistance(Point3d)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void getDistancePoint3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(0, 0, 0);
 		Point3D point2 = createPoint(0, 0, 0);
 		Point3D point3 = createPoint(1, 2, 0);
@@ -105,8 +122,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertEpsilonEquals(Math.sqrt(2), point.getDistance(point4));
 	}
 
-	@Test
-	public final void getDistanceL1Point3D() {
+	@DisplayName("getDistanceL1(Point3d)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void getDistanceL1Point3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
 		Point3D point3 = createPoint(1, 2, 0);
@@ -117,8 +137,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertEpsilonEquals(4, point.getDistanceL1(point4));
 	}
 
-	@Test
-	public final void getDistanceLinfPoint3D() {
+	@DisplayName("getDistanceLinf(Point3d)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void getDistanceLinfPoint3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
 		Point3D point3 = createPoint(1, 2, 0);
@@ -129,8 +152,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertEpsilonEquals(2, point.getDistanceLinf(point4));
 	}
 
-	@Test
-	public final void getIdistanceL1Point3D() {
+	@DisplayName("getIdistanceL1(Point3d)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void getIdistanceL1Point3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
 		Point3D point3 = createPoint(1, 2, 0);
@@ -141,8 +167,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertEquals(4, point.getIdistanceL1(point4));
 	}
 
-	@Test
-	public final void getIdistanceLinfPoint3D() {
+	@DisplayName("getIdistanceLinf(Point3d)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void getIdistanceLinfPoint3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
 		Point3D point3 = createPoint(1, 2, 0);
@@ -153,8 +182,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertEquals(2, point.getIdistanceLinf(point4));
 	}
 
-	@Test
-	public final void toUnmodifiable_exception() {
+	@DisplayName("toUnmodifiable with exception")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void toUnmodifiable_exception(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assertThrows(UnsupportedOperationException.class, () -> {
 			Point3D origin = createPoint(2, 3, 0);
 			Point3D immutable = origin.toUnmodifiable();
@@ -163,8 +195,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		});
 	}
 
-	@Test
-	public final void toUnmodifiable_changeInOrigin() {
+	@DisplayName("toUnmodifiable")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void toUnmodifiable_changeInOrigin(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D origin = createPoint(2, 3, 0);
 		assumeMutable(origin);
 		Point3D immutable = origin.toUnmodifiable();
@@ -172,8 +207,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertEpsilonEquals(origin, immutable);
 	}
 
-	@Test
-	public final void testClonePoint() {
+	@DisplayName("clone")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void testClonePoint(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D origin = createPoint(23, 45, 0);
 		Tuple3D clone = origin.clone();
 		assertNotNull(clone);
@@ -182,8 +220,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertEpsilonEquals(origin.getY(), clone.getY());
 	}
 
-	@Test
-	public final void operator_plusVector3D() {
+	@DisplayName("p + Vector3D")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void operator_plusVector3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
@@ -210,8 +251,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(4, -5, 0, r);
 	}
 
-	@Test
-	public final void operator_minusVector3D() {
+	@DisplayName("p - Vector3D")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void operator_minusVector3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
@@ -238,8 +282,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(2, 5, 0, r);
 	}
 
-	@Test
-	public final void operator_minusPoint3D_iffp() {
+	@DisplayName("p - Point3D with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void operator_minusPoint3D_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		Point3D point = createPoint(0, 0, 0);
 		Point3D point2 = createPoint(1, 0, 0);
@@ -254,8 +301,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpVectorEquals(-1.0, -1.5, 0, newVector); 
 	}
 
-	@Test
-	public final void operator_minusPoint3D_ifi() {
+	@DisplayName("p - Point3D with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void operator_minusPoint3D_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		Point3D point = createPoint(0, 0, 0);
 		Point3D point2 = createPoint(1, 0, 0);
@@ -270,8 +320,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpVectorEquals(-1, -2, 0, newVector); 
 	}
 
-	@Test
-	public final void operator_equalsTuple3D() {
+	@DisplayName("p == Tuple3D")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void operator_equalsTuple3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(49, -2, 0);
 		assertFalse(point.operator_equals(null));
 		assertTrue(point.operator_equals(point));
@@ -280,8 +333,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertTrue(point.operator_equals(createPoint(49, -2, 0)));
 	}
 
-	@Test
-	public final void operator_notEqualsTuple3D() {
+	@DisplayName("p != Tuple3D")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void operator_notEqualsTuple3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(49, -2, 0);
 		assertTrue(point.operator_notEquals(null));
 		assertFalse(point.operator_notEquals(point));
@@ -290,8 +346,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFalse(point.operator_notEquals(createPoint(49, -2, 0)));
 	}
 
-	@Test
-	public final void testEqualsObject() {
+	@DisplayName("equals(Object)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void testEqualsObject(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(49, -2, 0);
 		assertFalse(point.equals((Object) null));
 		assertTrue(point.equals((Object) point));
@@ -300,8 +359,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertTrue(point.equals((Object) createPoint(49, -2, 0)));
 	}
 
-	@Test
-	public final void operator_upToPoint3D() {
+	@DisplayName("p .. Point3D")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void operator_upToPoint3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(0, 0, 0);
 		Point3D point2 = createPoint(0, 0, 0);
 		Point3D point3 = createPoint(1, 2, 0);
@@ -311,8 +373,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertEpsilonEquals(Math.sqrt(2), point.operator_upTo(point4));
 	}
 
-	@Test
-	public final void operator_elvisPoint3D() {
+	@DisplayName("p ?: Point3D")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public final void operator_elvisPoint3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D orig1 = createPoint(45, -78, 0);
 		Point3D orig2 = createPoint(0, 0, 0);
 		Point3D param = createPoint(-5, -1.4, 0);
@@ -337,14 +402,21 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertSame(param, result);
 	}
 
-	@Test
-	public abstract void operator_andShape3D();
+	@DisplayName("p && Shape3D")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public abstract void operator_andShape3D(CoordinateSystem3D cs);
 
-	@Test
-	public abstract void operator_upToShape3D();
+	@DisplayName("p .. Shape3D")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public abstract void operator_upToShape3D(CoordinateSystem3D cs);
 
-	@Test
-	public void addPoint3DVector3D() {
+	@DisplayName("add(Point3D,Vector3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addPoint3DVector3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
@@ -370,8 +442,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(4, -5, 0, point);
 	}
 
-	@Test
-	public void addVector3DPoint3D() {
+	@DisplayName("add(Vector3D,Point3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addVector3DPoint3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
@@ -397,8 +472,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(4, -5, 0, point);
 	}
 
-	@Test
-	public void addVector3D() {
+	@DisplayName("add(Vector3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void addVector3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
 		Vector3D vector2 = createVector(1, 2, 0);
@@ -423,8 +501,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(5, -4, 0, point);
 	}
 
-	@Test
-	public void scaleAddDoubleVector3DPoint3D_iffp() {
+	@DisplayName("scaleAdd(double,Vector3D,Point3D) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleAddDoubleVector3DPoint3D_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
@@ -451,8 +532,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(0.5, 12.5, 0, point);
 	}
 
-	@Test
-	public void scaleAddDoubleVector3DPoint3D_ifi() {
+	@DisplayName("scaleAdd(double,Vector3D,Point3D) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleAddDoubleVector3DPoint3D_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
@@ -479,8 +563,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertIntPointEquals(1, 13, 0, point);
 	}
 
-	@Test
-	public void scaleAddIntVector3DPoint3D() {
+	@DisplayName("scaleAdd(int,Vector3D,Point3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleAddIntVector3DPoint3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
@@ -506,8 +593,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(1, 10, 0, point);
 	}
 
-	@Test
-	public void scaleAddIntPoint3DVector3D() {
+	@DisplayName("scaleAdd(int,Point3D,Vector3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleAddIntPoint3DVector3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
@@ -533,8 +623,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(-5, -5, 0, point);
 	}
 
-	@Test
-	public void scaleAddDoublePoint3DVector3D_iffp() {
+	@DisplayName("scaleAdd(double,Point3D,Vector3D) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleAddDoublePoint3DVector3D_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
@@ -561,8 +654,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(-6.5, -5, 0, point);
 	}
 
-	@Test
-	public void scaleAddDoublePoint3DVector3D_ifi() {
+	@DisplayName("scaleAdd(double,Point3D,Vector3D) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleAddDoublePoint3DVector3D_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
@@ -589,8 +685,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertIntPointEquals(-6, -5, 0, point);
 	}
 
-	@Test
-	public void scaleAddIntVector3D() {
+	@DisplayName("scaleAdd(int,Vector3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleAddIntVector3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
 		Vector3D vector2 = createVector(1, 2, 0);
@@ -615,8 +714,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(-41, -145, 0, point);
 	}
 
-	@Test
-	public void scaleAddDoubleVector3D_iffp() {
+	@DisplayName("scaleAdd(double,Vector3D) with double coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleAddDoubleVector3D_iffp(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeFalse(isIntCoordinates());
 		Point3D point = createPoint(1, 2, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
@@ -642,8 +744,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(-190.95, -498.28, 0, point);
 	}
 
-	@Test
-	public void scaleAddDoubleVector3D_ifi() {
+	@DisplayName("scaleAdd(double,Vector3D) with int coords")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void scaleAddDoubleVector3D_ifi(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		assumeTrue(isIntCoordinates());
 		Point3D point = createPoint(1, 2, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
@@ -669,8 +774,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertIntPointEquals(-221, -480, 0, point);
 	}
 
-	@Test
-	public void subPoint3DVector3D() {
+	@DisplayName("sub(Point3D,Vector3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subPoint3DVector3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Point3D point2 = createPoint(3, 0, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
@@ -696,8 +804,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(2, 5, 0, point);
 	}
 
-	@Test
-	public void subVector3D() {
+	@DisplayName("sub(Vector3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void subVector3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
 		Vector3D vector2 = createVector(1, 2, 0);
@@ -722,8 +833,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(-3, 8, 0, point);
 	}
 
-	@Test
-	public void operator_addVector3D() {
+	@DisplayName("p += Vector3D")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void operator_addVector3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
 		Vector3D vector2 = createVector(1, 2, 0);
@@ -748,8 +862,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertFpPointEquals(5, -4, 0, point);
 	}
 
-	@Test
-	public void operator_removeVector3D() {
+	@DisplayName("p -= Vector3D")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void operator_removeVector3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
 		Point3D point = createPoint(1, 2, 0);
 		Vector3D vector1 = createVector(0, 0, 0);
 		Vector3D vector2 = createVector(1, 2, 0);

@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
 @SuppressWarnings("rawtypes")
 class PathIteratorWrapper implements PathIterator3afp {
 
-    private final GeomFactory3afp<?, ?, ?, ?> factory;
+    private final GeomFactory3afp<?, ?, ?, ?, ?> factory;
 
     private final PathIterator3ai<?> iterator;
 
@@ -47,13 +47,13 @@ class PathIteratorWrapper implements PathIterator3afp {
      * @param factory the geometry factory.
      * @param iterator the original iterator.
      */
-    PathIteratorWrapper(GeomFactory3afp<?, ?, ?, ?> factory, PathIterator3ai<?> iterator) {
+    PathIteratorWrapper(GeomFactory3afp<?, ?, ?, ?, ?> factory, PathIterator3ai<?> iterator) {
         this.factory = factory;
         this.iterator = iterator;
     }
 
     @Override
-    public GeomFactory3afp<?, ?, ?, ?> getGeomFactory() {
+    public GeomFactory3afp<?, ?, ?, ?, ?> getGeomFactory() {
         return this.factory;
     }
 
@@ -203,32 +203,6 @@ class PathIteratorWrapper implements PathIterator3afp {
             this.element.toArray(array);
         }
 
-        //@Override
-        //public double getRadiusX() {
-        //    return this.element.getRadiusX();
-        //}
-
-        //@Override
-        //public double getRadiusY() {
-        //    return this.element.getRadiusY();
-        //}
-
-        //@Override
-        //public double getRotationX() {
-        //    return this.element.getRotationX();
-        //}
-
-        //@Override
-        //public boolean getSweepFlag() {
-        //    return this.element.getSweepFlag();
-        //}
-
-        //@Override
-        //public boolean getLargeArcFlag() {
-        //    return this.element.getLargeArcFlag();
-        //}
-
-        // TODO : integrate ARCTO in Path3D
     }
 
 }

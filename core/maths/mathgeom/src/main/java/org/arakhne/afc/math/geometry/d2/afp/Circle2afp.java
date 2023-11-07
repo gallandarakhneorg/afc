@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ package org.arakhne.afc.math.geometry.d2.afp;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.GeomConstants;
@@ -65,8 +65,8 @@ public interface Circle2afp<
      * @param cx is the center of the circle.
      * @param cy is the center of the circle.
      * @param radius is the radius of the circle.
-     * @return <code>true</code> if the point is inside the circle;
-     * <code>false</code> if not.
+     * @return {@code true} if the point is inside the circle;
+     * {@code false} if not.
      */
     @Pure
     static boolean containsCirclePoint(double cx, double cy, double radius, double px, double py) {
@@ -85,11 +85,10 @@ public interface Circle2afp<
      * @param rymin is the lowest corner of the rectangle.
      * @param rxmax is the uppest corner of the rectangle.
      * @param rymax is the uppest corner of the rectangle.
-     * @return <code>true</code> if the given rectangle is inside the circle;
-     *     otherwise <code>false</code>.
+     * @return {@code true} if the given rectangle is inside the circle;
+     *     otherwise {@code false}.
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean containsCircleRectangle(double cx, double cy, double radius, double rxmin,
             double rymin, double rxmax, double rymax) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
@@ -120,11 +119,10 @@ public interface Circle2afp<
      * @param x2 is the center of the second circle
      * @param y2 is the center of the second circle
      * @param radius2 is the radius of the second circle
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean intersectsCircleCircle(double x1, double y1, double radius1, double x2, double y2, double radius2) {
         assert radius1 >= 0 : AssertMessages.positiveOrZeroParameter(2);
         assert radius1 >= 0 : AssertMessages.positiveOrZeroParameter(5);
@@ -141,11 +139,10 @@ public interface Circle2afp<
      * @param y2 is the first corner of the rectangle.
      * @param x3 is the second corner of the rectangle.
      * @param y3 is the second corner of the rectangle.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
-    @SuppressWarnings("checkstyle:magicnumber")
     static boolean intersectsCircleRectangle(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
         assert radius >= 0 : AssertMessages.positiveOrZeroParameter(2);
         assert x2 <= x3 : AssertMessages.lowerEqualParameters(3, x2, 5, x3);
@@ -178,8 +175,8 @@ public interface Circle2afp<
      * @param y2 is the first point of the line.
      * @param x3 is the second point of the line.
      * @param y3 is the second point of the line.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
     static boolean intersectsCircleLine(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
@@ -197,8 +194,8 @@ public interface Circle2afp<
      * @param y2 is the first point of the segment.
      * @param x3 is the second point of the segment.
      * @param y3 is the second point of the segment.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
     static boolean intersectsCircleSegment(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
@@ -759,6 +756,15 @@ public interface Circle2afp<
         set(getX(), cy, radius);
     }
 
+	/** Replies this circle with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the circle.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toCircleDefinition(2, getCenterX(), getCenterY(), getRadius());
+	}
+
     /** Abstract iterator on the path elements of the circle.
      *
      * <h3>Discretization of the circle with Bezier</h3>
@@ -908,7 +914,6 @@ public interface Circle2afp<
         }
 
         @Override
-        @SuppressWarnings("checkstyle:magicnumber")
         public T next() {
             if (this.index >= NUMBER_ELEMENTS) {
                 throw new NoSuchElementException();
@@ -1007,7 +1012,6 @@ public interface Circle2afp<
         }
 
         @Override
-        @SuppressWarnings("checkstyle:magicnumber")
         public T next() {
             if (this.index >= NUMBER_ELEMENTS) {
                 throw new NoSuchElementException();

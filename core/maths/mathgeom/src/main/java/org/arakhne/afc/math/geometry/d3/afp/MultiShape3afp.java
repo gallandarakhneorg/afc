@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.MultiShape3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -44,6 +45,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
  * @param <V> is the type of the vectors.
+ * @param <Q> is the type of the quaternions.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
@@ -53,19 +55,20 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @since 13.0
  */
 public interface MultiShape3afp<
-		ST extends Shape3afp<?, ?, IE, P, V, B>,
-		IT extends MultiShape3afp<?, ?, CT, IE, P, V, B>,
-		CT extends Shape3afp<?, ?, IE, P, V, B>,
+		ST extends Shape3afp<?, ?, IE, P, V, Q, B>,
+		IT extends MultiShape3afp<?, ?, CT, IE, P, V, Q, B>,
+		CT extends Shape3afp<?, ?, IE, P, V, Q, B>,
 		IE extends PathElement3afp,
-		P extends Point3D<? super P, ? super V>,
-		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3afp<?, ?, IE, P, V, B>>
-		extends Shape3afp<ST, IT, IE, P, V, B>,
-		MultiShape3D<ST, IT, CT, PathIterator3afp<IE>, P, V, B> {
+		P extends Point3D<? super P, ? super V, ? super Q>,
+		V extends Vector3D<? super V, ? super P, ? super Q>,
+		Q extends Quaternion<? super P, ? super V, ? super Q>,
+		B extends AlignedBox3afp<?, ?, IE, P, V, Q, B>>
+		extends Shape3afp<ST, IT, IE, P, V, Q, B>,
+		MultiShape3D<ST, IT, CT, PathIterator3afp<IE>, P, V, Q, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?, ?> sphere) {
 		assert sphere != null : AssertMessages.notNullParameter();
 		if (sphere.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
@@ -79,7 +82,7 @@ public interface MultiShape3afp<
 
 	@Pure
 	@Override
-	default boolean intersects(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
+	default boolean intersects(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> prism) {
 		assert prism != null : AssertMessages.notNullParameter();
 		if (prism.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
@@ -93,7 +96,7 @@ public interface MultiShape3afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
 		assert segment != null : AssertMessages.notNullParameter();
 		if (segment.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
@@ -121,11 +124,11 @@ public interface MultiShape3afp<
 	@Pure
 	@Override
 	@Unefficient
-	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
 		assert multishape != null : AssertMessages.notNullParameter();
 		if (multishape.toBoundingBox().intersects(toBoundingBox())) {
 			for (final CT shape1 : getBackendDataList()) {
-				for (final Shape3afp<?, ?, ?, ?, ?, ?> shape2 : multishape.getBackendDataList()) {
+				for (final Shape3afp<?, ?, ?, ?, ?, ?, ?> shape2 : multishape.getBackendDataList()) {
 					if (shape1.intersects(shape2)) {
 						return true;
 					}
@@ -150,11 +153,11 @@ public interface MultiShape3afp<
 
 	@Pure
 	@Override
-	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
-		assert rectangularPrism != null : AssertMessages.notNullParameter();
-		if (rectangularPrism.intersects(toBoundingBox())) {
+	default boolean contains(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> AlignedBox) {
+		assert AlignedBox != null : AssertMessages.notNullParameter();
+		if (AlignedBox.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {
-				if (shape.contains(rectangularPrism)) {
+				if (shape.contains(AlignedBox)) {
 					return true;
 				}
 			}
@@ -237,7 +240,7 @@ public interface MultiShape3afp<
 	}
 
     @Override
-    default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?> circle) {
+    default P getClosestPointTo(Sphere3afp<?, ?, ?, ?, ?, ?, ?> circle) {
         assert circle != null : AssertMessages.notNullParameter();
         double min = Double.POSITIVE_INFINITY;
         final P closest = getGeomFactory().newPoint();
@@ -255,7 +258,7 @@ public interface MultiShape3afp<
     }
 
     @Override
-    default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+    default P getClosestPointTo(Segment3afp<?, ?, ?, ?, ?, ?, ?> segment) {
         assert segment != null : AssertMessages.notNullParameter();
         double min = Double.POSITIVE_INFINITY;
         final P closest = getGeomFactory().newPoint();
@@ -273,7 +276,7 @@ public interface MultiShape3afp<
     }
 
     @Override
-    default P getClosestPointTo(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangle) {
+    default P getClosestPointTo(AlignedBox3afp<?, ?, ?, ?, ?, ?, ?> rectangle) {
         assert rectangle != null : AssertMessages.notNullParameter();
         double min = Double.POSITIVE_INFINITY;
         final P closest = getGeomFactory().newPoint();
@@ -291,7 +294,7 @@ public interface MultiShape3afp<
     }
 
     @Override
-    default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?> path) {
+    default P getClosestPointTo(Path3afp<?, ?, ?, ?, ?, ?, ?> path) {
         assert path != null : AssertMessages.notNullParameter();
         double min = Double.POSITIVE_INFINITY;
         final P closest = getGeomFactory().newPoint();
@@ -309,7 +312,7 @@ public interface MultiShape3afp<
     }
 
     @Override
-    default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+    default P getClosestPointTo(MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?> multishape) {
         assert multishape != null : AssertMessages.notNullParameter();
         double min = Double.POSITIVE_INFINITY;
         final P closest = getGeomFactory().newPoint();
@@ -338,11 +341,11 @@ public interface MultiShape3afp<
 
 	    /** Iterated list.
 	     */
-	    protected final List<? extends Shape3afp<?, ?, IE, ?, ?, ?>> list;
+	    protected final List<? extends Shape3afp<?, ?, IE, ?, ?, ?, ?>> list;
 
-		private final GeomFactory3afp<IE, ?, ?, ?> factory;
+		private final GeomFactory3afp<IE, ?, ?, ?, ?> factory;
 
-		private Iterator<? extends Shape3afp<?, ?, IE, ?, ?, ?>> shapesIterator;
+		private Iterator<? extends Shape3afp<?, ?, IE, ?, ?, ?, ?>> shapesIterator;
 
 		private PathIterator3afp<IE> shapeIterator;
 
@@ -360,8 +363,8 @@ public interface MultiShape3afp<
 		 * @param list the list of the shapes to iterate on.
 		 * @param factory the factory of path elements.
 		 */
-		public AbstractMultiShapePathIterator(List<? extends Shape3afp<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory3afp<IE, ?, ?, ?> factory) {
+		public AbstractMultiShapePathIterator(List<? extends Shape3afp<?, ?, IE, ?, ?, ?, ?>> list,
+				GeomFactory3afp<IE, ?, ?, ?, ?> factory) {
 			assert list != null : AssertMessages.notNullParameter(0);
 			assert factory != null : AssertMessages.notNullParameter(1);
 			this.list = list;
@@ -373,7 +376,7 @@ public interface MultiShape3afp<
 		 *
 		 * @param list the list to iterate on.
 		 */
-		protected void delayedInit(List<? extends Shape3afp<?, ?, IE, ?, ?, ?>> list) {
+		protected void delayedInit(List<? extends Shape3afp<?, ?, IE, ?, ?, ?, ?>> list) {
 			if (this.shapesIterator.hasNext()) {
 				this.shapeIterator = getPathIteratorFrom(this.shapesIterator.next());
 				searchNext();
@@ -397,7 +400,7 @@ public interface MultiShape3afp<
 		 * @param shape the shape.
 		 * @return the path iterator.
 		 */
-		protected abstract PathIterator3afp<IE> getPathIteratorFrom(Shape3afp<?, ?, IE, ?, ?, ?> shape);
+		protected abstract PathIterator3afp<IE> getPathIteratorFrom(Shape3afp<?, ?, IE, ?, ?, ?, ?> shape);
 
 		@Override
 		public boolean hasNext() {
@@ -453,7 +456,7 @@ public interface MultiShape3afp<
 		}
 
 		@Override
-		public GeomFactory3afp<IE, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3afp<IE, ?, ?, ?, ?> getGeomFactory() {
 			return this.factory;
 		}
 
@@ -473,8 +476,8 @@ public interface MultiShape3afp<
 		 * @param list the list of the shapes to iterate on.
 		 * @param factory the factory of path elements.
 		 */
-		public MultiShapePathIterator(List<? extends Shape3afp<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory3afp<IE, ?, ?, ?> factory) {
+		public MultiShapePathIterator(List<? extends Shape3afp<?, ?, IE, ?, ?, ?, ?>> list,
+				GeomFactory3afp<IE, ?, ?, ?, ?> factory) {
 			super(list, factory);
 			delayedInit(list);
 		}
@@ -485,7 +488,7 @@ public interface MultiShape3afp<
 		}
 
 		@Override
-		protected PathIterator3afp<IE> getPathIteratorFrom(Shape3afp<?, ?, IE, ?, ?, ?> shape) {
+		protected PathIterator3afp<IE> getPathIteratorFrom(Shape3afp<?, ?, IE, ?, ?, ?, ?> shape) {
 			return shape.getPathIterator();
 		}
 
@@ -508,8 +511,8 @@ public interface MultiShape3afp<
 		 * @param factory the factory of path elements.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedMultiShapePathIterator(List<? extends Shape3afp<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory3afp<IE, ?, ?, ?> factory, Transform3D transform) {
+		public TransformedMultiShapePathIterator(List<? extends Shape3afp<?, ?, IE, ?, ?, ?, ?>> list,
+				GeomFactory3afp<IE, ?, ?, ?, ?> factory, Transform3D transform) {
 			super(list, factory);
 			assert transform != null : AssertMessages.notNullParameter(2);
 			this.transform = transform;
@@ -522,7 +525,7 @@ public interface MultiShape3afp<
 		}
 
 		@Override
-		protected PathIterator3afp<IE> getPathIteratorFrom(Shape3afp<?, ?, IE, ?, ?, ?> shape) {
+		protected PathIterator3afp<IE> getPathIteratorFrom(Shape3afp<?, ?, IE, ?, ?, ?, ?> shape) {
 			return shape.getPathIterator(this.transform);
 		}
 

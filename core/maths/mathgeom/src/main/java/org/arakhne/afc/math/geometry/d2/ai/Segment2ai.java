@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.eclipse.xtext.xbase.lib.Pure;
-
+import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
@@ -54,7 +54,6 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:methodcount")
 public interface Segment2ai<
         ST extends Shape2ai<?, ?, IE, P, V, B>,
         IT extends Segment2ai<?, ?, IE, P, V, B>,
@@ -74,7 +73,6 @@ public interface Segment2ai<
      * @param py is the x-coordinate of the point
      * @param result the closest point in the segment to the point.
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     static void findsClosestPointSegmentPoint(int ax, int ay, int bx, int by, int px, int py, Point2D<?, ?> result) {
         assert result != null : AssertMessages.notNullParameter(6);
 
@@ -129,7 +127,6 @@ public interface Segment2ai<
      * @param result the is point on the segment.
      * @return the square distance between the segments.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:magicnumber"})
     static double findsClosestPointSegmentRectangle(int sx1, int sy1, int sx2, int sy2,
             int rx, int ry, int rwidth, int rheight, Point2D<?, ?> result) {
         assert rwidth >= 0. : AssertMessages.positiveOrZeroParameter(6);
@@ -186,7 +183,6 @@ public interface Segment2ai<
      * @param result the is point on the shape.
      * @return the square distance between the segments.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
     static double findsClosestPointSegmentSegment(
             int s1x1, int s1y1, int s1x2, int s1y2,
             int s2x1, int s2y1, int s2x2, int s2y2,
@@ -210,7 +206,6 @@ public interface Segment2ai<
      * @param resultOnSecondSegment the point on the second segment.
      * @return the square distance between the segments.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
     @Unefficient
     static double findsClosestPointsSegmentSegment(
             int s1x1, int s1y1, int s1x2, int s1y2,
@@ -259,7 +254,6 @@ public interface Segment2ai<
      * @param py is the x-coordinate of the point
      * @param result the farthest point in the segment to the point.
      */
-    @SuppressWarnings("checkstyle:magicnumber")
     static void findsFarthestPointSegmentPoint(int ax, int ay, int bx, int by, int px, int py, Point2D<?, ?> result) {
         assert result != null : AssertMessages.notNullParameter(6);
         final int v1x = px - ax;
@@ -419,8 +413,6 @@ public interface Segment2ai<
      * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-            "checkstyle:npathcomplexity"})
     static int calculatesCrossingsSegmentShadowSegment(
             int crossings,
             int sx1, int sy1,
@@ -533,9 +525,6 @@ public interface Segment2ai<
      * @return the crossing, or {@link GeomConstants#SHAPE_INTERSECTS}.
      */
     @Pure
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-        "checkstyle:npathcomplexity", "checkstyle:returncount",
-        "checkstyle:booleanexpressioncomplexity", "checkstyle:nestedifdepth"})
     static int calculatesCrossingsRectangleShadowSegment(
             int crossings,
             int rxmin, int rymin,
@@ -757,8 +746,6 @@ public interface Segment2ai<
      * @param xCoordinate output parameter for the x coordinate that is intersecting.
      * @return the crossing; or {@link GeomConstants#SHAPE_INTERSECTS} if the segment is on the point.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-            "checkstyle:npathcomplexity"})
     static int calculatesCrossingsAndXPointShadowSegment(
             int crossing,
             int px, int py,
@@ -840,8 +827,8 @@ public interface Segment2ai<
      * @param y3 is the first point of the second segment.
      * @param x4 is the second point of the second segment.
      * @param y4 is the second point of the second segment.
-     * @return <code>true</code> if the two shapes are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two shapes are intersecting; otherwise
+     * {@code false}
      */
     @Pure
     static boolean intersectsSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
@@ -870,10 +857,9 @@ public interface Segment2ai<
      * @param enableThirdPoint indicates if the intersection on the third point is computed.
      * @param enableFourthPoint indicates if the intersection on the fourth point is computed.
      * @param intersectionPoint are the coordinates of the intersection, if exist.
-     * @return <code>true</code> if the two segments are intersecting; otherwise
-     * <code>false</code>
+     * @return {@code true} if the two segments are intersecting; otherwise
+     * {@code false}
      */
-    @SuppressWarnings("checkstyle:parameternumber")
     static boolean intersectsSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3,
             int x4, int y4, boolean enableThirdPoint, boolean enableFourthPoint, Point2D<?, ?> intersectionPoint) {
         return findsIntersectionTypeSegmentSegment(x1, y1, x2, y2, x3, y3, x4, y4,
@@ -897,13 +883,11 @@ public interface Segment2ai<
      * @param enableThirdPoint indicates if the intersection on the third point is computed.
      * @param enableFourthPoint indicates if the intersection on the fourth point is computed.
      * @param intersectionPoint are the coordinates of the intersection, if exist.
-     * @return an integer value; if <code>0</code> the two segments are not intersecting;
-     *     <code>1</code> if the two segments are intersecting and the segment 2 has pixels on both
-     *     sides of the segment 1; <code>2</code> if the segments are intersecting and the segment 2
+     * @return an integer value; if {@code 0} the two segments are not intersecting;
+     *     {@code 1} if the two segments are intersecting and the segment 2 has pixels on both
+     *     sides of the segment 1; {@code 2} if the segments are intersecting and the segment 2
      *     is only in one side of the segment 1.
      */
-    @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
-            "checkstyle:npathcomplexity"})
     static int findsIntersectionTypeSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4,
             boolean enableThirdPoint, boolean enableFourthPoint, Point2D<?, ?> intersectionPoint) {
         final BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> it1;
@@ -1374,8 +1358,8 @@ public interface Segment2ai<
      * @param rymin is the min of the coordinates of the rectangle.
      * @param rxmax is the max of the coordinates of the rectangle.
      * @param rymax is the max of the coordinates of the rectangle.
-     * @return <code>true</code> if the segment has an intersection with the
-     *     rectangle and the segment was clipped; <code>false</code> if the segment
+     * @return {@code true} if the segment has an intersection with the
+     *     rectangle and the segment was clipped; {@code false} if the segment
      *     does not intersect the rectangle.
      */
     default boolean clipToRectangle(int rxmin, int rymin, int rxmax, int rymax) {
@@ -1502,6 +1486,15 @@ public interface Segment2ai<
         assert multishape != null : AssertMessages.notNullParameter();
         return multishape.intersects(this);
     }
+
+	/** Replies this segment with a Geogebra-compatible form.
+	 *
+	 * @return the Geogebra representation of the segment.
+	 * @since 18.0
+	 */
+	default String toGeogebra() {
+		return GeogebraUtil.toSegmentDefinition(2, getX1(), getY1(), getX2(), getY2());
+	}
 
     /** The Bresenham line algorithm is an algorithm which determines which points in
      * an n-dimensional raster should be plotted in order to form a close

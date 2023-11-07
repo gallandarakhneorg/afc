@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,9 +44,8 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:magicnumber")
 public class Path3i extends AbstractShape3i<Path3i>
-        implements Path3ai<Shape3i<?>, Path3i, PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
+        implements Path3ai<Shape3i<?>, Path3i, PathElement3i, Point3i, Vector3i, Quaternion4i, AlignedBox3i> {
 
 	private static final long serialVersionUID = 2542453596839860853L;
 
@@ -99,12 +98,12 @@ public class Path3i extends AbstractShape3i<Path3i>
 	 * drawn). The control points of the curves are
 	 * not considered in this bounds.
 	 */
-	private SoftReference<RectangularPrism3i> graphicalBounds;
+	private SoftReference<AlignedBox3i> graphicalBounds;
 
 	/** Buffer for the bounds of the path that corresponds
 	 * to all the points added in the path.
 	 */
-	private SoftReference<RectangularPrism3i> logicalBounds;
+	private SoftReference<AlignedBox3i> logicalBounds;
 
 	/** Construct an empty path.
      */
@@ -145,11 +144,11 @@ public class Path3i extends AbstractShape3i<Path3i>
 	/** Constructor by copy.
      * @param path the path to copy.
      */
-	public Path3i(Path3ai<?, ?, ?, ?, ?, ?> path) {
+	public Path3i(Path3ai<?, ?, ?, ?, ?, ?, ?> path) {
 		set(path);
 	}
 
-	private boolean buildLogicalBoundingBox(RectangularPrism3i box) {
+	private boolean buildLogicalBoundingBox(AlignedBox3i box) {
 		if (this.numCoords > 0) {
 			int xmin = this.coords[0];
 			int ymin = this.coords[1];
@@ -197,7 +196,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	@Pure
 	@Override
-	public boolean containsControlPoint(Point3D<?, ?> point) {
+	public boolean containsControlPoint(Point3D<?, ?, ?> point) {
 		assert point != null : AssertMessages.notNullParameter();
 		final int px = point.ix();
 		final int py = point.iy();
@@ -241,7 +240,6 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	@Pure
 	@Override
-	@SuppressWarnings("checkstyle:equalshashcode")
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + this.numCoords;
@@ -259,7 +257,7 @@ public class Path3i extends AbstractShape3i<Path3i>
             this.coords[i + 1] += dy;
             this.coords[i + 2] += dz;
 		}
-		RectangularPrism3i bb;
+		AlignedBox3i bb;
         bb = this.logicalBounds == null ? null : this.logicalBounds.get();
         if (bb != null) {
             bb.translate(dx, dy, dz);
@@ -274,7 +272,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 	@Override
 	public void transform(Transform3D transform) {
         assert transform != null : AssertMessages.notNullParameter();
-		final Point3D<?, ?> p = new InnerComputationPoint3ai();
+		final Point3D<?, ?, ?> p = new InnerComputationPoint3ai();
         for (int i = 0; i < this.numCoords; i += 3) {
             p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 			transform.transform(p);
@@ -306,8 +304,8 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	@Override
 	@Pure
-	public RectangularPrism3i toBoundingBox() {
-        RectangularPrism3i bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
+	public AlignedBox3i toBoundingBox() {
+        AlignedBox3i bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
 			Path3ai.computeDrawableElementBoundingBox(
@@ -321,9 +319,9 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	@Override
 	@Pure
-	public void toBoundingBox(RectangularPrism3i box) {
+	public void toBoundingBox(AlignedBox3i box) {
         assert box != null : AssertMessages.notNullParameter();
-        RectangularPrism3i bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
+        AlignedBox3i bb = this.graphicalBounds == null ? null : this.graphicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
 			Path3ai.computeDrawableElementBoundingBox(
@@ -460,8 +458,8 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	@Override
 	@Pure
-	public RectangularPrism3i toBoundingBoxWithCtrlPoints() {
-        RectangularPrism3i bb = this.logicalBounds == null ? null : this.logicalBounds.get();
+	public AlignedBox3i toBoundingBoxWithCtrlPoints() {
+        AlignedBox3i bb = this.logicalBounds == null ? null : this.logicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
 			buildLogicalBoundingBox(bb);
@@ -472,9 +470,9 @@ public class Path3i extends AbstractShape3i<Path3i>
 
 	@Override
 	@Pure
-	public void toBoundingBoxWithCtrlPoints(RectangularPrism3i box) {
+	public void toBoundingBoxWithCtrlPoints(AlignedBox3i box) {
 		assert box != null : AssertMessages.notNullParameter();
-        RectangularPrism3i bb = this.logicalBounds == null ? null : this.logicalBounds.get();
+        AlignedBox3i bb = this.logicalBounds == null ? null : this.logicalBounds.get();
         if (bb == null) {
 			bb = getGeomFactory().newBox();
 			buildLogicalBoundingBox(bb);
@@ -489,7 +487,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
 		}
-		final Point3D<?, ?> p = new InnerComputationPoint3ai();
+		final Point3D<?, ?, ?> p = new InnerComputationPoint3ai();
         final int[] clone = new int[this.numCoords];
         for (int i = 0; i < clone.length; i += 3) {
             p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
@@ -510,7 +508,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 				clone[i] = this.coords[i];
 			}
 		} else {
-			final Point3D<?, ?> p = new InnerComputationPoint3ai();
+			final Point3D<?, ?, ?> p = new InnerComputationPoint3ai();
             for (int i = 0; i < clone.length; i += 3) {
                 p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 				transform.transform(p);
@@ -531,7 +529,7 @@ public class Path3i extends AbstractShape3i<Path3i>
 				clone[i] = this.coords[i];
 			}
 		} else {
-			final Point3D<?, ?> p = new InnerComputationPoint3ai();
+			final Point3D<?, ?, ?> p = new InnerComputationPoint3ai();
             for (int i = 0; i < clone.length; i += 3) {
                 p.set(this.coords[i], this.coords[i + 1], this.coords[i + 2]);
 				transform.transform(p);
@@ -699,7 +697,6 @@ public class Path3i extends AbstractShape3i<Path3i>
 	}
 
 	@Override
-	@SuppressWarnings("checkstyle:parameternumber")
 	public void curveTo(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3) {
 		ensureSlots(true, 9);
 		this.types[this.numTypes++] = PathElementType.CURVE_TO;
@@ -747,7 +744,6 @@ public class Path3i extends AbstractShape3i<Path3i>
 	}
 
 	@Override
-	@SuppressWarnings({"checkstyle:fallthrough", "checkstyle:cyclomaticcomplexity", "checkstyle:booleanexpressioncomplexity"})
 	public boolean remove(int x, int y, int z) {
         for (int i = 0, j = 0; i < this.numCoords && j < this.numTypes;) {
             switch (this.types[j]) {

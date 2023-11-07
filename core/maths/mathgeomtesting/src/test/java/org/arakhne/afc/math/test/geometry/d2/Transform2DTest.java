@@ -5,7 +5,7 @@
  * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (c) 2013-2022 The original authors, and other authors.
+ * Copyright (c) 2013-2023 The original authors and other contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,6 @@ package org.arakhne.afc.math.test.geometry.d2;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -38,6 +32,10 @@ import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.math.matrix.SingularMatrixException;
 import org.arakhne.afc.math.test.AbstractMathTestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 @SuppressWarnings("all")
 public class Transform2DTest extends AbstractMathTestCase {
@@ -266,7 +264,7 @@ public class Transform2DTest extends AbstractMathTestCase {
 
 	@ParameterizedTest(name = "{index}: {0}")
 	@EnumSource(CoordinateSystem2D.class)
-	public void transformTuple2D_translationOnly(CoordinateSystem2D cs) {
+	public void transformPoint2D_translationOnly(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		this.transform.makeTranslationMatrix(123, 456);
 		Point2D p = new Point2d(-584, 5647);
@@ -277,7 +275,7 @@ public class Transform2DTest extends AbstractMathTestCase {
 
 	@ParameterizedTest(name = "{index}: {0}")
 	@EnumSource(CoordinateSystem2D.class)
-	public void transformTuple2D_rotationOnly(CoordinateSystem2D cs) {
+	public void transformPoint2D_rotationOnly(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		this.transform.makeRotationMatrix(ANGLE);
 		Point2D p = new Point2d(1, 0);
@@ -288,7 +286,7 @@ public class Transform2DTest extends AbstractMathTestCase {
 
 	@ParameterizedTest(name = "{index}: {0}")
 	@EnumSource(CoordinateSystem2D.class)
-	public void transformTuple2D_translationRotation(CoordinateSystem2D cs) {
+	public void transformPoint2D_translationRotation(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		this.transform.makeTranslationMatrix(123, 456);
 		this.transform.setRotation(ANGLE);
@@ -300,7 +298,7 @@ public class Transform2DTest extends AbstractMathTestCase {
 
 	@ParameterizedTest(name = "{index}: {0}")
 	@EnumSource(CoordinateSystem2D.class)
-	public void transformTuple2D_scaleOnly(CoordinateSystem2D cs) {
+	public void transformPoint2D_scaleOnly(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		this.transform.makeScaleMatrix(123.456, 789.123);
 		Point2D p = new Point2d(1, 0);
@@ -323,7 +321,7 @@ public class Transform2DTest extends AbstractMathTestCase {
 
 	@ParameterizedTest(name = "{index}: {0}")
 	@EnumSource(CoordinateSystem2D.class)
-	public void transformTuple2DTuple2D_translationOnly(CoordinateSystem2D cs) {
+	public void transformPoint2DPoint2D_translationOnly(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		this.transform.makeTranslationMatrix(123, 456);
 		Point2D result = new Point2d();
@@ -337,7 +335,7 @@ public class Transform2DTest extends AbstractMathTestCase {
 
 	@ParameterizedTest(name = "{index}: {0}")
 	@EnumSource(CoordinateSystem2D.class)
-	public void transformTuple2DTuple2D_rotationOnly(CoordinateSystem2D cs) {
+	public void transformPoint2DPoint2D_rotationOnly(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		this.transform.makeRotationMatrix(ANGLE);
 		Point2D result = new Point2d();
@@ -351,7 +349,7 @@ public class Transform2DTest extends AbstractMathTestCase {
 
 	@ParameterizedTest(name = "{index}: {0}")
 	@EnumSource(CoordinateSystem2D.class)
-	public void transformTuple2DTuple2D_translationRotation(CoordinateSystem2D cs) {
+	public void transformPoint2DPoint2D_translationRotation(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		this.transform.makeTranslationMatrix(123, 456);
 		this.transform.setRotation(ANGLE);
@@ -366,7 +364,7 @@ public class Transform2DTest extends AbstractMathTestCase {
 
 	@ParameterizedTest(name = "{index}: {0}")
 	@EnumSource(CoordinateSystem2D.class)
-	public void transformTuple2DTuple2D_scaleOnly(CoordinateSystem2D cs) {
+	public void transformPoint2DPoint2D_scaleOnly(CoordinateSystem2D cs) {
 		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
 		this.transform.makeScaleMatrix(123.456, 789.123);
 		Point2D result = new Point2d();
@@ -441,9 +439,9 @@ public class Transform2DTest extends AbstractMathTestCase {
 	 * then it will not have an inverse, since coordinates that do
 	 * not lie on the destination point or line will not have an inverse
 	 * mapping.
-	 * The <code>determinant</code> method can be used to determine if this
+	 * The {@code determinant} method can be used to determine if this
 	 * transform has no inverse, in which case an exception will be
-	 * thrown if the <code>createInverse</code> method is called.
+	 * thrown if the {@code createInverse} method is called.
 	 * @param matrix is the matrix to invert
 	 * @see #determinant()
 	 * @throws SingularMatrixException if the matrix cannot be inverted.
@@ -816,6 +814,137 @@ public class Transform2DTest extends AbstractMathTestCase {
 		assertEpsilonEquals(4.52, this.transform.getScaleY());
 		assertEpsilonEquals("CS: " + CoordinateSystem2D.getDefaultCoordinateSystem(), //$NON-NLS-1$
 				0.1, this.transform.getRotation());
+	}
+
+
+	@ParameterizedTest(name = "{index}: {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void transformVector2D_translationOnly(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+		this.transform.makeTranslationMatrix(123, 456);
+		Vector2D p = new Vector2d(-584, 5647);
+		this.transform.transform(p);
+		assertEpsilonEquals(-584, p.getX());
+		assertEpsilonEquals(5647, p.getY());
+	}
+
+	@ParameterizedTest(name = "{index}: {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void transformVector2D_rotationOnly(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+		this.transform.makeRotationMatrix(ANGLE);
+		Vector2D p = new Vector2d(1, 0);
+		this.transform.transform(p);
+		assertEpsilonEquals(0, p.getX());
+		assertEpsilonEquals(-1, p.getY());
+	}
+
+	@ParameterizedTest(name = "{index}: {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void transformVector2D_translationRotation(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+		this.transform.makeTranslationMatrix(123, 456);
+		this.transform.setRotation(ANGLE);
+		Vector2D p = new Vector2d(1, 0);
+		this.transform.transform(p);
+		assertEpsilonEquals(0, p.getX());
+		assertEpsilonEquals(-1, p.getY());
+	}
+
+	@ParameterizedTest(name = "{index}: {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void transformVector2D_scaleOnly(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+		this.transform.makeScaleMatrix(123.456, 789.123);
+		Vector2D p = new Vector2d(1, 0);
+		this.transform.transform(p);
+		assertEpsilonEquals(123.456, p.getX());
+		assertEpsilonEquals(0, p.getY());
+
+		this.transform.makeScaleMatrix(123.456, 789.123);
+		p = new Vector2d(0, 1);
+		this.transform.transform(p);
+		assertEpsilonEquals(0, p.getX());
+		assertEpsilonEquals(789.123, p.getY());
+
+		this.transform.makeScaleMatrix(123.456, 789.123);
+		p = new Vector2d(0.5, 2);
+		this.transform.transform(p);
+		assertEpsilonEquals(61.728, p.getX());
+		assertEpsilonEquals(1578.246, p.getY());
+	}
+
+	@ParameterizedTest(name = "{index}: {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void transformVector2DVector2D_translationOnly(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+		this.transform.makeTranslationMatrix(123, 456);
+		Vector2D result = new Vector2d();
+		Vector2D p = new Vector2d(-584, 5647);
+		this.transform.transform(p, result);
+		assertEpsilonEquals(-584, p.getX());
+		assertEpsilonEquals(5647, p.getY());
+		assertEpsilonEquals(-584, result.getX());
+		assertEpsilonEquals(5647, result.getY());
+	}
+
+	@ParameterizedTest(name = "{index}: {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void transformVector2DVector2D_rotationOnly(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+		this.transform.makeRotationMatrix(ANGLE);
+		Vector2D result = new Vector2d();
+		Vector2D p = new Vector2d(1, 0);
+		this.transform.transform(p, result);
+		assertEpsilonEquals(1, p.getX());
+		assertEpsilonEquals(0, p.getY());
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(-1, result.getY());
+	}
+
+	@ParameterizedTest(name = "{index}: {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void transformVector2DVector2D_translationRotation(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+		this.transform.makeTranslationMatrix(123, 456);
+		this.transform.setRotation(ANGLE);
+		Vector2D result = new Vector2d();
+		Vector2D p = new Vector2d(1, 0);
+		this.transform.transform(p, result);
+		assertEpsilonEquals(1, p.getX());
+		assertEpsilonEquals(0, p.getY());
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(-1, result.getY());
+	}
+
+	@ParameterizedTest(name = "{index}: {0}")
+	@EnumSource(CoordinateSystem2D.class)
+	public void transformVector2DVector2D_scaleOnly(CoordinateSystem2D cs) {
+		CoordinateSystem2D.setDefaultCoordinateSystem(cs);
+		this.transform.makeScaleMatrix(123.456, 789.123);
+		Vector2D result = new Vector2d();
+		Vector2D p = new Vector2d(1, 0);
+		this.transform.transform(p, result);
+		assertEpsilonEquals(1, p.getX());
+		assertEpsilonEquals(0, p.getY());
+		assertEpsilonEquals(123.456, result.getX());
+		assertEpsilonEquals(0, result.getY());
+
+		this.transform.makeScaleMatrix(123.456, 789.123);
+		p = new Vector2d(0, 1);
+		this.transform.transform(p, result);
+		assertEpsilonEquals(0, p.getX());
+		assertEpsilonEquals(1, p.getY());
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(789.123, result.getY());
+
+		this.transform.makeScaleMatrix(123.456, 789.123);
+		p = new Vector2d(0.5, 2);
+		this.transform.transform(p, result);
+		assertEpsilonEquals(0.5, p.getX());
+		assertEpsilonEquals(2, p.getY());
+		assertEpsilonEquals(61.728, result.getX());
+		assertEpsilonEquals(1578.246, result.getY());
 	}
 
 }
