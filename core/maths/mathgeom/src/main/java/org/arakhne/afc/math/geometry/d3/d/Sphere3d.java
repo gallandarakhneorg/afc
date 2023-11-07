@@ -40,7 +40,7 @@ public class Sphere3d
 		extends AbstractShape3d<Sphere3d>
 		implements Sphere3afp<Shape3d<?>, Sphere3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {
 
-	private static final long serialVersionUID = -8532584773530573738L;
+	private static final long serialVersionUID = -8180447805240540696L;
 
 	private double centerX;
 

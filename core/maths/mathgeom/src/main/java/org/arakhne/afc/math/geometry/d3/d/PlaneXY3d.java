@@ -20,8 +20,6 @@
 
 package org.arakhne.afc.math.geometry.d3.d;
 
-import org.arakhne.afc.math.geometry.d3.Plane3D;
-import org.arakhne.afc.math.geometry.d3.PlaneClassification;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.afp.PlaneXY3afp;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -83,12 +81,6 @@ public class PlaneXY3d extends AbstractOrthoPlane3d<PlaneXY3d>
 			this.z = z;
 			fireGeometryChange();
 		}
-	}
-
-	@Override
-	public PlaneClassification classifies(Plane3D<?, ?, ?, ?, ?> otherPlane) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -23,7 +23,6 @@ package org.arakhne.afc.math.geometry.d3.d;
 import java.lang.ref.SoftReference;
 
 import org.arakhne.afc.math.geometry.d3.Plane3D;
-import org.arakhne.afc.math.geometry.d3.PlaneClassification;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.Plane3afp;
@@ -251,12 +250,6 @@ implements Plane3afp<Plane3d, Segment3d, Point3d, Vector3d, Quaternion4d> {
 		this.d += distance;
 		clearBufferedValues();
 		fireGeometryChange();
-	}
-
-	@Override
-	public PlaneClassification classifies(Plane3D<?, ?, ?, ?, ?> otherPlane) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

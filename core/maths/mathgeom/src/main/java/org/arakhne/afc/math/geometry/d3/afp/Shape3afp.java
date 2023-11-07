@@ -100,11 +100,14 @@ public interface Shape3afp<
 	@Unefficient
 	@Override
 	default boolean intersects(Shape3D<?, ?, ?, ?, ?, ?, ?> shape) {
-		if (shape instanceof MultiShape3afp) {
-			return intersects((MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?>) shape);
+		if (shape instanceof AlignedBox3afp) {
+			return intersects((AlignedBox3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		}
         if (shape instanceof Sphere3afp) {
 			return intersects((Sphere3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Segment3afp) {
+			return intersects((Segment3afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		}
 		if (shape instanceof Path3afp) {
 			return intersects((Path3afp<?, ?, ?, ?, ?, ?, ?>) shape);
@@ -112,11 +115,8 @@ public interface Shape3afp<
 		if (shape instanceof PathIterator3afp) {
 			return intersects((PathIterator3afp<?>) shape);
 		}
-		if (shape instanceof AlignedBox3afp) {
-			return intersects((AlignedBox3afp<?, ?, ?, ?, ?, ?, ?>) shape);
-		}
-		if (shape instanceof Segment3afp) {
-			return intersects((Segment3afp<?, ?, ?, ?, ?, ?, ?>) shape);
+		if (shape instanceof MultiShape3afp) {
+			return intersects((MultiShape3afp<?, ?, ?, ?, ?, ?, ?, ?>) shape);
 		}
 		return intersects(getPathIterator());
 	}

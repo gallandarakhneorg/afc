@@ -25,25 +25,30 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
-import org.arakhne.afc.math.geometry.d3.d.AlignedBox3d;
 import org.arakhne.afc.math.geometry.d3.d.Path3d;
-import org.arakhne.afc.math.test.geometry.d3.afp.AbstractPath3afpTest;
+import org.arakhne.afc.math.geometry.d3.d.Segment3d;
+import org.arakhne.afc.math.test.AbstractMathTestCase;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+@DisplayName("Issue #15")
 @SuppressWarnings("all")
-public class Path3dTest extends AbstractPath3afpTest<Path3d, AlignedBox3d> {
+public class Issue15Test extends AbstractMathTestCase {
 
-	@Override
-	protected TestShapeFactory3d createFactory() {
-		return TestShapeFactory3d.SINGLETON;
-	}
-
-	@Test
-	public void iddle() {
-		//
+	@DisplayName("Issue #15")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void issue15(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		Segment3afp segment = new Segment3d(-20, -20, 0, 20, 20, 0);
+		Path3afp path = new Path3d();
+		path.moveTo(5, 5, 0);
+		path.lineTo(5, -5, 0);
+		path.lineTo(-5, -5, 0);
+		path.lineTo(-5, 5, 0);
+		path.lineTo(5, 5, 0);
+		assertTrue(path.intersects(segment));
 	}
 
 }

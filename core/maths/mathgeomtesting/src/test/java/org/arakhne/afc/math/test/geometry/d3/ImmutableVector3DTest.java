@@ -29,7 +29,6 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.test.geometry.AbstractUnmodifiableVector3DTest;
 
 @SuppressWarnings("all")
-@Disabled("temporary")
 public class ImmutableVector3DTest extends AbstractUnmodifiableVector3DTest<ImmutableVector3D, ImmutablePoint3D, ImmutableQuaternion> {
 	
 	@Override

@@ -34,6 +34,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.Box3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Plane3afp;
+import org.arakhne.afc.math.geometry.d3.afp.PlaneXY3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PlaneXZ3afp;
 import org.arakhne.afc.math.geometry.d3.afp.PlaneYZ3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
@@ -1920,6 +1921,70 @@ public class PlaneXZ3dTest extends AbstractMathTestCase {
 		assertFalse(this.plane.intersects(createSegment(3, 3, 3, 2, 2, 2)));
 		assertFalse(this.plane.intersects(createSegment(3, 3, 3, 2, 1.25, 2)));
 		assertTrue(this.plane.intersects(createSegment(3, 3, 3, 2, 1, 2)));
+	}
+
+	@DisplayName("classifiesPlaneXZPlane(double,double,double,double,double,double,double,double)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void staticClassifiesPlaneXZPlane(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+
+		assertSame(PlaneClassification.COINCIDENT, PlaneXZ3afp.classifiesPlaneXZPlane(true, 4, 1., -3., 4., -4.));
+		
+		assertSame(PlaneClassification.BEHIND, PlaneXZ3afp.classifiesPlaneXZPlane(true, 4, 0., 1., 0., 4.));
+		assertSame(PlaneClassification.COINCIDENT, PlaneXZ3afp.classifiesPlaneXZPlane(true, 4, 0., 1., 0., -4.));
+		assertSame(PlaneClassification.BEHIND, PlaneXZ3afp.classifiesPlaneXZPlane(true, 4, 0., -1., 0., -4.));
+		assertSame(PlaneClassification.COINCIDENT, PlaneXZ3afp.classifiesPlaneXZPlane(true, 4, 0., -1., 0., 4.));
+		
+		assertSame(PlaneClassification.BEHIND, PlaneXZ3afp.classifiesPlaneXZPlane(true, 4, 0., 1., 0., 6.));
+		assertSame(PlaneClassification.IN_FRONT_OF, PlaneXZ3afp.classifiesPlaneXZPlane(true, 4, 0., 1., 0., -6.));
+		assertSame(PlaneClassification.BEHIND, PlaneXZ3afp.classifiesPlaneXZPlane(true, 4, 0., -1., 0., -6.));
+		assertSame(PlaneClassification.IN_FRONT_OF, PlaneXZ3afp.classifiesPlaneXZPlane(true, 4, 0., -1., 0., 6.));
+
+		assertSame(PlaneClassification.COINCIDENT, PlaneXZ3afp.classifiesPlaneXZPlane(false, 4, 1., -3., 4., -4.));
+		
+		assertSame(PlaneClassification.IN_FRONT_OF, PlaneXZ3afp.classifiesPlaneXZPlane(false, 4, 0., 1., 0., 4.));
+		assertSame(PlaneClassification.COINCIDENT, PlaneXZ3afp.classifiesPlaneXZPlane(false, 4, 0., 1., 0., -4.));
+		assertSame(PlaneClassification.IN_FRONT_OF, PlaneXZ3afp.classifiesPlaneXZPlane(false, 4, 0., -1., 0., -4.));
+		assertSame(PlaneClassification.COINCIDENT, PlaneXZ3afp.classifiesPlaneXZPlane(false, 4, 0., -1., 0., 4.));
+		
+		assertSame(PlaneClassification.IN_FRONT_OF, PlaneXZ3afp.classifiesPlaneXZPlane(false, 4, 0., 1., 0., 6.));
+		assertSame(PlaneClassification.BEHIND, PlaneXZ3afp.classifiesPlaneXZPlane(false, 4, 0., 1., 0., -6.));
+		assertSame(PlaneClassification.IN_FRONT_OF, PlaneXZ3afp.classifiesPlaneXZPlane(false, 4, 0., -1., 0., -6.));
+		assertSame(PlaneClassification.BEHIND, PlaneXZ3afp.classifiesPlaneXZPlane(false, 4, 0., -1., 0., 6.));
+	}
+
+	@DisplayName("classifies(Plane3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void classifiesPlane3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+
+		assertSame(PlaneClassification.COINCIDENT, this.plane.classifies(new Plane3d(1., -3., 4., -4.)));
+		
+		assertSame(PlaneClassification.COINCIDENT, this.plane.classifies(new Plane3d(0., 1., 0., -1.25)));
+		assertSame(PlaneClassification.IN_FRONT_OF, this.plane.classifies(new Plane3d(0., 1., 0., 1.25)));
+		assertSame(PlaneClassification.COINCIDENT, this.plane.classifies(new Plane3d(0., -1., 0., 1.25)));
+		assertSame(PlaneClassification.IN_FRONT_OF, this.plane.classifies(new Plane3d(0., -1., 0., -1.25)));
+		
+		assertSame(PlaneClassification.IN_FRONT_OF, this.plane.classifies(new Plane3d(0., 1., 0., 6.)));
+		assertSame(PlaneClassification.BEHIND, this.plane.classifies(new Plane3d(0., 1., 0., -6.)));
+		assertSame(PlaneClassification.IN_FRONT_OF, this.plane.classifies(new Plane3d(0., -1., 0., -6.)));
+		assertSame(PlaneClassification.BEHIND, this.plane.classifies(new Plane3d(0., -1., 0., 6.)));
+
+		this.plane.negate();
+		
+		assertSame(PlaneClassification.COINCIDENT, this.plane.classifies(new Plane3d(1., -3., 4., -4.)));
+		
+		assertSame(PlaneClassification.COINCIDENT, this.plane.classifies(new Plane3d(0., 1., 0., -1.25)));
+		assertSame(PlaneClassification.BEHIND, this.plane.classifies(new Plane3d(0., 1., 0., 1.25)));
+		assertSame(PlaneClassification.COINCIDENT, this.plane.classifies(new Plane3d(0., -1., 0., 1.25)));
+		assertSame(PlaneClassification.BEHIND, this.plane.classifies(new Plane3d(0., -1., 0., -1.25)));
+		
+		assertSame(PlaneClassification.BEHIND, this.plane.classifies(new Plane3d(0., 1., 0., 6.)));
+		assertSame(PlaneClassification.IN_FRONT_OF, this.plane.classifies(new Plane3d(0., 1., 0., -6.)));
+		assertSame(PlaneClassification.BEHIND, this.plane.classifies(new Plane3d(0., -1., 0., -6.)));
+		assertSame(PlaneClassification.IN_FRONT_OF, this.plane.classifies(new Plane3d(0., -1., 0., 6.)));
 	}
 
 }

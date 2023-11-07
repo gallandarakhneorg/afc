@@ -24,8 +24,6 @@ import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.CrossingComputationType;
-import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
@@ -34,7 +32,7 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 3D sphere.
+/** Interface that represented a 3D sphere independently of the storage of the coordinates.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.

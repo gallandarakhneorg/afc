@@ -549,6 +549,77 @@ extends Plane3D<PT, S, P, V, Q> {
 		return PlaneClassification.BEHIND;
 	}
 
+	/** Classifies the given plane against to another plane.
+	 * 
+	 * @param a1 first component of the first plane equation.
+	 * @param b1 second component of the first plane equation.
+	 * @param c1 third component of the first plane equation.
+	 * @param d1 fourth component of the first plane equation.
+	 * @param a2 first component of the second plane equation.
+	 * @param b2 second component of the second plane equation.
+	 * @param c2 third component of the second plane equation.
+	 * @param d2 fourth component of the second plane equation.
+	 * @return the classification. 
+	 */
+	@Pure
+	static PlaneClassification classifiesPlanePlane(
+			double a1, double b1, double c1, double d1,
+			double a2, double b2, double c2, double d2) {
+		final double normalSqLength1 = a1 * a1 + b1 * b1 + c1 * c1;
+		final double nx1;
+		final double ny1;
+		final double nz1;
+		if (MathUtil.isEpsilonEqual(normalSqLength1, 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
+			nx1 = a1;
+			ny1 = b1;
+			nz1 = c1;
+		} else {
+			final double normalLength = Math.sqrt(normalSqLength1);
+			nx1 = a1 / normalLength;
+			ny1 = b1 / normalLength;
+			nz1 = c1 / normalLength;
+		}
+
+		final double normalSqLength2 = a2 * a2 + b2 * b2 + c2 * c2;
+		final double nx2;
+		final double ny2;
+		final double nz2;
+		if (MathUtil.isEpsilonEqual(normalSqLength2, 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
+			nx2 = a2;
+			ny2 = b2;
+			nz2 = c2;
+		} else {
+			final double normalLength = Math.sqrt(normalSqLength2);
+			nx2 = a2 / normalLength;
+			ny2 = b2 / normalLength;
+			nz2 = c2 / normalLength;
+		}
+		
+		final double p = Vector3D.dotProduct(nx1, ny1, nz1, nx2, ny2, nz2);
+		if (MathUtil.isEpsilonEqual(Math.abs(p), 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
+			// planes are parallel
+			if (p >= 0.) {
+				// Plane normals are to the same direction
+				if (MathUtil.isEpsilonEqual(d1, d2, GeomConstants.UNIT_VECTOR_EPSILON)) {
+					return PlaneClassification.COINCIDENT;
+				}
+				if (d2 > d1) {
+					return PlaneClassification.IN_FRONT_OF;
+				}
+				return PlaneClassification.BEHIND;
+			}
+			// Plane normals are to the opposite directions
+			final double nd2 = -d2;
+			if (MathUtil.isEpsilonEqual(d1, nd2, GeomConstants.UNIT_VECTOR_EPSILON)) {
+				return PlaneClassification.COINCIDENT;
+			}
+			if (nd2 >= d1) {
+				return PlaneClassification.IN_FRONT_OF;
+			}
+			return PlaneClassification.BEHIND;
+		}
+		return PlaneClassification.COINCIDENT;
+	}
 
 	/** Classifies the given segment against to the plane.
 	 * 
@@ -876,6 +947,15 @@ extends Plane3D<PT, S, P, V, Q> {
 				ux, uy, uz);
 
 		return true;
+	}
+
+	@Override
+	default PlaneClassification classifies(Plane3D<?, ?, ?, ?, ?> otherPlane) {
+		assert otherPlane != null : AssertMessages.notNullParameter();
+		return classifiesPlanePlane(
+				getEquationComponentA(), getEquationComponentB(), getEquationComponentC(), getEquationComponentD(),
+				otherPlane.getEquationComponentA(), otherPlane.getEquationComponentB(),
+				otherPlane.getEquationComponentC(), otherPlane.getEquationComponentD());
 	}
 
 	/**

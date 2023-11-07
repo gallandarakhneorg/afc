@@ -29,7 +29,6 @@ import org.arakhne.afc.math.test.geometry.AbstractUnmodifiablePoint3DTest;
 import org.junit.jupiter.api.Disabled;
 
 @SuppressWarnings("all")
-@Disabled("temporary")
 public class ImmutablePoint3DTest extends AbstractUnmodifiablePoint3DTest<ImmutablePoint3D, ImmutableVector3D, ImmutableQuaternion> {
 	
 	@Override

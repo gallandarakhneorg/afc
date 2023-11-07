@@ -21,6 +21,8 @@
 package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.GeomConstants;
+import org.arakhne.afc.math.geometry.d3.Plane3D;
 import org.arakhne.afc.math.geometry.d3.PlaneClassification;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.PointVector3DReceiver;
@@ -617,6 +619,58 @@ public interface PlaneYZ3afp<PT extends PlaneYZ3afp<?, S, P, V, Q>,
 	@Override
 	default PlaneClassification classifies(double lx, double ly, double lz, double ux, double uy, double uz) {
 		return classifiesPlaneYZAlignedBox(isPositive(), getX(), lx, ly, lz, ux, uy, uz);
+	}
+
+	/** Classifies the given YZ plane against to another plane.
+	 * 
+	 * @param positive indicates of the plane is positive.
+	 * @param x is the x coordinate of the points of the plane.
+	 * @param a first component of the second plane equation.
+	 * @param b second component of the second plane equation.
+	 * @param c third component of the second plane equation.
+	 * @param d fourth component of the second plane equation.
+	 * @return the classification. 
+	 */
+	@Pure
+	static PlaneClassification classifiesPlaneYZPlane(
+			boolean positive, double x,
+			double a, double b, double c, double d) {
+		final double normalSqLength = a * a + b * b + c * c;
+		final double nx;
+		if (MathUtil.isEpsilonEqual(normalSqLength, 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
+			nx = a;
+		} else {
+			final double normalLength = Math.sqrt(normalSqLength);
+			nx = a / normalLength;
+		}
+		if (MathUtil.isEpsilonEqual(Math.abs(nx), 1., GeomConstants.UNIT_VECTOR_EPSILON)) {
+			// planes are parallel
+			final double x2 = nx >= 0. ? -d : d;
+			// Plane normals are to the same direction
+			if (MathUtil.isEpsilonEqual(x, x2, GeomConstants.UNIT_VECTOR_EPSILON)) {
+				return PlaneClassification.COINCIDENT;
+			}
+			if (positive) {
+				if (x2 >= x) {
+					return PlaneClassification.IN_FRONT_OF;
+				}
+				return PlaneClassification.BEHIND;
+			}
+			if (x2 >= x) {
+				return PlaneClassification.BEHIND;
+			}
+			return PlaneClassification.IN_FRONT_OF;
+		}
+		return PlaneClassification.COINCIDENT;
+	}
+
+	@Override
+	default PlaneClassification classifies(Plane3D<?, ?, ?, ?, ?> otherPlane) {
+		assert otherPlane != null : AssertMessages.notNullParameter();
+		return classifiesPlaneYZPlane(
+				isPositive(), getX(),
+				otherPlane.getEquationComponentA(), otherPlane.getEquationComponentB(),
+				otherPlane.getEquationComponentC(), otherPlane.getEquationComponentD());
 	}
 
 }

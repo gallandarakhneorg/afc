@@ -27,7 +27,11 @@ import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.afp.InnerComputationPoint3afp;
 import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 
-/** A 3D segment/line with 6 double precision floating-point numbers.
+/** A 3D segment/line with two points with native coordinates.
+ * This segment is based on the representation built up with 2 points, i.e.
+ * 6 double-precision-floating-point numbers.
+ * Class {@link PointObjectSegment3d} implements a segment based on two {@link Point3D} objects
+ * and not on native numbers.
  *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -36,7 +40,7 @@ import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
- * @see PointSegment3d
+ * @see PointObjectSegment3d
  */
 public class Segment3d extends AbstractShape3d<Segment3d>
 	implements Segment3afp<Shape3d<?>, Segment3d, PathElement3d, Point3d, Vector3d, Quaternion4d, AlignedBox3d> {

@@ -1903,8 +1903,9 @@ public abstract class AbstractSegment3afpTest<T extends Segment3afp<?, T, ?, ?, 
 		assertFalse(this.shape.intersects(createSphere(2, 0, 0, 1)));
 		assertFalse(this.shape.intersects(createSphere(12, 8, 0, 2)));
 		assertFalse(this.shape.intersects(createSphere(12, 8, 0, 2.1)));
-		assertFalse(this.shape.intersects(createSphere(2, 1, 0, 1)));
-		assertTrue(this.shape.intersects(createSphere(2, 1, 0, 1.1)));
+		assertFalse(this.shape.intersects(createSphere(2, 2, 2, 1)));
+		assertFalse(this.shape.intersects(createSphere(2, 2, 2, 1.7)));
+		assertTrue(this.shape.intersects(createSphere(2, 2, 2, 1.8)));
 		this.shape.set(0, 0, 0, 3, 0, 0);
 		assertFalse(this.shape.intersects(createSphere(2, 1, 0, 1)));
 		assertTrue(this.shape.intersects(createSphere(2, 1, 0, 1.1)));
@@ -2247,21 +2248,6 @@ public abstract class AbstractSegment3afpTest<T extends Segment3afp<?, T, ?, ?, 
 		assertEpsilonEquals(3.86522961, this.shape.operator_upTo(createPoint(2.3, 4.5, 0)));
 
 		assertEpsilonEquals(1.7320508087, this.shape.operator_upTo(createPoint(2, 2, 0)));
-	}
-
-	@DisplayName("Issue #15")
-	@ParameterizedTest(name = "{index} => {0}")
-	@EnumSource(CoordinateSystem3D.class)
-	public void issue15(CoordinateSystem3D cs) {
-		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
-		Segment3afp segment = createSegment(-20, -20, 0, 20, 20, 0);
-		Path3afp path = createPath();
-		path.moveTo(5, 5, 0);
-		path.lineTo(5, -5, 0);
-		path.lineTo(-5, -5, 0);
-		path.lineTo(-5, 5, 0);
-		path.lineTo(5, 5, 0);
-		assertTrue(path.intersects(segment));
 	}
 
 	@DisplayName("calculatesLinePlaneIntersection(double,double,double,double,double,double,double,double,double,double,Point3D)")

@@ -26,8 +26,6 @@ import org.arakhne.afc.math.GeogebraUtil;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
-import org.arakhne.afc.math.geometry.CrossingComputationType;
-import org.arakhne.afc.math.geometry.GeomConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;

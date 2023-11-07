@@ -22,7 +22,6 @@ package org.arakhne.afc.math.geometry.d3;
 
 import java.io.Serializable;
 
-import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.vmutil.annotations.ScalaOperator;
 import org.arakhne.afc.vmutil.annotations.XtextOperator;
 import org.arakhne.afc.vmutil.asserts.AssertMessages;
@@ -760,10 +759,6 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 
 	/** Replies if the given plane has an intersection with this plane: {@code this && plane}
 	 *
-	 * <p>You must use the intersection functions with a specific parameter type in place of
-	 * this general function. Indeed, the implementation of this function is unefficient due
-	 * to the tests against the types of the given shape, and the cast operators.
-	 *
 	 * <p>This function is an implementation of the operator for
 	 * the languages that defined or based on the
 	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
@@ -773,7 +768,6 @@ public interface Plane3D<PT extends Plane3D<?, ?, P, V, Q>,
 	 * @see #intersects(Shape3D)
 	 */
 	@Pure
-	@Unefficient
 	@XtextOperator("&&")
 	default boolean operator_and(Plane3D<?, ?, ?, ?, ?> plane) {
 		return intersects(plane);

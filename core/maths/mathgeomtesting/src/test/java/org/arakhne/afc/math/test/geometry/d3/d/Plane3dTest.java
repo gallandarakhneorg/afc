@@ -1769,6 +1769,65 @@ public class Plane3dTest extends AbstractMathTestCase {
 		assertSame(PlaneClassification.IN_FRONT_OF, Plane3afp.classifiesPlanePoint(-NORMAL_X, -NORMAL_Y, -NORMAL_Z, -D, -8, -4, -4));
 	}
 
+	@DisplayName("classifiesPlanePlane(double,double,double,double,double,double,double,double)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void staticClassifiesPlanePlane(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		
+		assertSame(PlaneClassification.COINCIDENT, Plane3afp.classifiesPlanePlane(NORMAL_X, NORMAL_Y, NORMAL_Z, D, 1., -3., 4., -4.));
+		assertSame(PlaneClassification.COINCIDENT, Plane3afp.classifiesPlanePlane(NORMAL_X, NORMAL_Y, NORMAL_Z, D, -1., 3., -4., 4.));
+		assertSame(PlaneClassification.COINCIDENT, Plane3afp.classifiesPlanePlane(NORMAL_X, NORMAL_Y, NORMAL_Z, D, NORMAL_X, NORMAL_Y, NORMAL_Z, D));
+
+		assertSame(PlaneClassification.IN_FRONT_OF, Plane3afp.classifiesPlanePlane(NORMAL_X, NORMAL_Y, NORMAL_Z, D, NORMAL_X, NORMAL_Y, NORMAL_Z, D + 2));
+		assertSame(PlaneClassification.IN_FRONT_OF, Plane3afp.classifiesPlanePlane(NORMAL_X, NORMAL_Y, NORMAL_Z, D, NORMAL_X, NORMAL_Y, NORMAL_Z, D + 4));
+
+		assertSame(PlaneClassification.BEHIND, Plane3afp.classifiesPlanePlane(NORMAL_X, NORMAL_Y, NORMAL_Z, D, NORMAL_X, NORMAL_Y, NORMAL_Z, D - 2));
+		assertSame(PlaneClassification.BEHIND, Plane3afp.classifiesPlanePlane(NORMAL_X, NORMAL_Y, NORMAL_Z, D, NORMAL_X, NORMAL_Y, NORMAL_Z, D - 4));
+		
+		//
+		
+		assertSame(PlaneClassification.COINCIDENT, Plane3afp.classifiesPlanePlane(-NORMAL_X, -NORMAL_Y, -NORMAL_Z, -D, 1., -3., 4., -4.));
+		assertSame(PlaneClassification.COINCIDENT, Plane3afp.classifiesPlanePlane(-NORMAL_X, -NORMAL_Y, -NORMAL_Z, -D, -1., 3., -4., 4.));
+		assertSame(PlaneClassification.COINCIDENT, Plane3afp.classifiesPlanePlane(-NORMAL_X, -NORMAL_Y, -NORMAL_Z, -D, NORMAL_X, NORMAL_Y, NORMAL_Z, D));
+
+		assertSame(PlaneClassification.BEHIND, Plane3afp.classifiesPlanePlane(-NORMAL_X, -NORMAL_Y, -NORMAL_Z, -D, NORMAL_X, NORMAL_Y, NORMAL_Z, D + 2));
+		assertSame(PlaneClassification.BEHIND, Plane3afp.classifiesPlanePlane(-NORMAL_X, -NORMAL_Y, -NORMAL_Z, -D, NORMAL_X, NORMAL_Y, NORMAL_Z, D + 4));
+
+		assertSame(PlaneClassification.IN_FRONT_OF, Plane3afp.classifiesPlanePlane(-NORMAL_X, -NORMAL_Y, -NORMAL_Z, -D, NORMAL_X, NORMAL_Y, NORMAL_Z, D - 2));
+		assertSame(PlaneClassification.IN_FRONT_OF, Plane3afp.classifiesPlanePlane(-NORMAL_X, -NORMAL_Y, -NORMAL_Z, -D, NORMAL_X, NORMAL_Y, NORMAL_Z, D - 4));
+	}
+
+	@DisplayName("classifies(Plane3D,Plane3D)")
+	@ParameterizedTest(name = "{index} => {0}")
+	@EnumSource(CoordinateSystem3D.class)
+	public void classifiesPlane3EPlane3D(CoordinateSystem3D cs) {
+		CoordinateSystem3D.setDefaultCoordinateSystem(cs);
+		
+		assertSame(PlaneClassification.COINCIDENT, this.plane.classifies(new Plane3d(1., -3., 4., -4.)));
+		assertSame(PlaneClassification.COINCIDENT, this.plane.classifies(new Plane3d(-1., 3., -4., 4.)));
+		assertSame(PlaneClassification.COINCIDENT, this.plane.classifies(new Plane3d(NORMAL_X, NORMAL_Y, NORMAL_Z, D)));
+
+		assertSame(PlaneClassification.IN_FRONT_OF, this.plane.classifies(new Plane3d(NORMAL_X, NORMAL_Y, NORMAL_Z, D + 2)));
+		assertSame(PlaneClassification.IN_FRONT_OF, this.plane.classifies(new Plane3d(NORMAL_X, NORMAL_Y, NORMAL_Z, D + 4)));
+
+		assertSame(PlaneClassification.BEHIND, this.plane.classifies(new Plane3d(NORMAL_X, NORMAL_Y, NORMAL_Z, D - 2)));
+		assertSame(PlaneClassification.BEHIND, this.plane.classifies(new Plane3d(NORMAL_X, NORMAL_Y, NORMAL_Z, D - 4)));
+		
+		//
+		this.plane.negate();
+		
+		assertSame(PlaneClassification.COINCIDENT, this.plane.classifies(new Plane3d(1., -3., 4., -4.)));
+		assertSame(PlaneClassification.COINCIDENT, this.plane.classifies(new Plane3d(-1., 3., -4., 4.)));
+		assertSame(PlaneClassification.COINCIDENT, this.plane.classifies(new Plane3d(NORMAL_X, NORMAL_Y, NORMAL_Z, D)));
+
+		assertSame(PlaneClassification.BEHIND, this.plane.classifies(new Plane3d(NORMAL_X, NORMAL_Y, NORMAL_Z, D + 2)));
+		assertSame(PlaneClassification.BEHIND, this.plane.classifies(new Plane3d(NORMAL_X, NORMAL_Y, NORMAL_Z, D + 4)));
+
+		assertSame(PlaneClassification.IN_FRONT_OF, this.plane.classifies(new Plane3d(NORMAL_X, NORMAL_Y, NORMAL_Z, D - 2)));
+		assertSame(PlaneClassification.IN_FRONT_OF, this.plane.classifies(new Plane3d(NORMAL_X, NORMAL_Y, NORMAL_Z, D - 4)));
+	}
+
 	@DisplayName("classifiesPlaneSegment(double,double,double,double,double,double,double,double,double,double)")
 	@ParameterizedTest(name = "{index} => {0}")
 	@EnumSource(CoordinateSystem3D.class)
